@@ -181,6 +181,21 @@ test.describe('edge cases (plan §15.4)', () => {
     await expect(stage.locator('[data-handle]')).toHaveAttribute('aria-label', /Direction undefined: the zero vector has no direction\./);
     expect(await stage.locator('.formula-panel .formula').nth(2).getAttribute('data-tex')).toContain('undefined');
   });
+  test('(0, 0): the "zero vector" note is centred above the origin and lies wholly inside the plane (C1 follow-up)', async ({ page }) => {
+    // Geometry only, no pixels: independent of OS font rasterisation. Guards the Linux baseline question
+    // (that reference showed this label shifted right and clipped; the source anchors it centred at the origin).
+    const stage = await openStage(page);
+    await setParam(stage, 'x', '0');
+    await setParam(stage, 'y', '0');
+    await showPlane(stage);
+    const note = (await stage.locator('[data-part="zero-note"]').boundingBox())!;
+    const box = await planeBox(stage);
+    const origin = worldToPage(box, 0, 0);
+    expect(note.x, 'note starts inside the plane').toBeGreaterThanOrEqual(box.x);
+    expect(note.x + note.width, 'note ends inside the plane').toBeLessThanOrEqual(box.x + box.width);
+    expect(Math.abs(note.x + note.width / 2 - origin.x), 'note is centred on the origin (px)').toBeLessThan(3);
+    expect(note.y + note.height, 'note sits above the origin').toBeLessThan(origin.y);
+  });
   test('negative zero never reaches the screen', async ({ page }) => {
     const stage = await openStage(page);
     await setParam(stage, 'y', '-0');

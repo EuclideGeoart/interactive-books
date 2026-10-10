@@ -1,16 +1,16 @@
 import { expect, test } from '@playwright/test';
 import { dragHandleTo, openStage, rowLines } from './helpers';
 
-const PART_SIZES = [7, 19, 14, 16, 10, 10, 8, 10]; // master plan §4
+const PART_SIZES = [9, 19, 15, 16, 10, 10, 8, 10]; // master plan §4
 
 test.describe('the map of the book (contents page)', () => {
-  test('eight Parts, 94 chapters, every one planned and none a link', async ({ page }) => {
+  test('eight Parts, 97 chapters, every one planned and none a link', async ({ page }) => {
     await page.goto('contents/');
     const parts = page.locator('main .part');
     await expect(parts).toHaveCount(8);
     for (const [i, size] of PART_SIZES.entries()) await expect(parts.nth(i).locator('.chapter-item')).toHaveCount(size);
-    await expect(page.locator('main .chapter-item')).toHaveCount(94);
-    await expect(page.locator('main .chapter-item[data-status="planned"]')).toHaveCount(94);
+    await expect(page.locator('main .chapter-item')).toHaveCount(97);
+    await expect(page.locator('main .chapter-item[data-status="planned"]')).toHaveCount(97);
     await expect(page.locator('main .chapter-item a')).toHaveCount(0); // planned content is never a dead link
     const i3 = page.locator('main [data-chapter-id="I.3"]');
     await expect(i3).toContainText('Vectors: components, magnitude, and direction');
@@ -75,7 +75,7 @@ test.describe('the book-map dialog', () => {
     await dialog.getByRole('searchbox').fill('zzzz');
     await expect(dialog.locator('.chapter-item:not([hidden])')).toHaveCount(0);
     await dialog.getByRole('searchbox').fill('');
-    await expect(dialog.locator('.chapter-item:not([hidden])')).toHaveCount(94);
+    await expect(dialog.locator('.chapter-item:not([hidden])')).toHaveCount(97);
     await page.keyboard.press('Escape');
     await expect(dialog).toBeHidden();
     await expect(opener).toBeFocused();

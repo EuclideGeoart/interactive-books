@@ -1,9 +1,11 @@
 # INTERACTIVE_MATH_FOUNDATIONS_MASTER_PLAN.md
 
 **Project:** Book II — Interactive Mathematical Foundations for Computing & Machine Learning  
-**Document status:** Freeze Candidate v1  
+**Document status:** Curriculum amendment v1.1 — 97 chapters across eight Parts; REF-1 remains I.3
+
 **Authority:** Curriculum, interaction architecture, mathematical conventions, validation policy, and implementation sequencing  
-**Implementation status:** Planning only — mass chapter implementation is explicitly out of scope until the reference chapter is accepted  
+**Implementation status:** M0/M2 platform implemented; WIN-0 Windows portability delivered; REF-1 awaits the final regression-floor review; mass chapter production remains out of scope
+
 **Long-term path:** Mathematical Foundations → Machine Learning → Neural Networks → Transformers → LLMs
 
 ---
@@ -245,6 +247,7 @@ Unless a topic explicitly specifies another base:
 - \(\log\) means the natural logarithm;
 - information measured in bits uses \(\log_2\) explicitly;
 - information measured in nats uses natural logarithms.
+- introduce exponentials and logarithms concretely in I.6; VII.1 applies them to tiny probabilities, log-likelihoods and stable computation.
 
 ## 3.6 Probability
 
@@ -304,7 +307,33 @@ Do not use ordinary equality merely because two floating-point numbers display t
 
 # 4. Authoritative Curriculum
 
-Chapter boundaries below are now the default architecture. They may be amended later only through an explicit curriculum decision, not incidentally during implementation.
+**Curriculum v1.1 — 97 chapters in eight Parts.** This deliberate amendment adds **I.4 Algebraic expressions, equations and inequalities**, **I.6 Essential function families**, and **III.10 Computational graphs and automatic differentiation**. Remaining chapter numbers in Parts I and III shift accordingly; Parts II and IV–VIII keep their chapter counts, with targeted topic clarifications. The eight-Part progression is unchanged.
+
+| Part | Chapters | Range |
+| --- | ---: | --- |
+| I · Mathematical Language | 9 | I.1–I.9 |
+| II · Linear Algebra | 19 | II.1–II.19 |
+| III · Calculus | 15 | III.1–III.15 |
+| IV · Probability | 16 | IV.1–IV.16 |
+| V · Statistics | 10 | V.1–V.10 |
+| VI · Optimization | 10 | VI.1–VI.10 |
+| VII · Information Theory | 8 | VII.1–VII.8 |
+| VIII · Numerical Computing | 10 | VIII.1–VIII.10 |
+| **Total** | **97** | |
+
+**Why the additions belong here:** introductory algebra and elementary exponential/logarithmic/trigonometric functions are prerequisites for later calculus, probability, likelihood and softmax; automatic differentiation connects the chain rule and Jacobians to the parameter updates in later neural networks. These are prerequisites, not an excuse to expand Book II into an encyclopedic pure-mathematics textbook.
+
+**Implementation order is not reading order.** REF-1 / M3 still implements **I.3 Vectors** first to prove the interaction architecture. The learner's eventual sequence is I.1 → I.2 → I.3 → … → I.9. Chapter I.3 must explain its basic squares, roots, right-triangle geometry and angular vocabulary locally, without assuming the later I.4/I.6 lessons have already been read.
+
+Other deliberate prerequisites and boundaries:
+
+- I.6 introduces logarithms and trigonometric functions; VII.1 deepens them for log probabilities rather than introducing logarithms for the first time.
+- II.8–II.10 distinguish linear maps from affine maps and make shapes/composition order explicit.
+- III.10 teaches computational graphs and forward/reverse-mode differentiation, **not** a neural-network training implementation.
+- Numerical reliability is discussed where it first matters; VIII then provides the consolidated treatment.
+- Do not renumber I.3 or VI.4, change frozen mathematical conventions, or start Part-wide production before REF-1 acceptance.
+
+Chapter boundaries are authoritative and may change only through an explicit reviewed curriculum amendment. Keep this plan, the curriculum data, test expectations, and visual baselines synchronized.
 
 ---
 
@@ -312,21 +341,20 @@ Chapter boundaries below are now the default architecture. They may be amended l
 
 **Purpose:** establish the notation and mental objects used by all later Parts without turning the opening of the book into a formal mathematics survey.
 
-### I.1 Scalars, quantities, and units
+### I.1 Scalars, quantities, units, powers and roots
 
 Core ideas:
 
-- scalar values;
-- sign;
-- magnitude in context;
-- units;
-- dimensionless values;
-- exact vs approximate numbers;
-- basic numeric expressions.
+- scalar values, signs, magnitude in context and units;
+- dimensionless quantities and basic arithmetic expressions;
+- exponents, squares, square roots and the inverse relationship between squaring and rooting;
+- exact vs approximate numbers, including simple radicals;
+- interpreting a square as an area and a square root as a length.
 
 Flagship interaction:
 
-- manipulate a physical or abstract scalar with a slider and observe direct formula/value consequences.
+- change a quantity and visualize its square and square root with matching geometric and numeric readouts;
+- keep the mechanism elementary enough to support the Pythagorean magnitude in I.3.
 
 ### I.2 Coordinates and points
 
@@ -351,33 +379,72 @@ Core ideas:
 - components;
 - endpoint representation;
 - magnitude;
-- direction;
+- direction and angle measured from the positive x-axis;
 - zero vector;
-- exact vs approximate magnitude.
+- exact vs approximate magnitude;
+- short, self-contained right-triangle and angular intuition; later I.6 generalizes trigonometric functions.
 
 Flagship interaction:
 
 - drag the endpoint of \(\mathbf v=(x,y)\);
-- live update components, \(\|\mathbf v\|\), direction, and exact/approx forms.
+- live update components, \(\|\mathbf v\|\), direction, and exact/approx forms;
+- interpret length by squares and roots from I.1 and position from I.2, without requiring later algebra or trigonometry chapters.
 
-This chapter proves the Book II interaction architecture.
+This chapter proves the Book II interaction architecture. **Its reference milestone and I.3 identifier do not change in v1.1.**
 
-### I.4 Functions as input → transformation → output
+### I.4 Algebraic expressions, equations and inequalities
 
 Core ideas:
 
-- input/output;
-- function notation;
-- domain/codomain at an engineering level;
-- graph as a view of behavior;
-- parameters;
-- composition preview.
+- expressions vs equations vs inequalities, variables, parameters and unknowns;
+- evaluating and simplifying expressions, substitutions and distributivity;
+- balancing operations on both sides of an equality;
+- solving elementary linear equations and interpreting a solution set;
+- inequalities and reversal of the sign when multiplying/dividing by a negative value;
+- domain restrictions and invalid manipulations, e.g. division by zero or squaring without checking extraneous roots.
 
 Flagship interaction:
 
-- modify \(x\) and a parameter \(a\) in \(f(x;a)\) and follow the value through input, transformation, output, and graph.
+- manipulate a balanced equality and see the same operation applied to both sides, with every algebraic transition recorded;
+- change an inequality multiplier's sign to reveal the reversal rule and a counterexample.
 
-### I.5 Sets, intervals, and relations
+This is a practical algebraic bridge into functions and calculus, not a complete abstract-algebra course.
+
+### I.5 Functions as input → transformation → output
+
+Core ideas:
+
+- input/output and function notation;
+- domain, codomain and actual image/range at an introductory engineering level;
+- graph as a representation of the same input-to-output rule;
+- parameters, graphical shifts and stretches;
+- composition and inverse-function preview.
+
+Flagship interaction:
+
+- modify \(x\) and a parameter \(a\) in \(f(x;a)\); keep input, transformation, output and graph synchronized;
+- distinguish changing the input from changing the function's parameter.
+
+### I.6 Essential function families
+
+Core ideas:
+
+- linear and affine, quadratic and other power functions;
+- exponentials and logarithms as inverses; domains, monotonicity and bases;
+- natural logarithms \(\ln x=\log x\) (Book II convention), with the identities that later probability and information-theory lessons need;
+- basic sine and cosine as circular motion and component ratios, with radians as canonical;
+- graph shapes, zero crossings, growth/decay and simple inverse or periodic behaviors;
+- composition, transformations and domain restrictions without overwhelming catalogues.
+
+Flagship interaction:
+
+- change parameters and compare the graphs of \(x\), \(x^2\), \(e^x\), \(\log x\), \(\sin x\) and \(\cos x\);
+- feed a value through \(e^x\) then \(\log\) to see how one undoes the other on its domain;
+- connect a rotating unit vector to sine/cosine components, building on the visual angles introduced in I.3.
+
+Do not re-teach an entire calculus or information theory chapter here.
+
+### I.7 Sets, intervals, and relations
 
 Core ideas:
 
@@ -392,7 +459,7 @@ Flagship interaction:
 
 - manipulate regions/items and observe set operations.
 
-### I.6 Indexed quantities and summation
+### I.8 Indexed quantities and summation
 
 Core ideas:
 
@@ -407,7 +474,7 @@ Flagship interaction:
 
 - step through a sum term-by-term while the accumulator and highlighted term stay synchronized.
 
-### I.7 The notation map for ML
+### I.9 The notation map for ML
 
 Core ideas:
 
@@ -423,7 +490,7 @@ Core ideas:
 
 This chapter is primarily a bridge and reference map rather than a giant interactive.
 
-**Part I exit condition:** a learner can read the symbols used in the rest of Book II without needing an ML background.
+**Part I exit condition:** a learner can read and manipulate elementary expressions, equations and core functions, and interpret the symbols used in the rest of Book II without needing an ML background.
 
 ---
 
@@ -478,16 +545,18 @@ This chapter is primarily a bridge and reference map rather than a giant interac
 
 ### II.8 Matrices as linear transformations
 
-- transformed grid;
-- transformed basis vectors;
-- transformed arbitrary vector;
-- matrix coefficients as images of basis directions.
+- matrix rows/columns and dimension \(m\times n\) as input/output shapes;
+- matrix addition and scalar multiplication as operations on compatible shapes;
+- transformed grid, transformed basis vectors and transformed arbitrary vectors;
+- matrix columns as images of basis directions;
+- distinguish a true linear transformation \(x\mapsto Ax\) (origin stays fixed) from an affine map \(x\mapsto Ax+b\) (may include translation).
 
 ### II.9 Matrix × vector
 
 - transformation view;
 - row × column mechanics;
-- shape checking;
+- shape checking for \(A\in\mathbb R^{m\times n}\), \(x\in\mathbb R^n\), \(Ax\in\mathbb R^m\);
+- explicitly connect outputs to rows and basis images to columns;
 - no black-box multiplication.
 
 ### II.10 Matrix × matrix as composition
@@ -495,7 +564,9 @@ This chapter is primarily a bridge and reference map rather than a giant interac
 - apply first transform;
 - apply second transform;
 - derive composition;
-- expose order \(BA\).
+- expose order \(BA\) when \(A\) acts first, then \(B\);
+- explain shape compatibility and why order matters;
+- show affine composition \((B(Ax+b)+c)=(BA)x+(Bb+c)\) as a bridge to \(Ax+b\) in later ML, keeping matrix multiplication and translation conceptually distinct.
 
 ### II.11 Transpose and orthogonality
 
@@ -541,9 +612,10 @@ This chapter is primarily a bridge and reference map rather than a giant interac
 
 ### II.17 Eigenvalues and eigenvectors
 
-- directions preserved by a transformation;
+- directions preserved by a transformation when real eigenvectors exist;
 - stretching/sign reversal;
-- repeated application/dynamical intuition.
+- repeated application/dynamical intuition;
+- explicit counterexample: a real 2D rotation can have no real eigenvector; its eigenvalues may be complex (explain the boundary without a complex-analysis detour).
 
 ### II.18 Orthogonal bases and least-squares geometry
 
@@ -558,6 +630,7 @@ This chapter is primarily a bridge and reference map rather than a giant interac
 - rank;
 - reconstruction;
 - low-rank approximation;
+- pseudoinverse and least-squares intuition, with numerical caveats rather than a fragile explicit-inverse recipe;
 - bridge to PCA/embeddings later.
 
 **Part II exit condition:** the learner can reason about vector spaces, transformations, systems, projections, eigen-directions, and SVD well enough to understand the linear layers of later ML models.
@@ -626,38 +699,59 @@ This chapter is primarily a bridge and reference map rather than a giant interac
 - local linear transformation;
 - shape semantics.
 
-### III.10 Hessian and curvature
+### III.10 Computational graphs and automatic differentiation
+
+Core ideas:
+
+- a mathematical expression represented as an acyclic graph of elementary operations;
+- forward evaluation from inputs to intermediate values and outputs;
+- chain rule through graph edges, including shared/reused inputs;
+- forward-mode derivatives and reverse-mode derivatives, with clear input/output shape and computational-cost intuition;
+- accumulation of contributions when multiple paths lead to the same parameter;
+- distinguishing automatic differentiation (derivatives of executed operations) from symbolic rearrangement and finite differences;
+- explaining why reverse mode is useful for scalar losses with many parameters, without prematurely teaching a whole neural network.
+
+Flagship interaction:
+
+- let the learner edit \(x,y\) in \(z=(x+y)x\); reveal \(u=x+y\), \(z=ux\), their local derivatives, and the backward accumulation:
+  \(\partial z/\partial x=2x+y\), \(\partial z/\partial y=x\);
+- single-step a trace of forward values and reverse adjoints with arrows matching the exact numerical contributions;
+- validate analytic derivatives against an independent finite-difference oracle at well-conditioned points while explaining its limitations near nonsmooth or numerically delicate states.
+
+This is the mathematical bridge to backpropagation in Book IV, not an ML training implementation.
+
+### III.11 Hessian and curvature
 
 - second derivatives;
 - local curvature;
 - saddle/min/max intuition;
 - connection to optimization.
 
-### III.11 Integrals as accumulation
+### III.12 Integrals as accumulation
 
 - area/accumulation;
 - signed area;
 - partition sums.
 
-### III.12 Fundamental derivative/integral connection
+### III.13 Fundamental derivative/integral connection
 
 - accumulation function;
 - local change of accumulated quantity;
 - conceptual Fundamental Theorem bridge.
 
-### III.13 Numerical differentiation
+### III.14 Numerical differentiation
 
 - finite differences;
 - step-size tradeoff;
 - truncation vs floating-point error.
 
-### III.14 Numerical integration
+### III.15 Numerical integration
 
 - rectangle/trapezoid methods;
 - convergence with partition refinement;
 - error intuition.
 
-**Part III exit condition:** the learner understands local sensitivity, gradients/Jacobians/Hessians, and numerical approximations well enough for optimization and backpropagation later.
+**Part III exit condition:** the learner understands local sensitivity, gradients/Jacobians/Hessians, computational graphs, automatic differentiation and numerical approximations well enough for optimization and later backpropagation.
 
 ---
 
@@ -679,11 +773,12 @@ Only the combinatorial tools required by the examples; no detached combinatorics
 
 ### IV.6 Bayes' theorem as probability-mass update
 
-- prior;
-- likelihood;
-- evidence;
+- prior and base rates;
+- likelihood and diagnostic evidence;
+- normalizing evidence;
 - posterior;
-- normalized update.
+- normalized update and visual probability-mass conservation;
+- counterexample to confusing (P(Amid B)) with (P(Bmid A)).
 
 ### IV.7 Random variables
 
@@ -693,7 +788,10 @@ Only the combinatorial tools required by the examples; no detached combinatorics
 ### IV.8 PMF, PDF, and CDF
 
 - what each representation means;
-- why PDF values are not probabilities at individual continuous points.
+- discrete probability masses vs continuous probability densities;
+- why PDF height is not the probability of an exact value and why interval probability is area under a PDF;
+- CDF as accumulated probability and a link to integration;
+- keep continuous normalization visible and correct.
 
 ### IV.9 Bernoulli and Binomial distributions
 
@@ -739,10 +837,15 @@ Only the combinatorial tools required by the examples; no detached combinatorics
 
 ### V.3 Population, sample, and sampling variability
 
+- sample selection and representativeness;
+- sampling bias vs random sampling variation;
+- repeated samples from the same population and the distribution of a statistic.
+
 ### V.4 Estimators and estimation
 
 - estimator vs estimate;
-- bias/variance intuition at a foundational level.
+- bias/variance intuition at a foundational level;
+- show estimator variability across samples rather than treating a single sample estimate as a fixed truth.
 
 ### V.5 Confidence intervals through repeated sampling
 
@@ -846,6 +949,10 @@ Show:
 
 ### VI.9 Constraints and projected/penalized intuition
 
+- constrained feasible regions and projection of an update back into the allowed region;
+- regularization penalties (e.g. (L+lambda|w|_2^2)) as an explicit change to the optimization objective;
+- distinguish model regularization from optimizer stability fixes.
+
 Foundational only; do not become a full operations-research text.
 
 ### VI.10 Numerical stopping and optimization diagnostics
@@ -854,7 +961,9 @@ Foundational only; do not become a full operations-research text.
 - gradient norm;
 - loss change;
 - iteration limits;
-- divergence/non-finite detection.
+- divergence/non-finite detection;
+- gradient clipping as a protective numerical intervention, with its effect on the update shown explicitly;
+- clarify that clipping or a tiny gradient does not by itself prove convergence to the global optimum.
 
 **Part VI exit condition:** the learner can inspect an optimizer step and explain exactly why the parameters moved.
 
@@ -866,8 +975,9 @@ Foundational only; do not become a full operations-research text.
 
 ### VII.1 Logarithms and log probabilities in computation
 
+- build on logarithms first introduced as a function family in I.6;
 - products become sums;
-- tiny probabilities;
+- tiny probabilities, (log 0), and explicit domain restrictions;
 - log-likelihood.
 
 ### VII.2 Self-information
@@ -905,9 +1015,11 @@ Expose:
 
 ### VII.7 Numerical stability: log-sum-exp and stable softmax
 
-- overflow example;
+- overflow and underflow examples;
 - max-shift derivation;
-- stable computation.
+- stable softmax and log-softmax from logits;
+- stable log-sum-exp without materializing enormous exponentials;
+- connect the formulas and values to identical probability-model state.
 
 ### VII.8 From token logits to language-model loss
 
@@ -915,10 +1027,10 @@ A bridge chapter, not yet a transformer implementation:
 
 - one position;
 - vocabulary logits;
-- softmax;
-- target token;
-- negative log probability;
-- average over positions.
+- softmax and stable log-softmax;
+- target token and negative log-likelihood calculated directly from logits;
+- average loss over positions, with ignored/masked positions handled explicitly when included;
+- connect this scalar loss to the gradient-based update without implementing a transformer.
 
 **Part VII exit condition:** cross entropy and token prediction loss are no longer mysterious formulas.
 
@@ -932,7 +1044,9 @@ A bridge chapter, not yet a transformer implementation:
 
 - sign/exponent/significand intuition;
 - finite representable set;
-- spacing/ULP intuition.
+- spacing/ULP intuition;
+- compare binary64, binary32, FP16 and bfloat16 (BF16) in precision and exponent range without pretending they are interchangeable;
+- emphasize that actual hardware/runtime support is platform-dependent.
 
 ### VIII.2 Rounding and representation error
 
@@ -961,7 +1075,8 @@ A bridge chapter, not yet a transformer implementation:
 - rescaling;
 - normalization;
 - compensated or rearranged calculations in selected examples;
-- connect to stable softmax/log-sum-exp.
+- connect to stable softmax/log-sum-exp;
+- introduce mixed-precision computation and loss-scaling intuition as examples of numerical trade-offs, not universally safe recipes.
 
 ### VIII.7 Numerical linear algebra realities
 
@@ -979,10 +1094,11 @@ A bridge chapter, not yet a transformer implementation:
 
 ### VIII.9 Vectorized computation
 
-- elementwise/broadcasted operations;
-- shapes;
+- tensor dimensions, axes and shape compatibility, from scalar to vector to matrix to batched arrays;
+- elementwise operations, broadcasting and axis-reduction behavior;
 - why vectorization matters;
-- do not confuse vectorization with the mathematical vector concept.
+- explicit errors and counterexamples for incompatible shapes;
+- do not confuse vectorization with the mathematical vector concept or infer automatic performance gains for every workload.
 
 ### VIII.10 Reproducibility, random seeds, and nondeterminism
 
@@ -1786,7 +1902,8 @@ After the chapter, the learner should be able to explain:
    \]
 4. how direction is obtained with a quadrant-aware angle calculation;
 5. why the zero vector has magnitude zero but no unique direction;
-6. the difference between an exact magnitude such as \(\sqrt{13}\) and its decimal approximation.
+6. the difference between an exact magnitude such as \(\sqrt{13}\) and its decimal approximation;
+7. the minimal right-triangle and angle reasoning needed for this chapter, without assuming later algebra (I.4) or trigonometric functions (I.6).
 
 ## 15.3 Required hero interaction
 
@@ -2026,7 +2143,7 @@ Freeze:
 - validation policy;
 - REF-1 definition.
 
-**Current document is the Phase M1 freeze candidate.**
+**Current status:** M0/M2 have been implemented, WIN-0 Windows portability has been delivered and validated on Windows, and this v1.1 amendment remains a curriculum freeze candidate until the synchronized app data/tests and the outstanding Linux regression pass have been reviewed. M3 / REF-1 remains the next educational milestone.
 
 ## Phase M2 — Minimal mathematics-platform adaptation
 
@@ -2092,7 +2209,7 @@ Freeze Part II before relying on it as a stable foundation.
 
 Build and freeze calculus.
 
-Chain rule, gradient, Jacobian, and Hessian become later ML prerequisites.
+Chain rule, computational graphs, automatic differentiation, gradient, Jacobian, and Hessian become later ML prerequisites.
 
 ## Phase M8 — Part IV Probability
 
@@ -2289,7 +2406,8 @@ Book II should deliberately prepare the next books.
 The learner should leave Book II understanding:
 
 - features/targets as vectors and matrices;
-- linear transformations;
+- linear and affine transformations;
+- elementary equations, exponentials and logarithms;
 - losses;
 - gradients;
 - optimization;
@@ -2303,7 +2421,7 @@ The learner should leave Book II understanding:
 Book II supplies:
 
 - matrix composition;
-- chain rule;
+- chain rule and computational graphs / automatic differentiation;
 - Jacobians/gradients;
 - optimization;
 - activation-independent mathematical language;
@@ -2318,6 +2436,7 @@ Later material will rely heavily on:
 - matrix products;
 - projections;
 - normalization;
+- tensor shapes and broadcasting;
 - softmax;
 - log probabilities;
 - stable computation.
@@ -2361,31 +2480,43 @@ The product remains a static learning application unless a later proven requirem
 
 ---
 
-# 24. Immediate Freeze Decision
+# 24. Curriculum v1.1 Decision and Freeze Boundary
 
-The architecture should now proceed in this exact order:
+The user approved the targeted prerequisite amendment on 2026-10-10:
 
-1. review and accept/amend this master plan;
-2. inspect Book I for reusable platform pieces;
-3. adapt the smallest necessary mathematics platform;
-4. implement REF-1 Vectors;
-5. independently validate REF-1;
-6. freeze its regression floor;
-7. only then complete Part I and continue Part-by-Part.
+- **I.4** elementary algebra and **I.6** essential function families;
+- **III.10** computational graphs and automatic differentiation;
+- topic-level coverage improvements in Linear Algebra, Probability, Statistics, Optimization, Information Theory and Numerical Computing;
+- **97 chapters total**, without changing the order of Parts or **I.3 REF-1** / **VI.4 flagship** identities.
 
-**No mass chapter generation is authorized before REF-1 acceptance.**
+This amends the **curriculum**, not the accepted design identity or mathematical conventions. The historical M0/M2 and WIN-0 implementation reports remain historical evidence and must not be retroactively rewritten as though their 94-chapter tests covered v1.1.
+
+Before accepting the amendment as the active regression floor:
+
+1. synchronize the data model, chapter IDs, Part exit conditions, navigation and unit/browser test expectations with this master plan;
+2. validate the true reading order (I.1–I.9, III.1–III.15) and the fixed markers I.3 / VI.4;
+3. independently review affected navigation/landing/screenshot changes, preserving distinct Linux and Windows visual baselines;
+4. rerun the independent validation pipeline on the available host(s), and run Linux validation after WIN-0 changes before declaring a two-platform freeze;
+5. record the acceptance commit and outstanding limitations.
+
+**No Part-wide mass chapter production is authorized before REF-1 acceptance.**
 
 ---
 
-# 25. First Post-Freeze Agent Milestone
+# 25. Next Educational Milestone — M3 / REF-1
 
-Once this master plan is approved, the next implementation task should be:
+**The reference chapter remains I.3 — Vectors: components, magnitude, and direction.** It is deliberately implemented before I.1/I.2 because it exercises the platform more comprehensively; the published learning order remains I.1, I.2, I.3 and so on.
 
-> **M0 + M2 preparation: inspect the existing Book I repository, produce the reuse audit, then implement only the minimum platform adaptation required for REF-1 without yet mass-producing content.**
+Once the revised curriculum and the M2/WIN-0 regression floor are accepted, authorize M3:
 
-After that work is independently reviewed, issue the dedicated **REF-1 Vectors implementation goal**.
+- use the established draggable-geometry and one-model/many-views foundation;
+- produce the complete 14-layer chapter, including intuition, derivation, worked examples, code, counterexamples, numerical notes, ML connections and exercises;
+- exercise real available/current navigation states for the first time;
+- maintain the separate formula, model, oracle and browser validation contracts;
+- validate mobile, keyboard, accessibility and representative drag latency;
+- stop for independent REF-1 review/freeze before implementing other chapters.
 
-This two-step sequence prevents the reference chapter from inheriting accidental DSA-specific architecture and prevents speculative “math framework” work from outrunning a real chapter.
+Later development completes Part I in **reading order** (I.1, I.2, I.4–I.9) and then proceeds through Parts II–VIII under the two-concurrent-Part maximum.
 
 ---
 

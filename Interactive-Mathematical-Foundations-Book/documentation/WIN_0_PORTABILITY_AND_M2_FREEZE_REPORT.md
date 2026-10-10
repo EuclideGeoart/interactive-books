@@ -8,7 +8,7 @@
 | Check (all run natively in PowerShell, no Git Bash) | Result |
 | --- | --- |
 | `npm run check` (astro check, 73 files) | **0 errors, 0 warnings, 0 hints** |
-| `npm test` (Vitest) | **421 passed / 421** in 11 files (was 411; +10 new trace tests) |
+| `npm test` (Vitest) | **421 passed / 421** in 11 files (was 413 at the final M0/M2 baseline; +8 new trace tests) |
 | `npm run test:oracle` (independent Python oracle, `.venv` with NumPy 2.5.3) | **16 tests OK**; fixture fresh, NumPy cross-check on |
 | `npm run build`, `npm run build:subpath` | both complete, 4 pages each |
 | `npm run check:dist` (static crawler) | root: 4 pages, 91 files OK · sub-path `/math-foundations/`: 4 pages, 91 files OK |

@@ -32,10 +32,10 @@ function parsePlan(): PlanPart[] {
 
 describe('curriculum data ⇄ master plan (drift test)', () => {
   const plan = parsePlan();
-  it('the plan has eight Parts with 7, 19, 14, 16, 10, 10, 8 and 10 chapters (94 total)', () => {
-    expect(plan.map(p => p.chapters.length)).toEqual([7, 19, 14, 16, 10, 10, 8, 10]);
-    expect(plan.reduce((a, p) => a + p.chapters.length, 0)).toBe(94);
-    expect(chapterCount).toBe(94);
+  it('the plan has eight Parts with 9, 19, 15, 16, 10, 10, 8 and 10 chapters (97 total)', () => {
+    expect(plan.map(p => p.chapters.length)).toEqual([9, 19, 15, 16, 10, 10, 8, 10]);
+    expect(plan.reduce((a, p) => a + p.chapters.length, 0)).toBe(97);
+    expect(chapterCount).toBe(97);
   });
   it('Part numerals, names, purposes and exit conditions match the plan verbatim', () => {
     expect(parts.map(p => ({ numeral: p.numeral, title: p.title, purpose: p.purpose, exit: p.exitCondition }))).toEqual(
@@ -58,9 +58,9 @@ describe('curriculum data ⇄ master plan (drift test)', () => {
 
 describe('curriculum structure', () => {
   it('chapter ids, part slugs and anchors are unique', () => {
-    expect(new Set(allChapters.map(r => r.id)).size).toBe(94);
+    expect(new Set(allChapters.map(r => r.id)).size).toBe(97);
     expect(new Set(parts.map(p => p.slug)).size).toBe(8);
-    expect(new Set(allChapters.map(r => chapterAnchor(r.part, r.chapter))).size).toBe(94);
+    expect(new Set(allChapters.map(r => chapterAnchor(r.part, r.chapter))).size).toBe(97);
     expect(new Set(parts.map(partAnchor)).size).toBe(8);
   });
   it('chapters are numbered 1..n within each Part and Parts 1..8 in order', () => {
@@ -71,7 +71,7 @@ describe('curriculum structure', () => {
     for (const r of allChapters) expect(r.chapter.status === 'available', r.id).toBe(r.chapter.slug !== undefined);
   });
   it('neighbours cross Part boundaries in reading order', () => {
-    const last = findChapter('I.7')!;
+    const last = findChapter('I.9')!;
     expect(neighbours(last).next?.id).toBe('II.1');
     expect(neighbours(findChapter('I.1')!).previous).toBeUndefined();
     expect(neighbours(findChapter('VIII.10')!).next).toBeUndefined();

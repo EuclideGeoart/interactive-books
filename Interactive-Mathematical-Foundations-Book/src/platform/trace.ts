@@ -6,7 +6,7 @@
  *
  * Scope in M2: the frame type and a pure cursor. There is deliberately NO timer, autoplay or speed control
  * here: nothing in M2 needs one, and §2.4's full player (play / pause / speed) arrives with the first
- * chapter that does (I.6 summation, II.1 vector addition). A timer-free cursor also has nothing to
+ * chapter that does (I.8 summation, II.1 vector addition). A timer-free cursor also has nothing to
  * disable for `prefers-reduced-motion`.
  */
 

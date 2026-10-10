@@ -2,9 +2,9 @@
 
 *For Computing & Machine Learning.* A visual-first, manipulation-driven mathematics book: **see it → manipulate it → understand the mechanism → derive the mathematics → implement/use it.**
 
-**Status: M0 + M2 foundation.** The platform, curriculum structure, design system and test harness are in place, together with one clearly labelled **foundation demo** (a draggable vector). **No curriculum chapter is written yet**; the reference chapter (I.3 *Vectors*) is milestone M3 and awaits the review gate.
+**Status: M0 + M2 foundation delivered; WIN-0 Windows portability delivered.** The platform, curriculum structure, design system and test harness are in place, together with one clearly labelled **foundation demo** (a draggable vector). The **v1.1 curriculum amendment (97 chapters)** passed the full Windows validation in C1; native Linux validation and independent review of the Windows baselines are pending. **No curriculum chapter is written yet**; the reference chapter (I.3 *Vectors*) is milestone M3 and awaits the review gate.
 
-Authority: [`documentation/INTERACTIVE_MATH_FOUNDATIONS_MASTER_PLAN.md`](documentation/INTERACTIVE_MATH_FOUNDATIONS_MASTER_PLAN.md) (relocated from the originally misspelled `documentaion/` in WIN-0; contents byte-identical, sha256 `c868e6ad…0612`).
+Authority: [`documentation/INTERACTIVE_MATH_FOUNDATIONS_MASTER_PLAN.md`](documentation/INTERACTIVE_MATH_FOUNDATIONS_MASTER_PLAN.md) — **curriculum v1.1 (97 chapters)**. WIN-0 first relocated the original v1 plan byte-for-byte (original sha256 `c868e6ad…0612`); the explicitly approved v1.1 amendment subsequently changed its contents. See [`documentation/CURRICULUM_V1_1_AMENDMENT.md`](documentation/CURRICULUM_V1_1_AMENDMENT.md) for the reviewed change map.
 
 | Read this | For |
 | --- | --- |
@@ -77,12 +77,12 @@ Only the interactive stages are Preact islands (everything is also rendered on t
 
 ### The curriculum is data
 
-`src/curriculum/curriculum.ts` holds all eight Parts and 94 chapters. `tests/unit/curriculum.test.ts` re-parses the master plan and fails if a title, a number, a Part purpose or an exit condition drifts. Chapters are `planned` (plain text in the map, never a dead link) or `available` (a link, with an MDX file).
+`src/curriculum/curriculum.ts` holds all eight Parts and 97 chapters (I: 9, II: 19, III: 15, IV: 16, V: 10, VI: 10, VII: 8, VIII: 10). `tests/unit/curriculum.test.ts` re-parses the v1.1 master plan and fails if a title, a number, a Part purpose or an exit condition drifts. Chapters are `planned` (plain text in the map, never a dead link) or `available` (a link, with an MDX file).
 
 ## Layout
 
 ```
-documentation/  the authoritative master plan (do not edit), audit, design direction, authoring guide, reports, screenshots
+documentation/  the authoritative, versioned master plan (edit only by explicit reviewed amendment), audit, design direction, authoring guide, reports, screenshots
 src/            see the table above
 code/python/    reference code shown on pages AND executed by the oracle tests
 oracle/         independent Python oracle (stdlib + NumPy cross-check) and its tests
