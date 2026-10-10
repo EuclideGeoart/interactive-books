@@ -93,10 +93,11 @@ export function directionSpoken(c: DirectionComparison): string {
 }
 
 export function directionDescription(c: DirectionComparison): string {
-  const base = 'Coordinate plane from −7 to 7 on both axes. A dashed line through the origin shows every vector with the same ratio y/x.';
+  const base = 'Coordinate plane from −7 to 7 on both axes. A dashed line through the origin carries the vector v and its opposite −v.';
+  const ratioNote = c.ratio === null ? ' The vector is vertical: it has a valid direction (straight up or down), but no ratio y/x is defined, because x = 0.' : ' Where x is not 0, v and −v share the same ratio y/x.';
   if (c.location.kind === 'origin') return `${base} The vector is the zero vector at the origin: it has no direction.`;
   const naive = c.naiveRadians === null ? 'The ratio is undefined, so there is no naive arrow.' : c.halfTurns === 0 ? 'The naive angle gives the same direction.' : 'A dashed caution-coloured arrow shows where the naive angle points: the opposite way.';
-  return `${base} The vector (${formatGiven(c.x).text}, ${formatGiven(c.y).text}) is in ${describeLocation(c.location)}. ${naive}`;
+  return `${base}${ratioNote} The vector (${formatGiven(c.x).text}, ${formatGiven(c.y).text}) is in ${describeLocation(c.location)}. ${naive}`;
 }
 
 // ---------------------------------------------------------------------------------------------- formulas

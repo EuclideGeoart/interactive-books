@@ -72,7 +72,7 @@ $$
 
 where $x$ is the **horizontal component** and $y$ is the **vertical component**. Two vectors are equal exactly when both components are equal. The **zero vector** $\mathbf 0=\begin{bmatrix}0\\0\end{bmatrix}$ is the move that goes nowhere.
 
-Throughout this book the plane has $+x$ to the right and $+y$ **up**, vectors are columns, and angles are in radians measured counter-clockwise from the $+x$ axis. A vector has two derived quantities: its **magnitude** $\lVert\mathbf v\rVert$ (how long the move is) and, when it is not the zero vector, its **direction** $\theta$ (which way).
+Throughout this book the plane has $+x$ to the right and $+y$ **up**, vectors are columns, and angles are in radians measured from the $+x$ axis, **counter-clockwise turns positive and clockwise turns negative** (so $(1,-1)$ has direction $-\pi/4$). A vector has two derived quantities: its **magnitude** $\lVert\mathbf v\rVert$ (how long the move is) and, when it is not the zero vector, its **direction** $\theta$ (which way).
 
 ## Magnitude: Pythagoras on the components
 
@@ -94,7 +94,7 @@ Two properties follow at once from the formula. The length is never negative, an
 
 ## Direction: the angle from the x-axis
 
-The direction of a nonzero vector is the angle $\theta$ that the arrow makes with the positive $x$ axis, counter-clockwise. In the right triangle, $\tan\theta$ is rise over run, so for a vector pointing into the right half-plane
+The direction of a nonzero vector is the signed angle $\theta$ from the positive $x$ axis to the arrow: counter-clockwise is positive, clockwise is negative. In the right triangle, $\tan\theta$ is rise over run, so for a vector pointing into the right half-plane
 
 $$
 \theta=\arctan\frac{y}{x}\qquad (x>0).
@@ -106,17 +106,17 @@ That is a perfectly good formula, for a vector pointing right. The trouble is ev
 
 Take $\mathbf v=(-3,2)$, which points up and to the left. Then $y/x=-2/3$ and $\arctan(-2/3)\approx-0.588$ radians, which is a direction pointing **down and to the right**: exactly backwards. The vector $-\mathbf v=(3,-2)$ has the identical ratio $-2/3$, so a formula that sees only the ratio *cannot tell $\mathbf v$ from $-\mathbf v$*. And $\arctan$ is only able to answer between $-\pi/2$ and $\pi/2$, the right half-plane, so for a vector in the left half-plane it is wrong by exactly half a turn.
 
-<Stage caption="Jump between quadrants and axes. The dashed line through the origin holds v and −v, which share one ratio; the red arrow is where arctan(y/x) points when it disagrees with the true direction.">
+<Stage caption="Jump between quadrants and axes. The dashed line through the origin carries v and −v, which share the ratio y/x whenever x is not 0 (on the y-axis no ratio exists, although the direction does); the red arrow is where arctan(y/x) points when it disagrees with the true direction.">
   <DirectionStage client:load />
 </Stage>
 
-The function that fixes this is $\operatorname{atan2}(y,x)$. It takes the two components separately, so it can see their signs, and returns the angle in $(-\pi,\pi]$. For $x>0$ it equals $\arctan(y/x)$. For $x<0$ it equals $\arctan(y/x)+\pi$ when $y\ge0$ and $\arctan(y/x)-\pi$ when $y<0$. On the axes it does not divide at all: $\operatorname{atan2}(y,0)=\pm\pi/2$ for $y\gtrless0$.
+The function that fixes this is $\operatorname{atan2}(y,x)$. It takes the two components separately, so it can see their signs, and returns the angle in $(-\pi,\pi]$. For $x>0$ it equals $\arctan(y/x)$. For $x<0$ it equals $\arctan(y/x)+\pi$ when $y\ge0$ and $\arctan(y/x)-\pi$ when $y<0$. When $x=0$ a vertical vector has a perfectly valid direction but no defined ratio $y/x$; $\operatorname{atan2}$ does not divide, so $\operatorname{atan2}(y,0)=\pi/2$ for $y>0$ and $-\pi/2$ for $y<0$.
 
 $$
-\theta=\operatorname{atan2}(y,x),\qquad \operatorname{atan2}(y,x)-\arctan\frac{y}{x}\in\{0,\ \pi,\ -\pi\}.
+\theta=\operatorname{atan2}(y,x),\qquad \operatorname{atan2}(y,x)-\arctan\frac{y}{x}\in\{0,\ \pi,\ -\pi\}\quad(x\neq0).
 $$
 
-The correction is *exactly* $0$, $\pi$ or $-\pi$, decided by the signs of $x$ and $y$ alone. Here is the whole picture in one table, every cell computed by the same model the stage above uses.
+This identity needs $x\neq0$, because $y/x$ must exist. The correction is *exactly* $0$, $\pi$ or $-\pi$, decided by the signs of $x$ and $y$ alone. Here is the whole picture in one table, every cell computed by the same model the stage above uses.
 
 <ProbeTable />
 

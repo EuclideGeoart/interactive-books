@@ -141,6 +141,19 @@ test.describe('mechanism B — a point is a place, a vector is a displacement', 
     await stage.locator('[data-action="reset"]').click();
     expect(await lines(stage, 'tail')).toEqual([`= (${MINUS}2, ${MINUS}1)`]);
   });
+  test('numeric entry beyond six decimals is rejected and the model is unchanged; six decimals are kept exactly', async ({ page }) => {
+    const stage = await open(page, 'placement');
+    const vx = field(stage, 'x-component of v');
+    await vx.fill('0.0000000001');
+    await vx.press('Enter');
+    await expect(stage.getByRole('alert')).toContainText('at most 6 decimal places');
+    expect(await lines(stage, 'vector')).toEqual(['= (3, 2)']);
+    await enter(stage, 'x-component of v', '0');
+    await enter(stage, 'y-component of v', '0');
+    await enter(stage, 'x-component of v', '0.000001');
+    expect(await lines(stage, 'vector')).toEqual(['= (0.000001, 0)']);
+    expect(await lines(stage, 'tip')).toEqual([`= (${MINUS}1.999999, ${MINUS}1)`]);
+  });
   test('keyboard on the tail handle moves P and never v', async ({ page }) => {
     const stage = await open(page, 'placement');
     await stage.locator('[data-handle]').first().focus();
@@ -259,6 +272,16 @@ test.describe('mechanism C — atan versus atan2', () => {
     await stage.locator('[data-action="reset"]').click();
     await expect(stage).toHaveAttribute('data-x', '-3');
   });
+  test('wording: signed angles, x ≠ 0, and the vertical case are explicit', async ({ page }) => {
+    await page.goto(PATH);
+    const body = (await page.locator('main').textContent()) ?? '';
+    expect(body).toContain('counter-clockwise turns positive and clockwise turns negative');
+    expect(body).toContain('no defined ratio');
+    expect(body).toContain('This identity needs');
+    const stage = await open(page, 'direction');
+    await stage.locator('[data-preset="pos-y"]').click();
+    expect(await stage.locator('.sr-only').first().textContent()).toContain('no ratio y/x is defined');
+  });
   test('formula panel and inspector agree on the angle', async ({ page }) => {
     const stage = await open(page, 'direction');
     const tex = await stage.locator('.formula-panel .formula').evaluateAll(e => e.map(x => x.getAttribute('data-tex')!));
@@ -306,7 +329,7 @@ test.describe('exercises', () => {
   });
   test('a construction is validated, not compared with a fixed answer', async ({ page }) => {
     const e = await ex(page, 'same-ratio');
-    for (const [x, y, ok] of [['-3', '2', false], ['6', '-4', true], ['1.5', '-1', true]] as const) {
+    for (const [x, y, ok] of [['-3', '2', false], ['6', '-4', true], ['1.5', '-1', true], ['0', '1', false], ['0.000000000001', '0', false]] as const) {
       await e.locator('[data-field="x"]').fill(x);
       await e.locator('[data-field="y"]').fill(y);
       await e.locator('[data-action="check"]').click();

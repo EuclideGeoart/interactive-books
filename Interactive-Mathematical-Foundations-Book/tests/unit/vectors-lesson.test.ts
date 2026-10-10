@@ -1,8 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { compareDirections } from '../../src/math/vector2/direction';
-import { derivePlacement, withTail, withTip } from '../../src/math/vector2/placement';
+import { derivePlacement, displacementBetween, isRepresentable, withTail, withTip } from '../../src/math/vector2/placement';
 import { deriveVector2 } from '../../src/math/vector2/vector2';
 import { DIRECTION_PRESETS, WORKED_EXAMPLES, directionFormulas, directionFrames, directionRows, directionScene, verdictText, workedFrames } from '../../src/lessons/vectors/direction-lesson';
+import { parseParam } from '../../src/platform/params';
+import { DISP_X, TAIL_X, TIP_X } from '../../src/lessons/vectors/placement-lesson';
+import { sameRatio } from '../../src/lessons/vectors/exercises';
 import { CANONICAL_PLACEMENT, placementFormulas, placementRows, placementScene } from '../../src/lessons/vectors/placement-lesson';
 import { areaEquation, areaRows, pythagorasScene } from '../../src/lessons/vectors/pythagoras-lesson';
 import { EXERCISES, exerciseById, parseNumber } from '../../src/lessons/vectors/exercises';
@@ -128,4 +131,61 @@ describe('exercises', () => {
     expect(g('same-magnitude', { x: '1.5', y: '2' }).correct).toBe(false);
   });
   it('every exercise has a worked solution', () => { for (const e of EXERCISES) expect(e.solution.length).toBeGreaterThan(40); });
+});
+
+describe('placement precision contract (Q = P + v and v = Q − P hold exactly for every accepted state)', () => {
+  const accepted = (raw: string) => { const r = parseParam(DISP_X, raw); return r.ok ? r.value : null; };
+  it('numeric entry rejects what the model cannot represent exactly', () => {
+    expect(accepted('0.0000001')).toBeNull();
+    expect(accepted('0.0000000001')).toBeNull();
+    expect(parseParam(TAIL_X, '0.1234567').ok).toBe(false);
+    expect(parseParam(TIP_X, '-0.0000001').ok).toBe(false);
+    expect(accepted('0.000001')).toBe(0.000001);
+    expect(accepted('-0.000001')).toBe(-0.000001);
+  });
+  it('smallest accepted displacement is never lost: the tip differs from the tail and Q − P = v', () => {
+    const d = derivePlacement({ tx: 0, ty: 0, vx: 0.000001, vy: 0 });
+    expect(d.tip.x).toBe(0.000001);
+    expect(d.measured).toEqual({ x: 0.000001, y: 0 });
+    expect(d.vector.isZero).toBe(false);
+  });
+  it('relationship holds across precision boundaries, cancellation and negative components', () => {
+    const vals = [0, 0.000001, -0.000001, 0.999999, -0.999999, 0.1, 0.2, -0.3, 3.999999, -3.999999, 2.3, 4, -4, 1234.567891];
+    for (const tx of vals) for (const vx of vals) {
+      const p = { tx, ty: -tx, vx, vy: -vx };
+      expect(isRepresentable(p)).toBe(true);
+      const d = derivePlacement(p);
+      expect(d.measured.x, `${tx}+${vx}`).toBe(vx);
+      expect(d.measured.y).toBe(-vx + 0);
+      expect(displacementBetween(d.tail, d.tip)).toEqual({ x: d.vector.x, y: d.vector.y });
+      // a nonzero displacement always moves the tip
+      if (vx !== 0) expect(d.tip.x).not.toBe(d.tail.x);
+    }
+    // cancellation: P + v lands exactly on the origin
+    const c = derivePlacement({ tx: 0.123456, ty: -0.000001, vx: -0.123456, vy: 0.000001 });
+    expect(c.tip).toEqual({ x: 0, y: 0 });
+    expect(Object.is(c.tip.x, -0)).toBe(false);
+  });
+  it('isRepresentable is false beyond six decimals', () => {
+    expect(isRepresentable({ tx: 0, ty: 0, vx: 1e-10, vy: 0 })).toBe(false);
+  });
+});
+
+describe('same-ratio exercise predicate', () => {
+  const g = (x: string, y: string) => exerciseById('same-ratio')!.grade({ x, y });
+  it('accepts exactly the opposite-direction vectors with y/x = −2/3', () => {
+    for (const [x, y] of [['3', '-2'], ['1.5', '-1'], ['6', '-4'], ['0.3', '-0.2'], ['1000000', '-666666.6666666667'], ['0.000000000003', '-0.000000000002']]) expect(g(x!, y!).correct, `${x},${y}`).toBe(true);
+  });
+  it('rejects the same direction, undefined ratios, wrong ratios and near-zero lookalikes', () => {
+    expect(g('-3', '2').message).toMatch(/SAME way/);
+    expect(g('0', '1').message).toMatch(/undefined/);
+    expect(g('0', '0').correct).toBe(false);
+    for (const [x, y] of [['0.000000000001', '0'], ['0.000000000001', '0.000000000001'], ['3', '-2.000001'], ['3', '-1.999999'], ['1000000', '-666666'], ['0.000000000003', '-0.000000000003'], ['2', '-3']]) {
+      const r = g(x!, y!);
+      expect(r.correct, `${x},${y}`).toBe(false);
+      expect(r.message).toMatch(/ratio/);
+    }
+    expect(sameRatio(1e-12, 0)).toBe(false);
+  });
+  it('the worked solution is well-formed', () => { expect(exerciseById('same-ratio')!.solution).not.toMatch(/,\./); });
 });

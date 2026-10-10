@@ -76,7 +76,7 @@ export function ParameterInput({ spec, value, grid, onCommit }: ParameterInputPr
         />
         <button type="button" class="step" aria-label={`Increase ${spec.name}`} onClick={() => step(1)}><span aria-hidden="true">+</span></button>
       </div>
-      <p class="param-hint" id={`${id}-hint`}>from {describeDomain(spec).replace(' to ', ' to ')}{spec.unit ? ` ${spec.unit}` : ''}</p>
+      <p class="param-hint" id={`${id}-hint`}>from {describeDomain(spec).replace(' to ', ' to ')}{spec.unit ? ` ${spec.unit}` : ''}{spec.maxDecimals !== undefined ? `, up to ${spec.maxDecimals} decimal places` : ''}</p>
       {error && <p class="param-error" id={`${id}-error`} role="alert">{error}</p>}
     </div>
   );

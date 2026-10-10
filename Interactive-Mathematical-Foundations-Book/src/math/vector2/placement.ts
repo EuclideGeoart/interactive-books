@@ -13,6 +13,10 @@
  * Arithmetic policy: tails and components are decimals the learner chose (a drag grid has ≤ 6 decimals). Sums and
  * differences are therefore rounded to 9 decimals — which is EXACT decimal arithmetic for such inputs and removes
  * binary noise such as 2.3 + 0.1 = 2.3999999999999995. −0 is canonicalised to +0.
+ *
+ * Precision CONTRACT: that exactness holds only for inputs with ≤ `MAX_INPUT_DECIMALS` (6) decimal places. The UI rejects finer
+ * numeric input (`ParamSpec.maxDecimals`) and `isRepresentable` states the contract for the model; `derivePlacement` of a
+ * representable state satisfies Q = P + v and v = Q − P EXACTLY (no value is ever rounded into a contradiction).
  */
 import { deriveVector2, type Vector2, type Vector2Derived } from './vector2';
 
@@ -43,6 +47,13 @@ export interface PlacementDerived {
 }
 
 const DECIMALS = 9;
+export const MAX_INPUT_DECIMALS = 6;
+
+/** True when every component has at most `MAX_INPUT_DECIMALS` decimal places, i.e. when the 9-decimal arithmetic is exact. */
+export function isRepresentable(p: Placement): boolean {
+  return [p.tx, p.ty, p.vx, p.vy].every(n => Number.isFinite(n) && Number(n.toFixed(MAX_INPUT_DECIMALS)) === n);
+}
+
 const round = (n: number): number => Number(n.toFixed(DECIMALS)) + 0;
 const add = (a: number, b: number): number => round(a + b);
 const sub = (a: number, b: number): number => round(a - b);

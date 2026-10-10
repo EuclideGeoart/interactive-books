@@ -20,6 +20,8 @@ export interface ParamSpec {
   readonly default: number;
   /** Increment for steppers and arrow keys. */
   readonly step: number;
+  /** Declared maximum number of decimal places an accepted value may have; finer input is REJECTED, never rounded. */
+  readonly maxDecimals?: number;
   /** Invalid input is rejected with a message; the model does not change. */
   readonly onInvalid: 'reject';
 }
@@ -41,6 +43,9 @@ export function parseParam(spec: ParamSpec, raw: string): ParseResult {
   if (!Number.isFinite(value)) return { ok: false, reason: `${spec.symbolText} must be a finite number.` };
   if (value < spec.domain.min || value > spec.domain.max) {
     return { ok: false, reason: `${spec.symbolText} must be between ${describeDomain(spec).replace(' to ', ' and ')}.` };
+  }
+  if (spec.maxDecimals !== undefined && Number(value.toFixed(spec.maxDecimals)) !== value) {
+    return { ok: false, reason: `${spec.symbolText} can have at most ${spec.maxDecimals} decimal places.` };
   }
   return { ok: true, value: value + 0 }; // `+ 0` normalises −0
 }

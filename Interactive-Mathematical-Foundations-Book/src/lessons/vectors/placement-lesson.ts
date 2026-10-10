@@ -17,6 +17,12 @@ import type { Inspector } from '../../ui/Inspector';
 
 export type PlacementRow = Parameters<typeof Inspector>[0]['rows'][number];
 
+/**
+ * Precision contract: every placement value has at most this many decimal places. `placement.ts` rounds sums and differences
+ * to 9 places, which is exact decimal arithmetic for inputs of ≤ 6 places, so Q = P + v and v = Q − P hold exactly.
+ * Finer numeric input is rejected with a message (see `ParamSpec.maxDecimals`), never rounded into a contradiction.
+ */
+export const PLACEMENT_DECIMALS = 6;
 export const PLACEMENT_WINDOW: WorldWindow = { xMin: -9, xMax: 9, yMin: -9, yMax: 9 };
 /** Tail and displacement components each range over [−4, 4]; the tip then stays within [−8, 8]. */
 export const PLACEMENT_LIMIT = 4;
@@ -26,7 +32,7 @@ export const TIP_LIMIT = 2 * PLACEMENT_LIMIT;
 export const CANONICAL_PLACEMENT: Placement = Object.freeze({ tx: -2, ty: -1, vx: 3, vy: 2 });
 
 const param = (id: string, name: string, symbolTex: string, symbolText: string, value: number, limit = PLACEMENT_LIMIT): ParamSpec => ({
-  id, name, symbolTex, symbolText, domain: { min: -limit, max: limit }, default: value, step: 1, onInvalid: 'reject',
+  id, name, symbolTex, symbolText, domain: { min: -limit, max: limit }, default: value, step: 1, onInvalid: 'reject', maxDecimals: PLACEMENT_DECIMALS,
 });
 export const TAIL_X: ParamSpec = param('tx', 'start point x', 'P_x', 'start x', CANONICAL_PLACEMENT.tx);
 export const TAIL_Y: ParamSpec = param('ty', 'start point y', 'P_y', 'start y', CANONICAL_PLACEMENT.ty);

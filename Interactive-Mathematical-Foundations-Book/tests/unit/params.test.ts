@@ -65,3 +65,17 @@ describe('stepValue — keyboard steps', () => {
     expect(clampToDomain(2, x.domain)).toBe(2);
   });
 });
+
+describe('parseParam — declared decimal precision', () => {
+  const p: ParamSpec = { ...x6(), maxDecimals: 6 };
+  it('accepts up to maxDecimals and rejects finer input instead of rounding it', () => {
+    expect(parseParam(p, '0.000001')).toEqual({ ok: true, value: 0.000001 });
+    expect(parseParam(p, '-1.234567')).toEqual({ ok: true, value: -1.234567 });
+    for (const bad of ['0.0000001', '0.0000000001', '1e-10', '-2.1234567']) {
+      const r = parseParam(p, bad);
+      expect(r.ok, bad).toBe(false);
+      if (!r.ok) expect(r.reason).toMatch(/at most 6 decimal places/);
+    }
+  });
+});
+function x6(): ParamSpec { return { id: 'x', name: 'x', symbolTex: 'x', symbolText: 'x', domain: { min: -6, max: 6 }, default: 0, step: 1, onInvalid: 'reject' }; }

@@ -86,6 +86,18 @@ class KnownValues(unittest.TestCase):
         self.assertEqual(oracle.evaluate_placement(1, -1, 3, 2)["measured"], {"x": 3.0, "y": 2.0})
         self.assertEqual(oracle.evaluate_placement(0.1, 0.2, 0.2, 0.1)["tip"], {"x": 0.3, "y": 0.3})
 
+    def test_smallest_accepted_displacement_is_not_lost_and_cancellation_is_exact(self):
+        # six decimals is the declared input precision: the tip keeps the displacement, and cancellation lands on 0
+        self.assertEqual(oracle.evaluate_placement(0, 0, 0.000001, 0)["tip"], {"x": 0.000001, "y": 0.0})
+        self.assertEqual(oracle.evaluate_placement(0, 0, 0.000001, 0)["measured"], {"x": 0.000001, "y": 0.0})
+        self.assertEqual(oracle.evaluate_placement(0.123456, -0.000001, -0.123456, 0.000001)["tip"], {"x": 0.0, "y": 0.0})
+
+    def test_fixture_placement_inputs_respect_the_declared_precision(self):
+        import json
+        for case in json.loads(oracle.FIXTURE_PATH.read_text(encoding="utf-8"))["placement"]:
+            for key, value in case["input"].items():
+                self.assertEqual(round(value, 6), value, f"{case['id']}.{key}")
+
     def test_sweep_every_grid_vector_satisfies_the_reconstruction_identity(self):
         for x in range(-6, 7):
             for y in range(-6, 7):

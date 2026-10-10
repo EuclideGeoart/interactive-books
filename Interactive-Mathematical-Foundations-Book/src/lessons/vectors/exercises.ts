@@ -43,6 +43,9 @@ const pick = (answer: Readonly<Record<string, string>>, correct: string, wrong: 
   return no(wrong[chosen] ?? 'Not quite.');
 };
 
+/** y/x = −2/3 ⇔ 2x + 3y = 0. The residual is judged RELATIVE to the size of its own terms, so it scales with the input. */
+export const sameRatio = (x: number, y: number): boolean => Math.abs(2 * x + 3 * y) <= 1e-12 * (2 * Math.abs(x) + 3 * Math.abs(y));
+
 export const EXERCISES: readonly Exercise[] = [
   {
     id: 'magnitude-5-12', kind: 'calculation', title: 'A length from components',
@@ -110,15 +113,14 @@ export const EXERCISES: readonly Exercise[] = [
     id: 'same-ratio', kind: 'construction', title: 'Same ratio, opposite way',
     prompt: 'Build a vector w that has the SAME ratio y/x as v = (−3, 2) but points the opposite way. Enter integers or decimals.',
     fields: [{ id: 'x', label: 'w x =' }, { id: 'y', label: 'w y =' }],
-    solution: 'Any w = t·(3, −2) with t > 0 works, for example (3, −2) or (1.5, −1): y/x = −2/3 for both,. This is why one ratio cannot determine a direction: v and −v share it.',
+    solution: 'Any w = t·(3, −2) with t > 0 works, for example (3, −2) or (1.5, −1): y/x = −2/3 for both, and x > 0 means w points the opposite way to v. This is why one ratio cannot determine a direction: v and −v share it.',
     grade(a) {
       const n = need(a, ['x', 'y']); if (!n) return NEED_NUMBERS;
       const [x, y] = n as [number, number];
       if (x === 0) return no('x = 0 makes the ratio y/x undefined. Choose x ≠ 0.');
-      const sameRatio = Math.abs(2 * x + 3 * y) <= 1e-9 * Math.max(1, Math.abs(x), Math.abs(y));
-      if (!sameRatio) return no(`The ratio of your vector is ${y / x}; v has ratio ${-2 / 3}. The components must keep y/x = −2/3.`);
-      const dot = -3 * x + 2 * y;
-      if (dot > 0) return no('That has the same ratio and points the SAME way (it is a positive multiple of v). Flip both signs.');
+      if (!sameRatio(x, y)) return no(`The ratio of your vector is ${Number((y / x).toPrecision(6))}; v has ratio ${Number((-2 / 3).toPrecision(6))}. The components must keep y/x = −2/3.`);
+      // With y/x = −2/3 fixed, w is a multiple t·(3, −2); it points the same way as v = (−3, 2) exactly when t < 0, i.e. x < 0.
+      if (x < 0) return no('That has the same ratio and points the SAME way (it is a positive multiple of v). Flip both signs.');
       return ok('Yes: same ratio, opposite direction. arctan(y/x) cannot tell w from v.');
     },
   },
