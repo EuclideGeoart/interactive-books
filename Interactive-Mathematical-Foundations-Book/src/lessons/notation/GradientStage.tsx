@@ -13,7 +13,7 @@ import { useLesson } from '../../ui/useLesson';
 import { formatApprox } from '../../platform/numeric/format';
 import {
   CANONICAL_GRADIENT, GRADIENT_PRESETS, STEP_OPTIONS, T1_SPEC, T2_SPEC, deriveGradientLesson, errorTableNote, gradientCode, gradientFormulas, gradientPresetMatches, gradientRows,
-  gradientSpoken, gradientVerdict, stepId, type GradientLessonDerived, type GradientLessonState,
+  gradientSpoken, gradientVerdict, stepId, stepText, type GradientLessonDerived, type GradientLessonState,
 } from './gradient-lesson';
 import { GRID_FREE } from './shared';
 import { FORMAT } from './view';
@@ -67,7 +67,7 @@ function GradientStageInner() {
               <tbody>
                 {d.errors.map(r => (
                   <tr key={r.e} class={r.e === s.e ? 'is-current' : undefined} data-step-row={r.e} data-current={String(r.e === s.e)} data-best={String(r.e === d.bestE)}>
-                    <th scope="row">10⁻{r.e}{r.e === s.e ? <span class="sr-only"> (chosen)</span> : null}{r.e === d.bestE ? <span class="tag"> smallest</span> : null}</th>
+                    <th scope="row">{stepText(r.e)}{r.e === s.e ? <span class="sr-only"> (chosen)</span> : null}{r.e === d.bestE ? <span class="tag"> smallest</span> : null}</th>
                     <td>≈ {errText(r.error1)}</td>
                     <td>≈ {errText(r.error2)}</td>
                   </tr>

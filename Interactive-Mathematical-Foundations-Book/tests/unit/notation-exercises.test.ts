@@ -48,7 +48,14 @@ describe('exercises', () => {
     expect(byId('entry-index').prompt).not.toMatch(/\b11\b/);
     expect(byId('norms').prompt).not.toMatch(/\b(14|10)\b/);
     expect(byId('argmin-min').prompt).not.toMatch(/\bposition 7\b/);
-    expect(byId('expectation').prompt).not.toMatch(/-1\/5|−1\/5/);
+    expect(byId('expectation').prompt).not.toMatch(/4\/5|8\/10/);
+    expect(byId('argmin-tie').prompt).not.toMatch(/position 5|\b5\b/);
+  });
+  it('no exercise uses the data of a ready-made stage case, so that no preset shows its answer', () => {
+    // the payoff preset is counts 3, 1, 1 and the wells presets are centred at 0 and 1; the exercises use counts 2, 3, 5 and centre 2
+    expect(deriveExpect({ set: 'payoff', c1: 2, c2: 3, c3: 5, c4: 0, c5: 0, c6: 0 }).total).toBe(10);
+    expect(byId('expectation').prompt).toMatch(/2 times, 0 appeared 3 times and 2 appeared 5 times/);
+    expect(byId('argmin-tie').prompt).toMatch(/\(θ − 2\)²/);
   });
 
   it('entry-index: X[2, 3] is the third example, the fourth feature, at position 11', () => {
@@ -109,23 +116,27 @@ describe('exercises', () => {
     expect(fields('argmin-min', { min: '2', argmin: '3', npargmin: '3' }).message).toMatch(/position/);
     expect(fields('argmin-min', { min: '2', argmin: '3', npargmin: '8' }).message).toMatch(/start at 0/);
   });
-  it('argmin-tie: np.argmin gives the position 3 of the first of two minimisers', () => {
-    const d = deriveArgmin({ kind: 'two-wells', c: 0, b: 0 });
-    expect([...d.argmin]).toEqual([-1, 1]);
-    expect(d.npIndex).toBe(3);
-    expect(d.rows[5]!.isMinimiser).toBe(true);
+  it('argmin-tie: ((θ − 2)² − 1)² is smallest at 1 and 3, and np.argmin gives the position 5 of the first', () => {
+    const d = deriveArgmin({ kind: 'two-wells', c: 2, b: 0 });
+    expect([...d.argmin]).toEqual([1, 3]);
+    expect(d.npIndex).toBe(5);
+    expect(d.rows[7]!.isMinimiser).toBe(true);
+    // worked by hand: (θ − 2)² − 1 is 35, 24, 15, 8, 3, 0, −1, 0, 3 for θ = −4, …, 4, and each is squared
+    expect(d.rows.map(r => r.loss)).toEqual([1225, 576, 225, 64, 9, 0, 1, 0, 9]);
     expect(choice('argmin-tie', 'position').correct).toBe(true);
     expect(choice('argmin-tie', 'second').message).toMatch(/FIRST/);
   });
-  it('expectation: counts 3, 1, 1 on the values -1, 0, 2 give -1/5', () => {
-    const d = deriveExpect({ set: 'payoff', c1: 3, c2: 1, c3: 1, c4: 0, c5: 0, c6: 0 });
-    expect(d.expectation).toEqual(q(-1, 5));
-    expect(d.p).toEqual([q(3, 5), q(1, 5), q(1, 5)]);
-    expect(fields('expectation', { value: '-1/5' }).correct).toBe(true);
-    expect(fields('expectation', { value: '−0.2' }).correct).toBe(true);
-    expect(fields('expectation', { value: '1/5' }).message).toMatch(/NEGATIVE/);
+  it('expectation: counts 2, 3, 5 on the values -1, 0, 2 give 4/5 (hand-worked: (-2 + 0 + 10) / 10)', () => {
+    const d = deriveExpect({ set: 'payoff', c1: 2, c2: 3, c3: 5, c4: 0, c5: 0, c6: 0 });
+    expect(d.expectation).toEqual(q(4, 5));
+    expect(d.p).toEqual([q(1, 5), q(3, 10), q(1, 2)]);
+    expect(fields('expectation', { value: '4/5' }).correct).toBe(true);
+    expect(fields('expectation', { value: '0.8' }).correct).toBe(true);
+    expect(fields('expectation', { value: '-4/5' }).message).toMatch(/POSITIVE/);
+    expect(fields('expectation', { value: '2' }).message).toMatch(/mode/);
+    expect(fields('expectation', { value: '8/3' }).message).toMatch(/different payoffs/);
     expect(fields('expectation', { value: '1/3' }).message).toMatch(/plain average/);
-    expect(fields('expectation', { value: '-1' }).message).toMatch(/divided by the total/);
+    expect(fields('expectation', { value: '8' }).message).toMatch(/dividing by the total/);
     expect(fields('expectation', { value: 'abc' }).correct).toBe(false);
   });
   it('no-data: every count 0 is undefined', () => {

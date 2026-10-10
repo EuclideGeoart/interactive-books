@@ -125,36 +125,37 @@ export const EXERCISES: readonly Exercise[] = [
   },
   {
     id: 'argmin-tie', kind: 'explanation', title: 'Two equally good minimisers',
-    prompt: 'The loss L(θ) = (θ² − 1)² is tabulated at θ = −4, −3, …, 4 (an array of nine numbers, in that order). It is smallest at both θ = −1 and θ = 1. What does np.argmin(L) return?',
+    prompt: 'The loss L(θ) = ((θ − 2)² − 1)² is tabulated at θ = −4, −3, …, 4 (an array of nine numbers, in that order). It is smallest at both θ = 1 and θ = 3. What does np.argmin(L) return?',
     choices: [
-      { id: 'position', label: '3, the position of the first minimum.' },
-      { id: 'first-theta', label: '−1, the first minimiser.' },
-      { id: 'set', label: 'the list [−1, 1] of all the minimisers.' },
+      { id: 'position', label: '5, the position of the first minimum.' },
+      { id: 'first-theta', label: '1, the first minimiser.' },
+      { id: 'set', label: 'the list [1, 3] of all the minimisers.' },
       { id: 'value', label: '0, the smallest loss.' },
-      { id: 'second', label: '5, the position of the last minimum.' },
+      { id: 'second', label: '7, the position of the last minimum.' },
     ],
-    solution: 'np.argmin returns one integer: the position in the array of the FIRST smallest entry. The array starts at θ = −4 at position 0, so θ = −1 is at position 3, and that is what is returned. It is not the parameter −1, it is not the set of minimisers {−1, 1} (the mathematical arg min is a set when there is a tie), and it is not the smallest loss 0. The second minimiser, at position 5, is silently ignored.',
+    solution: 'np.argmin returns one integer: the position in the array of the FIRST smallest entry. The array starts at θ = −4 at position 0, so θ = 1 is at position 5, and that is what is returned. It is not the parameter 1, it is not the set of minimisers {1, 3} (the mathematical arg min is a set when there is a tie), and it is not the smallest loss 0. The second minimiser, at position 7, is silently ignored.',
     grade: a => pick(a, 'position', {
-      position: 'Yes: np.argmin gives the position of the first minimum, 3 (θ = −1), and says nothing about the tie.',
-      'first-theta': 'It finds the first minimiser, but it returns its POSITION in the array (3), not its value (−1). The two coincide only by accident.',
-      set: 'The mathematical arg min is the set {−1, 1}, but np.argmin returns a single integer. To get all the minimisers you would write thetas[L == L.min()].',
+      position: 'Yes: np.argmin gives the position of the first minimum, 5 (θ = 1), and says nothing about the tie.',
+      'first-theta': 'It finds the first minimiser, but it returns its POSITION in the array (5), not its value (1). The two coincide only by accident.',
+      set: 'The mathematical arg min is the set {1, 3}, but np.argmin returns a single integer. To get all the minimisers you would write thetas[L == L.min()].',
       value: '0 is the min, the smallest VALUE of the loss. np.argmin does not return values at all; it returns a position.',
       second: 'np.argmin returns the FIRST minimum it meets, scanning from the start, not the last.',
     }),
   },
   {
     id: 'expectation', kind: 'calculation', title: 'An expectation from counts',
-    prompt: 'A game has the possible payoffs −1, 0 and 2. In 5 plays the payoff −1 appeared 3 times, 0 appeared once and 2 appeared once. Treat the counts as weights: the probabilities are the counts divided by their total. What is the expectation E[X] as an exact fraction?',
+    prompt: 'A game has the possible payoffs −1, 0 and 2. In 10 plays the payoff −1 appeared 2 times, 0 appeared 3 times and 2 appeared 5 times. Treat the counts as weights: the probabilities are the counts divided by their total. What is the expectation E[X] as an exact fraction?',
     fields: [{ id: 'value', label: 'E[X] =' }],
-    solution: 'The probabilities are 3/5, 1/5 and 1/5, and they add to 1. The expectation weights each payoff by its probability: (3/5)(−1) + (1/5)(0) + (1/5)(2) = −3/5 + 0 + 2/5 = −1/5. It is not one of the payoffs, and it is not the average of the three payoffs, which would be 1/3.',
+    solution: 'The probabilities are 2/10, 3/10 and 5/10, and they add to 1. The expectation weights each payoff by its probability: (2/10)(−1) + (3/10)(0) + (5/10)(2) = −2/10 + 0 + 10/10 = 8/10 = 4/5. It is not one of the payoffs, and it is not the average of the three payoffs, which would be 1/3.',
     grade(a) {
       if (parseRational(a.value) === null) return NEED_NUMBERS;
-      if (isRational(a.value, -1, 5)) return ok('Yes: (3·(−1) + 1·0 + 1·2)/5 = −1/5. The weights are the probabilities 3/5, 1/5, 1/5.');
-      if (isRational(a.value, 1, 5)) return no('The sign is lost: −1 was the most frequent payoff, so the weighted sum is NEGATIVE: −3/5 + 2/5.');
+      if (isRational(a.value, 4, 5)) return ok('Yes: (2·(−1) + 3·0 + 5·2)/10 = 8/10 = 4/5. The weights are the probabilities 2/10, 3/10, 5/10.');
+      if (isRational(a.value, -4, 5)) return no('The sign is reversed. The payoff 2 was seen more often than −1, so the weighted sum is POSITIVE: −2/10 + 10/10.');
       if (isRational(a.value, 1, 3)) return no('1/3 is the plain average of −1, 0 and 2. An expectation weights each value by its probability, and here −1 is much more frequent.');
-      if (isRational(a.value, -1, 1)) return no('−1 is the most frequent payoff (the mode), and it is also the sum 3·(−1) + 1·0 + 1·2 before dividing by the total. The expectation uses probabilities, so that sum must be divided by the total number of plays, 5.');
-      if (isRational(a.value, -1, 3)) return no('That divides by 3 (the number of different payoffs). The probabilities divide each count by the number of plays, 5.');
-      return no('Compute p = counts / 5, then add p_i times x_i: (3/5)(−1) + (1/5)(0) + (1/5)(2).');
+      if (isRational(a.value, 8, 1)) return no('8 is the sum 2·(−1) + 3·0 + 5·2 before dividing by the total. The expectation uses probabilities, so that sum must be divided by the total number of plays, 10.');
+      if (isRational(a.value, 2, 1)) return no('2 is the most frequent payoff (the mode). The expectation is a weighted average of all the payoffs, not the most frequent one.');
+      if (isRational(a.value, 8, 3)) return no('That divides by 3 (the number of different payoffs). The probabilities divide each count by the number of plays, 10.');
+      return no('Compute p = counts / 10, then add p_i times x_i: (2/10)(−1) + (3/10)(0) + (5/10)(2).');
     },
   },
   {

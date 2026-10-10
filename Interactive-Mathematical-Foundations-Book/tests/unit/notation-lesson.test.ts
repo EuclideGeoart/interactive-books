@@ -397,6 +397,14 @@ describe('the gradient views', () => {
       expect(gradientSpoken(l).length).toBeGreaterThan(0);
     }
   });
+  it('writes the step with a fully superscript exponent everywhere, never 10⁻ followed by plain digits', () => {
+    for (const [e, text] of [[1, '10⁻¹'], [3, '10⁻³'], [6, '10⁻⁶'], [9, '10⁻⁹'], [13, '10⁻¹³']] as const) {
+      const l = deriveGradientLesson({ ...CANONICAL_GRADIENT, e });
+      const names = gradientRows(l).map(r => r.name).join(' | ');
+      expect(names).toContain(`h = ${text}`);
+      expect(`${names} ${gradientVerdict(l).text}`).not.toMatch(/10⁻[0-9]/);
+    }
+  });
   it('uses = for the exact gradient and ≈ for every computed double', () => {
     const rows = gradientRows(deriveGradientLesson(CANONICAL_GRADIENT));
     for (const id of ['grad1', 'grad2', 'f', 'shape']) expect(rows.find(r => r.id === id)!.description.lines[0]!.relation, id).toBe('=');

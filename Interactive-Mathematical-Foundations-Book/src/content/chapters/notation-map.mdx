@@ -215,7 +215,7 @@ A finite difference approximates a slope with a small step $h$. A larger step ma
 
 Comparing two floating-point numbers with `==` is the same trap in a smaller setting. The Euclidean norm of $(1,1)$ is $\sqrt2$, which no double represents exactly; squaring the computed value gives a number that is *close to* $2$ and often not equal to it. Compare with a tolerance, as `np.isclose` does, or keep exact values while you can, as the stages do.
 
-Two more habits: an average of an empty batch should be handled explicitly and reported as undefined instead of letting a division by zero propagate as `nan`; and a norm computed with `np.linalg.norm` of a very large or very small vector can overflow or underflow in the intermediate squares, which is why library code scales before squaring.
+Two more habits: an average of an empty batch should be handled explicitly and reported as undefined instead of letting a division by zero propagate as `nan`; and a Euclidean norm squares every entry before adding, so a vector with entries near $10^{200}$ overflows to infinity even though its length is a perfectly ordinary double. `np.linalg.norm([1e200, 1e200])` returns `inf` (with a warning), while `math.hypot(1e200, 1e200)`, which scales before squaring, returns about $1.41\times10^{200}$.
 
 ## Connections to engineering and machine learning
 

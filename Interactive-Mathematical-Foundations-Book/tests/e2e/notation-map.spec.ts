@@ -526,7 +526,7 @@ test.describe('exercises', () => {
     await expect(form.locator('[data-feedback]')).toContainText('ABSOLUTE');
     form = await answer(page, 'argmin-min', { min: '2', argmin: '3', npargmin: '7' });
     await expect(form).toHaveAttribute('data-result', 'correct');
-    form = await answer(page, 'expectation', { value: '-1/5' });
+    form = await answer(page, 'expectation', { value: '4/5' });
     await expect(form).toHaveAttribute('data-result', 'correct');
     form = await answer(page, 'expectation', { value: '1/3' });
     await expect(form.locator('[data-feedback]')).toContainText('plain average');

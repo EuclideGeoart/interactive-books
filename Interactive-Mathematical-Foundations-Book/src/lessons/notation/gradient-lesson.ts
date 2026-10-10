@@ -61,6 +61,7 @@ export function deriveGradientLesson(state: GradientLessonState): GradientLesson
 const num = (v: number): string => (v < 0 ? `−${-v}` : String(v));
 const py = (v: number): string => (Number.isInteger(v) ? v.toFixed(1) : String(v));
 export const stepTex = (e: number): string => `10^{-${e}}`;
+export const stepText = (e: number): string => `10⁻${String(e).replace(/[0-9]/g, c => '⁰¹²³⁴⁵⁶⁷⁸⁹'[Number(c)]!)}`;
 
 export function gradientRows(derived: GradientLessonDerived): InspectorRowData[] {
   const { d, state: s } = derived;
@@ -70,8 +71,8 @@ export function gradientRows(derived: GradientLessonDerived): InspectorRowData[]
     { id: 'f', role: 'derived', symbolTex: 'f(\\theta)', name: 'the function value', description: qDescription(d.f), secondary: true },
     { id: 'grad1', role: 'primary', symbolTex: '\\dfrac{\\partial f}{\\partial\\theta_1}', name: 'exact partial derivative, 2θ₁', description: qDescription(d.grad[0]) },
     { id: 'grad2', role: 'primary', symbolTex: '\\dfrac{\\partial f}{\\partial\\theta_2}', name: 'exact partial derivative, 6θ₂', description: qDescription(d.grad[1]) },
-    { id: 'est1', role: 'y', symbolTex: '\\dfrac{f(\\theta+h\\mathbf{e}_1)-f(\\theta)}{h}', name: `finite difference in θ₁, h = 10⁻${s.e} (a computed double)`, description: approxDescription(d.estimate[0]) },
-    { id: 'est2', role: 'y', symbolTex: '\\dfrac{f(\\theta+h\\mathbf{e}_2)-f(\\theta)}{h}', name: `finite difference in θ₂, h = 10⁻${s.e} (a computed double)`, description: approxDescription(d.estimate[1]) },
+    { id: 'est1', role: 'y', symbolTex: '\\dfrac{f(\\theta+h\\mathbf{e}_1)-f(\\theta)}{h}', name: `finite difference in θ₁, h = ${stepText(s.e)} (a computed double)`, description: approxDescription(d.estimate[0]) },
+    { id: 'est2', role: 'y', symbolTex: '\\dfrac{f(\\theta+h\\mathbf{e}_2)-f(\\theta)}{h}', name: `finite difference in θ₂, h = ${stepText(s.e)} (a computed double)`, description: approxDescription(d.estimate[1]) },
     { id: 'err1', role: 'caution', symbolTex: '\\text{err}_1', name: 'estimate minus exact, in θ₁', description: approxDescription(d.error[0]), secondary: true },
     { id: 'err2', role: 'caution', symbolTex: '\\text{err}_2', name: 'estimate minus exact, in θ₂', description: approxDescription(d.error[1]), secondary: true },
   ];
@@ -109,7 +110,7 @@ export function gradientVerdict(derived: GradientLessonDerived): { text: string;
   const { d, state: s, errors, bestE } = derived;
   const here = errors.find(r => r.e === s.e)!;
   const stationary = d.stationary ? ' At this point the gradient is the zero vector, so θ is a stationary point of f.' : '';
-  const text = `The gradient ∇f = (${form(d.grad[0]).text}, ${form(d.grad[1]).text}) has the same shape as θ: one entry per parameter. The finite difference is only an estimate, off by about ${num(Number(here.worst.toPrecision(2)))} at h = 10⁻${s.e}; among these five steps the smallest error at this θ is at h = 10⁻${bestE}. A smaller step is not always a better one: past some point rounding error grows.${stationary}`;
+  const text = `The gradient ∇f = (${form(d.grad[0]).text}, ${form(d.grad[1]).text}) has the same shape as θ: one entry per parameter. The finite difference is only an estimate, off by about ${num(Number(here.worst.toPrecision(2)))} at h = ${stepText(s.e)}; among these five steps the smallest error at this θ is at h = ${stepText(bestE)}. A smaller step is not always a better one: past some point rounding error grows.${stationary}`;
   return { text, caution: here.worst > 1e-3 };
 }
 
