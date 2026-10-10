@@ -272,8 +272,10 @@ describe('worked distance traces', () => {
     }
   });
 
-  it('(−2, 1) → (4, −3) works out 36 + 16 = 52 = 2² · 13 and ends at 2√13', () => {
-    const frames = distanceFrames({ ax: -2, ay: 1, bx: 4, by: -3 });
+  it('the page example d2, (−3, 1) → (3, −3), works out 36 + 16 = 52 = 2² · 13 and ends at 2√13', () => {
+    const d2 = DISTANCE_EXAMPLES.find(e => e.id === 'd2')!;
+    expect(d2.state).toEqual({ ax: -3, ay: 1, bx: 3, by: -3 });
+    const frames = distanceFrames(d2.state);
     const all = frames.map(f => f.state.tex).join(' ');
     expect(all).toContain('36+16=52');
     expect(all).toContain('2\\sqrt{13}');
