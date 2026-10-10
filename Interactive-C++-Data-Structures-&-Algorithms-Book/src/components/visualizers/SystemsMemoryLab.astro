@@ -1,0 +1,26 @@
+---
+import TraceLab from './TraceLab.astro';
+import '../../styles/systems-memory.css';
+import { memoryOperations, type MemoryKind } from '../../visualizers/systems-memory/adapter';
+import freeList from '../../../cpp/chapter-51/FreeListStorage.hpp?raw';
+import arena from '../../../cpp/chapter-52/ByteArena.hpp?raw';
+import pool from '../../../cpp/chapter-53/ObjectPool.hpp?raw';
+import handles from '../../../cpp/chapter-55/HandleRegistry.hpp?raw';
+interface Props { kind: MemoryKind }
+const { kind } = Astro.props;
+const sources = { 'free-list':freeList, arena, 'object-pool':pool, handles };
+const names = { 'free-list':'FreeListStorage.hpp', arena:'ByteArena.hpp', 'object-pool':'ObjectPool.hpp', handles:'HandleRegistry.hpp' };
+const labels = { 'free-list': {logical:'Free-list topology',memory:'Physical slots'}, arena:{logical:'Bump / reservations',memory:'Byte / padding view'}, 'object-pool':{logical:'Object lifecycle',memory:'Typed storage slots'}, handles:{logical:'Identity / validation',memory:'Slot generations'} };
+---
+<div data-systems-memory-lab={kind}>
+<TraceLab id={`${kind}-lab`} chapter={`systems-memory-${kind}`} source={sources[kind]} fileName={names[kind]} operations={memoryOperations[kind]} regions={[kind]} viewLabels={labels[kind]} diagramNote="Storage, object lifetime, and identity are separate. Slot positions remain fixed within each view. Select with Enter or tap to inspect; Fit / Actual size controls preserve local scrolling.">
+  {kind === 'arena' ? <label>Requests: bytes:alignment<input name="requests" value="5:1,8:4,7:8" maxlength="100" required /></label> : <>
+    <label>{kind === 'handles' ? 'Retirement cycles' : 'Initial acquisitions'}<input name="count" type="number" min="1" max="6" step="1" value="3" required /></label>
+    <label>{kind === 'handles' ? 'Handle index' : 'Slot to return'}<input name="index" type="number" min="0" max="8" step="1" value="0" required /></label>
+  </>}
+  {kind === 'object-pool' && <label>Constructed value<input name="value" type="number" min="-999" max="999" step="1" value="42" required /></label>}
+  {kind === 'handles' && <label>Handle generation<input name="generation" type="number" min="0" max="9" step="1" value="1" required /></label>}
+  {kind === 'free-list' && <label>Break-It corruption<select name="fault"><option value="cycle">Cycle</option><option value="used">References used slot</option><option value="lost">Lost free slots</option><option value="invalid">Invalid index</option><option value="duplicate">Unchecked double return</option></select></label>}
+</TraceLab>
+</div>
+<script>import '../../scripts/systems-memory-labs';</script>

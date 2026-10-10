@@ -1,0 +1,10 @@
+---
+import TraceLab from './TraceLab.astro';
+import source from '../../../cpp/chapter-18/TeachingHash.hpp?raw';
+---
+<TraceLab id="hash-fundamentals-lab" chapter="hash-fundamentals" source={source} fileName="TeachingHash.hpp" operations={[{id:'hash',label:'Hash and map'}]} regions={['hash','mapping']} viewLabels={{logical:'Mapping view',memory:'Scalar values'}} diagramNote="The arrows show computation, not pointers. Select a scalar to inspect it; the full hash is independent of capacity.">
+<label>Key<input name="key" value="a" required minlength="1" maxlength="12" pattern="[a-z]{1,12}" /></label>
+<label>Compare with<input name="other" value="i" required minlength="1" maxlength="12" pattern="[a-z]{1,12}" /></label>
+<label>Capacity<select name="capacity"><option>4</option><option selected>8</option><option>16</option><option>32</option></select></label>
+</TraceLab>
+<script>import '../../scripts/hash-labs';</script>

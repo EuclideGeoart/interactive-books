@@ -1,0 +1,124 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import SystemsMemoryPreview from '../../components/visualizers/SystemsMemoryPreview.astro';
+import SystemsMemoryLab from '../../components/visualizers/SystemsMemoryLab.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-53/ObjectPool.hpp?raw';
+import main from '../../../cpp/chapter-53/main.cpp?raw';
+import CppPrerequisite from '../../components/book/CppPrerequisite.astro';
+
+<ChapterHero number="53" title="Object pools" part="PART VIII / ENGINE &amp; SYSTEMS DATA STRUCTURES" overline="STORAGE OCCUPANCY IS NOT OBJECT LIFETIME" description="Combine fixed typed storage with explicit construction, destruction and slot reuse." chain="reserve → construct → live → destroy → return" facts={[["Capacity", "Fixed typed slots"], ["Storage", "Stable, nonmovable"], ["Failure", "Constructor rollback"], ["Identity", "Raw indices can go stale"]]} />
+<CppPrerequisite lesson="09" summary="Alignment, placement lifetime and generic construction." />
+
+<Section id="mental-model" number="01" title="A slot can be occupied without containing an object." kicker="VISUAL MENTAL MODEL">
+
+A typed object pool keeps storage for several objects of one type, but not every slot contains a live object. Reserving a slot occupies its storage. Construction starts a T lifetime. Destruction ends that lifetime while leaving the storage occupied. Returning the slot finally makes it available again.
+
+<SystemsMemoryPreview kind="object-pool" />
+
+The preview stops after destroying slot zero. It is DESTROYED, contains no readable T fields, and is not yet on the free list. Slots one and two remain live. This gap between destruction and return is intentional: it makes the two responsibilities visible instead of hiding them inside an ambiguous “free object” operation.
+
+</Section>
+
+<Section id="intuition" number="02" title="Give storage and lifetime different verbs." kicker="THE INTUITION">
+
+`reserve()` answers where an object could be placed. `construct()` answers whether an object now exists there. `destroy()` ends that object, and `return_slot()` makes the storage reusable. A constructor that throws never produces a complete T, so its reserved storage returns directly to the free list without calling T’s destructor.
+
+A pool is useful when capacity is known and objects arrive and depart independently. It avoids moving other live objects during reuse. Unlike an arena, it permits individual reclamation; unlike a bare free list, it knows which slots actually contain T. It still does not attach durable identity to a reused address.
+
+</Section>
+
+<Section id="memory" number="03" title="Alignment belongs to each fixed typed slot." kicker="STRUCTURE / MEMORY LAYOUT">
+
+Each slot contains `alignas(T)` byte storage of `sizeof(T)` and a pointer to its current object. The pool owns a fixed `std::array`; copying and moving are deleted. Alignment therefore works for over-aligned types as well as ordinary small values. The pointer returned by `std::construct_at` is retained for access and passed to `std::destroy_at`.
+
+State is one of FREE, RESERVED, LIVE or DESTROYED. Only LIVE exposes a payload. Free-list links are separate metadata in this typed implementation, so no live T is reinterpreted as a link. The UI’s value is a demonstration Point-like integer; the canonical template can hold other types with nonthrowing destructors. Addresses remain stable while the pool exists, but address stability does not make a pointer to an old occupant an enduring identity.
+
+</Section>
+
+<Section id="operations" number="04" title="Pause between destruction and storage return." kicker="INTERACTIVE OPERATIONS">
+
+<SystemsMemoryLab kind="object-pool" />
+
+Full lifecycle first constructs the requested number of objects, then destroys and returns the selected slot, reserves again, and constructs a replacement. Stop at End object lifetime: occupancy has not decreased yet, but the value is unreadable. Continue through Return storage and inspect the free-list link. Change Constructed value to distinguish a new run’s payload.
+
+Throw / rollback reserves a slot, simulates a constructor exception, then successfully reuses that same slot. Double return demonstrates a rejected second return; exhaustion fills all slots and attempts one more reserve. Choose a slot that was never constructed or index eight to inspect guarded invalid transitions. Each operation begins with a fresh pool. The full native API also allows returning an unused RESERVED slot without any destructor call.
+
+</Section>
+
+<Section id="implementation" number="05" title="Exception rollback restores the reusable slot." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="ObjectPool.hpp" chapter="53" />
+
+The constructor call alone sits inside the exception handler. On constructor failure, the slot rejoins the free list, the rollback counter advances, and the exception is rethrown. Completed construction updates the state to LIVE. Invalid get, construct, destroy and return transitions are rejected before touching object bytes. `get()` returns a live T reference only after checking the state.
+
+The pool destructor destroys each remaining LIVE object exactly once. RESERVED and DESTROYED slots need no T destruction. Destructors are required to be nonthrowing, which keeps cleanup well-defined. Optional observers must also be nonthrowing and nonreentrant; the pool destructor deliberately does not invoke them. Snapshot callbacks are instrumentation and must copy any history they retain.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="The live-state transition follows successful construction." kicker="CODE + VISUALIZATION TRACE">
+
+`pool.reserve` removes storage from the free chain and labels it RESERVED. `pool.construct` occurs only after `std::construct_at` succeeds. `pool.destroy` occurs after `std::destroy_at` and clears the retained pointer. `pool.return` publishes storage on the free chain. A failure takes the separate `pool.rollback` branch, which exposes no live value.
+
+Use Previous across destruction to examine the earlier snapshot’s live value. This is recorded teaching history, not a C++ operation on destroyed memory. The running implementation never reads a destroyed object to render the diagram. Native parity compares emitted lifecycle states and free-chain updates, while independent constructor/destructor counters test effects the metadata alone could misrepresent.
+
+</Section>
+
+<Section id="invariants" number="07" title="Exactly the LIVE slots contribute to the lifetime balance." kicker="INVARIANTS">
+
+Free-list reachability equals the set of FREE slots; RESERVED, LIVE and DESTROYED are absent from that chain. Completed constructions minus explicit destructions equal live objects during the traced lifetime. Failed constructors increment rollback count without contributing to either completed construction or destruction count.
+
+A slot has a readable value if and only if its state is LIVE. Destruction must precede return for a live object, while a RESERVED slot can be canceled directly. Pool destruction closes any remaining live lifetimes. These rules check lifetime state, not semantic identity: a raw index naming slot zero cannot distinguish two objects that successively occupy slot zero.
+
+</Section>
+
+<Section id="complexity" number="08" title="Separate slot mechanics from T’s own work." kicker="COMPLEXITY EXPLORER">
+
+Compare one, three and six initial acquisitions. The occupancy counter includes RESERVED and DESTROYED storage, while construction and destruction counters measure completed lifetime events. In Full lifecycle, destruction decreases the live count before return decreases occupancy. Throw / rollback records one rollback and only one completed construction after recovery.
+
+Reserve and return perform O(1) slot work. Construction and destruction add the cost of T’s constructor or destructor; those may allocate, traverse data or release resources. The pool destructor scans O(N) slots and destroys remaining live objects. Backing storage costs O(N · sizeof(T)) plus metadata and alignment padding. Avoid attributing constructor costs, snapshot-history costs or measured allocator speedups to the constant-time free-list operation alone.
+
+</Section>
+
+<Section id="break-it" number="09" title="Returning a live slot violates two responsibilities at once." kicker="COMMON MISTAKES / BREAK-IT MODE">
+
+Run Break-It lifetime. The simulator makes live slot zero the head of a cyclic free chain while keeping its live value visible. The free-chain invariant fails: an available slot cannot simultaneously contain a live object reserved for its owner. This is safe corruption of copied metadata, not a native call that overwrites a live T.
+
+Compare Double return, which rejects the second attempt without damaging the chain. A different trap survives ordinary double-return guards: retain a raw pointer, destroy its object, reuse the storage, and treat the old pointer as proof of identity. The pool does not solve that problem. Do not perform stale dereferences as an experiment; inspect the old and new lifetime states and continue to Chapter 55’s generation checks.
+
+</Section>
+
+<Section id="analogy" number="10" title="Reserve a workshop bay, then assemble the machine." kicker="REAL-WORLD ANALOGY">
+
+A workshop bay may be available, reserved for assembly, occupied by a running machine, or still reserved after the machine has been dismantled. Dismantling the machine and releasing the bay are separate events. If assembly fails, return the reserved bay without pretending that a completed machine needed dismantling.
+
+</Section>
+
+<Section id="engineering" number="11" title="Stable storage helps references only within a live lifetime." kicker="ENGINEERING INSIGHT">
+
+Pools suit bounded particles, requests or engine objects with independent lifetimes and predictable capacity. They can reduce general allocation traffic, but fixed capacity needs a deliberate exhaustion policy. Throwing `std::bad_alloc` is this example’s policy; a caller may choose to catch it and degrade a feature, while another API might return an optional reservation.
+
+Chapter 51 supplied raw free storage. Chapter 52 grouped temporary allocations under a bulk boundary. This pool adds typed lifetime management without adopting that arena boundary. It remains single-threaded and registry-local. A reference returned from `get()` requires the caller to ensure the object stays live; the pool does not track borrowers. Generational handles check later lookups after reuse, but they too need a concurrency and ownership policy if shared between threads.
+
+</Section>
+
+<Section id="exercises" number="12" title="Distinguish cancellation, destruction and reuse." kicker="EXERCISES / CHALLENGES">
+
+1. List every legal lifecycle transition, including the constructor-failure path.
+2. Explain why calling T’s destructor after its constructor throws would be wrong.
+3. Predict occupancy and live count immediately after destroying one of three live objects.
+4. Write a reserved-slot cancellation sequence and state its expected destructor count.
+5. Explain why deleting move operations matters when clients retain references into slots.
+6. Design an owning reservation guard that returns unused storage on scope exit. State how ownership would transfer after successful construction without hiding the four teaching states.
+
+</Section>
+
+<Section id="summary" number="13" title="A pool owns storage and manages typed lifetimes." kicker="CHAPTER SUMMARY">
+
+Fixed, aligned, nonmovable slots support explicit reserve, construct, destroy and return operations. Constructor failure rolls back storage, invalid transitions are rejected, and the pool destructor closes remaining live lifetimes. Destroyed values are never inspected as objects. Raw pointers and indices still lack enduring identity across slot reuse.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="53" />
+</Section>
+

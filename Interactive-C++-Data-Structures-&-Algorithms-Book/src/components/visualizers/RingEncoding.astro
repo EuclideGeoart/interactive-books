@@ -1,0 +1,18 @@
+<div class="ring-encoding" data-ring-encoding>
+  <div class="operation-form"><label>Encoding<select data-encoding><option value="count">Count — all slots usable</option><option value="sentinel">Sentinel — reserve one slot</option></select></label><label>Physical slots<select data-capacity><option>5</option><option>8</option><option>32</option><option>1024</option></select></label><label>Read position<input type="range" min="0" max="4" value="3" data-head /></label><label>Queued values<input type="range" min="0" max="5" value="4" data-count /></label></div>
+  <output data-encoding-result aria-live="polite"></output>
+  <p class="fine-print">The source lab uses five physical slots. This arithmetic explorer supports 5–1024. No snapshots are retained; operation counts exclude validation, scheduling and cache effects. SentinelRing in the canonical header uses rejection and has no count member.</p>
+</div>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-ring-encoding]').forEach(root => {
+    const update = () => {
+      const capacity = Number(root.querySelector<HTMLSelectElement>('[data-capacity]')!.value), sentinel = root.querySelector<HTMLSelectElement>('[data-encoding]')!.value === 'sentinel';
+      const h = root.querySelector<HTMLInputElement>('[data-head]')!, c = root.querySelector<HTMLInputElement>('[data-count]')!;
+      h.max = String(capacity - 1); c.max = String(capacity - (sentinel ? 1 : 0));
+      const head = Number(h.value), count = Number(c.value), tail = (head + count) % capacity, full = count === Number(c.max);
+      root.querySelector('[data-encoding-result]')!.innerHTML = `<p><strong>${capacity} physical slots → ${c.max} usable positions.</strong> head = ${head}; tail = ${tail}; queued = ${count}.</p><p>${sentinel ? `empty ⇔ head == tail; full ⇔ (tail + 1) % capacity == head. The unused slot follows tail; it is not permanently slot ${capacity - 1}.` : 'empty ⇔ count == 0; full ⇔ count == capacity. Equal head/tail alone cannot distinguish those two states.'}</p><p><strong>${count === 0 ? 'EMPTY' : full ? 'FULL' : 'PARTLY FILLED'}</strong> · ${(head+1)%capacity === 0 ? 'Next read index wraps to zero.' : `Next read index: (${head} + 1) % ${capacity} = ${(head+1)%capacity}.`}</p><div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable dequeue work comparison"><table><caption>Successful dequeue: constant structural work</caption><thead><tr><th>Work</th><th>Naive shifting array</th><th>Circular storage</th></tr></thead><tbody><tr><td>Element shifts at size ${count}</td><td>${Math.max(0,count-1)}</td><td>0</td></tr><tr><td>Index/count writes</td><td>1 size update</td><td>${sentinel ? '1 head update' : '1 head + 1 count update'}</td></tr><tr><td>Growth as n increases</td><td>O(n)</td><td>O(1)</td></tr></tbody></table></div><p>When empty, dequeue rejects before any index/count write.</p>`;
+    };
+    root.addEventListener('input', update); update();
+  });
+</script>
+<style>.ring-encoding {border-block:1px solid var(--border);padding-block:1rem;} .operation-form {display:flex;flex-wrap:wrap;gap:1rem;} label {display:grid;gap:.4rem;flex:1;min-width:12rem;} input[type=range] {width:100%;} output {display:block;}</style>

@@ -1,0 +1,31 @@
+---
+const {kind='open'}=Astro.props;
+---
+<div class="interactive-frame" data-probing-explorer={kind}>
+<form class="lab-inputs"><label>Live keys (capacity 32)<input name="count" type="range" min="1" max="31" value="8" /></label><label>Distribution<select name="distribution"><option value="spread">Distinct homes</option><option value="collide">Every key hashes to home 1</option></select></label><button class="button button-primary" type="submit">Measure actual probes</button></form>
+<p class="hash-result" data-result aria-live="polite"></p>
+</div>
+<script>
+import {teachingHash} from '../../visualizers/hashing/hash';
+import {openState,openTrace} from '../../visualizers/open-addressing/model';
+import {robinState,robinTrace,robinMetrics} from '../../visualizers/robin-hood/model';
+for(const root of document.querySelectorAll<HTMLElement>('[data-probing-explorer]')){
+ const form=root.querySelector('form')!;
+ const render=()=>{
+  const inputs=new FormData(form),n=Number(inputs.get('count')),collide=inputs.get('distribution')==='collide';
+  const keys:string[]=[],homes=new Set<number>();let missing='';
+  for(let i=0;keys.length<n||!missing;i++){
+   let k='',v=i;do{k=String.fromCharCode(97+v%26)+k;v=Math.floor(v/26);}while(v);
+   const home=teachingHash(k)%32;
+   if(collide?home===1:!homes.has(home)){
+    if(keys.length<n){keys.push(k);homes.add(home);}else missing=k;
+   }
+  }
+  const robin=root.dataset.probingExplorer==='robin';
+  const probes=robin?robinTrace('find',robinState(keys,32),missing).steps.at(-1)!.state.probes:openTrace('find',openState(keys,32),missing).steps.at(-1)!.state.probes;
+  const metric=robin?` Maximum resident distance ${robinMetrics(robinState(keys,32)).max}.`:'';
+  root.querySelector('[data-result]')!.textContent=`${n} live entries / 32 slots = load ${(n/32).toFixed(3)}. Missing key ${missing} inspects ${probes} slots.${metric} Counted by the same model as the operation lab; these are slot inspections, not timing measurements.`;
+ };
+ form.addEventListener('submit',e=>{e.preventDefault();render();});form.addEventListener('input',render);render();
+}
+</script>

@@ -1,0 +1,145 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import SpatialPreview from '../../components/visualizers/SpatialPreview.astro';
+import SpatialLab from '../../components/visualizers/SpatialLab.astro';
+import SpatialExplorer from '../../components/visualizers/SpatialExplorer.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-63/KDTree.hpp?raw';
+import main from '../../../cpp/chapter-63/main.cpp?raw';
+
+<ChapterHero number="63" title="KD-Trees" part="PART IX / SPATIAL DATA STRUCTURES" overline="COORDINATE MEDIANS GUIDE THE SEARCH" description="A KD-tree recursively partitions points by alternating coordinate medians and uses splitting-plane distance to prune nearest-neighbor search." chain="axis → median → near side → best distance → plane test → far side or prune" facts={[["Dimensions", "2D, alternating x then y"], ["Build", "Median by coordinate then ID"], ["Nearest", "Squared distance; deterministic ties"], ["Worst case", "Linear geometric search"]]} />
+
+<Section id="mental-model" number="01" title="Each stored median creates a coordinate split." kicker="VISUAL MENTAL MODEL">
+
+The root partitions by x. Its children partition by y; grandchildren return to x. Each node stores one actual point and a split plane through that point. The plane is restricted to the node's inherited region, producing a hierarchy of alternating cuts.
+
+<SpatialPreview kind="kd-tree" />
+
+The spatial view preserves input coordinates and shows split regions. The hierarchy/storage view exposes the median ID, selected axis, split value, and low/high child links. Equal-coordinate points remain separate identities. Their median order uses ID as a deterministic second key.
+
+</Section>
+
+<Section id="intuition" number="02" title="A median balances counts; a plane bounds possible distance." kicker="THE INTUITION">
+
+At depth d choose x when d is even and y when d is odd. Sort the current point IDs by that coordinate, then by ID. Choose index floor(size / 2) as the median, store it in the node, and recursively build the two remaining slices. Sorted input therefore does not create the insertion-order chain of an ordinary unbalanced search tree.
+
+Equal coordinate values may occur in both subtrees because their IDs determine the total order. Geometrically, both inherited regions include the splitting plane. A coordinate-only point lookup must therefore preserve boundary possibilities; this implementation performs a zero-area closed range query and returns every matching ID.
+
+For nearest search, visit the side containing the query coordinate first. After that branch improves the best distance, compare squared distance to the splitting plane with the incumbent squared point distance. Every point across the plane is at least that far away in the split dimension. A strictly larger plane distance proves the opposite branch cannot win.
+
+</Section>
+
+<Section id="memory" number="03" title="Nodes store one point and two stable child IDs." kicker="STRUCTURE / MEMORY LAYOUT">
+
+Each node stores its median ID, split axis/value, parent ID, depth, inherited region, and two child slots. Null children represent empty slices. An empty point set builds no root; a singleton creates one node with both children null.
+
+The builder records unplaced input IDs as pending. Placing a median attaches its node to the parent immediately, removes that pending ID, and only then builds its children. Every intermediate snapshot has a reachable partial tree and an explicit set of unbuilt points.
+
+The C++ tree is a value-owned vector with integer node indices. Recursive construction can grow the vector, so it stores child indices and reacquires the parent after recursion. It never preserves an element reference across allocation. Query traversal does not allocate nodes, making its temporary const node reference stable. These identities are not native pointer addresses.
+
+</Section>
+
+<Section id="operations" number="04" title="Compare point, range, and nearest questions on one scene." kicker="INTERACTIVE OPERATIONS">
+
+<SpatialLab kind="kd-tree" />
+
+Run Balanced median build on sorted input. Follow x, y, x down successive depths and inspect the median chosen from each slice. Run Range query with −2,−2,3,3 and compare visited regions with accepted IDs. Point lookup uses Query point and returns all points at exactly that coordinate.
+
+Run Nearest neighbor near one corner of the uniform scene. Watch the likely branch improve the incumbent, then the plane comparison prune a distant branch. The algorithm must sometimes visit the opposite branch; it is not simply a greedy descent.
+
+For a tie experiment, use custom points 0,0;0,5;2,0 and query point 1,0. The root is B at x = 0. Search can first find C at squared distance 1, then encounter plane distance 1. It must visit the opposite side to discover equally close A, whose smaller ID wins. Every operation rebuilds the selected scene before querying.
+
+</Section>
+
+<Section id="implementation" number="05" title="Use exact total ordering and squared distances." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="KDTree.hpp" chapter="63" />
+
+The canonical code is a 2D teaching KD-tree with finite coordinates in [−8,8] and at most 12 unique A–Z point IDs. The closed query contract includes zero-area boxes. It rejects malformed bounds and non-finite coordinates before traversal. Squared distances stay finite in this bounded domain and avoid unnecessary square roots.
+
+The builder sorts each recursive slice with the same coordinate-then-ID comparator. This simple deterministic method costs more than selection-based production builders; the complexity section accounts for that. The API offers build, range, point lookup, and nearest; dynamic insertion/deletion and approximate nearest neighbors are outside this implementation.
+
+The optional observer receives tagged const state. Copy it to retain history and do not mutate or reenter the algorithm. Each run owns its state by value; an exception unwinds its vectors rather than returning a partially completed tree.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Nearest traversal has a separate plane-pruning statement." kicker="CODE + VISUALIZATION TRACE">
+
+Median places one node and attaches its parent link while remaining IDs stay pending. After construction, Query resets traversal status. Range Visit and Prune correspond to region-overlap statements; Test and Accept refer to closed coordinate containment.
+
+Nearest uses its own Near visit statement, then Distance compares the stored point with the incumbent. Best replaces the answer when distance is smaller or when equal distance has a smaller ID. The near branch runs before Plane compares its final incumbent with the current split's squared distance.
+
+If plane distance is at most the best distance, traverse the opposite branch. Otherwise Far prune skips it. Separate source tags for nearest visits and far pruning ensure the highlighted C++ line belongs to the algorithm actually executing. The plane value in the inspector is the last performed comparison, not a rendered geometric guess.
+
+</Section>
+
+<Section id="invariants" number="07" title="A coordinate-only picture must respect the full median order." kicker="INVARIANTS">
+
+Each placed point occurs in exactly one node; all others remain pending during construction. Each node has one consistent parent link, one median, and the expected alternating axis. The split equals that median's coordinate. Every descendant in the low subtree precedes the median under coordinate-then-ID order, and every high descendant follows it.
+
+Inherited regions contain all descendant points and lie within their parent. Equal-coordinate descendants can sit on a shared plane, so strict coordinate inequality is not the storage invariant. Unique identities and the total ordering remove ambiguity.
+
+Nearest stores one incumbent ID and its squared distance. Equal distances choose the smallest ID. The pruning comparison must be strictly greater before skipping the far branch, because equality can contain a better ID tie. Independent brute-force tests establish result correctness beyond the structural invariant checks.
+
+</Section>
+
+<Section id="complexity" number="08" title="Balanced counts do not guarantee cheap geometric queries." kicker="COMPLEXITY EXPLORER">
+
+<SpatialExplorer kind="kd-tree" />
+
+Compare uniform, clustered, duplicate, and sorted inputs. Read Visited nodes, Point tests, Plane comparisons, Pruned branches, and Tree depth. Sorted input still produces balanced median counts. Duplicate or poorly separated coordinates can defeat pruning even in that balanced hierarchy.
+
+With constant-time point access, sorting every recursive slice gives O(n log² n) construction time and O(n) stored nodes. A median-selection builder can achieve O(n log n) expected construction under appropriate selection assumptions. This canonical comparator performs linear ID-to-point lookup, so O(n² log² n) is a conservative build bound for the displayed code; retained recursive vectors and sorting workspace also belong to construction, not the final tree.
+
+For fixed low dimension and suitable geometric distributions, nearest-neighbor search often visits about logarithmically many nodes; worst-case geometric work is O(n). Balanced 2D orthogonal range search is commonly analyzed as O(√n + K) under its standard partition assumptions, but degeneracy and this conservative closed-boundary traversal can force O(n) visits. Point lookup here is that zero-area range procedure, not an unconditional one-path O(log n) lookup.
+
+For V visited nodes, actual query bookkeeping includes O(Vn) point-ID resolution in the canonical code, plus O(K log K) final range-result sorting. The TypeScript model also scans node IDs. Each lab run rebuilds the tree and copies snapshots before playback. In higher dimensions the search ball crosses many partitions and distance bounds become less selective: the curse of dimensionality can make a linear scan competitive. This 2D lab does not claim to benchmark that high-dimensional effect.
+
+</Section>
+
+<Section id="break-it" number="09" title="A tempting plane comparison can lose the correct tie." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+Use the three-point tie scene from the lab instructions. If the far-branch test used plane distance strictly less than best distance, it would prune at equality and miss A. A deterministic tie policy changes which pruning inequalities are safe.
+
+Try duplicate coordinates and Point lookup. Searching only the high side on coordinate equality can miss IDs placed in the low slice by the median's secondary ID ordering. The canonical closed range lookup visits every region that might contain the requested coordinate.
+
+Query an empty scene: there is no nearest point and no finite best distance. Returning a made-up origin would conflate absence with a valid answer. Try a non-finite query coordinate or reversed range to exercise rejection. For a local break experiment, remove the plane test and count the resulting full-tree nearest traversal; correct answers alone would not prove useful pruning.
+
+</Section>
+
+<Section id="analogy" number="10" title="A searcher uses a wall as a distance lower bound." kicker="REAL-WORLD ANALOGY">
+
+Imagine rooms divided by straight walls. After finding an object one meter away in your current room, a wall three meters away proves that no object beyond it is closer. A wall half a meter away provides no such proof; the neighboring room must be checked. The wall distance is a lower bound, not an object's actual distance.
+
+</Section>
+
+<Section id="engineering" number="11" title="Static low-dimensional points are a natural fit." kicker="ENGINEERING INSIGHT">
+
+Nearest snapping candidates, point-cloud lookup, local interpolation neighborhoods, and geometry picking can benefit from KD-trees when coordinates are low-dimensional and the point set is mostly static. Axis-aligned partitions support range queries and an inexpensive nearest-distance lower bound.
+
+Frequent edits require a separate update/rebuild strategy. Large extended objects need bounds-aware indexing; a point at the object's center cannot justify pruning its whole geometry. <a href="../64-r-trees/">R-trees</a> organize object rectangles, while <a href="../65-bounding-volume-hierarchies/">BVHs</a> organize enclosing volumes.
+
+For high-dimensional feature vectors, a balanced KD-tree may still visit most nodes. Approximate methods or scans can be more appropriate, but they introduce different accuracy and workload contracts. Choose an index from the query and update requirements, not from tree height alone.
+
+</Section>
+
+<Section id="exercises" number="12" title="Justify every branch you skip." kicker="EXERCISES / CHALLENGES">
+
+1. Build the median tree for points (−3,0), (−1,2), (0,1), (2,−1), and (4,3), assigning IDs A through E. Name each split axis.
+2. Explain why equal x coordinates can appear in both root subtrees while the full ordering invariant remains valid.
+3. Trace the nearest tie scene and identify the exact plane equality that must not be pruned.
+4. Prove that squared split-plane distance is a lower bound on every opposite-side point's squared Euclidean distance.
+5. Construct a scene in which nearest search visits every node despite balanced median counts.
+6. Replace repeated sorting with a median-selection strategy in a local copy. Preserve deterministic ties and compare build semantics before claiming a complexity improvement.
+
+</Section>
+
+<Section id="summary" number="13" title="A balanced partition becomes useful through valid distance bounds." kicker="CHAPTER SUMMARY">
+
+The KD-tree alternates axes and chooses coordinate-then-ID medians for deterministic balanced counts. Range queries preserve touching boundaries; point lookup returns all matching identities. Nearest search explores the likely side, updates a squared-distance incumbent, and uses a split-plane lower bound before skipping the opposite branch. Geometry, dimension, ties, and real lookup costs determine how much work it saves.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="63" />
+</Section>
+

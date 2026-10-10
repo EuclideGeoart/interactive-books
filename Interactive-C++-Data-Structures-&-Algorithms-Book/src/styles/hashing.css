@@ -1,0 +1,25 @@
+/* The existing book tokens, extended only for Part IV's buckets and probe slots. */
+.hash-diagram { display: block; font-family: var(--mono); }
+.hash-diagram text { fill: var(--ink); }
+.hash-diagram .hash-index { fill: var(--pointer); font-size: 12px; }
+.hash-diagram .hash-status { fill: var(--muted); font-size: 10px; letter-spacing: .6px; }
+.hash-diagram .hash-cell-line { font-size: 12px; }
+.hash-cell.hash-empty rect { fill: var(--surface-subtle); stroke: var(--border-strong); }
+.hash-cell.hash-tombstone rect { fill: var(--amber-fill); stroke: var(--amber); stroke-dasharray: 5 3; }
+.hash-cell.hash-collision rect { fill: var(--amber-fill); stroke: var(--amber); }
+.hash-cell.hash-freed rect { fill: var(--red-fill); stroke: var(--red); stroke-dasharray: 5 3; }
+.hash-cell.active-node rect { fill: var(--amber-fill); stroke-width: 3; }
+.hash-cell.selected rect { stroke: var(--pointer); stroke-width: 3; }
+.hash-cell:focus-visible rect { stroke: var(--pointer); stroke-width: 3; stroke-dasharray: 4 2; }
+.svg-scroll:has(.hash-diagram) { max-height: 580px; overflow: auto; overscroll-behavior: contain; }
+.hash-state-strip { display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); font: 12px var(--mono); }
+.hash-state-strip span, .hash-result { overflow-wrap: anywhere; }
+.hash-result { padding: 1rem 1.25rem; font-size: 12px; }
+@media(max-width:560px) { .svg-scroll:has(.hash-diagram) { max-height: 440px; } }
+
+[data-hash-break] .data-node { cursor: default; }
+
+.compact .hash-fields { grid-column: 1 / -1; }
+[data-chapter-lab] .hash-fields > div, [data-structure-preview] .hash-fields > div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: 12px; }
+.hash-fields dt { overflow-wrap: normal; }
+.hash-fields dd { min-width: 0; overflow-wrap: anywhere; }

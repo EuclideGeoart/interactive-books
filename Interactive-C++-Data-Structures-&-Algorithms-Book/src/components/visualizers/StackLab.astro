@@ -1,0 +1,13 @@
+---
+import TraceLab from './TraceLab.astro';
+import source from '../../../cpp/chapter-02/Stack.hpp?raw';
+import { stackOperations } from '../../visualizers/stack/model';
+const operations = stackOperations.map(id => ({ id, label: ({ push: 'Push', pop: 'Pop', top: 'Top / peek', empty: 'Empty?', clear: 'Clear' })[id] }));
+const regions = ['array', 'linked'].flatMap(kind => stackOperations.map(op => `${kind}-${op}`));
+---
+<TraceLab id="stack" chapter="stack" source={source} fileName="Stack.hpp" operations={operations} regions={regions}>
+  <label>Storage implementation<select name="implementation"><option value="array">Fixed array</option><option value="linked">Linked nodes</option></select></label>
+  <label>Starting stack<select name="preset"><option value="standard">10, 20, 30 (bottom → top)</option><option value="empty">Empty</option><option value="single">One value: 10</option><option value="full">Five values / full array</option><option value="custom">Custom values</option></select></label>
+  <label>Custom values (bottom → top)<input name="values" value="10,20,30" placeholder="10,20,30" /></label>
+  <label>Value to push<input name="value" type="number" min="-999" max="999" step="1" value="5" /></label>
+</TraceLab>

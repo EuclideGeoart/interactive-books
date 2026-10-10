@@ -1,0 +1,12 @@
+---
+import TraceLab from './TraceLab.astro';
+import source from '../../../cpp/chapter-30/Kahn.hpp?raw';
+interface Props { id?: string; title?: string }
+const { id = 'kahn-lab', title = 'Run Kahn' } = Astro.props;
+---
+<TraceLab id={id} chapter="graph-dag" source={source} fileName="Kahn.hpp" operations={[{id:'kahn',label:title}]} regions={['kahn']} viewLabels={{logical:'Graph view', memory:'Storage view'}} diagramNote="Edges point prerequisite → dependent. Positions stay fixed; green edges are retired. The queue and arrays remain visible below the scrollable graph.">
+<label>Dependency example<select name="preset">
+<option value="geometry">Geometry construction</option><option value="build">Build dependencies</option><option value="spreadsheet">Spreadsheet calculation</option><option value="packages">Package dependencies</option><option value="tasks">Task scheduling</option><option value="diamond">Diamond · tied ready vertices</option><option value="cycle">Cycle with downstream blocked work</option><option value="self-loop">Self-loop</option><option value="disconnected">Disconnected DAG</option><option value="single">Single vertex</option><option value="empty">Empty graph</option>
+</select></label>
+</TraceLab>
+<script>import '../../scripts/graph-labs';</script>

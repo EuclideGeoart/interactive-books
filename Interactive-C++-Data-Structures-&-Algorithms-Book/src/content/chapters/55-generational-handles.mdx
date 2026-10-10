@@ -1,0 +1,122 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import SystemsMemoryPreview from '../../components/visualizers/SystemsMemoryPreview.astro';
+import SystemsMemoryLab from '../../components/visualizers/SystemsMemoryLab.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-55/HandleRegistry.hpp?raw';
+import main from '../../../cpp/chapter-55/main.cpp?raw';
+
+<ChapterHero number="55" title="Generational handles" part="PART VIII / ENGINE &amp; SYSTEMS DATA STRUCTURES" overline="SAME SLOT DOES NOT MEAN SAME IDENTITY" description="Validate an index together with its generation so an old token cannot silently name a reused slot." chain="{index, generation} → bounds → alive → generation equality" facts={[["Lookup", "O(1) validation"], ["Reuse", "Generation advances"], ["Rollover", "Retire exhausted slot"], ["Ownership", "Token does not own"]]} />
+
+<Section id="mental-model" number="01" title="Keep the old token while reusing its physical slot." kicker="VISUAL MENTAL MODEL">
+
+An integer index identifies a storage position, not the current occupant’s identity. If slot zero contains A, then A is destroyed and B is created there, the integer zero still names a valid position. A stale reference can accidentally act on B unless it carries more information.
+
+<SystemsMemoryPreview kind="handles" />
+
+The saved token `{0, 1}` remembers A’s generation. The reused slot now has generation two and a new value. Its replacement token `{0, 2}` is valid, while `{0, 1}` is stale even though the index is in range and the slot is alive. Select each retained handle to compare handle.index, handle.generation, slot.currentGeneration and alive separately.
+
+</Section>
+
+<Section id="intuition" number="02" title="Validate the identity that was issued, not just its address." kicker="THE INTUITION">
+
+A handle contains an index and a generation copied when the identity is created. Lookup first checks that the index is in range, then that the slot is alive, then that generations match. Only all three conditions authorize access. A dead slot rejects even a matching generation, and a live replacement rejects the former generation.
+
+Destroy validates the supplied token before changing state. It removes the payload, advances the generation, then returns the slot to a free list. The old handle itself never changes. This makes stale detection local to the registry rather than requiring every client to find and clear all copies of an old raw pointer.
+
+</Section>
+
+<Section id="memory" number="03" title="Identity metadata has a different lifetime from the value." kicker="STRUCTURE / MEMORY LAYOUT">
+
+Each registry slot retains its generation, alive flag, retired flag and free-list link. Its optional integer payload exists only while alive. The teaching implementation stores ordinary values rather than reusing the typed object pool; it isolates identity checking from placement construction and storage ownership.
+
+Handles use an explicit `std::size_t` index and `std::uint32_t` generation. No packing or ABI layout is promised. The registry is fixed and noncopyable/nonmovable. A handle belongs to the issuing registry instance: another registry may issue the same pair. The pair contains no owner identifier and must not survive destruction and reconstruction of its registry as an authorization token.
+
+</Section>
+
+<Section id="operations" number="04" title="Compare stale rejection with valid replacement access." kicker="INTERACTIVE OPERATIONS">
+
+<SystemsMemoryLab kind="handles" />
+
+Stale / valid identity creates a value, destroys it, creates a replacement, then validates both saved tokens. Stop at the failed validation and inspect the old token; continue to the replacement’s successful validation. Double destroy shows that repeating destruction with the old token cannot destroy the replacement or corrupt the free list.
+
+Validate a handle creates slot zero at generation one, then checks the entered index and generation. Try index eight, generation zero, a wrong generation, then `{0, 1}`. Retire generations uses the requested number of destroy/create cycles with a teaching limit of three. After the third destruction, slot zero is retired and the next creation uses slot one. Exhaustion attempts seven creations in six slots. Each lab operation resets the registry before running its scenario.
+
+</Section>
+
+<Section id="implementation" number="05" title="Retirement makes rollover a capacity decision." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="HandleRegistry.hpp" chapter="55" />
+
+The default generation limit is the maximum `std::uint32_t`. A smaller positive limit can be supplied to exercise exhaustion. Destroying the last permitted generation retires the slot permanently instead of wrapping to a previously issued pair. Retired slots never rejoin the free list. The bounded registry can eventually exhaust all capacity; it does not promise an infinite stream of unique identities.
+
+`contains()` validates without exposing a payload reference. `get()` returns an optional integer copy so this example creates no retained raw borrow. `destroy()` returns false for invalid tokens. `create()` throws on exhaustion. Observers must be nonthrowing and nonreentrant; retain a copied snapshot if needed beyond the callback. The observer’s last validation result is historical, while the inspector recomputes a retained handle’s validity against the current state.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Invalidate before making the slot reusable." kicker="CODE + VISUALIZATION TRACE">
+
+`handle.validate` short-circuits bounds, alive and generation checks. `handle.destroy` removes the value and clears alive. `handle.advance` changes the retained generation. `handle.return` publishes the reusable slot on the free list. At the counter limit, `handle.retire` replaces advance and return entirely.
+
+The state between destroy and return is explicitly pending: the slot is neither alive nor yet reachable from the free list. During that interval, even the old matching generation cannot validate because alive is false. Previous reverses the recorded snapshots in the same order. It never reads the removed payload from native storage. Creation later publishes a value with the already-advanced generation; it does not repair old tokens.
+
+</Section>
+
+<Section id="invariants" number="07" title="Every revoked token must remain invalid in this registry." kicker="INVARIANTS">
+
+The free chain contains exactly dead, nonretired slots, excluding an explicitly pending destruction. Retired slots stay dead at the generation limit. A payload is present if and only if alive is true. Every token revoked by destruction must fail validation afterward, including after another value reuses its index.
+
+The UI retains revoked tokens as a diagnostic oracle; the canonical registry need not store their full history to validate an individual handle. Native tests separately retain an issued-identity set and check that no successful creation repeats a pair. That history check helps catch bugs that a TypeScript/native parity comparison alone would reproduce in both implementations.
+
+</Section>
+
+<Section id="complexity" number="08" title="One validation is bounded; retirement reduces available capacity." kicker="COMPLEXITY EXPLORER">
+
+Run one, three and six retirement cycles. Track validations, slot reuses and retired slots. Every destroy validates its input, so total validations include those internal checks as well as the final old/new checks. A reuse increments when an already-advanced slot is created again; moving to a fresh slot after retirement is a first use, not a reuse.
+
+Create, validation and destroy perform O(1) slot work for this fixed integer registry. Initialization is O(N), and metadata plus values occupy O(N) space. At a limit G, one slot can issue at most G identities before retirement, so N slots issue at most N·G identities during one registry lifetime. A wrapping design preserves capacity but can eventually alias a stale token; a wider counter delays that event without making it mathematically impossible.
+
+</Section>
+
+<Section id="break-it" number="09" title="Deliberately rewind a generation in copied metadata." kicker="COMMON MISTAKES / BREAK-IT MODE">
+
+Run Break-It generation and move to After. After normal destruction and replacement, the safe simulator rewinds the replacement slot’s generation to the saved old generation. The old token now passes ordinary index/alive/generation validation. The revoked-token invariant exposes that this “valid” result is an identity error.
+
+The experiment never changes native registry memory or dereferences a stale pointer. It demonstrates the consequence of generation reuse rather than relying on undefined behavior. Compare the guarded Double destroy scenario: its stale token is rejected with no mutation. Checking only index would fail earlier, and checking generation without alive would incorrectly accept a dead slot during destruction.
+
+</Section>
+
+<Section id="analogy" number="10" title="A room number needs a booking version." kicker="REAL-WORLD ANALOGY">
+
+A hotel room number identifies a location reused by many bookings. A service request carrying only the room number can reach a later guest. Pair the room with a booking version and validate both before acting. Checking the version does not make the request own the room or ensure that the booking remains active forever after the check.
+
+</Section>
+
+<Section id="engineering" number="11" title="Validation is neither ownership nor synchronization." kicker="ENGINEERING INSIGHT">
+
+Entity registries, assets and geometry objects can expose handles to asynchronous clients that later request a fresh lookup. The client receives a clear stale result instead of silently acting on a new occupant. The registry still needs a lifetime owner, an exhaustion policy and an instance boundary. Persisted or cross-registry tokens may need an additional domain identifier.
+
+In concurrent code, an object can disappear between validation and use unless a lock, pin, reference count or other protocol protects that interval. This chapter is single-threaded and does not claim that generations alone solve ABA or memory reclamation. Chapter 59 explains those additional constraints. Chapter 56 can combine identity validation with component membership, while keeping those two checks conceptually separate.
+
+</Section>
+
+<Section id="exercises" number="12" title="State the limits of the identity guarantee." kicker="EXERCISES / CHALLENGES">
+
+1. Predict every issued pair from a one-slot registry with generation limit three, including the final exhaustion.
+2. Explain why alive is still required when the supplied generation matches.
+3. Compare retiring, wrapping and widening a generation counter in terms of capacity and stale-token risk.
+4. Give an example where identical pairs from two registry instances refer to different values.
+5. Describe the synchronization needed if another thread can destroy a value after your validation.
+6. Design a command record that owns a handle token and revalidates it at execution time without assuming the token owns the referenced object.
+
+</Section>
+
+<Section id="summary" number="13" title="Reusable storage needs versioned identity." kicker="CHAPTER SUMMARY">
+
+A generational handle pairs a position with the version issued for that occupant. Bounds, alive and generation checks reject stale tokens. Destruction invalidates before reuse, and the chosen retirement policy avoids generation repetition by consuming finite capacity. Handles remain nonowning, registry-scoped tokens; lifetime and concurrency policies still belong to their owners.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="55" />
+</Section>
+

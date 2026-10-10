@@ -1,0 +1,146 @@
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import Section from '../../components/book/Section.astro';
+import Callout from '../../components/book/Callout.astro';
+import DoublyLab from '../../components/visualizers/DoublyLab.astro';
+import DoublyBreakIt from '../../components/visualizers/DoublyBreakIt.astro';
+import DoublyComplexity from '../../components/visualizers/DoublyComplexity.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-03/DoublyLinkedList.hpp?raw';
+import main from '../../../cpp/chapter-03/main.cpp?raw';
+
+<ChapterHero number="03" title="Doubly linked list" overline="EVERY CONNECTION HAS A RETURN PATH." description="Each node stores both a successor and a predecessor. You can walk in either direction, provided every edit maintains both relationships." chain="nullptr ← [10] ⇄ [20] ⇄ [30] → nullptr" facts={[["ENTRY POINTS", "head · tail"], ["NODE FIELDS", "prev · data · next"], ["KNOWN-NODE UNLINK", "O(1) pointer work"]]} />
+
+<Section id="mental-model" number="01" title="Add the way back." kicker="VISUAL MENTAL MODEL">
+
+<StructurePreview chapter="doubly" id="doubly-mental" operation="push-front" />
+
+Chapter 1 gave every node a successor. Keep that node identity, lifetime model, and forward link; add one field called `prev`. A doubly linked list is still a set of separately allocated objects. Adjacent objects in the list need not occupy adjacent storage.
+
+<div className="analogy-panel"><span className="analogy-symbol">head → 10 ⇄ 20 ⇄ 30 ← tail</span><div><p>From 20, next reaches 30 and prev reaches 10. At the boundaries, head.prev and tail.next are nullptr. An empty list has both endpoints null; a sole node is both head and tail.</p><p>The operation lab exposes both fields through the same pointer inspector used in Chapter 1. Select an arrow to follow its target, or use Enter and Space on a node.</p><a href="#operations">Inspect the two directions →</a></div></div>
+
+Each node is drawn as **prev | data | next**: the previous link leaves from the left and the next link from the right. Head's prev and tail's next explicitly read `nullptr`. This field arrangement is a visual convention, not a claim about the C++ struct's byte offsets. The diagram uses fixed slots throughout one experiment. Adjacent nodes use short links with separate entry points. Longer prev routes run above the node frames and longer next routes below the addresses. Memory view sorts teaching addresses while retaining exactly the same links. A drawing's left-to-right positions never substitute for following pointers.
+
+</Section>
+
+<Section id="intuition" number="02" title="A second pointer buys a second obligation." kicker="THE INTUITION">
+
+In a singly linked list, reaching a known node does not tell you its predecessor. Here the node carries that information itself. Unlinking a known middle node can update its neighbors directly; deleting the tail no longer requires a forward search for the predecessor.
+
+The cost is not only an extra pointer per node. Every mutation must repair two directions and sometimes two endpoints. A list that looks right when walked from head can still be broken when walked from tail. Our central experiment makes that discrepancy visible between two ordinary C++ assignments.
+
+Finding a node by value remains O(n). The public `erase(value)` searches for the first matching value; a private helper does the constant amount of rewiring after that search succeeds.
+
+</Section>
+
+<Section id="memory" number="03" title="Three fields, one owned object." kicker="STRUCTURE & MEMORY">
+
+Each Node stores `int data`, `Node* prev`, and `Node* next`. The list owns all live Nodes reachable through its chain. The pointers inside Nodes describe topology; their assignments neither create nor destroy objects. `head` and `tail` are separate variables stored by the list itself.
+
+The familiar lifetime sequence is unchanged: storage allocation, Node construction, live fields, destruction, then storage release. A node detached from the chain remains alive until delete. A saved local address can dangle afterward; the inspector must not read former data or links from it.
+
+On a common 64-bit ABI with 4-byte integers and 8-byte pointers this Node may occupy 24 bytes, including padding. That is an example, not a portable size guarantee. Use `sizeof` and `alignof` on the target platform. Allocator bookkeeping can add more overhead beyond the Node itself.
+
+</Section>
+
+<Section id="operations" number="04" title="Stop halfway through the repair." kicker="INTERACTIVE OPERATIONS">
+
+Start with 10 ⇄ 20 ⇄ 30 and select Delete value / middle with value 20. Jump to `unlink.forward`, then inspect 10.next and 30.prev. Advance to `unlink.backward` and inspect them again. You can reverse to the exact earlier snapshot without trying to undo pointer writes.
+
+<DoublyLab />
+
+Push front and push back each repair the old endpoint before publishing the new endpoint. Delete head and delete tail call the same private unlink helper with an already-known node. Delete value searches from head and removes only the first match. Forward and backward traversal return vectors of observed values and do not change links.
+
+Use the empty, single-node, and duplicate presets. Empty endpoint deletion is a no-op; deleting an absent value returns false. Clear repeatedly invokes unlink until head is null. Every operation starts a new bounded experiment with at most six starting nodes and one insertion, so a changed form never silently commits a partial trace.
+
+</Section>
+
+<Section id="implementation" number="05" title="One helper owns the rewiring rule." kicker="CANONICAL C++20">
+
+The private `unlink(Node*)` accepts only an owned node or nullptr. It is not a public arbitrary-pointer deletion API. A non-null node can arrive from the list's own endpoints or its search. Keeping that boundary private avoids pretending that an arbitrary pointer is safe merely because it has the right type.
+
+Copy and move are explicitly deleted. A generated copy would create two owners for one chain; implementing a safe move would require transferring both endpoints and emptying the source. That is useful in production but not necessary for this chapter's focused ownership contract. Destruction clears iteratively and does not recurse through nodes.
+
+<CanonicalSource source={source} main={main} fileName="DoublyLinkedList.hpp" chapter="03" />
+
+The `valid()` diagnostic checks endpoints, cycles, and reciprocal predecessors. It assumes pointers in this owning class still point to real allocations; it is not a general validator for arbitrary corrupted native memory. Broken-pointer scenarios run only in the guarded TypeScript model. Native assertions test normal operations without executing undefined behavior.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Forward changes before backward." kicker="CODE ↔ POINTER TRACE">
+
+<div className="trace-walkthrough"><div><span className="trace-index">1</span><div><code>curr-&gt;prev-&gt;next = curr-&gt;next;</code><h3>Bypass curr going forward.</h3><p>For 10 ⇄ 20 ⇄ 30, 10.next changes from 20 to 30. Node 20 is still alive. 30.prev still points to 20, so forward and reverse walks temporarily disagree.</p></div></div><div><span className="trace-index">2</span><div><code>curr-&gt;next-&gt;prev = curr-&gt;prev;</code><h3>Repair the return path.</h3><p>30.prev changes from 20 to 10. The remaining chain now agrees in both directions. Node 20 still retains its old fields while detached; it is not destroyed until the following delete expression.</p></div></div></div>
+
+Endpoint cases use the same rule with a null neighbor. If curr has no predecessor, assign head to its successor. If curr has no successor, assign tail to its predecessor. For a sole node, these are two distinct assignments: head becomes null, then tail becomes null. The empty-state equivalence is temporarily pending between them.
+
+<Callout title="A call statement resumes after its helper." tone="amber">The source includes the private unlink region beside every operation that calls it. The helper's tags execute before the caller's completed-call tag. The model and native fixture preserve that nested order; they do not hide helper mutations behind one animation.</Callout>
+
+</Section>
+
+<Section id="invariants" number="07" title="Check both directions and ownership." kicker="INVARIANTS">
+
+<div className="table-scroll"><table><thead><tr><th>Property</th><th>Why it matters</th></tr></thead><tbody><tr><td>head is null exactly when tail is null</td><td>An empty list cannot retain one stale endpoint.</td></tr><tr><td>head.prev is null</td><td>There is no predecessor before the first node.</td></tr><tr><td>tail.next is null</td><td>There is no successor beyond the last node.</td></tr><tr><td>A.next = B implies B.prev = A</td><td>Forward edges have the correct return path.</td></tr><tr><td>B.prev = A implies A.next = B</td><td>Backward edges agree with their forward counterpart.</td></tr><tr><td>All structural targets are live or null</td><td>Traversal must not dereference ended objects.</td></tr><tr><td>Both walks terminate and cover all live nodes</td><td>No cycles, disconnected ownership, or lost endpoint.</td></tr></tbody></table></div>
+
+The panel distinguishes a temporary operation state from a completed list. Reciprocal links and endpoint agreement may be pending between assignments. Structural links into dead storage always fail. At completion, every live owned node must appear exactly once in each traversal; the two orders must be reverses.
+
+A temporary detached node can still point to its former neighbors, which no longer point back. This is expected before delete, and explains why checking every live node's reciprocity can remain pending even after the remaining chain has been repaired.
+
+</Section>
+
+<Section id="complexity" number="08" title="Find it, then unlink it." kicker="COMPLEXITY EXPLORER">
+
+Move the size slider and change the target and starting endpoint. The explorer walks an index-linked chain up to 1024 nodes and counts visits without allocating a replay history. The backward option explains the benefit of prev links; the canonical public `erase(value)` specifically searches forward.
+
+<DoublyComplexity />
+
+Push front, push back, delete head, and delete tail require O(1) structural work. Searching by value and traversing all nodes take O(n). Unlinking an already-known owned node performs two structural assignments and one deletion. Clear and destruction take O(n). Nodes use O(n) storage with two pointer fields each; the cursor uses O(1) extra space. The example traversal methods additionally return O(n) vectors.
+
+A tail pointer made singly linked insertion at the back cheap, but did not reveal the predecessor for tail deletion. The prev field is what changes that operation. None of these asymptotic facts measure allocator behavior or memory-cache costs.
+
+</Section>
+
+<Section id="break-it" number="09" title="A forward walk can lie by omission." kicker="COMMON MISTAKES / BREAK-IT MODE">
+
+Choose a fault, run the broken operation, then compare the two bounded walks and invariant results. The missing-backlink scenario bypasses and frees 20 but leaves 30.prev pointing to ended storage. Forward traversal still reaches 10 and 30; backward traversal stops at the invalid address before reading any fields.
+
+<DoublyBreakIt />
+
+Stale head.prev and tail.next violate endpoint boundaries and can introduce cycles in one direction. Losing tail leaves live nodes reachable from head but inaccessible from the reverse entry point. Clearing only head after deleting the sole node leaves tail dangling. Restore valid list returns to the original owned three-node chain; corrupt state never becomes input to an ordinary native operation.
+
+<Callout title="Two null fields do not mean a node is detached.">The sole node of a valid list has both prev and next null. Membership also depends on endpoints and ownership. A pointer-field pattern alone cannot prove that an object is absent from a container.</Callout>
+
+</Section>
+
+<Section id="analogy" number="10" title="Neighbors keep each other's address." kicker="REAL-WORLD ANALOGY">
+
+Imagine a row of workstations where every person knows both their predecessor and successor. Removing the middle person requires telling both neighbors about the new relationship. Telling only the predecessor makes forward introductions work while backward introductions still ask for someone who has left.
+
+The row is a logical order. The workstations could be scattered across a building. The analogy helps explain reciprocal links, but object destruction is a separate act: updating the address book does not itself close a workstation or release its resources.
+
+</Section>
+
+<Section id="engineering" number="11" title="Stable nodes are useful when identity matters." kicker="ENGINEERING INSIGHT">
+
+Bidirectional links support local removal in schedulers, work lists, and caches when another structure already identifies the node. For example, a separate lookup table can provide a node handle while the list maintains recency order. Without that lookup, searching the list still costs O(n).
+
+Stable node addresses come with two links, allocations, and dependent memory reads. For scans or compact numeric workloads, contiguous containers often have better locality. Choose a list when stable identity and frequent local rewiring justify the cost, not because every operation has a flattering big-O label.
+
+This owning list destroys nodes when removing them. A container that only organizes externally owned objects has a different lifetime contract. Do not infer destruction from an unlink arrow alone; inspect the actual delete expression.
+
+</Section>
+
+<Section id="exercises" number="12" title="Name the invariant before the fix." kicker="EXERCISES & CHALLENGES">
+
+<div className="exercise"><h3>Where does backward traversal go halfway through?</h3><p>Delete 20 from the standard list. Pause immediately after unlink.forward. Predict both walks.</p><details><summary>Reveal reasoning</summary><p>Forward is 10,30. Backward is 30,20,10 because 30.prev has not changed and 20 is still alive. After unlink.backward, backward becomes 30,10. Deletion then ends 20's lifetime.</p></details></div>
+<div className="exercise"><h3>Which endpoint changes for a sole node?</h3><p>Delete head on the single-node preset and count endpoint assignments before delete.</p><details><summary>Reveal reasoning</summary><p>Both change separately: head becomes null because there is no predecessor, then tail becomes null because there is no successor. Clearing only one is an invalid final state.</p></details></div>
+<div className="exercise"><h3>Do duplicate values identify one object?</h3><p>Delete 20 from 10,20,20,30. How does the lab tell the two nodes apart?</p><details><summary>Reveal reasoning</summary><p>erase removes the first matching node found from head. Distinct addresses identify distinct objects even when their data values match. The second 20 remains owned and linked.</p></details></div>
+
+</Section>
+
+<Section id="summary" number="13" title="Every edit has two directions." kicker="CHAPTER SUMMARY">
+
+<div className="summary-panel"><h3>Preserve the chain and the return path.</h3><ul><li>prev exposes a known node's predecessor; finding a value still requires a walk.</li><li>Forward and backward rewiring are separate observable assignments.</li><li>Head, tail, reciprocal links, and ownership must agree at completion.</li><li>Unlink while the object is alive; destroy only after both neighbors bypass it.</li></ul><button className="button button-primary" type="button" data-complete aria-pressed="false">Mark chapter complete ✓</button></div>
+<ChapterPagination number="03" />
+
+</Section>

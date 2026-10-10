@@ -1,0 +1,132 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import Section from '../../components/book/Section.astro';
+import Callout from '../../components/book/Callout.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import BstLab from '../../components/visualizers/BstLab.astro';
+import TreeComplexity from '../../components/visualizers/TreeComplexity.astro';
+import TreeFoundationsBreakIt from '../../components/visualizers/TreeFoundationsBreakIt.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-11/BinarySearchTree.hpp?raw';
+import main from '../../../cpp/chapter-11/main.cpp?raw';
+
+<ChapterHero number="11" title="Binary Search Trees" overline="ORDER TURNS A BRANCH INTO A DECISION." description="Every key in the left subtree is smaller. Every key in the right subtree is larger. Follow the comparisons and see exactly what this promise buys—and what an unlucky shape costs." chain="search 62: 50 → 75 → 60 → 62" facts={[["DUPLICATES", "Rejected: integer set"], ["SEARCH", "O(h)"], ["WORST HEIGHT", "n − 1 edges"]]} />
+
+<Section id="mental-model" number="01" title="A whole subtree falls out of the search." kicker="VISUAL MENTAL MODEL">
+
+<StructurePreview chapter="bst" id="bst-mental" operation="search" inputs={{value:'62'}} />
+
+To search for 62, compare against 50. It is not equal and is larger, so skip the entire left subtree and follow right to 75. It is smaller than 75, so go left to 60. It is larger than 60, so go right to 62. Equality ends the search. Each equality and ordering test appears separately in the lab.
+
+The rule applies to **all descendants**, not only immediate children: every key in the left subtree is smaller than its ancestor, and every key in the right subtree is larger. This global range restriction makes pruning a whole subtree sound.
+
+</Section>
+
+<Section id="intuition" number="02" title="Choose the meaning of equality first." kicker="THE INTUITION">
+
+This book's numeric search trees are **sets of integers**. Inserting an existing value returns false and changes no links, values, or node lifetimes. Chapter 10's unordered BinaryTree may contain repeated values; the BST introduces a stronger contract. The same set policy applies to the balanced numeric trees later in Part III.
+
+A strict successor is the smallest stored key greater than the query. A strict predecessor is the largest key less than it. These APIs also work for a query absent from the tree: successor(61) is 62 in the preset. Missing neighbors return null, as do minimum and maximum on an empty tree.
+
+</Section>
+
+<Section id="memory" number="03" title="Ordering needs no extra Node field." kicker="STRUCTURE / MEMORY LAYOUT">
+
+The actual Node still stores value, left, and right, with no parent pointer, cached height, color, or subtree count. `root_` owns the hierarchy through child links. Insertion chooses a null child position by comparisons instead of filling the first level-order vacancy.
+
+The same input keys can have very different shape under different insertion orders. Separate allocations preserve addresses while links and values change. A search returns a const, non-owning observer; callers must not keep using it after that node is erased or its tree dies. Two-child erase may change the observed node's value without changing its address, a distinction developed in Chapter 13.
+
+</Section>
+
+<Section id="operations" number="04" title="Follow each yes or no." kicker="INTERACTIVE OPERATIONS">
+
+<BstLab />
+
+Start with search 62, then search an absent value. Minimum repeatedly follows left; maximum repeatedly follows right. Successor and predecessor keep a candidate while descending: a candidate is the best strict neighbor found so far, not an invented parent field.
+
+Insertion and erase are fully available here; Chapter 13 slows down their ownership mechanics. Load the duplicates preset to see that repeated initial keys are rejected by the same set rule. Use the chain preset to observe poor shape. Custom values specify **insertion order**, accept up to 15 integers from −999 to 999, and remain independent of the query. One insertion can add a sixteenth live node.
+
+The lab resets from these inputs when loading an operation. A canonical C++ caller can compose any number of operations on the same tree; the tests exercise continuing mutation sequences.
+
+</Section>
+
+<Section id="implementation" number="05" title="Reuse ownership without exposing the wrong insertion." kicker="C++ IMPLEMENTATION">
+
+`BinarySearchTree` privately inherits the Chapter 10 representation. It publicly exposes root and clear, and implements ordered operations itself. Private inheritance keeps unordered `append` out of the BST's public API; exposing it would let a caller violate ordering without any comparison. The `using` declarations expose the Node type and selected observer/cleanup functions, not duplicate storage.
+
+The base deletes copy and move operations, so the BST is also noncopyable and nonmovable. Its inherited destructor performs iterative clear. Allocation failure during insert occurs before publishing a link; the old tree remains intact. Searches and erase allocate no memory. All operations use ordinary integer comparisons with no custom comparator abstraction.
+
+<CanonicalSource source={source} main={main} fileName="BinarySearchTree.hpp" chapter="11" />
+
+<Callout title="Keep the source dependency layout.">Download Chapter 10's <code>BinaryTree.hpp</code> and keep it in <code>cpp/chapter-10/</code>. Put this header and example in <code>cpp/chapter-11/</code>. The relative include <code>../chapter-10/BinaryTree.hpp</code> deliberately reuses the one canonical owner. Compile from the chapter-11 folder using the displayed command.</Callout>
+
+<p>Header dependencies: <a href={`${import.meta.env.BASE_URL}source/chapter-10/BinaryTree.hpp`} download>Download BinaryTree.hpp</a>.</p>
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="A cursor selects; a slot can publish." kicker="CODE + VISUALIZATION POINTER TRACE">
+
+Search changes a local `current` pointer. The owning links remain unchanged. After equality fails, the less-than comparison determines exactly one next field. When current becomes null, the next loop guard fails and the function returns null; no dead field is read.
+
+Insert keeps `Node** slot`, the address of a root or child pointer. Moving slot left or right changes a local only. After a null vacancy is found, construction creates a new live Node with null children; `*slot = fresh` changes one owning link. No recursive return sequence or parent-pointer write is hidden behind that assignment.
+
+Successor saves current as candidate only if current's value is strictly greater, then searches left for a smaller eligible key. Otherwise it goes right. Predecessor reverses those directions. On return the candidate observer survives only as the function's returned value; the local name itself leaves scope.
+
+</Section>
+
+<Section id="invariants" number="07" title="Ranges compose from the root." kicker="INVARIANTS">
+
+All Chapter 10 ownership rules still apply: live targets, no cycles or shared ownership, and complete reachability at boundaries. The ordering checker carries an open lower and upper bound down the entire subtree. A node can satisfy its immediate parent comparison yet violate a more distant ancestor's range; a local-only check is insufficient.
+
+Strict inequalities prohibit duplicates. During the canonical two-child deletion, copying the successor value temporarily duplicates that key until its original node is detached. The ordering status is pending during that intermediate statement and must pass at completion. Duplicate insertion, in contrast, creates no temporary duplicate at all.
+
+</Section>
+
+<Section id="complexity" number="08" title="A search tree can become a linked chain." kicker="COMPLEXITY EXPLORER">
+
+<TreeComplexity kind="bst" />
+
+Search, insert, minimum, maximum, predecessor, successor, and erase take O(h + 1) work, conventionally written O(h) for nonempty trees. A well-shaped BST has height near log₂ n; sorted insertions can produce height n − 1. The explorer shows the actual maximum-search path for both insertion orders. An ordinary BST makes **no worst-case logarithmic guarantee**.
+
+The lab counts every condition evaluation, including loop guards and equality checks. This is a mechanical work model, not a CPU timing. Iterative ordered operations use O(1) auxiliary space. Nodes use O(n) storage, and clear takes O(n) work with O(1) auxiliary space.
+
+</Section>
+
+<Section id="break-it" number="09" title="Local-looking correctness can hide a global violation." kicker="COMMON MISTAKES / BREAK-IT MODE">
+
+<TreeFoundationsBreakIt ordered />
+
+Put 99 in the left subtree of 50 and inspect the failed range rule. Other faults isolate ownership from sorting: a perfectly ordered sequence of values can still leak a detached subtree or point into freed storage. Restore before running a valid algorithm.
+
+Common mistakes include routing equality inconsistently, assuming every insertion increases size, calling a missing result a valid Node, and claiming O(log n) without a height bound. Empty search, empty min/max, root-only erase, missing deletion, repeated keys, negative values, and absent-query neighbors all have explicit outcomes in this implementation.
+
+</Section>
+
+<Section id="analogy" number="10" title="A set of narrowing numeric signs." kicker="REAL-WORLD ANALOGY">
+
+Imagine signs that split an allowed number range into “smaller” and “larger.” Each turn rules out all numbers on the other side. The signs help only if ranges are truthful. A badly arranged trail with one useful turn at every sign is still linear, even though every sign obeys its local comparison rule.
+
+</Section>
+
+<Section id="engineering" number="11" title="Ordering and balance solve different problems." kicker="ENGINEERING INSIGHT">
+
+Ordered sets support strict neighbors and sorted traversal, useful for interval endpoints, event ordering, and geometric sweep algorithms. A raw unbalanced BST can be reasonable for a controlled shape, but adversarial insertion order can make its performance unacceptable. AVL and red-black trees add rebalancing while preserving the same ordering contract.
+
+Separately allocated nodes spend memory on links and may incur cache misses. A sorted vector often works well for mostly static data despite O(n) insertion shifts. Choose using mutation frequency, locality, iterator/observer stability requirements, and worst-case latency—not only a single complexity label. This teaching container is single-threaded and owns integer values only.
+
+</Section>
+
+<Section id="exercises" number="12" title="Predict the discarded subtree." kicker="EXERCISES / CHALLENGES">
+
+<div className="exercise"><h3>Search 61</h3><p>Which nodes are compared, and where does the search stop?</p><details><summary>Reveal reasoning</summary><p>The path is 50, 75, 60, 62, then 62.left is null. A plausible nearby key is not an equality match.</p></details></div>
+<div className="exercise"><h3>Duplicate 75</h3><p>How many new Node objects exist after inserting 75 into the standard preset?</p><details><summary>Reveal reasoning</summary><p>None. Equality returns false before allocation. Size and all owning links stay unchanged.</p></details></div>
+<div className="exercise"><h3>A successor without a query node</h3><p>Find successor(61), predecessor(61), and successor(90).</p><details><summary>Reveal reasoning</summary><p>They are 62, 60, and null. Candidate search is defined by a strict bound, whether or not 61 exists.</p></details></div>
+
+</Section>
+
+<Section id="summary" number="13" title="Keep both the range and the shape in mind." kicker="CHAPTER SUMMARY">
+
+<div className="summary-panel"><h3>Ordering enables pruning; height determines its cost.</h3><ul><li>Every descendant obeys its ancestors' strict ranges.</li><li>Duplicates are rejected consistently.</li><li>A search observer does not own its Node.</li><li>Ordinary BST operations are O(h), with O(n) worst-case paths.</li></ul><button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete ✓</button></div>
+<ChapterPagination number="11" />
+
+</Section>

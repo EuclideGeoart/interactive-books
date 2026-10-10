@@ -1,0 +1,126 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import TechniquePreview from '../../components/visualizers/TechniquePreview.astro';
+import TechniqueLab from '../../components/visualizers/TechniqueLab.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-47/DivideConquer.hpp?raw';
+import main from '../../../cpp/chapter-47/main.cpp?raw';
+
+<ChapterHero number="47" title="Divide and Conquer" part="PART VII / ALGORITHMIC TECHNIQUES" overline="SPLIT INDEPENDENT WORK, THEN COMBINE ITS ANSWERS" description="Divide and conquer solves smaller independent instances and combines their results into a solution of the original problem." chain="divide range → solve left → solve right → combine" facts={[["Example", "Stable merge sort"], ["Input", "Up to eight integers"], ["Core work", "O(n log n)"], ["Equal values", "Take left first"]]} />
+
+<Section id="mental-model" number="01" title="A parent waits for two complete subproblems." kicker="VISUAL MENTAL MODEL">
+
+A six-item range splits into two three-item ranges. Each side becomes smaller until an empty or singleton range needs no sorting. Parents then merge sorted children. Read the tree downward for division and upward for completed results. The active stack follows only one path at a time even though both child subproblems appear in the final tree.
+
+<TechniquePreview kind="divide-conquer" />
+
+This chapter studies the technique using the familiar <a href="../41-merge-sort/">Merge Sort</a> example. The visible half-open ranges describe ownership of work; the combine buffer shows how a parent consumes its children's answers.
+
+</Section>
+
+<Section id="intuition" number="02" title="Two solved halves still need a correct combine step." kicker="THE INTUITION">
+
+Splitting alone does not sort the parent. Once both halves are sorted, the smaller of their two front values is the smallest remaining value overall. Append it to a separate buffer and advance that half's cursor. When one half is exhausted, append the other half's remainder. Copy the completed buffer back into the parent range.
+
+Equal front values choose the left half first. Because the left range precedes the right range in the original input, this tie rule preserves stability. Original-index labels make equal-valued items distinguishable even when their numeric values match.
+
+</Section>
+
+<Section id="memory" number="03" title="Ranges divide work while a buffer protects unread input." kicker="STRUCTURE / MEMORY LAYOUT">
+
+The owned values vector is shared by recursive calls. A frame retains lo, hi, mid, two merge cursors, and its local output buffer. The half-open range [lo, hi) includes lo and excludes hi; its size is hi − lo. Its children [lo, mid) and [mid, hi) are disjoint and cover it exactly.
+
+While accumulating output, the original range stays unchanged. During copy-back, some array positions already contain merged values while others still contain old values. The completed buffer preserves the full result through that transition. A temporary duplicate in the working array is not a lost element while the buffer still owns the result.
+
+Frame and parent IDs are conceptual invocation identities. Stable tree positions show range topology rather than native stack layout. The origin-index vector is teaching metadata used to verify stability, not an extra sorting key in the comparison.
+
+</Section>
+
+<Section id="operations" number="04" title="Inspect the subrange that owns each comparison and write." kicker="INTERACTIVE OPERATIONS">
+
+<TechniqueLab kind="divide-conquer" />
+
+Run Merge sort on 7, 2, 5, 2, 9, 1. Select a range node and inspect its bounds. Step through both child returns, the first front comparison, appending to the combine buffer, and the first copy-back write. Use Previous to compare the complete buffer with the partially rewritten array.
+
+Try an empty input, one value, eight descending values, and repeated values. Empty and singleton inputs return without comparisons or writes. Integers are bounded within ±1,000,000 and lists contain at most eight values; malformed tokens and oversized input are rejected before execution.
+
+</Section>
+
+<Section id="implementation" number="05" title="Keep recursive frame references valid across vector growth." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="DivideConquer.hpp" chapter="47" />
+
+The public function owns its input copy and initializes original-index metadata. The helper divides until the range length is at most one, solves left then right deterministically, and merges using left-first ties. It obtains a reference to the active frame only after both recursive calls finish; recursive pushes could otherwise invalidate a reference into the frame vector.
+
+The optional observer receives the same semantic stages that playback shows. Observers must not mutate or reenter the run, and must copy any snapshot they keep. The complete standalone source and main file compile independently of the Part VI implementations; the cross-chapter relationship is conceptual rather than a code dependency.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Buffer append and array write are separate mutations." kicker="CODE + VISUALIZATION TRACE">
+
+Enter records a bounded half-open range. Base accepts a range of length zero or one. Split leaves the parent suspended while left and right recurse. Compare inspects two valid front candidates. Take left or Take right appends one candidate to the buffer and advances only its cursor. Write copies one buffered value and origin index back into the owned array.
+
+When a half is exhausted, remaining takes do not count as comparisons: there is no second valid candidate. Return marks that range solved and removes its live frame. Done publishes the sorted root range. Dependency arrows point from current candidate cells to the call that consumes them.
+
+</Section>
+
+<Section id="invariants" number="07" title="Independent ranges and sorted prefixes make combination safe." kicker="INVARIANTS">
+
+Every range lies inside the input and has nonnegative length. Children of a nontrivial range cover their parent exactly without overlap. During merge, each half is already sorted, cursors stay within their own halves, and the output prefix is sorted. Appending the smaller front value preserves that prefix property.
+
+After complete copy-back the parent is a sorted permutation of its input. At the final root return, every original index occurs once and equal values retain increasing original-index order. During partial copy-back, the invariant panel marks whole-array permutation as pending because the buffer still holds the complete result. Historical child nodes denote work completed at that time, not a promise that later parent writes leave their old array slices untouched.
+
+</Section>
+
+<Section id="complexity" number="08" title="Count levels and work per level." kicker="COMPLEXITY EXPLORER">
+
+Use the lab with 2, 4, and 8 descending values. At powers of two, each full merge level copies n values and there are log₂ n merge levels. Combine writes are therefore 2, 8, and 24 for those sizes. Maximum live depth is 1 + log₂ n, counting the root and singleton base calls. The lab counts actual front comparisons separately from writes.
+
+For even n, the recurrence is T(n) = 2T(n/2) + Θ(n). For odd n, use floor and ceiling half sizes. Both give O(n log n) core time; empty and singleton inputs take O(1). The owned arrays, retained O(n) range history, and peak combine buffers use O(n) space, with O(log n) live recursive frames. Saved interactive snapshots add presentation cost beyond the algorithm.
+
+Compare <a href="../38-binary-search/">Binary Search</a>: it keeps only one half and does constant work per level, yielding T(n) = T(n/2) + Θ(1). Halving alone does not determine complexity; the number of children and the combine cost matter.
+
+</Section>
+
+<Section id="break-it" number="09" title="A sorted final picture can hide a stability mistake." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+Run repeated values and inspect their original indices after sorting. Predict what changing the tie comparison from left-first to right-first would do: values would still be sorted, but equal items from the right half could leap ahead of equal items from the left. Stability needs its own check.
+
+Pause after the first copy-back write for 2, 1. The array temporarily shows 1, 1 while the buffer contains 1, 2. Predict why comparing that half-written array again would be wrong. The implementation completes comparisons and buffer construction before copying back.
+
+For a range with odd length, write its two child ranges on paper. Accidentally treating hi as inclusive can skip or duplicate an item. Try five values and use the range table to verify that every boundary belongs to exactly one child.
+
+</Section>
+
+<Section id="analogy" number="10" title="Sort two stacks of forms, then interleave their front pages." kicker="REAL-WORLD ANALOGY">
+
+Two clerks independently sort disjoint stacks of forms. A coordinator compares the front forms and places the earlier one into a fresh output tray. Dividing the stacks assigned work; interleaving them made the combined answer correct. The coordinator keeps the original stacks intact until all output has been assembled.
+
+</Section>
+
+<Section id="engineering" number="11" title="Independent subproblems differ from repeated equivalent states." kicker="ENGINEERING INSIGHT">
+
+Disjoint range work can make parallelism possible, but task creation and synchronization have costs. This bounded example runs sequentially and makes no speedup claim. The larger design question is whether child answers can be computed independently and whether combining them is cheaper than solving the whole problem directly.
+
+Unlike <a href="../46-backtracking/">Backtracking</a>, these child calls solve required pieces rather than alternative candidate solutions. Unlike <a href="../49-dynamic-programming/">Dynamic Programming</a>, this merge tree does not revisit an equivalent range subproblem through multiple histories. Repeated numeric values are not automatically repeated subproblems: the full state includes the range being solved.
+
+</Section>
+
+<Section id="exercises" number="12" title="Explain the combine cost before quoting a recurrence." kicker="EXERCISES / CHALLENGES">
+
+1. Draw the half-open range tree for five elements and mark all base cases.
+2. Predict combine writes for eight elements before using the counter.
+3. Explain why draining a remaining half does not increment Comparisons.
+4. Construct equal values with distinguishable original positions and show why the tie rule preserves order.
+5. Compare the recurrence for merge sort with binary search. Which term changes, and why?
+
+</Section>
+
+<Section id="summary" number="13" title="Divide the responsibility, solve each part, and justify combination." kicker="CHAPTER SUMMARY">
+
+Divide and conquer needs a terminating split, correct independent subproblem solutions, and a correct combine step. Merge sort makes those obligations visible with half-open ranges, sorted front candidates, a protected output buffer, and stable ties. Levels multiplied by work per level explain its cost; overlapping equivalent states will motivate a different technique in DP.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="47" />
+</Section>

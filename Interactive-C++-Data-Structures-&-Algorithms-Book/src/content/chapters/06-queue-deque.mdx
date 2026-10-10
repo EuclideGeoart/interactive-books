@@ -1,0 +1,132 @@
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import Section from '../../components/book/Section.astro';
+import Callout from '../../components/book/Callout.astro';
+import QueueLab from '../../components/visualizers/QueueLab.astro';
+import QueueComparison from '../../components/visualizers/QueueComparison.astro';
+import QueueBreakIt from '../../components/visualizers/QueueBreakIt.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-06/QueueDeque.hpp?raw';
+import main from '../../../cpp/chapter-06/main.cpp?raw';
+
+<ChapterHero number="06" part="PART II / QUEUES & ORDERED ACCESS" title="Queue + Deque" overline="CHOOSE WHICH END IS OPEN." description="A queue removes the oldest value first. A deque exposes both ends. Access policy defines the promise; storage determines the work." chain="front → [10] → [20] → [30] ← back" facts={[["QUEUE", "First in, first out"], ["DEQUE", "Both ends exposed"], ["FRONT SHIFT", "O(n) in the naive array"]]} />
+
+<Section id="mental-model" number="01" title="First to arrive. First to leave." kicker="VISUAL MENTAL MODEL">
+
+<StructurePreview chapter="queue" id="queue-mental" operation="push-back" diagramNote="Inspect a stable array slot; the values move when a front operation shifts them." />
+
+Enqueue 10, then 20, then 30. The **front** is 10: it arrived first and is next to leave. The **back** is 30: the most recent arrival. `front()` and `back()` observe those values without removing them. `empty()` asks whether either endpoint exists; `size()` counts members.
+
+<div className="analogy-panel"><span className="analogy-symbol">enqueue → back · front → dequeue</span><div><p>A queue is a restricted access policy: insert at the back, remove at the front. A deque is a double-ended queue: pushFront, pushBack, popFront and popBack are all available.</p><p>Using only pushBack and popFront on a deque implements FIFO. Choosing popBack instead changes the order on purpose.</p><a href="#operations">Compare the endpoint operations →</a></div></div>
+
+</Section>
+
+<Section id="intuition" number="02" title="The interface supplies the order." kicker="INTUITION">
+
+A breadth-first search schedules newly discovered neighbors at the back and processes the front. Replacing dequeue with popBack turns that scheduling discipline into a stack-like one; identical storage does not preserve the algorithm's behavior.
+
+A deque gives an algorithm more choices. In a sliding-window maximum algorithm, a deque can keep candidate indices: expire old indices at the front, discard dominated candidates at the back. That is deliberate use of both ends, not FIFO for every removal. The deque alone does not implement the whole window algorithm.
+
+</Section>
+
+<Section id="memory" number="03" title="Contiguous values, moving boundaries." kicker="STRUCTURE & MEMORY LAYOUT">
+
+Our first implementation deliberately keeps the front at array index 0. Five `int` objects live inside `std::array<int, 5>`; `count` separates members from unused positions. The back is index `count - 1`, but only when count is nonzero. Memory view exposes raw values outside membership. Those integers are alive and initialized; they are not extra queue elements.
+
+This makes dequeue expensive. Removing 10 from `[10,20,30,40]` copies 20 into index 0, 30 into index 1, and 40 into index 2, then decrements count. The last raw slot still contains 40. Three element assignments were needed to remove one item.
+
+A linked queue with head and tail can enqueue at tail and dequeue at head using constant link work. A doubly linked deque can also remove its tail without searching for its predecessor, as Chapter 3 demonstrates. Separate allocation, pointer metadata, locality, and lifetime management still matter; linked storage is not automatically superior. A circular array gives constant endpoint work while keeping contiguous storage, which motivates Chapter 7.
+
+<Callout title="Deque does not mean contiguous." tone="amber">The ADT specifies accessible ends, not a memory layout. A circular array and a doubly linked structure can both implement it. C++ <code>std::deque</code> is not a promise that all elements occupy one contiguous array; do not treat it as a raw contiguous buffer.</Callout>
+
+</Section>
+
+<Section id="operations" number="04" title="Watch each value shift." kicker="INTERACTIVE OPERATIONS">
+
+The lab is bounded to **five starting members and integer values from −999 to 999**. Each load creates a fresh experiment; playback does not append to an earlier run. The first two controls are the queue subset. The two controls marked Deque expose its additional operations. Queue facade calls delegate directly to the displayed deque source statements.
+
+<QueueLab />
+
+Try dequeue on 10,20,30. Pause after the first shift: `[20,20,30]` is the actual intermediate raw storage. Now try pushFront. It must copy from right to left so each original value survives until copied. Step backward and verify that every overwritten slot is restored exactly.
+
+Load the singleton preset and remove from either end. Both produce an empty deque. `front`, `back`, and either pop on the empty preset throw before indexing. Either push on the full preset throws before writing. Invalid custom values leave the existing experiment intact.
+
+</Section>
+
+<Section id="implementation" number="05" title="A complete deque and a queue facade." kicker="CANONICAL C++20">
+
+`ArrayDeque` owns its inline storage. Its defaulted copy and move operations copy the integers and count, producing independent containers; moving this inline integer array does not empty the source. Destruction needs no manual cleanup. `Queue` owns an `ArrayDeque` by value and uses the rule of zero. Its public interface intentionally has no pushFront or popBack.
+
+Underflow throws `std::underflow_error`; fixed-capacity overflow throws `std::overflow_error`. Guard failure leaves the state unchanged. Once a mutation starts, built-in integer assignments do not throw. These guarantees do not automatically transfer to a generalized container whose element copies can throw.
+
+<CanonicalSource source={source} main={main} fileName="QueueDeque.hpp" chapter="06" />
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Assignments move values, not slots." kicker="CODE ↔ STORAGE TRACE">
+
+For dequeue, the loop starts at source index 1. Each tagged `data[i - 1] = data[i]` changes exactly one destination slot. Incrementing the loop cursor does not copy another value. Only `--count` commits the smaller membership interval. The loop cursor stays visible until function scope ends.
+
+For pushFront, start at count, copy each predecessor rightward, and decrement the cursor. After the loop, write the new value at index 0 and increment count. Before count increases, the new last copy exists in physical storage outside logical membership. No node is allocated or freed by these operations.
+
+Native tests instrument this shipped header and compare source-tag order, all five raw slots, count, and the loop cursor after every tagged statement. The browser is a deterministic teaching model, not an embedded C++ interpreter.
+
+</Section>
+
+<Section id="invariants" number="07" title="Separate storage bounds from FIFO." kicker="INVARIANTS">
+
+At all times, count must remain between 0 and 5. At completed operation boundaries the members occupy `[0,count)`, with front at 0 and back at count minus one. While a shift loop executes, duplicates can temporarily appear; the lab marks the endpoint membership condition as pending until the operation finishes.
+
+A well-bounded array can still violate FIFO. Removing from the back does not corrupt storage, but it breaks the queue's removal contract. Invariants about indices cannot replace checks of observable order. For an empty container, there is no valid front or back, even though raw slot 0 is a live integer.
+
+</Section>
+
+<Section id="complexity" number="08" title="Count the work you moved." kicker="QUEUE VS DEQUE / COMPLEXITY EXPLORER">
+
+<QueueComparison />
+
+For a size-n naive array, enqueue/pushBack, popBack, front, back, empty and size are O(1). Dequeue/popFront shifts n−1 values and pushFront shifts n values: both are O(n). Draining the queue by repeated dequeue shifts n(n−1)/2 values in total, which is O(n²). Changing the scale in the explorer makes that accumulation visible.
+
+With circular storage, either endpoint moves by modular indexing instead. With a doubly linked deque, endpoint link changes are constant work, though allocation and release still contribute real costs. Big-O alone does not choose the best representation; capacity, locality, reference stability and the workload also matter.
+
+</Section>
+
+<Section id="break-it" number="09" title="An in-bounds mistake can still be wrong." kicker="COMMON MISTAKES / BREAK-IT MODE">
+
+<QueueBreakIt />
+
+The faults are local model experiments. They never execute undefined C++. Compare a wrong-end queue removal with the checked operation: storage bounds can remain valid while FIFO is broken. Reverse a shift loop and watch one value propagate across slots. Omit the singleton count update and the supposedly removed value remains a member. Empty reads demonstrate that object lifetime and ADT membership are different questions.
+
+</Section>
+
+<Section id="analogy" number="10" title="A service line with two doors." kicker="REAL-WORLD ANALOGY">
+
+A service line admits people at the back and serves the front: FIFO. A loading platform accessible from both ends resembles a deque. The platform's two doors permit either policy; the operating rules decide which one applies. Neither analogy says whether people should physically shuffle left after every departure.
+
+That last detail is the implementation opportunity. Give each position a number and move the “next to serve” marker instead of moving every remaining item.
+
+</Section>
+
+<Section id="engineering" number="11" title="Fair ordering needs a storage plan." kicker="ENGINEERING INSIGHT">
+
+Event queues, work queues and producer/consumer pipelines preserve arrival order when that is the required policy. BFS relies on FIFO to process distance layers in order. Scheduler queues may use FIFO within a priority class, while a priority queue chooses by urgency across classes; Chapter 8 changes the removal policy itself.
+
+A fixed-capacity queue makes overflow an application decision: reject, backpressure, or an explicitly documented loss policy. Linked allocation avoids a small fixed capacity but can fail and has less predictable latency. These examples are single-threaded. Sharing them across threads requires synchronization; constant-time endpoint work is not a thread-safety guarantee.
+
+</Section>
+
+<Section id="exercises" number="12" title="Predict the next endpoint." kicker="EXERCISES & CHALLENGES">
+
+<div className="exercise"><h3>One element, two names</h3><p>With only 10 present, which slots do front and back name? What changes after popBack?</p><details><summary>Reveal reasoning</summary><p>Both name slot 0. Count becomes zero; both observers must reject, although raw slot 0 still contains 10.</p></details></div>
+<div className="exercise"><h3>Why copy backward for pushFront?</h3><p>Start with 10,20,30. Predict the result of copying index 0 to 1 before copying index 1 to 2.</p><details><summary>Reveal reasoning</summary><p>The first assignment overwrites 20 with 10. The next propagates 10 instead of preserving 20. Starting from the right preserves every source until it is consumed.</p></details></div>
+<div className="exercise"><h3>Remove the shifting cost</h3><p>After dequeuing 10 from physical slots [10,20,30,40], leave the values where they are. Which metadata must change?</p><details><summary>Reveal reasoning</summary><p>Advance a head/read index from 0 to 1 and reduce count. Eventually the write index reaches the end, so it must wrap. That is Chapter 7's circular buffer.</p></details></div>
+
+</Section>
+
+<Section id="summary" number="13" title="Policy first. Storage second." kicker="CHAPTER SUMMARY">
+
+<div className="summary-panel"><h3>Keep the contract visible.</h3><ul><li>Queue exposes FIFO; deque exposes both endpoints.</li><li>Empty/singleton boundaries matter before any endpoint access.</li><li>A naive contiguous queue shifts n−1 values per dequeue.</li><li>Circular indexing removes the shifting requirement without moving slots.</li></ul><button className="button button-primary" type="button" data-complete aria-pressed="false">Mark chapter complete ✓</button></div>
+<ChapterPagination number="06" />
+
+</Section>

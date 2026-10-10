@@ -1,0 +1,36 @@
+---
+import TraceLab from './TraceLab.astro';
+import '../../styles/spatial.css';
+import { spatialAdapter, spatialDefaults, spatialFiles, spatialOperations } from '../../visualizers/spatial/adapter';
+import type { SpatialKind } from '../../visualizers/spatial/types';
+import hash from '../../../cpp/chapter-60/SpatialHash.hpp?raw';
+import quadtree from '../../../cpp/chapter-61/Quadtree.hpp?raw';
+import octree from '../../../cpp/chapter-62/Octree.hpp?raw';
+import kd from '../../../cpp/chapter-63/KDTree.hpp?raw';
+import rtree from '../../../cpp/chapter-64/RTree.hpp?raw';
+import bvh from '../../../cpp/chapter-65/BVH.hpp?raw';
+import broad from '../../../cpp/chapter-66/BroadPhase.hpp?raw';
+interface Props { kind: SpatialKind }
+const { kind } = Astro.props;
+const sources = { 'spatial-hash':hash, quadtree, octree, 'kd-tree':kd, 'r-tree':rtree, bvh, 'broad-phase':broad };
+const operations = spatialOperations[kind], defaults=spatialDefaults(kind);
+const regions=[...new Set(operations.flatMap(op=>spatialAdapter(kind).regions(op.id,defaults)))];
+const boxes=['r-tree','bvh','broad-phase'].includes(kind), three=kind==='octree';
+const value=(name:string)=>String(defaults.get(name)??'');
+---
+<div data-spatial-lab={kind}>
+<TraceLab id={`${kind}-lab`} chapter={`spatial-${kind}`} source={sources[kind]} fileName={`${spatialFiles[kind].name}.hpp`} operations={operations} regions={regions} viewLabels={{logical:'Spatial view',memory:'Hierarchy / storage'}} diagramNote="World positions stay fixed while the algorithm runs. Select a region or object to inspect its exact bounds and status. Storage IDs imply no C++ byte offsets; Actual size permits local panning.">
+  <label>Scene<select name="scene"><option value="uniform">Uniform</option><option value="clustered">Clustered</option><option value="overlap">Highly overlapping</option><option value="sorted">Sorted / diagonal</option><option value="empty">Empty</option><option value="single">Singleton</option><option value="duplicates">Duplicate coordinates</option><option value="boundary">Touching boundaries</option><option value="custom">Custom</option></select></label>
+  {kind==='broad-phase' && <label>Dimensions<select name="dimension"><option value="2">2D rectangles</option><option value="3">3D boxes</option></select></label>}
+  <label data-spatial-input="custom" hidden>{boxes?'Boxes: min → max coordinates':'Points: coordinates'}<input name={boxes?'boxes':'points'} value={value(boxes?'boxes':'points')} maxlength="500" /><small>Separate objects with semicolons; coordinates with commas.</small></label>
+  {kind!=='broad-phase' && <label data-spatial-input="query">Query bounds<input name="query" value={value('query')} maxlength="100" /><small>{three?'minX,minY,minZ,maxX,maxY,maxZ':'minX,minY,maxX,maxY'} · closed</small></label>}
+  {['quadtree','octree','kd-tree'].includes(kind) && <label data-spatial-input="queryPoint">Query point<input name="queryPoint" value={value('queryPoint')} maxlength="60" /></label>}
+  {['spatial-hash','quadtree','octree'].includes(kind) && <label data-spatial-input="point">Insert / move point<input name="point" value={value('point')} maxlength="60" /><small>{three?'x,y,z':'x,y'}</small></label>}
+  {['r-tree','bvh'].includes(kind) && <label data-spatial-input="object">Insert / move box<input name="object" value={value('object')} maxlength="100" /><small>minX,minY,maxX,maxY</small></label>}
+  {['spatial-hash','bvh'].includes(kind) && <label data-spatial-input="target">Object ID<input name="target" value="A" maxlength="8" /></label>}
+  {['spatial-hash','broad-phase'].includes(kind) && <label>Cell size<select name="cellSize"><option value="1">1 · small cells</option><option value="2">2</option><option value="4" selected>4</option><option value="8">8 · large cells</option></select></label>}
+  {['quadtree','octree'].includes(kind) && <><label>Leaf capacity<select name="capacity"><option value="1">1</option><option value="2" selected>2</option><option value="4">4</option><option value="8">8</option></select></label><label>Maximum depth<select name="maxDepth"><option value="0">0 · no split</option><option value="1">1</option><option value="2">2</option><option value="4" selected>4</option><option value="6">6</option></select></label></>}
+  {kind==='r-tree' && <label>Node capacity<select name="capacity"><option value="2" selected>2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></label>}
+</TraceLab>
+</div>
+<script>import '../../scripts/spatial-labs';</script>

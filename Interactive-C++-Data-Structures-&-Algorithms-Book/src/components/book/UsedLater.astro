@@ -1,0 +1,8 @@
+---
+import { chapters } from '../../content/book';
+interface Props { numbers: string[] }
+const { numbers } = Astro.props;
+const selected = numbers.map(number => chapters.find(chapter => chapter.number === number)).filter(chapter => chapter !== undefined);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<div class="foundations-used"><strong>USED LATER IN</strong>{selected.map(chapter => <a href={`${base}/chapters/${chapter.slug}/`}>→ Chapter {Number(chapter.number)} · {chapter.title}</a>)}</div>

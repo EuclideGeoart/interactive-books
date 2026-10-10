@@ -1,0 +1,11 @@
+---
+import TraceLab from './TraceLab.astro';
+import source from '../../../cpp/chapter-06/QueueDeque.hpp?raw';
+import { queueOperations } from '../../visualizers/queue/model';
+const labels = { 'push-back': 'Enqueue / pushBack', 'pop-front': 'Dequeue / popFront', 'push-front': 'Deque pushFront', 'pop-back': 'Deque popBack', front: 'Front', back: 'Back', empty: 'Empty?', size: 'Size' };
+---
+<TraceLab id="queue" chapter="queue" source={source} fileName="QueueDeque.hpp" operations={queueOperations.map(id => ({ id, label: labels[id] }))} regions={[...queueOperations]} diagramNote="Select an array slot. Front insertion/removal shifts values between stable slots; no pointer addresses are implied.">
+  <label>Starting deque<select name="preset"><option value="standard">10, 20, 30</option><option value="single">One element</option><option value="empty">Empty</option><option value="full">Full (five elements)</option><option value="custom">Custom</option></select></label>
+  <label>Custom values (front → back)<input name="values" value="10,20,30" /></label>
+  <label>Value to insert<input name="value" type="number" min="-999" max="999" step="1" value="40" /></label>
+</TraceLab>

@@ -1,0 +1,65 @@
+---
+import type { TreeKind } from '../../visualizers/tree/complexity';
+interface Props { kind: TreeKind }
+const { kind } = Astro.props;
+---
+<div class="tree-complexity" data-tree-complexity={kind}>
+  <div class="tree-work-controls">
+    <label>Stored {kind === 'trie' ? 'words' : 'keys'}<input type="range" min="1" max="1024" value="63" data-tree-size /></label>
+    {kind === 'btree' ? <label>Children per full page<select data-tree-fanout><option value="3">3</option><option value="8" selected>8</option><option value="32">32</option></select></label> : kind === 'trie' ? <label>Search word<input value="algorithm" maxlength="24" pattern="[a-z]{1,24}" data-tree-word /></label> : <label>Unbalanced BST insertion order<select data-tree-shape><option value="balanced">Medians first</option><option value="skewed">Sorted keys: 1, 2, 3…</option></select></label>}
+  </div>
+  <output data-tree-work aria-live="polite"></output>
+  <div class="tree-work-path" aria-label="Search path evidence" data-tree-path></div>
+  <div class="tree-work-bars" data-tree-bars></div>
+  <p class="fine-print" data-tree-note></p>
+</div>
+<script>
+import { binarySearchPath, avlHeightBound, pageLevels, type TreeKind } from '../../visualizers/tree/complexity';
+import { escapeHtml as esc } from './primitives';
+for (const root of document.querySelectorAll<HTMLElement>('[data-tree-complexity]')) {
+  const kind = root.dataset.treeComplexity as TreeKind;
+  const render = () => {
+    const size = Number(root.querySelector<HTMLInputElement>('[data-tree-size]')!.value);
+    const shape = root.querySelector<HTMLSelectElement>('[data-tree-shape]')?.value === 'skewed' ? 'skewed' : 'balanced';
+    let path: string[], result: string, note: string, bars: { label: string; count: number }[];
+    if (kind === 'btree') {
+      const fanout = Number(root.querySelector<HTMLSelectElement>('[data-tree-fanout]')!.value);
+      const pages = pageLevels(size, fanout), binary = binarySearchPath(size, 'balanced').length;
+      path = pages.capacities.map((capacity, i) => `Level ${i}: capacity ≤ ${capacity}`);
+      result = `${size} keys · ${pages.levels} page levels at fanout ${fanout} · up to one page access per level on this full-page model.`;
+      note = 'This packed B-tree capacity experiment counts keys in internal pages and leaves, not measured disk time or the lab’s exact occupancy. B+ record capacity is in leaf pages only. Each page holds fanout − 1 keys; capacity grows by a fanout each level. Minimum occupancy and partially filled pages can add levels. CPU comparisons within each page still matter. B+ range scans follow the actual linked leaves after locating their starting leaf.';
+      bars = [{ label: 'Binary hierarchy levels', count: binary }, { label: 'Packed page levels', count: pages.levels }];
+    } else if (kind === 'trie') {
+      const word = root.querySelector<HTMLInputElement>('[data-tree-word]')!.value;
+      if (!/^[a-z]{1,24}$/.test(word)) { root.querySelector('[data-tree-work]')!.textContent = 'Enter 1–24 lowercase letters.'; return; }
+      path = ['root', ...Array.from(word, (letter, i) => `${letter} · ${i + 1}`)];
+      result = `${size} stored words · L = ${word.length} · ${word.length} character transitions for a successful full-word lookup.`;
+      note = 'The path follows characters, not a comparison against every stored word. The canonical sparse std::map performs O(log σ) work per child lookup. Here σ ≤ 26 is fixed, so lookup is O(L); the bars count character transitions, not internal map comparisons. A missing edge can stop early. Prefix presence still does not prove that the final node is terminal. Storage depends on shared prefixes and alphabet representation.';
+      bars = [{ label: 'Character transitions', count: word.length }, { label: 'Stored words (comparison scale only)', count: size }];
+    } else {
+      const selected = binarySearchPath(size, shape), balanced = binarySearchPath(size, 'balanced');
+      path = selected.map(String);
+      result = `${size} keys · search maximum ${size} · ${selected.length} visited nodes · height ${selected.length - 1} edges for this shape.`;
+      note = 'This deterministic reference BST stores 1…n, either in median-first or sorted insertion order. The highlighted path really follows right-child decisions to find n. Shape is the evidence: every comparison discards one subtree, but a chain has no useful left subtree. Heights count edges; an empty tree has height −1.';
+      bars = [{ label: 'Median-first maximum search', count: balanced.length }, { label: 'Sorted insertion maximum search', count: size }];
+      if (kind === 'avl') { result += ` An AVL with ${size} nodes has height at most ${avlHeightBound(size)}.`; note += ' AVL bound is computed from N(h)=1+N(h−1)+N(h−2), with N(−1)=0 and N(0)=1. It is a bound, not a trace of AVL insertion here; the lab shows actual balancing.'; }
+      if (kind === 'rb') { result += ` RB height is at most 2 log₂(n+1) ≈ ${(2*Math.log2(size+1)).toFixed(1)}.`; note += ' Equal black height and no adjacent red nodes bound an RB path to at most twice its black levels. This bound does not describe the unbalanced reference BST; the lab shows actual RB restoration.'; }
+      if (kind === 'traversal') { result = `${size} nodes · traversal visits all ${size} once · reference height ${selected.length - 1}.`; note += ' DFS uses O(h) active frames. BFS retains a frontier, O(w), where w is maximum width. A chain minimizes BFS width but maximizes recursive depth. All four traversals still take O(n) work; returned output also occupies O(n).'; }
+      if (kind === 'mutation') note += ' Deletion first locates the target and sometimes its successor, O(h), then performs a bounded number of link assignments; the successor search cannot be called O(1).';
+    }
+    const shown = path.length > 14 ? [...path.slice(0, 6), `… ${path.length - 12} more …`, ...path.slice(-6)] : path;
+    root.querySelector('[data-tree-work]')!.textContent = result;
+    root.querySelector('[data-tree-path]')!.innerHTML = shown.map((value, i) => `<span>${esc(value)}</span>${i < shown.length - 1 ? '<b aria-hidden="true">→</b>' : ''}`).join('');
+    const max = Math.max(...bars.map(bar => bar.count));
+    root.querySelector('[data-tree-bars]')!.innerHTML = bars.map(bar => `<div><span>${esc(bar.label)}: <strong>${bar.count}</strong></span><div class="tree-bar-track"><div style="width:${Math.max(1, 100 * bar.count / max)}%"></div></div></div>`).join('');
+    root.querySelector('[data-tree-note]')!.textContent = note;
+  };
+  root.addEventListener('input', render); render();
+}
+</script>
+<style>
+.tree-complexity{border-block:1px solid var(--border);padding-block:1.5rem;margin-block:1.5rem;}
+.tree-work-controls{display:flex;flex-wrap:wrap;gap:1rem;}label{display:grid;gap:.5rem;flex:1;min-width:10rem;}input{width:100%;}output{display:block;font-weight:600;margin-block:1.5rem;}
+.tree-work-path{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin-block:1rem;font:12px var(--mono);}.tree-work-path span{background:var(--data-fill);border:1px solid var(--data-border);padding:.5rem;}.tree-work-path b{color:var(--pointer);}
+.tree-work-bars{display:grid;gap:1rem;margin-block:1rem;font-size:12px;}.tree-bar-track{height:12px;background:var(--surface-subtle);margin-top:.4rem;}.tree-bar-track>div{height:100%;background:var(--green);min-width:3px;}
+</style>

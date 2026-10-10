@@ -1,0 +1,123 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import SystemsOrganizationPreview from '../../components/visualizers/SystemsOrganizationPreview.astro';
+import SystemsOrganizationLab from '../../components/visualizers/SystemsOrganizationLab.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-54/SparseSet.hpp?raw';
+import main from '../../../cpp/chapter-54/main.cpp?raw';
+
+<ChapterHero number="54" title="Sparse sets" part="PART VIII / ENGINE &amp; SYSTEMS DATA STRUCTURES" overline="DIRECT MEMBERSHIP, DENSE ITERATION" description="A sparse set maps a bounded ID domain into a compact vector of present IDs, verifying membership with a round trip." chain="ID → sparse index → dense ID → equality" facts={[["Membership", "O(1) bounded lookup"], ["Insertion / removal", "O(1) after reservation"], ["Iteration", "O(n) members"], ["Tradeoff", "O(U) inverse-map storage"]]} />
+
+<Section id="mental-model" number="01" title="Two arrays answer different questions." kicker="VISUAL MENTAL MODEL">
+
+The dense vector tells us which IDs are present and in what order iteration will visit them. The sparse array tells us where an ID might be found. With members 1, 9, and 4, dense is `[1, 9, 4]`, while sparse entries 1, 9, and 4 contain 0, 1, and 2. ID order and dense order are deliberately different.
+
+<SystemsOrganizationPreview kind="sparse" />
+
+This snapshot shows the middle of removing 9: the final ID 4 has been copied into its hole, but the old final entry has not yet been popped. The duplicate is temporary and private. Inspect both views, then use the lab to reach the stable state `[1, 4]`. Cells represent vector positions and metadata indices, not C++ byte offsets.
+
+</Section>
+
+<Section id="intuition" number="02" title="An inverse index needs proof, not blind trust." kicker="THE INTUITION">
+
+Initialize every sparse entry to zero. That cannot mean every ID is present at dense position zero. Instead, membership checks that the candidate index is nonnegative and smaller than dense size, then that the dense ID at that index equals the requested ID. Short-circuit evaluation protects the read when the index is outside the live vector.
+
+For candidate `i = sparse[id]`, the full predicate is `i >= 0 && i < static_cast<int>(dense.size()) && dense[i] == id`, after first validating the ID against the bounded domain. Normal mutations only store nonnegative indices; the explicit lower bound also guards corrupted signed metadata. A stale sparse entry for an absent ID is allowed. Clearing every erased ID's entry would add work without replacing the need for the equality check. Membership is unrelated to object lifetime or a generational identity check.
+
+</Section>
+
+<Section id="memory" number="03" title="Reserve for the domain; iterate only live vector elements." kicker="STRUCTURE / STORAGE LAYOUT">
+
+This implementation has a domain of 16 IDs, an initialized `std::array<int, 16>` for sparse indices, and an owning `std::vector<int>` for dense members. Construction reserves room for 16 members. Reserved capacity beyond `size()` contains no readable vector elements; the diagram labels it outside size rather than inventing stored values.
+
+Insertion appends the ID and publishes its inverse mapping. Removing a middle entry copies the last ID into the hole, pops the last element, and repairs the moved ID's mapping. Removing the tail needs neither the move nor the repair. The dense vector owns scalar IDs, not the objects those IDs might identify. The set is noncopyable and nonmovable so its reserved-capacity contract stays intact. References to dense positions do not provide stable identity across mutations.
+
+</Section>
+
+<Section id="operations" number="04" title="Change one target and predict its round trip." kicker="INTERACTIVE OPERATIONS">
+
+<SystemsOrganizationLab kind="sparse" />
+
+Start with `1,9,4` and target 9. Follow Swap-delete until Move, Pop, Repair, and Settle have each executed. Reverse through those steps and inspect `dense[1]`, `dense[2]`, and sparse ID 4. The temporary duplicate disappears before the inverse mapping is repaired.
+
+Run Contains for 9 and then 2 on the same initial fixture. Run Insert with target 2, then with target 9 to observe duplicate rejection. Run Dense iteration to visit only present IDs. Try an empty initial list and target 0, a singleton, and a tail removal. Each operation starts a fresh deterministic fixture; its setup is visible and included in the counters.
+
+</Section>
+
+<Section id="implementation" number="05" title="Keep the canonical membership guard next to mutation." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="SparseSet.hpp" chapter="54" />
+
+`SparseSet::contains`, `insert`, `erase`, and `iterate` form the canonical API. IDs outside 0 through 15 throw before indexing. Duplicate insertions and absent erasures return false without changing membership. The main program checks mixed operations against an independent `std::set`, including tail deletion, empty state, and invalid IDs.
+
+The optional observer receives a const reference valid during its callback. Copy that state to retain it; callbacks must not throw or reenter the container. Observers reveal private mutation steps for teaching, not concurrent access points. Ordinary operations need no further allocation for the bounded domain after construction reserves capacity. Copy and move operations are deleted so a copied vector cannot silently lose that reservation.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Move, pop, and repair are three separate facts." kicker="CODE + VISUALIZATION TRACE">
+
+The `sparse.move` snapshot still has the old size and contains the moved ID twice. `sparse.pop` has the smaller size but can still retain the moved ID's old inverse index. `sparse.repair` writes the new dense position. `sparse.settle` ends the private mutation interval. Public membership checks should be made only at stable boundaries, never by reentering through an observer.
+
+After erasing 9, its sparse entry still reads 1. That entry now leads to dense ID 4, so the equality test rejects 9. Use Stale sparse entry to see this exact lookup. The highlighted source statement, counters, inspector, and reverse playback all come from immutable snapshots of those separate events.
+
+</Section>
+
+<Section id="invariants" number="07" title="A live member has exactly one inverse position." kicker="INVARIANTS">
+
+At a stable boundary, dense contains unique, in-domain IDs, and every dense position i satisfies `sparse[dense[i]] == i`. Those two properties make the round-trip membership test sufficient. Sparse entries for absent IDs need not equal a sentinel, zero, or any other distinguished value.
+
+The live invariant panel marks uniqueness and inverse-map consistency as pending during insertion and swap-delete. It must not report an ordinary move-before-pop snapshot as a persistent corruption. The deliberate Break-It traces finish outside that private mutation interval, so their invalid maps or duplicates produce actual failures.
+
+</Section>
+
+<Section id="complexity" number="08" title="Count the work performed by one deletion." kicker="COMPLEXITY EXPLORER">
+
+Compare middle and tail deletion with initial lists `1`, `1,9,4`, and `0,1,2,3,4,5,6,7`. Subtract setup counters before comparing: every initial insertion performs a lookup, append, and mapping write. A middle deletion adds one membership lookup, one moved ID, one pop, and one inverse repair. A tail deletion adds a lookup and pop only.
+
+For domain U and n members, initialized metadata plus reservation takes O(U) time/space. Membership, insert, and erase are O(1) in this bounded, pre-reserved implementation; iterating all members is O(n). A growable version may incur vector reallocation. Sequential dense iteration gives a locality opportunity, not a measured speedup. A huge sparse ID universe can make the O(U) metadata cost unacceptable.
+
+</Section>
+
+<Section id="break-it" number="09" title="Corrupt the live mapping; retain harmless stale metadata." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+Choose Break: inverse map with target 9. The safe teaching mutation writes index 16 into that live ID's mapping. The membership predicate rejects the index before any dense read, and the inverse-map invariant fails. The same invariant would catch a forgotten repair after moving the last ID. This experiment changes a checked model; it does not execute an out-of-bounds access.
+
+Choose Break: duplicate to append a present ID without its guard. Two dense positions cannot both be its unique inverse position. Contrast this with Stale sparse entry, which leaves valid invariants after an ordinary erase. Try out-of-domain target 16: input validation rejects it instead of making a corrupt trace. Reload a normal operation to discard an intentionally damaged state.
+
+</Section>
+
+<Section id="analogy" number="10" title="A compact guest list with a lookup card for every possible guest." kicker="REAL-WORLD ANALOGY">
+
+The dense vector is the line of checked-in guests. The sparse array is a cabinet with one card per allowed badge number. A card says where to look in the line, but the badge at that position must agree. Moving the last guest into a departure gap shortens the line without preserving arrival order.
+
+The analogy also exposes the cost: a card for every possible badge is cheap only when that domain is reasonably bounded. The structure is excellent at membership and iteration; it promises neither sorted order nor ownership of the guests.
+
+</Section>
+
+<Section id="engineering" number="11" title="Use compact membership without confusing it with identity." kicker="ENGINEERING INSIGHT">
+
+Sparse sets suit active-object lists, entity component membership, and bounded selections. They complement the storage concerns in <a href="../04-memory-pool/">Chapter 4</a> and the lifetime concerns of object pools. Neither an array index nor a sparse mapping can reject an old reference after an ID has been reused; <a href="../55-generational-handles/">generational handles</a> address that separate problem.
+
+Use <a href="../56-ecs-storage/">Chapter 56</a> to extend a dense ID vector into paired IDs and component values. A caller caching a dense index must account for swap-delete moving a different member into that position. Return identities to clients and keep dense positions as short-lived traversal details. Thread safety and reclamation require additional policies; this example is single-threaded.
+
+</Section>
+
+<Section id="exercises" number="12" title="Prove the map and account for movement." kicker="EXERCISES / CHALLENGES">
+
+1. Trace removal of 1 from `[1,9,4]`, showing all three arrays of dense snapshots and every sparse write.
+2. Explain why removing tail ID 4 requires no repair and why stale sparse metadata for 4 remains safe.
+3. Construct a false positive if the equality check is omitted, then one unsafe read if the bounds check is omitted.
+4. Compare a million-ID domain with ten members against a hash set. Include initialization and memory cost.
+5. Add component values conceptually. Which data must move together, and which references become invalid?
+6. Explain why changing a sparse entry to 16 is a safe teaching corruption here while dereferencing `dense[16]` is not.
+
+</Section>
+
+<Section id="summary" number="13" title="Dense membership is compact; identity is a separate contract." kicker="CHAPTER SUMMARY">
+
+A sparse set verifies direct-index membership by a round trip, iterates compact dense storage, and removes in constant work by moving the tail into a hole. Its cost includes metadata for the whole ID domain, and its order is unstable. Distinguish temporary mutation states from corrupt stable states, and distinguish absent-ID metadata from live object fields. Those boundaries make sparse storage useful without giving it promises it cannot keep.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="54" />
+</Section>

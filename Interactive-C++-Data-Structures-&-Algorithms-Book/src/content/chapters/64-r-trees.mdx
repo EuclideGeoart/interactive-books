@@ -1,0 +1,127 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import SpatialPreview from '../../components/visualizers/SpatialPreview.astro';
+import SpatialLab from '../../components/visualizers/SpatialLab.astro';
+import SpatialExplorer from '../../components/visualizers/SpatialExplorer.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-64/RTree.hpp?raw';
+import main from '../../../cpp/chapter-64/main.cpp?raw';
+
+<ChapterHero number="64" title="R-trees" part="PART IX / SPATIAL DATA STRUCTURES" overline="OBJECT RECTANGLES, RECURSIVE GROUPS" description="An R-tree groups object rectangles into enclosing rectangles, allowing sibling bounds to overlap." chain="object → leaf MBR → ancestor MBR → pruned search" facts={[["Objects", "Closed 2D AABBs"], ["Insertion", "Minimum enlargement"], ["Split", "Deterministic center median"], ["Capacity 2 caveat", "Unary chains can grow"]]} />
+
+<Section id="mental-model" number="01" title="Rectangles contain objects; rectangles also contain rectangles." kicker="VISUAL MENTAL MODEL">
+
+<SpatialPreview kind="r-tree" />
+
+An object is a rectangle with an identity. A leaf stores object IDs and their bounds. An internal node stores child IDs and each child's minimum bounding rectangle (MBR). The root encloses every object. Select a group in either view to inspect its bounds, parent, children and contents.
+
+An MBR is the smallest axis-aligned rectangle enclosing its entries. It can contain empty space. Two sibling MBRs may overlap substantially; there is no disjoint partition of space. A range query can therefore need several children at the same level. This differs from the coordinate partitions in quadtrees and KD-trees.
+
+</Section>
+
+<Section id="intuition" number="02" title="Choose the group that needs the least extra area." kicker="THE INTUITION">
+
+For an incoming box B, evaluate each child rectangle R using area(union(R, B)) − area(R). Choose the smallest enlargement, then the smaller original area, then the lower numeric node ID. The trace reports all candidates' actual enlargement values. A larger existing group can sometimes accept B with zero enlargement.
+
+Repeat this choice recursively until a leaf is reached. Append the object, recompute the leaf MBR, and return upward. Each ancestor recomputes its own union. If a node overflows, split it and propagate the new sibling to its parent. Splitting a full root creates a new root, increasing every leaf's depth together.
+
+</Section>
+
+<Section id="memory" number="03" title="Stable indices connect variable-sized entry arrays." kicker="STRUCTURE / STORAGE LAYOUT">
+
+The C++ tree owns vectors of objects and nodes. Integer indices identify nodes; each node stores its parent, bounds, children, and object indices. Leaves use object entries, internal nodes use child entries. These are conceptual fields, not a native byte-offset diagram. Vector growth can relocate storage, so recursive insertion never retains a Node reference across an allocation.
+
+Maximum capacity M is an integer from 2 through 6. An ordinary node holds at least floor((M + 1) / 2) entries. A root leaf may hold one entry; an internal root has at least two children. Empty means no root and no nodes. Objects have distinct IDs even when their rectangles are identical. The diagram keeps all input-scene rectangles visible during construction; the inspector identifies pending inputs until they enter a leaf. The native R-tree owns only objects submitted to its insertion API, while the lab also retains the input scene for teaching.
+
+</Section>
+
+<Section id="operations" number="04" title="Force leaf splits, then force an internal split." kicker="INTERACTIVE OPERATIONS">
+
+<SpatialLab kind="r-tree" />
+
+Build the sorted scene with capacity 2. Step through a choice, an append, a bound update, a split, and growth of a new root. Use Previous to inspect the overflowing node before the split. Its occupancy check is pending while propagation is in progress; completed states must satisfy the full policy.
+
+Insert uses the initial scene followed by one new box from the object field, with ID `new`. Range query builds the scene and then traverses intersecting MBRs. Try the overlap scene and compare visited nodes with the uniform scene. Empty and singleton scenes exercise root exceptions. Custom boxes use `minX,minY,maxX,maxY`, separated by semicolons. Coordinates must be finite in [−8, 8], and minimums cannot exceed maximums. Zero-area boxes and touching edges are valid.
+
+</Section>
+
+<Section id="implementation" number="05" title="A complete recursive insertion with an explicit teaching split." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="RTree.hpp" chapter="64" />
+
+On overflow, sort entries by x-center, then lexicographic entry ID, and divide at floor((M + 1) / 2). For child entries the ID is its `N` label; insertion-path ties instead use the numeric node index. Both halves meet the minimum occupancy. This simple deterministic split works for internal nodes as well as leaves.
+
+This is an R-tree, with overlapping MBRs, recursive insertion, uniform leaf depth and occupancy rules. It is not an R*-tree implementation. Quadratic split, reinsertion and overlap-aware heuristics are useful variants, not claims about this code. The standalone header allows at most 16 objects and validates every insertion and query. The shared custom-scene form accepts at most 12 initial boxes. RAII vectors own all storage; the optional observer must be nonthrowing and nonreentrant.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="An ancestor changes only when its update statement executes." kicker="CODE + VISUALIZATION TRACE">
+
+The source tags separate choosing a child, appending an entry, recomputing a bound, splitting, and replacing the root. Immediately after append, the leaf may overflow and its bound may be stale. Immediately after a split, the caller has yet to publish the sibling entry and update its own MBR. These are genuine intermediate states, not finished trees.
+
+Queries test a node bound before entering it. A disjoint node becomes pruned. Admitted leaves test each object as a candidate; only closed AABB overlaps become accepted results. Acceptance is an exact rectangle result, not proof that a detailed CAD shape inside that rectangle intersects the query. Snapshots preserve actual object coordinates and can be replayed backward without re-running insertion.
+
+</Section>
+
+<Section id="invariants" number="07" title="Enclosure, occupancy and equal leaf depth work together." kicker="INVARIANTS">
+
+Every child reference identifies a node whose parent points back. Every completed MBR encloses all its children or objects. Every object is owned by exactly one leaf, and all leaves share a depth. Capacity and minimum occupancy hold outside the stated root exception. Incomplete mutation snapshots report affected structural rules as pending until propagation completes.
+
+Sibling non-overlap is deliberately absent: overlapping siblings are legal. A finished query must match an exhaustive scan of the object rectangles. A duplicated-coordinate scene must return each matching object ID once; merging equal rectangles into one object would violate identity.
+
+</Section>
+
+<Section id="complexity" number="08" title="Balanced height does not guarantee a selective query." kicker="COMPLEXITY EXPLORER">
+
+<SpatialExplorer kind="r-tree" />
+
+Compare visited hierarchy nodes, AABB tests, pruned branches, recomputed bounds and depth. Repeat the sorted scene at capacities 2 and 3 to expose the minimum-occupancy caveat. These are mechanical counts, not timing measurements. Overlapping MBRs can admit every branch even when the tree is height balanced.
+
+For height h and maximum capacity M, insertion scans at most M children per level and may sort M + 1 entries at each overflowing level: O(h M log M) worst-case work for this teaching split, plus amortized vector storage growth. With fixed M this is O(h). For M at least 3, minimum occupancy is at least two, so h is O(log n); M = 2 permits one-entry non-root nodes, so occupancy alone only guarantees O(n) height. The lab uses M = 2 to make splits easy to see, not to promise logarithmic insertion.
+
+A query costs O(v M + k) for v visited nodes and k results. With fixed M at least 3, worst-case query work and storage are O(n), and recursion uses O(h). With M = 2, unary chains can accumulate at many levels. Each level has at most n nodes, giving O(n(h + 1)) node storage and full-tree query work, with h = O(n). This specific median-split builder therefore has O(n²) worst-case node count and query work. Ascending sequences of 8, 12 and 16 boxes create 28, 66 and 120 nodes respectively, at depths 6, 10 and 14; a full-domain query visits every node. The 16-object case is checked directly in the bounded algorithm and native C++; the interactive form retains its 12-object initial-scene limit. Capacity 3 avoids the unary-chain case. Repeated insertion to build n objects inherits the chosen capacity's height and split costs. Recording immutable visualization snapshots adds separate history storage and copying that is not part of index-query complexity.
+
+</Section>
+
+<Section id="break-it" number="09" title="Omitting an ancestor update can lose a correct result." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+Insert a rectangle outside its chosen leaf's old MBR. Stop after append and compare the object with the old group boundary. If execution ended there, a query in the extension could prune the stale group and miss the object. Continue through every bound update and explain why the failure disappears. The lab does not silently declare partial updates valid.
+
+Try the overlap scene and imagine following only one intersecting child: valid results in the other branch would be lost. Try a reversed rectangle to see validation reject it. Finally, propose a split that leaves one side empty; explain why that violates the occupancy policy even if the root still encloses all objects.
+
+</Section>
+
+<Section id="analogy" number="10" title="Map folders can cover overlapping districts." kicker="REAL-WORLD ANALOGY">
+
+A geographic archive places map sheets in folders labeled by the smallest rectangle covering their contents. A city's search window can overlap several folder labels, so the librarian must open all relevant folders. A label promises containment, not exclusive ownership of a geographic district.
+
+</Section>
+
+<Section id="engineering" number="11" title="Spatial databases index envelopes before detailed geometry." kicker="ENGINEERING INSIGHT">
+
+GIS feature lookup, CAD picking and database spatial indexes benefit from grouping objects whose bounds are nearby. Bounding rectangles offer cheap rejection before expensive polygon, curve or solid tests. Large overlapping envelopes reduce that rejection power. Split quality and update workload matter as much as nominal balance.
+
+Choose an R-tree for variable-sized object envelopes and dynamic insertions when its grouping policy fits the workload. Deletion, underflow reinsertion, disk pages, concurrency and production R*-tree optimization are outside this bounded implementation. The next chapter compares a binary hierarchy over objects with an explicit refit path for motion.
+
+</Section>
+
+<Section id="exercises" number="12" title="Predict the rectangle changes before stepping." kicker="EXERCISES / CHALLENGES">
+
+1. Compute the enlargement of two candidate MBRs for one inserted box and resolve a tie using the exact policy.
+2. With capacity 3, prove that the two halves of a four-entry split both satisfy minimum occupancy.
+3. Explain why an internal root split preserves equal leaf depth.
+4. Construct two overlapping sibling MBRs and a query that must enter both.
+5. Give a scene in which a balanced R-tree query visits every leaf.
+6. Why does capacity 2 weaken a logarithmic height argument based solely on occupancy?
+
+</Section>
+
+<Section id="summary" number="13" title="R-tree pruning depends on enclosure and useful grouping." kicker="CHAPTER SUMMARY">
+
+The R-tree stores object rectangles in a recursive, balanced-leaf hierarchy. Minimum enlargement chooses insertion paths; a deterministic median split restores capacity, and ancestor unions restore enclosure. Sibling overlap is legal and can make queries expensive. Exact AABB results remain only candidates for detailed shape tests.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="64" />
+</Section>
+

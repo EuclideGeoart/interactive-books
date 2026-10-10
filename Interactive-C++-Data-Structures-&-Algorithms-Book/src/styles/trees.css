@@ -1,0 +1,24 @@
+/* Tree-local extensions of the accepted engineering-diagram visual language. */
+.tree-state-strip { display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); font: 11px var(--mono); }
+.tree-state-strip span { white-space: nowrap; }
+.tree-state-strip button { color: var(--pointer); padding: .2rem .3rem; font: inherit; }
+.tree-diagram .node-value { font-size: 22px; }
+.tree-badge { fill: var(--ink); font-size: 11px; }
+.tree-node.in-selected-subtree rect { stroke: var(--pointer); stroke-dasharray: 5 3; }
+.tree-node.selected rect { stroke-dasharray: none; stroke-width: 3; }
+.tree-node.visited-node rect { stroke-width: 2.5; }
+.tree-node.active-node rect { fill: var(--amber-fill); stroke-width: 3; }
+.tree-node.tree-red rect { fill: var(--red-fill); stroke: var(--red); }
+.tree-node.tree-black rect { fill: var(--surface-subtle); stroke: var(--ink); }
+.tree-node.tree-red .tree-badge { fill: var(--red); }
+.tree-link.secondary-link .reference-arrow { stroke-dasharray: 5 3; opacity: .85; }
+.tree-auxiliary { padding: 1rem 1.25rem; border-top: 1px solid var(--border); font-size: 12px; }
+.tree-auxiliary strong { color: var(--pointer); font: 11px var(--mono); }
+.tree-auxiliary ol { display: flex; flex-wrap: wrap; list-style: none; padding: 0; gap: .4rem; margin: .6rem 0 1rem; }
+.tree-auxiliary li { padding: .4rem .6rem; border: 1px solid var(--border-strong); background: var(--pointer-fill); font-family: var(--mono); }
+.tree-auxiliary li.empty-auxiliary { border: 0; padding-left: 0; background: none; color: var(--muted); }
+.tree-output p, .tree-result { margin-top: .5rem; overflow-wrap: anywhere; }
+[data-chapter-lab] .svg-scroll:has(.tree-diagram), [data-structure-preview] .svg-scroll:has(.tree-diagram) { max-height: 580px; overflow: auto; overscroll-behavior: contain; }
+@media(max-width:560px) { [data-chapter-lab] .svg-scroll:has(.tree-diagram), [data-structure-preview] .svg-scroll:has(.tree-diagram) { max-height: 440px; } }
+
+.tree-edge-label { fill: var(--pointer); font: 11px var(--mono); paint-order: stroke; stroke: var(--surface); stroke-width: 4px; stroke-linejoin: round; }

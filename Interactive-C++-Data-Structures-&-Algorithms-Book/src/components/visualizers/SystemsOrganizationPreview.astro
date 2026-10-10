@@ -1,0 +1,20 @@
+---
+import '../../styles/systems-organization.css';
+import { organizationAdapter, organizationDefaults, organizationOperations, type OrganizationKind } from '../../visualizers/systems-organization/adapter';
+import { drawOrganization, inspectOrganization, describeOrganization } from '../../visualizers/systems-organization/presentation';
+interface Props { kind: OrganizationKind }
+const { kind } = Astro.props;
+const trace = organizationAdapter(kind).build(organizationOperations[kind][0]!.id, organizationDefaults(kind));
+const tag = { sparse: 'sparse.move', ecs: 'ecs.probe', dirty: 'dirty.begin', commands: 'commands.begin' }[kind];
+const state = trace.steps.find(step => step.source === tag)?.state ?? trace.initial;
+---
+<div data-organization-preview={kind} data-diagram class="diagram-component">
+  <h3 class="sr-only">Organization mental model snapshot</h3>
+  <div class="diagram-topline"><span class="diagram-caption">MENTAL MODEL · INSPECT A STATE</span><div class="segmented" role="group" aria-label="Preview representation"><button type="button" data-view="logical" aria-pressed="true">Membership / execution</button><button type="button" data-view="memory" aria-pressed="false">Storage / metadata</button></div></div>
+  <div class="diagram-with-inspector"><div class="diagram-canvas">
+    <div class="svg-scroll" tabindex="0" role="region" aria-label="Scrollable organization mental model" data-svg set:html={drawOrganization(state, `organization-${kind}-preview`, 'logical', null)} />
+    <details class="text-fallback"><summary>Text representation</summary><code data-ascii>{describeOrganization(state)}</code></details>
+  </div><details class="inspector-shell" data-inspector-shell><summary>Inspect state <span>Choose an ID, slot, or command</span></summary><aside class="pointer-inspector" aria-label="Organization state inspector" data-inspector set:html={inspectOrganization(state, null)} /></details></div>
+  <script type="application/json" data-organization-state set:html={JSON.stringify(state).replace(/</g, '\\u003c')} />
+</div>
+<script>import '../../scripts/systems-organization-labs';</script>

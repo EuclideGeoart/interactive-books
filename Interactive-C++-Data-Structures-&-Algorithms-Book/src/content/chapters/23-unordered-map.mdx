@@ -1,0 +1,118 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import UnorderedMapLab from '../../components/visualizers/UnorderedMapLab.astro';
+import PointKeyContract from '../../components/visualizers/PointKeyContract.astro';
+import TeachingHashDownload from '../../components/visualizers/TeachingHashDownload.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-23/UnorderedMap.hpp?raw';
+import main from '../../../cpp/chapter-23/main.cpp?raw';
+import CppPrerequisite from '../../components/book/CppPrerequisite.astro';
+
+<ChapterHero number="23" part="PART IV / HASHING" title="std::unordered_map" overline="ENGINEER AGAINST THE CONTRACT" description="Use a hash map without assuming its internal design. Separate membership from bucket policy, element references from iterators, and equality from hashing." chain="Key + Hash + Equality → membership contract → measured implementation" facts={[["Key uniqueness","Equality predicate"],["Capacity control","reserve / rehash"],["Element references","Survive rehash"],["Layout / order","Implementation-selected"]]} />
+<CppPrerequisite lesson="17" summary="Key equality, callable hash policies and iterator validity." />
+
+<Section id="mental-model" number="01" title="A map promises answers, not our teaching table." kicker="VISUAL MENTAL MODEL">
+
+`std::unordered_map<Key, Value>` associates a mapped value with each distinct key. The cards below display membership in alphabetical UI order. They are not native bucket positions, allocated nodes or the order of a C++ iteration. Switch to memory view to examine saved-handle guarantees without inventing addresses.
+
+<StructurePreview chapter="unordered-map" id="unordered-preview" operation="find" inputs={{keys:'cat,dog',key:'cat'}} viewLabels={{logical:'Membership view',memory:'Memory view'}} diagramNote="Cards depict stored values. Neither alphabetical card order nor their x-position is a standard-library layout guarantee." />
+
+Chapters 20–22 implemented concrete collision policies. Here the boundary is the library call. A browser trace can explain its result and contractual implications while leaving implementation mechanics unspecified.
+
+</Section>
+<Section id="intuition" number="02" title="Equality decides identity; hashing narrows the search." kicker="INTUITION">
+
+Two objects can occupy different native addresses and still be equal keys. For PointKey, equality compares coordinate values. Hashing must be consistent with that identity: equivalent keys must have equal hashes, while unequal keys may collide. A custom equality predicate must describe a stable equivalence relation. [C++ draft: unordered requirements](https://eel.is/c++draft/unord.req#general)
+
+The examples explicitly supply a teaching string hash. The number displayed is that supplied functor's result, not a predicted value of `std::hash<std::string>`. No modulo formula is asserted for the library's bucket selection. PointHash is a separate, deliberately simple example over integer coordinates.
+
+</Section>
+<Section id="memory" number="03" title="An iterator and an element reference serve different purposes." kicker="STRUCTURE / MEMORY LAYOUT">
+
+An iterator participates in traversal. A reference identifies an element. Rehash invalidates iterators but preserves pointers and references to elements; erase invalidates handles to erased elements. No specific node layout, growth sequence or iteration order is assumed here. [C++ draft: invalidation](https://eel.is/c++draft/unord.req#general)
+
+The lab saves a conceptual iterator and reference to the first starting key. Membership cards stay separate from those handles, so an invalid iterator is never portrayed as permission to read freed data. A call that assigns an existing mapped integer visibly changes that value while the element remains present.
+
+</Section>
+<Section id="operations" number="04" title="Change capacity policy without fabricating exact buckets." kicker="INTERACTIVE OPERATIONS">
+
+<UnorderedMapLab />
+
+Find cat, assign a new value to cat, insert owl, and erase cat. Compare the saved iterator/reference status for each independent experiment. Reserve and Rehash accept the same numeric input but interpret it differently. Set load hint reports the requested hint and leaves the accepted getter value unknown; load another experiment to return to the default policy.
+
+Starting keys are limited to twelve valid teaching strings. Blank input creates an empty map. Every load starts from those keys with the default maximum load factor, making before/after comparisons repeatable. A single step highlights one complete public C++ call. No allocator, bucket traversal or implementation-selected iteration sequence is animated behind it.
+
+</Section>
+<Section id="implementation" number="05" title="Use public APIs and an explicit custom key." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="UnorderedMap.hpp" chapter="23" />
+<TeachingHashDownload />
+
+The wrapper functions validate teaching input and call insert_or_assign, contains, erase, reserve, rehash and max_load_factor. The native main checks membership and element-reference survival across growth without dereferencing invalidated iterators. It compares the observed bucket count against required bounds, never an exact implementation-dependent number.
+
+PointKey uses defaulted memberwise equality. PointHash combines its unsigned coordinate representations with wrapping arithmetic. It is deterministic and easy to inspect, not a high-quality spatial hash. The container owns its keys and mapped values and uses standard-library value semantics; these small wrappers add no ownership layer or persistent handles. Allocation and library exceptions propagate to the native caller. The browser illustrates successful calls and validation errors, not allocation-failure simulation.
+
+</Section>
+<Section id="pointer-trace" number="06" title="A source boundary is still a meaningful trace." kicker="CODE + VISUALIZATION TRACE">
+
+Stepping reserve highlights exactly the canonical reserve call. The before snapshot contains membership and saved handles; the after snapshot contains the new capacity bound and handle guidance. Previous returns to the exact before snapshot. It does not claim that the C++ library rolls back reserve or resurrects an invalidated iterator.
+
+The native parity fixture instruments the actual wrapper source and compares membership at these call boundaries. It sorts values only for test comparison, just as the UI sorts cards for readability. Hash buckets and iteration sequences are intentionally excluded from the parity assertion because those would impose an implementation choice the model does not own.
+
+</Section>
+<Section id="invariants" number="07" title="Hash and equality must agree on what a key means." kicker="INVARIANTS">
+
+The central implication is `a == b ⇒ hash(a) == hash(b)`. The reverse is unnecessary. Equal coordinate pairs must produce equal PointHash values. Distinct pairs such as (1,2) and (0,33) collide under this example but remain distinct keys because equality compares both coordinates.
+
+Key identity must not depend on changing external state. If a custom equality rule ignores y but the hash continues to include it, two keys deemed equal can begin in different hash groups. Do not insert such a mismatched pair into a real map to see what happens; test the predicate/hash implication separately, as the Break-It panel does.
+
+</Section>
+<Section id="complexity" number="08" title="Reserve elements; rehash buckets." kicker="COMPLEXITY / CAPACITY EXPLORER">
+
+Use the Reserve, Rehash and Set load hint tabs above, varying the numeric request and starting membership. The display reports size, a justified bucket lower bound, and an exact fractional upper bound for load factor when available. It does not round a bound downward or invent a bucket count. No comparison counter is shown because the standard-library implementation is not being executed in the browser.
+
+After rehash(n), bucket_count is at least n and sufficient for size/max_load_factor. Reserve(n) is equivalent to rehash(ceil(n/max_load_factor())). The maximum-load setter supplies a hint; query the getter for the accepted value and do not infer an immediate rebuild. [C++ draft: hash policy](https://eel.is/c++draft/unord.req#general)
+
+Lookup and single-key mutation have average constant-time expectations and linear worst cases. Rehash has average linear and worst quadratic complexity. [C++ draft: complexity requirements](https://eel.is/c++draft/unord.req#general)
+
+These bounds do not include a promise that your hash is cheap. For a long string, evaluating the supplied function consumes its characters. Reservation can move growth work to a deliberate phase; it does not cure a pathological hash function or eliminate all future allocations. This chapter's teaching strings are bounded in length to keep the example focused.
+
+</Section>
+<Section id="break-it" number="09" title="Change equality and watch the implication fail." kicker="COMMON MISTAKES / BREAK-IT">
+
+<PointKeyContract />
+
+Keep the default points (1,2) and (1,3). Correct equality says they differ. Switch to the broken x-only equality: the points now compare equal, but the hash values differ. Restore coordinate equality, then try (1,2) and (0,33) to see an allowed collision. Testing a single pair can expose an error; it cannot prove an arbitrary custom functor correct.
+
+This panel tests a pure implication, outside any native unordered_map. The displayed canonical source remains the correct coordinate-equality example. Other mistakes are retaining an iterator across growth, treating reserve's argument as a bucket count, expecting sorted traversal, or assuming a copied numeric hash identifies a unique key.
+
+</Section>
+<Section id="analogy" number="10" title="The catalog entry can stay while the index changes." kicker="REAL-WORLD ANALOGY">
+
+A catalog's indexing system may be reorganized without changing the records it indexes. An old traversal position can become unusable even though a particular record remains. Removing that record is a different event: references to it no longer identify a live element. The analogy separates index organization from membership without specifying how either is implemented.
+
+</Section>
+<Section id="engineering" number="11" title="Choose the container for the workload and guarantees." kicker="ENGINEERING INSIGHT">
+
+Use unordered_map when key-based access matters and ordering does not. Consider an ordered map when sorted traversal or range queries dominate; a sorted vector or small linear collection can be attractive when data is tiny or changes rarely. Compare memory overhead, iteration locality, key size, adversarial inputs and reference requirements under the actual workload.
+
+Many implementations use node-based storage, but that is an implementation tendency, not a layout promised by this visualization. Measure the selected standard library, allocator and hash policy. Do not transfer the exact tombstone, Robin Hood, resize or relocation rules from the preceding teaching containers to an unrelated library container.
+
+</Section>
+<Section id="exercises" number="12" title="Separate a guarantee from an observation." kicker="EXERCISES / CHALLENGES">
+
+1. Explain why equal hashes do not imply equal PointKey objects.
+2. Reserve room for sixteen elements. Which exact bucket counts can the UI legitimately promise?
+3. Save both an iterator and reference to cat, then rehash. Which must be reacquired?
+4. Erase dog while a reference to cat is saved. What survives?
+5. Change equality to ignore y. Design a matching hash, then discuss the resulting loss of distribution.
+6. Compare an observed native bucket count on two standard libraries without making either count an API promise.
+
+</Section>
+<Section id="summary" number="13" title="Carry the hashing lessons across the library boundary." kicker="CHAPTER SUMMARY">
+
+<div className="summary-panel"><h3>Use the guarantees; measure the implementation.</h3><ul><li>Equality defines identity and hashing must respect it.</li><li>Reserve counts elements; rehash requests buckets.</li><li>Element references and iterators have different invalidation rules.</li><li>Average complexity depends on usable hashing; worst cases still matter.</li><li>Membership cards make no claim about native layout or traversal order.</li></ul><button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button></div>
+<ChapterPagination number="23" />
+</Section>

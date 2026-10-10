@@ -1,0 +1,30 @@
+<div class="doubly-break" data-doubly-break>
+  <div class="break-controls"><label>Fault to introduce<select data-fault><option value="backlink">Omit successor backlink during deletion</option><option value="head-prev">Stale head.prev</option><option value="tail-next">Stale tail.next</option><option value="lost-tail">Lose tail</option><option value="single">Clear only head when deleting sole node</option></select></label><button class="button button-primary" data-break>Run broken operation</button><button class="button" data-restore>Restore valid list</button></div>
+  <p data-broken-note aria-live="polite">The intact list is valid in both directions.</p>
+  <div class="svg-scroll" role="region" tabindex="0" aria-label="Scrollable broken-list diagram" data-broken-svg></div>
+  <aside class="pointer-inspector" aria-label="Broken-list pointer inspector" data-broken-inspector></aside>
+  <ul data-broken-rules></ul>
+</div>
+<script>
+  import { brokenDoubly,doublyState,doublyInvariants,walkDoubly,type DoublyBreak } from '../../visualizers/doubly-linked-list/model';
+  import { drawDoubly } from '../../visualizers/doubly-linked-list/diagram';
+  import { pointerInspector } from '../memory/inspector';
+  import { escapeHtml } from '../visualizers/primitives';
+  document.querySelectorAll<HTMLElement>('[data-doubly-break]').forEach(root=>{
+    let state=doublyState(), selected: string | null=null;
+    const render=()=>{
+      root.querySelector('[data-broken-svg]')!.innerHTML=drawDoubly(state,'doubly-broken','logical',selected);
+      root.querySelector('[data-broken-inspector]')!.innerHTML=pointerInspector(state,selected);
+      const a=walkDoubly(state), b=walkDoubly(state,'prev');
+      root.querySelector('[data-broken-note]')!.textContent=`Forward traversal: [${a.values.join(', ')}] ${a.error || 'terminates'}. Backward traversal: [${b.values.join(', ')}] ${b.error || 'terminates'}. A terminating walk alone does not prove ownership or reciprocal links.`;
+      root.querySelector('[data-broken-rules]')!.innerHTML=doublyInvariants(state,true).map(i=>`<li class="invariant-${i.status}">${i.status==='pass' ? '✓' : '✕'} ${escapeHtml(i.name)} — ${escapeHtml(i.detail)}</li>`).join('');
+    };
+    root.querySelector('[data-break]')!.addEventListener('click',()=>{state=brokenDoubly(root.querySelector<HTMLSelectElement>('[data-fault]')!.value as DoublyBreak);selected=null;render();});
+    root.querySelector('[data-restore]')!.addEventListener('click',()=>{state=doublyState();selected=null;render();});
+    function inspect(target: EventTarget | null) {const el=target instanceof Element ? target.closest<HTMLElement>('[data-node],[data-target],[data-inspect]') : null;const address=el?.dataset.node ?? el?.dataset.target ?? el?.dataset.inspect;if(address){selected=address;render();root.querySelector<HTMLElement>(`[data-node="${address}"]`)?.focus({preventScroll:true});}}
+    root.addEventListener('click',event=>inspect(event.target));
+    root.addEventListener('keydown',event=>{if(['Enter',' '].includes(event.key)&&(event.target as Element).matches('[data-node],[data-target]')){event.preventDefault();inspect(event.target);}});
+    render();
+  });
+</script>
+<style>.doubly-break {border-block:1px solid var(--border);padding-block:1rem;min-width:0;} .break-controls{display:flex;flex-wrap:wrap;gap:1rem;align-items:end;} label{display:grid;gap:.5rem;max-width:100%;} select{max-width:100%;} .pointer-inspector{margin-block:1rem;} ul{display:grid;gap:.65rem;} :global(.doubly-break .invariant-fail){color:var(--red);}</style>

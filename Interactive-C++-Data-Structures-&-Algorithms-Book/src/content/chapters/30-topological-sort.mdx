@@ -1,0 +1,88 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import Section from '../../components/book/Section.astro';
+import Callout from '../../components/book/Callout.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import GraphDagLab from '../../components/visualizers/GraphDagLab.astro';
+import GraphComplexity from '../../components/visualizers/GraphComplexity.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-30/Kahn.hpp?raw';
+import main from '../../../cpp/chapter-30/main.cpp?raw';
+
+<ChapterHero number="30" title="Topological Sorting" part="PART V / GRAPHS" overline="THE READY QUEUE IS A PROOF OF READINESS." description="Kahn's algorithm turns dependency counts into a valid order. Watch an edge retire, a successor become ready, and the next piece of work join the queue." chain="count → enqueue sources → pop → emit → decrement → enqueue newly ready" facts={[["WORKLIST","Zero-indegree FIFO queue"],["TIME","O(V + E)"],["FAILURE","Emitted fewer than V → cycle"]]} />
+
+<Section id="mental-model" number="01" title="Several tasks can be ready at once." kicker="VISUAL MENTAL MODEL">
+<StructurePreview chapter="graph-dag" id="kahn-mental" operation="kahn" inputs={{preset:'diamond'}} viewLabels={{logical:'Graph view',memory:'Storage view'}} diagramNote="The diamond has two valid middle orders. Crossings in the drawing do not create extra vertices." />
+For A → B, A → C, B → D and C → D, the initial indegrees are A:0, B:1, C:1, D:2. Only A is ready. Retiring A's edges makes B and C ready; D waits for both. A,B,C,D and A,C,B,D are equally valid topological orders.
+</Section>
+
+<Section id="intuition" number="02" title="Zero means no remaining prerequisite." kicker="THE INTUITION">
+Kahn repeatedly chooses a vertex with no unsatisfied incoming edge, emits it, and satisfies each outgoing dependency. If any vertices remain in a finite directed graph but none is ready, following remaining incoming edges must eventually revisit a vertex: a directed cycle prevents completion.
+
+FIFO is a tie policy, reused from <a href={`${import.meta.env.BASE_URL}chapters/06-queue-deque/`}>Chapter 6</a>. A min-priority queue can choose the smallest currently ready ID but adds queue cost. This implementation seeds sources in ascending vertex ID, then enqueues successors in edge input order. It promises determinism for the same input, not a unique mathematical answer or globally lexicographically smallest order.
+</Section>
+
+<Section id="memory" number="03" title="Keep indegrees separate from graph structure." kicker="STRUCTURE / MEMORY LAYOUT">
+The const graph stores edges plus outgoing lists of edge indices. A state object owns indegree, counted/removed flags, a `std::deque` ready queue, an output vector, and the current vertex/edge. Graph edges remain intact; **removed** means logically retired by the algorithm, not erased from their vector.
+
+An indegree index names a vertex. Edge flags index edges. Those arrays have different domains. All IDs are checked during graph construction. The observer uses signed −1 for “no current vertex/edge”; stored graph indices remain `std::size_t`. The native teaching implementation bounds vertices and edges to one million before running, keeping its observer casts representable.
+</Section>
+
+<Section id="operations" number="04" title="Inspect every handoff into the ready queue." kicker="INTERACTIVE OPERATIONS">
+<GraphDagLab />
+At every semantic step read **Output**, **Zero-indegree queue**, **Current**, the indegree table, and the highlighted edge together. Next completes one tagged statement; Previous restores the prior state. Click an executable line number to jump to its next execution. Play uses the same snapshots.
+
+Choose the diamond for tied successors, disconnected DAG for several launch points, cycle for partial output, self-loop for the smallest failure, and empty/single for boundary behavior. Initial displayed zeros mean “not counted yet”; the phase and live invariant make that setup distinction explicit.
+</Section>
+
+<Section id="implementation" number="05" title="A const input and a result with explicit failure." kicker="C++ IMPLEMENTATION">
+<CanonicalSource source={source} main={main} fileName="Kahn.hpp" chapter="30" />
+The optional observer makes the canonical execution testable without a second native algorithm. It receives the state **after** each tagged statement. With the default no-op observer, only the result state is returned. Standard containers own all memory. Constructor bounds checks reject an invalid edge; an allocation failure propagates before a result is delivered. There is no in-place input mutation to roll back.
+
+Outgoing adjacency avoids scanning all E edges for every popped vertex. Each adjacency entry names one edge record. The native graph counts even parallel records consistently; the interactive simple-graph editor rejects duplicate pairs for a clearer teaching model.
+</Section>
+
+<Section id="pointer-trace" number="06" title="Emission and edge retirement are distinct events." kicker="CODE + VISUALIZATION TRACE">
+In the diamond, stop just after emitting A. Output is [A], queue is empty, B and C still have indegree 1, and no edge has retired yet. Inspect A → B, then retire it: B becomes zero. **Only the next enqueue statement** places B into the queue. A → C is still pending at this point.
+
+After both decrements and enqueues the queue is [B,C]. Popping B removes it before it is emitted. Retiring B → D changes D from 2 to 1. Only C's later decrement can make D ready. The counts show why D cannot jump ahead merely because one prerequisite finished.
+</Section>
+
+<Section id="invariants" number="07" title="Count exactly the edges that still matter." kicker="LIVE INVARIANTS">
+<ul><li>Residual indegree equals counted incoming edges minus retired incoming edges.</li><li>Every queued vertex is distinct, not yet emitted, and has zero residual indegree.</li><li>Every output vertex is distinct and had zero residual indegree when emitted.</li><li>At completion, exactly V emitted vertices proves the graph acyclic.</li></ul>
+The first rule holds during setup and halfway through processing outgoing edges. Emitting a vertex does not instantly erase its entire adjacency list. No invariant requires a newly-zero target to already be queued before the enqueue statement executes.
+</Section>
+
+<Section id="complexity" number="08" title="Every edge contributes two visits." kicker="COMPLEXITY EXPLORER">
+<GraphComplexity kind="kahn" />
+There are E initial counts and E outgoing inspections on an acyclic graph; each vertex is seeded or enqueued once and popped once. Total time is **O(V + E)**. The counters show actual edge visits, queue pops and indegree writes for the selected graph. Cyclic runs can stop before all outgoing edges are visited.
+
+The diagnostic counted/removed arrays cost O(E); indegrees, queue and output cost O(V). A production implementation that needs only the order and cycle flag can omit per-edge diagnostics. Matrix traversal pays O(V²) instead of adjacency-list O(V + E).
+</Section>
+
+<Section id="break-it" number="09" title="An empty queue does not always mean success." kicker="COMMON MISTAKES / BREAK-IT MODE">
+Choose the cyclic preset and jump to After. A and E emit, while B, C and D remain. The queue is empty and the output has 2 of 5 vertices, so the failure is mechanically visible. B and C form the cycle; D is downstream blocked work. A residual vertex is **not necessarily itself on a cycle**.
+
+The lab deliberately reports a failed DAG invariant for this input. Compare <a href={`${import.meta.env.BASE_URL}chapters/32-cycle-detection/`}>directed active-stack cycle detection</a>, which detects a specific back edge. Do not reuse undirected DFS's parent-edge exception here, and do not treat a partial output as a complete schedule.
+</Section>
+
+<Section id="analogy" number="10" title="Release work when its last prerequisite finishes." kicker="REAL-WORLD ANALOGY">
+An assembly station waits for several parts. Each delivered part removes one outstanding requirement. The last delivery moves the station into the ready queue; the queue still determines when a worker takes it. Being ready and already executing are different states, just as enqueue and pop are different statements.
+</Section>
+
+<Section id="engineering" number="11" title="Topological readiness is one layer of a scheduler." kicker="ENGINEERING INSIGHT">
+Build engines, dependency evaluators and task schedulers often propagate readiness in this style. Real scheduling also tracks worker capacity, durations, cancellation and failure. Here **emit** means “place into an order,” not “a concurrent task has finished.” A concurrent executor should satisfy outgoing dependencies after successful completion, using an appropriate synchronization policy.
+
+Incremental recomputation may reuse a cached order, process only dirty descendants or maintain order dynamically. It need not run a complete topological sort after every value update. The DAG example in <a href={`${import.meta.env.BASE_URL}chapters/29-dags/`}>Chapter 29</a> separates topology changes from changed inputs. Always define whether arrows mean prerequisite → dependent before computing the counts.
+</Section>
+
+<Section id="exercises" number="12" title="Predict the next legal transition." kicker="EXERCISES / CHALLENGES">
+<div className="exercise"><h3>Ready but not queued</h3><p>Immediately after A → B is retired, must B already appear in the queue?</p><details><summary>Reveal reasoning</summary><p>No. The next tagged enqueue statement publishes B into the queue. Its indegree is already zero in this intermediate snapshot.</p></details></div>
+<div className="exercise"><h3>Why no duplicates?</h3><p>Could two prerequisites enqueue the same target?</p><details><summary>Reveal reasoning</summary><p>The count reaches zero only once, after the last incoming edge retires. Earlier decrements leave it positive.</p></details></div>
+<div className="exercise"><h3>Change the tie policy</h3><p>Does replacing FIFO with a min-heap invalidate the order?</p><details><summary>Reveal reasoning</summary><p>No, provided it contains only ready vertices. The tie order and queue complexity change, while every emitted vertex still has all prerequisites satisfied.</p></details></div>
+</Section>
+
+<Section id="summary" number="13" title="The order follows from exact remaining counts." kicker="CHAPTER SUMMARY">
+<div className="summary-panel"><ul><li>Compute indegrees and enqueue every source.</li><li>Pop, emit, retire outgoing edges, and enqueue newly ready successors.</li><li>Indegree state stays accurate even between individual rewrites.</li><li>Fewer than V emitted vertices proves a directed cycle.</li><li>Several orders can be valid; deterministic tie rules make traces reproducible.</li></ul><button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete ✓</button></div>
+<ChapterPagination number="30" />
+</Section>

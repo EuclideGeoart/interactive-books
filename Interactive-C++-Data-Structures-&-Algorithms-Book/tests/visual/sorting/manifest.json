@@ -1,0 +1,866 @@
+[
+  {
+    "slug": "37-linear-search",
+    "width": 1440,
+    "theme": "light",
+    "view": "logical",
+    "tag": "linear.compare",
+    "step": "3",
+    "file": "37-linear-search-1440-light-logical.png"
+  },
+  {
+    "slug": "37-linear-search",
+    "width": 1440,
+    "theme": "light",
+    "view": "memory",
+    "tag": "linear.compare",
+    "step": "3",
+    "file": "37-linear-search-1440-light-memory.png"
+  },
+  {
+    "slug": "37-linear-search",
+    "width": 1440,
+    "theme": "dark",
+    "view": "logical",
+    "tag": "linear.compare",
+    "step": "3",
+    "file": "37-linear-search-1440-dark-logical.png"
+  },
+  {
+    "slug": "37-linear-search",
+    "width": 1440,
+    "theme": "dark",
+    "view": "memory",
+    "tag": "linear.compare",
+    "step": "3",
+    "file": "37-linear-search-1440-dark-memory.png"
+  },
+  {
+    "slug": "38-binary-search",
+    "width": 1440,
+    "theme": "light",
+    "view": "logical",
+    "tag": "binary.low",
+    "step": "5",
+    "file": "38-binary-search-1440-light-logical.png"
+  },
+  {
+    "slug": "38-binary-search",
+    "width": 1440,
+    "theme": "light",
+    "view": "memory",
+    "tag": "binary.low",
+    "step": "5",
+    "file": "38-binary-search-1440-light-memory.png"
+  },
+  {
+    "slug": "38-binary-search",
+    "width": 1440,
+    "theme": "dark",
+    "view": "logical",
+    "tag": "binary.low",
+    "step": "5",
+    "file": "38-binary-search-1440-dark-logical.png"
+  },
+  {
+    "slug": "38-binary-search",
+    "width": 1440,
+    "theme": "dark",
+    "view": "memory",
+    "tag": "binary.low",
+    "step": "5",
+    "file": "38-binary-search-1440-dark-memory.png"
+  },
+  {
+    "slug": "39-sorting-fundamentals",
+    "width": 1440,
+    "theme": "light",
+    "view": "logical",
+    "tag": "explore.inversion",
+    "step": "2",
+    "file": "39-sorting-fundamentals-1440-light-logical.png"
+  },
+  {
+    "slug": "39-sorting-fundamentals",
+    "width": 1440,
+    "theme": "light",
+    "view": "memory",
+    "tag": "explore.inversion",
+    "step": "2",
+    "file": "39-sorting-fundamentals-1440-light-memory.png"
+  },
+  {
+    "slug": "39-sorting-fundamentals",
+    "width": 1440,
+    "theme": "dark",
+    "view": "logical",
+    "tag": "explore.inversion",
+    "step": "2",
+    "file": "39-sorting-fundamentals-1440-dark-logical.png"
+  },
+  {
+    "slug": "39-sorting-fundamentals",
+    "width": 1440,
+    "theme": "dark",
+    "view": "memory",
+    "tag": "explore.inversion",
+    "step": "2",
+    "file": "39-sorting-fundamentals-1440-dark-memory.png"
+  },
+  {
+    "slug": "40-elementary-sorts",
+    "width": 1440,
+    "theme": "light",
+    "view": "logical",
+    "tag": "insertion.shift",
+    "step": "3",
+    "file": "40-elementary-sorts-1440-light-logical.png"
+  },
+  {
+    "slug": "40-elementary-sorts",
+    "width": 1440,
+    "theme": "light",
+    "view": "memory",
+    "tag": "insertion.shift",
+    "step": "3",
+    "file": "40-elementary-sorts-1440-light-memory.png"
+  },
+  {
+    "slug": "40-elementary-sorts",
+    "width": 1440,
+    "theme": "dark",
+    "view": "logical",
+    "tag": "insertion.shift",
+    "step": "3",
+    "file": "40-elementary-sorts-1440-dark-logical.png"
+  },
+  {
+    "slug": "40-elementary-sorts",
+    "width": 1440,
+    "theme": "dark",
+    "view": "memory",
+    "tag": "insertion.shift",
+    "step": "3",
+    "file": "40-elementary-sorts-1440-dark-memory.png"
+  },
+  {
+    "slug": "41-merge-sort",
+    "width": 1440,
+    "theme": "light",
+    "view": "logical",
+    "tag": "merge.output",
+    "step": "19",
+    "file": "41-merge-sort-1440-light-logical.png"
+  },
+  {
+    "slug": "41-merge-sort",
+    "width": 1440,
+    "theme": "light",
+    "view": "memory",
+    "tag": "merge.output",
+    "step": "19",
+    "file": "41-merge-sort-1440-light-memory.png"
+  },
+  {
+    "slug": "41-merge-sort",
+    "width": 1440,
+    "theme": "dark",
+    "view": "logical",
+    "tag": "merge.output",
+    "step": "19",
+    "file": "41-merge-sort-1440-dark-logical.png"
+  },
+  {
+    "slug": "41-merge-sort",
+    "width": 1440,
+    "theme": "dark",
+    "view": "memory",
+    "tag": "merge.output",
+    "step": "19",
+    "file": "41-merge-sort-1440-dark-memory.png"
+  },
+  {
+    "slug": "42-quick-sort",
+    "width": 1440,
+    "theme": "light",
+    "view": "logical",
+    "tag": "quick.place",
+    "step": "26",
+    "file": "42-quick-sort-1440-light-logical.png"
+  },
+  {
+    "slug": "42-quick-sort",
+    "width": 1440,
+    "theme": "light",
+    "view": "memory",
+    "tag": "quick.place",
+    "step": "26",
+    "file": "42-quick-sort-1440-light-memory.png"
+  },
+  {
+    "slug": "42-quick-sort",
+    "width": 1440,
+    "theme": "dark",
+    "view": "logical",
+    "tag": "quick.place",
+    "step": "26",
+    "file": "42-quick-sort-1440-dark-logical.png"
+  },
+  {
+    "slug": "42-quick-sort",
+    "width": 1440,
+    "theme": "dark",
+    "view": "memory",
+    "tag": "quick.place",
+    "step": "26",
+    "file": "42-quick-sort-1440-dark-memory.png"
+  },
+  {
+    "slug": "43-heap-sort",
+    "width": 1440,
+    "theme": "light",
+    "view": "logical",
+    "tag": "heap.shrink",
+    "step": "32",
+    "file": "43-heap-sort-1440-light-logical.png"
+  },
+  {
+    "slug": "43-heap-sort",
+    "width": 1440,
+    "theme": "light",
+    "view": "memory",
+    "tag": "heap.shrink",
+    "step": "32",
+    "file": "43-heap-sort-1440-light-memory.png"
+  },
+  {
+    "slug": "43-heap-sort",
+    "width": 1440,
+    "theme": "dark",
+    "view": "logical",
+    "tag": "heap.shrink",
+    "step": "32",
+    "file": "43-heap-sort-1440-dark-logical.png"
+  },
+  {
+    "slug": "43-heap-sort",
+    "width": 1440,
+    "theme": "dark",
+    "view": "memory",
+    "tag": "heap.shrink",
+    "step": "32",
+    "file": "43-heap-sort-1440-dark-memory.png"
+  },
+  {
+    "slug": "44-counting-radix-sort",
+    "width": 1440,
+    "theme": "light",
+    "view": "logical",
+    "tag": "radix.output",
+    "step": "28",
+    "file": "44-counting-radix-sort-1440-light-logical.png"
+  },
+  {
+    "slug": "44-counting-radix-sort",
+    "width": 1440,
+    "theme": "light",
+    "view": "memory",
+    "tag": "radix.output",
+    "step": "28",
+    "file": "44-counting-radix-sort-1440-light-memory.png"
+  },
+  {
+    "slug": "44-counting-radix-sort",
+    "width": 1440,
+    "theme": "dark",
+    "view": "logical",
+    "tag": "radix.output",
+    "step": "28",
+    "file": "44-counting-radix-sort-1440-dark-logical.png"
+  },
+  {
+    "slug": "44-counting-radix-sort",
+    "width": 1440,
+    "theme": "dark",
+    "view": "memory",
+    "tag": "radix.output",
+    "step": "28",
+    "file": "44-counting-radix-sort-1440-dark-memory.png"
+  },
+  {
+    "slug": "37-linear-search",
+    "width": 1024,
+    "theme": "light",
+    "view": "logical",
+    "tag": "linear.compare",
+    "step": "3",
+    "file": "37-linear-search-1024-light-logical.png"
+  },
+  {
+    "slug": "37-linear-search",
+    "width": 1024,
+    "theme": "light",
+    "view": "memory",
+    "tag": "linear.compare",
+    "step": "3",
+    "file": "37-linear-search-1024-light-memory.png"
+  },
+  {
+    "slug": "37-linear-search",
+    "width": 1024,
+    "theme": "dark",
+    "view": "logical",
+    "tag": "linear.compare",
+    "step": "3",
+    "file": "37-linear-search-1024-dark-logical.png"
+  },
+  {
+    "slug": "37-linear-search",
+    "width": 1024,
+    "theme": "dark",
+    "view": "memory",
+    "tag": "linear.compare",
+    "step": "3",
+    "file": "37-linear-search-1024-dark-memory.png"
+  },
+  {
+    "slug": "38-binary-search",
+    "width": 1024,
+    "theme": "light",
+    "view": "logical",
+    "tag": "binary.low",
+    "step": "5",
+    "file": "38-binary-search-1024-light-logical.png"
+  },
+  {
+    "slug": "38-binary-search",
+    "width": 1024,
+    "theme": "light",
+    "view": "memory",
+    "tag": "binary.low",
+    "step": "5",
+    "file": "38-binary-search-1024-light-memory.png"
+  },
+  {
+    "slug": "38-binary-search",
+    "width": 1024,
+    "theme": "dark",
+    "view": "logical",
+    "tag": "binary.low",
+    "step": "5",
+    "file": "38-binary-search-1024-dark-logical.png"
+  },
+  {
+    "slug": "38-binary-search",
+    "width": 1024,
+    "theme": "dark",
+    "view": "memory",
+    "tag": "binary.low",
+    "step": "5",
+    "file": "38-binary-search-1024-dark-memory.png"
+  },
+  {
+    "slug": "39-sorting-fundamentals",
+    "width": 1024,
+    "theme": "light",
+    "view": "logical",
+    "tag": "explore.inversion",
+    "step": "2",
+    "file": "39-sorting-fundamentals-1024-light-logical.png"
+  },
+  {
+    "slug": "39-sorting-fundamentals",
+    "width": 1024,
+    "theme": "light",
+    "view": "memory",
+    "tag": "explore.inversion",
+    "step": "2",
+    "file": "39-sorting-fundamentals-1024-light-memory.png"
+  },
+  {
+    "slug": "39-sorting-fundamentals",
+    "width": 1024,
+    "theme": "dark",
+    "view": "logical",
+    "tag": "explore.inversion",
+    "step": "2",
+    "file": "39-sorting-fundamentals-1024-dark-logical.png"
+  },
+  {
+    "slug": "39-sorting-fundamentals",
+    "width": 1024,
+    "theme": "dark",
+    "view": "memory",
+    "tag": "explore.inversion",
+    "step": "2",
+    "file": "39-sorting-fundamentals-1024-dark-memory.png"
+  },
+  {
+    "slug": "40-elementary-sorts",
+    "width": 1024,
+    "theme": "light",
+    "view": "logical",
+    "tag": "insertion.shift",
+    "step": "3",
+    "file": "40-elementary-sorts-1024-light-logical.png"
+  },
+  {
+    "slug": "40-elementary-sorts",
+    "width": 1024,
+    "theme": "light",
+    "view": "memory",
+    "tag": "insertion.shift",
+    "step": "3",
+    "file": "40-elementary-sorts-1024-light-memory.png"
+  },
+  {
+    "slug": "40-elementary-sorts",
+    "width": 1024,
+    "theme": "dark",
+    "view": "logical",
+    "tag": "insertion.shift",
+    "step": "3",
+    "file": "40-elementary-sorts-1024-dark-logical.png"
+  },
+  {
+    "slug": "40-elementary-sorts",
+    "width": 1024,
+    "theme": "dark",
+    "view": "memory",
+    "tag": "insertion.shift",
+    "step": "3",
+    "file": "40-elementary-sorts-1024-dark-memory.png"
+  },
+  {
+    "slug": "41-merge-sort",
+    "width": 1024,
+    "theme": "light",
+    "view": "logical",
+    "tag": "merge.output",
+    "step": "19",
+    "file": "41-merge-sort-1024-light-logical.png"
+  },
+  {
+    "slug": "41-merge-sort",
+    "width": 1024,
+    "theme": "light",
+    "view": "memory",
+    "tag": "merge.output",
+    "step": "19",
+    "file": "41-merge-sort-1024-light-memory.png"
+  },
+  {
+    "slug": "41-merge-sort",
+    "width": 1024,
+    "theme": "dark",
+    "view": "logical",
+    "tag": "merge.output",
+    "step": "19",
+    "file": "41-merge-sort-1024-dark-logical.png"
+  },
+  {
+    "slug": "41-merge-sort",
+    "width": 1024,
+    "theme": "dark",
+    "view": "memory",
+    "tag": "merge.output",
+    "step": "19",
+    "file": "41-merge-sort-1024-dark-memory.png"
+  },
+  {
+    "slug": "42-quick-sort",
+    "width": 1024,
+    "theme": "light",
+    "view": "logical",
+    "tag": "quick.place",
+    "step": "26",
+    "file": "42-quick-sort-1024-light-logical.png"
+  },
+  {
+    "slug": "42-quick-sort",
+    "width": 1024,
+    "theme": "light",
+    "view": "memory",
+    "tag": "quick.place",
+    "step": "26",
+    "file": "42-quick-sort-1024-light-memory.png"
+  },
+  {
+    "slug": "42-quick-sort",
+    "width": 1024,
+    "theme": "dark",
+    "view": "logical",
+    "tag": "quick.place",
+    "step": "26",
+    "file": "42-quick-sort-1024-dark-logical.png"
+  },
+  {
+    "slug": "42-quick-sort",
+    "width": 1024,
+    "theme": "dark",
+    "view": "memory",
+    "tag": "quick.place",
+    "step": "26",
+    "file": "42-quick-sort-1024-dark-memory.png"
+  },
+  {
+    "slug": "43-heap-sort",
+    "width": 1024,
+    "theme": "light",
+    "view": "logical",
+    "tag": "heap.shrink",
+    "step": "32",
+    "file": "43-heap-sort-1024-light-logical.png"
+  },
+  {
+    "slug": "43-heap-sort",
+    "width": 1024,
+    "theme": "light",
+    "view": "memory",
+    "tag": "heap.shrink",
+    "step": "32",
+    "file": "43-heap-sort-1024-light-memory.png"
+  },
+  {
+    "slug": "43-heap-sort",
+    "width": 1024,
+    "theme": "dark",
+    "view": "logical",
+    "tag": "heap.shrink",
+    "step": "32",
+    "file": "43-heap-sort-1024-dark-logical.png"
+  },
+  {
+    "slug": "43-heap-sort",
+    "width": 1024,
+    "theme": "dark",
+    "view": "memory",
+    "tag": "heap.shrink",
+    "step": "32",
+    "file": "43-heap-sort-1024-dark-memory.png"
+  },
+  {
+    "slug": "44-counting-radix-sort",
+    "width": 1024,
+    "theme": "light",
+    "view": "logical",
+    "tag": "radix.output",
+    "step": "28",
+    "file": "44-counting-radix-sort-1024-light-logical.png"
+  },
+  {
+    "slug": "44-counting-radix-sort",
+    "width": 1024,
+    "theme": "light",
+    "view": "memory",
+    "tag": "radix.output",
+    "step": "28",
+    "file": "44-counting-radix-sort-1024-light-memory.png"
+  },
+  {
+    "slug": "44-counting-radix-sort",
+    "width": 1024,
+    "theme": "dark",
+    "view": "logical",
+    "tag": "radix.output",
+    "step": "28",
+    "file": "44-counting-radix-sort-1024-dark-logical.png"
+  },
+  {
+    "slug": "44-counting-radix-sort",
+    "width": 1024,
+    "theme": "dark",
+    "view": "memory",
+    "tag": "radix.output",
+    "step": "28",
+    "file": "44-counting-radix-sort-1024-dark-memory.png"
+  },
+  {
+    "slug": "37-linear-search",
+    "width": 390,
+    "theme": "light",
+    "view": "logical",
+    "tag": "linear.compare",
+    "step": "3",
+    "file": "37-linear-search-390-light-logical.png"
+  },
+  {
+    "slug": "37-linear-search",
+    "width": 390,
+    "theme": "light",
+    "view": "memory",
+    "tag": "linear.compare",
+    "step": "3",
+    "file": "37-linear-search-390-light-memory.png"
+  },
+  {
+    "slug": "37-linear-search",
+    "width": 390,
+    "theme": "dark",
+    "view": "logical",
+    "tag": "linear.compare",
+    "step": "3",
+    "file": "37-linear-search-390-dark-logical.png"
+  },
+  {
+    "slug": "37-linear-search",
+    "width": 390,
+    "theme": "dark",
+    "view": "memory",
+    "tag": "linear.compare",
+    "step": "3",
+    "file": "37-linear-search-390-dark-memory.png"
+  },
+  {
+    "slug": "38-binary-search",
+    "width": 390,
+    "theme": "light",
+    "view": "logical",
+    "tag": "binary.low",
+    "step": "5",
+    "file": "38-binary-search-390-light-logical.png"
+  },
+  {
+    "slug": "38-binary-search",
+    "width": 390,
+    "theme": "light",
+    "view": "memory",
+    "tag": "binary.low",
+    "step": "5",
+    "file": "38-binary-search-390-light-memory.png"
+  },
+  {
+    "slug": "38-binary-search",
+    "width": 390,
+    "theme": "dark",
+    "view": "logical",
+    "tag": "binary.low",
+    "step": "5",
+    "file": "38-binary-search-390-dark-logical.png"
+  },
+  {
+    "slug": "38-binary-search",
+    "width": 390,
+    "theme": "dark",
+    "view": "memory",
+    "tag": "binary.low",
+    "step": "5",
+    "file": "38-binary-search-390-dark-memory.png"
+  },
+  {
+    "slug": "39-sorting-fundamentals",
+    "width": 390,
+    "theme": "light",
+    "view": "logical",
+    "tag": "explore.inversion",
+    "step": "2",
+    "file": "39-sorting-fundamentals-390-light-logical.png"
+  },
+  {
+    "slug": "39-sorting-fundamentals",
+    "width": 390,
+    "theme": "light",
+    "view": "memory",
+    "tag": "explore.inversion",
+    "step": "2",
+    "file": "39-sorting-fundamentals-390-light-memory.png"
+  },
+  {
+    "slug": "39-sorting-fundamentals",
+    "width": 390,
+    "theme": "dark",
+    "view": "logical",
+    "tag": "explore.inversion",
+    "step": "2",
+    "file": "39-sorting-fundamentals-390-dark-logical.png"
+  },
+  {
+    "slug": "39-sorting-fundamentals",
+    "width": 390,
+    "theme": "dark",
+    "view": "memory",
+    "tag": "explore.inversion",
+    "step": "2",
+    "file": "39-sorting-fundamentals-390-dark-memory.png"
+  },
+  {
+    "slug": "40-elementary-sorts",
+    "width": 390,
+    "theme": "light",
+    "view": "logical",
+    "tag": "insertion.shift",
+    "step": "3",
+    "file": "40-elementary-sorts-390-light-logical.png"
+  },
+  {
+    "slug": "40-elementary-sorts",
+    "width": 390,
+    "theme": "light",
+    "view": "memory",
+    "tag": "insertion.shift",
+    "step": "3",
+    "file": "40-elementary-sorts-390-light-memory.png"
+  },
+  {
+    "slug": "40-elementary-sorts",
+    "width": 390,
+    "theme": "dark",
+    "view": "logical",
+    "tag": "insertion.shift",
+    "step": "3",
+    "file": "40-elementary-sorts-390-dark-logical.png"
+  },
+  {
+    "slug": "40-elementary-sorts",
+    "width": 390,
+    "theme": "dark",
+    "view": "memory",
+    "tag": "insertion.shift",
+    "step": "3",
+    "file": "40-elementary-sorts-390-dark-memory.png"
+  },
+  {
+    "slug": "41-merge-sort",
+    "width": 390,
+    "theme": "light",
+    "view": "logical",
+    "tag": "merge.output",
+    "step": "19",
+    "file": "41-merge-sort-390-light-logical.png"
+  },
+  {
+    "slug": "41-merge-sort",
+    "width": 390,
+    "theme": "light",
+    "view": "memory",
+    "tag": "merge.output",
+    "step": "19",
+    "file": "41-merge-sort-390-light-memory.png"
+  },
+  {
+    "slug": "41-merge-sort",
+    "width": 390,
+    "theme": "dark",
+    "view": "logical",
+    "tag": "merge.output",
+    "step": "19",
+    "file": "41-merge-sort-390-dark-logical.png"
+  },
+  {
+    "slug": "41-merge-sort",
+    "width": 390,
+    "theme": "dark",
+    "view": "memory",
+    "tag": "merge.output",
+    "step": "19",
+    "file": "41-merge-sort-390-dark-memory.png"
+  },
+  {
+    "slug": "42-quick-sort",
+    "width": 390,
+    "theme": "light",
+    "view": "logical",
+    "tag": "quick.place",
+    "step": "26",
+    "file": "42-quick-sort-390-light-logical.png"
+  },
+  {
+    "slug": "42-quick-sort",
+    "width": 390,
+    "theme": "light",
+    "view": "memory",
+    "tag": "quick.place",
+    "step": "26",
+    "file": "42-quick-sort-390-light-memory.png"
+  },
+  {
+    "slug": "42-quick-sort",
+    "width": 390,
+    "theme": "dark",
+    "view": "logical",
+    "tag": "quick.place",
+    "step": "26",
+    "file": "42-quick-sort-390-dark-logical.png"
+  },
+  {
+    "slug": "42-quick-sort",
+    "width": 390,
+    "theme": "dark",
+    "view": "memory",
+    "tag": "quick.place",
+    "step": "26",
+    "file": "42-quick-sort-390-dark-memory.png"
+  },
+  {
+    "slug": "43-heap-sort",
+    "width": 390,
+    "theme": "light",
+    "view": "logical",
+    "tag": "heap.shrink",
+    "step": "32",
+    "file": "43-heap-sort-390-light-logical.png"
+  },
+  {
+    "slug": "43-heap-sort",
+    "width": 390,
+    "theme": "light",
+    "view": "memory",
+    "tag": "heap.shrink",
+    "step": "32",
+    "file": "43-heap-sort-390-light-memory.png"
+  },
+  {
+    "slug": "43-heap-sort",
+    "width": 390,
+    "theme": "dark",
+    "view": "logical",
+    "tag": "heap.shrink",
+    "step": "32",
+    "file": "43-heap-sort-390-dark-logical.png"
+  },
+  {
+    "slug": "43-heap-sort",
+    "width": 390,
+    "theme": "dark",
+    "view": "memory",
+    "tag": "heap.shrink",
+    "step": "32",
+    "file": "43-heap-sort-390-dark-memory.png"
+  },
+  {
+    "slug": "44-counting-radix-sort",
+    "width": 390,
+    "theme": "light",
+    "view": "logical",
+    "tag": "radix.output",
+    "step": "28",
+    "file": "44-counting-radix-sort-390-light-logical.png"
+  },
+  {
+    "slug": "44-counting-radix-sort",
+    "width": 390,
+    "theme": "light",
+    "view": "memory",
+    "tag": "radix.output",
+    "step": "28",
+    "file": "44-counting-radix-sort-390-light-memory.png"
+  },
+  {
+    "slug": "44-counting-radix-sort",
+    "width": 390,
+    "theme": "dark",
+    "view": "logical",
+    "tag": "radix.output",
+    "step": "28",
+    "file": "44-counting-radix-sort-390-dark-logical.png"
+  },
+  {
+    "slug": "44-counting-radix-sort",
+    "width": 390,
+    "theme": "dark",
+    "view": "memory",
+    "tag": "radix.output",
+    "step": "28",
+    "file": "44-counting-radix-sort-390-dark-memory.png"
+  }
+]

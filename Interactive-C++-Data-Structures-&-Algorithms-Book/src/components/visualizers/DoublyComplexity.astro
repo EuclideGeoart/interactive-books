@@ -1,0 +1,13 @@
+<div class="doubly-complexity" data-doubly-complexity>
+  <div class="work-controls"><label>Node count<input type="range" min="1" max="1024" value="64" data-size /></label><label>Target location<select data-location><option value="middle">Middle</option><option value="head">Head</option><option value="tail">Tail</option></select></label><label>Search from<select data-direction><option value="forward">Head → next</option><option value="backward">Tail → prev</option></select></label></div>
+  <output aria-live="polite" data-work-output></output>
+  <p class="fine-print">Counts a bounded chain of index links without snapshot history. A private unlink helper takes an already-known node; the public erase(value) must search first. Two structural updates include endpoint assignments for boundary nodes. Allocation time, destruction, and CPU timings are excluded.</p>
+</div>
+<script>
+  import { measureDoubly } from '../../visualizers/doubly-linked-list/model';
+  document.querySelectorAll<HTMLElement>('[data-doubly-complexity]').forEach(root=>{
+    const update=()=>{const size=Number(root.querySelector<HTMLInputElement>('[data-size]')!.value),location=root.querySelector<HTMLSelectElement>('[data-location]')!.value,direction=root.querySelector<HTMLSelectElement>('[data-direction]')!.value;const index=location==='head' ? 0 : location==='tail' ? size-1 : Math.floor(size/2);const count=measureDoubly(size,index,direction==='backward');root.querySelector('[data-work-output]')!.textContent=`${size} nodes · target index ${index} · ${count.visits} node visits to find it + ${count.rewires} structural assignments to unlink it. Search O(n); known-node unlink O(1).`;};
+    root.addEventListener('input',update);update();
+  });
+</script>
+<style>.doubly-complexity{border-block:1px solid var(--border);padding-block:1rem;} .work-controls{display:flex;flex-wrap:wrap;gap:1rem;} label{display:grid;gap:.5rem;flex:1;min-width:10rem;} input{width:100%;} output{display:block;font-weight:600;margin-block:1.5rem;}</style>

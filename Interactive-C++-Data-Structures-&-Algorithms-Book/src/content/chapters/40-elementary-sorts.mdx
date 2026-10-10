@@ -1,0 +1,98 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import Section from '../../components/book/Section.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import SearchSortLab from '../../components/visualizers/SearchSortLab.astro';
+import SearchSortDownload from '../../components/visualizers/SearchSortDownload.astro';
+import SortingComplexity from '../../components/visualizers/SortingComplexity.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-40/ElementarySorts.hpp?raw';
+import main from '../../../cpp/chapter-40/main.cpp?raw';
+
+<ChapterHero number="40" title="Bubble / Selection / Insertion" part="PART VI / SEARCHING & SORTING" overline="THREE DIFFERENT PROOFS OF GROWING ORDER." description="Bubble finalizes a suffix, selection places one extreme key, and insertion grows a sorted prefix. Compare their real work on exactly the same input." chain="adjacent exchanges | scan and place | hold, shift, insert" facts={[["WORST TIME","O(n²) for all three"],["STABLE","Strict bubble and insertion"],["ADAPTIVE","Early-exit bubble; insertion"]]} />
+
+<Section id="mental-model" number="01" title="Look for the region each algorithm can prove." kicker="VISUAL MENTAL MODEL">
+<StructurePreview chapter="elementary-sorts" id="elementary-mental" operation="bubble" inputs={{preset:'mixed'}} viewLabels={{logical:'Order and ranges',memory:'Indexed records'}} diagramNote="Identity letters move with records. The comparative facts run all three correct algorithms from the same original input." />
+Bubble compares adjacent pairs and pushes an extreme key to the end of the active range. Selection scans the entire remaining range for its best candidate, then swaps that candidate into the next final position. Insertion removes one record logically into a held local, shifts larger predecessors, and writes the held record into the gap.
+
+All three ultimately order the same keys, but the intermediate claims differ. Bubble has a finalized suffix; selection has a finalized prefix; insertion has an internally sorted prefix whose records may still move when later items arrive. Descending mode reverses the comparator while keeping each algorithm's mechanics intact.
+</Section>
+
+<Section id="intuition" number="02" title="A pass should have a specific purpose." kicker="THE INTUITION">
+In ascending bubble sort, the largest remaining key travels right through successive adjacent comparisons. Once a complete pass ends, its last position is final. If an entire pass performs no swap, the remaining range is already ordered, so the algorithm exits early.
+
+Selection does not gradually move a candidate while scanning. It updates a candidate index, then performs at most one placement swap after the scan finishes. Insertion instead exploits an already sorted prefix: only predecessors strictly larger than the held key need shifting. Finding the first predecessor that belongs before or equal to the held key establishes its insertion position.
+</Section>
+
+<Section id="memory" number="03" title="A logical hole can still contain a physical value." kicker="STRUCTURE / MEMORY LAYOUT">
+Bubble and selection exchange complete records within the array. Insertion copies the next record into **held**, leaving its old array slot physically unchanged. That slot is a logical hole: it is excluded from the logical sequence while the held record stands in for it. Each shift copies a predecessor into the hole and leaves a new logical hole one position earlier.
+
+Both views deliberately retain those actual stored copies. A cell labeled **hole, stale copy** is not empty or destroyed storage. It does not contribute another logical record. Immediately after a shift, the new hole is j − 1; the following cursor statement decrements j. The inspector, hole label and separate held row expose this intermediate state. After insertion writes the held record, releasing held storage restores the ordinary one-record-per-slot interpretation.
+
+The sorting kernels use O(1) auxiliary element space; insertion needs one held record. This observable wrapper owns original-input and result copies plus snapshots for teaching. Those allocations are instrumentation and are excluded from the in-place algorithm claim. None of the three algorithms recurses.
+</Section>
+
+<Section id="operations" number="04" title="Run one input through all three algorithms." kicker="INTERACTIVE OPERATIONS">
+<SearchSortLab kind="elementary-sorts" />
+Select Bubble sort, Selection sort or Insertion sort to step through that algorithm. The comparative facts always report completed **normal** runs of all three algorithms on the same original keys, identities and direction. They are labeled completed runs so their totals cannot be mistaken for the current playback counters. The live counters below the trace refer only to the selected execution.
+
+Try Sorted, Reverse, Nearly sorted, All equal and Stability. Observe comparisons, swaps, shifts, array writes, passes, observed equal-key order, the algorithm's stability guarantee and whether it adapts to existing order. In fault mode the comparison report still uses correct normal algorithms, while the selected bubble trace demonstrates the altered tie rule. Empty and singleton inputs finish without entering a sorting pass.
+</Section>
+
+<Section id="implementation" number="05" title="Three loops, three different mutation schedules." kicker="C++ IMPLEMENTATION">
+<SearchSortDownload chapter="40" />
+<CanonicalSource source={source} main={main} fileName="ElementarySorts.hpp" chapter="40" />
+Bubble's shrinking boundary excludes its finalized suffix. A boolean records whether the current pass swapped anything. Selection's minimum field is a candidate index, not a copied record; scanning updates that index without writing the array. It skips a placement swap when the candidate is already at the destination.
+
+Insertion tests j &gt; 0 before reading j − 1, so no negative index is converted into an array access. It compares the held key with one predecessor, shifts only on a strict ordering violation, decrements j separately, and finally writes held at j. Using strict comparisons keeps equal records in their original relative order. The observer sees state after each tagged statement, including copied-but-not-yet-advanced insertion states.
+</Section>
+
+<Section id="pointer-trace" number="06" title="Follow a held 2 past 5 and 3." kicker="CODE + VISUALIZATION TRACE">
+Use custom input 1,3,5,2 and select Insertion sort. On the last pass, held receives 2 and j is 3. Comparing with 5 succeeds, so index 2 is copied to index 3. The physical array becomes [1,3,5,5]; held still contains 2. Only the next step moves j to 2. The next successful comparison shifts 3, producing [1,3,3,5], then j becomes 1. Comparing with 1 fails. The separate insertion statement writes 2 to index 1.
+
+For Selection sort on 2A,2B,1C, watch the candidate become index 2. The single placement swap creates [1C,2B,2A], reversing equal-key identities. For Bubble sort on the same input, strict adjacent swaps produce [1C,2A,2B]. Same numeric result, different stability behavior.
+</Section>
+
+<Section id="invariants" number="07" title="State the promise at each intermediate boundary." kicker="LIVE INVARIANTS">
+All algorithms conserve original records. During insertion, conservation counts the physical array except the logical hole, plus held; transient copies do not imply newly created logical records. Bubble's suffix matches the final ordered positions, and selection's prefix matches its final placements.
+
+Insertion's processed prefix remains internally ordered after excluding the hole, including between a shift and cursor advance. It is not marked as finalized until completion. At the end every algorithm must be sorted. Stable equal-key order is checked for bubble and insertion; selection explicitly offers no such guarantee. An observed stable selection result on one input is compatible with an unstable algorithm.
+</Section>
+
+<Section id="complexity" number="08" title="Fewer swaps can coexist with the same quadratic comparisons." kicker="COMPLEXITY EXPLORER">
+<SortingComplexity chapter="40" />
+<table><thead><tr><th>Algorithm</th><th>Sorted-input work</th><th>Worst-case work</th><th>Stable?</th></tr></thead><tbody><tr><td>Bubble, early exit</td><td>n − 1 comparisons for n ≥ 1</td><td>n(n − 1)/2 comparisons and swaps</td><td>Yes, strict adjacent swaps</td></tr><tr><td>Selection</td><td>n(n − 1)/2 comparisons</td><td>Same comparisons; at most n − 1 swaps</td><td>No guarantee</td></tr><tr><td>Insertion</td><td>n − 1 comparisons, zero shifts for n ≥ 1</td><td>n(n − 1)/2 comparisons and shifts</td><td>Yes, strict shifts</td></tr></tbody></table>
+
+Counts are zero for empty input. A swap counts two array writes, excluding any local temporary. Each insertion shift counts one array write; each completed noninitial insertion adds one final write, even when it returns to the same position. Copying the held local is not an array write. Passes count started bubble scans, selection placements and insertion attempts; the final singleton needs no pass.
+
+Insertion's shift count equals the initial strict inversion count, making its work O(n + I) for I inversions. Bubble's early-exit check helps sorted input, but particular nearly sorted arrangements can still need many passes. Selection scans the same pairs regardless of existing order. These operation counts compare mechanics, not elapsed time or cache behavior.
+</Section>
+
+<Section id="break-it" number="09" title="Swapping equal neighbors destroys the stability proof." kicker="COMMON MISTAKES / BREAK-IT MODE">
+<SearchSortLab kind="elementary-sorts" id="elementary-break-it" preset="stability" mode="unstable-ties" />
+This lab starts with 2A,2B,1C and Bubble's “also swap equal keys” fault. The first comparison exchanges A and B even though their numeric keys are already equivalent. The bounded algorithm still finishes with sorted keys, but the final stable-order invariant fails. Reset and choose the strict policy to see the stable result.
+
+Selection on the same input is a separate, intentional instability example: a distant placement swap moves A across B even though the scan uses a strict comparator. Strictness alone does not make arbitrary distant swaps stable. For insertion, shifting on equality instead of strict inequality would likewise move older equal records behind the held record. All fault demonstrations terminate and avoid invalid memory access.
+</Section>
+
+<Section id="analogy" number="10" title="Arrange cards with three different routines." kicker="REAL-WORLD ANALOGY">
+Bubble repeatedly fixes neighboring pairs. Selection looks across the unsorted cards, chooses the smallest, and trades it into the next position. Insertion picks up the next card, slides larger cards aside, and puts the held card into the gap. The gap can be physically covered during the movement, but the held card still belongs to the collection.
+</Section>
+
+<Section id="engineering" number="11" title="Small and nearly ordered inputs reward simple mechanics." kicker="ENGINEERING INSIGHT">
+Insertion is useful for small ranges and inputs with few inversions. Larger hybrid sorts often use a simple small-range method internally, but the threshold depends on records, comparisons, hardware and surrounding implementation. Selection can minimize the number of placement swaps among these three while still paying quadratic comparisons; expensive moves may change which cost dominates.
+
+For ordinary larger arrays, the next chapters introduce algorithms with better asymptotic comparison work. Stability needs should be decided from the application contract, not inferred from a few samples. If records are large, sorting handles or indices may reduce movement cost, but then the resulting permutation must be applied or consumed explicitly.
+</Section>
+
+<Section id="exercises" number="12" title="Predict the counter, not just the output." kicker="EXERCISES / CHALLENGES">
+<div className="exercise"><h3>One pass or many?</h3><p>How many comparisons does early-exit bubble perform on [1,2,3,4]?</p><details><summary>Reveal reasoning</summary><p>Three in one pass. No swaps prove that the remaining array is ordered, so it stops.</p></details></div>
+<div className="exercise"><h3>Insertion writes</h3><p>For [3,2,1], how many shifts and array writes does this implementation perform?</p><details><summary>Reveal reasoning</summary><p>Three shifts remove the three strict inversions. Two final insertions add two writes, for five array writes in total.</p></details></div>
+<div className="exercise"><h3>Selection stability</h3><p>Why does keeping the first equal minimum still fail to guarantee stable selection sort?</p><details><summary>Reveal reasoning</summary><p>The distant placement swap can carry the destination record across an equal record. [2A,2B,1C] becomes [1C,2B,2A] even without replacing the candidate on equality.</p></details></div>
+<div className="exercise"><h3>Half-completed shift</h3><p>Immediately after copying a[j − 1] to a[j], before decrementing j, which index is the logical hole?</p><details><summary>Reveal reasoning</summary><p>Index j − 1. Its physical value remains as a stale copy, but the logical record now occupies j. The held record accounts for the excluded hole.</p></details></div>
+</Section>
+
+<Section id="summary" number="13" title="The same sorted keys can hide very different work." kicker="CHAPTER SUMMARY">
+<div className="summary-panel"><ul><li>Bubble uses adjacent swaps and a finalized suffix, with an early-exit pass.</li><li>Selection scans before a single placement and is typically unstable.</li><li>Insertion separates held storage, shifts, cursor advances and final insertion.</li><li>Strict bubble and insertion preserve equal-key identities.</li><li>Compare actual counters on the same input; worst-case O(n²) does not make all three interchangeable.</li></ul><button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete ✓</button></div>
+<ChapterPagination number="40" />
+</Section>

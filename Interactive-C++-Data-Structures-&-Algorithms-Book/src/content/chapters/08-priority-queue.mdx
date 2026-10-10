@@ -1,0 +1,133 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import Callout from '../../components/book/Callout.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import PriorityLab from '../../components/visualizers/PriorityLab.astro';
+import PriorityExplorer from '../../components/visualizers/PriorityExplorer.astro';
+import PriorityBreakIt from '../../components/visualizers/PriorityBreakIt.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-08/PriorityQueue.hpp?raw';
+import main from '../../../cpp/chapter-08/main.cpp?raw';
+
+<ChapterHero number="08" part="PART II / QUEUES & ORDERED ACCESS" title="Priority Queue" overline="CHOOSE WHAT MATTERS NEXT." description="A priority queue removes the entry that ranks first under an explicit priority rule. Arrival time matters only when the chosen tie policy says it should." chain="priority 9 → value 30 · priority 5 → value 10 · priority 2 → value 20" facts={[["POLICY", "Higher or lower first"], ["TIES HERE", "FIFO within equal priority"], ["NEXT CHAPTER", "An efficient heap implementation"]]} />
+
+<Section id="mental-model" number="01" title="Order by importance, not by arrival." kicker="VISUAL MENTAL MODEL">
+
+<StructurePreview chapter="priority" id="priority-mental" operation="peek" viewLabels={{logical:'Removal order',memory:'Arrival storage'}} diagramNote="The ranked view is derived from priority and FIFO ties. Arrival storage shows the actual unsorted vector." />
+
+Values 10, 20, 30, and 40 arrive with priorities 5, 2, 9, and 5. In **higher-first** mode, the next result is value 30 because its priority is 9. Values 10 and 40 tie; our policy serves 10 first because it arrived first. Switch to Arrival storage: the underlying entries have not been sorted.
+
+The numbers have separate meanings. A payload value of 999 with priority 1 still loses to a payload value of 2 with priority 9 in higher-first mode. The priority is the ordering key; the value is the work or data associated with it.
+
+</Section>
+
+<Section id="intuition" number="02" title="Define the ADT before choosing storage." kicker="THE CONTRACT">
+
+`insert(value, priority)` adds an entry. `peek()` returns the next entry without removal. `extract()` returns and removes that entry. Both `empty()` and `size()` describe membership. None of these promises requires a sorted array or a tree.
+
+A FIFO queue promises the oldest arrival next. A deque exposes both endpoints. A ring buffer changes their storage mechanics. **A priority queue changes the removal policy itself.** Higher-number-first and lower-number-first are both useful conventions: urgency often increases with the number, while the earliest scheduled timestamp is the smallest number.
+
+Ties are a separate design decision. This chapter explicitly chooses FIFO among equal priorities. Other APIs may choose arbitrary order. Stability is not inherent in the words “priority queue,” and should never be assumed without an interface guarantee.
+
+</Section>
+
+<Section id="memory" number="03" title="One contract, several representations." kicker="STRUCTURE & STORAGE">
+
+The canonical `PriorityQueue` stores entries in an unsorted `std::vector<Entry>`, preserving arrival order. Insertion appends. Peek scans for the best priority. Extraction scans, saves the chosen entry, and erases it; later entries shift left without changing relative order. Storage indices may change after extraction and are not persistent IDs.
+
+A sorted array instead pays during insertion so the best entry is already at an accessible endpoint. Keep that endpoint at the **back** to remove without shifting. A sorted linked list has different allocation and locality costs; even with O(1) insertion at a known position, finding that position is O(n). An unsorted linked list likewise scans to find the best entry, despite cheap relinking once found.
+
+A binary heap offers a third balance: efficient repair after insert/extract and constant-time access to the next entry. Chapter 9 explains its mechanics. Here, compare the observable costs without assuming that the ADT itself is a heap.
+
+</Section>
+
+<Section id="operations" number="04" title="Choose a direction. Follow the selection." kicker="INTERACTIVE OPERATIONS">
+
+<PriorityLab />
+
+Load starts a fresh experiment. Use a tie preset to see why the strict `>` or `<` comparison never replaces an earlier equal candidate. Try Peek followed by Extract on the same preset: Peek leaves storage untouched; Extract returns the same entry and removes it. Choose an empty preset to follow the checked exception path.
+
+The browser is bounded to eight entries, seven before insertion, with integer payloads and priorities from −999 to 999. These are readability limits, not native container capacities. The C++ implementation grows with its vector. Changing direction reloads the experiment; the native object's direction is chosen at construction.
+
+</Section>
+
+<Section id="implementation" number="05" title="A complete stable, unsorted implementation." kicker="CANONICAL C++20">
+
+`Entry` contains two integers. The queue owns its vector and relies on RAII for destruction. Copy construction and assignment are explicitly defaulted and produce independent value copies. Move construction and assignment are explicitly defaulted: vector storage transfers according to standard container semantics, and the source remains valid with unspecified contents. No code assumes a moved-from queue is empty.
+
+`peek()` returns an entry by value, so callers do not retain a reference into storage that a future insertion or erase could invalidate. Both Peek and Extract throw `std::underflow_error` when empty. Append can throw on allocation failure; the prior queue is preserved for this integer entry type. After a successful scan, the integer copy and erase path does not throw.
+
+<CanonicalSource source={source} main={main} fileName="PriorityQueue.hpp" chapter="08" />
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="The scan is real work." kicker="CODE ↔ STORAGE TRACE">
+
+Peek and Extract call `best_index()`. The lab first highlights the empty check inside that helper, then candidate index 0, scan index 1, each comparison, and the returned index. Only after the helper returns does the caller's assignment complete. The source panel includes both regions so nested execution remains visible.
+
+For Extract, `result = data_[best]` saves a copy before `erase` invalidates that position. The erase statement performs the vector's internal shifts as one completed statement. The visualizer does not claim that these internal moves are individually traced. Previous, Reset, and Before/After inspect immutable snapshots of the same execution.
+
+</Section>
+
+<Section id="invariants" number="07" title="Priority, stability, and guarded access." kicker="CHECK THE PROMISE">
+
+The selected candidate must outrank every other entry under the chosen direction. Equal priorities must retain arrival order. Empty storage must never be indexed for a result. Our scan checks emptiness first and only reads indices strictly below `size()`.
+
+The ranked diagram is a derived view, not a second mutable container. The comparator uses priority only; the stable index tie-break in the display mirrors the native scan's “keep the earlier candidate” rule. There is no requirement that the underlying vector be sorted.
+
+</Section>
+
+<Section id="complexity" number="08" title="Where should the work happen?" kicker="COMPLEXITY EXPLORER">
+
+<PriorityExplorer />
+
+An unsorted array performs n−1 priority comparisons for nonempty Peek or Extract. Extraction may additionally shift n−1 entries, so its overall cost remains O(n). Appending takes O(1) with spare capacity and amortized O(1) over many inserts; a particular reallocation can move O(n) entries.
+
+Sorted storage does up to n shifts during insertion, but Peek and removal from the back take O(1). Heap insertion/extraction repairs at most logarithmically many levels; a vector-backed heap insertion still has the same occasional O(n) reallocation caveat. The count model compares kinds of work, not measured timings or exact CPU cost.
+
+<Callout title="Choose from the workload.">If almost all operations are inserts and reads are rare, unsorted storage can be reasonable. If the next result is read repeatedly between occasional inserts, moving work to insertion may help. A heap balances frequent inserts and extractions without fully sorting all entries.</Callout>
+
+</Section>
+
+<Section id="break-it" number="09" title="A valid array can still violate the ADT." kicker="COMMON MISTAKES / BREAK IT">
+
+<PriorityBreakIt />
+
+These controlled selection faults never execute unsafe native code. Removing the oldest entry turns the structure back into FIFO; reversing the comparison changes the promised direction; replacing the candidate on equality breaks our stability policy. Each failure can leave perfectly valid vector storage while returning the wrong work item.
+
+</Section>
+
+<Section id="analogy" number="10" title="A dispatcher with an explicit rule." kicker="REAL-WORLD ANALOGY">
+
+A dispatcher receives jobs in arrival order but chooses the most urgent waiting job. Equal urgency follows arrival order. A later urgent job can overtake older low-priority work. If urgent jobs keep arriving, low-priority work can starve; the data structure does not automatically provide fairness or aging.
+
+</Section>
+
+<Section id="engineering" number="11" title="Scheduling is more than ordering." kicker="ENGINEERING INSIGHT">
+
+An event simulator often uses a lower-first queue keyed by event time. A task scheduler might use higher-first urgency. Dijkstra and best-first pathfinding choose the smallest current distance or estimate. Their correctness depends on the algorithm's surrounding rules, not merely on storing priorities.
+
+This implementation does not expose decrease-key, cancellation, or mutable entry handles. One practical pathfinding strategy inserts a new distance and discards stale entries when removed; that changes memory use and requires an external “best known distance” check. Stable ties make experiments reproducible but do not replace that check. Thread safety, real-time allocation constraints, and fairness are separate engineering requirements.
+
+</Section>
+
+<Section id="exercises" number="12" title="Predict the next job." kicker="EXERCISES / CHALLENGES">
+
+1. Load `11:4,22:9,33:4,44:-1`. Predict all four extraction results in both directions. Explain where FIFO matters.
+2. Enter equal payload values with different priorities. Show why comparing the payload instead would be wrong.
+3. For 128 entries and one insert followed by 1,000 peeks, compare an unsorted array with sorted storage. Count work units rather than inventing a timing result.
+4. Explain why swapping the last entry into an extracted position would need extra tie metadata to preserve our arrival policy.
+5. Design an aging policy for low-priority work. Which part belongs to the scheduler, and which part belongs to the container?
+
+</Section>
+
+<Section id="summary" number="13" title="Policy first. Mechanism next." kicker="CHAPTER SUMMARY">
+
+A priority queue promises selection by priority, an explicit direction, and a documented tie rule. Its storage can be unsorted, sorted, or partially ordered. The current unsorted implementation makes the ADT easy to inspect; the next chapter builds a binary heap to make frequent inserts and removals efficient.
+
+<div className="summary-panel"><div><span className="eyebrow">CHAPTER 08 COMPLETE</span><h3>Ready to apply the invariant?</h3><p>Revisit the lab, predict the next operation, and verify it one statement at a time.</p></div><button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete <span aria-hidden="true">✓</span></button></div>
+
+<ChapterPagination number="08" />
+
+</Section>

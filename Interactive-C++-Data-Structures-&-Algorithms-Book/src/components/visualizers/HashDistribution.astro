@@ -1,0 +1,12 @@
+---
+interface Props { id: string }
+const { id } = Astro.props;
+---
+<div class="operation-lab" data-hash-distribution id={id}>
+<div class="lab-heading"><div><span class="eyebrow">MEASURED KEY COMPARISONS</span><h3>Same hash, different key distributions.</h3></div></div>
+<form class="lab-inputs"><label for={`${id}-count`}>Stored keys<select id={`${id}-count`} name="count"><option>8</option><option selected>16</option><option>32</option><option>64</option></select></label><label for={`${id}-mode`}>Distribution<select id={`${id}-mode`} name="mode"><option value="spread">Ordinary keys</option><option value="collision">All keys map to bucket 1</option></select></label></form>
+<p class="hash-result" data-result aria-live="polite"></p>
+<div class="svg-scroll" role="region" tabindex="0" aria-label="Bucket lengths and actual comparison counts" data-distribution-svg></div>
+<p class="diagram-view-note">Fixed capacity 16; automatic growth is disabled for this isolated distribution experiment. We generate real lowercase keys, insert at each chain head, then actually compare keys while looking up every stored key. No timing estimate and no changed hash function.</p>
+</div>
+<script>import '../../scripts/hash-foundations-experiments';</script>

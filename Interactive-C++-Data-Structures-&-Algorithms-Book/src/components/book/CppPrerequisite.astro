@@ -1,0 +1,10 @@
+---
+interface Props { lesson: string; summary: string }
+const { lesson, summary } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<aside class="cpp-prerequisite" aria-label="C++ prerequisite">
+  <strong>C++ PREREQUISITE</strong>
+  <span>{summary}</span>
+  <a href={`${base}/chapters/00-cpp-foundations/#lesson-${lesson}`}>Chapter 0 →</a>
+</aside>

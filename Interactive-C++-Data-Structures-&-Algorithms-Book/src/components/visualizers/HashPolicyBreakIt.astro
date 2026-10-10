@@ -1,0 +1,17 @@
+---
+import TraceLab from './TraceLab.astro';
+import openSource from '../../../cpp/chapter-21/OpenAddressing.hpp?raw';
+import robinSource from '../../../cpp/chapter-22/RobinHood.hpp?raw';
+const {kind='open'}=Astro.props;
+---
+<p>The fault below exists only in a copied teaching snapshot. No malformed container is passed to native C++.</p>
+<TraceLab id={`${kind}-policy-break`} chapter={`${kind}-policy-break`} source={kind==='open'?openSource:robinSource} fileName={kind==='open'?'OpenAddressing.hpp':'RobinHood.hpp'} operations={[{id:'broken',label:kind==='open'?'Break: erase to EMPTY':'Break: reset displaced distance'},{id:'correct',label:'Restore correct policy'}]} regions={['find']} diagramNote="Predict whether lookup will reach q, then step through the canonical lookup on the model. Red invariant text identifies the fault." />
+<script>
+import {mountHashLab} from '../../scripts/hash-labs';
+import {openAddressingAdapter} from '../../visualizers/open-addressing/adapter';
+import {tombstoneExperiment} from '../../visualizers/open-addressing/model';
+import {robinHoodAdapter} from '../../visualizers/robin-hood/adapter';
+import {robinState,robinTrace} from '../../visualizers/robin-hood/model';
+for(const root of document.querySelectorAll<HTMLElement>('[data-chapter-lab="open-policy-break"]'))mountHashLab(root,{...openAddressingAdapter,build:op=>tombstoneExperiment(op==='broken').trace,regions:()=>['find']});
+for(const root of document.querySelectorAll<HTMLElement>('[data-chapter-lab="robin-policy-break"]'))mountHashLab(root,{...robinHoodAdapter,build:op=>{const s=robinState(['a','i','q']);if(op==='broken')s.slots[2]!.distance=0;return robinTrace('find',s,'q');},regions:()=>['find']});
+</script>

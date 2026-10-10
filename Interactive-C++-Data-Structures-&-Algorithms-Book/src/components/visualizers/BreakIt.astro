@@ -1,0 +1,43 @@
+---
+import Diagram from './Diagram.astro';
+---
+<div class="break-lab" data-break>
+  <div class="break-header"><div><span class="eyebrow">CONTROLLED FAILURE</span><h3>Break a link. Understand the consequence.</h3></div><span class="break-label">Break-It lab</span></div>
+  <div class="break-controls"><label>Choose a mistake<select data-break-mode><option value="lost">Lose the head pointer</option><option value="cycle">Make a cycle</option><option value="dangling">Delete before unlinking</option></select></label><button class="button danger-button" type="button" data-break-run>Run broken line</button><button class="button" type="button" data-break-reset>Restore valid list</button></div>
+  <pre class="broken-code"><code data-broken-code>head = nullptr; // Objects are NOT deleted.</code></pre>
+  <Diagram id="break" compact />
+  <div class="break-feedback" aria-live="polite"><strong data-break-status>✓ The starting list is valid.</strong><p data-break-explanation>Predict what will fail, then run the broken line.</p></div>
+  <ul class="break-invariants" data-break-invariants></ul>
+</div>
+<script>
+  import { DiagramView } from '../../scripts/diagrams';
+  import { initialState, makeBrokenTrace, type BreakMode } from '../../visualizers/linked-list/model';
+  import { checkInvariants } from '../../visualizers/linked-list/invariants';
+  import { escapeHtml } from './primitives';
+  for (const root of document.querySelectorAll<HTMLElement>('[data-break]')) {
+    const diagram = new DiagramView(root.querySelector('[data-diagram]')!, initialState());
+    const code: Record<BreakMode, string> = { lost: 'head = nullptr; // Objects are NOT deleted.', cycle: 'auto* tail = head->next->next; // This three-node example.\ntail->next = head; // Traversal never reaches nullptr.', dangling: 'delete head; // head still holds the freed address.' };
+    function restore() {
+      diagram.update(initialState());
+      root.querySelector('[data-break-status]')!.textContent = '✓ The starting list is valid.';
+      root.querySelector('[data-break-explanation]')!.textContent = 'Predict what will fail, then run the broken line.';
+      root.querySelector('[data-break-invariants]')!.innerHTML = '';
+      root.classList.remove('is-broken');
+    }
+    root.querySelector('[data-break-mode]')!.addEventListener('change', event => {
+      restore();
+      root.querySelector('[data-broken-code]')!.textContent = code[(event.target as HTMLSelectElement).value as BreakMode];
+    });
+    root.querySelector('[data-break-run]')!.addEventListener('click', () => {
+      const mode = root.querySelector<HTMLSelectElement>('[data-break-mode]')!.value as BreakMode;
+      const trace = makeBrokenTrace(mode);
+      const final = trace.steps.at(-1)!;
+      diagram.update(final.state, final.event);
+      root.classList.add('is-broken');
+      root.querySelector('[data-break-status]')!.textContent = `✕ ${final.title}`;
+      root.querySelector('[data-break-explanation]')!.textContent = final.explanation;
+      root.querySelector('[data-break-invariants]')!.innerHTML = checkInvariants(final.state, true).map(rule => `<li class="invariant-${rule.status}">${rule.status === 'pass' ? '✓' : rule.status === 'pending' ? '△' : '✕'} ${escapeHtml(rule.name)} — ${escapeHtml(rule.detail)}</li>`).join('');
+    });
+    root.querySelector('[data-break-reset]')!.addEventListener('click', restore);
+  }
+</script>

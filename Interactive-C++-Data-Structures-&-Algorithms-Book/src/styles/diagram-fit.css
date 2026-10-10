@@ -1,0 +1,10 @@
+.diagram-size-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; padding: 9px 12px; border-bottom: 1px solid var(--border); background: var(--surface-subtle); }
+.diagram-size-controls button { min-height: 36px; padding: 5px 10px; font-size: 11px; }
+.diagram-size-controls button[aria-pressed='true'] { background: var(--pointer-fill); border-color: var(--pointer); color: var(--pointer); }
+.diagram-size-controls span { font-size: 10px; color: var(--muted); margin-left: auto; }
+/* Override chapter-specific scroll caps and inline native-width declarations.
+   The SVG viewBox and preserveAspectRatio keep all geometry visible and intact. */
+[data-svg][data-diagram-scale='fit']:has(svg.tree-diagram,svg.graph-diagram,svg.heap-diagram,svg.technique-tree-svg,svg.systems-diagram) { max-height: none !important; overflow: hidden !important; }
+[data-diagram-scale='fit'] :is(svg.tree-diagram,svg.graph-diagram,svg.heap-diagram,svg.technique-tree-svg,svg.systems-diagram) { display: block; width: 100% !important; min-width: 0 !important; max-width: 100% !important; height: auto !important; max-height: min(520px, 65vh) !important; }
+[data-diagram-scale='fit'] .technique-tree-scroll { max-height: none; overflow: hidden; }
+@media (max-width: 560px) { .diagram-size-controls button { min-height: 40px; } .diagram-size-controls span { flex-basis: 100%; margin-left: 0; } }

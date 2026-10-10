@@ -1,0 +1,138 @@
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Hero from '../../components/book/Hero.astro';
+import Section from '../../components/book/Section.astro';
+import Callout from '../../components/book/Callout.astro';
+import MentalModel from '../../components/visualizers/MentalModel.astro';
+import OperationLab from '../../components/visualizers/OperationLab.astro';
+import FullSource from '../../components/code/FullSource.astro';
+import ComplexityExplorer from '../../components/visualizers/ComplexityExplorer.astro';
+import BreakIt from '../../components/visualizers/BreakIt.astro';
+import CppPrerequisite from '../../components/book/CppPrerequisite.astro';
+
+<Hero />
+<CppPrerequisite lesson="02" summary="Storage, lifetimes, pointers, ownership, construction and cleanup." />
+
+<div className="chapter-intro-strip"><span>YOUR FIRST POINTER-BASED STRUCTURE</span><p>Build the mental model. Follow the execution. Make it yours.</p><a href="#operations">Jump to the lab <span aria-hidden="true">↓</span></a></div>
+
+<Section id="mental-model" number="01" title="Start with the connections." kicker="VISUAL MENTAL MODEL">
+
+A linked list is a chain, not a row of boxes in memory. Each node knows just one thing about the structure: **where the next node lives.**
+
+<MentalModel />
+
+<div className="three-observations"><div><span>01 / THE ENTRY POINT</span><h3>Start at head.</h3><p>The list owns a single pointer to its first node. An empty list has <code>head == nullptr</code>.</p></div><div><span>02 / THE RELATIONSHIP</span><h3>Follow next.</h3><p>Each <code>next</code> field stores an address, connecting one object to another.</p></div><div><span>03 / THE BOUNDARY</span><h3>Stop at nullptr.</h3><p>The last node points nowhere. Check for null before reading a node’s fields.</p></div></div>
+
+</Section>
+
+<Section id="intuition" number="02" title="Order is a relationship." kicker="THE INTUITION">
+
+<div className="prose-columns"><div><p>In an array, the next element is found by arithmetic. In a linked list, the next element is found by reading a pointer. You can connect objects that live far apart in memory.</p><p>To insert a node, you change relationships. Existing values stay where they are. But to find the fifth node, you must follow four links from the first.</p></div><div className="comparison-note"><span className="eyebrow">THE TRADE-OFF</span><h3>Cheap rewiring.<br/>Sequential discovery.</h3><p>Insertion after a <em>known node</em> is O(1). Finding that node can still take O(n).</p></div></div>
+
+</Section>
+
+<Section id="memory" number="03" title="Two fields. Separate allocations." kicker="STRUCTURE & MEMORY">
+
+<div className="memory-explainer"><div className="struct-code"><span className="eyebrow">THE NODE</span><pre><code>{`struct Node {
+    int data;    // the value
+    Node* next;  // a borrowed link
+};`}</code></pre></div><div><h3>A pointer holds an address.</h3><p><code>node-&gt;next</code> is a field inside a node. <code>head</code> is a separate variable owned by the list. Assigning one does not automatically update the other.</p><p>Switch the diagram to <strong>Memory view</strong>: the addresses are sorted, but the arrows still define the list’s order.</p></div></div>
+
+<Callout title="Addresses are illustrative, not a promise about layout.">A typical 64-bit ABI uses 8-byte pointers and may pad this node to 16 bytes. Actual size, alignment, allocator overhead, and addresses depend on the implementation. Use <code>sizeof(Node)</code> and <code>alignof(Node)</code> on your platform.</Callout>
+
+</Section>
+
+<Section id="operations" number="04" title="See every pointer assignment." kicker="INTERACTIVE OPERATIONS">
+
+Choose an operation, set the values, and step through real C++. Amber identifies the active change; blue shows references. Click a node at any time to inspect it.
+
+<OperationLab />
+
+<div className="operation-notes"><p><strong>Try the edges.</strong> Choose an empty or single-node list. Delete <code>10</code>, <code>20</code>, or <code>30</code> to see head, middle, and tail removal. Search for <code>99</code> to reach the null terminator.</p><p><strong>One operation per experiment.</strong> Each loaded operation starts from your selected list. Use a custom starting list to explore other values. Delete and insert-after use the first match.</p></div>
+
+</Section>
+
+<Section id="implementation" number="05" title="The whole implementation." kicker="CANONICAL C++20">
+
+This class owns every allocated node and releases them in its destructor. Copying is disabled to prevent two lists from owning the same chain; moving transfers ownership and empties the source. `find()` returns a borrowed, read-only node pointer that becomes invalid when its node is erased or the list is destroyed.
+
+<FullSource />
+
+<Callout title="Allocation failure leaves the list unchanged." tone="green">If <code>new</code> throws <code>std::bad_alloc</code>, no existing link has been modified. The operations that only traverse or release nodes do not allocate. Cleanup is iterative, so destroying a long list does not grow the call stack.</Callout>
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="A link changes before head does." kicker="CODE ↔ POINTER TRACE">
+
+For insertion at the head, the order of these two assignments is the entire algorithm. The new node must keep the old chain reachable before it becomes the entry point.
+
+<div className="trace-walkthrough"><div><span className="trace-index">1</span><div><code>newNode-&gt;next = head;</code><h3>Keep the old entry point.</h3><p>The new node now points to the old first node. <code>head</code> still points to <code>10</code>.</p></div></div><div><span className="trace-index">2</span><div><code>head = newNode;</code><h3>Publish the new first node.</h3><p>Only now does <code>head</code> move to <code>5</code>. The path from <code>5</code> to the original chain already exists.</p></div></div></div>
+
+<p><a className="text-link" href="#operations">Trace these assignments in the lab →</a> Choose Insert head, then click the line numbers to move between the two assignments.</p>
+
+<Callout title="delete is not an unlink operation." tone="amber">Deletion first saves a pointer, then bypasses the node while it is alive, then destroys the object and releases its storage. The lab separates destruction and freeing on the same C++ line. A saved local pointer still holds the old address afterward; it is dangling until it leaves scope.</Callout>
+
+</Section>
+
+<Section id="invariants" number="07" title="Make correctness visible." kicker="INVARIANTS">
+
+The live panel checks the list after every semantic event. It distinguishes a broken structure from a temporary condition inside a correct operation.
+
+<div className="table-scroll"><table><thead><tr><th>Property</th><th>What it protects</th></tr></thead><tbody><tr><td>No live nodes ⇒ <code>head == nullptr</code></td><td>The empty state has no stale entry point.</td></tr><tr><td>Traversal eventually reaches <code>nullptr</code></td><td>No cycles, and no walk into an ended object lifetime.</td></tr><tr><td>All live nodes are reachable after the operation</td><td>The owning list has not lost an allocation.</td></tr><tr><td>Every structural link targets a live object or null</td><td>Freed storage is never treated as a valid node.</td></tr><tr><td>Dangling local pointers are never dereferenced</td><td>A saved address does not extend an object’s lifetime.</td></tr></tbody></table></div>
+
+<p className="margin-note">△ <strong>Temporary is meaningful.</strong> A newly allocated node is detached before it is linked. A removed node is detached before it is deleted. The panel marks these transitions in amber; at the function boundary, reachability must be restored.</p>
+
+</Section>
+
+<Section id="complexity" number="08" title="Count the work. Then name it." kicker="COMPLEXITY EXPLORER">
+
+A search starts at the head and follows links until it finds the target. Increase the list size and compare that traversal with the two assignments used by head insertion.
+
+<ComplexityExplorer />
+
+<div className="table-scroll"><table><thead><tr><th>Operation</th><th>Time</th><th>Why</th></tr></thead><tbody><tr><td>Insert at head</td><td><code>O(1)</code></td><td>A fixed number of pointer assignments.</td></tr><tr><td>Insert at tail</td><td><code>O(n)</code></td><td>This implementation stores no tail pointer.</td></tr><tr><td>Insert after a value</td><td><code>O(n)</code></td><td>Find the first match, then rewire in O(1).</td></tr><tr><td>Delete by value / search</td><td><code>O(n)</code></td><td>The target may be at the end or absent.</td></tr><tr><td>Clear / destructor</td><td><code>O(n)</code></td><td>Destroy and free every node exactly once.</td></tr></tbody></table></div>
+
+Total storage is O(n), including one pointer per node plus any padding and allocation overhead. Each operation uses O(1) auxiliary space; the teaching visualizer separately retains snapshots for replay.
+
+</Section>
+
+<Section id="break-it" number="09" title="The mistakes are part of the lesson." kicker="COMMON MISTAKES / BREAK-IT MODE">
+
+<div className="mistake-list"><div><span>01</span><div><h3>Overwriting the only pointer.</h3><p>Setting <code>head</code> to null does not free the chain. The nodes become unreachable allocations.</p></div></div><div><span>02</span><div><h3>Reading after deletion.</h3><p><code>delete current; current = current-&gt;next;</code> reads a dead object. Save the successor or advance head first.</p></div></div><div><span>03</span><div><h3>Reversing the two insertion assignments.</h3><p>After <code>head = newNode</code>, assigning <code>newNode-&gt;next = head</code> creates a self-loop and loses the original chain.</p></div></div></div>
+
+<BreakIt />
+
+<p className="fine-print">Broken operations run in a guarded memory model. No undefined C++ is executed in the browser. “Run broken line” shows the resulting state; restore the list before comparing another fault.</p>
+
+</Section>
+
+<Section id="analogy" number="10" title="A trail of forwarding addresses." kicker="REAL-WORLD ANALOGY">
+
+<div className="analogy-panel"><span className="analogy-symbol" aria-hidden="true">A → B → C</span><div><p>Imagine a set of offices. Your directory gives you only the first address. Each office has a note with the next address; the last says “end of trail.”</p><p>The offices need not sit beside each other. To add an office, rewrite a note. To reach a distant office, follow every intervening note. Lose the first address and the offices still exist—you just cannot reach them through your directory.</p></div></div>
+
+</Section>
+
+<Section id="engineering" number="11" title="Where this becomes systems work." kicker="ENGINEERING INSIGHT">
+
+<div className="engineering-grid"><div><span className="eyebrow">MEMORY ALLOCATORS</span><h3>A free list is a chain.</h3><p>A pool can link unused blocks through a next pointer. Taking the first free block resembles removing the head; returning a block resembles inserting at the head.</p></div><div><span className="eyebrow">EVENT & WORK CHAINS</span><h3>Stable objects, changing order.</h3><p>Links can organize objects without moving their storage. This matters when other parts of a system hold references to those objects.</p></div></div>
+
+<Callout title="O(1) does not mean “fastest in practice.”">Pointer chasing adds dependent loads; separate allocations can scatter nodes and reduce cache locality. A <code>std::vector</code> often wins for scanning despite different insertion costs. Choose a linked structure for a measured ownership or rewiring need. <code>std::forward_list</code> is the standard singly linked container; this implementation exists to expose its mechanics.</Callout>
+
+</Section>
+
+<Section id="exercises" number="12" title="Make a prediction. Test it." kicker="EXERCISES & CHALLENGES">
+
+<div className="exercise"><span>CHALLENGE 01</span><h3>What survives a head deletion?</h3><p>Delete <code>10</code> from the default list. Stop after <code>head = current-&gt;next</code>. Is node 10 alive? Which references still point to it?</p><details><summary>Reveal the reasoning</summary><p>It is still alive but detached. <code>current</code> and <code>nodeToDelete</code> still point to it. Only <code>head</code> moved to node 20. After <code>delete</code>, those locals dangle until they leave scope.</p></details></div>
+
+<div className="exercise"><span>CHALLENGE 02</span><h3>Can a failed search change the list?</h3><p>Search for <code>99</code>, then compare Before and After. Count the visited nodes and value comparisons.</p><details><summary>Reveal the reasoning</summary><p>The chain is unchanged. The cursor visits all three nodes and compares each value once before reaching nullptr. Reassigning a local pointer does not alter any <code>next</code> field.</p></details></div>
+
+<div className="exercise"><span>CHALLENGE 03</span><h3>What would a tail pointer really buy?</h3><p>Sketch the extra state needed for O(1) insertion at the tail. Which empty-list, single-node, move, and clear cases now need another update?</p><details><summary>Reveal the reasoning</summary><p>Store a tail pointer and maintain <code>tail-&gt;next == nullptr</code>. Empty lists need both references null. The first insertion sets both; deleting the only node clears both. Removing the tail still requires finding its predecessor, so remains O(n) in a singly linked list. Moves transfer both references; clear resets both.</p></details></div>
+
+</Section>
+
+<Section id="summary" number="13" title="The structure is in the links." kicker="CHAPTER SUMMARY">
+
+<div className="summary-panel"><h3>You can now see the invisible work.</h3><ul><li><strong>Topology is separate from storage.</strong> Arrows define order; addresses identify objects.</li><li><strong>Save, link, then publish.</strong> Pointer assignment order preserves reachability.</li><li><strong>Unlink before destroying.</strong> A dangling address is not a live object.</li><li><strong>Measure the walk.</strong> Finding a node takes O(n); rewiring a known link takes O(1).</li></ul><button className="button button-primary" type="button" data-complete aria-pressed="false">Mark chapter complete <span aria-hidden="true">✓</span></button><p className="fine-print">Your reading progress is saved on this device.</p></div>
+
+<ChapterPagination number="01" />
+
+</Section>

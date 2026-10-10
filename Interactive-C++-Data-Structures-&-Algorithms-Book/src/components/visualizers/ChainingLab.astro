@@ -1,0 +1,14 @@
+---
+import TraceLab from './TraceLab.astro';
+import source from '../../../cpp/chapter-20/ChainedMap.hpp?raw';
+interface Props { conceptual?: boolean }
+const { conceptual = false } = Astro.props;
+const chapter = conceptual ? 'hash-table' : 'chaining';
+---
+<TraceLab id={`${chapter}-lab`} chapter={chapter} source={source} fileName="ChainedMap.hpp" operations={[{id:'insert',label:'Insert / assign'},{id:'find',label:'Find'},{id:'update',label:'Update / insert'},{id:'erase',label:'Erase'},{id:'contains',label:'Contains'},{id:'rehash',label:'Rehash ×2'}]} regions={['insert','find','erase','rehash']} diagramNote="Buckets own one-way next chains. Each object keeps its position throughout this trace. Logical arrows define order; memory addresses are illustrative. Freed storage has no readable fields.">
+<label>Starting key:value entries<input name="entries" value="a:1,i:2,q:3,b:4,c:5,d:6" maxlength="140" /></label>
+<label>Key<input name="key" value="e" required pattern="[a-z]{1,12}" maxlength="12" /></label>
+<label>Value<input name="value" value="7" type="number" min="-999" max="999" step="1" required /></label>
+</TraceLab>
+<p class="diagram-view-note">At most eight starting entries. Blank creates an empty map. Keys: 1–12 lowercase ASCII letters. Repeated keys update. Six starting entries fill the 8-bucket table to α = 0.75; inserting e grows it to 16. Experiments start from the entered list each time.</p>
+<script>import '../../scripts/hash-labs';</script>

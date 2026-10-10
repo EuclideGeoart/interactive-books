@@ -1,0 +1,13 @@
+---
+import TraceLab from './TraceLab.astro';
+import source from '../../../cpp/chapter-08/PriorityQueue.hpp?raw';
+const operations = [{id:'insert',label:'Insert'},{id:'peek',label:'Peek'},{id:'extract',label:'Extract'}];
+---
+<TraceLab id="priority" chapter="priority" source={source} fileName="PriorityQueue.hpp" operations={operations} regions={['priority-insert','priority-peek','priority-extract','priority-best']} viewLabels={{logical:'Removal order',memory:'Arrival storage'}} diagramNote="Select an entry to compare its priority, removal rank, and actual storage index. The ranked view is derived, not sorted storage.">
+  <label>Priority direction<select name="mode"><option value="higher">Higher number first</option><option value="lower">Lower number first</option></select></label>
+  <label>Starting entries<select name="preset"><option value="standard">Mixed priorities with a tie</option><option value="empty">Empty</option><option value="single">One entry</option><option value="ties">All equal priorities</option><option value="custom">Custom entries</option></select></label>
+  <label>Custom value:priority pairs<input name="values" value="10:5,20:2,30:9,40:5" aria-describedby="priority-bound" /></label>
+  <label>Value to insert<input name="value" type="number" min="-999" max="999" value="50" /></label>
+  <label>Priority to insert<input name="priority" type="number" min="-999" max="999" value="7" /></label>
+  <p id="priority-bound" class="fine-print">At most 8 entries (7 before insertion); integers −999…999. Equal priorities always use FIFO.</p>
+</TraceLab>

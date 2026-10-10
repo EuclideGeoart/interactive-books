@@ -1,0 +1,124 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import AdvancedSortLab from '../../components/visualizers/AdvancedSortLab.astro';
+import SortingComplexity from '../../components/visualizers/SortingComplexity.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-41/MergeSort.hpp?raw';
+import main from '../../../cpp/chapter-41/main.cpp?raw';
+
+<ChapterHero number="41" title="Merge sort" part="PART VI / SEARCHING & SORTING" overline="SPLIT THE RANGE. MERGE THE HEADS." description="Split into smaller sorted ranges, then merge records into a separate buffer without losing equal-key order." chain="[8 3 5 1] → [3 8] + [1 5] → [1 3 5 8]" facts={[["Time", "O(n log n)"], ["Workspace", "O(n) buffer + O(log n) stack"], ["Stability", "Left head wins ties"], ["Mechanics", "Split · compare · emit · copy"]]} />
+
+<Section id="mental-model" number="01" title="Two sorted heads feed one output." kicker="VISUAL MENTAL MODEL">
+
+Start with two sorted runs: left `[2,5,8]` and right `[1,6,7]`. Only the two heads compete. Output 1 from the right, 2 from the left, then 5, 6, 7 and 8. No item behind a run's head can be smaller than that head. This is the reason a linear merge works.
+
+<StructurePreview chapter="merge-sort" id="merge-sort-preview" operation="sort" inputs={{values:'8,3,5,1,6,2,7,4'}} diagramNote="The input keeps its indexed slots. Playback adds the separately allocated temporary output and explicit half-open recursive ranges." />
+
+In the lab, pause at a Merge cursors step. The two ranges occupy their original input slots, while the temporary row receives one complete record at a time. A letter is the original identity, so equal values remain distinguishable.
+
+</Section>
+
+<Section id="intuition" number="02" title="Recursion asks a smaller version of the same question." kicker="THE INTUITION">
+
+A range containing zero or one item is sorted already. Otherwise choose `mid = low + (high − low) / 2`, recursively sort `[low, mid)`, recursively sort `[mid, high)`, and merge those two sorted ranges. Every recursive child is smaller than its parent.
+
+The range stack is the same depth-first idea used in <a href="../12-tree-traversal/">tree traversal</a>. The left call finishes before the right call; only after both return does the parent merge. It is not eight unrelated arrays being magically combined.
+
+</Section>
+
+<Section id="memory" number="03" title="One buffer is reused at every level." kicker="STRUCTURE / STORAGE LAYOUT">
+
+The canonical function owns its input vector and allocates an n-record temporary buffer. A merge writes into the corresponding `[low, high)` slots of that buffer, then copies those records back to the input. The input slots remain fixed throughout playback. During copy-back the input can temporarily contain two copies of an identity; the complete merged result is still held in the buffer.
+
+Algorithmic auxiliary space is O(n) for the buffer plus O(log n) recursive frames. This implementation is not in-place. The returned teaching State, its explicit range-stack mirror, and browser snapshot history are diagnostic overhead excluded from that complexity statement. `std::optional<Item>` marks unwritten teaching buffer slots; it does not make an uninitialized slot a valid output item. Owned vectors manage lifetime, with no borrowed pointers or manual deletion.
+
+</Section>
+
+<Section id="operations" number="04" title="Watch emission before copy-back." kicker="INTERACTIVE OPERATIONS">
+
+<AdvancedSortLab kind="merge" />
+
+Use `2,1,2,1` to follow duplicate identities. At the final merge, equal keys must choose the head of the left run first. Step through Output, Advance, Copy start, Copy and Copy next: emitting an item does not immediately overwrite the input.
+
+Load blank input, one value, sorted input, reverse input and all equal values. Signed 32-bit extremes are accepted. The lab allows at most 32 records so a full trace remains inspectable. Previous, Reset, Before and After select stored snapshots; changing an input and loading starts a fresh run.
+
+</Section>
+
+<Section id="implementation" number="05" title="A complete stable merge with guarded reads." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="MergeSort.hpp" chapter="41" />
+
+Download the standalone header and main.cpp into the same directory, then use the displayed C++20 command. `merge_sort::sort(values)` returns the final teaching state. Its optional observer receives each tagged state after the statement executes. Observers must be nonthrowing and nonreentrant.
+
+The head-selection condition first checks whether the right range is exhausted. It reads the left head only if the left cursor is below mid, and reads the right head only while that range remains nonempty. Comparisons use `<=`, preserving left-before-right ties without subtracting keys, so signed extrema cannot overflow a comparison.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="The three cursors have different jobs." kicker="CODE + VISUALIZATION TRACE">
+
+`i` addresses the next left record, `j` the next right record, and `k` the next temporary output slot. Choose records the exact exhaustion/key condition. Output writes one complete key/identity pair at k. Advance increments k and exactly one input cursor. A drained run contributes no more key comparisons.
+
+Copy start changes phase and resets k to low. Each Copy writes one buffer record into the input; Copy next advances the copy cursor. Returning restores the just-completed range in the state panel, while the explicit recursion stack removes its frame. Source-line clicks jump between actual executions of that statement, including repeated merges.
+
+</Section>
+
+<Section id="invariants" number="07" title="A merged prefix is sorted, stable and complete so far." kicker="INVARIANTS">
+
+Before merging, both input halves are sorted. At each output boundary the temporary prefix contains exactly the emitted records, in ascending order. Equal keys retain their original relative order because ties come from the left run. No occupied output slot repeats an identity.
+
+The inspector verifies that each identity still owns its original key. Full input permutation can be temporarily pending during copy-back; it must pass again when the range returns. Ascending order is a completion property, so unsorted input is not called a broken algorithm before work begins.
+
+</Section>
+
+<Section id="complexity" number="08" title="Count the writes that the buffer requires." kicker="COMPLEXITY EXPLORER">
+
+<SortingComplexity chapter="41" />
+
+Each merge of length m writes m records to the buffer and m records back. At each balanced recursion level the merged lengths total n, and there are O(log n) levels. That gives O(n log n) time even for sorted input in this canonical version; no already-ordered-run shortcut is implemented.
+
+The lab counts only actual head-to-head key comparisons, input array writes, temporary item writes, merge passes and maximum simultaneously active calls. For `[2,1,2,1]`, there are 8 buffer writes, 8 input writes and maximum depth 3, including singleton calls. Snapshot cloning, optional-slot clearing for display and validation are excluded. These are algorithmic counts, not timing measurements.
+
+</Section>
+
+<Section id="break-it" number="09" title="A different tie condition changes the contract." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+Load `2,1,2,1`, then find the final merge's equality decision. Predict the result if `<=` became `<`: the equal right record would be emitted before the equal left record. The values would still be sorted, but stability would fail. Check the actual stable identity order in After.
+
+Try a blank input and observe the base-case return before any record read. A copy-back that starts before the merge finishes would overwrite heads still needed by the merge. Forgetting to reset k to low would skip every copy because k already equals high.
+
+</Section>
+
+<Section id="analogy" number="10" title="Merge two already ordered checkout lines." kicker="REAL-WORLD ANALOGY">
+
+Imagine two queues ordered by appointment time. Admit whichever front appointment is earlier; if they tie, admit the person from the left queue first. Record the resulting line on a separate list. Once that list is complete, replace the old local roster with it. Comparing every pair of people is unnecessary because each queue is already ordered.
+
+</Section>
+
+<Section id="engineering" number="11" title="Predictable work trades against memory traffic." kicker="ENGINEERING INSIGHT">
+
+Stable merging is useful when records already have a meaningful secondary order, such as draw commands first ordered by submission sequence and then by material. Stability preserves that earlier sequence among equal materials. Sequential input reads and output writes suit contiguous storage, though copying large records increases bandwidth use.
+
+For external sorting, merging sorted runs generalizes to data that does not fit in memory. This chapter's implementation remains an in-memory two-way merge. Compare its buffer cost with <a href="../42-quick-sort/">quicksort</a> and the bounded worst-case work of <a href="../43-heap-sort/">heap sort</a>.
+
+</Section>
+
+<Section id="exercises" number="12" title="Explain every emitted identity." kicker="EXERCISES / CHALLENGES">
+
+1. Trace merging `[2A,5B,8C]` with `[1D,6E,7F]`. Which steps are key comparisons and which are exhaustion decisions?
+2. Run `2,1,2,1` and list final identities. Explain why equal records from the left must win.
+3. Predict buffer writes and input writes for eight records, then measure them.
+4. Find a copy-back snapshot where an identity appears twice in the input. Where is the complete permutation stored?
+5. Explain why n = 1 has depth 1 but performs zero merge passes and zero item writes.
+
+</Section>
+
+<Section id="summary" number="13" title="The stable merge is the center of the algorithm." kicker="CHAPTER SUMMARY">
+
+Divide until ranges are trivially sorted. Compare the two live heads, emit one whole record, and advance only its source cursor. Left wins ties. Copy-back is a separate visible phase. The buffer explains both the stable ordering guarantee and the O(n) auxiliary-memory cost.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="41" />
+</Section>
+

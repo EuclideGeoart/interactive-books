@@ -1,0 +1,141 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import Section from '../../components/book/Section.astro';
+import Callout from '../../components/book/Callout.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import TreeMutationLab from '../../components/visualizers/TreeMutationLab.astro';
+import TreeComplexity from '../../components/visualizers/TreeComplexity.astro';
+import TreeFoundationsBreakIt from '../../components/visualizers/TreeFoundationsBreakIt.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-11/BinarySearchTree.hpp?raw';
+import main from '../../../cpp/chapter-11/main.cpp?raw';
+import mutation from '../../../cpp/chapter-13/Mutation.hpp?raw';
+import mutationMain from '../../../cpp/chapter-13/main.cpp?raw';
+
+<ChapterHero number="13" title="Tree Insertion and Deletion" overline="CHANGE ONE FIELD. ACCOUNT FOR EVERY OBJECT." description="Insertion publishes one new node. Deletion must preserve every surviving subtree. Follow the root or child slot, the successor, and the exact boundary between unlinking and destruction." chain="locate → choose replacement → repair owning link → destroy → free" facts={[["POLICY", "Integer set · reject duplicates"], ["TWO CHILDREN", "Copy inorder successor value"], ["PARENT FIELD", "None: use Node** slot"]]} />
+
+<Section id="mental-model" number="01" title="Remove a key without losing a subtree." kicker="VISUAL MENTAL MODEL">
+
+<StructurePreview chapter="tree-mutation" id="mutation-mental" operation="erase" inputs={{preset:'successor',value:'50'}} />
+
+In the deep-successor preset, erase 50. It has two children. The smallest key in its right subtree is 55, reached by following left from 75 through 60. That successor has a right child, 57. A correct deletion must preserve 57 while removing the key 50.
+
+This implementation copies 55 into the original root Node, then replaces the successor's owning slot with 57, and finally deletes the successor Node. The root's address survives; its stored value changes. The physical object freed is the former 55 Node. Select these objects as the trace advances to separate **key identity** from **object identity**.
+
+</Section>
+
+<Section id="intuition" number="02" title="Three cases reduce to one vacant or bypassed slot." kicker="THE INTUITION">
+
+A leaf has no children, so its owning slot becomes null. A node with one child is bypassed by writing that child's address into its owning slot. A node with two children cannot simply choose one child and discard the other subtree.
+
+The inorder successor solves the two-child case: it is the minimum of the right subtree, so it has no left child. After copying its integer value into the target, deleting the successor reduces to the zero/one-child case. The successor may be the immediate right child or a deeper left descendant. Its right child, if present, must be reattached.
+
+The duplicate policy remains a set policy. Insert rejects equality before allocation. Copying during erase briefly creates equal stored values, but the completed tree again has strictly ordered, unique keys.
+
+</Section>
+
+<Section id="memory" number="03" title="Owning links are fields; locals are observers." kicker="STRUCTURE / MEMORY LAYOUT">
+
+`Node** slot` identifies the pointer that owns the target: either `root_` or a parent's left/right field. The class stores no parent pointer. `victim`, `successor`, and `replacement` are temporary local observers. `successorSlot` is another pointer to a pointer field, used to splice the successor out of its old location.
+
+Changing a local pointer does not unlink an object. Changing an owning field does not destroy an object. Running a destructor ends object lifetime. Releasing allocation storage is a further phase of delete. Memory view preserves an illustrative tombstone after release, but the inspector refuses to expose former value or child fields.
+
+A root replacement is the same slot mechanism applied to `&root_`. It needs no invented parent node, sentinel Node, or special parent-pointer repair. The only special case is which field's address the local slot holds.
+
+</Section>
+
+<Section id="operations" number="04" title="Pause on every assignment." kicker="INTERACTIVE OPERATIONS">
+
+<TreeMutationLab />
+
+Try these experiments separately: erase 10 from the standard tree for a leaf; erase 60 for one right child (62); erase 50 for two children; erase 50 from the singleton preset for root-to-null replacement. Use custom 50,25 to test a root with only a left child. Use the deep-successor preset and erase 50 to preserve successor's right child 57.
+
+Insert a missing value and stop before publication. Insert an existing value and verify there is no Allocate event. Erase a missing value and verify all Node states remain unchanged. Clear handles empty, single, balanced-ish, and skewed trees iteratively.
+
+Inputs are at most 15 initial integers from −999 to 999 in insertion order, with duplicate initial keys rejected. The lab permits one additional inserted node and creates a fresh experiment per load. Bounds keep every semantic snapshot inspectable; the native class accepts ordinary int values without this UI limit.
+
+</Section>
+
+<Section id="implementation" number="05" title="One canonical erase, examined twice." kicker="C++ IMPLEMENTATION">
+
+Chapter 11's `BinarySearchTree.hpp` remains the single canonical ordered implementation. This chapter imports its actual insert and erase code into the synchronized lab, along with Chapter 10's actual clear helper. There is no second “visual” C++ erase algorithm to drift from the executable header. The `MutationTree` alias below supplies a chapter-specific name for examples without creating another owner type.
+
+<CanonicalSource source={source} main={main} fileName="BinarySearchTree.hpp" chapter="11" />
+<CanonicalSource source={mutation} main={mutationMain} fileName="Mutation.hpp" chapter="13" />
+
+Keep BinaryTree.hpp in `cpp/chapter-10/`, BinarySearchTree.hpp in `cpp/chapter-11/`, and Mutation.hpp with its example in `cpp/chapter-13/`. The relative includes deliberately preserve that dependency layout. Compile chapter-13/main.cpp from its folder; both dependencies must be downloaded too. Chapter 12's Traversal.hpp is optional for this mutation example.
+
+Copy and move remain deleted through the base owner. The tree destructor performs iterative, allocation-free clear; erase is noexcept because it allocates nothing, copies only int, rewrites pointers, and destroys a trivial Node. This would need reanalysis for a throwing payload assignment or destructor. Successful insert constructs before publication, preserving the original tree if allocation fails.
+
+<p>Header dependencies: <a href={`${import.meta.env.BASE_URL}source/chapter-10/BinaryTree.hpp`} download>Download BinaryTree.hpp</a> · <a href={`${import.meta.env.BASE_URL}source/chapter-11/BinarySearchTree.hpp`} download>Download BinarySearchTree.hpp</a>.</p>
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="The successor's old link must be repaired." kicker="CODE + VISUALIZATION POINTER TRACE">
+
+Search first moves slot through existing root/child fields. After the target is found, `victim = *slot` saves its address. The two-child guard chooses the strategy. Then `successorSlot = &victim->right` starts a leftward search whose every field-address assignment appears separately.
+
+After `successor = *successorSlot`, the line `victim->value = successor->value` changes only the target's integer. Its left, right, and address stay the same. Next, `*successorSlot = successor->right` bypasses the old successor object. The right child survives because the owning slot now targets it. Only then does `delete successor` end lifetime and release storage.
+
+In the zero/one-child branch, replacement first takes victim's left link. If null, it takes the right link. The single write `*slot = replacement` handles a leaf, one left child, one right child, or root replacement. `delete victim` follows. Reading victim's child after delete would be invalid; the canonical order saves everything first.
+
+<Callout title="Native and semantic evidence have different granularity.">Native fixtures instrument the shipped headers and compare completed source-tag order and tree state at every statement. The visual model additionally separates allocation/construction and destruction/freeing, and exposes scope boundaries. These extra phases share their C++ source expression; they do not pretend the browser executes native C++.</Callout>
+
+</Section>
+
+<Section id="invariants" number="07" title="Temporary disagreement must have a reason." kicker="INVARIANTS">
+
+At the operation boundary, every live node is reachable exactly once, all owning targets are live or null, and all descendant keys obey strict bounds. During successful insertion, the new live node is detached until publication. During erase, a victim is detached before deletion. During successor value copying, two live nodes briefly contain the same key. These are specific pending states, not blanket permission for arbitrary corruption.
+
+A dangling local observer after delete is visible until its actual scope ends. It cannot be dereferenced. A structural link into the same freed allocation would be a failure even mid-operation: the owning links should already have bypassed it. Rewinding selects a saved state; it never resurrects a native object or undoes a real delete.
+
+</Section>
+
+<Section id="complexity" number="08" title="Finding the slot usually dominates rewriting it." kicker="COMPLEXITY EXPLORER">
+
+<TreeComplexity kind="mutation" />
+
+Insert and erase take O(h) search work, with worst-case O(n) on a skewed BST. The successor search adds another downward segment within the same overall height bound. Once the relevant slots are known, a constant number of links and values change. Describing the whole erase as O(1) would omit locating those slots.
+
+Clear rotates left descendants upward until a root has no left child, then deletes it and continues through its right child. Each rotation promotes a previously unpromoted node on this destructive walk, so there are O(n) rotations and exactly n deletions. It uses O(1) auxiliary space and no recursive call stack. It intentionally rearranges a dying tree; ordinary erase does not use this wholesale cleanup strategy.
+
+</Section>
+
+<Section id="break-it" number="09" title="A lost subtree is still allocated." kicker="COMMON MISTAKES / BREAK-IT MODE">
+
+<TreeFoundationsBreakIt ordered />
+
+Lose the left subtree and observe that live allocations remain in memory despite disappearing from root's reachable hierarchy. Free a child before unlinking it and inspect the forbidden structural pointer into ended storage. These are controlled model faults; native undefined behavior is not executed.
+
+In two-child erase, forgetting successor's right child leaks a surviving subtree. Deleting victim after copying the successor value destroys the wrong object. Updating only a local current instead of `*slot` leaves the owner pointing at the removed allocation. Failing to replace root correctly breaks singleton and one-child root cases. Tests cover these boundaries as well as missing keys, duplicates, negative keys, immediate successors, deeper successors, and successor right-child preservation.
+
+</Section>
+
+<Section id="analogy" number="10" title="Replace the label, then remove the spare location." kicker="REAL-WORLD ANALOGY">
+
+Imagine numbered folders arranged by range. To remove a folder with two branches, copy the next folder's number onto the original location, then remove that next location while reconnecting its remaining branch. This illustrates value transfer, not object movement. In C++, the original allocation retains its address; a different allocation is destroyed.
+
+</Section>
+
+<Section id="engineering" number="11" title="Stable addresses do not guarantee stable values." kicker="ENGINEERING INSIGHT">
+
+A client retaining an observer to the target of a two-child erase can see its key change. A client retaining an observer to the successor sees that object destroyed. This API returns const observers but does not promise the iterator invalidation guarantees of a standard ordered container. The distinction matters when tree nodes also carry external IDs, application handles, or large payloads.
+
+An alternative transplant strategy can move the successor Node into the target's position, preserving the successor's payload identity but requiring more pointer assignments and a different invalidation contract. This chapter deliberately uses one consistent value-copy strategy and tests its exact mechanics. It does not silently substitute transplantation in the visualization. AVL and red-black balancing add more obligations beyond this ordinary BST erase.
+
+</Section>
+
+<Section id="exercises" number="12" title="Name the object that will die." kicker="EXERCISES / CHALLENGES">
+
+<div className="exercise"><h3>Deep successor with a right child</h3><p>Erase 50 from 50,25,75,60,90,55,57. Which field receives 57?</p><details><summary>Reveal reasoning</summary><p>60.left receives the former 55 Node's right child, 57. The original root stores 55 afterward, and the former 55 allocation is destroyed.</p></details></div>
+<div className="exercise"><h3>Only a left child</h3><p>Erase root 50 from custom 50,25. Is a parent pointer needed?</p><details><summary>Reveal reasoning</summary><p>No. slot addresses root_. replacement is 25, so *slot = replacement makes 25 the root before 50 is deleted.</p></details></div>
+<div className="exercise"><h3>Unlink is not delete</h3><p>Stop after erase.bypass and before delete. Is victim's lifetime over?</p><details><summary>Reveal reasoning</summary><p>No. It is detached but still live. The saved victim observer remains valid until delete. After destruction, its former fields are unavailable even if the illustrative address is still drawn.</p></details></div>
+
+</Section>
+
+<Section id="summary" number="13" title="Preserve survivors before ending lifetime." kicker="CHAPTER SUMMARY">
+
+<div className="summary-panel"><h3>Every assignment has one job.</h3><ul><li>Slot search identifies an owning field without inventing parent storage.</li><li>Leaf and one-child deletion bypass the target before delete.</li><li>Two-child deletion copies the successor key and preserves its right subtree.</li><li>Iterative clear handles deep ownership without recursive destruction.</li></ul><button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete ✓</button></div>
+<ChapterPagination number="13" />
+
+</Section>

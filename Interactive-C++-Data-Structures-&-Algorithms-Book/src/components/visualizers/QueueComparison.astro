@@ -1,0 +1,19 @@
+<div class="queue-comparison" data-queue-comparison>
+  <div class="operation-form"><label>Access policy<select data-policy><option value="queue">Queue — FIFO</option><option value="deque">Deque — both ends</option></select></label><label>Attempt an operation<select data-attempt><option value="push-back">pushBack / enqueue</option><option value="pop-front">popFront / dequeue</option><option value="push-front">pushFront</option><option value="pop-back">popBack</option></select></label><label>Number of live values <input type="range" min="0" max="1024" value="32" data-size /></label></div>
+  <output data-comparison aria-live="polite"></output>
+  <p class="fine-print">Bounded work model: 0–1024 values, with sufficient capacity for insertion. Counts describe element shifts, not CPU time. The source lab uses five slots. Policy determines which operations exist; storage determines their cost.</p>
+</div>
+<script>
+  import { queueWork } from '../../visualizers/queue/model';
+  document.querySelectorAll<HTMLElement>('[data-queue-comparison]').forEach(root => {
+    const update = () => {
+      const policy = root.querySelector<HTMLSelectElement>('[data-policy]')!.value;
+      const op = root.querySelector<HTMLSelectElement>('[data-attempt]')!.value as 'push-front' | 'pop-front' | 'push-back' | 'pop-back';
+      const n = Number(root.querySelector<HTMLInputElement>('[data-size]')!.value), work = queueWork(n, op);
+      const allowed = policy === 'deque' || op === 'push-back' || op === 'pop-front';
+      root.querySelector('[data-comparison]')!.innerHTML = `<p><strong>${allowed ? 'Allowed' : 'Not exposed by Queue'}: ${op}</strong> · ${n} members. ${!allowed ? 'Queue exposes enqueue at back and dequeue at front; the deque-only action is unavailable.' : n === 0 && op.startsWith('pop') ? 'Underflow: all checked implementations reject removal.' : `Naive array: ${work.shifts} element shifts. Circular storage: 0 shifts.`}</p><div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable queue and deque comparison"><table><caption>Access, storage, and workload</caption><thead><tr><th>Property</th><th>Queue</th><th>Deque</th></tr></thead><tbody><tr><th>Allowed changes</th><td>enqueue back; dequeue front</td><td>push/pop at either end</td></tr><tr><th>Ordering</th><td>FIFO by construction</td><td>FIFO only when choosing the queue subset</td></tr><tr><th>Applications</th><td>BFS, events, work pipelines</td><td>Sliding-window candidates, work at both ends</td></tr><tr><th>Possible storage</th><td>Ring array or linked head/tail</td><td>Circular array or doubly linked nodes</td></tr></tbody></table></div><div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable endpoint implementation comparison"><table><caption>${op}: implementation changes cost, not policy</caption><thead><tr><th>Implementation</th><th>Work</th><th>Memory tradeoff</th></tr></thead><tbody><tr><td>Naive contiguous array</td><td>${op.endsWith('front') ? 'O(n)' : 'O(1)'}; ${work.shifts} shifts</td><td>Adjacent ints; fixed spare capacity</td></tr><tr><td>Circular array</td><td>O(1); no element shifts</td><td>Adjacent slots; wrap indices; fixed capacity here</td></tr><tr><td>Doubly linked deque</td><td>O(1) endpoint links, plus allocation/release costs</td><td>Two pointers per node; separate allocations</td></tr></tbody></table></div><p>Drain ${n} elements with naive dequeue: <strong>${work.drainShifts} shifts</strong> = n(n − 1)/2. Circular storage advances its head ${n} times.</p>`;
+    };
+    root.addEventListener('input', update); update();
+  });
+</script>
+<style>.queue-comparison {border-block:1px solid var(--border);padding-block:1rem;} .operation-form {display:flex;flex-wrap:wrap;gap:1rem;} label {display:grid;gap:.4rem;flex:1;min-width:12rem;} input[type=range] {width:100%;} output {display:block;}</style>

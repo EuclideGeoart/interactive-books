@@ -1,0 +1,11 @@
+---
+import TraceLab from './TraceLab.astro';
+import source from '../../../cpp/chapter-04/Pool.hpp?raw';
+const operations = [
+  ['allocate', 'Allocate storage'], ['construct', 'Construct object'], ['destroy', 'Destroy object'], ['deallocate', 'Return storage'], ['cycle', 'Full lifetime'], ['reuse', 'Reuse address'], ['exhaustion', 'Exhaust pool'], ['double-free', 'Double return'], ['use-after-destroy', 'Read dead object'], ['foreign', 'Foreign address'], ['live-return', 'Return live object'], ['failure', 'Constructor throws'], ['reorder', 'Reorder free list'],
+].map(([id, label]) => ({ id: id!, label: label! }));
+---
+<TraceLab id="pool-lab" chapter="pool" source={source} fileName="Pool.hpp" operations={operations} regions={['allocate', 'construct', 'destroy', 'deallocate', 'read', 'create', 'validate']}>
+  <label>Pool slots<select name="capacity"><option>1</option><option>2</option><option selected>4</option><option>6</option></select></label>
+  <label>Object value<input name="value" type="number" value="42" min="-999" max="999" step="1" required /></label>
+</TraceLab>

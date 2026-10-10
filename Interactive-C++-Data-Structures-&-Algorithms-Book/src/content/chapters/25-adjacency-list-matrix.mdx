@@ -1,0 +1,127 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import Section from '../../components/book/Section.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import GraphComplexity from '../../components/visualizers/GraphComplexity.astro';
+import GraphStructureLab from '../../components/visualizers/GraphStructureLab.astro';
+import GraphStructureBreakIt from '../../components/visualizers/GraphStructureBreakIt.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-25/Representations.hpp?raw';
+import main from '../../../cpp/chapter-25/main.cpp?raw';
+
+<ChapterHero number="25" title="Adjacency List vs Adjacency Matrix" overline="ONE GRAPH. THREE CONSISTENT VIEWS." description="Select an edge or matrix cell and follow the same relationship through the graph, adjacency rows, and matrix. Compare actual neighbor reads." chain="A: B,C · B: A,D,E · C: A · D: B · E: B" facts={[["LIST", "O(V + E) storage"], ["MATRIX", "O(V²) storage"], ["LOOKUP", "O(deg u) vs O(1)"]]} />
+
+<Section id="mental-model" number="01" title="Every view derives from one graph." kicker="VISUAL MENTAL MODEL">
+
+<h3>Inspect the graph and its stored relationships.</h3>
+
+<StructurePreview chapter="graph-representations" id="graph-representations-mental" operation="inspect" viewLabels={{logical:"Graph view",memory:"Storage view"}} diagramNote="Select a vertex or edge to inspect its identity and relationships. Positions remain stable throughout the trace." />
+
+The graph drawing, adjacency list, and adjacency matrix are displayed together. Select an edge, adjacency entry, or matrix cell to follow its endpoints across representations. A matrix cell that is absent still denotes a meaningful endpoint pair; selecting it must not create an edge.
+
+For an undirected graph the matrix is symmetric. Directed edges produce only their own ordered cell. A self-loop occupies a diagonal cell. Isolated vertices still have a list row and an all-empty matrix row.
+
+</Section>
+
+<Section id="intuition" number="02" title="A row of neighbors or a row of possibilities." kicker="THE INTUITION">
+
+The adjacency list stores the neighbors that exist. The matrix reserves one position for every possible destination, whether an edge exists or not. For sparse graphs most matrix positions are empty; a dense graph makes that overhead less wasteful.
+
+The visual matrix uses edge presence separately from weight. A zero-weight edge is present, not an empty cell. Neighbor iteration in a matrix proceeds by ascending destination ID, while this adjacency list preserves edge insertion order. The neighbor sets agree even when their output orders differ.
+
+</Section>
+
+<Section id="memory" number="03" title="Nested vectors are a logical layout." kicker="STRUCTURE / MEMORY LAYOUT">
+
+The canonical helper returns `vector<vector<Neighbor>>`; each inner vector contains destination ID, original edge ID, and weight. An undirected non-loop contributes two entries with the same original edge ID. A loop is inserted once.
+
+The canonical matrix experiment builds nested boolean rows. `vector<bool>` is a specialized compact representation, so the display is not a byte-level diagram of bool objects. It teaches rows and columns and the cost of examining possible neighbors.
+
+</Section>
+
+<Section id="operations" number="04" title="Run both representations on the same source." kicker="INTERACTIVE OPERATIONS">
+
+<GraphStructureLab kind="graph-representations" />
+
+Inspect neighbors reads only actual adjacency entries in input order. Scan matrix row examines every destination, including absent cells. Choose Dense four vertices, then Single vertex, and compare the read counter. Custom edges let you change density without introducing a separate matrix input.
+
+The default A row contains B and C; its list scan uses two reads while its matrix scan uses five. In a custom graph `0,2;0,1`, the list produces C,B and the matrix produces B,C. That difference is ordering, not inconsistent topology.
+
+</Section>
+
+<Section id="implementation" number="05" title="Derive the secondary representation." kicker="C++ IMPLEMENTATION">
+
+The standalone header includes validation, graph records, adjacency construction, and list/matrix neighbor inspection. It allocates the matrix once, fills present cells from edges, and scans the requested row. No second mutable graph is maintained.
+
+A weighted application could store an optional weight per cell or separate presence and weight arrays. Using numeric zero alone as an absence sentinel would lose real zero-weight edges. This chapter’s matrix remains a presence matrix because the operation asks only who is adjacent.
+
+<CanonicalSource source={source} main={main} fileName="Representations.hpp" chapter="25" />
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Count an empty matrix cell as real work." kicker="CODE + VISUALIZATION TRACE">
+
+The highlighted matrix scan statement increments the read counter before checking the cell. Only a present cell appends a neighbor. In the list variant every read names an existing edge, which is highlighted with its original edge ID.
+
+Step backward through an append: the output shrinks but the underlying graph does not change. Representation selection remains inspection, independent of the algorithm’s active edge. All snapshots are stored values, so reverse playback restores exact earlier counters and output.
+
+</Section>
+
+<Section id="invariants" number="07" title="Membership must agree in every representation." kicker="INVARIANTS">
+
+For each ordered pair (u,v), a matrix cell is present exactly when the derived adjacency row contains v. For undirected graphs the reverse cell is also present; self-loops remain one diagonal entry. A directed pair is not automatically symmetric.
+
+Unique pairs are enforced at graph validation, so this matrix does not need to choose among parallel weights. Numeric IDs must refer to existing labels; label spelling is presentation rather than a matrix coordinate.
+
+</Section>
+
+<Section id="complexity" number="08" title="Lookup and iteration favor different layouts." kicker="COMPLEXITY EXPLORER">
+
+<GraphComplexity kind="representations" />
+
+Use the operation tabs, graph presets, source ID, and read counter as the complexity explorer. A list uses O(V + E) space and scans neighbors in O(deg(u)); a direct edge-membership lookup in an unsorted row takes O(deg(u)). A matrix uses O(V²) space and gives O(1) membership lookup, but finding all neighbors requires O(V) cell reads.
+
+A complete traversal over adjacency lists costs O(V + E); scanning every matrix row costs O(V²). These bounds concern prepared representations. The experiment rebuilds its matrix in O(V² + E), and the bounded teaching validator adds O(V² + E²) setup, neither hidden inside the displayed row-read count.
+
+</Section>
+
+<Section id="break-it" number="09" title="An absent cell is not a zero-cost edge." kicker="COMMON MISTAKES / BREAK-IT MODE">
+
+The controlled fault illustrates two mistakes: copying directed entries into reverse cells and treating weight zero as absence. Both change the graph being represented. Use a custom zero-weight edge and inspect its endpoints to confirm that the edge remains present.
+
+<GraphStructureBreakIt kind="representation" />
+
+</Section>
+
+<Section id="analogy" number="10" title="A contact list versus a seating chart." kicker="REAL-WORLD ANALOGY">
+
+A contact list records only actual contacts. A seating chart reserves a square for every possible pair. Lists are economical when few pairs connect; a chart makes direct pair lookup simple. The analogy concerns storage and access, not how the graph was discovered.
+
+</Section>
+
+<Section id="engineering" number="11" title="Choose from the operations you actually perform." kicker="ENGINEERING INSIGHT">
+
+A sparse relation engine that repeatedly walks successors naturally fits adjacency lists. Small dense relations with frequent membership tests may favor a matrix. Packed bit matrices can improve constants for set operations, but that is a different representation with its own API.
+
+This book keeps the authoritative edge list for editing and derives teaching views. A production algorithm can retain its prepared adjacency structure across queries instead of rebuilding it for each experiment.
+
+</Section>
+
+<Section id="exercises" number="12" title="Separate set equality from traversal order." kicker="EXERCISES / CHALLENGES">
+
+Enter `0,3;0,1;0,2` on A,B,C,D. Predict list and matrix outputs before stepping. Then direct the graph and inspect D.
+
+Challenge: explain why a matrix row scan still performs V reads for an isolated vertex, while its list scan performs zero. Both are correct; the empty row contains different amounts of work in the two representations.
+
+</Section>
+
+<Section id="summary" number="13" title="Storage determines what scanning means." kicker="CHAPTER SUMMARY">
+
+The representations describe the same relationships but offer different space and access costs. Neither order implies a unique graph traversal. Chapter 26 builds a FIFO traversal using prepared adjacency entries.
+
+Continue the connections: <a href={`${import.meta.env.BASE_URL}chapters/24-graph-fundamentals/`}>Chapter 24 — Graph Fundamentals</a> · <a href={`${import.meta.env.BASE_URL}chapters/26-breadth-first-search/`}>Chapter 26 — Breadth-First Search</a>.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete ✓</button>
+<ChapterPagination number="25" />
+
+</Section>

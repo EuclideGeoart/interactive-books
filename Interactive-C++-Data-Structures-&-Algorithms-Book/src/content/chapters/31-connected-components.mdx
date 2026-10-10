@@ -1,0 +1,127 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import Section from '../../components/book/Section.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import GraphComplexity from '../../components/visualizers/GraphComplexity.astro';
+import GraphStructureLab from '../../components/visualizers/GraphStructureLab.astro';
+import GraphStructureBreakIt from '../../components/visualizers/GraphStructureBreakIt.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-31/Components.hpp?raw';
+import main from '../../../cpp/chapter-31/main.cpp?raw';
+
+<ChapterHero number="31" title="Connected Components" overline="WHEN ONE SEARCH ENDS, LOOK FOR AN UNSEEN SEED." description="Launch repeated searches over an undirected graph. Component IDs explain independent regions, including isolated vertices." chain="{A,B,C} · {D,E} · {F}" facts={[["SEEDS", "Ascending vertex IDs"], ["LABELS", "One component per vertex"], ["WORK", "O(V + E)"]]} />
+
+<Section id="mental-model" number="01" title="A component is a maximal reachable region." kicker="VISUAL MENTAL MODEL">
+
+<h3>Inspect the graph and its stored relationships.</h3>
+
+<StructurePreview chapter="graph-components" id="graph-components-mental" operation="components" viewLabels={{logical:"Graph view",memory:"Storage view"}} diagramNote="Select a vertex or edge to inspect its identity and relationships. Positions remain stable throughout the trace." />
+
+The default graph has A—B—C, D—E, and isolated F. No path crosses between those three groups. A connected component includes every vertex reachable within its region; it is not just any small connected subset.
+
+The component column begins unassigned. The first launch labels A,B,C with ID 0; the next labels D,E with ID 1; the final launch labels F with ID 2. These numeric labels are deterministic names, not mathematical rankings.
+
+</Section>
+
+<Section id="intuition" number="02" title="An outer loop completes the coverage proof." kicker="THE INTUITION">
+
+One BFS answers which vertices are reachable from one source. To partition the entire undirected graph, scan vertex IDs in ascending order. Whenever a vertex has no component ID, launch another BFS and assign the new ID to every vertex it discovers.
+
+The queue must empty before the next seed starts. A vertex already labeled by an earlier launch is skipped by the outer loop. An isolated vertex still starts and finishes its own one-vertex search.
+
+</Section>
+
+<Section id="memory" number="03" title="Component IDs are an array indexed by vertex." kicker="STRUCTURE / MEMORY LAYOUT">
+
+The native state stores component[v], color[v], predecessor[v], output, and the FIFO deque. Assigning a component copies an integer; it does not move vertex storage or create subgraphs. Output records processing order across all launches.
+
+A component root has no predecessor. Other vertices can record a discovery predecessor, giving one BFS tree per component. The union of those trees is a forest that explains coverage, but the original graph may contain additional cycle edges.
+
+</Section>
+
+<Section id="operations" number="04" title="Watch three launches, not one long queue." kicker="INTERACTIVE OPERATIONS">
+
+<GraphStructureLab kind="graph-components" />
+
+Load the default disconnected graph. Follow A’s queue until it is empty, then observe the launch at D and finally F. The Search launches counter is the number of components found so far. Component assignments appear before enqueueing.
+
+Try Empty, Single vertex, Self-loop, Dense, and Custom. This lab accepts undirected graphs only. Directed weak or strong components require a different explicitly chosen rule; the algorithm must not silently apply ordinary undirected component labels to directed reachability.
+
+</Section>
+
+<Section id="implementation" number="05" title="Assign on discovery and skip assigned seeds." kicker="C++ IMPLEMENTATION">
+
+The standalone header validates direction, constructs adjacency once, and repeats FIFO searches. The next component ID is the launch count before incrementing it. Assigning before enqueue prevents multiple incoming undirected paths from adding the same vertex twice.
+
+The empty graph has zero components. A graph with V isolated vertices has V components, even though it has no edge inspections. Standard containers own both persistent graph values and auxiliary arrays.
+
+<CanonicalSource source={source} main={main} fileName="Components.hpp" chapter="31" />
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="A new seed gets a new ID exactly once." kicker="CODE + VISUALIZATION TRACE">
+
+At a launch, active becomes the seed and the launch count increments. Assign sets the seed’s component and discovery color. Enqueue follows. Inside the search, every unassigned neighbor receives the same saved ID before it enters the queue.
+
+Already assigned neighbors still count as adjacency reads, but do not change component IDs. When the current queue drains, the outer scan continues from its next numeric seed; assigned vertices are skipped without another launch.
+
+</Section>
+
+<Section id="invariants" number="07" title="Component labels partition the vertices." kicker="INVARIANTS">
+
+Every completed vertex has exactly one nonnegative component ID. Every undirected edge has endpoints in the same final component. No vertex is scheduled twice. During a launch, an unassigned neighbor across a frontier edge is expected until its discovery step.
+
+At completion the queue is empty and the number of distinct component IDs equals the launch count. These are connectivity labels, not DSU parent pointers; Chapter 36 introduces a different structure for maintaining equivalence under unions.
+
+</Section>
+
+<Section id="complexity" number="08" title="Repeated launches do not multiply edge work." kicker="COMPLEXITY EXPLORER">
+
+<GraphComplexity kind="bfs" />
+
+Use Disconnected, Dense, and a custom graph containing only labels. The output counter reaches V, while the adjacency-read counter reaches twice the number of non-loop edges plus the number of loops. Search launches varies with connectivity, not with repeated full graph rescanning.
+
+After adjacency preparation, the outer scan contributes O(V), all inner searches together contribute O(V + E), and auxiliary arrays/queue use O(V). The bounded validator’s pairwise comparisons are setup. Trace snapshot storage is additional educational overhead.
+
+</Section>
+
+<Section id="break-it" number="09" title="Stopping after the first search misses vertices." kicker="COMMON MISTAKES / BREAK-IT MODE">
+
+The fault below demonstrates why a one-source traversal is not a component decomposition. Forgetting isolated vertices is particularly easy when a program builds its vertex set only from edge endpoints; this graph stores the label set explicitly.
+
+<GraphStructureBreakIt kind="components" />
+
+</Section>
+
+<Section id="analogy" number="10" title="Separate islands still belong to one map." kicker="REAL-WORLD ANALOGY">
+
+Road-connected islands form separate travel regions when there are no bridges or ferries between them. A tiny island with one settlement is still a region. The analogy assumes undirected connectivity; one-way transport requires the distinctions from Chapter 28.
+
+</Section>
+
+<Section id="engineering" number="11" title="Compute labels once for repeated static queries." kicker="ENGINEERING INSIGHT">
+
+For a fixed undirected graph, two vertices are connected exactly when their component IDs agree. After O(V + E) labeling, this query is O(1). Adding or removing edges can invalidate the partition, so an application must decide whether to recompute or use an appropriate dynamic structure.
+
+Union-Find in Chapter 36 efficiently supports merging components when edges are added. It does not directly support arbitrary edge deletion or reproduce a traversal path.
+
+</Section>
+
+<Section id="exercises" number="12" title="Count components before counting edges." kicker="EXERCISES / CHALLENGES">
+
+With labels A,B,C,D and one edge A—B, how many components exist? Three: `{A,B}`, `{C}`, and `{D}`. What changes after adding C—D? Two components remain.
+
+Challenge: add a self-loop to isolated C. Does the component count change? No; the loop does not create a path to another vertex. It changes cycle status, which Chapter 32 treats separately.
+
+</Section>
+
+<Section id="summary" number="13" title="Coverage needs a launch from every unseen region." kicker="CHAPTER SUMMARY">
+
+The outer seed scan and inner traversal together partition all undirected vertices. Isolated vertices count, assignment occurs on discovery, and component IDs enable constant-time connectivity queries for the unchanged graph.
+
+Continue the connections: <a href={`${import.meta.env.BASE_URL}chapters/26-breadth-first-search/`}>Chapter 26 — Breadth-First Search</a> · <a href={`${import.meta.env.BASE_URL}chapters/36-union-find/`}>Chapter 36 — Union-Find</a>.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete ✓</button>
+<ChapterPagination number="31" />
+
+</Section>

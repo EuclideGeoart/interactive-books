@@ -1,0 +1,31 @@
+/* Memory chapters use book role tokens; routing and lifetime semantics stay local. */
+.sm-scene { min-width: 0; padding: 12px; font: 12px/1.6 var(--mono); }
+.sm-scene p { overflow-wrap: anywhere; }
+.sm-svg { display: block; max-width: none; }
+.sm-label { fill: var(--ink); font: 12px var(--mono); }
+.sm-small { fill: var(--ink); font: 10px var(--mono); }
+.sm-error { fill: var(--red); font: 10px var(--mono); }
+.sm-slot, .sm-byte { cursor: pointer; }
+.sm-slot rect, .sm-byte rect { stroke: var(--border-strong); fill: var(--surface); }
+.sm-free rect { fill: var(--surface-subtle); }
+.sm-reserved rect { fill: var(--pointer-fill); stroke: var(--pointer); }
+.sm-live rect { fill: var(--data-fill); stroke: var(--green); }
+.sm-destroyed rect { fill: var(--surface-subtle); stroke-dasharray: 5 3; }
+.sm-padding rect { fill: var(--amber-fill); stroke: var(--amber); }
+.sm-active rect { stroke: var(--amber); stroke-width: 2; }
+.sm-slot.selected rect, .sm-slot:focus rect, .sm-byte.selected rect, .sm-byte:focus rect { stroke: var(--ink); stroke-width: 3; }
+.sm-slot:focus, .sm-byte:focus { outline: none; }
+.sm-bump { stroke: var(--amber); stroke-width: 3; }
+.sm-result { background: var(--pointer-fill); padding: 10px; border-left: 3px solid var(--pointer); }
+.sm-result.sm-broken { background: var(--red-fill); border-color: var(--red); }
+.sm-table-scroll { max-width: 100%; overflow: auto; overscroll-behavior: contain; }
+.sm-scene table { width: 100%; border-collapse: collapse; font: 11px/1.6 var(--mono); }
+.sm-scene caption { text-align: left; padding: 8px 0; }
+.sm-scene th, .sm-scene td { border: 1px solid var(--border); text-align: left; padding: 8px; white-space: nowrap; }
+.sm-scene button { font: inherit; padding: 5px 8px; min-height: 36px; margin: 3px 2px; }
+.sm-scene button[aria-pressed='true'] { outline: 2px solid var(--pointer); }
+[data-systems-memory-lab] .lab-workspace { align-items: start; }
+[data-systems-memory-lab] .svg-scroll { min-width: 0; max-height: 720px; overflow: auto; }
+[data-systems-memory-preview] { border: 1px solid var(--border); border-radius: 6px; background: var(--surface); min-width: 0; }
+[data-systems-memory-preview] .svg-scroll { min-width: 0; max-height: 580px; overflow: auto; }
+@media (max-width: 560px) { .sm-scene { padding: 8px; } .sm-scene button { min-height: 44px; } }

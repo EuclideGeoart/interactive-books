@@ -1,0 +1,113 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import Callout from '../../components/book/Callout.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import AvlLab from '../../components/visualizers/AvlLab.astro';
+import TreeComplexity from '../../components/visualizers/TreeComplexity.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-14/AvlTree.hpp?raw';
+import main from '../../../cpp/chapter-14/main.cpp?raw';
+
+<ChapterHero number="14" title="AVL trees" overline="HEIGHT IS A LOCAL PROMISE" description="An ordered tree can repair its own shape. Follow the exact links, temporary pointers and height writes that turn a long path into a short one." chain="30 ← 20 ← 10 · rotate right · 10 ← 20 → 30" facts={[["Search / insert / erase", "O(log n)"], ["Balance factor", "height(left) − height(right)"], ["Null / leaf height", "0 / 1"], ["Duplicate keys", "Rejected"]]} />
+
+<Section id="mental-model" number="01" title="Move a subtree root. Keep every ordered key." kicker="VISUAL MENTAL MODEL">
+
+Start with 30 above its left child 20. Inserting 10 makes a left-left chain: the root's left subtree is two levels taller than its right. A right rotation promotes 20, leaves 10 on its left, and puts 30 on its right. The node allocations keep their identities; only links and stored heights change.
+
+<StructurePreview chapter="avl" id="avl-preview" operation="insert" inputs={{values:'30,20',value:'10'}} />
+
+Select a node to compare its actual left/right links with its stored height. The inspector labels the balance factor as derived: the canonical node stores height, not a separate balance member. Memory view preserves the same allocations while removing the suggestion that nearby nodes must occupy nearby addresses.
+
+</Section>
+<Section id="intuition" number="02" title="A small local imbalance can lengthen every future search." kicker="THE INTUITION">
+
+BST ordering alone does not limit height. AVL adds a promise at every node: the absolute difference between its child-subtree heights is at most one. After an insertion or deletion, only ancestors of the changed position can need new heights or rotations. Recursive return follows exactly that ancestor path.
+
+Four names describe the shape around an unbalanced node, not four different ordering rules. LL needs a right rotation; RR needs a left rotation. LR first rotates the left child left, then the node right. RL first rotates the right child right, then the node left. Deletion chooses the repair from current child balance factors, including zero, rather than from the deleted key's old direction.
+
+</Section>
+<Section id="memory" number="03" title="Two owning links, one cached height." kicker="STRUCTURE / MEMORY LAYOUT">
+
+Each Node contains an integer key, left and right child pointers, and an integer height. The tree owns every reachable node through its root and child relationships. There is no parent pointer. Recursion remembers the return path, and a `Node*&` parameter names the caller's root or child-pointer slot so repair can replace that exact slot.
+
+A null subtree has height zero; a leaf has height one. Height is cached information, so rewiring makes it stale until the corresponding assignment recomputes it. A rotation must refresh the old root before the pivot because the pivot's new height depends on the old root's updated height. The call-stack display and temporary references describe active helper scopes; they are not extra fields in Node.
+
+</Section>
+<Section id="operations" number="04" title="Try all four repairs, then delete through the same tree." kicker="INTERACTIVE OPERATIONS">
+
+<AvlLab />
+
+Use starting order `30,20` with key `10` for LL, `10,20` with `30` for RR, `30,10` with `20` for LR, and `10,30` with `20` for RL. To observe a non-null transfer subtree, start `40,20,50,10,30` and insert `5`. That right rotation transfers node 30 from the pivot's right to the old root's left.
+
+Search compares the requested key along one ordered path. Erase covers absent keys, leaves, one-child bypass and two-child successor-key replacement, then repairs ancestors. Empty input builds an empty tree. A repeated key is rejected; these chapters consistently use set semantics. The lab accepts up to 24 starting keys and integer values from −999 to 999. It rebuilds the stated initial order for each loaded operation rather than silently accumulating earlier experiments.
+
+</Section>
+<Section id="implementation" number="05" title="Publish the rotated root through its caller's slot." kicker="CANONICAL C++20">
+
+The complete integer-set implementation provides insert, contains, erase, values, empty, clear and valid. The destructor recursively destroys owned nodes. Copy and move are explicitly deleted: sharing owning raw links would double-delete, and this teaching class chooses no transfer API. Native keys may use the full int domain; invariant bounds use wider integers so extreme keys remain valid.
+
+Allocation happens before a new leaf is published. If allocation throws, ancestors retain their original links. The remaining integer and pointer assignments do not allocate. Balanced height bounds recursive search, updates and destruction to O(log n) stack depth; exporting all values still allocates O(n) output storage.
+
+<CanonicalSource source={source} main={main} fileName="AvlTree.hpp" chapter="14" />
+
+</Section>
+<Section id="pointer-trace" number="06" title="Transfer first. Attach second. Publish last." kicker="CODE + VISUALIZATION POINTER TRACE">
+
+A right rotation saves x's left child as y, then saves y's right child as transfer. It assigns x.left to transfer before assigning y.right to x. At this moment the caller still points at x: y can be detached from the caller's root path while a local pointer keeps its identity available. This is why rendering only the final reachable tree would conceal real state.
+
+Next, two separate statements recompute x.height and y.height. Returning y does not itself change the caller's link. The caller's final slot assignment publishes the new subtree root. Double rotations repeat this sequence, publishing the child repair before rotating the larger subtree. The trace shows every tagged statement in this order, plus scope-return steps that remove temporary references and restore the caller's recursion frame.
+
+Deleting a two-child node copies only its successor's key, then removes the successor allocation. Selecting the original node before and after shows that its address remains stable while its key changes. An ended allocation is a tombstone with unreadable fields; erase does not leave a live node behind.
+
+</Section>
+<Section id="invariants" number="07" title="Ordering, ownership, heights and balance must agree." kicker="INVARIANTS">
+
+| Settled rule | What it prevents |
+| --- | --- |
+| Every live node is reachable exactly once | Lost subtrees, cycles, shared owning children |
+| Every left descendant is smaller; every right descendant is larger | Local-looking but globally incorrect ordering |
+| Stored height equals one plus the larger child height | Future repairs based on stale metadata |
+| Every balance factor is −1, 0 or 1 | A path degenerating toward linear height |
+
+During a statement-level rotation, reachability and cached heights may temporarily fail these settled rules. The live panel marks those as pending until the caller finishes repair. A failed rule at the operation boundary is an error, never an accepted AVL variant. The checker bounds walks with visited identities so even a broken cycle cannot hang the inspector.
+
+</Section>
+<Section id="complexity" number="08" title="The shortest possible AVL tree grows exponentially with height." kicker="COMPLEXITY EXPLORER">
+
+<TreeComplexity kind="avl" />
+
+The minimum node count at height h follows one node plus the minimum counts at heights h−1 and h−2. That recurrence grows exponentially, so height grows logarithmically with n. A rotation performs a constant number of link and height writes; finding and repairing the ancestor path costs O(log n). Deletion can rebalance several ancestors. Compare the explorer's bound with the lab's actual comparisons and field writes; a theoretical height bound is not a measured timing result.
+
+</Section>
+<Section id="break-it" number="09" title="A sorted traversal does not prove the heights are correct." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+Pause immediately after a link transfer and inspect the pending rules. Predict the next write before stepping. Omitting the saved transfer would lose an entire ordered interval. Updating the pivot height first would read the old root's stale metadata. Rotating only once for an LR or RL shape would leave the subtree unbalanced. Returning y without assigning the caller's slot would fail to publish the repair.
+
+For a controlled failure exercise, copy the canonical header and omit one height update. Its `valid()` check rejects the stale cache even if `values()` remains sorted. The browser runs only the correct algorithm; native and semantic tests separately inject corrupted heights to test the checker. Empty erase, missing search, duplicate insertion, deleting the sole node and extreme int values are all defined cases.
+
+</Section>
+<Section id="analogy" number="10" title="Rebalance a directory without losing any folders." kicker="REAL-WORLD ANALOGY">
+
+Imagine rearranging a filing hierarchy so no branch becomes much deeper than its sibling. The folder identities stay the same, and their sorted contents stay in order; only which folder introduces a subtree changes. The middle interval must be transferred to its new owner before the old relationship is forgotten.
+
+</Section>
+<Section id="engineering" number="11" title="Choose strict height control when lookup paths matter." kicker="ENGINEERING INSIGHT">
+
+AVL trees provide a worst-case logarithmic ordered index with relatively strict height control. That can suit read-heavy ordered lookup. The cost includes cached heights, pointer chasing, node allocation and update repairs. A contiguous sorted array can still outperform it for a mostly static small dataset; an ordinary library ordered container may use another balancing rule. The structure solves path length, not cache locality, thread safety or iterator invalidation policy.
+
+</Section>
+<Section id="exercises" number="12" title="Prove the transfer, then the cache." kicker="EXERCISES / CHALLENGES">
+
+1. Execute LL, RR, LR and RL. Name every subtree-root publication.
+2. Use the non-null transfer example. Explain why every key in that subtree fits its new interval.
+3. Reverse over the two height writes. Which cached value is stale at each snapshot?
+4. Erase a node with two children. Which allocation dies, and which key changes in place?
+5. Insert sorted values, then delete them in another order. Check all invariants after each operation.
+
+</Section>
+<Section id="summary" number="13" title="Local rotations preserve global order." kicker="CHAPTER SUMMARY">
+
+<div className="summary-panel"><h3>Height metadata earns its storage.</h3><ul><li>AVL adds a local balance bound to BST ordering.</li><li>Rotations preserve node identities and transfer the middle subtree explicitly.</li><li>The caller publishes the new root after the helper returns.</li><li>Cached heights update from children toward ancestors.</li><li>Insert, search and erase remain O(log n).</li></ul><button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button></div>
+<ChapterPagination number="14" />
+</Section>

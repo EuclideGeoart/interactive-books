@@ -1,0 +1,21 @@
+<div class="heap-break" data-heap-break>
+  <div class="break-controls"><label>Deliberate algorithm error<select data-fault><option value="early">Stop sift-up one level too early</option><option value="child">Choose the wrong child in sift-down</option><option value="parent">Use the wrong parent formula</option></select></label><button type="button" class="button button-primary" data-break>Run broken operation</button><button type="button" class="button" data-restore>Restore valid heap</button></div>
+  <p data-verdict aria-live="polite">The intact max heap is valid.</p>
+  <div class="svg-scroll" tabindex="0" role="region" aria-label="Controlled heap fault diagram" data-break-svg></div>
+  <ul data-rules></ul>
+  <p class="fine-print">These are simulated wrong algorithms, separate from canonical execution. Both views still share the same array: an array-only swap with a stale tree cannot occur in this renderer.</p>
+</div>
+<script>
+  import { heapFault, heapState, heapInvariants } from '../../visualizers/binary-heap/model';
+  import { drawHeap } from '../../visualizers/binary-heap/adapter';
+  import { escapeHtml } from './primitives';
+  document.querySelectorAll<HTMLElement>('[data-heap-break]').forEach(root => {
+    let state = heapState(), selected: string | null = null;
+    const render = () => { root.querySelector('[data-break-svg]')!.innerHTML = drawHeap(state, 'heap-break', 'logical', selected); root.querySelector('[data-rules]')!.innerHTML = heapInvariants(state,true).map(r => `<li class="invariant-${r.status}">${r.status==='fail'?'✕':'✓'} ${escapeHtml(r.name)} — ${escapeHtml(r.detail)}</li>`).join(''); };
+    root.querySelector('[data-break]')!.addEventListener('click', () => { const fault = heapFault(root.querySelector<HTMLSelectElement>('[data-fault]')!.value as 'early'|'child'|'parent'); state = fault.state; selected = null; root.querySelector('[data-verdict]')!.textContent = fault.explanation; render(); });
+    root.querySelector('[data-restore]')!.addEventListener('click', () => { state = heapState(); selected = null; root.querySelector('[data-verdict]')!.textContent = '✓ Valid max heap restored.'; render(); });
+    const select = (target: EventTarget | null) => { const node = target instanceof Element ? target.closest<HTMLElement>('[data-node]') : null; if (!node) return; selected = node.dataset.node!; const view = node.dataset.heapView; render(); root.querySelector<HTMLElement>(`[data-node="${selected}"][data-heap-view="${view}"]`)?.focus({preventScroll:true}); };
+    root.addEventListener('click', e => select(e.target)); root.addEventListener('keydown', e => { if (['Enter',' '].includes(e.key) && (e.target as Element).matches('[data-node]')) {e.preventDefault();select(e.target);} }); render();
+  });
+</script>
+<style>.heap-break{border-block:1px solid var(--border);padding-block:1rem;min-width:0}.break-controls{display:flex;flex-wrap:wrap;gap:1rem;align-items:end}label{display:grid;gap:.5rem;max-width:100%}select{max-width:100%}:global(.heap-break .invariant-fail){color:var(--red)}</style>

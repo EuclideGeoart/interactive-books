@@ -1,0 +1,31 @@
+{
+  "id": "./",
+  "name": "The Interactive C++ Book",
+  "short_name": "C++ DSA",
+  "description": "An interactive, visual guide to C++ data structures and algorithms.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#142b40",
+  "theme_color": "#142b40",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

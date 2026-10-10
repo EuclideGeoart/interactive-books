@@ -1,0 +1,18 @@
+<div class="stack-comparison" data-stack-comparison>
+  <div class="operation-form"><label>Live values <input type="range" min="0" max="1024" value="32" data-size /></label><label>Operation <select data-work><option value="push">Push</option><option value="pop">Pop</option><option value="clear">Clear</option></select></label></div>
+  <p class="fine-print">A capacity-sufficient fixed array versus individually allocated nodes. The trace lab uses capacity 5; this work model uses capacity 1025. Illustrative ABI: int = 4 bytes, pointer = 8 bytes, aligned Node = 16 bytes. Allocator metadata excluded.</p>
+  <output aria-live="polite" data-comparison></output>
+</div>
+<script>
+  import { stackWork } from '../../visualizers/stack/comparison';
+  document.querySelectorAll<HTMLElement>('[data-stack-comparison]').forEach(root => {
+    const size = root.querySelector<HTMLInputElement>('[data-size]')!;
+    const op = root.querySelector<HTMLSelectElement>('[data-work]')!;
+    const update = () => {
+      const n = Number(size.value), work = stackWork(n, op.value as 'push' | 'pop' | 'clear');
+      root.querySelector('[data-comparison]')!.innerHTML = `<div class="table-scroll"><table><caption>${n} live values · ${op.value}</caption><thead><tr><th>Measured model quantity</th><th>Fixed array</th><th>Linked nodes</th></tr></thead><tbody><tr><td>Layout</td><td>${n} adjacent int slots</td><td>${n} separate nodes connected by next</td></tr><tr><td>Reserved payload storage</td><td>4100 bytes (1025 slots)</td><td>${n * 16} bytes, excluding allocator metadata</td></tr><tr><td>Pointer fields in nodes</td><td>0 bytes</td><td>${n * 8} bytes</td></tr><tr><td>Assignments during operation</td><td>${work.arrayAssignments}</td><td>${work.linkedAssignments}</td></tr><tr><td>New allocations during operation</td><td>0</td><td>${work.linkedAllocations}</td></tr><tr><td>Deallocations during operation</td><td>0</td><td>${work.linkedReleases}</td></tr><tr><td>Time model</td><td>O(1)</td><td>${op.value === 'clear' ? 'O(n)' : 'O(1), excluding allocator variability'}</td></tr></tbody></table></div>`;
+    };
+    root.addEventListener('input', update); update();
+  });
+</script>
+<style>.stack-comparison {border-block:1px solid var(--border);padding-block:1rem;} output {display:block;} input[type=range] {width:100%;} .operation-form {display:flex;flex-wrap:wrap;gap:1rem;} label {display:grid;gap:.4rem;flex:1;min-width:12rem;}</style>

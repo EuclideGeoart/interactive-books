@@ -1,0 +1,19 @@
+---
+interface Props { chapter:string }
+const {chapter}=Astro.props;
+const search=chapter==='37'||chapter==='38';
+---
+<div class="sorting-complexity" data-sorting-complexity={chapter}>
+  <h3>Count the work on a small input.</h3>
+  <p>These counts execute the same deterministic algorithms as the lab. They describe algorithmic operations, not wall-clock benchmarks. Snapshot copies, validation and rendering are excluded.</p>
+  <form>
+    <label>Records n<input type="number" name="size" min="0" max="16" value="8" required /></label>
+    <label hidden={chapter==='38'||chapter==='42'}>Input order<select name="shape"><option value="scrambled">Mixed / balanced last pivots</option><option value="sorted">Already sorted</option><option value="reverse">Reverse sorted</option><option value="equal">All equal</option><option value="nearly">Nearly sorted</option></select></label>
+    {search && <label>Target<select name="target"><option value="missing">Missing</option><option value="first">First record</option><option value="middle">Middle record</option><option value="last">Last record</option></select></label>}
+    {chapter==='44' && <label>Key bound<select name="key-bound"><option value="9">0…9 · 10 buckets</option><option value="31">0…31 · 32 buckets</option><option value="99">0…99 · 100 buckets</option></select></label>}
+    <button type="submit" class="button">Measure operations</button>
+  </form>
+  <output aria-live="polite" data-work-output></output>
+  <p class="fine-print">Comparisons count key tests. A swap counts two array writes; a shift is one write. Temporary writes include buffer/count-array assignments. Pass and recursion meanings follow the selected algorithm.</p>
+</div>
+<script>import '../../scripts/sorting-complexity';</script>

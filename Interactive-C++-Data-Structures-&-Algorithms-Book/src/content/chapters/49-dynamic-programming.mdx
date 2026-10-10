@@ -1,0 +1,120 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import TechniquePreview from '../../components/visualizers/TechniquePreview.astro';
+import TechniqueLab from '../../components/visualizers/TechniqueLab.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-49/DynamicProgramming.hpp?raw';
+import main from '../../../cpp/chapter-49/main.cpp?raw';
+
+<ChapterHero number="49" title="Dynamic programming" part="PART VII / ALGORITHMIC TECHNIQUES" overline="SOLVE EACH EQUIVALENT SUBPROBLEM ONCE" description="Dynamic programming defines reusable states and evaluates their dependencies, retaining the best solution instead of committing to one unproved local choice." chain="define state → derive recurrence → seed base → evaluate dependencies" facts={[["Mechanics", "Fibonacci tree becomes a DAG"], ["Optimization", "Minimum coins for an amount"], ["Recurrence", "Best smaller count + one coin"], ["Core cost", "States × denominations"]]} />
+
+<Section id="mental-model" number="01" title="Different calls can ask the same question." kicker="VISUAL MENTAL MODEL">
+
+F(5) asks for F(4) and F(3); F(4) asks for F(3) again. The invocation tree has distinct call identities, but those two F(3) calls describe an equivalent subproblem. Collapse invocations with equal arguments into one state. The resulting directed acyclic graph records which values depend on which others.
+
+<TechniquePreview kind="dynamic-programming" />
+
+The Fibonacci operation first executes and unwinds the actual small recursion tree, then explicitly changes representation to the shared-state DAG. Its arrows run from prerequisite to consumer. F(0) and F(1) are base states; there is no dependency from F(0) to F(1). Each later state depends on both predecessors. This short example explains reuse; the main problem below is optimization.
+
+</Section>
+
+<Section id="intuition" number="02" title="Ask what the last coin could have been." kicker="THE INTUITION">
+
+Let D(a) be the minimum number of coins whose sum is exactly amount a, using unlimited copies of the allowed denominations. D(0) = 0. For positive a, consider every coin c no larger than a: a reachable D(a − c) gives candidate D(a − c) + 1. Choose the smallest candidate. If no candidate exists, a is unreachable.
+
+Why is this optimal substructure? Remove the final coin from an optimal representation. If the remaining representation were not optimal for its smaller amount, replacing it with a better one would improve the original, contradicting optimality. Every possible final coin is considered, so the recurrence loses no optimum. Overlap appears when different candidate paths need the same smaller amount.
+
+</Section>
+
+<Section id="memory" number="03" title="Unknown is not a numeric optimum." kicker="STRUCTURE / STORAGE LAYOUT">
+
+An owned vector has one optional integer per amount, including zero. `std::nullopt` means not evaluated. A stored −1 means evaluated and proved unreachable. A stored nonnegative number is the minimum coin count. The UI prints those meanings explicitly; a blank or unknown cell must never be mistaken for a zero-cost solution.
+
+The loop keeps the current amount, dependency amount, candidate, and local best separately. A cell becomes resolved only after every denomination has been considered. The display table exposes these temporary values alongside clickable state cells. Frame and DAG identifiers are conceptual labels, not simulated C++ addresses.
+
+</Section>
+
+<Section id="operations" number="04" title="Move from repeated calls to a justified optimum." kicker="INTERACTIVE OPERATIONS">
+
+<TechniqueLab kind="dynamic-programming" />
+
+Start with Fibonacci n = 5. Before collapse, inspect both F(3) nodes and watch their separate returns. After collapse, inspect the single F(3) state and its incoming dependencies. The lab bounds n to 0 through 6 so the complete invocation tree remains inspectable in its scroll panel.
+
+Switch to Coins with `1,3,4`, target 6. D(6) considers D(5) + 1, D(3) + 1, and D(2) + 1. The candidates are 3, 2, and 3, so the result is two coins. Try `2,4`, target 7: odd amounts become unreachable. Target zero succeeds with zero coins, even with no denominations. Positive targets with no denominations are unreachable. Bounds match Chapter 48: target through 16 and at most six unique coins from 1 through 16.
+
+</Section>
+
+<Section id="implementation" number="05" title="The loop order follows the dependency graph." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="DynamicProgramming.hpp" chapter="49" />
+
+Coins are sorted ascending. An improvement must be strictly smaller, so equal-count candidates retain the first ascending denomination considered; this implementation returns counts, not a reconstructed list. Positive coins guarantee each dependency amount is smaller than its consumer. Amounts therefore fill from zero upward. Optional values are dereferenced only after their dependencies have been resolved.
+
+The standalone header owns all data and validates before observation. The optional observer sees const state during its callback and should be nonthrowing and nonreentrant. Copy that state to retain it. Bounded amounts keep counts and Fibonacci values comfortably within `int`; this demonstration does not claim unrestricted integer safety.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Compare before publishing a resolved state." kicker="CODE + VISUALIZATION TRACE">
+
+Base publishes D(0). Start selects an amount and resets local best. Check counts each denomination, including one that is too large. Candidate reads a resolved dependency and forms a possible count; unreachable dependencies produce no usable candidate. Improve changes only the local best. Write publishes that best after the loop. Done reads the target.
+
+During a half-computed amount the table cell stays unknown even when the local best is finite. Previous and Next reveal exactly when tentative information becomes final. Dependency arrows name actual state cells, and the inspector states whether a value is unknown, unreachable, or resolved.
+
+</Section>
+
+<Section id="invariants" number="07" title="Every published cell satisfies the recurrence." kicker="INVARIANTS">
+
+D(0) is zero. Before evaluating a positive amount, all smaller amounts are resolved. After a candidate check, local best is the minimum reachable count among candidates examined so far. After write, the cell equals the minimum over every allowed final coin, or unreachable if there were no reachable candidates.
+
+There are no cyclic dependencies because a positive coin strictly decreases the amount. Reusing an equivalent state is valid here because amount and the fixed coin set fully determine its answer. A limited coin supply would require a richer state; reusing these cells for that different problem would be incorrect.
+
+</Section>
+
+<Section id="complexity" number="08" title="Count states multiplied by candidate checks." kicker="COMPLEXITY EXPLORER">
+
+Use target 4, 8, then 16 with the same coins and compare the lab counters. The canonical loop checks every denomination for each positive amount, so checks equal target × coin count, including oversized coins. Writes equal target + 1. Core evaluation is O(Ak), initialization is O(A), denomination sorting is O(k log k), and retained table space is O(A + k).
+
+For an empty coin set, checks are zero but initialization and amount writes still cost O(A). For Fibonacci, compare 15 recursive calls at n = 5 with six DAG writes. Naive recursion grows exponentially; bottom-up Fibonacci performs O(n) work and this illustrative full table uses O(n) storage. Snapshot retention adds presentation cost beyond these algorithmic bounds.
+
+</Section>
+
+<Section id="break-it" number="09" title="Do not turn absence into a free solution." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+With coins `2,4`, target 7, predict what happens if unknown or unreachable cells are initialized to zero. Amount 1 would falsely look free, allowing an invented solution at amount 3. The actual trace keeps these states distinct. Adding one to the sentinel −1 without checking it would also manufacture a zero-count candidate.
+
+Try coins `3,4`, target 6 and compare Chapter 48's stuck greedy attempt with the DP answer. Try a denomination larger than the target and count its skipped transitions. Reason about filling amounts backward: D(6) would read unresolved dependencies. A zero coin would depend on the current cell itself, so the input validator rejects it.
+
+</Section>
+
+<Section id="analogy" number="10" title="A shared answer sheet replaces repeated homework." kicker="REAL-WORLD ANALOGY">
+
+Several students may need the same smaller calculation. A shared answer sheet labels each question, distinguishes unanswered from impossible, and publishes an answer only after its prerequisites are complete. Dynamic programming adds the mathematical discipline: the question labels must identify equivalent states, and the recurrence must cover every valid possibility.
+
+</Section>
+
+<Section id="engineering" number="11" title="Design state identity before choosing storage." kicker="ENGINEERING INSIGHT">
+
+The dependency viewpoint connects to <a href="../29-dags/">DAGs</a> and <a href="../30-topological-sort/">topological order</a>. Here increasing amount already provides a valid order, so a graph container and general topological-sort algorithm are unnecessary. In geometry or planning, a missing state parameter can cause incorrect reuse even if the cache itself works perfectly.
+
+<a href="../47-divide-and-conquer/">Divide and conquer</a> separates subproblems that need not overlap. <a href="../46-backtracking/">Backtracking</a> explores alternatives; DP exploits equivalence among repeated subproblems. The next chapter evaluates this exact coin recurrence on demand and compares it with the bottom-up loop.
+
+</Section>
+
+<Section id="exercises" number="12" title="Specify the state before filling the table." kicker="EXERCISES / CHALLENGES">
+
+1. Derive the three candidates for D(6) with coins 1, 3, and 4 before playing the trace.
+2. Explain why optimal substructure alone does not imply that repeated subproblems exist.
+3. Predict checks and writes for target 12 and four denominations, including an oversized one.
+4. Propose the extra state needed if each physical coin can be used only once.
+5. Design a predecessor array for reconstruction. State how you would break equal-count ties.
+
+</Section>
+
+<Section id="summary" number="13" title="DP starts with equivalent questions, not a table." kicker="CHAPTER SUMMARY">
+
+Define the state, justify the recurrence, specify bases and unreachable states, then choose a dependency-safe evaluation order. Fibonacci makes repeated computation visible; minimum coin change turns reuse into an optimization algorithm. Memoization and tabulation will now apply two evaluation strategies to that same recurrence.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="49" />
+</Section>

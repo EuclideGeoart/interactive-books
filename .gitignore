@@ -40,3 +40,8 @@
 /Interactive-C++-Data-Structures-&-Algorithms-Book/part-iii-delivery/
 /Interactive-C++-Data-Structures-&-Algorithms-Book/part-iv-delivery/
 /Interactive-C++-Data-Structures-&-Algorithms-Book/documentation/validation/
+
+# Supplementary review captures are reproducible generated artifacts, not test inputs.
+# A small, explicitly tracked evidence subset (with its manifests) is retained.
+# Canonical Playwright baselines under tests/e2e/*-snapshots remain versioned.
+/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/visual/

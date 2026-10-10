@@ -1,0 +1,119 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import RobinHoodLab from '../../components/visualizers/RobinHoodLab.astro';
+import HashPolicyBreakIt from '../../components/visualizers/HashPolicyBreakIt.astro';
+import HashProbingExplorer from '../../components/visualizers/HashProbingExplorer.astro';
+import TeachingHashDownload from '../../components/visualizers/TeachingHashDownload.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-22/RobinHood.hpp?raw';
+import main from '../../../cpp/chapter-22/main.cpp?raw';
+
+<ChapterHero number="22" part="PART IV / HASHING" title="Robin Hood Hashing" overline="MAKE DISPLACEMENT EXPLICIT" description="Compare how far two keys have traveled. Let the farther-traveled incoming key take the slot, then continue with the displaced resident. Repair deletion by moving a chain backward." chain="incoming distance > resident distance → swap → displaced key continues" facts={[["Collision policy","Linear Robin Hood"],["Metadata","Exact probe distance"],["Deletion","Backward shift"],["Goal","Reduce lookup-cost variance"]]} />
+
+<Section id="mental-model" number="01" title="A resident near home can yield its slot." kicker="VISUAL MENTAL MODEL">
+
+At capacity eight, a belongs at one and b belongs at two. Now insert i, whose home is one. It passes a, reaches two with distance one, and meets b at distance zero. Incoming i takes slot two. Displaced b continues to three with distance one.
+
+<StructurePreview chapter="robin-hood" id="robin-preview" operation="insert" inputs={{keys:'a,b',key:'i',capacity:'8'}} diagramNote="Each occupied slot shows its key, home and stored distance. The incoming record becomes visible when insertion begins." />
+
+Distance is measured along the wrapping probe route: `(index + capacity − home) % capacity`. It is not the absolute difference between indices, nor the total number of comparisons performed by the operation.
+
+</Section>
+<Section id="intuition" number="02" title="Share the cost of displacement." kicker="INTUITION">
+
+Ordinary linear probing sends each newcomer to the next free slot. Robin Hood insertion compares the newcomer with every resident it meets. If the newcomer has traveled farther, the two records swap. The displaced resident is now the incoming record, carrying its own key, value and distance. Only that record advances.
+
+This policy aims to reduce variance in lookup cost. It does not eliminate collisions, guarantee constant worst-case time, or sort every cluster's distances monotonically. A new home can begin inside an occupied run; the exact lookup stopping argument matters more than a visual impression of sorted numbers.
+
+</Section>
+<Section id="memory" number="03" title="Distance is stored metadata with a precise meaning." kicker="STRUCTURE / MEMORY LAYOUT">
+
+Each vector slot stores occupied, key, value and distance. EMPTY slots contain no member; there is no TOMBSTONE state in this chapter. A separate local incoming record survives each swap until a free slot receives it. The diagram names that record explicitly, including during replacement-table insertion.
+
+The same validated lowercase keys and polynomial-31 uint32 hash apply. Browser capacity is one through 32, native capacity one through 4096. Memory view shows the slot vector in index order, without claiming native offsets or a stable address for keys that move.
+
+</Section>
+<Section id="operations" number="04" title="Steal a slot, then follow the displaced key." kicker="INTERACTIVE OPERATIONS">
+
+<RobinHoodLab />
+
+The defaults insert q into a,b,i. At the swap step, identify the incoming key and the resident before advancing. For the shortest example, use a,b and insert i. To inspect deletion shifts, use a,i,q and erase a; both following entries must move backward one slot. Erase a in a,b instead: b is at its own home, so it stays put.
+
+Find and Contains use the resident-distance stopping rule. Duplicate insertion first locates and updates the existing value; it never duplicates or displaces that key. A full table refuses a new key before any swap. Try capacity one, an empty starting list, missing erase, wraparound with g,o,w, and rehash to a different capacity. Every load starts a fresh fixture.
+
+</Section>
+<Section id="implementation" number="05" title="Prepare the incoming string before changing the table." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="RobinHood.hpp" chapter="22" />
+<TeachingHashDownload />
+
+The duplicate lookup and capacity check precede construction and swaps. The incoming string is allocated before existing slots change; subsequent moves and swaps use the nonthrowing behavior of these string/number records with their standard allocator. Rehash builds a separate RobinHood object and commits its vector only after reinsertion succeeds. Independent copies are supported, copy assignment commits through a temporary, and move is deleted to preserve a positive capacity in every usable instance.
+
+Insert returns true for a new key and false for either update or full-table refusal; the lab distinguishes those results. Find returns an optional integer. Backward-shift erase moves records and can invalidate observations of their old indices even without rehash. These teaching tables expose no persistent iterator or reference contract.
+
+</Section>
+<Section id="pointer-trace" number="06" title="Swap changes identity; advance changes distance." kicker="CODE + VISUALIZATION TRACE">
+
+At each insertion probe, the highlighted source reads occupancy. A separate comparison tests incoming distance against resident distance. Swap exchanges the entire records. Pause there: the new resident has the newcomer's distance, while incoming has the displaced resident's old distance. The following advance increments the incoming distance and wraps the index. Conflating these two steps would teach the wrong state.
+
+Deletion creates a hole, inspects the next slot, and shifts it only if occupied with positive distance. Each shift decrements that entry's distance and moves the hole forward. EMPTY or distance zero ends repair. The loop is bounded even when deletion began in a full table. Reverse playback restores each intermediate hole and incoming record from snapshots.
+
+Rehash traces replacement lookup and insertion with the same canonical tags, while retaining the original row until commit. Its counter includes the duplicate-preflight inspections as well as placement probes. Scanning the old vector is additional sequential work, not a target-slot probe.
+
+</Section>
+<Section id="invariants" number="07" title="Exact distance is a requirement, not a decoration." kicker="INVARIANTS">
+
+| Rule | Check |
+| --- | --- |
+| Stored distance is exact | Recompute home and wrapping distance from the actual slot. |
+| Keys are unique | Include the temporary incoming record during swaps. |
+| Lookup reaches every stored key | No earlier EMPTY or smaller resident distance may stop it. |
+| Settled deletion has no unrepaired hole | Stop shifting only at EMPTY or a home resident. |
+
+Distance and uniqueness violations fail immediately, even mid-operation. Reachability alone may be pending during an explicitly marked backward-shift repair, because the temporary hole can interrupt an otherwise valid route. Once erase returns, every surviving entry must again be searchable. The checker does not grant all intermediate snapshots a blanket exemption.
+
+</Section>
+<Section id="complexity" number="08" title="Measure distances and the work needed to maintain them." kicker="COMPLEXITY EXPLORER">
+
+<HashProbingExplorer kind="robin" />
+
+The operation lab shows maximum and average resident distance, the distribution of distances, actual inspections, swaps and backward shifts. The explorer varies live occupancy and whether homes are distinct or concentrated. With identical homes, all keys still form a long cluster; Robin Hood cannot manufacture distribution that the hash function did not provide.
+
+Under suitable hashing and bounded load, expected operations are O(1); worst-case lookup, insertion and deletion are O(capacity). This implementation deliberately performs a duplicate lookup before insertion, so a new-key insertion may inspect slots twice. Deletion can shift a whole cluster. Rehash scans the old storage and reinserts members, with expected linear rebuilding under favorable distribution and quadratic worst-case collision work. Lower variance in searches may be worth extra writes during mutation; it is not a universal performance win.
+
+</Section>
+<Section id="break-it" number="09" title="A false distance can make a real key disappear." kicker="COMMON MISTAKES / BREAK-IT">
+
+<HashPolicyBreakIt kind="robin" />
+
+The broken model resets i's distance to zero in the a,i,q cluster. Searching q reaches i at query distance one and stops because the resident claims a smaller distance. The exact-distance invariant fails immediately. Restore the metadata and repeat to reach q. This fault is isolated to copied model state and is never executed on a malformed native table.
+
+Other mistakes include incrementing the newly placed resident after a swap, shifting a distance-zero key backward, leaving a deletion hole in front of displaced keys, or importing Chapter 21's tombstones without redesigning lookup and deletion together.
+
+</Section>
+<Section id="analogy" number="10" title="The longer wait gets the place in line." kicker="REAL-WORLD ANALOGY">
+
+Imagine travelers looking for a place near their destination. A traveler who has already gone farther can ask a recently arrived occupant to continue. The occupant carries their own journey history onward. Removing someone requires closing only the gap through which later travelers were displaced, stopping when the next traveler is already at their destination.
+
+</Section>
+<Section id="engineering" number="11" title="Predictable searches can cost more writes." kicker="ENGINEERING INSIGHT">
+
+Robin Hood policies can smooth probe-distance distributions, but swaps and backward shifts move key/value records. Expensive objects, reference stability, deletion frequency and cache behavior all matter. The native example's integer values make movement easy to study; a production generic container needs a deliberate exception and relocation policy for arbitrary key/value types. Concurrency would add synchronization requirements around every transient swap and hole. This chapter implements neither a concurrent container nor standard-library internals.
+
+</Section>
+<Section id="exercises" number="12" title="Name the incoming key after every swap." kicker="EXERCISES / CHALLENGES">
+
+1. Insert i into a,b. Write down both records before swap, after swap and after advance.
+2. Erase a from a,i,q. Verify each surviving key's new index and distance.
+3. Erase a from a,b. Why must b remain where it is?
+4. Create wraparound at home seven. Verify that distance at index zero is one.
+5. Compare probe counters for duplicate and new-key insertion at the same load.
+
+</Section>
+<Section id="summary" number="13" title="A distance policy ties insertion, lookup and deletion together." kicker="CHAPTER SUMMARY">
+
+<div className="summary-panel"><h3>Displacement stays visible.</h3><ul><li>The farther-traveled incoming key may replace a nearer-home resident.</li><li>The displaced record continues with its own exact distance.</li><li>Backward-shift deletion repairs the route without tombstones.</li><li>Early-stop lookup relies on the distance and reachability invariants.</li></ul><button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button></div>
+<ChapterPagination number="22" />
+</Section>

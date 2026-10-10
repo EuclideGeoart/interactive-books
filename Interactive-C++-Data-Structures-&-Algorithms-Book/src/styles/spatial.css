@@ -1,0 +1,69 @@
+.spatial-scene { min-width: 0; padding: 12px; font-size: 12px; line-height: 1.6; }
+.spatial-focus, .spatial-result { padding: 9px 11px; border-left: 3px solid var(--pointer); background: var(--pointer-fill); overflow-wrap: anywhere; }
+.spatial-result { border-color: var(--green); background: var(--data-fill); }
+.spatial-scene h4 { margin: 12px 0 4px; font-size: 12px; }
+.spatial-scene h4 span { display: block; font-weight: 400; color: var(--muted); }
+.spatial-diagram { display: block; max-width: none; }
+.spatial-domain { fill: var(--surface); stroke: var(--border-strong); }
+.spatial-grid-line { fill: none; stroke: var(--border); stroke-width: 1; }
+.spatial-axis { fill: var(--muted); font: 12px var(--mono); }
+.spatial-region { cursor: pointer; }
+.spatial-region rect { fill: none; stroke: var(--border-strong); stroke-width: 1.5; }
+.spatial-region.status-pruned rect { stroke-dasharray: 3 5; opacity: .55; }
+.spatial-region.status-current rect { stroke: var(--amber); stroke-width: 3; fill: var(--amber-fill); fill-opacity: .3; }
+.spatial-region.status-visited rect { stroke: var(--pointer); }
+.spatial-split { fill: none; stroke: var(--pointer); stroke-width: 1.5; stroke-dasharray: 7 4; }
+.spatial-query { cursor: pointer; }
+.spatial-query rect { fill: var(--pointer-fill); fill-opacity: .35; stroke: var(--pointer); stroke-width: 3; stroke-dasharray: 8 4; }
+.spatial-query-point { cursor: pointer; }
+.spatial-query-point path { stroke: var(--pointer); stroke-width: 3; }
+.spatial-query-point text { fill: var(--pointer); font: bold 14px var(--mono); }
+.spatial-object { cursor: pointer; }
+.spatial-object :is(rect,circle:not(.spatial-hit)) { fill: var(--surface-subtle); stroke: var(--ink); stroke-width: 1.8; }
+.spatial-object rect { fill-opacity: .65; }
+.spatial-object.status-current :is(rect,circle:not(.spatial-hit)), .spatial-object.status-candidate :is(rect,circle:not(.spatial-hit)) { fill: var(--amber-fill); stroke: var(--amber); stroke-width: 3; }
+.spatial-object.status-accepted :is(rect,circle:not(.spatial-hit)) { fill: var(--data-fill); stroke: var(--green); stroke-width: 3; }
+.spatial-object.status-pruned :is(rect,circle:not(.spatial-hit)) { stroke: var(--muted); stroke-dasharray: 3 2; }
+.spatial-object.status-fault :is(rect,circle:not(.spatial-hit)) { fill: var(--red-fill); stroke: var(--red); }
+.spatial-object text, .spatial-active-label { fill: var(--ink); font: 600 12px var(--mono); paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; }
+.spatial-hit { fill: transparent; stroke: none; }
+.spatial-label-leader { fill: none; stroke: var(--muted); stroke-width: 1; stroke-dasharray: 2 3; }
+.spatial-pair { fill: none; stroke: var(--amber); stroke-width: 1.5; stroke-dasharray: 4 4; }
+.spatial-scene :is(g.selected,g:focus) > :is(rect,circle:not(.spatial-hit),path) { stroke: var(--ink); stroke-width: 3.5; }
+.spatial-scene g:focus { outline: none; }
+.spatial-scene [aria-pressed='true']:is(button) { outline: 2px solid var(--pointer); outline-offset: 2px; }
+.spatial-table-scroll, .spatial-hierarchy-scroll { max-width: 100%; overflow: auto; max-height: 360px; overscroll-behavior: contain; margin: 12px 0; border: 1px solid var(--border); }
+.spatial-hierarchy { display: block; max-width: none; }
+.spatial-tree-node { cursor: pointer; }
+.spatial-tree-node rect { fill: var(--surface); stroke: var(--border-strong); }
+.spatial-tree-node.status-current rect { fill: var(--amber-fill); stroke: var(--amber); }
+.spatial-tree-node.status-pruned rect { stroke-dasharray: 4 4; }
+.spatial-tree-node.status-accepted rect { fill: var(--data-fill); stroke: var(--green); }
+.spatial-tree-node text { fill: var(--ink); font: 11px var(--mono); }
+.spatial-tree-node .spatial-node-detail { fill: var(--muted); font-size: 10px; }
+.spatial-scene table { width: 100%; border-collapse: collapse; font: 11px/1.5 var(--mono); margin: 0; }
+.spatial-scene :is(td,th) { padding: 7px; white-space: nowrap; border-bottom: 1px solid var(--border); }
+.spatial-scene caption { text-align: left; padding: 8px; font-size: 11px; }
+.spatial-scene button { min-height: 34px; padding: 5px 8px; font: inherit; }
+.spatial-scene tr.status-current { background: var(--amber-fill); }
+.spatial-scene tr.status-accepted { background: var(--data-fill); }
+.spatial-scene tr.status-pruned { color: var(--muted); }
+.spatial-legend { display: flex; flex-wrap: wrap; list-style: none; gap: 6px 14px; padding: 8px 0 0; font: 11px var(--mono); }
+.spatial-pair-summary { overflow-wrap: anywhere; }
+[data-spatial-lab] .svg-scroll { min-width: 0; max-height: 850px; overflow: auto; }
+[data-spatial-lab] .lab-workspace { align-items: start; }
+[data-spatial-lab] .lab-inputs label { min-width: 130px; }
+[data-spatial-preview] { min-width: 0; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); }
+[data-spatial-preview] .svg-scroll { max-height: 850px; overflow: auto; }
+[data-diagram-scale='fit'] .spatial-diagram { width: 100%; min-width: 0; height: auto; max-height: 500px; }
+[data-diagram-scale='fit']:has(.spatial-diagram) { overflow: hidden; max-height: none; }
+.spatial-explorer { border-block: 1px solid var(--border); padding: 20px 0; }
+.spatial-explorer form { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
+.spatial-explorer label { display: grid; gap: 5px; font-size: 12px; }
+.spatial-explorer dl { display: flex; flex-wrap: wrap; gap: 10px 24px; }
+.spatial-explorer dt { font-size: 11px; color: var(--muted); }
+.spatial-explorer dd { margin: 0; font: 600 20px var(--mono); }
+.spatial-explorer [data-explorer-explanation] { border-left: 3px solid var(--pointer); padding-left: 12px; }
+.spatial-explorer .spatial-table-scroll { max-height: none; }
+.spatial-explorer td { white-space: normal; min-width: 210px; }
+@media (max-width: 560px) { .spatial-scene { padding: 8px; } .spatial-scene button { min-height: 40px; } .spatial-explorer form > label { flex: 1 1 120px; } }

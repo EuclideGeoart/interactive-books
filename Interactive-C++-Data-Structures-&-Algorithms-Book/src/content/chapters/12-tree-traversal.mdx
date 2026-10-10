@@ -1,0 +1,134 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import Section from '../../components/book/Section.astro';
+import Callout from '../../components/book/Callout.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import TraversalLab from '../../components/visualizers/TraversalLab.astro';
+import TreeComplexity from '../../components/visualizers/TreeComplexity.astro';
+import TreeFoundationsBreakIt from '../../components/visualizers/TreeFoundationsBreakIt.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-12/Traversal.hpp?raw';
+import main from '../../../cpp/chapter-12/main.cpp?raw';
+
+<ChapterHero number="12" title="Tree Traversal" overline="THE WAITING WORK DETERMINES THE ORDER." description="Depth-first search suspends callers. Breadth-first search queues future nodes. Expose those auxiliary structures and traversal order becomes a consequence you can explain." chain="pre: A B D E C · in: D B E A C · post: D E B C A · breadth: A B C D E" facts={[["DFS", "Call stack · O(h)"], ["BFS", "Queue · O(w)"], ["VISITS", "Every node once · O(n)"]]} />
+
+<Section id="mental-model" number="01" title="One tree, four observable orders." kicker="VISUAL MENTAL MODEL">
+
+<StructurePreview chapter="traversal" id="traversal-mental" operation="preorder" />
+
+All four traversals start at A and eventually visit every reachable Node. They differ in **when a value is output** relative to processing children. Preorder outputs the node before either child; inorder outputs it between left and right; postorder outputs it after both. Breadth-first outputs whole levels from left to right.
+
+In the letter preset, A–E label stored integer values 65–69. Those are teaching names; the C++ result vector contains integers. Custom numeric presets show values directly. An output list is separate from the live hierarchy: traversal does not relink or destroy nodes.
+
+</Section>
+
+<Section id="intuition" number="02" title="Recursion keeps the unfinished continuation." kicker="THE INTUITION">
+
+A depth-first call must remember where to resume after its child finishes. That continuation sits in a **call-stack frame**. Calling left pushes a child frame and suspends the parent below it. Returning removes the child frame and resumes the exact statement after the call. This is the last-in, first-out behavior from <a href={`${import.meta.env.BASE_URL}chapters/02-stack/`}>Chapter 2 — Stack</a>.
+
+Breadth-first instead retains a FIFO frontier: take the oldest waiting node from the front and append its children at the back. After outputting A, the queue is [B, C]. Processing B appends D and E behind C, leaving [C, D, E]. Therefore C is output before B's children. Compare this frontier with <a href={`${import.meta.env.BASE_URL}chapters/06-queue-deque/`}>Chapter 6 — Queue + Deque</a>. This traversal implementation uses `std::queue` directly.
+
+</Section>
+
+<Section id="memory" number="03" title="Observers wait; ownership stays in the tree." kicker="STRUCTURE / MEMORY LAYOUT">
+
+The traversal functions borrow `const Node*` values from Chapter 10's BinaryTree. A DFS frame holds its current node, selected order, and a reference to the shared output vector. The auxiliary frame panel shows node and execution phase; it is a conceptual account of active calls, not a claim about native ABI stack layout or byte addresses.
+
+BFS stores non-owning Node pointers in `std::queue<const Node*>`, whose default underlying container is a deque. Queue slots are not child fields and do not imply new Node allocations. Removing a queue entry leaves the Node alive and owned by the tree. The output vector contains copied integers, so its results can outlive the tree.
+
+The tree must remain alive and structurally unchanged during either traversal. There is no concurrent mutation support. Null child calls read no fields. Logical/memory view changes presentation only; it cannot alter output order.
+
+</Section>
+
+<Section id="operations" number="04" title="Watch both the frontier and the result." kicker="INTERACTIVE OPERATIONS">
+
+<TraversalLab />
+
+Load each traversal on A–B–C–D–E. Advance from one output event to the next while observing intermediate calls or queue actions. DFS shows a frame even for a null child; its guard returns immediately. When a recursive call's source line is highlighted as completed, the child has already returned and the caller is active again.
+
+Select **BST construction** and the ascending preset to build a right chain. The same values under complete-shape construction form a wide tree. Construction is setup, not part of the traversal's source trace. Custom inputs contain up to 15 integers from −999 to 999; under the BST rule, equal values are rejected consistently. Under the unordered complete rule, repeated values represent distinct Nodes and appear repeatedly in the output.
+
+Empty BFS initializes empty output and queue, fails the root and loop guards, then returns an empty vector. Empty DFS calls its null-root helper and returns an empty vector. A singleton produces exactly one value in all four orders, despite different intermediate states.
+
+</Section>
+
+<Section id="implementation" number="05" title="Small functions with explicit auxiliary ownership." kicker="C++ IMPLEMENTATION">
+
+`tree_traversal` is a namespace, keeping helper names out of the global namespace. `Order` is a scoped enum selecting output position. `dfs` takes the output vector by reference so recursive calls append to the same result. `depth_first` owns that vector locally and returns it by value; the compiler can elide a copy or move the vector. The tree itself is neither copied nor moved.
+
+`breadth_first` uses the standard queue's push, front, pop, and empty operations. It saves front before popping because pop returns no element. Both algorithms preserve the original nodes if output or auxiliary allocation fails, though no partial result is returned to the caller on an exception. There is no manual Node allocation in these helpers.
+
+<CanonicalSource source={source} main={main} fileName="Traversal.hpp" chapter="12" />
+
+<Callout title="Two folders, one Node definition.">Keep <code>BinaryTree.hpp</code> in <code>cpp/chapter-10/</code> and <code>Traversal.hpp</code> plus this example in <code>cpp/chapter-12/</code>. The relative include refers to the actual shared Node. Compile from chapter-12. The helpers can also accept the const root observer from Chapter 11's BST, because it uses that same Node type.</Callout>
+
+<p>Header dependencies: <a href={`${import.meta.env.BASE_URL}source/chapter-10/BinaryTree.hpp`} download>Download BinaryTree.hpp</a>.</p>
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Call, suspend, return, resume." kicker="CODE + VISUALIZATION POINTER TRACE">
+
+For inorder at A, preorder's condition first evaluates false. A then calls left, placing B above it. B calls D, and D calls its null left child. The null frame returns; D's left call is now complete. D outputs its value between child calls, then visits its null right child and returns. Only then does B's left-call statement complete.
+
+The canonical tags follow **completed statement order**. A caller's `dfs(node->left, ...)` event appears after all tagged child statements, never before them as though the child work were already finished. Untagged entry/suspension/exit events show the call-stack boundaries that surround those statements. Output appears exactly at push_back, not merely when a node becomes active.
+
+For BFS, `current = queue.front()` copies an observer while the entry is still queued. `queue.pop()` removes only that entry. `output.push_back(current->value)` follows, then two separate null checks and enqueue operations append left and right. Combining these into one visual step would hide why level order emerges.
+
+</Section>
+
+<Section id="invariants" number="07" title="A visit is not a mutation." kicker="INVARIANTS">
+
+The tree's live-object, acyclicity, unique ownership, and reachability rules must hold throughout traversal. Root, values, and child fields never change. On a valid tree, every node contributes exactly one output occurrence; repeated equal values can still correspond to distinct nodes in the unordered tree.
+
+Every active DFS frame borrows a live node or null. The stack contains suspended ancestors beneath the active call. The BFS queue contains discovered but not yet processed nodes in FIFO order. A cycle would cause the canonical traversal to recurse or queue forever; these helpers require a valid tree and do not maintain a general graph visited set. The visual fault checker can inspect corrupt topology safely, but that does not make corrupted native traversal valid.
+
+</Section>
+
+<Section id="complexity" number="08" title="Same work, different waiting space." kicker="COMPLEXITY EXPLORER">
+
+<TreeComplexity kind="traversal" />
+
+Each traversal visits n nodes, so time is O(n). DFS has O(h + 1) active frames including a null boundary call; a chain can therefore require O(n) call-stack depth. BFS retains O(w) auxiliary pointers, where w is maximum level width; during a level transition the queue can mix remaining parents and already discovered children. All returned vectors additionally occupy O(n) space.
+
+The explorer contrasts reference shapes and explains the corresponding depth/width pressures. It does not measure native stack bytes or queue allocator overhead. Recursive DFS is intentionally retained for teaching call mechanics. For untrusted, very deep input, use an explicit stack or a depth limit to avoid native stack exhaustion. BinaryTree destruction already uses iterative cleanup, so traversal recursion is a separate choice.
+
+</Section>
+
+<Section id="break-it" number="09" title="A cycle defeats a tree-only traversal." kicker="COMMON MISTAKES / BREAK-IT MODE">
+
+<TreeFoundationsBreakIt />
+
+Create a cycle and inspect the failed tree rule, then restore. The controlled fault never calls native DFS on corrupt storage. A visited set would be appropriate for a graph, but adding one here would conceal the ownership error rather than repair it.
+
+Other common mistakes are popping before saving queue.front(), pushing right before left while expecting left-to-right output, and confusing activation with output. Inorder produces sorted values **only for a BST**. A–B–C–D–E is a general tree, so its inorder D, B, E, A, C is deliberately not alphabetically sorted.
+
+</Section>
+
+<Section id="analogy" number="10" title="Finish a branch or circulate by level." kicker="REAL-WORLD ANALOGY">
+
+Depth-first is like reading nested instructions while keeping a finger at each place you must resume. Breadth-first is like a service desk: newly discovered tasks join behind already waiting tasks. The analogy explains scheduling order; it does not mean the underlying tree owns its objects in a stack or queue allocation pattern.
+
+</Section>
+
+<Section id="engineering" number="11" title="Output position can express a dependency." kicker="ENGINEERING INSIGHT">
+
+Preorder can serialize a hierarchy before its descendants, provided the format also records enough shape information. Inorder enumerates a BST's keys in order. Postorder processes children before their parent, useful for expression evaluation or bottom-up aggregate computation. Breadth-first exposes levels, useful for level summaries and nearest-depth exploration in an unweighted tree.
+
+The output vector here keeps the API easy to inspect and test. For huge data, a callback or iterator can stream values and avoid O(n) retained output. That would change exception, invalidation, and lifetime contracts and is not silently assumed by the current implementation.
+
+</Section>
+
+<Section id="exercises" number="12" title="Explain the waiting work." kicker="EXERCISES / CHALLENGES">
+
+<div className="exercise"><h3>Queue after B</h3><p>What is queued immediately after B's children are enqueued?</p><details><summary>Reveal reasoning</summary><p>C, D, E. C arrived while processing A and was already ahead of B's newly discovered children.</p></details></div>
+<div className="exercise"><h3>Which inorder frame waits?</h3><p>When D outputs, what non-null callers are suspended below it?</p><details><summary>Reveal reasoning</summary><p>A and B. Their left-child calls have not yet completed. Returning from D resumes B before A.</p></details></div>
+<div className="exercise"><h3>Same output, different mechanism</h3><p>Build an ascending right-chain BST and compare preorder with BFS.</p><details><summary>Reveal reasoning</summary><p>Both output the chain from root downward. DFS still retains ancestor frames; BFS typically holds only the next node. Equal output does not imply equal auxiliary space.</p></details></div>
+
+</Section>
+
+<Section id="summary" number="13" title="The auxiliary structure explains the order." kicker="CHAPTER SUMMARY">
+
+<div className="summary-panel"><h3>Track unfinished work and output separately.</h3><ul><li>Pre/in/postorder differ at the point of output relative to child calls.</li><li>A recursive caller resumes only after its child returns.</li><li>BFS appends children behind the existing FIFO frontier.</li><li>All four visit O(n) nodes; DFS depth and BFS width determine auxiliary space.</li></ul><button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete ✓</button></div>
+<ChapterPagination number="12" />
+
+</Section>

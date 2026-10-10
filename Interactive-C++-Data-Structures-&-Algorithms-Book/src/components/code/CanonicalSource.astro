@@ -1,0 +1,24 @@
+---
+import { Code } from 'astro:components';
+import { cleanSource } from '../../engine/source';
+interface Props { source: string; main: string; fileName: string; chapter: string; pthread?: boolean }
+const { source, main, fileName, chapter, pthread = false } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const clean = cleanSource(source);
+---
+<div class="full-source" data-canonical-source>
+  <div class="code-title"><span><i></i> {fileName}</span><div><a href={`${base}/source/chapter-${chapter}/${fileName}`} download>Download .hpp ↓</a><button type="button" data-copy-canonical>Copy source</button></div></div>
+  <details open><summary>Complete implementation · lifetime, ownership, operations, and cleanup</summary><div class="full-code-scroll" tabindex="0" role="region" aria-label="Complete canonical C++ header" data-canonical-text><Code code={clean} lang="cpp" theme="github-dark-default" /></div></details>
+  <details><summary>main.cpp · compile and exercise the implementation</summary><div class="full-code-scroll" tabindex="0" role="region" aria-label="C++ validation example"><Code code={main} lang="cpp" theme="github-dark-default" /></div><a class="download-main" href={`${base}/source/chapter-${chapter}/main.cpp`} download>Download main.cpp ↓</a></details>
+  <div class="compile-command"><span>COMPILE &amp; RUN</span><code>c++ -std=c++20 -Wall -Wextra -Werror -pedantic -fsanitize=address,undefined {pthread && '-pthread '}main.cpp -o example &amp;&amp; ./example</code></div>
+</div>
+<script>
+  for (const root of document.querySelectorAll('[data-canonical-source]')) {
+    root.querySelector('[data-copy-canonical]')?.addEventListener('click', async event => {
+      const button = event.currentTarget as HTMLButtonElement;
+      try { await navigator.clipboard.writeText(root.querySelector('[data-canonical-text] code')!.textContent!); button.textContent = 'Copied ✓'; }
+      catch { button.textContent = 'Use Download .hpp'; }
+      setTimeout(() => { button.textContent = 'Copy source'; }, 2500);
+    });
+  }
+</script>

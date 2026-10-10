@@ -1,0 +1,24 @@
+---
+import '../../styles/spatial.css';
+import { spatialAdapter,spatialDefaults,spatialOperations } from '../../visualizers/spatial/adapter';
+import { drawSpatial,describeSpatial,inspectSpatial } from '../../visualizers/spatial/presentation';
+import type { SpatialKind } from '../../visualizers/spatial/types';
+interface Props { kind:SpatialKind }
+const {kind}=Astro.props;
+const operations=spatialOperations[kind];
+const operation=operations.find(op=>/query|range|nearest|pairs/.test(op.id))??operations[0]!;
+const inputs=spatialDefaults(kind);
+if(kind==='broad-phase')inputs.set('scene','clustered');
+const trace=spatialAdapter(kind).build(operation.id,inputs);
+const state=trace.steps[Math.floor(trace.steps.length*0.65)]?.state??trace.initial;
+---
+<div data-spatial-preview={kind} data-diagram class="diagram-component">
+  <h3 class="sr-only">Spatial mental model snapshot</h3>
+  <div class="diagram-topline"><span class="diagram-caption">MENTAL MODEL · COORDINATES AND BOUNDS</span></div>
+  <div class="diagram-with-inspector"><div class="diagram-canvas">
+    <div class="svg-scroll" tabindex="0" role="region" aria-label="Scrollable spatial mental model" data-svg set:html={drawSpatial(state,`${kind}-preview`,'logical',null)} />
+    <details class="text-fallback"><summary>Text representation</summary><code data-ascii>{describeSpatial(state)}</code></details>
+  </div><details class="inspector-shell" data-inspector-shell><summary>Inspect spatial state <span>Choose a point, box or region</span></summary><aside class="pointer-inspector" aria-label="Spatial state inspector" data-inspector set:html={inspectSpatial(state,null)} /></details></div>
+  <script type="application/json" data-spatial-state set:html={JSON.stringify(state).replace(/</g,'\\u003c')} />
+</div>
+<script>import '../../scripts/spatial-labs';</script>

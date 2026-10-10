@@ -1,0 +1,127 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import Section from '../../components/book/Section.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import GraphComplexity from '../../components/visualizers/GraphComplexity.astro';
+import GraphStructureLab from '../../components/visualizers/GraphStructureLab.astro';
+import GraphStructureBreakIt from '../../components/visualizers/GraphStructureBreakIt.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-28/Directed.hpp?raw';
+import main from '../../../cpp/chapter-28/main.cpp?raw';
+
+<ChapterHero number="28" title="Directed Graphs" overline="AN ARROW IS A ONE-WAY CONTRACT." description="Inspect incoming and outgoing relationships separately, then test reachability. Direction changes which paths exist without changing vertex identity." chain="A → B ≠ B → A · indegree(B)=1 · outdegree(A)=2" facts={[["INCOMING", "Edges ending here"], ["OUTGOING", "Edges starting here"], ["REACHABILITY", "Follow arrow direction"]]} />
+
+<Section id="mental-model" number="01" title="Incoming is not another word for adjacent." kicker="VISUAL MENTAL MODEL">
+
+<h3>Inspect the graph and its stored relationships.</h3>
+
+<StructurePreview chapter="graph-directed" id="graph-directed-mental" operation="inspect" viewLabels={{logical:"Graph view",memory:"Storage view"}} diagramNote="Select a vertex or edge to inspect its identity and relationships. Positions remain stable throughout the trace." />
+
+The default arrows are A→B, A→C, B→D, and B→E. Select B: A is incoming, while D and E are outgoing. Traversal from B may reach D and E, but not A. Arrowheads indicate the actual edge destination.
+
+All chapter inputs are directed, including custom edges. Opposite arcs A→B and B→A are allowed as two distinct ordered pairs. A self-loop belongs to both incoming and outgoing sets.
+
+</Section>
+
+<Section id="intuition" number="02" title="Direction restricts every step of a path." kicker="THE INTUITION">
+
+A directed path must follow each edge’s orientation. Ignoring arrowheads answers a different, undirected question. Indegree counts edges ending at a vertex; outdegree counts edges starting there. A self-loop adds one to each count.
+
+A source has indegree zero and a sink has outdegree zero. Those terms describe local edge counts, not necessarily a unique origin or final task. An isolated vertex is both a source and a sink.
+
+</Section>
+
+<Section id="memory" number="03" title="One record derives two useful indexes." kicker="STRUCTURE / MEMORY LAYOUT">
+
+The edge record stores ordered from/to IDs. Outgoing adjacency is prepared for traversal. The inspector derives incoming neighbors from the same edge set, so it cannot drift out of sync with outgoing rows. A graph algorithm that frequently queries incoming edges could retain a reverse adjacency index.
+
+The storage view exposes IDs, endpoints, and algorithm arrays without inventing a parent hierarchy. A predecessor is a result of one traversal; another source can produce a different predecessor forest on the unchanged graph.
+
+</Section>
+
+<Section id="operations" number="04" title="Test reachability from different sources." kicker="INTERACTIVE OPERATIONS">
+
+<GraphStructureLab kind="graph-directed" />
+
+Inspect neighbors lists outgoing neighbors in insertion order; selecting a vertex additionally exposes incoming and outgoing data. Breadth-first search uses that same directed graph to show reachable vertices and minimum edge-count distances from the selected source.
+
+On Standard, source A reaches every vertex, but source E reaches only itself. On Diamond, A reaches D by two possible paths. On Cycle and branch, vertices on the cycle can return to their start; D may still be a sink with no return route.
+
+</Section>
+
+<Section id="implementation" number="05" title="Reuse the rule, ship a complete header." kicker="C++ IMPLEMENTATION">
+
+This standalone header contains graph validation, ordered adjacency construction, inspection, and BFS. It does not need another chapter’s header to compile. The native main asserts that starting at a sink does not discover its incoming neighbor.
+
+BFS uses the same deterministic insertion-order tie rule as Chapter 26. It computes minimum numbers of directed edges, ignoring stored weights. All IDs and weights obey the bounded teaching graph policy.
+
+<CanonicalSource source={source} main={main} fileName="Directed.hpp" chapter="28" />
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="No reverse adjacency entry is manufactured." kicker="CODE + VISUALIZATION TRACE">
+
+While building adjacency, a directed edge contributes only to the from row. Inspect therefore highlights only outgoing records. A vertex with many incoming edges and no outgoing edges completes its inspection with zero neighbor reads.
+
+Step BFS from E in Standard. E is discovered, assigned distance zero, enqueued, dequeued, output, and finished; there are no edge-inspection steps. This trace is a mechanical consequence of the outgoing row being empty.
+
+</Section>
+
+<Section id="invariants" number="07" title="Direction belongs in predecessor validation." kicker="INVARIANTS">
+
+If predecessor[v] = u, the edge u→v must exist. Merely finding v→u is insufficient. Distances inherit the BFS one-edge relation, and each queued ID is discovered but not yet processed.
+
+The sum of all indegrees equals E, as does the sum of all outdegrees, including self-loops. Reversing a display arrow without changing the edge record would violate the representation contract even if the drawing remained visually neat.
+
+</Section>
+
+<Section id="complexity" number="08" title="Outgoing work determines this traversal." kicker="COMPLEXITY EXPLORER">
+
+<GraphComplexity kind="bfs" />
+
+Compare an outward star, its reversed custom edges, and a directed cycle using the source control. V and E may stay fixed while reachable output and inspected outgoing entries change substantially.
+
+Prepared outgoing adjacency supports O(V + E) full traversal; a single-source run only processes reachable rows. Deriving one incoming inspector by scanning edge records costs O(E). Preparing both indexes costs O(V + E), while the bounded validator’s pair checks remain separate setup.
+
+</Section>
+
+<Section id="break-it" number="09" title="Symmetrizing silently changes the problem." kicker="COMMON MISTAKES / BREAK-IT MODE">
+
+The fault control demonstrates a fabricated reverse edge. Also avoid claiming that one source reaching all vertices proves strong connectivity: the default outward graph is a counterexample. Every vertex would need a directed return route as well.
+
+<GraphStructureBreakIt kind="representation" />
+
+</Section>
+
+<Section id="analogy" number="10" title="One-way streets explain reachability." kicker="REAL-WORLD ANALOGY">
+
+A route planner may permit travel from one intersection to another without a legal return on the same street. An undirected map of the same intersections can appear connected while the directed map has unreachable destinations. Two-way streets can be modeled with two directed arcs if each direction has its own cost.
+
+</Section>
+
+<Section id="engineering" number="11" title="Weak and strong connectivity ask different questions." kicker="ENGINEERING INSIGHT">
+
+A directed graph is weakly connected if ignoring all arrow directions makes it connected. It is strongly connected if every vertex can reach every other by directed paths. The default graph is weakly connected but not strongly connected. This chapter demonstrates the intuition; it does not implement an SCC decomposition algorithm.
+
+Directed does not imply acyclic. Chapter 29 requires both direction and the absence of directed cycles before interpreting dependencies as a DAG; Chapter 30 uses indegrees to schedule ready work.
+
+</Section>
+
+<Section id="exercises" number="12" title="Distinguish an incoming neighbor from a reachable one." kicker="EXERCISES / CHALLENGES">
+
+In Standard, list B’s incoming and outgoing neighbors, then predict a BFS from D. Answers: incoming A; outgoing D,E; a search from D outputs D only.
+
+Challenge: construct A→B, B→C, C→A. Explain why it is strongly connected, why all three vertices have indegree and outdegree one, and why no vertex is a DAG source.
+
+</Section>
+
+<Section id="summary" number="13" title="An ordered edge defines a permitted traversal." kicker="CHAPTER SUMMARY">
+
+Incoming and outgoing sets serve different operations. Directed paths follow arrows, weak connectivity ignores them, and strong connectivity demands mutual reachability. These distinctions prepare the DAG and topological scheduling chapters.
+
+Continue the connections: <a href={`${import.meta.env.BASE_URL}chapters/29-dags/`}>Chapter 29 — DAGs</a> · <a href={`${import.meta.env.BASE_URL}chapters/30-topological-sort/`}>Chapter 30 — Topological Sorting</a> · <a href={`${import.meta.env.BASE_URL}chapters/32-cycle-detection/`}>Chapter 32 — Cycle Detection</a>.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete ✓</button>
+<ChapterPagination number="28" />
+
+</Section>

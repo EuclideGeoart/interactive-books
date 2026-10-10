@@ -1,0 +1,27 @@
+.spsc-scene { min-width: 0; color: var(--ink); }
+.spsc-diagram { display: block; max-width: none; }
+.spsc-diagram text { fill: var(--ink); font-family: var(--mono); }
+.spsc-heading { font-size: 14px; font-weight: 700; }
+.spsc-label { font-size: 12px; }
+.spsc-value { font-size: 24px; font-weight: 700; }
+.spsc-status { font-size: 10px; font-weight: 700; }
+.spsc-node rect { fill: var(--surface); stroke: var(--border); stroke-width: 1.5; }
+.spsc-node.queued rect { fill: var(--data-fill); stroke: var(--green); }
+.spsc-node.active rect { stroke: var(--amber); stroke-width: 3; }
+.spsc-node.unsafe rect { fill: var(--red-fill); stroke: var(--red); }
+.spsc-node.selected rect,.spsc-node:focus rect { stroke: var(--pointer); stroke-width: 3; }
+.spsc-node { cursor: pointer; outline: none; }
+.spsc-threads { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; padding: 12px; border-bottom: 1px solid var(--border); }
+.spsc-threads h4,.spsc-threads p { margin: 0 0 6px; }
+.spsc-threads p { font-size: 12px; }
+.spsc-threads small { font-size: 10px; color: var(--muted); }
+.spsc-scene button { min-height: 36px; padding: 5px 9px; font-size: 12px; }
+.spsc-scene button[aria-pressed='true'] { color: var(--pointer); border-color: var(--pointer); background: var(--pointer-fill); }
+.spsc-handoff { padding: 10px 14px; margin: 0; font-size: 11px; line-height: 1.7; border-top: 1px solid var(--border); }
+.spsc-result { padding: 12px 14px; margin: 0; font-size: 12px; border-top: 1px solid var(--border); background: var(--surface-subtle); }
+.spsc-danger { color: var(--red); }
+.spsc-table-scroll { max-width: 100%; overflow: auto; }
+.spsc-table-scroll table { border-collapse: collapse; font-size: 11px; min-width: 480px; width: 100%; }
+.spsc-table-scroll caption { text-align: left; padding: 10px; color: var(--muted); }
+.spsc-table-scroll th,.spsc-table-scroll td { padding: 8px; border: 1px solid var(--border); text-align: left; }
+@media(max-width:560px) { .spsc-threads { gap: 8px; padding: 10px; } .spsc-scene button { min-height: 40px; } }

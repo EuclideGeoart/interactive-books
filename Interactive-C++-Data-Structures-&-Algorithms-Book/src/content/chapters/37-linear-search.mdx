@@ -1,0 +1,92 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import Section from '../../components/book/Section.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import SearchSortLab from '../../components/visualizers/SearchSortLab.astro';
+import SearchSortDownload from '../../components/visualizers/SearchSortDownload.astro';
+import SortingComplexity from '../../components/visualizers/SortingComplexity.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-37/LinearSearch.hpp?raw';
+import main from '../../../cpp/chapter-37/main.cpp?raw';
+
+<ChapterHero number="37" title="Linear Search" part="PART VI / SEARCHING & SORTING" overline="ONE REJECTED CANDIDATE AT A TIME." description="Inspect consecutive records until equality succeeds or no candidate remains. Linear search works without any ordering promise and returns the first match." chain="inspect → compare → advance → found or exhausted" facts={[["CONTRACT","First matching index"],["TIME","O(n) worst case"],["DOMAIN","Sorted or unsorted keys"]]} />
+
+<Section id="mental-model" number="01" title="The cursor separates known from unknown." kicker="VISUAL MENTAL MODEL">
+<StructurePreview chapter="linear-search" id="linear-mental" operation="linear" inputs={{preset:'standard',target:'40'}} viewLabels={{logical:'Search order',memory:'Indexed storage'}} diagramNote="Index 0 is the first candidate. Letters identify original records even when keys repeat." />
+Searching [10,20,30,40,50] for 40 rejects indices 0, 1 and 2, then succeeds at index 3. The fifth element is never compared. The cursor names an index; the result is also an index, so returning 3 does not mean the matching key is 3.
+
+A useful picture is a rejected prefix followed by untested candidates. Each failed comparison lengthens the prefix by exactly one. No information about numerical ordering is needed.
+</Section>
+
+<Section id="intuition" number="02" title="A match is sufficient; absence requires exhaustion." kicker="THE INTUITION">
+To establish presence, one equal key is enough. To establish absence in arbitrary input, every key must be rejected. An unvisited last element could always contain the target. This explains both early termination and the linear worst case.
+
+The contract here is **first match**: scan from index 0 upward and stop immediately on equality. For [2A,1B,2C], searching for 2 returns index 0 and record A. A different traversal direction would implement a different contract. “Return all matches” would require continuing after success and collecting multiple positions.
+</Section>
+
+<Section id="memory" number="03" title="Reading an element does not move it." kicker="STRUCTURE / MEMORY LAYOUT">
+The input is contiguous indexed storage, like the array-backed structures in earlier chapters. Logical and storage views show the same record order because this algorithm does not mutate it. Each record holds a numeric key and an original identity; the letter is a teaching label for that identity, not part of the comparison.
+
+The algorithm needs an index, a target and a result: O(1) auxiliary space. Our observable implementation additionally owns a copy of the input and its original records so playback and invariants can be checked. Snapshot history is instrumentation, not a claim that ordinary linear search requires O(n) algorithm workspace. `result == -1` represents not found; no array access ever uses that sentinel.
+</Section>
+
+<Section id="operations" number="04" title="Compare first, middle, last and missing targets." kicker="INTERACTIVE OPERATIONS">
+<SearchSortLab kind="linear-search" />
+With the standard input, try targets 10, 30, 50 and 99. Compare the final equality counts: 1, 3, 5 and 5. Choose Duplicates and target 2 to observe first-match termination. Choose Unsorted and target 1: order changes which index succeeds, but does not invalidate the algorithm.
+
+The empty preset performs no equality test. The single preset either succeeds after one test or fails after one test. Custom input accepts at most twelve bounded integer keys; an empty custom field represents an empty sequence. Change the target and press Load operation; Next, Previous, reset, play and the step slider all use the same immutable execution history.
+</Section>
+
+<Section id="implementation" number="05" title="The loop guard owns the bounds proof." kicker="C++ IMPLEMENTATION">
+<SearchSortDownload chapter="37" />
+<CanonicalSource source={source} main={main} fileName="LinearSearch.hpp" chapter="37" />
+`i` begins at zero and is read only while it is smaller than the input length. Equality runs before incrementing the index. The found branch sets the result and exits the loop; exhaustion leaves −1 unchanged. Empty input enters neither the inspection nor comparison statement.
+
+The shared input constructor rejects more than 64 items or keys outside ±1,000,000 before tracing. Those teaching limits make signed observer indices and counters comfortably representable. The optional observer receives state after each tagged statement; its default implementation does nothing. RAII containers clean up both normal returns and exceptions. Input copying, diagnostic checks and observer calls are excluded from the search count.
+</Section>
+
+<Section id="pointer-trace" number="06" title="Inspection, equality and advancement are separate events." kicker="CODE + VISUALIZATION TRACE">
+Pause at `linear.inspect` for index 2. The diagram selects key 30, but the equality count still describes earlier comparisons. Step to `linear.compare`: 30 equals 40 is false, and the count becomes three. Only `linear.advance` changes the cursor to 3.
+
+At index 3, equality succeeds. The next `linear.found` step assigns the result; no advance follows it. Finally `linear.finish` records completion. Click a tagged source line to jump to its next execution and verify that the array records never change. Index n may appear after the last failed comparison; it is a boundary, not a dereferenceable cell.
+</Section>
+
+<Section id="invariants" number="07" title="Every earlier position has already failed equality." kicker="LIVE INVARIANTS">
+The live checker verifies conservation of all records, a target-free rejected prefix, and the first-match result. Before an inspection at i, every index below i is known unequal. A successful result must equal the first matching index in the original array; a completed unsuccessful trace must contain no matching record anywhere.
+
+There is no sortedness invariant. Imposing one would unnecessarily restrict a correct algorithm. The result is pending until a match is assigned or exhaustion establishes absence, so the inspector distinguishes a running search from a completed not-found result.
+</Section>
+
+<Section id="complexity" number="08" title="Count equality tests instead of timing the animation." kicker="COMPLEXITY EXPLORER">
+<SortingComplexity chapter="37" />
+For a first match at zero-based position k, the count is k + 1. For a missing target it is n. The best successful case is O(1), and the worst case is O(n). Under a uniform distribution over successful positions, the average is (n + 1) / 2 comparisons; that probability assumption is part of the claim.
+
+These counters model algorithm operations. Playback duration, drawing, input validation, array cloning and JavaScript scheduling are not performance benchmarks. A comparison of search algorithms must also account for preparing and maintaining the ordered domain required by binary search.
+</Section>
+
+<Section id="break-it" number="09" title="Do not mistake a boundary for an element." kicker="COMMON MISTAKES / BREAK-IT MODE">
+Load empty input and then a missing target in a one-element input. A mistaken `i <= n` guard would attempt to read one past the end. The canonical guard uses a strict bound; the lab never performs that invalid access. Also compare target 2 on the duplicate preset: continuing after success could overwrite the result with a later match, violating the stated first-match policy.
+
+A found index of zero is valid. Testing the result as a boolean would confuse index 0 with failure and −1 with success. Compare explicitly against −1, or design an API using an optional index. This chapter keeps the sentinel visible so its role is unambiguous.
+</Section>
+
+<Section id="analogy" number="10" title="Check mailboxes in street order." kicker="REAL-WORLD ANALOGY">
+A courier checks labels on a row of mailboxes. Finding the desired label ends the job. Finding no label requires reaching the end of the row. The labels can be in any order; the walk still works. “First matching mailbox” resolves what happens when two labels are identical.
+</Section>
+
+<Section id="engineering" number="11" title="A small contiguous scan can be the right tool." kicker="ENGINEERING INSIGHT">
+Linear scans are useful for small collections, one-off lookups, and predicates that do not have a matching ordered index. Contiguous access can have favorable locality. Building an index or sorting solely to answer one query can cost more work than the query itself; repeated lookups change that tradeoff.
+
+In an engine, scanning a short material list or command batch is often simpler than maintaining another container. If the input changes during a search, define iterator/index validity and synchronization separately. This deterministic lab owns a snapshot, so concurrent mutation is outside its contract.
+</Section>
+
+<Section id="exercises" number="12" title="Predict exactly what will be inspected." kicker="EXERCISES / CHALLENGES">
+<div className="exercise"><h3>Duplicate policy</h3><p>Search [7A,4B,7C] for 7. What result and count should appear?</p><details><summary>Reveal reasoning</summary><p>Index 0 after one equality test. Record C is never inspected.</p></details></div>
+<div className="exercise"><h3>Absence proof</h3><p>Why is rejecting n − 1 elements insufficient for an arbitrary array?</p><details><summary>Reveal reasoning</summary><p>The remaining untested element might match. Without another domain property, it must be compared too.</p></details></div>
+<div className="exercise"><h3>All matches</h3><p>Change the contract to return all equal-key indices. Which termination rule changes?</p><details><summary>Reveal reasoning</summary><p>Collect each successful index and keep advancing. Every input position is compared, even if the first matches.</p></details></div>
+</Section>
+
+<Section id="summary" number="13" title="The first equal record ends this search." kicker="CHAPTER SUMMARY">
+<div className="summary-panel"><ul><li>Linear search needs equality, not sorted input.</li><li>The rejected prefix grows one index at a time.</li><li>The contract returns the first matching index, or −1 after exhaustion.</li><li>Actual key comparisons range from zero on empty input to n.</li><li>Ordering will let the next chapter discard whole groups of candidates.</li></ul><button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete ✓</button></div>
+<ChapterPagination number="37" />
+</Section>

@@ -1,0 +1,142 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import Callout from '../../components/book/Callout.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import HeapLab from '../../components/visualizers/HeapLab.astro';
+import HeapExplorer from '../../components/visualizers/HeapExplorer.astro';
+import HeapBreakIt from '../../components/visualizers/HeapBreakIt.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-09/BinaryHeap.hpp?raw';
+import main from '../../../cpp/chapter-09/main.cpp?raw';
+
+<ChapterHero number="09" part="PART II / QUEUES & ORDERED ACCESS" title="Binary Heap" overline="ONE ARRAY. TWO WAYS TO SEE IT." description="A binary heap is a complete binary tree whose parent outranks its children. Store it in an array and repair only one path after insertion or extraction." chain="index 0 = root · parent(i) = floor((i−1)/2) · children = 2i+1, 2i+2" facts={[["PEEK", "O(1) at index 0"], ["SIFT", "O(log n) levels"], ["BUILD", "O(n) bottom up"]]} />
+
+<Section id="mental-model" number="01" title="The tree and array are the same structure." kicker="VISUAL MENTAL MODEL">
+
+<StructurePreview chapter="heap" id="heap-mental" operation="peek" viewLabels={{logical:'Tree + array',memory:'Index formulas'}} diagramNote="Select a tree node or array cell. Both highlight the same index because they read one array, not separate states." />
+
+Array index 0 contains the root, 90. Indices 1 and 2 hold 70 and 60. The next row occupies indices 3, 4, and 5. Select index 2 in either representation: both show the same value 60, and its left child is index 5. There is no right child at index 6 yet.
+
+In a **max heap**, every parent is at least as large as its children. In a **min heap**, every parent is at most as large. Equal values are allowed. The best value is therefore at the root, even though the entire array is not sorted.
+
+</Section>
+
+<Section id="intuition" number="02" title="A little order is enough." kicker="THE INTUITION">
+
+Chapter 8 defined which entry a priority queue returns. A binary heap gives that policy an efficient implementation: maintain just enough local order to know the next result. It does not sort siblings, cousins, or every consecutive array pair.
+
+Two rules work together. **Completeness** fills every level before the next and fills the last level from left to right. **Heap order** constrains each parent/child edge. Completeness bounds the height; local order places the best value at index 0. A correctly ordered but long, sparse tree would not provide this same height guarantee.
+
+</Section>
+
+<Section id="memory" number="03" title="Indices replace stored pointers." kicker="STRUCTURE & MEMORY">
+
+The vector is the only owning representation. The tree is a drawing of its indices. For zero-based indexing, `parent(i) = (i - 1) / 2` using integer division, **only when i > 0**. The root has no parent. The left child is `2*i + 1`; the right child is `2*i + 2`. A computed index names a child only if it is less than the current size.
+
+The native sift-down loop uses `i < size/2` before computing children. This precisely identifies internal nodes and avoids multiplying an arbitrary out-of-range index. The complete tree occupies exactly indices 0 through size−1, without holes. No node allocations or pointer fields accompany the drawing.
+
+<Callout title="Heap data structure ≠ heap memory.">The word heap here names an ordering structure. A vector usually owns a dynamic allocation, but the heap algorithm also works over a suitable fixed array. Its mathematical tree is unrelated to the general-purpose allocation area often called “the heap.”</Callout>
+
+</Section>
+
+<Section id="operations" number="04" title="Watch one path repair itself." kicker="INTERACTIVE OPERATIONS">
+
+<HeapLab />
+
+Insertion appends a value, creating the last tree leaf. Sift-up compares it with its parent, swaps if it outranks the parent, and continues toward the root. Peek reads index 0 without mutation. Extraction saves the root, moves the last value to index 0, removes the last cell, then sifts down by choosing the better child.
+
+Choose **Build heap**, then the unordered preset. The destination begins empty. The first tagged statement takes the whole input vector; the complete shape exists immediately, while heap order is temporarily pending. Starting from the last internal node and walking backward, each sift-down repairs a subtree whose children have already been repaired.
+
+The lab permits at most fifteen values, fourteen before insertion, from −999 to 999. Custom Insert/Peek/Extract input must already satisfy the chosen max/min order. Build accepts arbitrary input order. Preset changes and Load start a new experiment; they do not commit partially played states.
+
+</Section>
+
+<Section id="implementation" number="05" title="Own values. Derive the tree." kicker="CANONICAL C++20">
+
+The complete `BinaryHeap` owns `std::vector<int>`. It explicitly defaults copy and move operations and destruction. Copying creates independent values. Moving transfers vector storage under standard container rules, leaving the source valid with unspecified contents. The max/min flag travels with the value semantics; no cached size, pointers, or second tree need repair.
+
+Empty Peek and Extract throw before indexing storage. Insert can throw during vector growth, leaving this integer heap unchanged; subsequent integer swaps cannot throw. Build takes its input vector by value and moves it into storage before nonthrowing integer repair. The implementation exposes a const view for inspection, not mutable access that could silently destroy order.
+
+<CanonicalSource source={source} main={main} fileName="BinaryHeap.hpp" chapter="09" />
+
+The comparator is a small max/min predicate, not a generic comparison framework. This heap stores integer values directly. To implement Chapter 8's stable task priority queue, store payload, priority, and an arrival sequence and compare the priority first and sequence second. Plain equal integers here have no separate identity, and heaps are not intrinsically stable.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Pause at the surprising intermediate states." kicker="CODE ↔ INDEX TRACE">
+
+After `data_[0] = data_.back()`, the last value appears in **two** cells: index 0 and the still-existing final cell. Only the next `pop_back()` removes the old tail. Both drawings show this same temporary duplication. For a singleton, the assignment is harmless self-assignment and the pop produces an empty heap; no sift-down follows.
+
+A `std::swap` is one completed tagged statement. That semantic step changes both array entries and therefore both tree labels together. It is not two independent animations or a separately synchronized tree model. An index selection stays attached to that position as values move.
+
+The source panel includes nested sift helpers. A caller line such as `sift_down(0)` is marked complete only after the helper's tagged statements execute. Local indices, value comparisons, swaps, the saved result, and invariant status remain available through reverse playback. Standard-library internals and allocation failure are not simulated.
+
+</Section>
+
+<Section id="invariants" number="07" title="Shape always. Order after repair." kicker="LIVE INVARIANTS">
+
+The array always represents a complete tree. Heap order may be temporarily false after appending, moving the last value, or loading an unsorted build input. The panel labels this as **pending** during repair, then verifies all parent/child edges at completion. Dashed edges and an exclamation mark identify violating child indices as well as color.
+
+Choosing the better child is essential: swapping a max-heap parent with the smaller child can leave the larger child above its new parent. A strict comparator also means equality stops a sift; moving equal values adds work without improving the invariant. Siblings need not be ordered relative to each other.
+
+</Section>
+
+<Section id="complexity" number="08" title="Doubling the size adds about one level." kicker="COMPLEXITY EXPLORER">
+
+<HeapExplorer />
+
+For n > 0, the complete-tree height is floor(log₂ n). A full height-h tree has 2^(h+1)−1 nodes. Each sift moves at most one edge per iteration, giving O(log n) repair work. Peek is O(1); Extract is O(log n). Insertion is O(log n) with spare vector capacity and amortized O(log n) overall, but a single reallocation may move O(n) integers. “Logarithmic repair” does not eliminate that allocation cost.
+
+Bottom-up Build is O(n), even though an individual sift-down can cost O(log n). Roughly half the nodes are leaves and need no repair, a quarter can move at most one level, an eighth at most two, and so on. The total is bounded by n times the convergent sum 1/4 + 2/8 + 3/16 + … . Repeated independent insertions instead give an O(n log n) worst-case construction bound.
+
+Counters in the lab count actual value comparisons and swaps. Sift-down may compare two children before comparing the winner to the parent, so comparisons are not identical to levels or swaps. The explorer's level bars show populations, not benchmark timings.
+
+</Section>
+
+<Section id="break-it" number="09" title="Break a local rule. See the global consequence." kicker="COMMON MISTAKES / BREAK IT">
+
+<HeapBreakIt />
+
+These cases simulate safe snapshots of wrong algorithms; they are not added as unsafe branches to the canonical C++. Restore returns to a valid state. A wrong parent formula, premature stop, or wrong child choice can preserve the array shape while violating heap order. A stale tree after an array swap is prevented structurally here: no second tree state exists.
+
+Another common mistake is assuming array index 1 is always the second-largest value. Either child of the root may be next, and extracting the root is what discovers the next best value after repair.
+
+</Section>
+
+<Section id="analogy" number="10" title="Local comparisons, one champion." kicker="REAL-WORLD ANALOGY">
+
+Imagine a hierarchy where each parent must outrank the entries directly below it. That rule guarantees the champion at the top without ranking every pair in the hierarchy. Add one newcomer at the last open position and compare upward; replace the champion with the last entrant and compare downward. The complete shape limits how far either entrant can travel.
+
+</Section>
+
+<Section id="engineering" number="11" title="A useful implementation with clear limits." kicker="ENGINEERING INSIGHT">
+
+Heaps support scheduler queues, event simulation, graph-search frontiers, and bounded top-k selection. Contiguous storage avoids per-node allocations and makes index calculations cheap, but allocation growth, comparator cost, payload moves, and cache behavior still affect performance.
+
+This example has no arbitrary erase, decrease-key handle, stable task identity, or synchronization. A handle-based heap must update position metadata on every swap. A stable queue needs an explicit arrival tie-breaker. A hard real-time system may reserve or fix capacity to avoid allocation in critical paths. These are separate interface decisions, not automatic properties of a binary heap.
+
+</Section>
+
+<Section id="exercises" number="12" title="Reason in indices and paths." kicker="EXERCISES / CHALLENGES">
+
+1. For indices 0, 1, 2, 5, and 6, calculate each existing parent and child in a seven-element array. Explain why the root is special.
+2. Insert 95 into the default max heap. Predict the two swap pairs before stepping. Reverse the first swap and verify both drawings return together.
+3. Extract from a one-element heap. Identify the moment membership becomes empty and explain why no invalid child is read.
+4. Build a min heap from `40,10,90,20,70,30,60`. Record which internal nodes are repaired and count comparisons versus swaps.
+5. Construct a valid max heap whose two children are in increasing order. Explain why this does not violate the invariant.
+6. Extend the comparator on paper to stable payload/priority entries. Explain which metadata is needed when moving equal-priority tasks.
+
+</Section>
+
+<Section id="summary" number="13" title="Efficient priority access comes from two small rules." kicker="CHAPTER SUMMARY">
+
+Completeness makes the tree shallow. Parent/child order makes the root best. One array provides both storage and the tree interpretation. Append/sift-up, move-last/sift-down, and bottom-up Build preserve these rules at different costs.
+
+Part II began with FIFO endpoints, exposed both ends with a deque, and used circular storage to avoid unnecessary movement. Priority queues changed the removal promise; binary heaps supplied efficient ordered access. The next part can build on these index and invariant ideas without treating every tree as a heap.
+
+<div className="summary-panel"><div><span className="eyebrow">CHAPTER 09 COMPLETE</span><h3>Ready to apply the invariant?</h3><p>Revisit the lab, predict the next operation, and verify it one statement at a time.</p></div><button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete <span aria-hidden="true">✓</span></button></div>
+
+<ChapterPagination number="09" />
+
+</Section>

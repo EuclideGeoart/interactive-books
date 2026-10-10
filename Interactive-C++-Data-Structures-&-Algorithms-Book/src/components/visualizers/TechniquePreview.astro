@@ -1,0 +1,19 @@
+---
+import '../../styles/techniques.css';
+import { techniqueAdapter, techniqueDefaults, techniqueOperations, type TechniqueKind } from '../../visualizers/techniques/adapter';
+import { drawTechnique, describeTechnique, inspectTechnique } from '../../visualizers/techniques/presentation';
+interface Props { kind: TechniqueKind }
+const { kind } = Astro.props;
+const trace = techniqueAdapter(kind).build(techniqueOperations[kind][0]!.id, techniqueDefaults(kind));
+const state = trace.steps.find(step => step.state.frames.length >= 3)?.state ?? trace.steps[Math.floor(trace.steps.length / 2)]?.state ?? trace.initial;
+---
+<div data-technique-preview={kind} data-diagram class="diagram-component">
+  <h3 class="sr-only">Algorithm mental model snapshot</h3>
+  <div class="diagram-topline"><span class="diagram-caption">MENTAL MODEL · ONE EXECUTION SNAPSHOT</span></div>
+  <div class="diagram-with-inspector"><div class="diagram-canvas">
+    <div class="svg-scroll" tabindex="0" role="region" aria-label="Scrollable algorithm mental model" data-svg set:html={drawTechnique(state, `${kind}-preview`, 'logical', null)} />
+    <details class="text-fallback"><summary>Text representation</summary><code data-ascii>{describeTechnique(state)}</code></details>
+  </div><details class="inspector-shell" data-inspector-shell><summary>Inspect state <span>Choose a frame, decision or cell</span></summary><aside class="pointer-inspector" aria-label="Algorithm state inspector" data-inspector set:html={inspectTechnique(state, null)} /></details></div>
+  <script type="application/json" data-technique-state set:html={JSON.stringify(state).replace(/</g, '\\u003c')} />
+</div>
+<script>import '../../scripts/technique-labs';</script>

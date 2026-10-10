@@ -1,0 +1,127 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import SpatialPreview from '../../components/visualizers/SpatialPreview.astro';
+import SpatialLab from '../../components/visualizers/SpatialLab.astro';
+import SpatialExplorer from '../../components/visualizers/SpatialExplorer.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-65/BVH.hpp?raw';
+import main from '../../../cpp/chapter-65/main.cpp?raw';
+
+<ChapterHero number="65" title="Bounding volume hierarchies" part="PART IX / SPATIAL DATA STRUCTURES" overline="GROUP OBJECTS, REJECT WHOLE BRANCHES" description="A BVH encloses groups of objects in nested bounds so queries can reject whole subtrees." chain="objects → centroid median → enclosing bounds → query or refit" facts={[["Volume", "Closed 2D AABB"], ["Build", "Longest centroid extent"], ["Leaves", "One object each"], ["Motion", "Refit or rebuild"]]} />
+
+<Section id="mental-model" number="01" title="A binary hierarchy wraps the objects already present." kicker="VISUAL MENTAL MODEL">
+
+<SpatialPreview kind="bvh" />
+
+Each leaf owns one object's AABB. Each internal node owns the union of its two children's bounds. Bounds follow groups of objects rather than a fixed subdivision grid. Empty space can lie inside a group bound, and sibling bounds may overlap. A query that misses a group misses every descendant.
+
+The spatial view places objects at their actual coordinates. The hierarchy/storage view exposes parent and child identity, making it possible to see which grouping is retained during refit. This lab is 2D; the same containment and union rules extend to 3D AABBs, as exercised by the real 3D broad-phase example in Chapter 66.
+
+</Section>
+
+<Section id="intuition" number="02" title="Separate the objects by their centers, then repeat." kicker="THE INTUITION">
+
+Compute each box centroid. Find the extent of the centroids along X and Y; choose the larger extent, with X winning equal extents. Sort on that coordinate, breaking ties by object ID, then split at the median. Recursively build each half and union the resulting child bounds.
+
+This chooses the longest centroid extent, not the longest side of the enclosing object bound. A huge object can enlarge a group without changing the spread of its centers. Equal centers are still divided by ID, so every recursive group gets smaller. The builder is deterministic and height balanced even on sorted or duplicate-center input.
+
+</Section>
+
+<Section id="memory" number="03" title="A leaf identifies an object; internal nodes identify groups." kicker="STRUCTURE / STORAGE LAYOUT">
+
+The standalone C++ owns vectors of objects and nodes. A node stores bounds, a parent index, child indices, and leaf object indices. A completed internal node has exactly two children and no objects; a leaf has one object and no children. For n positive objects there are 2n − 1 nodes; an empty scene has no root.
+
+Indices remain meaningful when vectors reallocate. Recursive building reacquires nodes by index after creating descendants, avoiding dangling references. During construction a pending node temporarily lists its assigned objects before its children are attached. The inspector exposes that real intermediate state rather than drawing a completed hierarchy prematurely.
+
+</Section>
+
+<Section id="operations" number="04" title="Compare the same move with refit and rebuild." kicker="INTERACTIVE OPERATIONS">
+
+<SpatialLab kind="bvh" />
+
+Build the uniform and sorted scenes. Range query highlights a bound test, a pruned branch, an object candidate, and an accepted result. Use a small query far from most objects to see rejection; use the overlap scene to expose weaker pruning.
+
+Move and refit changes the target ID's box, then recomputes the leaf and every ancestor. Move and rebuild applies the same box change and replaces the grouping by fresh centroid partitions. Move A across the scene using `6,6,8,8`, and compare grouping and bound shapes after each operation. Empty-scene moves and unknown IDs are rejected. Closed box inputs use finite coordinates [−8, 8]; duplicates and zero extents are valid. Custom scenes accept at most 12 initial objects.
+
+</Section>
+
+<Section id="implementation" number="05" title="Build, query and bottom-up refit are independently callable." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="BVH.hpp" chapter="65" />
+
+The constructor validates unique nonempty IDs and at most 16 objects, then builds the hierarchy. `query` tests a closed AABB. `move` accepts a target and new bounds, with a rebuild flag. All storage is RAII owned; no interchapter geometry library is required. C++ copies have independent vector storage; a copied observer keeps its normal `std::function` capture semantics.
+
+A callback sees the live const state only during its invocation and must copy it to retain history. Keep observers nonthrowing and nonreentrant. This teaching builder sorts each recursive range; it does not claim linear-time median partition or a production surface-area heuristic (SAH).
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="A moved leaf makes its old ancestors temporarily stale." kicker="CODE + VISUALIZATION TRACE">
+
+The move event changes the object first. Its leaf still has the old bound. The next bound event recomputes that leaf; subsequent events recompute its parent, grandparent and root. No ancestor jumps ahead of its source statement. Node identities and links stay unchanged throughout refit.
+
+Rebuild explicitly clears the previous hierarchy before allocating new groups. Build events show a bounded pending group, a centroid partition, and a completed union. Query events test and prune groups before testing leaf objects. Previous restores the complete prior snapshot, including the old object box and pending enclosure state.
+
+</Section>
+
+<Section id="invariants" number="07" title="Every completed internal bound encloses both children." kicker="INVARIANTS">
+
+Each object occurs in exactly one final leaf. Every child points back to its parent, and every internal node has exactly two children. Internal bounds enclose both child bounds; leaf bounds equal the current object bounds. A finished query equals the exhaustive closed-AABB scan.
+
+During build and refit, topology or enclosure rules may be pending. A moved object outside its old leaf is an expected intermediate state, not a valid completed BVH. At completion all pending rules must pass. Refit preserves connectivity; rebuild may change connectivity while preserving the represented objects and query answers.
+
+</Section>
+
+<Section id="complexity" number="08" title="Fast updates can retain an increasingly poor grouping." kicker="COMPLEXITY EXPLORER">
+
+<SpatialExplorer kind="bvh" />
+
+Count visited nodes, AABB tests, pruned branches, depth and bound recomputations. Compare overlap with uniform scenes. After a long-distance move, inspect the expanded refitted groups versus rebuilt groups. A rebuild need not improve every particular query; the lab makes no unmeasured speedup claim.
+
+Sorting every recursive subrange gives this builder O(n log² n) comparison work and O(n) peak temporary/index storage, with O(log n) recursion depth. A one-object leaf builder stores 2n − 1 nodes. Query costs O(v + k), where v is visited nodes and k results, and O(n) in the worst case even though height is O(log n).
+
+Once the moved leaf is known, refit recomputes O(log n) bounds. This small implementation first scans objects and nodes to locate that leaf, so its full move-and-refit call costs O(n). A maintained ID-to-leaf map could remove the scan for larger systems. Rebuilding costs O(n log² n). Visualization snapshot copying is separate from these index costs.
+
+</Section>
+
+<Section id="break-it" number="09" title="Cheap refit is correct even when its pruning gets worse." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+Move A from one corner to the opposite corner. Pause immediately after the move. If the leaf and root were left stale, a query at A's new location could miss it. Step through all ancestor unions and verify enclosure is restored without any links changing.
+
+Now compare the refitted hierarchy with a rebuild. A stretched group can enclose large empty areas and admit irrelevant queries. That is a quality problem, not an invariant violation. Do not declare a refitted tree incorrect merely because siblings overlap. Conversely, a visually compact group is incorrect if it fails to contain its moved child.
+
+</Section>
+
+<Section id="analogy" number="10" title="A shipping label can reject a whole nested container." kicker="REAL-WORLD ANALOGY">
+
+Imagine a nested shipment whose outer label records the total coordinate envelope of everything inside. If a search window misses that envelope, no inner package needs inspection. Moving one package requires correcting every enclosing label. Repacking may improve grouping, while relabeling alone preserves the old organization.
+
+</Section>
+
+<Section id="engineering" number="11" title="Refit follows motion; rebuild repairs grouping quality." kicker="ENGINEERING INSIGHT">
+
+Collision systems, scene picking, CAD selection and render culling use cheap bounds to avoid expensive primitive tests. A ray traversal applies ray-versus-box tests and can prioritize nearer children; this chapter implements AABB range traversal, not a ray/triangle intersector. A leaf hit is a candidate for the detailed primitive test.
+
+Production builders may use SAH, spatial splits, SIMD-friendly wide nodes or linear layouts. Motion policies may choose occasional rebuilds, local rotations or refits. This bounded binary example teaches ownership, grouping and enclosure without importing an engine. Choose rebuild frequency from workload evidence and query quality, not from fabricated rendering benchmarks.
+
+</Section>
+
+<Section id="exercises" number="12" title="Separate correctness from tree quality." kicker="EXERCISES / CHALLENGES">
+
+1. Compute centroid extents for three boxes where the longest object-envelope axis differs from the longest centroid axis.
+2. Predict the ID tie order when every centroid is identical.
+3. List the exact nodes updated when one leaf moves, beginning with the leaf itself.
+4. Construct a correct refit whose root covers more empty space than before.
+5. Explain why this sorting builder is O(n log² n), rather than O(n log n).
+6. Add an ID-to-leaf lookup on paper and identify which move cost it removes.
+
+</Section>
+
+<Section id="summary" number="13" title="Enclosure enables pruning; grouping controls how often it works." kicker="CHAPTER SUMMARY">
+
+A BVH recursively groups objects and stores enclosing AABBs. Centroid-median construction is deterministic and balanced. Queries prune disjoint bounds. Refit restores containment along one ancestor chain while preserving topology; rebuilding recomputes the grouping. Correct bounds are necessary, but useful bounds depend on the workload.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="65" />
+</Section>
+

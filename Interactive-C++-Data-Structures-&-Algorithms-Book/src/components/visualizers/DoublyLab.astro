@@ -1,0 +1,12 @@
+---
+import TraceLab from './TraceLab.astro';
+import source from '../../../cpp/chapter-03/DoublyLinkedList.hpp?raw';
+import { doublyOperations } from '../../visualizers/doubly-linked-list/model';
+const labels = ['Push front','Push back','Delete head','Delete tail','Delete value / middle','Forward traversal','Backward traversal','Clear'];
+const operations=doublyOperations.map((id,i)=>({id,label:labels[i]!}));
+---
+<TraceLab id="doubly" chapter="doubly" source={source} fileName="DoublyLinkedList.hpp" operations={operations} regions={[...doublyOperations,'unlink']}>
+  <label>Starting list<select name="preset"><option value="standard">10 ⇄ 20 ⇄ 30</option><option value="empty">Empty</option><option value="single">One node: 10</option><option value="duplicates">Duplicate values</option><option value="custom">Custom values</option></select></label>
+  <label>Custom values (head → tail)<input name="values" value="10,20,30" placeholder="10,20,30" /></label>
+  <label>Value to insert / delete<input name="value" type="number" min="-999" max="999" step="1" value="20" /></label>
+</TraceLab>

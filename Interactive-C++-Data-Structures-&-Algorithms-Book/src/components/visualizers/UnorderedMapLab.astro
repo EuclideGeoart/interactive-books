@@ -1,0 +1,12 @@
+---
+import TraceLab from './TraceLab.astro';
+import source from '../../../cpp/chapter-23/UnorderedMap.hpp?raw';
+---
+<TraceLab id="unordered-map-lab" chapter="unordered-map" source={source} fileName="UnorderedMap.hpp" operations={[{id:'insert',label:'Insert / assign'},{id:'find',label:'Find / contains'},{id:'erase',label:'Erase'},{id:'reserve',label:'Reserve elements'},{id:'rehash',label:'Rehash buckets'},{id:'max-load',label:'Set load hint'}]} regions={['insert','find','erase','reserve','rehash','max-load']} viewLabels={{logical:'Membership view',memory:'Memory view'}} diagramNote="Alphabetical cards show membership only. They do not depict native buckets, allocation layout or standard-library iteration order. Each load starts an independent experiment.">
+<label>Starting keys<input name="keys" value="cat,dog" maxlength="160" /></label>
+<label>Key<input name="key" value="cat" minlength="1" maxlength="12" pattern="[a-z]{1,12}" required /></label>
+<label>Value<input name="value" type="number" value="9" min="-999" max="999" /></label>
+<label>Elements / buckets requested<input name="requested" type="number" value="16" min="0" max="4096" /></label>
+<label>Maximum load hint<input name="hint" type="number" value="0.5" min="0.125" max="8" step="0.125" /></label>
+</TraceLab>
+<script>import '../../scripts/hash-labs';</script>

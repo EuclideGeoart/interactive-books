@@ -1,0 +1,115 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import HashFundamentalsLab from '../../components/visualizers/HashFundamentalsLab.astro';
+import HashDistribution from '../../components/visualizers/HashDistribution.astro';
+import HashBreakIt from '../../components/visualizers/HashBreakIt.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-18/TeachingHash.hpp?raw';
+import main from '../../../cpp/chapter-18/main.cpp?raw';
+
+<ChapterHero number="18" title="Hashing Fundamentals" overline="TURN A KEY INTO A STARTING PLACE" description="Hashing turns a key into a number. Reducing that number selects a bucket. Collisions are normal: equality still decides which key you found." chain="key → hash function → full hash → modulo capacity → bucket" facts={[["Teaching key", "1–12 lowercase letters"], ["Hash arithmetic", "uint32 wrap"], ["Bucket selection", "hash % capacity"], ["Collision", "Different keys, same bucket"]]} />
+
+<Section id="mental-model" number="01" title="The same key follows the same computation." kicker="VISUAL MENTAL MODEL">
+
+```text
+"cat" → polynomial-31 → 98262 → mod 8 → bucket 6
+"a"   → polynomial-31 →    97 → mod 8 → bucket 1
+"i"   → polynomial-31 →   105 → mod 8 → bucket 1  COLLISION
+```
+
+A **key** identifies an entry: cat might name a counter. A **value** is the associated payload, such as 42. Hashing uses the key to choose a starting place; it does not hash the mapped value in this map. The hash function returns a full hash value. The capacity tells us how many buckets exist, and modulo reduces the full hash to a valid bucket index.
+
+</Section>
+<Section id="intuition" number="02" title="A directory saves searching everywhere." kicker="THE INTUITION">
+
+A list lookup may inspect every key. A hash table first computes a likely location, then resolves any ambiguity there. Determinism means a lookup and an earlier insertion agree about where to begin. Equal keys must produce equal hashes. Different keys may produce the same full hash, and different full hashes can reduce to the same bucket. Neither kind of collision proves equality.
+
+Changing the mapped value should not move the key. Changing capacity may change the bucket even though the key and full hash stay unchanged. Changing the hash policy while entries remain stored would require rebuilding their mapping as well.
+
+</Section>
+<Section id="memory" number="03" title="Hash value and bucket index have different ranges." kicker="STRUCTURE / MEMORY LAYOUT">
+
+The canonical function starts at zero. For each ASCII byte it computes `hash = hash * 31 + byte` using unsigned 32-bit arithmetic. Overflow wraps modulo 2³²; TypeScript uses `Math.imul` and `>>> 0` to match that native policy. The result is between 0 and 4294967295. For a positive capacity m, `hash % m` is between 0 and m − 1.
+
+There is no table allocation in this chapter's hash function. The scalar view shows computed values, not object pointers or a claimed native byte layout. Capacity zero is invalid: modulo zero is not an empty-table representation. An empty table still has bucket capacity, but stores no entries.
+
+</Section>
+<Section id="operations" number="04" title="Make a collision, then change the capacity." kicker="INTERACTIVE OPERATIONS">
+
+<HashFundamentalsLab />
+
+Step a and i at capacity 8. Both map to bucket 1. Change to 16: a remains in 1 while i moves to 9. Change both keys to cat: equal keys must agree at every capacity. Try twelve z characters to see unsigned wrapping during the byte-by-byte trace. Invalid keys are rejected; the explorer does not silently lowercase or strip characters.
+
+</Section>
+<Section id="implementation" number="05" title="One policy shared by every hashing chapter." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="TeachingHash.hpp" chapter="18" />
+
+`validate_key` accepts 1–12 lowercase ASCII letters and throws `std::invalid_argument` otherwise. `teaching_hash` is a pure, allocation-free, nonthrowing byte computation. Its callers validate the teaching alphabet before using it in a map. `bucket_index` checks positive capacity before computing the index. No ownership, copy, move, or iterator lifetime exists for these stateless functions.
+
+The polynomial is a deterministic teaching policy shared with the browser. It is not promised to be a production-quality hash for arbitrary data or a security primitive.
+
+</Section>
+<Section id="pointer-trace" number="06" title="Trace arithmetic before tracing pointers." kicker="CODE + VISUALIZATION TRACE">
+
+The first step initializes the canonical hash variable. Each following byte step highlights the multiplication and addition line; the inspector shows the prefix hash and bytes consumed. Returning the full hash does not choose a bucket. The separate mapping line performs modulo. Previous and Reset select immutable snapshots of this computation.
+
+The comparison key is evaluated independently using the same policy. Its finished mapping stays visible while the first key is traced, so a temporarily different prefix hash is not misreported as an equality failure.
+
+</Section>
+<Section id="invariants" number="07" title="Equal keys must start together." kicker="INVARIANTS">
+
+| Rule | Consequence |
+| --- | --- |
+| Equal keys imply equal hashes | Insertion and lookup can meet. |
+| Equal hashes do not imply equal keys | Compare keys before reading or updating a value. |
+| Positive capacity bounds modulo | Every index belongs to the bucket array. |
+| Capacity is separate from the full hash | Rehashing can reuse a stored full hash. |
+| Hash and equality agree on normalization | A case-insensitive equality needs a compatible hash. |
+
+Our equality is exact lowercase byte equality. If a future key type ignores a field for equality but includes it in hashing, equal keys could be sent to different buckets. That is a correctness defect, not merely poor distribution.
+
+</Section>
+<Section id="complexity" number="08" title="Distribution changes how much work follows hashing." kicker="COMPLEXITY EXPLORER">
+
+<HashDistribution id="hash-fundamentals-distribution" />
+
+Hashing a length-L string costs O(L). Index reduction is constant work for these machine integers. A later table operation also pays for collision resolution. The chart selects actual keys under the fixed polynomial and counts actual successful-search comparisons in bucket chains. A long single chain requires a linear scan even though computing its bucket was quick.
+
+Load factor α = n / m measures entries per bucket on average. It does not tell us whether one bucket holds nearly everything. Two maps can have identical size, capacity and load factor but very different search costs.
+
+</Section>
+<Section id="break-it" number="09" title="A bucket match cannot stand in for equality." kicker="COMMON MISTAKES / BREAK-IT MODE">
+
+<HashBreakIt id="hash-fundamentals-break" fundamentals />
+
+In the faulty equality scenario, a and i share a bucket but must retain separate values. In the faulty resize scenario, copying bucket indices leaves i in its old bucket after capacity becomes 16. A correct lookup computes 105 % 16 = 9 and would miss it. Restore returns to the valid starting model.
+
+</Section>
+<Section id="analogy" number="10" title="A mail sorting rack is a starting place." kicker="REAL-WORLD ANALOGY">
+
+A sorting rule assigns an envelope to a rack. Several recipients may share a rack, so a worker still reads the full address. Adding more racks changes the sorting rule's final reduction; moving the old rack contents straight across by rack number may leave letters in the wrong place.
+
+</Section>
+<Section id="engineering" number="11" title="Fast lookup and cryptographic security are different goals." kicker="ENGINEERING INSIGHT">
+
+Hash-table hashing seeks cheap computation and useful distribution for the expected inputs. Cryptographic hashing seeks security properties such as preimage resistance and collision resistance. A fast polynomial with deliberately discoverable collisions does not meet those security goals. A security-sensitive service may also need a keyed or randomized table hash to resist adversarial concentration; this deterministic lesson intentionally makes every run reproducible.
+
+Hash quality depends on the key distribution and capacity policy. A larger table cannot repair every poor hash: distinct keys with the same full hash remain together under every modulo capacity. A production choice needs evidence from its actual workload.
+
+</Section>
+<Section id="exercises" number="12" title="Predict the mapping before stepping." kicker="EXERCISES / CHALLENGES">
+
+1. Compute the hash of ab by hand, then check it in the explorer.
+2. Explain why a and i collide at 8 but not at 16, while a and q still collide at 16.
+3. Find two unequal keys that share a bucket at capacity 32.
+4. Why can changing a mapped integer leave the hash unchanged?
+5. Explain why α = 1 does not guarantee one entry per bucket.
+
+</Section>
+<Section id="summary" number="13" title="A hash narrows the search. Equality finishes it." kicker="CHAPTER SUMMARY">
+
+<div className="summary-panel"><h3>Keep the two computations separate.</h3><ul><li>A deterministic hash maps a validated key to a uint32 value.</li><li>Modulo positive capacity chooses a valid bucket.</li><li>Different keys can collide; compare full keys.</li><li>Load factor measures occupancy, while distribution reveals concentration.</li><li>Capacity changes require remapping entries.</li></ul><button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button></div>
+<ChapterPagination number="18" />
+</Section>

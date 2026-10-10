@@ -1,0 +1,31 @@
+{
+  "name": "interactive-cpp-book",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.12.0" },
+  "scripts": {
+    "dev": "astro dev --host 0.0.0.0",
+    "build": "astro build",
+    "preview": "astro preview --host 0.0.0.0",
+    "check": "astro check",
+    "test": "vitest run",
+    "test:cpp": "node scripts/check-cpp.mjs",
+    "test:e2e": "playwright test",
+    "icons:pwa": "sh scripts/generate-pwa-icons.sh",
+    "validate": "npm run check && npm test && npm run test:cpp && npm run build && npm run test:e2e"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.3.0",
+    "astro": "^5.13.0",
+    "shiki": "^3.12.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@axe-core/playwright": "^4.10.2",
+    "@playwright/test": "^1.58.0",
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
+}

@@ -1,0 +1,11 @@
+---
+interface Props { kind?: string }
+const {kind='kahn'} = Astro.props;
+---
+<div class="graph-complexity" data-graph-complexity={kind}>
+<p>Change the graph size. These are work estimates for adjacency storage; the operation lab above counts the actual trace.</p>
+<label>{kind==='dsu'?'Elements n':'Vertices V'} <input type="range" name="vertices" min="1" max="100" value="8" /></label>
+<label hidden={kind==='dsu'}>Density <select name="density"><option value="sparse">Sparse · about 2 edges per vertex</option><option value="dense">Dense · every distinct ordered pair</option></select></label>
+<output aria-live="polite"></output>
+</div>
+<script>import '../../scripts/graph-labs';</script>

@@ -1,0 +1,21 @@
+---
+import '../../styles/spatial.css';
+import type { SpatialKind } from '../../visualizers/spatial/types';
+interface Props { kind:SpatialKind }
+const {kind}=Astro.props;
+---
+<div class="spatial-explorer" data-spatial-explorer={kind}>
+  <h3>{kind==='broad-phase'?'Match the index to the workload':'Count the work in contrasting scenes'}</h3>
+  <p>These are mechanical counts from the executable model, not wall-clock benchmarks. Use the operation lab above to inspect the corresponding steps.</p>
+  <form data-explorer-form>
+    <label>Scene<select name="scene"><option value="uniform">Uniform</option><option value="clustered">Clustered</option><option value="overlap">Highly overlapping</option><option value="sorted">Sorted / diagonal</option><option value="duplicates">Duplicate coordinates</option><option value="empty">Empty</option></select></label>
+    {['spatial-hash','broad-phase'].includes(kind) && <label>Cell size<select name="cellSize"><option value="1">1</option><option value="2">2</option><option value="4" selected>4</option><option value="8">8</option></select></label>}
+    {['quadtree','octree'].includes(kind) && <label>Leaf capacity<select name="capacity"><option value="1">1</option><option value="2" selected>2</option><option value="4">4</option></select></label>}
+    {kind==='broad-phase' && <><label>Dimensions<select name="dimension"><option value="2">2D</option><option value="3">3D</option></select></label><label>Motion<select name="motion"><option value="static">Static objects</option><option value="moving">Moving objects</option></select></label></>}
+  </form>
+  <p role="alert" data-explorer-error hidden></p>
+  <div aria-live="polite" data-explorer-result></div>
+  <p data-explorer-explanation></p>
+  {kind==='broad-phase' && <div class="spatial-table-scroll" tabindex="0" role="region" aria-label="Spatial workload comparison"><table><caption>Qualitative workload fit · no timing rankings</caption><thead><tr><th scope="col">Structure</th><th scope="col">Workload considerations</th></tr></thead><tbody data-workload-comparison></tbody></table></div>}
+</div>
+<script>import '../../scripts/spatial-labs';</script>

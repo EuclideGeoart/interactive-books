@@ -1,0 +1,121 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import TechniquePreview from '../../components/visualizers/TechniquePreview.astro';
+import TechniqueLab from '../../components/visualizers/TechniqueLab.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-50/MemoTabulation.hpp?raw';
+import main from '../../../cpp/chapter-50/main.cpp?raw';
+
+<ChapterHero number="50" title="Memoization and tabulation" part="PART VII / ALGORITHMIC TECHNIQUES" overline="ONE RECURRENCE, TWO EVALUATION STRATEGIES" description="Memoization solves needed states recursively and caches them; tabulation resolves states in a planned dependency-safe order." chain="same state → same recurrence → different order → same optimum" facts={[["Problem", "Unlimited minimum coin change"], ["Top-down", "Call, cache, reuse"], ["Bottom-up", "Initialize, fill, read"], ["Important distinction", "Unknown ≠ unreachable"]]} />
+
+<Section id="mental-model" number="01" title="A demand-driven stack or an ordered table." kicker="VISUAL MENTAL MODEL">
+
+Both operations answer the same question: what is the fewest number of coins summing exactly to this amount? Memoization begins at the target and descends to needed smaller amounts. Tabulation begins at zero and advances through all amounts to the target. Both share results between consumers.
+
+<TechniquePreview kind="memo-tabulation" />
+
+The memo view shows conceptual call frames next to cached state cells. A frame retains its amount, local best and pending dependency. Multiple calls can refer to the same cache cell. Frames represent invocations; cells represent equivalent subproblems. A cache hit can therefore create a short-lived frame without creating a new subproblem.
+
+</Section>
+
+<Section id="intuition" number="02" title="Keep the mathematics fixed while changing evaluation order." kicker="THE INTUITION">
+
+D(0) = 0. For a positive amount a, each coin c no larger than a proposes D(a − c) + 1 if that smaller amount is reachable. The minimum proposal is the optimum. No proposal means unreachable. Removing a final coin from an optimum proves optimal substructure, as in Chapter 49.
+
+Memoization asks a dependency to solve itself when needed and records its answer before returning. Tabulation arranges for dependencies to be solved already. Neither changes the recurrence or turns coin selection into the largest-first greedy rule. The denominations are unlimited, positive, fixed for one run, and considered in ascending order with strict improvements only.
+
+</Section>
+
+<Section id="memory" number="03" title="Cache state and frame state have different lifetimes." kicker="STRUCTURE / STORAGE LAYOUT">
+
+Each optional cache entry is unknown until its result is published. A stored −1 means proved unreachable and is a reusable answer. A stored zero is the valid base result. The memo lookup uses `has_value()`, so unreachable results count as hits rather than being repeatedly recomputed.
+
+A suspended frame keeps its own local best while a child computes another best. The vector of conceptual observer frames mirrors this retained information without claiming ABI byte offsets, registers or addresses. After a child returns, its frame disappears but its cache result survives. The tabulation operation uses no recursive calls; its table and current loop locals hold the necessary state.
+
+</Section>
+
+<Section id="operations" number="04" title="Compare both strategies on the same difficult input." kicker="INTERACTIVE OPERATIONS">
+
+<TechniqueLab kind="memo-tabulation" />
+
+Run Memo with coins `1,3,4`, target 6. Stop at a pending dependency and inspect the caller's local best before descending. Continue until a cache hit, then step backward to see that no cache write occurred on the hit. At return, the value is visible while the frame still exists; pop removes it in a separate step. Switch to Tabulation with the same input and compare the answer, writes, checks, calls and depth.
+
+Next use `2,4`, target 7. Memoization visits only odd amounts 7, 5, 3 and 1. It proves them unreachable and reuses those cached failures. Even amount zero can remain unknown because this search never needs it. Tabulation still resolves every amount from zero through seven. Try empty coins at a positive target, then target zero; the empty sum needs zero coins. Targets are bounded to 0 through 16, with at most six unique denominations from 1 through 16.
+
+</Section>
+
+<Section id="implementation" number="05" title="A cached failure is still a cached answer." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="MemoTabulation.hpp" chapter="50" />
+
+The header is standalone and contains both strategies. A generic recursive lambda calls itself through an explicit self parameter; the lambda captures the owned state by reference. A frame is accessed again through `back()` after a child returns, avoiding a retained reference into a vector that may have reallocated. Strictly positive coins ensure termination by decreasing amount.
+
+The optional observer receives a const reference during the callback; retain a copy for history. It should be nonthrowing and nonreentrant. The canonical algorithm does not require the observer. Observer-frame metadata is retained even without a callback in this teaching implementation, adding constant work per call and O(depth) storage. Inputs remain bounded so count arithmetic and recursion depth are predictable.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Separate cache publication, return, and frame removal." kicker="CODE + VISUALIZATION TRACE">
+
+Call pushes a fresh invocation. Hit reuses a present optional entry. Miss starts evaluation without claiming the cell is already valid. Pending records the requested smaller amount before the recursive call. Candidate consumes its returned answer. Improve updates this caller's best. Write publishes the completed result only after all candidates have been checked. Return exposes that value, then pop removes the frame.
+
+Tabulation instead emits base, start, check, candidate, improve and write events in increasing amount order. Previous restores the whole prior snapshot: live frames, retained locals, cache entries, dependencies and counters. A cache hit and a return are separate observable facts even when they happen consecutively.
+
+</Section>
+
+<Section id="invariants" number="07" title="Every resolved entry has the same meaning in both strategies." kicker="INVARIANTS">
+
+A resolved D(a) is the optimum for exactly a or a proof of unreachability. Its smaller dependencies are resolved before publication. Unknown entries make no claim. Live recursive arguments strictly decrease down the stack. A finished operation has an answer and no live frames, while the untouched initial state has not started evaluation.
+
+Memoization has exactly one miss and one write per newly solved state. Calls equal hits plus misses at completion. The base state is only written if reached. Both strategies must agree on the target's result, but their unvisited entries, operation counts and execution orders may differ. Equal final answers alone do not verify stack restoration or cache behavior.
+
+</Section>
+
+<Section id="complexity" number="08" title="Measure the visited domain as well as the table size." kicker="COMPLEXITY EXPLORER">
+
+With coins `2,4`, run targets 3, 7, then 15. Memoization solves only the required odd states; tabulation fills every amount. Compare cache misses against resolved writes, then compare calls against maximum depth. A cache hit adds a call but not another expansion of its state's transitions. Try adding coin 1: the memoized dependency closure then includes every amount to the target.
+
+Let A be target, k the number of denominations, and R the number of states actually solved. Both implementations sort in O(k log k) and allocate a dense O(A) table. Memo evaluation costs O(R(k + 1)) plus initialization; tabulation costs O(A(k + 1)). Storage is O(A + k), with memoization additionally using O(depth) frames, at most A + 1 here. Thus this dense memo implementation does not avoid O(A) initialization or table memory when it visits fewer states. Observer snapshot history adds a separate visualization cost.
+
+</Section>
+
+<Section id="break-it" number="09" title="Cache presence cannot be inferred from reachability." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+Run the unreachable fixture and locate a hit on a stored −1. If a faulty lookup treated only nonnegative values as cached, that failed subproblem would be recomputed. If unknown and unreachable were both represented by −1 without another validity bit, the algorithm could not distinguish them. The optional wrapper carries precisely that missing information.
+
+Imagine one shared best variable across every recursive level: a child would overwrite its caller's unfinished solution. Inspect two frames to see why best is local. Try changing the coin set between runs; reusing an old cache would be invalid because the problem changed. The lab creates a fresh state on each run. Zero coins and negative targets are rejected rather than permitted to break termination or indexing.
+
+</Section>
+
+<Section id="analogy" number="10" title="Answer requests as they arrive or fill the reference manual." kicker="REAL-WORLD ANALOGY">
+
+A help desk can investigate each requested question and keep a record, including “impossible.” Or it can prepare a complete manual in prerequisite order. Both can give the same correct answer. Demand-driven work may avoid unused questions; preparation can give simple predictable access patterns. The useful choice depends on which questions will be asked and how expensive the bookkeeping is.
+
+</Section>
+
+<Section id="engineering" number="11" title="Choose an evaluation strategy from the dependency structure." kicker="ENGINEERING INSIGHT">
+
+Memoization suits naturally recursive or sparsely reached states, but deep recursion can exceed a real process stack when the educational bounds are removed. Tabulation exposes dependency order and often offers predictable sequential storage access. Both can retain a chosen predecessor for reconstruction; neither reconstructs a coin list in this count-only implementation. Rolling storage is useful only when dependency requirements permit it, and it can complicate reconstruction.
+
+The Part VII story now connects: <a href="../45-recursion/">recursion</a> retains suspended work; <a href="../46-backtracking/">backtracking</a> explores and undoes choices; <a href="../47-divide-and-conquer/">divide and conquer</a> separates work; <a href="../48-greedy-algorithms/">greedy algorithms</a> commit when justified; <a href="../49-dynamic-programming/">DP</a> reuses equivalent solved questions. Memoization and tabulation are two ways to schedule that reuse.
+
+</Section>
+
+<Section id="exercises" number="12" title="Explain differences without changing the problem." kicker="EXERCISES / CHALLENGES">
+
+1. List every state memoization solves for coins 2 and 4, target 7. Why is D(0) unknown?
+2. Explain why caching an unreachable answer is as necessary as caching a finite optimum.
+3. Predict the maximum call depth for coins 1, 3, and 4 at target 6 with ascending choices.
+4. Describe a sparse cache that could avoid dense initialization. What new lookup and storage costs would it introduce?
+5. Design a reconstruction policy shared by both strategies, including a deterministic tie rule.
+6. Identify which of the six Part VII techniques fits an acyclic dependency evaluator with repeated requests, and justify the state identity.
+
+</Section>
+
+<Section id="summary" number="13" title="Reuse is the principle; evaluation order is a choice." kicker="CHAPTER SUMMARY">
+
+Memoization and tabulation compute the same minimum-coin recurrence. Top-down evaluation retains callers and caches demanded results; bottom-up evaluation fills a dependency-safe domain. Unknown and unreachable remain distinct. Counters expose which work each strategy performs, and neither strategy is universally superior. This completes the algorithmic-techniques sequence through Chapter 50.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="50" />
+</Section>

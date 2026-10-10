@@ -1,0 +1,92 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import Section from '../../components/book/Section.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import SearchSortLab from '../../components/visualizers/SearchSortLab.astro';
+import SearchSortDownload from '../../components/visualizers/SearchSortDownload.astro';
+import SortingComplexity from '../../components/visualizers/SortingComplexity.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-39/Fundamentals.hpp?raw';
+import main from '../../../cpp/chapter-39/main.cpp?raw';
+
+<ChapterHero number="39" title="Sorting Fundamentals" part="PART VI / SEARCHING & SORTING" overline="ORDER KEYS WITHOUT LOSING RECORD IDENTITY." description="Measure disorder with inversions, distinguish sorted regions from final positions, and make stability visible with identities that survive every move." chain="choose direction → inspect pairs → count inversions → track identities" facts={[["SORTED","Zero strict inversions"],["STABLE","Equal keys keep relative order"],["RECORD","Key plus persistent identity"]]} />
+
+<Section id="mental-model" number="01" title="Disorder is a relationship between two positions." kicker="VISUAL MENTAL MODEL">
+<StructurePreview chapter="sorting-fundamentals" id="fundamentals-mental" operation="inspect" inputs={{preset:'mixed'}} viewLabels={{logical:'Key order',memory:'Indexed records'}} diagramNote="An identity letter stays with its original record. It is never recomputed from the record’s current position." />
+For ascending order, an inversion is a pair of indices i &lt; j whose keys satisfy a[i] &gt; a[j]. In [4,2,5,1,3], the six inversions are (0,1), (0,3), (0,4), (1,3), (2,3) and (2,4). The pair need not be adjacent. Zero strict inversions means the entire sequence is sorted.
+
+The explorer reads every pair and records which ones violate the selected direction. It is an inspection algorithm, not an automatic sorter: the arbitrary swap operation is provided to let you change one arrangement and examine the consequences.
+</Section>
+
+<Section id="intuition" number="02" title="Comparison observes; a swap changes storage." kicker="THE INTUITION">
+A comparison answers a question about keys. It does not change the sequence. A swap exchanges two complete records, changing two array slots when the indices differ. A shift copies one record into a neighboring slot, usually while another record is held separately. Those operations have different costs and different consequences for duplicate identities.
+
+Ascending order requires each key to be no greater than its successor; descending reverses that relation. Equal keys are already ordered in both directions and do not form a strict inversion. A stable algorithm preserves their **original relative order**, not their original positions. Sorting [2A,1B,2C] stably yields [1B,2A,2C].
+</Section>
+
+<Section id="memory" number="03" title="Position is temporary; identity belongs to the record." kicker="STRUCTURE / MEMORY LAYOUT">
+Each teaching record contains `key` and `id`. A begins with ID 0, B with ID 1, and so on. The entire record moves together. Comparing only the key and moving only that field would detach the payload identity from the value; a real sort must move the complete record, its handle, or an explicitly designed index permutation.
+
+An in-place sorting algorithm uses O(1) auxiliary element storage beyond the input, subject to any separately stated recursion stack. An out-of-place algorithm may allocate a second array or merge buffer. The explorer stores all inversion pairs, which can itself require O(n²) diagnostic memory; that does not describe the auxiliary memory of a sorting algorithm. The trace recorder also owns history outside the algorithmic operation model.
+</Section>
+
+<Section id="operations" number="04" title="Inspect the order before and after one explicit swap." kicker="INTERACTIVE OPERATIONS">
+<SearchSortLab kind="sorting-fundamentals" />
+Run Count inversions on the mixed preset and step through its six inversion records. Choose Descending and repeat: every unequal pair reverses its status. Choose All equal to see zero inversions in both directions. Empty and singleton inputs contain no pairs, so they are sorted without a key comparison.
+
+For identity inspection choose Custom input with 2,1,2. Select swap indices 0 and 2, then Swap records, then inspect. The numeric array still reads [2,1,2], but the equal records have traded places. The equal-key-order fact changes even though the inversion count does not. Invalid swap indices produce an input error before replacing the current trace.
+</Section>
+
+<Section id="implementation" number="05" title="Enumerate each pair once." kicker="C++ IMPLEMENTATION">
+<SearchSortDownload chapter="39" />
+<CanonicalSource source={source} main={main} fileName="Fundamentals.hpp" chapter="39" />
+The outer loop chooses i; the inner loop starts at i + 1. This excludes self-pairs and avoids counting both (i,j) and (j,i). The comparator helper expresses the requested direction. A successful strict inversion test appends one pair and increments the inversion total in a separate tagged step.
+
+The optional swap checks both indices before accessing storage. It exchanges complete records. A self-swap leaves the teaching swap/write counts at zero. The standalone helper header supplies owned vectors, the record type, checked construction and an optional no-op observer. Native tests compare every observer snapshot with the TypeScript model; independent tests count inversions directly from the input relation.
+</Section>
+
+<Section id="pointer-trace" number="06" title="Discovering an inversion and recording it are distinct steps." kicker="CODE + VISUALIZATION TRACE">
+On mixed input, the first compared pair is indices 0 and 1: keys 4 and 2. `explore.compare` increments pairs inspected and computes true. At this instant the inversion has been recognized but not yet added to the recorded list. `explore.inversion` then appends (0,1) and changes the count to one.
+
+The comparison for indices 0 and 2 finds 4 &gt; 5 false, so there is no append step. Jumping to the comparison source line cycles through both successful and unsuccessful conditions. The completed count is exact; a running count is explicitly “found so far,” so it is never presented as the total before all pairs have been inspected.
+</Section>
+
+<Section id="invariants" number="07" title="Conserve records and state exactly what a region guarantees." kicker="LIVE INVARIANTS">
+The explorer checks that every original identity and key remains present exactly once, every recorded pair is a strict inversion, and the final zero-count test agrees with sortedness. Stability is a separate property: a permutation can be numerically sorted while reversing equal-key identities.
+
+A **sorted prefix** is internally ordered but may move when a later key is inserted. A **finalized prefix or suffix** is already in its eventual positions and will not be touched again. Insertion sort uses the former; selection and bubble sort establish the latter. The next chapter names those regions differently to avoid suggesting that every green region has the same proof.
+</Section>
+
+<Section id="complexity" number="08" title="The vocabulary describes different dimensions of work." kicker="COMPLEXITY EXPLORER">
+<SortingComplexity chapter="39" />
+This pair explorer performs n(n − 1) / 2 key comparisons even on sorted input. A sortedness-only test could stop at the first descending adjacent pair and costs O(n); it answers a smaller question than listing every inversion. An adaptive sorter does less work when the input already has useful order. Adaptiveness is separate from stability and auxiliary memory.
+
+Comparison sorts determine order by comparing keys. Counting and radix methods use additional key-domain structure, such as bounded integer buckets or digits. The comparison decision-tree lower bound does not automatically apply to those extra operations. Their range size, digit count and storage cost still matter. Teaching counters distinguish comparisons, swaps, shifts, writes and passes instead of treating them as interchangeable units of time.
+</Section>
+
+<Section id="break-it" number="09" title="Equal-looking numbers can conceal an unstable result." kicker="COMMON MISTAKES / BREAK-IT MODE">
+Use the equal-record swap experiment above. If the diagram dropped identity labels after each move, [2A,1B,2C] and [2C,1B,2A] would look identical. The numerical inversion count cannot detect this change, because it deliberately ignores equal pairs. The identity-order fact exposes it.
+
+Stability is guaranteed over **all** supported inputs, not established by one successful demonstration. An unstable algorithm may happen to preserve order on a particular input. Conversely, swapping equal records can break stability without breaking sortedness. Chapter 40 provides an executable tie-policy fault and a selection-sort counterexample to make both distinctions concrete.
+</Section>
+
+<Section id="analogy" number="10" title="Sort tickets by priority while preserving arrival order." kicker="REAL-WORLD ANALOGY">
+Each ticket has a priority and an arrival identity. Ordering by priority groups urgent work, while a stable sort keeps earlier arrivals ahead of later arrivals with the same priority. Two tickets with priority 2 are still different tickets. Exchanging only their printed priority fields would alter which work belongs to which ticket rather than sort the records.
+</Section>
+
+<Section id="engineering" number="11" title="Choose guarantees around the payload and workload." kicker="ENGINEERING INSIGHT">
+A renderer sorting commands by material may care about preserving submission order within an equal material group. A geometry pipeline may instead sort lightweight indices to avoid repeatedly moving large objects. The proper representation depends on payload cost, ownership and required secondary ordering.
+
+Stable passes also compose useful orderings: sorting by a secondary key and then stably by a primary key preserves the secondary order within each primary group. If the second pass is unstable, that earlier work can be lost. In-place behavior, stability, adaptiveness, worst-case cost and domain restrictions are independent questions; a single Big-O label cannot choose an algorithm for you.
+</Section>
+
+<Section id="exercises" number="12" title="Separate properties that happen to look similar." kicker="EXERCISES / CHALLENGES">
+<div className="exercise"><h3>Count strict pairs</h3><p>How many ascending inversions occur in [2A,2B,1C]?</p><details><summary>Reveal reasoning</summary><p>Two: (0,2) and (1,2). The equal pair (0,1) is not a strict inversion.</p></details></div>
+<div className="exercise"><h3>Sorted but unstable</h3><p>Is [1C,2B,2A] a valid stable result for that input?</p><details><summary>Reveal reasoning</summary><p>The keys are sorted, but A originally preceded B. Their reversal violates stability.</p></details></div>
+<div className="exercise"><h3>Sorted versus finalized</h3><p>After sorting the prefix [3,5] with an unprocessed key 1, can the prefix positions be final?</p><details><summary>Reveal reasoning</summary><p>No. The incoming 1 belongs before both records. The prefix is internally sorted, but its positions must move.</p></details></div>
+</Section>
+
+<Section id="summary" number="13" title="Ordering keys is only one part of sorting correctly." kicker="CHAPTER SUMMARY">
+<div className="summary-panel"><ul><li>A strict inversion records an out-of-order pair under a chosen direction.</li><li>Zero inversions means sorted; equal-key identity order is a separate property.</li><li>Comparisons observe; swaps and shifts mutate complete records.</li><li>Sorted regions and finalized positions have different meanings.</li><li>Stability, space use, adaptiveness and key-domain assumptions guide algorithm choice.</li></ul><button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete ✓</button></div>
+<ChapterPagination number="39" />
+</Section>

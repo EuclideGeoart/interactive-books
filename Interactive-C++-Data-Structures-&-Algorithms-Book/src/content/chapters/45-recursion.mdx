@@ -1,0 +1,128 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import TechniquePreview from '../../components/visualizers/TechniquePreview.astro';
+import TechniqueLab from '../../components/visualizers/TechniqueLab.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-45/Recursion.hpp?raw';
+import main from '../../../cpp/chapter-45/main.cpp?raw';
+
+<ChapterHero number="45" title="Recursion" part="PART VII / ALGORITHMIC TECHNIQUES" overline="RETAIN A QUESTION, SOLVE A SMALLER ONE" description="A recursive call suspends its caller, solves a smaller instance, and returns a value to the exact point where the caller will resume." chain="enter frame → reach base case → return → resume caller" facts={[["Example", "Factorial, n = 0..8"], ["Time", "O(n)"], ["Recursive depth", "max(1, n)"], ["Iteration", "Same result, one frame"]]} />
+
+<Section id="mental-model" number="01" title="Each call keeps its own unfinished work." kicker="VISUAL MENTAL MODEL">
+
+To compute 4!, one call retains 4 while another computes 3!. That second call retains 3 while another computes 2!. The base call returns 1. Only then can the suspended multiplications finish: 2, 6, 24. A call tree records who called whom; the live stack contains only calls that have not returned.
+
+<TechniquePreview kind="recursion" />
+
+Read the call stack, retained arguments, and returned-value table together. A resolved tree node is historical evidence of a completed call, not a frame that still occupies the stack.
+
+</Section>
+
+<Section id="intuition" number="02" title="A base case gives the smaller question somewhere to stop." kicker="THE INTUITION">
+
+Factorial means the product of the integers from 1 through n, with 0! defined as 1. For n above 1, n! equals n times (n − 1)!. The base case answers 0 and 1 directly. The recursive case reduces a nonnegative integer, so repeated calls must reach that base case.
+
+Correct recursion needs both a stopping rule and progress toward it. Merely writing a function that calls itself proves neither termination nor correctness. The induction argument has two pieces: the base returns the right value, and a correct smaller result becomes the correct larger result when multiplied by n.
+
+</Section>
+
+<Section id="memory" number="03" title="A frame retains an argument and a place to resume." kicker="STRUCTURE / MEMORY LAYOUT">
+
+Every live factorial invocation owns a distinct n. Its caller remains suspended at the call expression, waiting to receive the child result and perform multiplication. The displayed resume description is a conceptual return-address explanation. Frame IDs such as call-0 identify invocations; they are not native pointers or byte offsets.
+
+The runtime may store arguments, local values, bookkeeping, and return information according to its compiler and calling convention. This diagram makes no ABI claim. The C++ observer records a separate vector of conceptual arguments for inspection. Popping that vector mirrors returning from a call; it does not implement the machine stack itself.
+
+The iterative version retains an accumulator and loop factor in one invocation. Standard C++ does not guarantee tail-call elimination, and this recursive factorial still has multiplication to perform after the child returns.
+
+</Section>
+
+<Section id="operations" number="04" title="Compare the same factorial with and without nested calls." kicker="INTERACTIVE OPERATIONS">
+
+<TechniqueLab kind="recursion" />
+
+Run Recursive with n = 4. Pause when four frames are live and predict the next return. Step until the result is 24, then use Previous to rebuild the exact suspended state. Run Iterative with the same n: the result and multiplication count agree, while maximum depth stays one.
+
+Try n = 0 and n = 1. Both produce 1 without any multiplication. The bounded input accepts integers from 0 through 8. Negative values, fractions, and values above the ceiling are rejected before any calls begin.
+
+</Section>
+
+<Section id="implementation" number="05" title="Return the smaller answer before using it." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="Recursion.hpp" chapter="45" />
+
+The public functions validate n, create an owned observation state, and execute either the recursive helper or the loop. The recursive helper receives the same observation state by reference while each invocation keeps its own n and child result. The observer is optional; it receives tagged const snapshots and must not mutate or reenter the run. Copy a snapshot if retaining it after the callback.
+
+The input ceiling makes every product fit a conventional 32-bit int: 8! is 40320. This ceiling is part of the educational API, not the mathematical definition of factorial. Extending the domain requires choosing a numeric representation, checking overflow, and considering recursion depth together.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Entering and returning are different events." kicker="CODE + VISUALIZATION TRACE">
+
+Enter records a live argument. Call marks where the caller is suspended before descending. Base produces 1. Multiply uses the child's returned value. Return publishes the invocation's answer and removes its live frame. Done leaves the final result available with an empty stack.
+
+For n = 4, the retained-argument sequence grows through 4, 3, 2, 1; returned values appear for n = 1, 2, 3, 4 in that order. The result is not assigned to every caller at the base case. Each caller still performs its own multiplication after resuming.
+
+The iterative trace starts one frame, updates the accumulator once per factor from 2 through n, then returns. Source highlights come from tags in the canonical header; backward playback restores saved states without rerunning C++.
+
+</Section>
+
+<Section id="invariants" number="07" title="Smaller arguments descend; correct values return." kicker="INVARIANTS">
+
+Successive recursive frames differ by one in n, and no argument is negative. Each completed invocation returns exactly its own factorial. Completed invocations leave the live stack while their result rows remain available for inspection. At completion no call frame remains.
+
+These local checks connect to the proof: decreasing arguments establish termination within the accepted domain, the base establishes a correct first answer, and multiplication propagates correctness upward. A plausible final number alone would not establish correct call order or stack restoration.
+
+</Section>
+
+<Section id="complexity" number="08" title="Count work separately from maximum depth." kicker="COMPLEXITY EXPLORER">
+
+Use the lab's n control as the explorer: compare n = 2, 4, and 8 under both operations. Recursive calls and maximum depth are max(1, n); both versions perform max(0, n − 1) multiplications. Counting arithmetic as constant cost, both take O(n) time. Recursive live frames require O(n) space; the loop uses O(1) working space.
+
+The recursive implementation also retains one return record per call, another O(n) teaching cost. The iterative record stays constant size. Saving all interactive snapshots adds presentation work beyond those algorithm costs. For large arbitrary-precision factorials, multiplication itself would no longer be constant time.
+
+A short program can still create a deep stack. An input bound of eight makes this lab safe; general recursive traversals need a depth argument or an explicit stack when input depth can become large.
+
+</Section>
+
+<Section id="break-it" number="09" title="A base case is useless if execution cannot reach it." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+First predict what n = 0 should do, then run it. In a local copy of the canonical source, imagine replacing the base condition with “n equals 1” while still allowing zero: the decreasing calls would pass through negative values and never reach 1. The safe lab keeps the correct base condition and bounds.
+
+Pause before a recursive call and write down the caller's retained n. If you treat all frames as one mutable n, you will predict the wrong unwinding products. Compare the live frame stack with historical return rows to see why a resolved call should not remain live.
+
+Try n = 9 to observe validation. Simply removing that bound would not prove overflow safety or protect arbitrary recursion depth; those require separate decisions.
+
+</Section>
+
+<Section id="analogy" number="10" title="Leave a numbered note before delegating a smaller task." kicker="REAL-WORLD ANALOGY">
+
+A coordinator delegates a smaller calculation and leaves a note: “when the answer comes back, multiply it by 4.” The next coordinator leaves a note involving 3. The final coordinator can answer immediately. Replies travel back through the notes in reverse order; none of the waiting instructions disappears merely because someone else is working.
+
+</Section>
+
+<Section id="engineering" number="11" title="The same frame mechanics support several ways of thinking." kicker="ENGINEERING INSIGHT">
+
+Recursive parsers and tree traversals retain local context while processing nested structure. An explicit stack can represent that context when depth must be controlled, but it must retain enough information to know where execution resumes.
+
+Continue to <a href="../46-backtracking/">Backtracking</a> to explore alternatives and restore a shared partial solution. <a href="../47-divide-and-conquer/">Divide and Conquer</a> splits independent work before combining answers. <a href="../50-memoization-tabulation/">Memoization and Tabulation</a> will compare recursive demand with an explicit dependency order.
+
+</Section>
+
+<Section id="exercises" number="12" title="Predict both the answer and the unfinished work." kicker="EXERCISES / CHALLENGES">
+
+1. List the retained arguments and resume descriptions when factorial(5) first reaches its base case.
+2. Predict the live frames immediately after factorial(2) returns, then verify with playback.
+3. Explain why 0! needs no multiplications and why the loop starts with accumulator 1.
+4. Compare n = 8 under both operations. Which counters match, and which differ?
+5. Design a recursive sum over a half-open array range. State its base case, shrinking measure, and frame contents before writing code.
+
+</Section>
+
+<Section id="summary" number="13" title="Recursion stores the work that must resume later." kicker="CHAPTER SUMMARY">
+
+A recursive invocation owns retained state and a continuation. Smaller arguments lead to a base case; returned values then flow through suspended callers. Recursion and iteration can compute the same result with very different maximum live depth. Conceptual frame inspection explains that difference without inventing machine addresses.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="45" />
+</Section>

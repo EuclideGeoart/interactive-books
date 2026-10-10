@@ -1,0 +1,15 @@
+---
+import TraceLab from './TraceLab.astro';
+import btree from '../../../cpp/chapter-16/BTree.hpp?raw';
+import bplus from '../../../cpp/chapter-16/BPlusTree.hpp?raw';
+interface Props { kind?: 'btree'|'bplus' }
+const {kind='btree'}=Astro.props;
+const plus=kind==='bplus';
+---
+<TraceLab id={plus?'bplus-lab':'btree-lab'} chapter="b-tree" source={plus?bplus:btree} fileName={plus?'BPlusTree.hpp':'BTree.hpp'} operations={[{id:'insert',label:'Insert / split'},{id:'search',label:'Search'},...(plus?[{id:'range',label:'Range scan'}]:[])]} regions={['insert','search','descend','split',...(plus?['range']:[])]}>
+<input type="hidden" name="kind" value={kind} />
+<label>Starting insertion order<input name="values" value={plus?'5,10,20,25,30,40,50,60':'10,20,30'} maxlength="140" /></label>
+<label>{plus?'Key / range lower bound':'Key'}<input name="value" type="number" min="-999" max="999" step="1" value={plus?'15':'40'} required /></label>
+{plus&&<label>Range upper bound<input name="high" type="number" min="-999" max="999" step="1" value="50" required /></label>}
+</TraceLab>
+<script>import '../../scripts/tree-labs';</script>

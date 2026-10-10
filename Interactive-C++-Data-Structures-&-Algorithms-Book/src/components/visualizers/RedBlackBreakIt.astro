@@ -1,0 +1,23 @@
+<div class="rb-break" data-rb-break>
+<div class="break-controls"><label>Controlled fault<select data-fault><option value="root">Color the root red</option><option value="red-red">Create a red parent and red child</option><option value="black-height">Change one leaf's black height</option><option value="parent">Omit a real parent backlink</option></select></label><button type="button" class="button button-primary" data-break>Introduce fault</button><button type="button" class="button" data-restore>Restore valid tree</button></div>
+<p data-broken-note aria-live="polite">All five color rules and ownership checks hold.</p>
+<div class="segmented" role="group" aria-label="Fault diagram representation"><button type="button" data-view="logical" aria-pressed="true">Logical view</button><button type="button" data-view="memory" aria-pressed="false">Memory view</button></div>
+<div class="svg-scroll" role="region" tabindex="0" aria-label="Scrollable red-black fault diagram" data-svg></div>
+<details data-inspector-shell open><summary>Inspect the color or link fault</summary><aside class="pointer-inspector" aria-label="Red-black fault inspector" data-inspector></aside></details>
+<details class="text-fallback"><summary>Text representation</summary><code data-ascii></code></details>
+<ul data-broken-rules></ul>
+</div>
+<script>
+import {redBlackState,redBlackInvariants} from '../../visualizers/red-black/model';
+import {redBlackAdapter} from '../../visualizers/red-black/adapter';
+import {InspectionDiagram} from '../../scripts/inspection-diagram';
+import {escapeHtml} from './primitives';
+for(const [index,root]of [...document.querySelectorAll<HTMLElement>('[data-rb-break]')].entries()){
+ const fresh=()=>redBlackState([20,10,30,5,15,25,35]);let state=fresh();
+ const diagram=new InspectionDiagram(root,redBlackAdapter,state,`rb-fault-${index}`);
+ const render=()=>{diagram.update(state,undefined,true);root.querySelector('[data-broken-rules]')!.innerHTML=redBlackInvariants(state,true).map(rule=>`<li class="invariant-${rule.status}">${rule.status==='pass'?'✓':'✕'} ${escapeHtml(rule.name)} — ${escapeHtml(rule.detail)}</li>`).join('');};
+ root.querySelector('[data-break]')!.addEventListener('click',()=>{state=fresh();const fault=root.querySelector<HTMLSelectElement>('[data-fault]')!.value;const top=state.nodes[state.root!]!;if(fault==='root')top.red=true;else if(fault==='red-red'){state.nodes[top.left!]!.red=true;state.nodes[state.nodes[top.left!]!.left!]!.red=true;}else if(fault==='black-height')state.nodes[state.nodes[top.left!]!.left!]!.red=false;else state.nodes[top.left!]!.parent=null;root.querySelector('[data-broken-note]')!.textContent='This deliberate model fault is never executed by the canonical C++. Read every invariant: one mutation may violate several rules.';render();});
+ root.querySelector('[data-restore]')!.addEventListener('click',()=>{state=fresh();root.querySelector('[data-broken-note]')!.textContent='All five color rules and ownership checks hold.';render();});render();
+}
+</script>
+<style>.rb-break{border-block:1px solid var(--border);padding-block:1rem;min-width:0}.break-controls{display:flex;flex-wrap:wrap;gap:1rem;align-items:end}label{display:grid;gap:.5rem;max-width:100%}select{max-width:100%}ul{display:grid;gap:.65rem}.pointer-inspector{margin-block:1rem}:global(.rb-break .invariant-fail){color:var(--red)}</style>

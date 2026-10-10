@@ -1,0 +1,44 @@
+---
+import SourceCode from '../code/SourceCode.astro';
+interface Props {
+  id: string; chapter: string; source: string; fileName: string;
+  operations: { id: string; label: string }[]; regions: string[];
+  viewLabels?: { logical: string; memory: string };
+  diagramNote?: string;
+}
+const { id, chapter, source, fileName, operations, regions,
+  viewLabels = { logical: 'Logical view', memory: 'Memory view' },
+  diagramNote = 'Select a node, slot, or link to inspect it. Scroll the diagram horizontally if needed. Addresses are illustrative.',
+} = Astro.props;
+---
+<div class="operation-lab" id={id} data-chapter-lab={chapter} data-lab-id={id}>
+  <div class="lab-heading"><div><span class="eyebrow">INTERACTIVE EXECUTION</span><h3>Follow one statement at a time.</h3></div><span class="live-indicator">Deterministic execution</span></div>
+  <div class="operation-tabs" role="group" aria-label="Operation">
+    {operations.map((op, i) => <button type="button" data-operation={op.id} aria-pressed={i === 0}>{op.label}</button>)}
+  </div>
+  <form class="lab-inputs" data-operation-form><slot /><button type="submit" class="button button-primary">Load operation <span aria-hidden="true">↗</span></button></form>
+  <p data-input-error class="input-error" role="alert" hidden></p>
+  <div class="lab-workspace">
+    <div class="diagram-component compact" data-diagram>
+      <div class="diagram-topline"><span class="diagram-caption">LIVE STATE</span><div class="segmented" role="group" aria-label="Diagram representation"><button type="button" data-view="logical" aria-pressed="true">{viewLabels.logical}</button><button type="button" data-view="memory" aria-pressed="false">{viewLabels.memory}</button></div></div>
+      <div class="diagram-with-inspector"><div class="diagram-canvas">
+        <div class="svg-scroll" tabindex="0" role="region" aria-label="Scrollable structure diagram" data-svg></div>
+        <p class="diagram-view-note">{diagramNote}</p>
+        <details class="text-fallback"><summary>Text representation</summary><code data-ascii></code></details>
+      </div><details class="inspector-shell" data-inspector-shell open><summary>Inspect storage &amp; references <span>Tap a node or slot to select it</span></summary><aside class="pointer-inspector" aria-label="Pointer and storage inspector" data-inspector></aside></details></div>
+    </div>
+    <div class="code-pane"><div class="code-title"><span><i></i> {fileName}</span><span>C++20</span></div><div class="operation-code" data-operation-code tabindex="0" role="region" aria-label="Synchronized C++ source">{regions.map(region => <SourceCode source={source} region={region} interactive />)}</div><div class="code-status"><span class="active-dot"></span><span data-code-status>Click a line number to jump to its execution.</span></div></div>
+  </div>
+  <div class="step-explanation" aria-live="polite" aria-atomic="true"><span class="step-badge" data-event>BEFORE</span><div><strong data-step-title>Ready</strong><p data-step-explanation>Use Next to follow the operation.</p></div></div>
+  <div class="playback-controls">
+    <div class="mobile-step-context"><span data-mobile-event>BEFORE</span><code data-mobile-code>Choose Play or Next to begin.</code></div>
+    <div class="playback-actions"><button type="button" data-action="reset" aria-label="Reset operation" title="Reset operation">↺</button><button type="button" data-action="previous" aria-label="Previous step" title="Previous step">←</button><button type="button" class="play-button" data-action="play">▶ <span>Play</span></button><button type="button" data-action="next" aria-label="Next step" title="Next step">→</button></div>
+    <div class="step-progress"><span data-step-count>Step 0 / 0</span><input type="range" min="0" max="0" value="0" data-scrubber aria-label="Execution step" /></div>
+    <label class="speed-label">Speed<select data-speed aria-label="Playback speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select></label>
+  </div>
+  <div class="lab-bottom"><div class="segmented" role="group" aria-label="Operation phase"><button type="button" data-phase="before" aria-pressed="true">Before</button><button type="button" data-phase="steps" aria-pressed="false">Step-by-step</button><button type="button" data-phase="after" aria-pressed="false">After</button></div><div class="complexity-counters" data-counters></div></div>
+  <details class="before-after"><summary>Compare before and after</summary><dl><div><dt>Before</dt><dd data-before></dd></div><div><dt>After</dt><dd data-after></dd></div></dl></details>
+  <div class="lab-invariants"><div class="invariant-title"><span class="eyebrow">LIVE INVARIANTS</span><strong data-invariant-summary></strong></div><ul data-invariants></ul></div>
+  <noscript><p class="callout">Enable JavaScript to step through this operation. The full C++ source and chapter explanations remain available below.</p></noscript>
+</div>
+<script>import '../../scripts/chapter-labs';</script>

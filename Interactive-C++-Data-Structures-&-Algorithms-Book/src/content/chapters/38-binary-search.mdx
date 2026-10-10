@@ -1,0 +1,91 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import Section from '../../components/book/Section.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import SearchSortLab from '../../components/visualizers/SearchSortLab.astro';
+import SearchSortDownload from '../../components/visualizers/SearchSortDownload.astro';
+import SortingComplexity from '../../components/visualizers/SortingComplexity.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-38/BinarySearch.hpp?raw';
+import main from '../../../cpp/chapter-38/main.cpp?raw';
+
+<ChapterHero number="38" title="Binary Search" part="PART VI / SEARCHING & SORTING" overline="ORDER JUSTIFIES EVERY DISCARDED HALF." description="Search an ascending array by shrinking a half-open candidate interval. Follow the exact midpoint, comparisons and boundary updates that make logarithmic progress possible." chain="validate order → midpoint → equality → choose half → shrink" facts={[["PRECONDITION","Ascending keys"],["INTERVAL","[low, high)"],["DUPLICATES","Any matching index"]]} />
+
+<Section id="mental-model" number="01" title="A candidate interval is a precise claim." kicker="VISUAL MENTAL MODEL">
+<StructurePreview chapter="binary-search" id="binary-mental" operation="binary" inputs={{preset:'standard',target:'40'}} viewLabels={{logical:'Candidate interval',memory:'Indexed storage'}} diagramNote="high is an exclusive boundary and can equal the array length; it never names a value to read." />
+Initially low is 0 and high is n. Only indices in [low, high) remain candidates. For [10,20,30,40,50] and target 40, mid is 2 and key 30 is too small. Every key at or before index 2 is also too small, so low becomes 3. The next midpoint is 4; key 50 is too large, so high becomes 4. The remaining interval [3,4) contains the match.
+</Section>
+
+<Section id="intuition" number="02" title="Monotonicity turns one comparison into many exclusions." kicker="THE INTUITION">
+On ascending input, a key smaller than the target proves that all earlier keys are also too small. A larger key proves all later keys are too large. Without that ordering, neither conclusion follows. The prerequisite is a monotonic search domain under the same comparison relation used by the search.
+
+This implementation returns **any match**. In [1A,2B,2C,2D,3E], the first midpoint already matches record C at index 2. It does not promise index 1. A lower-bound algorithm uses a different loop invariant to locate the first not-less-than position; merely renaming this result “first” would be incorrect.
+</Section>
+
+<Section id="memory" number="03" title="Bounds move; records stay fixed." kicker="STRUCTURE / MEMORY LAYOUT">
+`low`, `high` and `mid` are indices into one unchanged record array. A half-open interval has length high − low and is empty when the two bounds meet. The exclusive endpoint may equal n, but a computed midpoint is always smaller than high while the loop condition holds.
+
+The midpoint is `low + (high - low) / 2`, using integer division. It avoids forming the potentially overflowing sum low + high. Nonnegative ordered bounds make the subtraction valid. The teaching implementation caps n at 64 and uses signed observer indices; the same arithmetic principle applies to larger index types with representable bounds. Ordinary iterative binary search requires O(1) auxiliary memory; stored trace snapshots and input copies are diagnostic overhead.
+</Section>
+
+<Section id="operations" number="04" title="Watch the interval shrink around the target." kicker="INTERACTIVE OPERATIONS">
+<SearchSortLab kind="binary-search" />
+Use the standard array with targets 10, 40, 50 and 99. Read low, high, mid and candidate count together. Equality and less-than are two distinct key comparisons on an unsuccessful probe, so the comparison counter need not equal the number of visited midpoints.
+
+Try empty, single, negative and extreme-key inputs. For the duplicate preset, target 2 shows the any-match policy. The source line and interval projection update from the same immutable state; moving backward restores both bounds, not merely the active color. The order validator rejects an unsorted preset before searching, so an invalid input cannot produce a misleading success or absence claim.
+</Section>
+
+<Section id="implementation" number="05" title="Use one interval convention from start to finish." kicker="C++ IMPLEMENTATION">
+<SearchSortDownload chapter="38" />
+<CanonicalSource source={source} main={main} fileName="BinarySearch.hpp" chapter="38" />
+The loop runs while low is strictly below high. After a failed equality check, a smaller midpoint key sets low to mid + 1; otherwise high becomes mid. Both updates remove the tested midpoint, and each leaves a valid half-open interval. The found branch returns its midpoint index; an empty interval leaves the result at −1.
+
+The canonical example explicitly checks sortedness for teaching safety. That check is O(n), so **the checked wrapper as a whole is O(n)** for a fresh input, even though the search loop performs O(log n) work. An application that maintains or validates sortedness once can amortize that preparation across many queries. The displayed search counters exclude domain validation and the observer's invariant checks.
+</Section>
+
+<Section id="pointer-trace" number="06" title="The branch condition chooses the exact assignment." kicker="CODE + VISUALIZATION TRACE">
+With target 40, pause at midpoint index 2. The equality step establishes 30 != 40. The next less-than step establishes 30 &lt; 40. Only the following `binary.low` statement changes low to 3. The discarded left segment now contains keys proven smaller than the target.
+
+When mid is 4, the two tests select the other branch. Setting high to 4 excludes index 4 without also excluding index 3. On the final successful equality, `binary.found` sets result to 3. Bounds need not collapse when a match is found: early return is already justified. Read the source assignment instead of assuming every highlighted range change uses inclusive endpoints.
+</Section>
+
+<Section id="invariants" number="07" title="Keep candidates valid and make strict progress." kicker="LIVE INVARIANTS">
+The live panel checks ascending input, valid half-open bounds, and discarded ranges. Every discarded left key must be smaller than the target; every discarded right key must be larger. If the target occurs, at least one candidate must remain until a match is reported.
+
+Correct unsuccessful iterations strictly reduce high − low. The variant is a nonnegative integer, so it cannot decrease forever. The diagnostic fault guard also verifies the exact branch update. Any returned index must contain the target; it need not be the first equal position. These are algorithm facts recorded in state, independent of the rendered colors.
+</Section>
+
+<Section id="complexity" number="08" title="Logarithmic probes are not always one comparison each." kicker="COMPLEXITY EXPLORER">
+<SortingComplexity chapter="38" />
+An unsuccessful probe removes at least half the previous candidates, rounded appropriately. For nonempty length n, at most floor(log₂ n) + 1 midpoint probes are needed. Our branch order counts one equality comparison on success and two key comparisons on each unsuccessful probe. Empty input has zero probes and zero key comparisons.
+
+Random access matters. An array reaches its midpoint directly; traversing a linked list to each midpoint does not inherit the same total-time bound. Also keep construction, sorting and validation costs separate from the repeated query cost. These counts are an operation model, not measured CPU time.
+</Section>
+
+<Section id="break-it" number="09" title="A safe fault trace can demonstrate a nonterminating rule." kicker="COMMON MISTAKES / BREAK-IT MODE">
+<SearchSortLab kind="binary-search" id="binary-break-it" preset="single" mode="nonprogress" target={41} />
+This second lab starts with [40], target 41, and Retain midpoint. Mid is 0. The broken lower update keeps low at 0, so the interval remains [0,1). The bounded guard reports **nonprogress** and terminates; it never actually runs an infinite loop.
+
+For a wrong-boundary example choose Sorted, target 4, and Wrong interval update. Mid is 2 with key 3, but the injected low = mid + 2 skips index 3, which could contain 4. The exact-update checker reports the failure. Choose Unsorted to see order validation fail before any probe. Faults never perform an out-of-bounds read or native undefined behavior; the failure itself is the lesson.
+</Section>
+
+<Section id="analogy" number="10" title="Open an alphabetized directory near its middle." kicker="REAL-WORLD ANALOGY">
+If the middle name comes before your target, the entire earlier part of an alphabetized directory is irrelevant. That shortcut relies on its ordering. Randomly shuffled pages remove the guarantee even if you keep opening the physical middle. Reaching one matching name also does not establish that it is the first entry for that name.
+</Section>
+
+<Section id="engineering" number="11" title="Preserve the same ordering across production and lookup." kicker="ENGINEERING INSIGHT">
+Sorted tables support compact read-heavy indexes, event-time lookup and boundary queries. An engine might sort timestamps once and perform many searches in the resulting array. Mutating an element's search key without restoring order invalidates future binary searches even when the memory remains perfectly accessible.
+
+A comparator must describe the same order during construction and lookup. Reversing sort direction without changing search branches breaks the proof. APIs should distinguish presence queries, any-match search, lower bound and upper bound; the differences matter for duplicate ranges and insertion positions. This chapter implements ascending any-match search only, keeping the contract small and explicit.
+</Section>
+
+<Section id="exercises" number="12" title="Prove the next range before moving a cursor." kicker="EXERCISES / CHALLENGES">
+<div className="exercise"><h3>Exclusive high</h3><p>For [0,5), what is mid and which upper update follows a too-large midpoint?</p><details><summary>Reveal reasoning</summary><p>Mid is 2. Set high to 2, leaving [0,2). Index 2 has already failed and must be excluded.</p></details></div>
+<div className="exercise"><h3>First duplicate?</h3><p>Why does searching [1,2,2,2,3] for 2 return 2 rather than 1?</p><details><summary>Reveal reasoning</summary><p>The initial midpoint is 2, equality succeeds, and the contract permits any match. No first-occurrence search has been performed.</p></details></div>
+<div className="exercise"><h3>Whole-function cost</h3><p>If the function checks all adjacent pairs before every query, is the complete function O(log n)?</p><details><summary>Reveal reasoning</summary><p>No. Validation costs O(n). The logarithmic claim describes the search loop on a domain whose ordering is already established.</p></details></div>
+</Section>
+
+<Section id="summary" number="13" title="Every discarded index needs an ordering proof." kicker="CHAPTER SUMMARY">
+<div className="summary-panel"><ul><li>Binary search requires ascending keys under the search comparator.</li><li>Track [low, high), compute an overflow-safe midpoint, and exclude the tested midpoint.</li><li>Every unsuccessful iteration strictly shrinks the candidate interval.</li><li>This implementation returns any match and handles empty input without reading a cell.</li><li>Validation is separate from the logarithmic query work.</li></ul><button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete ✓</button></div>
+<ChapterPagination number="38" />
+</Section>

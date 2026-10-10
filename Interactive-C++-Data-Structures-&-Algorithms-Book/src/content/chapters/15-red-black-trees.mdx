@@ -1,0 +1,117 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import Callout from '../../components/book/Callout.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import RedBlackLab from '../../components/visualizers/RedBlackLab.astro';
+import RedBlackBreakIt from '../../components/visualizers/RedBlackBreakIt.astro';
+import TreeComplexity from '../../components/visualizers/TreeComplexity.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-15/RedBlackTree.hpp?raw';
+import main from '../../../cpp/chapter-15/main.cpp?raw';
+
+<ChapterHero number="15" title="Red-black trees" overline="COLOR CONSTRAINS THE PATH" description="Replace exact height caches with five color rules. Follow parent, uncle and grandparent through recoloring and rotations that restore an ordered tree." chain="P = parent · U = uncle · G = grandparent · null leaves are black" facts={[["Search / insert / erase", "O(log n)"], ["Stored balance metadata", "One color flag"], ["Main interactive lab", "Insertion + search"], ["Duplicate keys", "Rejected"]]} />
+
+<Section id="mental-model" number="01" title="Color is metadata with a structural consequence." kicker="VISUAL MENTAL MODEL">
+
+A new BST node starts red. That preserves the number of black nodes on paths through its insertion point, but may create a red parent with a red child. Repair changes colors and occasionally rotates links until all rules hold. Colors are labeled in text as well as encoded visually.
+
+<StructurePreview chapter="red-black" id="red-black-preview" operation="insert" inputs={{values:'30,20',value:'10'}} />
+
+Select a node: this implementation really stores a parent pointer, unlike the AVL implementation. Logical view emphasizes child ownership; memory view also exposes parent references. A null child is conceptually a black leaf, not an allocated sentinel node with hidden fields.
+
+</Section>
+<Section id="intuition" number="02" title="Equal black height limits how uneven paths can become." kicker="THE INTUITION">
+
+Every path from a node to a descendant null leaf contains the same number of black nodes. Because red nodes cannot have red children, extra red nodes can at most alternate between black nodes. The longest root-to-null path is therefore at most twice the shortest. This gives logarithmic height without storing each subtree's exact height.
+
+Insertion repairs one possible red-red conflict. When the uncle is red, recolor parent and uncle black, grandparent red, then continue upward. When the uncle is black or null, rotations reshape a triangle into a line if necessary, recolor the line's parent and grandparent, and rotate the grandparent. Finally, make the root black.
+
+</Section>
+<Section id="memory" number="03" title="Own children. Borrow the parent." kicker="STRUCTURE / MEMORY LAYOUT">
+
+Node stores key, a boolean red flag, and left, right and parent pointers. Root and child links express ownership; parent is a non-owning backlink. Destruction follows children only. Following both directions while deleting would revisit allocations and double-delete them.
+
+P, U and G are active local pointers in insertion repair, not extra members. The inspector removes helper temporaries when their scope ends and restores the caller's references. Every non-null child's parent must identify the node that owns it. The root's parent must be null, including immediately after a completed root rotation.
+
+</Section>
+<Section id="operations" number="04" title="Separate the red-uncle and black-uncle cases." kicker="INTERACTIVE OPERATIONS">
+
+<RedBlackLab />
+
+Start `30,20` and insert `10` for a line rotation. Start `30,10` and insert `20` for a triangle followed by a line repair. Mirror those inputs to see both orientations. Start `20,10,30` and insert `5` to watch the red uncle trigger recoloring and upward propagation. Arbitrary bounded keys use the same algorithm; these are examples, not prerecorded traces.
+
+Search follows BST comparisons without changing colors. Empty input, singleton trees, missing keys and duplicate insertions are supported. Up to 24 starting keys and values from −999 to 999 keep the browser diagram bounded. The main interactive lab intentionally covers insertion and search. The complete native implementation also supplies fully repaired deletion, exercised independently below.
+
+</Section>
+<Section id="implementation" number="05" title="A complete ordered set with conventional deletion repair." kicker="CANONICAL C++20">
+
+The header provides insert, contains, erase, values, empty, clear and valid. Copy and move are deleted; each instance exclusively owns its nodes. Recursive cleanup follows balanced child paths. Allocation happens before publication of a new red leaf, so a failed allocation leaves existing membership unchanged. Color and pointer repair then needs no allocations.
+
+Deletion first finds the record. With two children, it copies the successor key and removes the successor node, which has at most one child. Removing a black node may reduce one path's black count. The full fix-up examines sibling color and near/far child colors, propagates the deficit or repairs it with recoloring and rotations. A null replacement has no parent member, so the function carries its actual parent separately. The canonical implementation never pretends that simply deleting a black leaf preserves the tree.
+
+<CanonicalSource source={source} main={main} fileName="RedBlackTree.hpp" chapter="15" />
+
+Native validation repeatedly compares mixed insert/erase operations with a standard set, validates after every operation, deletes all remaining keys in shuffled order, and runs sanitizers. Deletion is complete canonical coverage, but it is not advertised as an animated browser lesson.
+
+</Section>
+<Section id="pointer-trace" number="06" title="A rotation repairs forward and backward links separately." kicker="CODE + VISUALIZATION POINTER TRACE">
+
+The rotation saves its pivot and transfer subtree. It moves transfer into the old root's child slot, then repairs transfer.parent when non-null. Next it gives the pivot the old root's parent and publishes the pivot through either the tree root or that parent's child slot. Finally it attaches the old root below the pivot and sets the old root's parent to the pivot.
+
+Between those assignments, backlinks can disagree with child links; that is an observable transition, not a single magical rotation event. Stable identities make it possible to follow the same node through the sequence. Red-uncle repair similarly emits three separate color writes, then advances n to G. The root-black assignment is visible even if the root is already black.
+
+</Section>
+<Section id="invariants" number="07" title="Five color rules, plus ordinary BST ownership." kicker="INVARIANTS">
+
+| Red-black rule | Interpretation in this implementation |
+| --- | --- |
+| Every node is red or black | The boolean red flag has exactly two values. |
+| Root is black | The empty tree also satisfies this rule. |
+| Null leaves are black | A conceptual null contributes one to the checker's black count. |
+| A red node has no red child | Consecutive red nodes are forbidden. |
+| All paths to descendant nulls have equal black height | Both child subtrees return the same black count. |
+
+The checker additionally validates strict BST ranges, unique ownership, reachability and actual parent backlinks. Equal black height alone cannot catch a key on the wrong side. During repair, violations are pending until the operation completes; a settled violation is a failure. The checker reports each rule separately so recoloring one node can visibly fix one property while breaking another.
+
+</Section>
+<Section id="complexity" number="08" title="Bound path length through black height." kicker="COMPLEXITY EXPLORER">
+
+<TreeComplexity kind="rb" />
+
+A subtree with black height b has enough branching to force exponential growth in b; forbidding adjacent reds limits total height to at most twice the black contribution. Search, insertion and complete deletion therefore take O(log n). Recoloring can propagate upward. A bounded number of rotations does not make the entire insertion constant-time: locating the position and walking repair ancestors still cost work. The explorer shows a bound, while the lab counters count its own observed operations.
+
+</Section>
+<Section id="break-it" number="09" title="Change one property and read every failed rule." kicker="COMMON MISTAKES / BREAK-IT MODE">
+
+<RedBlackBreakIt />
+
+Coloring the root red violates a rule even when search order remains correct. Turning one red leaf black can unbalance black height. A red parent/child pair violates the adjacency rule. Omitting a real backlink breaks ownership consistency regardless of colors. These are controlled model faults; the canonical C++ never executes intentionally invalid mutations.
+
+An uncle is the parent's sibling, not the inserted node's sibling. A null uncle is black. For deletion, the sibling cases and propagated black deficit are different from insertion's parent/uncle cases; reusing insertion repair for deletion is incorrect. Do not count red nodes when comparing black heights, and use one consistent convention for whether null leaves contribute.
+
+</Section>
+<Section id="analogy" number="10" title="Equal checkpoints, limited shortcuts." kicker="REAL-WORLD ANALOGY">
+
+Think of root-to-leaf routes with the same number of mandatory black checkpoints. A red stop may appear between checkpoints, but two red stops cannot be consecutive. Routes may differ in total length, yet none can grow arbitrarily long without violating one of those constraints. The analogy describes a bound; the pointers and color rules are the actual proof obligations.
+
+</Section>
+<Section id="engineering" number="11" title="Balance policy is one part of container design." kicker="ENGINEERING INSIGHT">
+
+Red-black trees are a common implementation choice for ordered associative containers, but a particular standard-library implementation is not guaranteed by the container's abstract contract. This teaching set intentionally omits allocators, generic comparison, iterators and concurrency. It makes ordering, ownership and repair explicit. Real systems must also consider cache behavior, exception guarantees and how record replacement affects borrowed references.
+
+</Section>
+<Section id="exercises" number="12" title="Explain the case before choosing a rotation." kicker="EXERCISES / CHALLENGES">
+
+1. Find P, U and G for the line, triangle and red-uncle examples.
+2. Explain why inserting a red leaf initially preserves black height.
+3. Pause after transfer.parent changes. Which other backlinks still need repair?
+4. Use Break-It to produce unequal black heights without changing any keys.
+5. Follow native erase on a black leaf and on a two-child node; validate after every deletion.
+
+</Section>
+<Section id="summary" number="13" title="Colors make an ordered tree's height predictable." kicker="CHAPTER SUMMARY">
+
+<div className="summary-panel"><h3>Five rules, visible repairs.</h3><ul><li>New leaves start red; a red parent triggers insertion repair.</li><li>A red uncle propagates recoloring upward.</li><li>A black uncle leads to line or triangle rotations.</li><li>Actual parent backlinks require their own assignments.</li><li>Complete deletion has a separate black-deficit repair.</li></ul><button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button></div>
+<ChapterPagination number="15" />
+</Section>
