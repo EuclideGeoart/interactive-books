@@ -1,0 +1,23 @@
+---
+/**
+ * Static table: the exact squared distance from the origin (the model's BigInt rational) next to the double a program computes for
+ * x**2 + y**2, at build time. JavaScript's number is the same binary64 format Python's float uses, and squaring a double is a single
+ * correctly rounded operation in both, so the double column is what Python prints.
+ */
+import { derivePoint } from '../../math/coordinates/point';
+import { rationalForm } from '../../math/quantity/exactform';
+import { toNumber } from '../../math/quantity/rational';
+
+const points: ReadonlyArray<readonly [number, number]> = [[0.1, 0.7], [0.5, 0.5], [0.3, 0.4], [0.6, 0.8], [0.1, 0.2], [1.1, 2.2], [2.3, 0.4]];
+const rows = points.map(([x, y]) => {
+  const exact = derivePoint({ x, y }).distSq;
+  const double = x * x + y * y;
+  return { point: `(${x}, ${y})`, code: `${x}**2 + ${y}**2`, exact: rationalForm(exact).text, double: String(double), same: double === toNumber(exact) };
+});
+---
+<div class="table-scroll" data-scrollable="Exact squared distances versus doubles, scrollable">
+  <table class="num-table" data-table="distance-exact-vs-double">
+    <thead><tr><th>point</th><th>Python</th><th>exact x² + y²</th><th>double (what the program holds)</th><th>agree?</th></tr></thead>
+    <tbody>{rows.map(r => <tr data-agree={String(r.same)}><td>{r.point}</td><td><code>{r.code}</code></td><td>{r.exact}</td><td>{r.double}</td><td>{r.same ? 'yes' : '⚠ no'}</td></tr>)}</tbody>
+  </table>
+</div>

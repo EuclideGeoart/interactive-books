@@ -54,7 +54,7 @@ export const parts: readonly Part[] = [
     exitCondition: "a learner can read and manipulate elementary expressions, equations and core functions, and interpret the symbols used in the rest of Book II without needing an ML background.",
     chapters: [
       available(1, "Scalars, quantities, units, powers and roots", "quantities"),
-      planned(2, "Coordinates and points"),
+      available(2, "Coordinates and points", "coordinates"),
       available(3, "Vectors: components, magnitude, and direction", "vectors", "reference"),
       planned(4, "Algebraic expressions, equations and inequalities"),
       planned(5, "Functions as input → transformation → output"),

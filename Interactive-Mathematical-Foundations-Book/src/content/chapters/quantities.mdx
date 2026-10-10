@@ -231,7 +231,7 @@ Three more cautions. Squaring a large double can overflow: $10^{200}$ times itse
 - **Features with different units.** A data point with a height in metres and a duration in seconds is a vector whose two numbers cannot be compared. Distances between such points depend on the choice of units unless the features are first made dimensionless: subtracting the mean and dividing by the standard deviation (which has the same unit as the feature) is the standard way.
 - **Errors and spread.** Mean squared error is measured in the *square* of the target's unit; the root-mean-square error, its square root, is in the target's own unit, which is why RMSE is the one people read. A standard deviation is the square root of a variance for the same reason.
 - **Exponents in practice.** Geometric decay, such as a learning rate halved at each step ($0.5^{k}$), is a power with a negative-exponent mirror image in growth. Floating-point underflow at large $k$ is the numerical caution above.
-- **Looking ahead.** Squares and square roots return in <Xref to="/chapters/vectors/">vectors</Xref>, where the length of a vector is the root of a sum of squares and Pythagoras' areas are literal.
+- **Looking ahead.** Squares and square roots return at once in <Xref to="/chapters/coordinates/">Coordinates and points</Xref>, where the distance between two points is the root of a sum of two squares, and again in <Xref to="/chapters/vectors/">vectors</Xref>, where the length of a vector is the same thing and Pythagoras' areas are literal.
 
 ## Exercises
 

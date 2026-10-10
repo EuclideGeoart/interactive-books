@@ -1,0 +1,288 @@
+---
+kind: chapter
+curriculumId: I.2
+title: "Coordinates and points"
+hero: "How do two numbers *pin down* a place?"
+lede: A coordinate is a signed distance read from an agreed zero. We build the number line, then the plane from two of them, and learn what a point's coordinates, quadrant, displacement and distance each say, and where screens and arrays quietly turn the picture upside down.
+description: The number line and signed displacement, the Cartesian plane, coordinates and quadrants (axes belong to no quadrant), displacement, distance by Pythagoras, midpoint and taxicab distance, screen versus mathematics rows, executable Python, and exercises with feedback.
+---
+import '../../styles/chapters/coordinates.css';
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import Xref from '../../shell/Xref.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import PointStage from '../../lessons/coordinates/PointStage';
+import LineStage from '../../lessons/coordinates/LineStage';
+import SegmentStage from '../../lessons/coordinates/SegmentStage';
+import PixelStage from '../../lessons/coordinates/PixelStage';
+import WorkedExampleStage from '../../lessons/coordinates/WorkedExampleStage';
+import Exercise from '../../lessons/coordinates/Exercise';
+import NumericsTable from '../../lessons/coordinates/NumericsTable.astro';
+import distanceCode from '../../../code/python/coordinates_distance.py?raw';
+import quadrantCode from '../../../code/python/coordinates_quadrant.py?raw';
+import imageCode from '../../../code/python/coordinates_image_index.py?raw';
+
+<Stage caption="A point P in the plane. Drag it, use the arrow keys on it, or type its two coordinates. The shaded region is its quadrant; the dashed legs are its distances to the two axes; the solid segment is its distance to the origin. Move it onto an axis and watch the quadrant disappear.">
+  <PointStage client:load />
+</Stage>
+
+Try it before reading on. Drag $P$ into each of the four corners and watch the signs of $x$ and $y$. Then drag it onto an axis, and read what the stage says about its quadrant. Then compare the two distances to the axes with the two coordinates: which coordinate is the distance to which axis? By the end of the chapter you will know how a pair of numbers fixes a place, why a point on an axis is in no quadrant, what the distance between two points is and why Pythagoras supplies it, and why the row of a pixel in an image is not its $y$-coordinate.
+
+## Intuition: reading a place from two rulers
+
+Finding a house on a street needs one number: how far along the street. A street is a line, and one signed number fixes a place on a line. Finding a seat in a theatre needs two: which row and which seat in the row. A plane has two independent directions, so a place in a plane needs two numbers, one for each.
+
+A **coordinate system** is the agreement that makes those numbers mean something: where zero is, which way is positive, and what one step is. Change the agreement and the same place gets different numbers, so the numbers are never the place itself. They are a *reading* of the place against rulers that somebody chose. Most of the mistakes in this chapter come from forgetting one of the choices, usually which way an axis points.
+
+The quantities of <Xref to="/chapters/quantities/">the previous chapter</Xref> are what the coordinates measure: each coordinate is a signed length, and its unit travels with it. The squares and roots of that chapter return here in one place only, the distance between two points.
+
+## Definition: number line, plane and point
+
+**Number line.** Choose a point $O$ on a straight line, a direction to call positive, and a unit of length. The **coordinate** of a point $X$ on the line is the number $x$ whose absolute value is the distance from $O$ to $X$, with the sign $+$ if $X$ is on the positive side of $O$ and $-$ if it is on the other. Each point has exactly one coordinate and each real number is the coordinate of exactly one point. The point $O$ has coordinate $0$.
+
+**Displacement and distance on the line.** For two points with coordinates $a$ and $b$, the **displacement** from $a$ to $b$ is the signed number
+$$
+b-a,
+$$
+positive when $b$ is to the right of $a$, negative when it is to the left, and zero when they are the same point. The **distance** is its absolute value, $\lvert b-a\rvert$. The displacement has a direction and the distance does not: $a-b=-(b-a)$, while $\lvert a-b\rvert=\lvert b-a\rvert$.
+
+**Cartesian plane.** Take two number lines in the plane that cross at their zero points at a right angle. The first, the **$x$-axis**, is drawn horizontally with positive to the right. The second, the **$y$-axis**, is drawn vertically with positive upward. The crossing point is the **origin** $O=(0,0)$. A point $P$ has the **coordinates** $(x,y)$ when $x$ is the coordinate on the $x$-axis of the foot of the perpendicular from $P$ to that axis, and $y$ is the same for the $y$-axis. The pair is **ordered**: $(2,5)$ and $(5,2)$ are different points.
+
+**Quadrants.** The axes cut the plane into four open regions, numbered counter-clockwise from the top right:
+
+| Quadrant | Sign of $x$ | Sign of $y$ |
+| --- | --- | --- |
+| I | $+$ | $+$ |
+| II | $-$ | $+$ |
+| III | $-$ | $-$ |
+| IV | $+$ | $-$ |
+
+The word *open* matters. A point is in a quadrant only when **both** coordinates are non-zero and have the signs in the table. A point with $x=0$ or $y=0$ lies on an axis. It is a border between two quadrants and belongs to neither. The origin is on both axes and belongs to no quadrant.
+
+**Distance in the plane.** The **distance** between $A=(a_1,a_2)$ and $B=(b_1,b_2)$ is
+$$
+\lvert AB\rvert=\sqrt{(b_1-a_1)^{2}+(b_2-a_2)^{2}}.
+$$
+The next sections explain where this comes from. For the origin it reads $\lvert OP\rvert=\sqrt{x^{2}+y^{2}}$.
+
+## The number line: one number, a direction, a distance
+
+Everything in the plane is built from the line, so begin there. The stage shows two points $a$ and $b$ on one line. The step from $a$ to $b$ is drawn below the line as a signed arrow, and the distance is drawn above it as a measurement.
+
+<Stage caption="Two points on a number line. Drag a and b, use the arrow keys, or type them. The arrow below the line is the signed step b − a; the measurement above it is the distance |b − a|. When a and b coincide there is no step and the distance is 0.">
+  <LineStage client:load />
+</Stage>
+
+Swap the two points and watch what changes. The arrow flips direction and the signed step changes sign. The measurement above does not change at all. That is the whole difference between a displacement and a distance, and it is worth saying again in words: a displacement answers "how do I get from here to there?", and so depends on which is which. A distance answers "how far apart are they?", and does not.
+
+The stage also shows the **midpoint** $\tfrac{a+b}{2}$. It is the point exactly half-way, since it is $a$ plus half the displacement: $a+\tfrac12(b-a)=\tfrac{a+b}{2}$. And it shows a tempting wrong answer. If $a$ and $b$ are on opposite sides of $0$, then $\lvert a\rvert+\lvert b\rvert$ is the distance, because the path passes through $0$. If they are on the *same* side, it is not: $\lvert 3\rvert+\lvert 5\rvert=8$, but the points $3$ and $5$ are $2$ apart. The sum of absolute values is a distance *via zero*, and the stage marks it as such.
+
+The cleanest rule for the distance on a line is the one in the definition, $\lvert b-a\rvert$, because it never needs to ask which side of $0$ anyone is on.
+
+## The plane: two lines at right angles
+
+Now put a second line through $O$, perpendicular to the first. The hero stage is that picture. A point $P=(x,y)$ is reached from the origin by walking $x$ along the first axis, then $y$ in the perpendicular direction. The two dashed legs on the stage are those two walks, read backwards: from $P$ straight down (or up) to the $x$-axis, and straight across to the $y$-axis.
+
+Look at what the legs measure. The vertical leg ends on the $x$-axis and has length $\lvert y\rvert$. The horizontal leg ends on the $y$-axis and has length $\lvert x\rvert$. So the distance from $P$ to the **$x$-axis** is $\lvert y\rvert$ and the distance to the **$y$-axis** is $\lvert x\rvert$. Each distance uses the *other* coordinate. This is the single most common slip in this topic, and the stage's verdict line repeats it deliberately.
+
+### Quadrants and the axes
+
+The quadrant of a point is decided by the **two signs and nothing else**. The point $(-3,2)$ has $x<0$ and $y>0$, so it is in quadrant II. The point $(-0.1,\,100)$ is in quadrant II too: the size of a coordinate has no say in the quadrant, only its sign.
+
+An axis point needs separate care, because "not positive" and "negative" are different things. For $(0,-4)$, $x$ is neither positive nor negative. It is zero, the border. The point is on the $y$-axis and is in neither quadrant III nor quadrant IV. A program that writes `if x > 0 and y > 0: ... elif ... else: quadrant 4` assigns $(0,-4)$ and even $(0,0)$ to quadrant IV. The reference code below runs that mistake next to the correct version.
+
+Use the presets on the stage to visit the three kinds of position: a quadrant, a half-axis, and the origin. In each case the verdict line says which, and which quadrants an axis separates.
+
+## The distance formula is Pythagoras
+
+Take two points $A=(a_1,a_2)$ and $B=(b_1,b_2)$. Draw a horizontal line through $A$ and a vertical line through $B$; they meet at the corner $C=(b_1,a_2)$. Then $AC$ is horizontal with length $\lvert b_1-a_1\rvert$, $CB$ is vertical with length $\lvert b_2-a_2\rvert$, and the angle at $C$ is a right angle, because the axes were chosen perpendicular. In the right triangle $ACB$ the **Pythagorean theorem** gives
+$$
+\lvert AB\rvert^{2}=\lvert AC\rvert^{2}+\lvert CB\rvert^{2}=(b_1-a_1)^{2}+(b_2-a_2)^{2}.
+$$
+Squares make the absolute values unnecessary, since $\lvert t\rvert^{2}=t^{2}$. Taking the non-negative root, which is what $\sqrt{\ \ }$ means, gives the distance formula above.
+
+This is a proof only because the theorem is taken as known. In coordinate geometry it is also used as the **definition** of distance: when a plane is *defined* as the set of pairs of numbers, distance is *declared* to be this formula, and the theorem about right triangles becomes a statement that the formula agrees with the geometry. For the hero point and the origin the same triangle has legs $\lvert x\rvert$ and $\lvert y\rvert$.
+
+The stage below carries the pieces: the displacement $(\Delta x,\Delta y)=(b_1-a_1,\,b_2-a_2)$, the right-angled corner, the exact squared distance, and the distance itself in its simplest exact form.
+
+<Stage caption="Two points A and B. Drag either one, use the arrow keys, or type the four coordinates. The legs show the components of the displacement, the corner marks the right angle, and the measurement along AB is the distance. M is the midpoint.">
+  <SegmentStage client:load />
+</Stage>
+
+Four things to try on it.
+
+- **Reverse the direction.** Swap $A$ and $B$ (or drag one through the other). The displacement $B-A$ turns into $A-B$ and *both* components change sign. The distance is unchanged, since each component is squared.
+- **Make a leg vanish.** Put $B$ directly above $A$. The segment is *vertical*, $\Delta x=0$, and the formula collapses to $\sqrt{\Delta y^{2}}=\lvert\Delta y\rvert$, which is the number-line distance again. A horizontal segment does the same with $\Delta x$. The plane distance contains the line distance as the special case.
+- **Make the points coincide.** Then both legs are $0$, the distance is $0$ and there is no direction. The stage reports this case in its own words: a zero displacement has no direction.
+- **Read the exact form.** Take $A=(-3,1)$ and $B=(3,-3)$. Then $\Delta=(6,-4)$, $\Delta x^{2}+\Delta y^{2}=36+16=52$, and $\sqrt{52}=2\sqrt{13}\approx 7.211103$. The exact form is $2\sqrt{13}$. The decimal is a rounding, and the book writes $\approx$ for it, as in <Xref to="/chapters/quantities/">the previous chapter</Xref>. Only when the squared distance is a perfect square, as in the $3$-$4$-$5$ triangle, is the distance a whole number.
+
+### Midpoint, and a second kind of distance
+
+The midpoint of the segment $AB$ averages each coordinate separately:
+$$
+M=\Bigl(\tfrac{a_1+b_1}{2},\ \tfrac{a_2+b_2}{2}\Bigr)=A+\tfrac12\,(B-A).
+$$
+The second form says: start at $A$ and take half of the displacement.
+
+Walking from $A$ to $B$ along the grid lines (horizontally, then vertically) covers $\lvert\Delta x\rvert+\lvert\Delta y\rvert$. This is the **taxicab distance**, after a driver who must keep to the streets. It is never shorter than the straight line, and it is equal to it exactly when the segment is horizontal, vertical, or has zero length. The reason is one line: $(\lvert\Delta x\rvert+\lvert\Delta y\rvert)^{2}=\Delta x^{2}+\Delta y^{2}+2\lvert\Delta x\rvert\lvert\Delta y\rvert$, and the extra term is zero only if a leg is zero. The stage shows both numbers, and which one is the straight-line distance.
+
+## Screen rows are not the $y$-axis
+
+A mathematical plane has $y$ growing **upward**. A picture stored in a computer does not. In an image array, `img[row, col]`, row $0$ is the **top** row and rows are counted downward; screen coordinates in nearly every graphics system do the same. A point $(x,y)$ in the mathematical picture therefore sits in the array at
+$$
+\text{col}=x,\qquad \text{row}=H-1-y,
+$$
+where $H$ is the number of rows. The pair is swapped (row first), the vertical direction is flipped, and the $-1$ appears because the first row is numbered $0$ and not $1$. The formula undoes itself: $y=H-1-\text{row}$.
+
+This stage is limited, on purpose, to **integer lattice points**: the pixel $(x,y)$ is the cell whose indices are the integers $x$ and $y$, with the point $(0,0)$ at the bottom left. Other conventions exist (pixel centres at half-integers, the origin at the top left) and change the formula by a constant or a sign. The stage models one convention and states it.
+
+<Stage caption="A grid of pixels, drawn the mathematical way (y up) and stored the array way (row 0 on top). Choose the size, then pick a cell by dragging the point or typing x and y. The table highlights the same cell, and the two slip rows in the inspector show what the wrong formulas would have returned.">
+  <PixelStage client:load />
+</Stage>
+
+The two classic slips are both shown. Using `H - y` as the row is off by one: for $y=0$ it points at row $H$, which does not exist, and Python raises an `IndexError`. Writing `img[x, y]` in place of `img[row, col]` is worse when the image is square or the indices happen to be in range, because it raises **no error** and returns a *different* pixel. A bug that crashes is a gift; a bug that returns the wrong pixel is not.
+
+## Worked examples
+
+A distance calculation is five steps, and it pays to see them as steps rather than a trick:
+
+1. **Subtract** each pair of coordinates to get the displacement $(\Delta x,\Delta y)$, in the direction from $A$ to $B$.
+2. **Square** each component. The sign disappears here.
+3. **Add** the two squares. This is the *squared* distance, and it is exact whenever the coordinates are.
+4. **Root** it, using the exact method of <Xref to="/chapters/quantities/">the previous chapter</Xref>: factor out square factors to reach the simplest radical form.
+5. **Check** by squaring the answer, and by reversing the direction: the displacement changes sign, the distance does not.
+
+Step through four cases. The first is the $3$-$4$-$5$ triangle. The second is the $2\sqrt{13}$ case from above. The third has coordinates with halves, so the arithmetic is on fractions and the root of a fraction is needed. The last starts in quadrant III and ends in quadrant I: the first point has negative coordinates, yet both components of the displacement are positive, because the displacement is a difference.
+
+<Stage caption="Choose a pair of points and step through the work. Going back selects an earlier step; nothing is undone.">
+  <WorkedExampleStage client:load />
+</Stage>
+
+## Executable reference code
+
+The Python below is stored in the repository and executed by the test suite, so what you read is known to run. First the distance work: displacement, squared distance, `math.dist`, the midpoint, the taxicab distance, and an exact equality that the doubles get wrong.
+
+<CodeFile source={distanceCode} file="code/python/coordinates_distance.py" note="displacement, distance, midpoint" />
+
+Then the quadrant decision, with the common mistake and what happens to axis points and to `-0.0`.
+
+<CodeFile source={quadrantCode} file="code/python/coordinates_quadrant.py" note="quadrants and the axes" />
+
+Finally the picture-to-array conversion, with the two slips from the pixel stage run on a real array.
+
+<CodeFile source={imageCode} file="code/python/coordinates_image_index.py" note="math coordinates to array rows (needs NumPy)" />
+
+Two observations about the first file. The comparison `closer` uses **squared** distances and never takes a root. This is legitimate because both sides are non-negative and squaring is strictly increasing on non-negative numbers, so $d_1<d_2$ exactly when $d_1^{2}<d_2^{2}$. Comparing without roots is both faster and exact, and nearest-neighbour searches do it all the time. And the last lines build two `Fraction`s from *strings*. A `Fraction` made from the float `0.1` would carry the binary rounding along with it.
+
+## Explore: change the parameters
+
+These questions have definite answers; check them against the stages.
+
+- On the point stage, find every point with integer coordinates in the range $-7$ to $7$, both coordinates non-zero, whose distance to the origin is a whole number. (There are exactly eight, all of the $3$-$4$-$5$ family.)
+- On the point stage, drag $P$ along a circle around the origin of radius $5$. Which quantity stays fixed, and which quantities change?
+- On the point stage, set $x=0.5$ and $y=-1.5$. Which quadrant? What are the distances to the two axes? Is the distance to the origin rational?
+- On the line stage, set $a=2$ and $b=6$, then change $a$ to $-2$. What happens to the signed step, the distance, and the "via zero" number?
+- On the segment stage, put $A=(0,0)$ and move $B$ along the line $y=x$. What is the ratio of the taxicab distance to the straight-line distance, and does it depend on where $B$ is?
+- On the pixel stage, make the image $10\times 2$, put the point at the top row, then at the bottom row. Which row index does each have?
+
+## Common mistakes
+
+<Callout kind="misconception" title="The coordinate is the distance to the nearest axis">
+It is the distance to the **other** axis. The $x$-coordinate $x$ is measured along the $x$-axis, from the $y$-axis, so $\lvert x\rvert$ is the distance to the $y$-axis. The distance to the $x$-axis is $\lvert y\rvert$. Check with $(-3,2)$: it is $2$ above the $x$-axis and $3$ to the left of the $y$-axis.
+</Callout>
+
+<Callout kind="misconception" title="A point on an axis is in one of the neighbouring quadrants">
+It is in neither. The axes are the borders, and a border is not part of what it divides. $(0,-4)$ is not in quadrant III and not in quadrant IV, and the origin is in none of the four. Every sign test in code needs a case for zero.
+</Callout>
+
+<Callout kind="misconception" title="(x, y) and (y, x) are the same point">
+The pair is ordered. $(2,5)$ is two to the right and five up; $(5,2)$ is five to the right and two up. They coincide only on the line $y=x$.
+</Callout>
+
+<Callout kind="misconception" title="Distance can be negative, or depends on the direction">
+Distance is a length, so it is never negative, and $\lvert AB\rvert=\lvert BA\rvert$. The *displacement* is the one with a direction and signs. If you need to say which way, use $B-A$; if you need to say how far, use $\lvert B-A\rvert$.
+</Callout>
+
+<Callout kind="misconception" title="Distance adds the coordinates">
+On a line that is wrong already: $\lvert 3\rvert+\lvert 5\rvert=8$ is not the distance between $3$ and $5$. In the plane the formula adds the **squared differences** and takes a root. Adding the differences instead gives the taxicab distance, which is a different quantity and is longer, except along an axis.
+</Callout>
+
+<Callout kind="misconception" title="Dropping the root is harmless">
+$\Delta x^{2}+\Delta y^{2}$ is the squared distance, which is $25$ and not $5$ for the $3$-$4$-$5$ triangle. It is useful, and it keeps its exactness, but it is measured in the *square* of the unit. When a question asks "how far?", the root is part of the answer.
+</Callout>
+
+<Callout kind="misconception" title="Row equals y">
+In an array, row $0$ is at the top and the row is $H-1-y$, not $y$. And `img[y, x]` is not `img[x, y]`: the first index is the row.
+</Callout>
+
+## Numerical considerations
+
+The mathematics above is exact. The doubles a program uses are not, and the distance formula meets two problems.
+
+**Equality.** Whether two points are equally far from the origin is a question about whether two sums of squares are equal, and a test with `==` on doubles gets it wrong for perfectly ordinary decimals. The points $(0.1,\,0.7)$ and $(0.5,\,0.5)$ both have squared distance exactly $\tfrac12$, because $\tfrac{1}{100}+\tfrac{49}{100}=\tfrac{50}{100}$. A double holds $0.1$ and $0.7$ only approximately, so `0.1**2 + 0.7**2` is `0.49999999999999994` while `0.5**2 + 0.5**2` is exactly `0.5`. The table shows the exact value next to the double for several points. A row marked "no" is a case where the program's answer is a different number from the true one.
+
+<NumericsTable />
+
+<Callout kind="numerical">
+Do not decide that two distances are equal with `==` on floats. Either compare with a tolerance (`math.isclose`), or keep the coordinates exact, as `Fraction` objects built from strings, and compare the squared distances, which need no root. The distance itself is almost never needed to decide equality or order.
+</Callout>
+
+**Overflow and underflow.** Squaring is where large and small numbers go wrong. For the point $(3\cdot 10^{200},\,4\cdot 10^{200})$, the true distance is $5\cdot10^{200}$, which a double holds without difficulty. But the naive `math.sqrt(x*x + y*y)` computes $x\cdot x=9\cdot10^{400}$ first, which is beyond the largest double, so the intermediate result is `inf` and so is the answer. For tiny coordinates such as $10^{-200}$ it is the squares that underflow to `0.0`, so the naive answer is `0.0` where the true distance is about $1.414\cdot 10^{-200}$. Python's `math.hypot` and `math.dist` scale their arguments internally and return the right size for both. Use them in code that may meet extreme values; the formula on paper is unchanged.
+
+**Negative zero.** The double `-0.0` is a separate value from `0.0` that compares *equal* to it. The test `x == 0` therefore catches it, and the quadrant code above treats $(-0.0,\,3)$ as an axis point. But anything that reads the *sign bit* (`math.copysign(1, x)`, or formatting the number) sees `-0.0` as negative. A sign test written with `<` and `>` is safe; one written with the sign bit is not.
+
+## Connections to engineering and machine learning
+
+- **Images are arrays.** Every digital image is a grid of pixels addressed by row and column, with row $0$ on top. Moving between a mathematical picture and an array, between a plotting library and an image library, or between two libraries with different origins is exactly the conversion in this chapter. Mistakes here produce upside-down or mirrored output, silently.
+- **Bounding boxes.** Object detectors describe a rectangle as a corner plus a width and height, `(x, y, w, h)`, or as two corners, `(x1, y1, x2, y2)`, and libraries differ on whether $y$ points down and which corner is the anchor. Check the convention before comparing boxes from two sources.
+- **Distance between feature vectors.** A data point with two features is a point in a plane, and its distance to another is the formula above. The nearest-neighbour method picks the data point at the smallest distance, and clustering methods group points by it. The distance is only meaningful if the two axes are comparable: a feature in metres and one in seconds cannot be mixed (see <Xref to="/chapters/quantities/">units</Xref>), and a feature measured in thousands will dominate one measured in tenths.
+- **Squared distance in practice.** The squared Euclidean distance is the cost that least-squares methods and $k$-means minimise. It is differentiable at zero where the distance is not, and it avoids the root altogether.
+- **Looking ahead.** In <Xref to="/chapters/vectors/">Vectors</Xref> the displacement from $P$ to $Q$ becomes an object of its own, $v=Q-P$, and the point is recovered as $Q=P+v$. The distance formula returns there as the length of a vector.
+
+## Exercises
+
+Answer each question and press **Check**. A wrong answer tells you *which* mistake it looks like. After one attempt you may open a worked solution.
+
+<Exercise client:load id="quadrant-basic" />
+
+<Exercise client:load id="axis-point" />
+
+<Exercise client:load id="axis-distance" />
+
+<Exercise client:load id="line-distance" />
+
+<Exercise client:load id="signed-step" />
+
+<Exercise client:load id="distance-345" />
+
+<Exercise client:load id="radical-distance" />
+
+<Exercise client:load id="midpoint" />
+
+<Exercise client:load id="construct-point" />
+
+<Exercise client:load id="taxicab" />
+
+<Exercise client:load id="equal-distance" />
+
+<Exercise client:load id="pixel-row" />
+
+<Exercise client:load id="img-indexing" />
+
+## Summary and checkpoints
+
+- A coordinate is a signed distance from an agreed zero, along an agreed positive direction. On a line, the displacement from $a$ to $b$ is $b-a$, and the distance is $\lvert b-a\rvert$.
+- A point in the plane is an *ordered* pair $(x,y)$. The distance from the point to the $x$-axis is $\lvert y\rvert$ and to the $y$-axis is $\lvert x\rvert$.
+- The quadrant is decided by the two signs. A point with a zero coordinate is on an axis and in **no** quadrant; the origin is in none.
+- The distance between $A$ and $B$ is $\sqrt{\Delta x^{2}+\Delta y^{2}}$, which is Pythagoras on the right triangle with legs $\lvert\Delta x\rvert$ and $\lvert\Delta y\rvert$. The displacement has a direction, the distance does not. The midpoint averages each coordinate.
+- Compare distances through their squares, which stay exact. The taxicab distance $\lvert\Delta x\rvert+\lvert\Delta y\rvert$ is never shorter than the straight line.
+- In an array, row $0$ is the top and row $=H-1-y$, column $=x$. Never assume a library's origin.
+- In code: use `math.dist` and `math.hypot` for extreme values, compare with a tolerance or exactly, and write every sign test with a case for zero.
+
+**Checkpoints.** You are ready to move on when you can, without looking:
+
+1. Say which quadrant $(-3,2)$ is in, and why $(0,-4)$ is in none.
+2. Give the distance from $(-3,2)$ to each axis, and say which coordinate each uses.
+3. Compute the displacement and the distance from $(1,2)$ to $(4,6)$, and say what changes when the points are swapped.
+4. Write $\sqrt{52}$ in simplest form and say why the answer is exact.
+5. Convert the point $(2,0)$ in a picture $4$ rows high into a row and a column of an array.
