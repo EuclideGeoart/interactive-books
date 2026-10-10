@@ -1,6 +1,6 @@
 # WIN-0 — Native Windows Portability & M2 Freeze Corrections
 
-**Baseline:** `3247b96` · **Host:** Windows 10 Pro 10.0.19045, Windows PowerShell 5.1, Node 22.14.0, Python 3.13.3, NumPy 2.5.3, Playwright 1.63.0 (bundled Chromium 1243), Intel i5-12600 · **Final commit:** see §9
+**Baseline:** `3247b96` · **Host:** Windows 10 Pro 10.0.19045, Windows PowerShell 5.1, Node 22.14.0, Python 3.13.3, NumPy 2.5.3, Playwright 1.63.0 (bundled Chromium 1243), Intel i5-12600 · **Final commit:** `79cfadc` (`fix(book-ii): WIN-0 native Windows portability and M2 freeze corrections`, on `3247b96`). A file cannot contain its own hash, so this line was recorded by a docs-only commit that follows it.
 **Scope:** portability and the M2 freeze corrections only. No REF-1, no curriculum / mathematical-convention / visual-identity change, no Book I change, no test weakened or deleted, no Linux baseline rewritten.
 
 ## 1. Result in one table
