@@ -1,0 +1,15 @@
+# Book II line-ending policy. Scoped to this directory: it does not affect Book I or the repository root.
+# Text is stored and checked out with LF on every platform (also under core.autocrlf=true), because
+#  - tests parse the master plan with split('\n') and a byte-exact sha256 is recorded for it,
+#  - the committed oracle fixture is compared with Python's output,
+#  - Linux visual baselines and the crawler must see identical bytes.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.ico binary

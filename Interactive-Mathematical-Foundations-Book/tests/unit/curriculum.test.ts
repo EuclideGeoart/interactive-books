@@ -6,7 +6,7 @@ import { allChapters, chapterAnchor, chapterCount, findChapter, neighbours, part
 /** Parse the AUTHORITATIVE master plan (read-only) with an independent, line-based reader. */
 interface PlanPart { numeral: string; title: string; purpose: string; exit: string; chapters: { n: number; title: string; role?: string }[] }
 function parsePlan(): PlanPart[] {
-  const lines = readFileSync('documentaion/INTERACTIVE_MATH_FOUNDATIONS_MASTER_PLAN.md', 'utf8').split('\n');
+  const lines = readFileSync('documentation/INTERACTIVE_MATH_FOUNDATIONS_MASTER_PLAN.md', 'utf8').split('\n');
   const out: PlanPart[] = [];
   let current: PlanPart | null = null;
   for (const line of lines) {

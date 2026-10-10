@@ -1,9 +1,9 @@
 # Book II — Reuse Audit of the Interactive C++ DSA Book (M0)
 
 **Status:** M0 deliverable · **Scope:** read-only audit of Book I, followed by the reuse decisions that shaped M2
-**Authority:** `documentaion/INTERACTIVE_MATH_FOUNDATIONS_MASTER_PLAN.md` (§2.5 "small shared platform, domain-owned mathematics", §17 Phase M0)
+**Authority:** `documentation/INTERACTIVE_MATH_FOUNDATIONS_MASTER_PLAN.md` (§2.5 "small shared platform, domain-owned mathematics", §17 Phase M0)
 
-> The master plan lives in a directory spelled `documentaion/` (sic) in the tree supplied for this milestone. It was left exactly as supplied (sha256 `c868e6ad…0612`, committed unmodified as the repository's first commit). New deliverables live in the correctly spelled `documentation/`.
+> The master plan was supplied in a directory spelled `documentaion/` (sic) and was relocated to `documentation/` in WIN-0. Its contents are byte-identical (sha256 `c868e6ad…0612`).
 
 ---
 

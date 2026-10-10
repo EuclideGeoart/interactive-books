@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "build:subpath": "BOOK_BASE=/math-foundations/ astro build --outDir dist-subpath",
+    "build:subpath": "node scripts/build-subpath.mjs",
     "serve": "node scripts/serve-dist.mjs dist / 4451",
     "serve:subpath": "node scripts/serve-dist.mjs dist-subpath /math-foundations 4452",
     "check": "astro check",
@@ -19,7 +19,8 @@
     "check:dist": "node scripts/check-dist.mjs dist / && node scripts/check-dist.mjs dist-subpath /math-foundations/",
     "test:e2e": "playwright test",
     "test:e2e:subpath": "playwright test --config playwright.subpath.config.ts",
-    "oracle:setup": "sh scripts/setup-oracle.sh",
+    "measure:drag": "node scripts/measure-drag-latency.mjs",
+    "oracle:setup": "node scripts/setup-oracle.mjs",
     "validate": "npm run check && npm test && npm run test:oracle && npm run build && npm run build:subpath && npm run check:dist && npm run test:e2e && npm run test:e2e:subpath"
   },
   "dependencies": {

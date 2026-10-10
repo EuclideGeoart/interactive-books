@@ -1,7 +1,7 @@
 /**
  * Semantic traces (master plan §2.4, §6.4).
  *
- * A trace is a list of IMMUTABLE frames holding mathematical states/events — not screenshots, not drawing
+ * A trace is a list of IMMUTABLE frames (deeply frozen, detached copies — see `traceFrom`) holding mathematical states/events — not screenshots, not drawing
  * commands. Navigation selects a frame; it never "undoes" a mutation.
  *
  * Scope in M2: the frame type and a pure cursor. There is deliberately NO timer, autoplay or speed control
@@ -23,10 +23,40 @@ export interface TraceCursor {
   readonly count: number;
 }
 
+/**
+ * A deep, detached, frozen copy of `value`. Supported: primitives, arrays and plain objects (any depth, shared
+ * references and cycles preserved). Anything whose contents `Object.freeze` cannot protect — Map, Set, Date,
+ * typed arrays, functions, class instances — is rejected with a TypeError rather than silently left mutable.
+ */
+function snapshot<T>(value: T, seen = new WeakMap<object, unknown>()): T {
+  if (typeof value !== 'object' || value === null) {
+    if (typeof value === 'function' || typeof value === 'symbol') throw new TypeError(`Trace states cannot contain a ${typeof value}`);
+    return value;
+  }
+  const done = seen.get(value);
+  if (done) return done as T;
+  if (Array.isArray(value)) {
+    const copy: unknown[] = [];
+    seen.set(value, copy);
+    for (const item of value) copy.push(snapshot(item, seen));
+    return Object.freeze(copy) as T;
+  }
+  const proto = Object.getPrototypeOf(value);
+  if (proto !== Object.prototype && proto !== null) throw new TypeError('Trace states must be plain data (arrays and plain objects); found ' + (value.constructor?.name ?? 'an exotic object'));
+  const copy: Record<string, unknown> = proto === null ? Object.create(null) : {};
+  seen.set(value, copy);
+  for (const key of Object.keys(value)) copy[key] = snapshot((value as Record<string, unknown>)[key], seen);
+  return Object.freeze(copy) as T;
+}
+
+/**
+ * Builds a trace of genuinely stable historical snapshots: every frame is a deep, detached, frozen copy, so
+ * neither later mutation of the objects passed in nor an attempt to edit a stored state can change history.
+ */
 export function traceFrom<TState, TEvent = never>(
   frames: readonly Omit<TraceFrame<TState, TEvent>, 'index'>[],
 ): readonly TraceFrame<TState, TEvent>[] {
-  return Object.freeze(frames.map((frame, index) => Object.freeze({ ...frame, index }) as TraceFrame<TState, TEvent>));
+  return Object.freeze(frames.map((frame, index) => snapshot({ ...frame, index }) as TraceFrame<TState, TEvent>));
 }
 
 export function cursorAt(count: number, index = 0): TraceCursor {

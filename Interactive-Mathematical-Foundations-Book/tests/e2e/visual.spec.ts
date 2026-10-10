@@ -2,15 +2,17 @@
  * Layer 9 — screenshot regression (master plan §12.9): a SMALL, curated set of deterministic states. These catch
  * clipping, axis inversion, label collisions, formula overflow and responsive breakage. They are NOT evidence of
  * mathematical correctness — that is the job of the unit, oracle and synchronisation tests.
- * Baselines are Linux/Chrome specific (fonts are self-hosted, which removes the largest source of drift).
+ * Baselines are per rendering platform (see playwright.config.ts): the Linux/Chrome references are the established
+ * ones; Windows has its own set under __screenshots__/win32/. Fonts are self-hosted, which removes the largest source of drift.
  */
 import { expect, test, type Page } from '@playwright/test';
 import { chooseSnap, openStage, setParam } from './helpers';
 
 async function settle(page: Page) {
   await page.evaluate(() => document.fonts.ready);
-  // a tall element screenshot would otherwise capture the sticky bar mid-page
-  await page.addStyleTag({ content: '.topbar{position:static !important;backdrop-filter:none !important} *{caret-color:transparent !important}' });
+  // a tall element screenshot would otherwise capture the sticky bar mid-page, and (on Windows Chromium) the
+  // fixed, off-screen skip link painted inside the clip. Neither is part of what these baselines are about.
+  await page.addStyleTag({ content: '.topbar{position:static !important;backdrop-filter:none !important} .skip-link{visibility:hidden !important} *{caret-color:transparent !important}' });
   await page.mouse.move(0, 0);
   await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur?.());
 }

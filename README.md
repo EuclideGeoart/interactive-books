@@ -28,7 +28,7 @@ npm run oracle:setup
 npm run validate
 ```
 
-The M0/M2 foundation is complete but not yet independently accepted. Its first full chapter milestone is REF-1 Vectors. See the [implementation report](Interactive-Mathematical-Foundations-Book/documentation/M0_M2_IMPLEMENTATION_REPORT.md). The master plan is currently at `Interactive-Mathematical-Foundations-Book/documentaion/INTERACTIVE_MATH_FOUNDATIONS_MASTER_PLAN.md` (directory spelling retained from the original repository).
+The M0/M2 foundation is complete but not yet independently accepted. Its first full chapter milestone is REF-1 Vectors. See the [implementation report](Interactive-Mathematical-Foundations-Book/documentation/M0_M2_IMPLEMENTATION_REPORT.md). The master plan is at `Interactive-Mathematical-Foundations-Book/documentation/INTERACTIVE_MATH_FOUNDATIONS_MASTER_PLAN.md`.
 
 ## Repository policy
 

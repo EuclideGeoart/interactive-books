@@ -270,7 +270,9 @@ def main(argv: list[str]) -> int:
     args = parser.parse_args(argv)
     text = render(build_fixture())
     if args.write:
-        FIXTURE_PATH.write_text(text, encoding="utf-8")
+        # Keep the fixture LF on every platform (Windows text mode would write CRLF).
+        with FIXTURE_PATH.open("w", encoding="utf-8", newline="\n") as handle:
+            handle.write(text)
         print(f"wrote {FIXTURE_PATH.relative_to(ROOT)} ({len(text)} bytes; NumPy cross-check: {'on' if np else 'off'})")
         return 0
     if not FIXTURE_PATH.exists() or FIXTURE_PATH.read_text(encoding="utf-8") != text:

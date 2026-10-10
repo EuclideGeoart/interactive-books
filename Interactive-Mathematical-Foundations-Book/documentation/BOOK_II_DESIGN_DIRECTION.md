@@ -2,7 +2,7 @@
 
 **Product:** *Interactive Mathematical Foundations for Computing & Machine Learning* (Book II)
 **Status:** M2 design contract · written before implementation, amended with an "as built" section at the end
-**Constraint set:** `documentaion/INTERACTIVE_MATH_FOUNDATIONS_MASTER_PLAN.md` §2, §3, §6, §7, §8, §11
+**Constraint set:** `documentation/INTERACTIVE_MATH_FOUNDATIONS_MASTER_PLAN.md` §2, §3, §6, §7, §8, §11
 
 ---
 

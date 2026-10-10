@@ -4,7 +4,7 @@
 
 **Status: M0 + M2 foundation.** The platform, curriculum structure, design system and test harness are in place, together with one clearly labelled **foundation demo** (a draggable vector). **No curriculum chapter is written yet**; the reference chapter (I.3 *Vectors*) is milestone M3 and awaits the review gate.
 
-Authority: [`documentaion/INTERACTIVE_MATH_FOUNDATIONS_MASTER_PLAN.md`](documentaion/INTERACTIVE_MATH_FOUNDATIONS_MASTER_PLAN.md) (the directory name is spelled that way in the tree as supplied; it is left untouched).
+Authority: [`documentation/INTERACTIVE_MATH_FOUNDATIONS_MASTER_PLAN.md`](documentation/INTERACTIVE_MATH_FOUNDATIONS_MASTER_PLAN.md) (relocated from the originally misspelled `documentaion/` in WIN-0; contents byte-identical, sha256 `c868e6ad…0612`).
 
 | Read this | For |
 | --- | --- |
@@ -15,7 +15,7 @@ Authority: [`documentaion/INTERACTIVE_MATH_FOUNDATIONS_MASTER_PLAN.md`](document
 
 ## Quick start
 
-Requires Node ≥ 22.12 and npm. Python 3 is needed only for the oracle tests; NumPy is a cross-check and is installed into a local `.venv`.
+Requires Node ≥ 22.12 and npm. Python 3 is needed only for the oracle tests; NumPy is a cross-check and is installed into a local `.venv`. Every npm script is plain Node, so the commands below run unchanged in Windows PowerShell, cmd, and POSIX shells (Git Bash is not required; in fact avoid it for `npm run serve`, since MSYS rewrites a bare `/` argument into a Windows path).
 
 ```sh
 npm ci
@@ -40,15 +40,16 @@ which is exactly:
 | crawl | `npm run check:dist` | Every URL under the base path and resolving; fragments exist; fonts and CSS `url()`s resolve; no raw TeX or KaTeX error nodes |
 | browser | `npm run test:e2e` and `npm run test:e2e:subpath` | Playwright at 1440 / 820 / 390 px: interaction, keyboard, touch, accessibility (axe), responsive layout, deployment, screenshots |
 
-Browser tests use a *production* build served by `scripts/serve-dist.mjs` (a strict static server: real 404s, no SPA fallback, nothing outside the mount path). They find Chrome via `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` or `/opt/google/chrome/chrome`; no browser download is performed. Ports 4451 (root) and 4452 (sub-path).
+Browser tests use a *production* build served by `scripts/serve-dist.mjs` (a strict static server: real 404s, no SPA fallback, nothing outside the mount path). They use `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`, else `/opt/google/chrome/chrome` when it exists (Linux reference setup), else Playwright's bundled Chromium (`npx playwright install chromium` once, e.g. on Windows). Ports 4451 (root) and 4452 (sub-path).
 
-**Screenshot baselines** live in `tests/e2e/__screenshots__/` (17 images, ~1.5 MB). They are Linux/Chrome specific; fonts are self-hosted so they are deterministic on a given machine class. Refresh deliberately with `npx playwright test tests/e2e/visual.spec.ts --update-snapshots` and *look at the images*. Review captures at full resolution: `node scripts/capture-review.mjs <outDir>` (needs a running server).
+**Screenshot baselines are per rendering platform.** The Linux/Chrome references are `tests/e2e/__screenshots__/<spec>/` (17 images) and are the authority on Linux (and any non-Windows platform). Windows has its own 17-image set in `tests/e2e/__screenshots__/win32/`, selected automatically by `playwright.config.ts`; see its README for review status. A platform's baselines are never compared with another's and the tolerance is the same on both (`maxDiffPixelRatio` 0.004). Refresh deliberately with `npx playwright test tests/e2e/visual.spec.ts --update-snapshots` (on Linux this rewrites the Linux set; on Windows only the `win32` set) and *look at the images*. `BOOK_BASELINE_PLATFORM=linux` forces the Linux set on any OS. Review captures at full resolution: `node scripts/capture-review.mjs <outDir>` (needs a running server).
 
 ### Deployment
 
 ```sh
 npm run build                                   # origin root
-BOOK_BASE=/some/path/ npm run build             # any sub-directory (outDir defaults to dist/)
+BOOK_BASE=/some/path/ npm run build             # any sub-directory, POSIX shells (outDir defaults to dist/)
+$env:BOOK_BASE='/some/path/'; npm run build     # the same in PowerShell
 npm run build:subpath                           # the tested sub-path build: /math-foundations/
 ```
 
@@ -81,16 +82,15 @@ Only the interactive stages are Preact islands (everything is also rendered on t
 ## Layout
 
 ```
-documentaion/   the authoritative master plan, exactly as supplied (do not edit)
-documentation/  audit, design direction, authoring guide, implementation report, screenshots
+documentation/  the authoritative master plan (do not edit), audit, design direction, authoring guide, reports, screenshots
 src/            see the table above
 code/python/    reference code shown on pages AND executed by the oracle tests
 oracle/         independent Python oracle (stdlib + NumPy cross-check) and its tests
 fixtures/       JSON written by the oracle, read by the TypeScript parity tests
 tests/unit/     Vitest          tests/e2e/   Playwright
-scripts/        static server, dist crawler, oracle runner/setup, review-screenshot capture
+scripts/        static server, dist crawler, oracle runner/setup, sub-path build, drag-latency measurement, review-screenshot capture (all Node, cross-platform)
 ```
 
 ## Moving or importing this directory
 
-Nothing depends on the absolute path. After moving or cloning: `npm ci`, and re-create the (non-relocatable) virtual environment with `rm -rf .venv && npm run oracle:setup`. `dist/`, `dist-subpath/` and `.astro/` are regenerated by the build.
+Nothing depends on the absolute path. After moving or cloning: `npm ci`, and re-create the (non-relocatable) virtual environment with `rm -rf .venv && npm run oracle:setup` (PowerShell: `Remove-Item -Recurse -Force .venv; npm run oracle:setup`). `dist/`, `dist-subpath/` and `.astro/` are regenerated by the build.

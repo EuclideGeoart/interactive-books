@@ -1,7 +1,7 @@
 # M0 + M2 Implementation Report
 
 **Milestone:** M0 (reuse audit) + M2 (minimal mathematics platform) · **Stops at the M0 + M2 review gate.** Nothing here implements, or claims to implement, REF-1 (I.3 *Vectors*) or any Part.
-**Authority:** `documentaion/INTERACTIVE_MATH_FOUNDATIONS_MASTER_PLAN.md` — unmodified (sha256 `c868e6ad73de2b61e49badbbab6727badd130d1d143f37417bd4fbf495ce0612`, committed as the repository's first commit `85e8eab`). The directory name `documentaion` is as supplied; new documents are in `documentation/`.
+**Authority:** `documentation/INTERACTIVE_MATH_FOUNDATIONS_MASTER_PLAN.md` — unmodified (sha256 `c868e6ad73de2b61e49badbbab6727badd130d1d143f37417bd4fbf495ce0612`, committed as the repository's first commit `85e8eab`). *(At M2 the file sat in a directory misspelled `documentaion/`; WIN-0 relocated it, content unchanged.)*
 
 *Reports are evidence, not acceptance (plan §18.4). Every claim below names the command or file that supports it so the reviewer can re-verify it.*
 
@@ -159,7 +159,7 @@ Book I was **not modified**. At audit time its `.git/` was an empty directory (n
 * **The "available" and "current" states are implemented but have never rendered.** Only *planned* content exists, so no test exercises: the link branch of the book map and of the chapter pager, the `src/pages/chapters/[slug].astro` route (it generates zero pages today), `aria-current` on the Part ruler, or the chapter label derived from the curriculum (the demo belongs to no Part). A fixture chapter was deliberately **not** invented to cover them; they will be exercised for the first time when I.3 is published (see §8, item 1).
 * **Drag latency was not measured.** In free mode each pointer frame re-renders three or four formula strings (KaTeX output is cached by string, and free drags produce mostly new strings). Plan §20 expects "within one animation frame on typical hardware"; that is unverified, and a low-end phone is the case to measure.
 * No CI configuration is included (the repository has no remote).
-* The `documentaion/` directory-name typo is preserved on purpose.
+* ~~The `documentaion/` directory-name typo is preserved on purpose.~~ Superseded: relocated to `documentation/` in WIN-0 (content byte-identical).
 
 ## 8. REF-1 (M3) — what is proven and what remains
 

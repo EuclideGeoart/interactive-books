@@ -13,6 +13,85 @@ describe('traceFrom — immutable semantic frames', () => {
   });
 });
 
+describe('traceFrom — deep, detached snapshots', () => {
+  interface S { total: number; terms: number[]; nested: { label: { text: string }; list: { v: number }[] } }
+  const make = (): { input: S; event: { kind: string; at: number[] } } => ({
+    input: { total: 3, terms: [1, 2], nested: { label: { text: 'a' }, list: [{ v: 1 }] } },
+    event: { kind: 'add', at: [0] },
+  });
+
+  it('is unaffected by later mutation of the objects passed in (state and event)', () => {
+    const { input, event } = make();
+    const frames = traceFrom<S, typeof event>([{ state: input, event, explanation: 'x' }]);
+    input.total = 99; input.terms.push(7); input.nested.label.text = 'changed'; input.nested.list[0]!.v = 42; input.nested.list.push({ v: 5 });
+    event.kind = 'other'; event.at.push(9);
+    expect(frames[0]!.state).toEqual({ total: 3, terms: [1, 2], nested: { label: { text: 'a' }, list: [{ v: 1 }] } });
+    expect(frames[0]!.event).toEqual({ kind: 'add', at: [0] });
+  });
+
+  it('does not alias the input: the stored state is a different object at every depth', () => {
+    const { input } = make();
+    const s = traceFrom<S>([{ state: input }])[0]!.state;
+    expect(s).not.toBe(input);
+    expect(s.terms).not.toBe(input.terms);
+    expect(s.nested.label).not.toBe(input.nested.label);
+  });
+
+  it('freezes every nested object and array in states and events', () => {
+    const { input, event } = make();
+    const f = traceFrom<S, typeof event>([{ state: input, event }])[0]!;
+    for (const o of [f, f.state, f.state.terms, f.state.nested, f.state.nested.label, f.state.nested.list, f.state.nested.list[0], f.event, f.event!.at]) {
+      expect(Object.isFrozen(o)).toBe(true);
+    }
+  });
+
+  it('rejects attempts to mutate a stored state (strict mode throws; nothing changes)', () => {
+    const { input } = make();
+    const s = traceFrom<S>([{ state: input }])[0]!.state;
+    expect(() => { s.total = 0; }).toThrow(TypeError);
+    expect(() => { s.terms.push(1); }).toThrow(TypeError);
+    expect(() => { s.terms[0] = 100; }).toThrow(TypeError);
+    expect(() => { s.nested.label.text = 'z'; }).toThrow(TypeError);
+    expect(() => { delete (s.nested as Partial<S['nested']>).list; }).toThrow(TypeError);
+    expect(() => { (s as unknown as Record<string, unknown>).extra = 1; }).toThrow(TypeError);
+    expect(s).toEqual({ total: 3, terms: [1, 2], nested: { label: { text: 'a' }, list: [{ v: 1 }] } });
+  });
+
+  it('gives frames that were handed the same object independent stored copies', () => {
+    const working = { total: 5, terms: [1, 2] };
+    const frames = traceFrom<typeof working>([{ state: working }, { state: working }]);
+    expect(frames[0]!.state).not.toBe(frames[1]!.state);
+    expect(frames[0]!.state.terms).not.toBe(frames[1]!.state.terms);
+    expect(frames[0]!.state).toEqual(frames[1]!.state);
+  });
+
+  it('preserves shared references and cycles inside one frame', () => {
+    const shared = { n: 1 };
+    const cyc: { self?: unknown; a: typeof shared; b: typeof shared } = { a: shared, b: shared };
+    cyc.self = cyc;
+    const s = traceFrom<typeof cyc>([{ state: cyc }])[0]!.state;
+    expect(s.a).toBe(s.b);
+    expect(s.self).toBe(s);
+    expect(Object.isFrozen(s)).toBe(true);
+  });
+
+  it('rejects state it cannot protect, instead of leaving it silently mutable', () => {
+    expect(() => traceFrom([{ state: new Map([[1, 2]]) }])).toThrow(TypeError);
+    expect(() => traceFrom([{ state: { when: new Date(0) } }])).toThrow(TypeError);
+    expect(() => traceFrom([{ state: { f: () => 1 } }])).toThrow(TypeError);
+    expect(() => traceFrom([{ state: new Float64Array(2) }])).toThrow(TypeError);
+  });
+
+  it('keeps primitives (including -0, NaN, Infinity) exactly', () => {
+    const s = traceFrom<{ a: number; b: number; c: number; d: null; e: undefined; f: string; g: boolean }>(
+      [{ state: { a: -0, b: NaN, c: Infinity, d: null, e: undefined, f: 'ü', g: true } }])[0]!.state;
+    expect(Object.is(s.a, -0)).toBe(true);
+    expect(s.b).toBeNaN();
+    expect(s.c).toBe(Infinity);
+    expect(s).toMatchObject({ d: null, f: 'ü', g: true });
+  });
+});
+
 describe('TraceCursor — selection, never mutation', () => {
   it('clamps at both ends', () => {
     const c = cursorAt(4);
