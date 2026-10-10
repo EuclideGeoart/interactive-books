@@ -1,0 +1,73 @@
+/* I.5 Functions as input, transformation and output: chapter-specific rules only. Everything else comes from the shared stage/chapter styles. */
+
+.stage-plane { display: grid; gap: 10px; align-content: start; min-width: 0; }
+.legend-line { font: 0.8125rem/1.45 var(--font-ui); color: var(--ink-3); }
+
+/* ───────── stage panels: the shared stage sizes its formula columns for three equations; the first stage shows two, the others stack */
+@container (min-width: 700px) {
+  .stage-full[data-stage='function'] .formula-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stage-full[data-stage='height'] .formula-panel,
+  .stage-full[data-stage='composition'] .formula-panel,
+  .stage-full[data-stage='inverse'] .formula-panel { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ───────── the machine as boxes: input, operation, value, operation, … output */
+.pipelines { display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr); }
+@container (min-width: 700px) { .pipelines { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; } }
+.pipeline-block { display: grid; gap: 6px; min-width: 0; align-content: start; }
+.pipeline-title { font: 600 0.875rem/1.3 var(--font-ui); color: var(--ink-2); }
+.pipeline-none { font: 0.9375rem/1.5 var(--font-ui); color: var(--c-caution-text); padding: 10px 12px; border: 1px dashed var(--c-caution); border-radius: var(--radius); }
+.pipeline { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: stretch; gap: 6px 4px; }
+.pipe-value {
+  display: grid; align-content: center; justify-items: center; gap: 2px; min-width: 3.6rem; min-height: 56px; padding: 6px 10px;
+  border: 1.5px solid var(--rule-strong); border-radius: var(--radius); background: var(--sheet); text-align: center;
+}
+.pipe-tag { font: 600 0.6875rem/1.2 var(--font-ui); letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-3); }
+.pipe-num { font: 600 1.0625rem/1.3 var(--font-math); font-variant-numeric: tabular-nums; color: var(--ink); }
+.pipe-value.is-refused { border-color: var(--c-caution); background: color-mix(in srgb, var(--c-caution) 10%, var(--sheet)); }
+.pipe-value.is-refused .pipe-num { color: var(--c-caution-text); font-family: var(--font-ui); font-size: 0.9375rem; }
+.pipe-value.is-skipped { border-style: dashed; background: transparent; }
+.pipe-value.is-skipped .pipe-num { color: var(--ink-3); font: italic 500 0.875rem var(--font-ui); }
+.pipe-op { display: grid; align-content: center; justify-items: center; gap: 0; padding: 0 2px; font: 0.8125rem/1.25 var(--font-ui); color: var(--ink-2); text-align: center; max-width: 8.5rem; }
+.pipe-arrow { font-size: 1.125rem; line-height: 1; color: var(--ink-3); }
+.pipe-op.is-skipped { color: var(--ink-3); opacity: 0.7; }
+
+/* ───────── the table of inputs and outputs */
+.fn-table-wrap { max-width: 28rem; }
+.fn-table { width: 100%; border-collapse: collapse; background: var(--sheet); border: 1px solid var(--rule); font-variant-numeric: tabular-nums; }
+.fn-table caption { caption-side: top; padding: 0 0 6px; text-align: left; font: 0.8438rem/1.45 var(--font-ui); color: var(--ink-2); }
+.fn-table th { text-align: left; font: 600 0.8125rem var(--font-ui); padding: 6px 12px; border-bottom: 2px solid var(--ink); background: var(--sheet-2); }
+.fn-table td { padding: 5px 12px; border-bottom: 1px solid var(--rule); font-size: 0.9688rem; }
+.fn-table tr:last-child td { border-bottom: 0; }
+.fn-table tr[data-current='true'] td { background: color-mix(in srgb, var(--c-primary) 14%, transparent); font-weight: 700; box-shadow: inset 3px 0 0 var(--c-primary); }
+.fn-table td[data-defined='false'] { color: var(--c-caution-text); font-style: italic; }
+
+/* ───────── sets of numbers on a number line (the domain of a composite) */
+.setlines { display: grid; gap: 10px; grid-template-columns: minmax(0, 1fr); }
+@container (min-width: 700px) { .setlines { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; } }
+.setline-block { min-width: 0; display: grid; gap: 2px; }
+.setline-title { font: 600 0.875rem/1.3 var(--font-ui); color: var(--ink-2); }
+.setline-title span { font-family: var(--font-math); font-weight: 600; color: var(--ink); }
+.setline { display: block; width: 100%; height: auto; aspect-ratio: 640 / 64; border: 1px solid var(--rule); border-radius: 2px; background: var(--plane-bg); }
+.setline-axis { stroke: var(--ink-3); stroke-width: 1.6; }
+.setline-tick { stroke: var(--ink-3); stroke-width: 1.4; }
+.setline-num { font: 15px var(--font-ui); fill: var(--ink-3); font-variant-numeric: tabular-nums; }
+.setline-bar { stroke: var(--role); stroke-width: 9; stroke-linecap: butt; }
+.setline-arrow { fill: var(--role); }
+.setline-end { stroke: var(--role); stroke-width: 2.6; }
+.setline-end.is-filled { fill: var(--role); }
+.setline-end.is-open { fill: var(--sheet); }
+
+/* ───────── controls: the choice of rule or function is a wrapping grid of segments */
+.stage-controls .segmented { grid-column: 1 / -1; }
+.stage-controls .segments { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 8.5rem), 1fr)); width: 100%; }
+.stage-controls .segment span { height: auto; min-height: 44px; padding-block: 8px; border-left: 0; box-shadow: 0 0 0 0.5px var(--rule-strong); text-align: center; }
+
+/* ───────── the table built at build time */
+.table-scroll .num-table td:first-child { font-family: var(--font-mono); font-weight: 500; }
+.num-table code { white-space: nowrap; }
+.num-table td:nth-child(3), .num-table td:nth-child(4) { font-family: var(--font-mono); font-size: 0.875rem; }
+.num-table tr[data-agree='false'] td:last-child { color: var(--c-caution-text); font-weight: 600; }
+
+/* ───────── worked-example trace caption */
+.trace-caption { margin-top: 6px; }

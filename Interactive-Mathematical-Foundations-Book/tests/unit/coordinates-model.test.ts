@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { exactCoordinate, isCoordinate } from '../../src/math/coordinates/coords';
 import { deriveDistanceWork } from '../../src/math/coordinates/distancework';
 import { deriveLine } from '../../src/math/coordinates/numberline';
-import { derivePixel, resizePixel, validatePixel } from '../../src/math/coordinates/pixel';
+import { derivePixel, latticeCells, resizePixel, validatePixel } from '../../src/math/coordinates/pixel';
 import { derivePoint, positionOf, quadrantIndex } from '../../src/math/coordinates/point';
 import { deriveSegment } from '../../src/math/coordinates/segment';
 import { int, toNumber, type Rational } from '../../src/math/quantity/rational';
@@ -174,5 +174,27 @@ describe('screen versus mathematics (integer lattice)', () => {
     expect(() => validatePixel({ w: 1, h: 4, x: 0, y: 0 })).toThrow(RangeError);
     expect(() => validatePixel({ w: 4, h: 11, x: 0, y: 0 })).toThrow(RangeError);
     expect(resizePixel({ w: 8, h: 8, x: 7, y: 6 }, 4, 5)).toEqual({ w: 4, h: 5, x: 3, y: 4 });
+  });
+});
+
+describe('the lattice cells (the table next to the pixel plane)', () => {
+  it('a 3 x 2 image, worked by hand: row 0 is the TOP row (y = H - 1), the flat index counts left to right then down', () => {
+    const cells = latticeCells({ w: 3, h: 2, x: 1, y: 0 });
+    expect(cells.map(r => r.map(c => [c.x, c.y]))).toEqual([[[0, 1], [1, 1], [2, 1]], [[0, 0], [1, 0], [2, 0]]]);
+    expect(cells.flat().map(c => c.index)).toEqual([0, 1, 2, 3, 4, 5]);
+    expect(cells.flat().filter(c => c.selected).map(c => [c.row, c.col])).toEqual([[1, 1]]);
+  });
+  it('for every size and every lattice point: exactly one selected cell, it is the point, and its (row, col, index) agree with derivePixel', () => {
+    for (let w = 2; w <= 10; w++) for (let h = 2; h <= 10; h++) for (let x = 0; x < w; x++) for (let y = 0; y < h; y++) {
+      const cells = latticeCells({ w, h, x, y });
+      expect(cells).toHaveLength(h);
+      const chosen = cells.flat().filter(c => c.selected);
+      expect(chosen).toHaveLength(1);
+      const d = derivePixel({ w, h, x, y });
+      expect([chosen[0]!.row, chosen[0]!.col, chosen[0]!.index, chosen[0]!.x, chosen[0]!.y]).toEqual([d.row, d.col, d.index, x, y]);
+    }
+  });
+  it('rejects an invalid state like the rest of the pixel model', () => {
+    expect(() => latticeCells({ w: 3, h: 2, x: 3, y: 0 })).toThrow(RangeError);
   });
 });

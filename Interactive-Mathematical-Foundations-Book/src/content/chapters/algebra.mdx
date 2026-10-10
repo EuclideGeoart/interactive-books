@@ -1,0 +1,298 @@
+---
+kind: chapter
+curriculumId: I.4
+title: "Algebraic expressions, equations and inequalities"
+hero: "What does it mean to do the *same* thing to both sides?"
+lede: "An equation is a question about an unknown number, and every step of solving it must leave the set of answers unchanged. We keep a balance, learn the one rule that turns an inequality around, and meet the two steps that quietly change the answers: squaring and dividing by something that can be zero."
+description: "Expressions, equations, identities and inequalities; balanced operations that keep the solution set; the sign reversal when multiplying by a negative number; extraneous roots from squaring; the root lost by dividing by x − c; executable Python; exercises with feedback."
+---
+import '../../styles/chapters/algebra.css';
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import Xref from '../../shell/Xref.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import BalanceStage from '../../lessons/algebra/BalanceStage';
+import ReversalStage from '../../lessons/algebra/ReversalStage';
+import ExtraneousStage from '../../lessons/algebra/ExtraneousStage';
+import FallacyStage from '../../lessons/algebra/FallacyStage';
+import ExpressionStage from '../../lessons/algebra/ExpressionStage';
+import WorkedExampleStage from '../../lessons/algebra/WorkedExampleStage';
+import Exercise from '../../lessons/algebra/Exercise';
+import NumericsTable from '../../lessons/algebra/NumericsTable.astro';
+import solveCode from '../../../code/python/algebra_solve.py?raw';
+import extraneousCode from '../../../code/python/algebra_extraneous.py?raw';
+import affineCode from '../../../code/python/algebra_affine.py?raw';
+
+<Stage caption="A statement with an unknown x, and the history of what you do to both sides. Pick a statement, then choose an operation and press the button: the new statement is added to the history. The beam shows both sides at the trial value of x, and the line below it marks the solutions. Try multiplying by 0, and try dividing 4 − 2x < x + 10 by a negative number.">
+  <BalanceStage client:load />
+</Stage>
+
+Try it before reading on. Start with $3x+2=x+10$ and subtract $x$ from both sides, then subtract $2$, then divide by $2$. After each step, drag the trial value of $x$ to $4$ and watch the beam: it is level at the same value every time. Then pick the last statement, $4-2x<x+10$, divide by $-3$ and watch the relation turn around. Finally try to multiply by $0$ and read why the stage refuses. By the end of the chapter you will know what a solution set is, why a balanced step keeps it, the one operation that changes an inequality, and the two familiar steps that can change an equation's answers without warning.
+
+## Intuition: a question and a scale
+
+A written equation looks like a fact. It is really a question. When you read $3x+2=x+10$ you are asked: **for which numbers $x$ are the two sides equal?** For $x=4$ both sides are $14$. For $x=0$ they are $2$ and $10$. The unknown is a placeholder, and the equation picks out the numbers that fit.
+
+A pair of kitchen scales is the right picture. The two pans hold the two sides. If they balance, the sides are equal, and *whatever you do to one pan you must do to the other* if you want them to keep balancing: take a kilogram off both, double both, halve both. The solving procedure is nothing else. Each step produces a new statement with the **same answers**, only simpler, until the unknown stands alone and the answer can be read off.
+
+Two things can go wrong, and both are the subject of this chapter. Some steps do *not* keep the answers: multiplying by $0$ destroys them, and squaring or dividing by an expression that can be $0$ changes them. And the picture has to be extended to *inequalities*, where "the pan that is lower" is a statement about order and one operation, multiplying by a negative number, turns the order around.
+
+This chapter prepares the next one, <Xref to="/chapters/functions/">Functions as input, transformation and output</Xref>, where the same letter $x$ stops being an unknown to be found and becomes an input that varies. It uses the squares and roots of <Xref to="/chapters/quantities/">the first chapter</Xref> and the number line of <Xref to="/chapters/coordinates/">the second</Xref>.
+
+## Definition: expressions, equations, inequalities and their solutions
+
+**Expression.** An expression is a recipe for a number, built from numbers, letters and the operations of arithmetic: $3x+2$, $x^{2}-1$, $\frac{y}{4}$. It has no "$=$" and is not true or false. It has a value once its letters have values.
+
+**Variable, parameter, unknown.** A letter stands for a number, and the word used says what the letter is doing. An **unknown** is a letter whose value we are trying to find ($x$ in $3x+2=x+10$). A **variable** is a letter that is allowed to take many values, and we study what happens as it does ($x$ in $f(x)=3x+2$). A **parameter** is a letter that is fixed for a given problem but could have been another number ($a$ in $ax+b$). The same symbol can be any of them, depending on the question.
+
+**Equation.** An equation states that two expressions have the same value: $L(x)=R(x)$. It is a **condition on $x$**. It is true for some values of $x$, false for others.
+
+**Inequality.** Replace "$=$" by $<$, $\le$, $>$ or $\ge$. The statement is again a condition on $x$.
+
+**Solution set.** The **solution set** of a statement is the set of all numbers $x$ that make it true. Two statements are **equivalent** when they have the same solution set. Solving means replacing a statement by equivalent ones until the answer is visible.
+
+**Identity.** An equation that is true for *every* $x$, such as $2(x+1)=2x+2$, is an **identity**. An equation that is true for *no* $x$, such as $2(x+1)=2x+1$, is a **contradiction**. Everything else is a **conditional equation**: it is true for some $x$ and false for others.
+
+**Balanced operation.** An operation applied to both sides of a statement is **balanced** when the new statement is equivalent to the old. The balanced operations for a linear statement $a_1x+b_1\ \square\ a_2x+b_2$ are:
+
+- add the same number, or the same multiple of $x$, to both sides (subtracting is adding a negative number);
+- multiply both sides by a number $k\neq 0$, or divide both sides by $k\neq 0$.
+
+Each is **reversible**: adding $c$ is undone by adding $-c$, and multiplying by $k$ is undone by dividing by $k$. That is exactly why it preserves the solution set. If a step turns $S$ into $S'$ and the inverse step turns $S'$ back into $S$, then every solution of $S$ is a solution of $S'$ and vice versa. Multiplying by $0$ has no inverse, and the stage refuses it.
+
+## Keeping the balance
+
+A linear equation $a_1x+b_1=a_2x+b_2$ has a solution set of exactly one of three kinds. Move the $x$ terms to the left and the constants to the right, which are two balanced steps. What remains is
+$$
+(a_1-a_2)\,x=b_2-b_1 .
+$$
+Let $m=a_1-a_2$ and $c=b_2-b_1$. Then:
+
+| value of $m$ | the equation $mx=c$ | solution set |
+| --- | --- | --- |
+| $m\neq 0$ | divide by $m$: $x=c/m$ | exactly one number |
+| $m=0$, $c\neq 0$ | $0=c$, which is false | no solution |
+| $m=0$, $c=0$ | $0=0$, which is true | every $x$ |
+
+The stage follows this: the beam, the history and the inspector are all computed from the same statement. The beam shows $L(x)$ in the left pan and $R(x)$ in the right pan at the trial value of $x$. The pan with the larger value is lower, and the beam is **exactly level** only when the two sides are equal, that is, at a solution of an equation. The amount of tilt is schematic (it grows with the difference but is capped so that the picture stays on the page); the inspector shows the true numbers $L(x)$, $R(x)$ and $L(x)-R(x)$.
+
+Look at the presets. For $2x+3=2x+7$ the $x$ terms cancel and the history ends with the false statement $0=4$; the solution set is empty, and the verdict is marked as a caution. For $2x+3=2x+3$ they cancel to the true $0=0$ and every $x$ works.
+
+The history is a record. Selecting an earlier step with the stepper or the slider **shows** that statement; it never undoes anything, and the solution set stays the same at every step. You can remove the last step explicitly with its own button, which is a different action.
+
+### Why multiplying by $0$ is refused
+
+Start from $x=3$ and multiply both sides by $0$. The result is $0=0$, which is true for every $x$. The original had one solution and the new statement has all of them. Since no number turns $0$ back into $3$, the step cannot be undone. A step that changes the solution set is not balanced, and the stage shows its reason instead of accepting it. Dividing by $0$ is refused for the plain reason that division by $0$ is undefined.
+
+## Inequalities and the order-reversing rule
+
+An inequality such as $5x-1\ge 2x+8$ is solved by the same balanced steps, with its relation carried along. Adding a number to both sides keeps the relation. Multiplying by a **positive** $k$ keeps it. The one new fact is this.
+
+> If $p<q$ and $k<0$, then $kp>kq$.
+
+*Proof.* Since $p<q$, the number $q-p$ is positive. A negative number times a positive number is negative, so $k(q-p)<0$, that is $kq-kp<0$, that is $kq<kp$. $\square$
+
+So **multiplying or dividing by a negative number reverses the relation**: $<$ becomes $>$, and $\le$ becomes $\ge$. Geometrically, multiplying by $-1$ reflects the number line through $0$, which swaps left and right, so what was to the left is now to the right; multiplying by $-3$ reflects and then stretches by $3$.
+
+<Stage caption="Two numbers p and q on a number line, and their products with k below. Drag p and q or type them, and change k. For k greater than 0 the arrow keeps its direction; for k less than 0 it reverses. With k equal to 0 both products collapse to 0 and the step is rejected.">
+  <ReversalStage client:load />
+</Stage>
+
+The stage states the **counterexample** in numbers. With $p=2$, $q=5$ and $k=-2$, the true order is $2<5$, and the products are $kp=-4$ and $kq=-10$. If you forgot to reverse and wrote $-4<-10$, you would have written a false statement. The true one is $-4>-10$. The multiplier $k=0$ is rejected for a different reason: $0\cdot p$ and $0\cdot q$ are both $0$, so the strict inequality $p<q$ becomes the false $0<0$, or loses its meaning altogether, and nothing can be divided back.
+
+The solution set of an inequality is an **interval**, with an exact endpoint and an end that is open or closed. For $5x-1\ge 2x+8$ the steps give $3x\ge 9$, then $x\ge 3$: the set $[3,\infty)$, and $3$ belongs to it because the relation allows equality. For $4-2x<x+10$ the steps give $-3x<6$, then dividing by $-3$ (reversing) $x>-2$: the set $(-2,\infty)$, with $-2$ excluded. A square bracket or a filled dot means *included*; a round bracket or an open dot means *excluded*.
+
+## Squaring is not a balanced step
+
+Squaring both sides is tempting: it removes a square root. But the step $a=b\ \Rightarrow\ a^{2}=b^{2}$ only goes one way. The squared equation $a^{2}=b^{2}$ is also true when $a=-b$, so the new statement can have **more** solutions than the old. The extra ones are called **extraneous roots**.
+
+Take the family $\sqrt{x+p}=x+q$ with whole numbers $p,q$. The square root sign means the **non-negative** root, so a solution must make the right side non-negative as well. Write $t=x+q$ for the right side. Then $x+p=t-q+p$, and squaring $x+p=(x+q)^{2}$ gives
+$$
+t^{2}=t+(p-q),\qquad t=\frac{1\pm\sqrt{D}}{2},\qquad D=4p-4q+1 .
+$$
+So $x=t-q=\frac{1-2q\pm\sqrt{D}}{2}$, which is the quadratic $x^{2}+(2q-1)x+(q^{2}-p)=0$ with discriminant $D$. The number $D$ is always odd.
+
+A candidate $x_0$ solves the **original** equation exactly when its right side $x_0+q=t$ is **not negative**. If $t<0$, the number $x_0$ solves $-\sqrt{x+p}=x+q$ instead: the other sign of the root. Because the two values of $t$ add up to $1$, the larger one is at least $\tfrac12$, so **at least one candidate is always valid** whenever there are candidates. Whether the second is valid depends on the sign of its $t$.
+
+<Stage caption="The curve y = √(x + p) (solid), the same curve with the opposite sign (dashed) and the line y = x + q. Each root of the squared equation sits on the line: a filled marker on the solid curve means it solves the original equation, an open-looking marker on the dashed curve means it solves the other sign and is extraneous. Change p and q, or use the presets.">
+  <ExtraneousStage client:load />
+</Stage>
+
+The preset $p=2$, $q=0$ is $\sqrt{x+2}=x$. Squaring gives $x+2=x^{2}$, so $x^{2}-x-2=0$ and $(x-2)(x+1)=0$. The candidates are $2$ and $-1$. Substitute **into the original equation**: for $x=2$, $\sqrt{4}=2$ and the right side is $2$, so it is valid. For $x=-1$, $\sqrt{1}=1$ but the right side is $-1$: extraneous. It is a solution of $-\sqrt{x+2}=x$ instead.
+
+The preset $p=1$, $q=0$ has the irrational candidates $\frac{1\pm\sqrt5}{2}$. The sign of $\frac{1-\sqrt5}{2}$ is decided *exactly* (it is negative because $\sqrt5>1$), not by looking at its decimal $-0.618034\ldots$. The stage also shows $p=0$, $q=1$ where $D=-3<0$: there is no real candidate and squaring cannot create any.
+
+> The only reliable test of a candidate is to put it back into the **original** equation.
+
+### The honest scope of this family
+
+Squaring is one of several steps that can add roots. Multiplying both sides by an expression that can be $0$ does it too. This chapter treats one family exactly, so that the claim "a candidate is valid exactly when $x+q\ge0$" can be checked on every case. Other equations with radicals, and equations with fractions, need the same discipline: find the candidates by whatever steps you like, then check them in the original.
+
+## Dividing by something that can be zero
+
+The opposite danger is losing a root. Consider $x(x-2)=3(x-2)$. A tempting step is to divide both sides by $(x-2)$, which leaves $x=3$. But the division is allowed only where $x-2\neq0$, that is for $x\neq2$. At $x=2$ both sides equal $0$, so $x=2$ **is** a solution, and the division threw it away.
+
+The safe way is to move everything to one side and factor:
+$$
+x(x-2)-3(x-2)=0\iff(x-2)(x-3)=0\iff x=2\ \text{or}\ x=3 .
+$$
+A product is $0$ exactly when one of its factors is $0$, so both roots appear. In general $x(x-c)=m(x-c)$ is equivalent to $(x-c)(x-m)=0$.
+
+<Stage caption="The left side x(x − c) is a parabola and the right side m(x − c) is a line. They cross where the equation is true. The marker labelled lost is the solution that dividing by (x − c) throws away; when c equals m there is a single touching point and nothing is lost.">
+  <FallacyStage client:load />
+</Stage>
+
+When $c=m$ the equation is $(x-c)^{2}=0$ with the single root $c$. Dividing gives $x=m=c$: nothing is lost *as a value*, but the division was still not justified. The stage keeps both cases apart.
+
+The same lesson applies to simplifying a fraction such as $\frac{x^{2}-4}{x-2}=x+2$: the two sides agree for every $x\neq2$, but the left side is *undefined* at $2$. A simplification that is valid only where a divisor is not $0$ carries that restriction with it. The restriction on $x$ is called a **domain restriction**.
+
+## Expanding brackets: identities and slips
+
+The **distributive law** says that multiplication spreads over addition: $a(bx+c)=abx+ac$ for every $a,b,c,x$. It is an identity. Written as an equation $a(bx+c)=abx+ac$, its solution set is every $x$.
+
+The most common slip multiplies only the first term: $a(bx+c)=abx+c$. The stage compares the two. Write the equation as a pair of lines $y=a(bx+c)$ and $y=abx+c$. They have the same slope $ab$, so they are parallel. They coincide when the constants agree, $ac=c$, which happens exactly when $c(a-1)=0$, that is $a=1$ or $c=0$. Otherwise they are a constant distance $c(a-1)$ apart, and the slip's equation is a **contradiction**: true for no $x$. A single numerical check at one $x$ already catches it.
+
+<Stage caption="The bracket a(bx + c) as a solid line and its expansion as a dashed line. Pick whether the expansion multiplies every term or only the first. At the chosen x the inspector shows both values and their gap. The lines coincide for an identity and are parallel for the slip.">
+  <ExpressionStage client:load />
+</Stage>
+
+This is the difference between the words in the definition. The bracket is an **expression**. Setting it equal to its correct expansion makes an **identity**, true for every $x$. Setting it equal to the slip makes a **contradiction**, true for no $x$ (except in the harmless cases $a=1$ or $c=0$, where the slip happens to be right). An equation like $2(x+1)=x+5$ is **conditional**: true only at $x=3$.
+
+Reading $f(x)=ax+b$ is a first look at the next chapter: the same expression $ax+b$, but now $x$ is an input, and $a$ and $b$ are parameters that define the rule.
+
+## Worked examples
+
+Solving a linear equation is three moves in a fixed order, and it pays to see them as steps:
+
+1. **Collect the $x$ terms** on one side by adding the opposite of the unwanted $x$ term to both sides.
+2. **Collect the constants** on the other side the same way.
+3. **Divide** by the number in front of $x$ (reversing an inequality if it is negative) and then **check** in the *original* statement.
+
+Step through five cases. The first is $3x+2=x+10$. The second has a solution that is not a whole number. The third is the inequality $4-2x<x+10$, where the last step reverses the relation. The fourth is $\sqrt{x+2}=x$ with its extraneous root. The last is the division that loses a root.
+
+<Stage caption="Choose a problem and step through the work. Going back selects an earlier step; nothing is undone.">
+  <WorkedExampleStage client:load />
+</Stage>
+
+## Executable reference code
+
+The Python below is stored in the repository and executed by the test suite, so what you read is known to run. First the solver: a function that returns one of exactly three answers, the inequality version with its reversal, and the case of multiplying by $0$.
+
+<CodeFile source={solveCode} file="code/python/algebra_solve.py" note="exact solving with fractions, the three cases, the reversal" />
+
+Then the extraneous-root check, with the substitution test, an exact test with `Fraction`, and the division fallacy.
+
+<CodeFile source={extraneousCode} file="code/python/algebra_extraneous.py" note="square, solve, then substitute into the original" />
+
+Finally the two machine-learning situations of this chapter: undoing a standardisation, and a learning rate as a factor in an inequality.
+
+<CodeFile source={affineCode} file="code/python/algebra_affine.py" note="inverting an affine map; 0 &lt; eta &lt; 1" />
+
+Two observations about the first file. The inputs are turned into `Fraction`s so that the answer is exact; `Fraction("0.1")` is one tenth, while the float `0.1` is a binary approximation of it. And the function returns a tuple whose first entry is one of `"point"`, `"none"` or `"all"`: the three kinds of solution set, made explicit instead of hidden in a float.
+
+## Explore: change the parameters
+
+These questions have definite answers; check them against the stages.
+
+- On the balance stage, choose $5x-1\ge2x+8$. Which trial values of $x$ make the beam tilt toward the left pan, and does the verdict say the statement is true there?
+- On the balance stage, start from $3x+2=x+10$ and multiply both sides by $-2$ before doing anything else. Is the beam level at the same $x$? Which trial value is it level at in the new statement?
+- On the balance stage, try to multiply by $0$. What does the stage say, and where is that fact in the definition?
+- On the reversal stage, find all pairs $p<q$ with $p,q\in\{-2,-1,0,1,2\}$ and $k=-1$ for which the products $kp$ and $kq$ are both positive.
+- On the extraneous stage, find every $p$ for which $q=0$ gives an extraneous root. (Hint: it depends on whether $D$ is greater than $1$.)
+- On the extraneous stage, find a pair $(p,q)$ with $p<q$ that has no real candidate, and one with $p=q$ where both roots are valid.
+- On the division stage, which $(c,m)$ make the line tangent to the parabola?
+
+## Common mistakes
+
+<Callout kind="misconception" title="Do the operation to one side only">
+Adding $2$ to the left side alone changes the statement. The balance is kept only if the *same* operation is applied to **both** sides. The history in the stage writes the operation on each side before it simplifies, so you can see it was done to both.
+</Callout>
+
+<Callout kind="misconception" title="Multiplying or dividing by a negative number keeps the inequality">
+It reverses it. From $-3x<6$ the correct step is $x>-2$, not $x<-2$. Test one value: $x=-5$ makes $-3x<6$ false ($15<6$), and $x<-2$ is true there, so the two statements disagree. Subtracting a negative number does *not* reverse anything: only multiplying or dividing does.
+</Callout>
+
+<Callout kind="misconception" title="Every root of the squared equation is a root of the original">
+Squaring adds the roots of the equation with the other sign of the root. Always substitute the candidates **into the original**. In $\sqrt{x+2}=x$ the candidate $-1$ fails: $\sqrt{1}=1\neq-1$.
+</Callout>
+
+<Callout kind="misconception" title="Divide both sides by the common factor">
+In $x(x-2)=3(x-2)$ the common factor $(x-2)$ is $0$ at $x=2$. Dividing by it discards the solution $x=2$. Move everything to one side and factor instead.
+</Callout>
+
+<Callout kind="misconception" title="a(bx + c) is abx + c">
+The factor $a$ multiplies every term in the bracket: $a(bx+c)=abx+ac$. With the slip, the two sides are parallel lines that never meet when $a\neq1$ and $c\neq0$, so the "equation" is true for no $x$.
+</Callout>
+
+<Callout kind="misconception" title="An equation with no solution is a wrong equation">
+An equation that reduces to a false statement such as $0=4$ is correct *as a question*: its answer is the empty set. "No solution" is a legitimate answer, as legitimate as "$x=4$", and so is "every $x$" when it reduces to $0=0$.
+</Callout>
+
+## Numerical considerations
+
+The mathematics above is exact. A program that solves equations with doubles is not, and two problems appear even for tiny, harmless-looking equations.
+
+**Equality of the answer.** Solve $0.1x+0.2=0.3$ by hand: subtract $0.2$, divide by $0.1$, and the answer is exactly $1$. In doubles, `(0.3 - 0.2) / 0.1` is `0.9999999999999998`, and `== 1` is `False`. The table solves several equations exactly with the model's rational arithmetic, next to the double a program holds. A row marked "no" is a case where the program's answer is a different number from the true one.
+
+<NumericsTable />
+
+<Callout kind="numerical">
+Do not test the answer of an equation with `==` on floats. Either keep the coefficients exact (`Fraction` built from strings, never from floats), or compare with a tolerance (`math.isclose`) chosen for the problem. The check "substitute and compare the two sides" has the same weakness.
+</Callout>
+
+**A coefficient that should vanish.** The three-way answer depends on whether $m=a_1-a_2$ is exactly $0$. In doubles, `(0.1 + 0.2) - 0.3` is not $0$ but $2^{-54}\approx5.55\cdot10^{-17}$. The equation $(0.1+0.2)x+1=0.3x+2$ has **no solution** (the $x$ terms cancel to $0$ and leave $0=1$), but computed in floats the program divides $1$ by $2^{-54}$ and reports $x\approx1.8\cdot10^{16}$ with full confidence. The reference file above shows both calculations: the float one and the exact one that returns `none`.
+
+**Substitution with a tolerance.** The extraneous-root test in the reference file compares `math.sqrt(x + p)` with `x + q` using `math.isclose`. That is adequate for the whole-number parameters of this family, where a valid root has a right side of at least $0$ and an invalid one has a negative right side of at least about $0.6$ in size. For other equations the tolerance decides the verdict, and a tolerance that is too wide accepts a false root while one that is too narrow rejects a true one. The exact test (a `Fraction` whose square root is itself a `Fraction`) cannot be fooled but works only when the root is rational.
+
+## Connections to engineering and machine learning
+
+- **Undoing a transformation.** Standardising a feature, $z=\frac{x-\mu}{\sigma}$, is an affine map, and getting back to the original scale is *solving that equation for $x$*: multiply by $\sigma$ (not $0$) and add $\mu$. A feature with $\sigma=0$ is the "multiply by $0$" case in disguise: the map cannot be undone, and a constant column cannot be standardised.
+- **Learning rates are factors in an inequality.** Gradient descent on $f(w)=(w-c)^{2}$ updates $w\leftarrow w-\eta\cdot2(w-c)$, so the distance to the minimiser is multiplied by $1-2\eta$ at every step. The distance shrinks when $\lvert1-2\eta\rvert<1$. Written as $-1<1-2\eta<1$ and solved with the steps of this chapter, subtracting $1$ gives $-2<-2\eta<0$, and dividing by $-2$ **reverses both inequalities**: $0<\eta<1$. The condition $\eta>0$ matters: a negative rate moves away from the minimum. The reference file runs three steps for several rates.
+- **One-dimensional least squares.** Fitting a single weight to $xw=y$ gives $w=y/x$, valid only for $x\neq0$. When $x=0$ the equation says $0=y$: no solution if $y\neq0$, every $w$ if $y=0$. The three cases of this chapter are the three behaviours of the linear system in one unknown, and they return in higher dimensions.
+- **Thresholds on a loss.** A stopping rule such as "stop when the loss is below $\varepsilon$" is an inequality in the parameters. Rearranging it by hand needs the same reversal rule whenever a negative coefficient is involved.
+- **Domain guards in code.** The division fallacy is the source of many runtime errors: a formula simplified by hand is fine for $x\neq2$ and a `ZeroDivisionError` at $2$. Write the restriction down with the formula.
+- **Looking ahead.** In <Xref to="/chapters/functions/">Functions</Xref> the expression $ax+b$ becomes a rule with a domain, and an equation $f(x)=y$ asks for the inputs that produce a given output.
+
+## Exercises
+
+Answer each question and press **Check**. A wrong answer tells you *which* mistake it looks like. After one attempt you may open a worked solution.
+
+<Exercise client:load id="solve-linear" />
+
+<Exercise client:load id="no-solution" />
+
+<Exercise client:load id="reverse-predict" />
+
+<Exercise client:load id="multiply-zero" />
+
+<Exercise client:load id="inequality-boundary" />
+
+<Exercise client:load id="valid-root" />
+
+<Exercise client:load id="construct-extraneous" />
+
+<Exercise client:load id="lost-root" />
+
+<Exercise client:load id="distribute-expand" />
+
+<Exercise client:load id="pick-identity" />
+
+<Exercise client:load id="learning-rate" />
+
+## Summary and checkpoints
+
+- An equation or inequality is a **condition** on an unknown; its **solution set** is the set of numbers that satisfy it. A linear equation has exactly one solution, none, or every number.
+- A **balanced** step (add the same thing to both sides, multiply or divide both sides by a non-zero number) is reversible, so it keeps the solution set. Multiplying by $0$ is not reversible and is refused.
+- Multiplying or dividing by a **negative** number reverses an inequality, because it reflects the line through $0$. Test a value to catch a missed reversal.
+- Squaring is **not** a balanced step: it can add roots (extraneous roots). Substitute each candidate into the **original** equation.
+- Dividing by an expression that can be $0$ can lose a root. Move everything to one side and factor instead.
+- $a(bx+c)=abx+ac$ is an identity; the slip $abx+c$ gives a contradiction unless $a=1$ or $c=0$.
+- In code: keep coefficients exact, never compare a float answer with `==`, and test whether a coefficient that should cancel is exactly $0$.
+
+**Checkpoints.** You are ready to move on when you can, without looking:
+
+1. Solve $3x+2=x+10$ and say what the beam does at the solution.
+2. Say what the solution set of $2x+3=2x+7$ is, and why.
+3. Divide $-3x<6$ by $-3$ and explain, with a number, why the relation turns around.
+4. Name the extraneous root of $\sqrt{x+2}=x$ and the reason it fails in the original equation.
+5. Say which solution of $x(x-2)=3(x-2)$ is lost by dividing by $x-2$.
