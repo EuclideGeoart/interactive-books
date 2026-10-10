@@ -43,7 +43,24 @@ Final run of that command on this checkout: **exit 0**.
 The 96 distinct browser cases run at **1440 × 900, 820 × 1180 and 390 × 844** (mobile: touch, DPR 2). Breakdown by spec file (distinct cases, from `playwright test --list`): stage interaction & geometry **33**, accessibility **24** (axe in light/dark × every page and state, plus keyboard, targets, motion, colour, maths), navigation **14**, smoke **8**, deployment **7**, visual **10** (producing 17 baselines, because some run only at one viewport).
 
 ### Relocation was verified, not assumed
-Copied the tree (without `.venv`, build output, `.git`) to an unrelated absolute path, then: `vitest` 413 ✓, fresh `.venv` + oracle 16 ✓, both builds ✓, crawler ✓, 62 browser tests incl. screenshot baselines ✓.
+Copied the tree (without `.venv`, build output, `.git`) to an unrelated absolute path, then: `vitest` 411 ✓ (the two build-failure-plugin tests were added afterwards), fresh `.venv` + oracle 16 ✓, both builds ✓, crawler ✓, 62 browser tests incl. screenshot baselines ✓.
+
+### Files changed (milestone commit `9e9498d`: 129 files, +22,641 lines; `git show --stat 9e9498d` for the list)
+
+| Area | Files |
+| --- | --- |
+| `src/shell/` (shell components, emblems, `href`) | 17 |
+| `src/ui/` (plane, drag point, inspector, controls, formula, trace stepper) | 11 |
+| `src/platform/` (viewport, numeric formatting, exact/approx, params, trace, overflow, tex) | 7 |
+| `src/math/` (vector model, exactness, KaTeX macros, math-error build plugin) | 4 |
+| `src/lessons/`, `src/curriculum/`, `src/pages/`, `src/styles/`, `src/scripts/`, `src/content/` + `content.config.ts` | 2 · 2 · 5 · 6 · 1 · 2 |
+| `tests/unit/` (11 files) · `tests/e2e/` (6 specs + helpers + 17 baselines) | 11 · 24 |
+| `oracle/` · `fixtures/` · `code/python/` | 3 · 1 · 2 |
+| `scripts/` (strict static server, dist crawler, oracle runner/setup, review capture) | 5 |
+| `documentation/` (audit, design, authoring, this report) + 12 review screenshots | 4 + 12 |
+| repository root (configs, `package.json`/lock, `README.md`, `.gitignore`) · `public/` | 9 · 1 |
+
+The master plan (first commit `85e8eab`) is unchanged.
 
 ## 3. Architecture
 
@@ -66,7 +83,7 @@ Source is ≈ 3.3 k lines (+ ≈ 2.1 k lines of tests) against Book I's 13.6 k l
 * **Excluded:** every DSA model/primitive/script/style, the C++ pipeline, the PWA.
 
 ### The single deviation from Book I's stack, and its evidence
-Preact islands instead of string-`innerHTML` rendering. Book I's `DiagramView.render()` / `InspectionDiagram.render()` replace the diagram DOM on every update and re-focus by selector; that cannot support a **dragged** element (pointer capture, hover and focus live on one node). Preact is the only runtime framework added; every component renders on the server. KaTeX (88 kB gz) ships only in the stage's island chunk; the contents page loads 2 kB of script.
+Preact islands instead of string-`innerHTML` rendering. Book I's `DiagramView.render()` / `InspectionDiagram.render()` replace the diagram DOM on every update and re-focus by selector; that cannot support a **dragged** element (pointer capture, hover and focus live on one node). Preact is the only runtime framework added; every component renders on the server. KaTeX (88 kB gz) ships only in the stage's island chunk; the contents page loads about 3 kB of script (2.35 kB shell + 0.76 kB overflow helper).
 
 ### Exact vs approximate (plan §3.8–3.9, §10)
 `platform/numeric/quantity.ts` (generic) decides *presentation*; `math/vector2/exact.ts` (domain) decides *whether an exact form exists*. One family only: integer vectors → `n` or `a√b` (b square-free), BigInt arithmetic, attempted while `x²+y² ≤ 10¹²`. Anything else is "numeric only" (`≈`). `…` after an approximation appears only when the exact value is known irrational. Negative zero never reaches the screen; a non-zero value is never displayed as `0` (it switches to scientific notation). Non-finite results are reported as such.
@@ -139,6 +156,8 @@ Book I was **not modified**. At audit time its `.git/` was an empty directory (n
 * The landing-page hero is the same stage in its `hero` variant.
 * All font subsets are emitted into `dist/` (2.9 MB total) though only Latin loads; KaTeX CSS references three formats per font.
 * `404.html` on a sub-path is served by the hosting rules, not by this project (GitHub Pages only serves a root `404.html`).
+* **The "available" and "current" states are implemented but have never rendered.** Only *planned* content exists, so no test exercises: the link branch of the book map and of the chapter pager, the `src/pages/chapters/[slug].astro` route (it generates zero pages today), `aria-current` on the Part ruler, or the chapter label derived from the curriculum (the demo belongs to no Part). A fixture chapter was deliberately **not** invented to cover them; they will be exercised for the first time when I.3 is published (see §8, item 1).
+* **Drag latency was not measured.** In free mode each pointer frame re-renders three or four formula strings (KaTeX output is cached by string, and free drags produce mostly new strings). Plan §20 expects "within one animation frame on typical hardware"; that is unverified, and a low-end phone is the case to measure.
 * No CI configuration is included (the repository has no remote).
 * The `documentaion/` directory-name typo is preserved on purpose.
 
@@ -158,7 +177,7 @@ Book I was **not modified**. At audit time its `.git/` was an empty directory (n
 | §15.12 "interaction architecture clean enough to reuse" | **for the reviewer to judge**; `CHAPTER_AUTHORING.md` documents the pattern |
 
 **Remaining REF-1 prerequisites (none are platform blockers; all are chapter work or decisions):**
-1. Author the chapter (`kind: chapter`, `curriculumId: I.3`) following the 14-layer contract; flip I.3 to `available` (and update the M2 scope-guard test, which exists to be deleted at that moment).
+1. Author the chapter (`kind: chapter`, `curriculumId: I.3`) following the 14-layer contract; flip I.3 to `available` (and update the M2 scope-guard test, which exists to be deleted at that moment). **First verification after the flip:** the map link, the pager link, the `/chapters/<slug>/` route and `aria-current` on the Part ruler, none of which has rendered yet (§7).
 2. Decide the fate of `/foundation/` and the landing hero: keep as the platform showcase, or fold into I.3.
 3. Exercises pattern (predict-before-run, manipulate-and-explain) — not built; needs one real example.
 4. Common-mistakes / counterexample interactions (e.g. `atan` vs `atan2`) — the "quadrant-aware" teaching moment has no widget yet.
@@ -174,9 +193,9 @@ Book I was **not modified**. At audit time its `.git/` was an empty directory (n
 
 ## 10. Git
 
-Repository initialised in this directory (no remote). First commit is the unmodified master plan; the milestone is a second commit; a small follow-up commit records the milestone hash here. See `git log --oneline`; the final hash and working-tree status are also given in the hand-off message.
+Repository initialised in this directory (no remote). History: `85e8eab` the unmodified master plan → **`9e9498d1addaf26dd5cb23474e269bbfe36f3849`** the M0 + M2 milestone → a docs-only follow-up commit recording this hash and the corrections above. The final HEAD hash and working-tree status are in the hand-off message (a document cannot contain the hash of the commit that contains it).
 
-For the planned import into the shared `interactive-books` repository *with history preserved*, a subtree-style merge keeps every commit and leaves this working tree untouched:
+**Importing into the shared `interactive-books` repository (history preserved).** Do **not** `mv` this directory into that repository and `git add` it: that records an *embedded repository* (a gitlink), not the files, and loses the history there. Run a subtree-style merge from the repository's *current* location (the relative path below assumes this directory has not been moved yet), review it, and only then retire the old directory:
 
 ```sh
 cd /work/interactive-books
@@ -186,4 +205,4 @@ git read-tree --prefix=Interactive-Mathematical-Foundations-Book/ -u book2/main
 git commit -m "feat(book-ii): import Interactive Mathematical Foundations with history"
 ```
 
-(After importing, run `npm ci` and `npm run oracle:setup` inside the book; the shared `.gitignore` already whitelists the directory and ignores `dist/`, `.astro/`, `.venv/`, `test-results/`, `playwright-report/`.)
+Afterwards, inside the imported book: `npm ci` and `rm -rf .venv && npm run oracle:setup` (a virtual environment is not relocatable). The shared `.gitignore` already whitelists this directory name and ignores `dist/`, `.astro/`, `.venv/`, `test-results/` and `playwright-report/`; this project's own `.gitignore` additionally ignores `dist-subpath/`.
