@@ -1,0 +1,292 @@
+---
+kind: chapter
+curriculumId: I.7
+title: "Sets, intervals, and relations"
+hero: "Is it *in*, or is it out?"
+lede: Almost every definition in mathematics starts by saying which things belong. Learn to combine sets, to read the ends of an interval correctly, and to describe a rule between two collections as a set of pairs.
+description: Sets and their operations, union, intersection, difference and complement, with counting and De Morgan. Intervals with open and closed ends, ordered pairs and products, and relations with their four properties, equivalence and functions.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import SetsStage from '../../lessons/sets/SetsStage';
+import IntervalStage from '../../lessons/sets/IntervalStage';
+import ProductStage from '../../lessons/sets/ProductStage';
+import RelationStage from '../../lessons/sets/RelationStage';
+import WorkedStage from '../../lessons/sets/WorkedStage';
+import Exercise from '../../lessons/sets/Exercise';
+import '../../styles/chapters/sets-and-relations.css';
+import finite from '../../../code/python/sets_finite.py?raw';
+import intervals from '../../../code/python/sets_intervals.py?raw';
+import masks from '../../../code/python/sets_numpy_masks.py?raw';
+
+<Stage caption="Press the numbers to put them in A or in B, or choose a ready-made pair of sets. The picture is schematic: the areas are not to scale. Then choose an operation, and the elements it keeps are outlined in the picture and listed under it.">
+  <SetsStage client:load variant="hero" />
+</Stage>
+
+Try it before reading on. Press **overlapping**, then **A ∩ B**: the elements that are in both sets are picked out. Press **A ∪ B** and the picked-out elements become everything that is in at least one of them. Now press numbers to move elements around, and watch the lists under the picture change. By the end of the chapter you will be able to say what each operation keeps, to count a union without listing it, to tell exactly when two intervals join into one, and to say which of four properties a rule between two collections has.
+
+## Intuition: a set is a question with a yes-or-no answer
+
+A **set** is a collection of things, called its **elements**, where the only question that matters is *is this thing in the set, or not?* Two consequences are worth stating at once, because they surprise people who think of a set as a list. The order does not matter: $\{1,2,3\}$ and $\{3,2,1\}$ are the same set. Repeats do not matter either: writing an element twice does not make it more present, so $\{1,2,2,3\}=\{1,2,3\}$.
+
+Three kinds of set carry almost everything in this book:
+
+- **Finite collections**, such as the rows of a dataset, the digits $\{0,1,\dots,9\}$ or the set of labels a classifier can output. You can list them and count them.
+- **Intervals of numbers**, such as all the temperatures from $0$ to $100$. You cannot list them, but you can say exactly where they start and stop, and whether the end itself belongs.
+- **Sets of pairs**, such as every pair (input, output) of a function, or every pair of items that are "similar". These are called *relations*.
+
+The same few ideas apply to all three. Combine two sets by asking for what is in *either*, in *both*, in the first *but not* the second, or in *neither*. Then ask which of those are the same set, and how many elements each has.
+
+Intervals add one genuinely new difficulty: the end. The interval of numbers strictly between $0$ and $1$ and the interval of numbers from $0$ to $1$ *including* both ends are different sets, and the difference is a single point on each side. That single point decides whether two intervals that touch at $1$ form one piece or two. Most mistakes with intervals are mistakes about the ends.
+
+## Definition
+
+**Sets and membership.** We write $x\in A$ when $x$ is an element of $A$ and $x\notin A$ when it is not. A set is determined by its elements: $A=B$ exactly when every element of $A$ is in $B$ and every element of $B$ is in $A$. The **empty set** $\varnothing$ has no elements. The number of elements of a finite set is its **size**, written $\lvert A\rvert$.
+
+**Subset.** $A\subseteq B$ means every element of $A$ is in $B$. It is a **proper** subset, $A\subsetneq B$, if in addition $B$ has an element that $A$ lacks. The empty set is a subset of every set, because the sentence *every element of $\varnothing$ is in $B$* has nothing to check, so it cannot fail. Every set is a subset of itself.
+
+**The universe.** To talk about "everything that is not in $A$" you must say *everything in what*. Fix a **universe** $U$ that contains all the elements you care about. Throughout the stages here, finite sets live in $U=\{1,2,\dots,12\}$ and interval sets live in the real line $\mathbb{R}$. A complement means nothing until the universe is named.
+
+**The operations.** For two sets $A$ and $B$ inside a universe $U$:
+
+$$
+\begin{aligned}
+A\cup B&=\{\,x : x\in A\ \text{or}\ x\in B\,\} &&\text{(union: at least one)}\\
+A\cap B&=\{\,x : x\in A\ \text{and}\ x\in B\,\} &&\text{(intersection: both)}\\
+A\setminus B&=\{\,x : x\in A\ \text{and}\ x\notin B\,\} &&\text{(difference: in }A\text{ only)}\\
+U\setminus A&=\{\,x\in U : x\notin A\,\} &&\text{(complement of }A\text{ in }U\text{)}\\
+A\mathbin{\triangle}B&=(A\setminus B)\cup(B\setminus A) &&\text{(symmetric difference: exactly one)}
+\end{aligned}
+$$
+
+Here *or* is the inclusive *or* of mathematics: an element in both sets is in the union. Two sets are **disjoint** when $A\cap B=\varnothing$.
+
+**Counting.** Adding $\lvert A\rvert+\lvert B\rvert$ counts every element of the overlap twice, once for each set. Subtract one copy of the overlap and the count is right. This is **inclusion and exclusion**:
+
+$$
+\lvert A\cup B\rvert=\lvert A\rvert+\lvert B\rvert-\lvert A\cap B\rvert .
+$$
+
+**De Morgan's laws.** Complementing swaps *or* with *and*:
+
+$$
+U\setminus(A\cup B)=(U\setminus A)\cap(U\setminus B),\qquad U\setminus(A\cap B)=(U\setminus A)\cup(U\setminus B).
+$$
+
+In words: being outside the union means being outside $A$ *and* outside $B$; being outside the intersection means being outside $A$ *or* outside $B$. The stage at the top evaluates both sides for the sets you build, so you can watch them agree.
+
+**Intervals.** For real numbers $a\le b$ there are four intervals with ends $a$ and $b$:
+
+$$
+[a,b]=\{x : a\le x\le b\},\quad (a,b)=\{x : a<x<b\},\quad [a,b)=\{x : a\le x<b\},\quad (a,b]=\{x : a<x\le b\}.
+$$
+
+A square bracket means the end is **included** (closed); a round bracket means it is **excluded** (open). On a number line a closed end is drawn as a filled dot and an open end as a hollow ring. An interval can also run forever in one direction, as in $[0,\infty)$ or $(-\infty,2)$; an infinite end is never included, because there is no number $\infty$ to include. If the left end is larger than the right end the set has no elements: it is the empty set. A single point is the closed interval $[a,a]=\{a\}$, while $(a,a]$ and $[a,a)$ are empty.
+
+**Ordered pairs and products.** An **ordered pair** $(a,b)$ remembers which element came first: $(1,2)$ and $(2,1)$ are different, and $(1,1)$ is allowed. The **Cartesian product** $A\times B$ is the set of all ordered pairs with first element from $A$ and second from $B$. Its size is the product of the sizes, $\lvert A\times B\rvert=\lvert A\rvert\,\lvert B\rvert$, because the two choices are independent.
+
+**Relations.** A **relation** from $A$ to $B$ is any subset $R\subseteq A\times B$. We write $a\,R\,b$ for $(a,b)\in R$. "Less than" on numbers is the relation $\{(a,b):a<b\}$; "divides" is $\{(a,b): b \text{ is a multiple of } a\}$. A relation is nothing but its set of pairs.
+
+## Mechanics: how each piece behaves
+
+### Counting and combining finite sets
+
+The hero stage and the full copy in **Explore** do the finite case. Two habits make the finite case quick:
+
+1. **Draw the four regions.** Two sets split the universe into four disjoint regions: in $A$ only, in both, in $B$ only, in neither. Every operation keeps a union of some of these regions: the union keeps the first three, the intersection keeps only *both*, the difference $A\setminus B$ keeps only *in $A$ only*, and the complement $U\setminus A$ keeps *in $B$ only* and *in neither*.
+2. **Count by regions, not by lists.** Inclusion and exclusion counts the union from three numbers. If you also know the size of the universe, the number of elements in neither set is $\lvert U\rvert-\lvert A\cup B\rvert$.
+
+### Intervals: is the end in or out?
+
+An interval is determined by four things: two ends and whether each is included. Choose them in the stage below, move the test point $x$, and read whether $x$ belongs to each set. The result of an operation is always written in its simplest form: pieces that overlap or touch with the shared point included are merged into one, and an empty piece is dropped.
+
+<Stage caption="Choose the ends of two intervals and whether each end is included. The hollow ring is an excluded end, the filled dot an included one, and an arrow means the interval runs on without end. Move the test point x with the slider (it moves by 0.05) and read, for each set, whether x is in it and why.">
+  <IntervalStage client:load />
+</Stage>
+
+The presets are the cases that cause trouble. Read them in turn:
+
+- $(0,1)\cup(1,2)$: the point $1$ is in neither interval, so the union is **two pieces** with a one-point hole. The number line shows the hole.
+- $[0,1]\cup(1,2)$: now $1$ belongs to the first interval. The pieces meet at an included point, and the union is the single interval $[0,2)$.
+- $[0,1]\cap[1,2]$: the intervals share exactly the point $1$. The intersection is the one-element set $\{1\}$, not the empty set.
+- $[0,1)\cap[1,2]$: the first interval stops just short of $1$ and the second starts at $1$. Nothing is shared, and the intersection is empty.
+- $\mathbb{R}\setminus\{1\}$: removing a single point from the line leaves **two rays**, $(-\infty,1)\cup(1,\infty)$.
+- $[0,5]\setminus(2,3)$ shows that a difference can split an interval in two: $[0,2]\cup[3,5]$, with the open piece $(2,3)$ cut out of the middle and both of its ends kept.
+
+The general rule is short. Two intervals $[\,\cdot\,,p]$ and $[q,\,\cdot\,]$ with the same touching value $p=q$ make **one piece if the shared point is included in at least one of them**, and **two pieces if it is excluded from both**. The table of four cases is:
+
+| left interval ends | right interval starts | union |
+|:--|:--|:--|
+| open, $p)$ | open, $(p$ | two pieces, hole at $p$ |
+| closed, $p]$ | open, $(p$ | one piece |
+| open, $p)$ | closed, $[p$ | one piece |
+| closed, $p]$ | closed, $[p$ | one piece (they share $p$) |
+
+The complement of an interval turns every included end into an excluded one and the other way round: $\mathbb{R}\setminus[2,5)=(-\infty,2)\cup[5,\infty)$. The complement of the whole line is the empty set and the complement of the empty set is the whole line.
+
+### Ordered pairs and products
+
+Choose the elements of $A$ and $B$ below. The two tables list the pairs of $A\times B$ and of $B\times A$. A pair shown with a dashed outline is in one table and not in the other.
+
+<Stage caption="Press the numbers to put them in A or in B. Each table lists the ordered pairs: the first coordinate labels the rows and the second labels the columns. A dashed outline marks a pair that is in one product and not in the other.">
+  <ProductStage client:load />
+</Stage>
+
+Try the presets. For $A=\{1,2,3\}$ and $B=\{3,4\}$ there are $3\cdot2=6$ pairs. The pair $(1,3)$ is in $A\times B$ but its reverse $(3,1)$ is not in the same table, so $A\times B\ne B\times A$. They are equal exactly when $A=B$ or when one of the sets is empty (both products are then empty). When $A=B$ the table is symmetric.
+
+### Relations and their four properties
+
+A relation on a set $S$ is a subset of $S\times S$. Four properties tell relations apart. For all elements $a$, $b$, $c$ of $S$:
+
+- **reflexive**: $a\,R\,a$ for every $a$ (every element is related to itself);
+- **symmetric**: $a\,R\,b$ implies $b\,R\,a$;
+- **antisymmetric**: if $a\,R\,b$ and $b\,R\,a$, then $a=b$;
+- **transitive**: if $a\,R\,b$ and $b\,R\,c$, then $a\,R\,c$.
+
+A property fails because of a **witness**: a specific pair or triple that breaks it. A property that holds has no witness. The stage finds and outlines the witness for you. The words *symmetric* and *antisymmetric* are not opposites: the equality relation is both, "less than" is antisymmetric and not symmetric, and a relation can be neither.
+
+A relation that is reflexive, symmetric and transitive is an **equivalence relation**. It does what equality does: it splits the set into **classes**, groups of elements that are all related to one another and to nothing outside the group. "Same parity" on whole numbers is one: the classes are the odd numbers and the even numbers. A relation that is reflexive, antisymmetric and transitive is a **partial order**; "at most" and "divides" are examples.
+
+A relation $R\subseteq A\times B$ is a **function** from $A$ to $B$ when every element of $A$ is related to *exactly one* element of $B$. A relation fails to be a function in two ways: some $a$ has no partner (nothing is assigned) or some $a$ has more than one (the value is ambiguous). Many different $a$ may share the same $b$; that does not stop it being a function.
+
+<Stage caption="Press a cell to add or remove a pair: rows are elements of A and columns are elements of B. Or fill the grid with a rule. Press the name of a property to outline the pairs that prove or break it. Change the sizes of A and B to see which properties apply: reflexive, symmetric, antisymmetric and transitive are about a relation on ONE set, so they need the two sets to have the same size.">
+  <RelationStage client:load />
+</Stage>
+
+Work through these in the stage:
+
+- **less than**, the relation $a<b$: not reflexive (the pair $(1,1)$ is missing), not symmetric, but antisymmetric and transitive. The antisymmetry holds vacuously: no pair $(a,b)$ and $(b,a)$ are both present, so the condition never applies.
+- **a divides b** on $\{1,\dots,6\}$: reflexive, antisymmetric and transitive, but not symmetric ($2$ divides $4$, $4$ does not divide $2$). A partial order, not an equivalence.
+- **same parity**: reflexive, symmetric, transitive, so an equivalence relation with two classes.
+- **nothing** (no pairs): symmetric, antisymmetric and transitive, all by emptiness, but not reflexive.
+
+## Worked examples
+
+Four computations, each shown step by step with every set and every count taken from the same model as the stages. Step forward and back with the buttons; going back selects an earlier step, and nothing is undone.
+
+<Stage caption="Choose an example and step through the work. The first is a union with a hole, the second a count by inclusion and exclusion, the third a check of De Morgan's law, and the last a check that same parity is an equivalence relation.">
+  <WorkedStage client:load />
+</Stage>
+
+## Executable reference code
+
+The Python below is stored in the repository and executed by the test suite, so what you read is known to run. The comments record what each line returns.
+
+First the finite case, using Python's built-in `set`: union `|`, intersection `&`, difference `-`, symmetric difference `^`, the subset tests, De Morgan against an explicit universe, and ordered pairs from `itertools.product`. Notice that Python has no built-in complement: you must subtract from a universe you name.
+
+<CodeFile source={finite} file="code/python/sets_finite.py" note="sets, De Morgan, products and relations" />
+
+Then intervals. Python has no interval type, so the file builds one from `Fraction`, which represents numbers like `0.1` exactly. It shows why a closed end must be tested on the *exact* number, when two intervals join, and the three empty cases from the Definition section.
+
+<CodeFile source={intervals} file="code/python/sets_intervals.py" note="open and closed ends with exact numbers" />
+
+Finally the form the same ideas take on data: a split of row numbers into training, validation and test sets that must be disjoint, a Boolean mask as the indicator of a set, clipping to a closed interval, and a grid of combinations.
+
+<CodeFile source={masks} file="code/python/sets_numpy_masks.py" note="disjoint splits, masks, clipping and products with NumPy" />
+
+## Explore: change the sets
+
+This is the finite stage with everything visible: the lists, the true-or-false facts about the pair, and the identities with your numbers in them. These questions have definite answers; check them against the stage.
+
+<Stage caption="The full finite stage. Press numbers to build A and B, choose an operation, and read the facts about the pair: whether one set is inside the other, whether they are equal or disjoint, and whether inclusion and exclusion and De Morgan's laws hold.">
+  <SetsStage client:load variant="full" />
+</Stage>
+
+- Make $A$ the odd numbers from $1$ to $11$ and $B$ the even numbers from $2$ to $12$ (the **disjoint** preset). What is $\lvert A\cup B\rvert$, and why does inclusion and exclusion collapse to a plain sum?
+- Make $A=\{2,3\}$ and $B=\{1,2,3,4\}$ (the **A inside B** preset). What is $A\cap B$? What is $A\cup B$? What is $A\setminus B$, and what is $B\setminus A$?
+- Press **A empty**. Which operation gives the whole universe? Is $A$ a subset of $B$, and is it a proper subset?
+- Choose $A=\{1,2,3,4\}$ and $B=\{3,4,5,6\}$ and the operation $U\setminus A$. Count the elements. Then find, using the facts list, the two sides of De Morgan's first law and check them against each other.
+- Build two sets of your own where $A\subseteq B$ and $B\subseteq A$ are both true. What must be true of $A$ and $B$?
+
+## Common mistakes
+
+<Callout kind="misconception" title="An open end and a closed end differ only slightly, so it does not matter">
+It decides the answer. $(0,1)\cup(1,2)$ is missing the number $1$; $[0,1]\cup(1,2)$ is not. And $[0,1]\cap[1,2]=\{1\}$ while $[0,1)\cap[1,2]=\varnothing$: the first has one element, the second none. Always ask of an end whether the number itself belongs.
+</Callout>
+
+<Callout kind="misconception" title="The union adds the sizes">
+Only if the sets are disjoint. In general $\lvert A\cup B\rvert=\lvert A\rvert+\lvert B\rvert-\lvert A\cap B\rvert$. With $A=\{1,\dots,5\}$ and $B=\{4,\dots,7\}$ the sum is $5+4=9$, but the union is $\{1,\dots,7\}$ with $7$ elements: the two elements $4$ and $5$ are in both.
+</Callout>
+
+<Callout kind="misconception" title="The complement of a union is the union of the complements">
+De Morgan's law swaps the operation: $U\setminus(A\cup B)=(U\setminus A)\cap(U\setminus B)$. Being outside the union means being outside *both* sets. The union of the complements, $(U\setminus A)\cup(U\setminus B)$, is the complement of the *intersection* instead.
+</Callout>
+
+<Callout kind="misconception" title="The pair (a, b) is the same as (b, a)">
+An ordered pair keeps the order, so $(1,2)\ne(2,1)$. Only when you deliberately forget the order do you get a two-element *set* $\{1,2\}$, and then $\{1,1\}$ collapses to $\{1\}$, which an ordered pair $(1,1)$ does not.
+</Callout>
+
+<Callout kind="misconception" title="Symmetric and antisymmetric are opposites">
+They are not. Equality is both. "Less than" is antisymmetric (vacuously) and not symmetric. A relation with the pairs $(1,2)$ and $(2,1)$ and the pair $(3,3)$ is symmetric and not antisymmetric. Check each property against its own witness.
+</Callout>
+
+<Callout kind="misconception" title="Being close is an equivalence relation">
+"$\lvert a-b\rvert\le 1$" is reflexive and symmetric, but not transitive: $1$ is close to $2$ and $2$ is close to $3$, but $1$ is not close to $3$. Failing to be transitive is exactly why it does not split the numbers into classes.
+</Callout>
+
+<Callout kind="misconception" title="The empty set and the set containing the empty set are the same">
+They are not. $\varnothing$ has no elements; $\{\varnothing\}$ has one element, which happens to be the empty set. Similarly $[1,1]=\{1\}$ has one element and $(1,1)=\varnothing$ has none.
+</Callout>
+
+## Numerical considerations
+
+Sets and intervals are exact: an element is in or it is not. Numbers on a computer are not. The decimal $0.1$ cannot be stored exactly in a double, and a closed end that is a decimal fraction can then miss itself.
+
+<Callout kind="numerical">
+In Python, `0.1 + 0.2` is `0.30000000000000004`, so a test for the point $0.3$ against a closed interval ending exactly at $0.3$ can fail by a single rounding error. The same trap sits in every closed end that comes from a computed number. If you need exact membership, keep the ends and the test point as exact values: `Fraction("0.1")` reads the text and is exactly one tenth, whereas `Fraction(0.1)` reads the double and is not. If the numbers are measured or computed, choose a tolerance and say so, and do not pretend the end is exact.
+</Callout>
+
+Every interval value in this chapter is an exact decimal with at most two places, so the stage can say that an end is in or out with no doubt, and it writes $=$. The same stage would be wrong to use for a computed double. A second place where a set meets a number: the **empty set from reversed ends** is not an error. The interval from $3$ to $1$ is empty because no $x$ satisfies $3\le x\le 1$; code that sorts the ends silently, or clips them, answers a different question than the one that was asked. The stage reports that case with its reason instead of repairing it.
+
+Finally, a finite set of floating-point numbers can contain two values that print the same and compare different. Set membership uses exact equality, so `0.1 + 0.2` and `0.3` are two different elements of a Python `set`. When elements are measurements, round them to a stated precision first, or compare with a tolerance and use a structure that expects it.
+
+## Connections to engineering and machine learning
+
+- **Train, validation and test splits are disjoint sets.** A split of the row numbers $U$ into three sets must satisfy $\text{train}\cap\text{val}=\varnothing$, and the same for each other pair, and their union must be $U$. If a row is in both train and test, the reported test score is optimistic: this is **leakage**. Counting the distinct rows is inclusion and exclusion: if $800$, $100$ and $100$ ids are listed and exactly $30$ of them appear in both train and test, only $970$ different rows were used.
+- **An indicator is a set written as a column.** The indicator of $A$ is the function that is $1$ on $A$ and $0$ elsewhere. In NumPy, `np.isin(rows, A)` gives the Boolean mask, and summing the mask counts $\lvert A\rvert$. The complement is the mask's negation, the intersection is `&` and the union is `|`, which is why set algebra and mask algebra are the same algebra.
+- **Clipping is intersection with a closed interval.** `np.clip(x, lo, hi)` moves every value outside $[lo,hi]$ onto the nearest end, so the result lies in the closed interval. The ends are included, and the choice of a closed interval matters: a clipped value of exactly $lo$ is a legal output.
+- **Feature spaces are products.** A model that takes a colour from $\{\text{red},\text{green},\text{blue}\}$ and a size from $\{S,M,L\}$ has $3\cdot3=9$ combinations: the Cartesian product. A grid search over two hyperparameters is a product of two sets, and the cost is the product of the sizes, which is why adding one more parameter can multiply a run time rather than add to it.
+- **Equivalence relations are clustering.** Grouping items into classes where being in the same class is reflexive, symmetric and transitive is a partition of the data. Duplicate detection is the same idea; if "is a near-duplicate of" is only close and not transitive, chaining gives classes you did not intend.
+- **A function is a relation with one output per input.** A deterministic model is a function from inputs to outputs; a lookup table with two different outputs for the same key is a relation that is not a function, and the code that reads it must say which to use.
+
+## Exercises
+
+Answer each question and press **Check**. A wrong answer tells you *which* mistake it looks like. After one attempt you may open a worked solution.
+
+<Exercise client:load id="union-count" />
+
+<Exercise client:load id="join-closed" />
+
+<Exercise client:load id="complement-interval" />
+
+<Exercise client:load id="product-count" />
+
+<Exercise client:load id="product-commute" />
+
+<Exercise client:load id="divides-properties" />
+
+<Exercise client:load id="near-not-transitive" />
+
+<Exercise client:load id="count-less-than" />
+
+<Exercise client:load id="de-morgan-count" />
+
+<Exercise client:load id="split-leak" />
+
+## Summary and checkpoints
+
+- A set is determined by its elements: order and repeats do not matter. The union keeps what is in at least one set, the intersection what is in both, the difference what is in the first only, and a complement needs a named universe.
+- Counting a union: $\lvert A\cup B\rvert=\lvert A\rvert+\lvert B\rvert-\lvert A\cap B\rvert$. De Morgan: the complement of a union is the intersection of the complements, and the complement of an intersection is the union of the complements.
+- An interval end is **in** (closed, filled dot) or **out** (open, hollow ring). Two touching intervals join into one piece exactly when the shared point is in at least one; $[a,a]$ is one point, and reversed ends or $(a,a)$ give the empty set. The complement of an interval flips every end.
+- Ordered pairs keep their order. $\lvert A\times B\rvert=\lvert A\rvert\,\lvert B\rvert$, and $A\times B=B\times A$ only if $A=B$ or one set is empty.
+- A relation is a set of pairs. Reflexive, symmetric, antisymmetric and transitive are four separate properties, each with a witness when it fails. Reflexive, symmetric and transitive together make an equivalence relation, which splits a set into classes; a function is a relation with exactly one partner for each input.
+- On a computer, exact membership needs exact numbers: `0.1 + 0.2` is not `0.3`.
+
+**Checkpoints.** You can move on when you can, without the stage:
+
+1. Say what $A\cup B$, $A\cap B$, $A\setminus B$ and $U\setminus A$ each keep, and count a union from three sizes.
+2. Decide whether $[0,1)\cup[1,2]$ is one interval, and whether $[0,1)\cap[1,2]$ is empty.
+3. Write the complement of $[2,5)$ and of $\{1\}$ in $\mathbb{R}$.
+4. List $A\times B$ for two small sets and say why $B\times A$ is different.
+5. Give a relation that is symmetric but not transitive, and one that is an equivalence relation, with its classes.
