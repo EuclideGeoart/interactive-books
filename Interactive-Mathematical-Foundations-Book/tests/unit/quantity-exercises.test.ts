@@ -67,13 +67,15 @@ describe('I.1 grading against the model', () => {
   it('construct a side: accepts only numbers whose exact square is 0.0049', () => {
     expect(grade('construct-side', { side: '0.07' }).correct).toBe(true);
     expect(grade('construct-side', { side: '7/100' }).correct).toBe(true);
-    expect(grade('construct-side', { side: '-0.07' }).correct).toBe(true);
+    const negative = grade('construct-side', { side: '-0.07' });
+    expect(negative.correct).toBe(false);
+    expect(negative.message).toMatch(/cannot be negative/);
     expect(grade('construct-side', { side: '0.7' }).message).toMatch(/decimal places/);
     expect(grade('construct-side', { side: '0.007' }).message).toMatch(/6 decimal places/);
     expect(grade('construct-side', { side: '0.0700000001' }).correct).toBe(false);
     // every accepted answer really satisfies the model's own check
     const target = parseDecimal('0.0049')!;
-    for (const s of ['0.07', '7/100', '0.070', '-0.07']) {
+    for (const s of ['0.07', '7/100', '0.070']) {
       const side = parseDecimal(s) ?? { num: BigInt(s.split('/')[0]!), den: BigInt(s.split('/')[1] ?? '1') };
       expect(mul(side, side)).toEqual(target);
     }

@@ -71,14 +71,14 @@ const constructSide: Exercise = {
   title: 'Build a square',
   prompt: 'A square must have area 0.0049 square metres. Enter a side length, in metres, whose square is exactly 0.0049.',
   fields: [{ id: 'side', label: 'side (m)' }],
-  solution: '0.0049 = 49 / 10 000, so the side is √49 / √10 000 = 7 / 100 = 0.07. Check: 0.07 × 0.07 = 0.0049. (−0.07 also squares to 0.0049, but a length is positive.)',
+  solution: '0.0049 = 49 / 10 000, so the side is √49 / √10 000 = 7 / 100 = 0.07. Check: 0.07 × 0.07 = 0.0049. (−0.07 also squares to 0.0049, so it solves the equation, but a length is positive, so it is not a side.)',
   grade: ans => {
     const side = frac(parseRational(ans.side));
     if (!side) return NEED_NUMBERS;
     const target = R('0.0049');
     if (same(mul(side, side), target)) {
       return side.num < 0n
-        ? ok('−0.07 does square to 0.0049: it is the other root. A side length is the positive one, 0.07.')
+        ? no('−0.07 does square to 0.0049: it is the other solution of x² = 0.0049. But a side length cannot be negative, so the side is the positive one, 0.07.')
         : ok('Yes: 0.07 × 0.07 = 0.0049 exactly. Squaring doubles the number of decimal places, so the root of a number with 4 decimal places has 2.');
     }
     const tenfold = [R('0.7'), R('0.007')];
