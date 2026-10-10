@@ -1,0 +1,61 @@
+/* I.4 Algebraic expressions, equations and inequalities: chapter-specific rules only. Everything else comes from the shared stage/chapter styles. */
+
+/* ───────── number lines are wide, flat planes (the shared .plane is square) */
+.plane.numberline { aspect-ratio: 16 / 7.5; }
+
+/* ───────── two handles that sit on the same pixel: the one just moved lets go of the pointer so the other can be picked up and pulled away */
+.behind, .behind * { pointer-events: none; }
+
+/* ───────── stage panels: the shared stage sizes its formula columns for three equations; these stages show two */
+@container (min-width: 700px) {
+  .stage-full[data-stage='balance'] .formula-panel,
+  .stage-full[data-stage='reversal'] .formula-panel,
+  .stage-full[data-stage='expression'] .formula-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* the squaring and the division arguments are wide lines of reasoning: their two panels stack */
+  .stage-full[data-stage='extraneous'] .formula-panel,
+  .stage-full[data-stage='fallacy'] .formula-panel { grid-template-columns: minmax(0, 1fr); }
+}
+
+.stage-plane { display: grid; gap: 14px; align-content: start; min-width: 0; }
+
+/* ───────── the balance beam */
+.beam-wrap { border: 1px solid var(--rule); border-radius: 2px; background: var(--plane-bg); }
+.beam { display: block; width: 100%; height: auto; aspect-ratio: 360 / 214; }
+.beam-stand { fill: var(--ink-3); }
+.beam-bar { stroke: var(--ink); stroke-width: 6; stroke-linecap: round; }
+.beam-string { stroke: var(--ink-3); stroke-width: 1.4; }
+.beam-pivot { fill: var(--paper); stroke: var(--ink); stroke-width: 3; }
+.beam .pan rect { fill: color-mix(in srgb, var(--role) 16%, var(--sheet)); stroke: var(--role); stroke-width: 2; }
+.beam .pan text { font: 600 16px var(--font-math); fill: var(--role-text, var(--ink)); font-variant-numeric: tabular-nums; }
+.beam-caption { font: 12px var(--font-ui); fill: var(--ink-3); }
+.beam[data-lower='level'] .beam-bar { stroke: var(--c-x); }
+@media (prefers-reduced-motion: no-preference) {
+  .beam-bar, .beam-string, .beam .pan { transition: all 0.2s ease-out; }
+}
+
+/* ───────── the history of operations and its controls */
+.balance-history { padding-top: 14px; border-top: 1px solid var(--rule); }
+.mini-head { font: 600 1rem/1.3 var(--font-text); margin-bottom: 6px; }
+/* four operation names are too wide for one 150px column: the operation choice takes its own row and wraps into a grid */
+.stage-controls .segmented { grid-column: 1 / -1; }
+.stage-controls .segments { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 8.5rem), 1fr)); width: 100%; }
+[data-stage='expression'] .segments { grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
+.stage-controls .segment span { height: auto; min-height: 44px; padding-block: 8px; border-left: 0; box-shadow: 0 0 0 0.5px var(--rule-strong); text-align: center; }
+.balance-controls .apply-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; grid-column: 1 / -1; }
+.balance-controls .apply-row .button { min-height: 44px; }
+.balance-controls .rejection { grid-column: 1 / -1; font: 0.875rem/1.45 var(--font-ui); color: var(--ink-3); }
+.balance-controls .rejection.is-shown { color: var(--c-caution-text); font-weight: 600; }
+.balance-controls .rejection.is-shown::before { content: '⚠ '; }
+
+/* ───────── the two number lines of the reversal stage */
+.reversal-lines { gap: 6px; }
+.line-title { font: 0.875rem/1.3 var(--font-ui); color: var(--ink-2); margin-top: 4px; }
+
+/* ───────── the table built at build time */
+.table-scroll .num-table td:first-child { font-family: var(--font-mono); font-weight: 500; }
+.num-table code { white-space: nowrap; }
+.num-table td:nth-child(3), .num-table td:nth-child(4) { font-family: var(--font-mono); font-size: 0.875rem; }
+.num-table tr[data-agree='false'] td:last-child { color: var(--c-caution-text); font-weight: 600; }
+
+/* ───────── worked-example trace caption */
+.trace-caption { margin-top: 6px; }

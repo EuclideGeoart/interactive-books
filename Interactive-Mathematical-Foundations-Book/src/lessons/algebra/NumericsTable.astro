@@ -1,0 +1,27 @@
+---
+/**
+ * Static table: the exact solution of a·x + b = c·x + d (the model's BigInt rational) next to the double a program computes for
+ * (d − b) / (a − c), at build time. JavaScript's number is the same binary64 format Python's float uses, and each of the three operations
+ * is a single correctly rounded operation in both, so the double column is what Python prints.
+ */
+import { deriveBalance } from '../../math/algebra/balance';
+import { rationalForm } from '../../math/quantity/exactform';
+import { toNumber } from '../../math/quantity/rational';
+
+const equations: ReadonlyArray<readonly [number, number, number, number]> = [[3, 2, 1, 10], [0.1, 0.2, 0, 0.3], [0.1, 0.7, 0, 0.8], [0.3, 0.1, 0, 0.7], [0.1, 0, 0, 0.3], [0.7, 0.1, 0, 0.8], [1.1, 0, 0, 3.3]];
+const rows = equations.map(([a1, b1, a2, b2]) => {
+  const d = deriveBalance({ initial: { a1, b1, rel: '=', a2, b2 }, steps: [], trial: 0 });
+  const set = d.initialSolution;
+  if (set.kind !== 'point') throw new Error('every equation in the table has one solution');
+  const exact = set.x;
+  const double = (b2 - b1) / (a1 - a2);
+  const term = (a: number, b: number) => `${a === 0 ? '' : `${a}*x`}${a !== 0 && b !== 0 ? ' + ' : ''}${b === 0 && a !== 0 ? '' : b}`;
+  return { equation: `${term(a1, b1)} = ${term(a2, b2)}`, code: `(${b2} - ${b1}) / (${a1} - ${a2})`, exact: rationalForm(exact).text, double: String(double), same: double === toNumber(exact) };
+});
+---
+<div class="table-scroll" data-scrollable="Exact solutions versus doubles, scrollable">
+  <table class="num-table" data-table="solve-exact-vs-double">
+    <thead><tr><th>equation</th><th>Python</th><th>exact x</th><th>double (what the program holds)</th><th>agree?</th></tr></thead>
+    <tbody>{rows.map(r => <tr data-agree={String(r.same)}><td>{r.equation}</td><td><code>{r.code}</code></td><td>{r.exact}</td><td>{r.double}</td><td>{r.same ? 'yes' : '⚠ no'}</td></tr>)}</tbody>
+  </table>
+</div>
