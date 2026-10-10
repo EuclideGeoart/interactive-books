@@ -61,7 +61,7 @@ export const parts: readonly Part[] = [
       available(6, "Essential function families", "function-families"),
       available(7, "Sets, intervals, and relations", "sets-and-relations"),
       available(8, "Indexed quantities and summation", "summation"),
-      planned(9, "The notation map for ML"),
+      available(9, "The notation map for ML", "notation-map"),
     ],
   },
   {

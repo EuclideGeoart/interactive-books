@@ -1,0 +1,271 @@
+---
+kind: chapter
+curriculumId: I.9
+title: "The notation map for ML"
+hero: "Every symbol has a *shape*."
+lede: Machine-learning papers are written in a compact notation, and almost every misreading comes from a shape or an index. Learn the conventions of this book once, check that products fit, and see which symbol is a number, which a set, and which a place.
+description: A map of the notation used in machine learning. Scalars, column vectors, data matrices and batches of sequences, indices counted from 1 against NumPy from 0, products and norms, arg min against min, expectations from counts, and a gradient that has the shape of its parameters.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import Xref from '../../shell/Xref.astro';
+import ShapeStage from '../../lessons/notation/ShapeStage';
+import AlgebraStage from '../../lessons/notation/AlgebraStage';
+import NormStage from '../../lessons/notation/NormStage';
+import ArgminStage from '../../lessons/notation/ArgminStage';
+import ExpectStage from '../../lessons/notation/ExpectStage';
+import GradientStage from '../../lessons/notation/GradientStage';
+import NotationTable from '../../lessons/notation/NotationTable';
+import Exercise from '../../lessons/notation/Exercise';
+import '../../styles/chapters/notation-map.css';
+import shapes from '../../../code/python/notation_shapes.py?raw';
+import normsArgmin from '../../../code/python/notation_norms_argmin.py?raw';
+import expectGradient from '../../../code/python/notation_expectation_gradient.py?raw';
+
+<Stage caption="Choose an object (a number, a vector, a data matrix or a batch of sequences), its sizes and the entry you point at. The picture numbers every cell by its place in the flattened array, the readout gives the shape and the position, and the Python being run is shown beside it. Typed values that are not allowed are rejected, not changed; an index outside its axis is reported, not repaired.">
+  <ShapeStage client:load />
+</Stage>
+
+Try it before reading on. Look at the **matrix**: its rows are examples and its columns are features. Point at an entry with $i$ and $j$ and read the NumPy expression that names it. Then point beyond the last row, and then at $0$. One of those raises an error in Python and the other does not. By the end of the chapter you will read the shape of every object in a formula, check that a product exists, and tell the minimum of a loss from the place where it is reached.
+
+## Intuition: a symbol is a promise about shape
+
+A formula in a paper is a sentence in which every symbol makes a promise. A plain italic letter such as $x$ promises one number. A bold letter such as $\mathbf{x}$ promises a list of numbers, and the book always means a **column**. A capital letter such as $X$ promises a table. A calligraphic letter such as $\mathcal{X}$ promises a stack of tables. If you know the promise, you can read most of a formula without knowing what it computes: you only ask whether the pieces fit.
+
+That is also how you find errors. A product of two tables exists only if their sizes agree in one place. A gradient has one entry for every parameter. An average needs at least one thing to average. Each of these is a check on shape or on count, and none of them needs any arithmetic.
+
+Two decisions run through the whole book and are worth learning now, because they are where a paper and a program part ways:
+
+- **Examples are rows, features are columns.** The data matrix $X\in\mathbb{R}^{n\times d}$ has $n$ rows, one per example, and $d$ columns, one per feature. An individual example $\mathbf{x}^{(i)}$ is a row of $X$ written as a column vector.
+- **Mathematics counts from 1, NumPy from 0.** The entry in the $i$-th row and $j$-th column is written with indices $i$ and $j$ and stored at `X[i - 1, j - 1]`. Mixing the two conventions is the commonest way to read the right number from the wrong place.
+
+## Definition
+
+**Objects and their shapes.** The set $\mathbb{R}^{d}$ is the set of columns of $d$ real numbers, $\mathbb{R}^{n\times d}$ the set of tables with $n$ rows and $d$ columns, and $\mathbb{R}^{B\times T\times d}$ the set of stacks of $B$ tables with $T$ rows and $d$ columns each. The statement $\mathbf{x}\in\mathbb{R}^{d}$ is therefore a statement about shape. NumPy writes the same facts as tuples: a vector is `(d,)`, a matrix `(n, d)`, a tensor `(B, T, d)`. A NumPy vector of shape `(d,)` is one-dimensional; it is not a column of shape `(d, 1)`, and the difference matters in a few operations.
+
+**Indices and positions.** An entry of a matrix has two indices, $X_{ij}$. An array is stored as one long list, row by row (**row-major** order). In a matrix with $d$ columns, the entry with zero-based indices $(r, c)$ is at position $r\,d + c$. In a tensor with shape $B\times T\times d$, zero-based indices $(b, t, f)$ sit at position $(b\,T + t)\,d + f$. One step along the last axis moves one position, and one step along the first axis moves a whole slab.
+
+**Products and transposes.** The transpose $X^{\top}$ swaps rows and columns, so an $n\times d$ matrix becomes $d\times n$. The product $AB$ of an $m\times p$ matrix and a $p\times q$ matrix exists exactly when the **inner** sizes match, and then its shape is the **outer** pair, $m\times q$. The matrix–vector product is the special case $q=1$. The product $X^{\top}X$ of a data matrix is always defined and always square, with one row and one column per feature. The elementwise product, written $\mathbf{a}\odot\mathbf{b}$, multiplies entry by entry and needs equal shapes; it is `a * b` in NumPy, whereas the matrix product is `A @ B`.
+
+**Norms.** The norm $\lVert\mathbf{x}\rVert$ is a measure of size. Three are used constantly:
+
+$$
+\lVert\mathbf{x}\rVert_1=\sum_{j}\lvert x_j\rvert,\qquad
+\lVert\mathbf{x}\rVert_2=\sqrt{\sum_{j}x_j^{2}},\qquad
+\lVert\mathbf{x}\rVert_\infty=\max_{j}\lvert x_j\rvert .
+$$
+
+For every $\mathbf{x}\in\mathbb{R}^{d}$ they satisfy $\lVert\mathbf{x}\rVert_\infty\le\lVert\mathbf{x}\rVert_2\le\lVert\mathbf{x}\rVert_1\le d\,\lVert\mathbf{x}\rVert_\infty$, and each is $0$ only for the zero vector. When no subscript is written, $\lVert\mathbf{x}\rVert$ means the Euclidean norm $\lVert\mathbf{x}\rVert_2$.
+
+**Minimum against arg min.** For a loss $L$, the **minimum** $\min_{\theta}L(\theta)$ is the smallest *value* the loss takes; it is a number. The **arg min** $\argmin_{\theta}L(\theta)$ is the *set of places* $\theta$ where that value is reached; it is a set, and it may have more than one element. Adding the same constant to every loss changes the minimum and leaves the arg min unchanged. NumPy's `np.argmin` is a third thing again: the position, counting from $0$, of the *first* smallest entry of an array.
+
+**Expectation.** For values $x_1,\dots,x_k$ with probabilities $p_i\ge0$ that add to $1$,
+
+$$
+\mathbb{E}[X]=\sum_{i=1}^{k}p_i\,x_i .
+$$
+
+When the probabilities come from counts $c_i$, they are $p_i=c_i/(c_1+\dots+c_k)$. If every count is $0$, the division is by $0$ and there is no distribution, so the expectation is **undefined**; it is not $0$. The expectation is a weighted average, and it need not be one of the values: a die never shows $3.5$.
+
+**Gradient.** For a function $f$ of a parameter vector $\theta\in\mathbb{R}^{d}$, the gradient $\nabla_{\theta}f$ collects one slope for each parameter, so it lies in $\mathbb{R}^{d}$ as well: **the gradient has the shape of $\theta$**. How such slopes are found belongs to Part III, Calculus. Here only the notation matters, together with one fact about computing: an estimate made with a small step $h$ is an approximation, written with $\approx$, and it is never exactly the gradient.
+
+## Mechanics: how to read and check a formula
+
+### Objects, indices and positions
+
+The stage at the top of the chapter is the place to practise indices. Switch between the four kinds of object and watch the readout: the shape tuple, the number of entries, the NumPy expression for the chosen entry, its position in the flattened array and the **stride** along each axis (how many positions one step along that axis moves). With a vector, only one index exists; with a tensor there are three, and the picture shows one slab per example.
+
+Three things deserve a deliberate test. First, point at the last entry of each kind of object and confirm that its position is one less than the number of entries. Second, set an index one beyond its axis and read the verdict: Python raises an error, and the stage says so instead of picking a nearby entry. Third, set an index to $0$. In mathematics that index does not exist; in NumPy a negative index is legal and counts from the end, so a program may *silently* read the wrong entry. The stage tells those two outcomes apart.
+
+### Do the shapes fit?
+
+<Stage caption="Choose a product and the sizes of its operands. The rectangles are drawn to scale; the two inner sizes must be equal and the outer pair is the shape of the result. When they differ, the result is undefined and the stage says which two numbers disagree. The Python being run shows the error that NumPy would raise.">
+  <AlgebraStage client:load />
+</Stage>
+
+Read the rule off the picture and not off a formula: for a product, put the two operands next to each other and look at the sizes that touch. When they are equal they cancel, and what remains is the shape of the answer. The preset with a mismatch shows the failure; the transposed product shows the usual repair, and the Gram preset shows why $X^{\top}X$ never fails. Note that the *order* matters: the product $XW$ may exist while $WX$ does not.
+
+### Three ways to measure a vector
+
+<Stage caption="Choose the vector by typing its two components or dragging it, and choose which norm's ball to draw through it. The dashed outlines are the unit balls of the three norms: a diamond, a circle and a square. Every length is exact: a square root is shown as a radical, and an approximation is labelled as one.">
+  <NormStage client:load />
+</Stage>
+
+The three balls differ in shape, and that is the whole idea. The norm of the vector is the factor by which the unit ball of that norm must be stretched to reach it, so the diamond, the circle and the square give three different answers for the same arrow. The chain of inequalities in the definition is visible: the square contains the circle and the circle contains the diamond. Check the preset on a coordinate axis, where all three norms agree, and the preset on a diagonal, where they are as far apart as they can be.
+
+### Minimum, arg min and the position NumPy reports
+
+<Stage caption="Choose a loss and the offset b. The table lists the loss at each grid point with its NumPy position counted from zero; the smallest rows are marked, and the one np.argmin reports is outlined. The minimum value, the arg min set and the np.argmin position are three separate readouts.">
+  <ArgminStage client:load />
+</Stage>
+
+Change the offset and watch which readout moves. Choose the loss with two wells and read the three results side by side: a set with two elements, a single number, and a single position. They answer three different questions, and a program that stores one of them in a variable meant for another is wrong without raising any error.
+
+### An average with weights
+
+<Stage caption="Choose a set of values and type how often each was seen. The probabilities are computed as counts divided by their total, and the expectation is the sum of probability times value. When every count is zero the division is by zero and the stage reports the expectation as undefined, with the reason.">
+  <ExpectStage client:load />
+</Stage>
+
+The expectation is an ordinary sum, the kind written with sigma in the previous chapter, with weights that add to $1$. Compare it with the value seen most often (the mode): they are different numbers in general, and the expectation need not be a value that ever occurs. Press the no-data preset and see that the stage will not invent a distribution.
+
+### The shape of a gradient
+
+<Stage caption="Choose the point theta and the step h. The exact gradient of the function is shown as a column with the shape of theta; the estimates below are computed with a finite difference in double arithmetic, so every one of them says approximately equal. The table shows the error for each step.">
+  <GradientStage client:load />
+</Stage>
+
+Treat this as a preview of Part III. Nothing in the stage asks you to differentiate; it shows that the symbol $\nabla_{\theta}f$ names a column with the same number of entries as $\theta$, and that a numerical estimate is only an approximation whose error first falls and then grows as the step shrinks.
+
+## Worked examples
+
+Each example is short enough to do by hand, and each can be checked against a stage. The numbers are not the ones in the exercises at the end of the chapter.
+
+**A batch of images.** A mini-batch holds $B=32$ images, each a grid with $T=7$ rows of $d=5$ numbers. It is a tensor of shape $32\times7\times5$, and it holds $32\cdot7\cdot5=1120$ numbers. In zero-based terms the entry with batch index $b=3$, row $t=1$ and column $f=2$ is at position $(3\cdot7+1)\cdot5+2=112$. Flattening each image to a vector of length $35$ gives a matrix of shape $32\times35$ with the same $1120$ numbers.
+
+**Does the product exist?** Let $X$ be $9\times4$ and $\mathbf{w}\in\mathbb{R}^{4}$. The inner sizes are $4$ and $4$, so $X\mathbf{w}$ exists and has shape $(9,)$: one number per example. Now let $\mathbf{v}\in\mathbb{R}^{9}$. Then $X\mathbf{v}$ does not exist ($4\ne9$), but $X^{\top}\mathbf{v}$ does: $(4\times9)(9)$ gives $(4,)$, one number per feature. The matrix $X^{\top}X$ is $4\times4$ and $XX^{\top}$ is $9\times9$.
+
+**Three norms.** For $\mathbf{x}=(3,\,-4)^{\top}$: $\lVert\mathbf{x}\rVert_1=3+4=7$, $\lVert\mathbf{x}\rVert_2=\sqrt{9+16}=5$ and $\lVert\mathbf{x}\rVert_\infty=4$. The chain $4\le5\le7\le2\cdot4$ holds. For $\mathbf{x}=(1,1)^{\top}$ the Euclidean norm is $\sqrt2$, an irrational number that a program can only approximate; the stage keeps it as a radical.
+
+**Place against value.** Take the loss $L(\theta)=(\theta-1)^2+5$ on the integers from $-2$ to $4$. The smallest value is $5$, reached only at $\theta=1$, so the minimum is $5$ and the arg min is $\{1\}$. In an array that starts at $\theta=-2$, the position that `np.argmin` returns is $1-(-2)=3$. Adding $10$ to the loss makes the minimum $15$ and leaves $\{1\}$ and the position $3$ untouched.
+
+**An expectation from counts.** A spinner showed $1$ twice, $2$ once and $4$ once. The total is $4$, the probabilities are $\tfrac12,\tfrac14,\tfrac14$, and $\mathbb{E}[X]=\tfrac12\cdot1+\tfrac14\cdot2+\tfrac14\cdot4=2$. Doubling every count changes nothing, since the probabilities are the same.
+
+## Executable reference code
+
+The Python below is stored in the repository and executed by the test suite, so what you read is known to run. The comments record what each line returns.
+
+First shapes, indices, positions and products: a vector, a data matrix, a tensor, the conversion between mathematical and NumPy indices, the flattened position of an entry, the transpose, matrix products with their shapes, and the error raised when the inner sizes disagree.
+
+<CodeFile source={shapes} file="code/python/notation_shapes.py" note="shapes, indices, positions and products in NumPy" />
+
+Then norms and the three meanings of minimum: the three norms with the chain of inequalities, the Euclidean norm of a vector whose length is not a whole number, and `min`, `argmin` and `np.argmin` told apart on a table with a tie.
+
+<CodeFile source={normsArgmin} file="code/python/notation_norms_argmin.py" note="norms, minimum against arg min, and np.argmin" />
+
+Finally the notation of averages, sums over an axis and the gradient: an expectation from counts with exact fractions, the failure of the division by zero, a conditional probability as a ratio, sums along each axis, and a finite difference that only approximates the gradient.
+
+<CodeFile source={expectGradient} file="code/python/notation_expectation_gradient.py" note="expectation, sums over axes, and a gradient with the shape of its parameters" />
+
+## Explore: the notation table
+
+The table lists the symbols of the book with how each is read aloud, what it means, the shape of what it names, the Python that writes the same thing and where the idea is developed later. Search it by a word, narrow it by category, and use it when a later chapter shows a symbol you do not recognise. Every Python snippet marked as runnable appears in the reference code above.
+
+<Stage caption="Search the table by a word such as transpose, norm or mean, or choose a category. The count of matching symbols is announced, and an empty result says so and offers a button that shows everything again.">
+  <NotationTable client:load />
+</Stage>
+
+These questions have definite answers; check each against the stages above.
+
+- In the shape stage, choose a matrix with more rows than columns and point at the last entry. How many entries are there, and what is the position of the last one? Does the same hold for a tensor?
+- Set the matrix index $i$ to $0$ and then to one more than the number of rows. Which of the two raises an error in Python, and why can the other be worse?
+- In the product stage, find sizes for which $X\mathbf{w}$ fails but $X^{\top}\mathbf{w}$ works. What does that say about which of the two sizes is the number of examples?
+- In the norm stage, find a vector for which all three norms are equal. Then find one for which the Euclidean norm is not a whole number, and read how the stage writes it.
+- In the arg min stage, choose the flat bottom and read the three results. How many elements does the arg min have, and which one does `np.argmin` report?
+- In the expectation stage, choose the fair die. Is the expectation one of the faces? Then set one count to $0$ and the others unchanged: what happens to the probability of that face?
+- In the gradient stage, choose the smallest step and then the largest. Which error is smaller? Is it the smallest step that gives the best estimate?
+- In the table, search for "norm" and then for a word that does not occur. What does the table say, and how do you get the full list back?
+
+## Common mistakes
+
+<Callout kind="misconception" title="A vector is a row, or a list of unspecified orientation">
+In this book a vector is a **column**, $\mathbf{x}\in\mathbb{R}^{d}$ with shape $d\times1$. A single example is a row of the data matrix written as a column. NumPy's `(d,)` is one-dimensional and has no orientation at all, which is why `x.T` leaves it unchanged. If you need a genuine row or column you must reshape: `x.reshape(1, -1)` or `x.reshape(-1, 1)`.
+</Callout>
+
+<Callout kind="misconception" title="The NumPy index is the mathematical index">
+Only if you have already subtracted $1$. With mathematical indices counted from $1$, the entry is `X[i - 1, j - 1]`. Writing `X[i, j]` quietly reads the entry one row down and one column right, and at the last row or column it raises an error. A negative index never raises one: `X[-1]` is the last row, so a slip to index $0$ reads the end of the array.
+</Callout>
+
+<Callout kind="misconception" title="A matrix product can be taken whenever the numbers of entries are equal">
+The rule is about the inner **sizes**, not the number of entries. A $2\times6$ matrix and a $3\times4$ matrix both hold twelve numbers, yet their product does not exist. Check the pair of sizes that touch.
+</Callout>
+
+<Callout kind="misconception" title="The star is the matrix product">
+In NumPy `A * B` is the elementwise product, the one written with a circled dot; the matrix product is `A @ B`. For two square arrays of the same size both exist and both give an answer of the same shape, so a wrong choice raises no error and the numbers are simply different.
+</Callout>
+
+<Callout kind="misconception" title="The norm of a vector is the square root of the sum of squares">
+That is one norm, the Euclidean norm. There are others, and a paper that writes $\lVert\mathbf{x}\rVert$ without a subscript usually means that one; a paper that writes $\lVert\mathbf{x}\rVert_1$ or $\lVert\mathbf{x}\rVert_\infty$ means exactly what the subscript says. A norm is never negative, and it is $0$ only for the zero vector.
+</Callout>
+
+<Callout kind="misconception" title="The arg min is the smallest value of the loss">
+The smallest value is the **minimum**, a number. The **arg min** is where that value is reached, a *set* of places. They differ in kind, and a flat bottom shows it: many places, one value. `np.argmin` is a third quantity, the position in an array, and it returns only the first minimiser.
+</Callout>
+
+<Callout kind="misconception" title="The expectation is the most likely value, or the average of the possible values">
+It is the average of the values **weighted by their probabilities**. It need not be a value that can occur, it is not the mode, and it equals the plain average of the values only when every probability is the same.
+</Callout>
+
+<Callout kind="misconception" title="No data gives an average of zero">
+A probability from counts divides by the total count. With no observations that is a division by zero, and the right answer is that the quantity does not exist. Code that returns $0$ instead makes an empty batch look like a batch whose average really is $0$.
+</Callout>
+
+<Callout kind="misconception" title="The gradient is a number, or a matrix">
+For a function of a parameter vector with $d$ entries the gradient has $d$ entries and the shape of the parameters. It is a different object from a **Hessian**, the table of second derivatives with $d\times d$ entries, which Part III treats separately.
+</Callout>
+
+## Numerical considerations
+
+Everything in the stages is exact except where it says otherwise. In a program, three habits are worth learning from the start.
+
+<Callout kind="numerical">
+A finite difference approximates a slope with a small step $h$. A larger step makes the *formula* less accurate; a smaller step makes the *arithmetic* less accurate, because $f(\theta+h)$ and $f(\theta)$ become nearly equal doubles and their difference loses digits. The error therefore falls at first and then rises again, and the stage shows that there is a best step. Never expect a finite difference to equal the gradient, and do not test it with `==`.
+</Callout>
+
+Comparing two floating-point numbers with `==` is the same trap in a smaller setting. The Euclidean norm of $(1,1)$ is $\sqrt2$, which no double represents exactly; squaring the computed value gives a number that is *close to* $2$ and often not equal to it. Compare with a tolerance, as `np.isclose` does, or keep exact values while you can, as the stages do.
+
+Two more habits: an average of an empty batch should be handled explicitly and reported as undefined instead of letting a division by zero propagate as `nan`; and a norm computed with `np.linalg.norm` of a very large or very small vector can overflow or underflow in the intermediate squares, which is why library code scales before squaring.
+
+## Connections to engineering and machine learning
+
+- **Data matrices.** A table of $n$ examples and $d$ features is $X\in\mathbb{R}^{n\times d}$. A model $X\mathbf{w}$ gives one prediction per example, and the first thing to check in a pipeline is that `X.shape[1]` equals `len(w)`.
+- **Batches of sequences.** A language model works on tensors of shape $B\times T\times d$: a batch, positions and features. Most shape bugs in deep-learning code are an axis in the wrong place, which is why shapes belong in comments and in assertions.
+- **The Gram matrix.** $X^{\top}X$ is a $d\times d$ table with one row and column per feature. It reappears in least squares, in covariance and in principal components, which later parts take up.
+- **Regularisation.** The penalties $\lVert\mathbf{w}\rVert_1$ and $\lVert\mathbf{w}\rVert_2^{2}$ are the first two norms of the weights. The diamond and the circle in the norm stage are the reason the first tends to produce zero weights and the second only small ones.
+- **Training is an arg min.** Fitting a model means finding $\theta$ in $\argmin_{\theta}L(\theta)$. The minimum value tells you how good the fit is, the arg min tells you what the parameters are, and when the loss has a flat direction the arg min is a whole set.
+- **Losses are expectations.** A population loss is $\mathbb{E}[\ell(\theta;X)]$ and the loss on a batch is its estimate by an average over the examples in the batch. The expectation notation is the language of Part IV, Probability, and the averages over examples are the sums of the <Xref to="/chapters/summation/">previous chapter</Xref>.
+- **Gradient descent.** The update $\theta\leftarrow\theta-\eta\,\nabla_{\theta}L$ only makes sense because the gradient has the shape of $\theta$. When a program raises a shape error in an update, the first suspect is a gradient with a different shape.
+
+## Exercises
+
+Answer each question and press **Check**. A wrong answer tells you *which* mistake it looks like. After one attempt you may open a worked solution.
+
+<Exercise client:load id="entry-index" />
+
+<Exercise client:load id="last-entry" />
+
+<Exercise client:load id="product-shapes" />
+
+<Exercise client:load id="product-defined" />
+
+<Exercise client:load id="norms" />
+
+<Exercise client:load id="argmin-min" />
+
+<Exercise client:load id="argmin-tie" />
+
+<Exercise client:load id="expectation" />
+
+<Exercise client:load id="no-data" />
+
+<Exercise client:load id="gradient-shape" />
+
+## Summary and checkpoints
+
+- A symbol promises a shape: italic for a number, bold for a column vector $\mathbf{x}\in\mathbb{R}^{d}$, a capital for a table, a calligraphic capital for a stack of tables. The data matrix $X\in\mathbb{R}^{n\times d}$ has examples as rows and features as columns.
+- Mathematics counts from $1$ and NumPy from $0$: the entry with indices $i,j$ is `X[i - 1, j - 1]`. Arrays are stored row by row; an entry at zero-based $(r,c)$ of a matrix with $d$ columns is at position $r\,d+c$. A negative index wraps; an index past the end raises an error.
+- A product $AB$ exists when the inner sizes agree and has the outer pair as its shape. The transpose swaps the sizes. $X^{\top}X$ is always $d\times d$.
+- The norms $\lVert\mathbf{x}\rVert_1$, $\lVert\mathbf{x}\rVert_2$ and $\lVert\mathbf{x}\rVert_\infty$ are three measures of size with $\lVert\mathbf{x}\rVert_\infty\le\lVert\mathbf{x}\rVert_2\le\lVert\mathbf{x}\rVert_1\le d\,\lVert\mathbf{x}\rVert_\infty$.
+- The minimum is a value, the arg min is a set of places, and `np.argmin` is the position of the first smallest entry.
+- $\mathbb{E}[X]=\sum_i p_ix_i$ with $p_i=c_i/\sum c$; it is undefined when there are no observations.
+- The gradient $\nabla_{\theta}f$ has the shape of $\theta$, and a finite-difference estimate is an approximation with a best step.
+
+**Checkpoints.** You can move on when you can, without the stage:
+
+1. Say the shape of $X$, of $X^{\top}$, of $X\mathbf{w}$ and of $X^{\top}X$ for a data matrix with $n$ examples and $d$ features.
+2. Convert a mathematical pair of indices to the NumPy expression and to the flattened position.
+3. Decide whether a product of two shapes exists and give the shape of the result, or the two sizes that disagree.
+4. State the three norms and the order of their sizes.
+5. Distinguish the minimum, the arg min and `np.argmin`, and say which of the three changes when a constant is added to the loss.
+6. Compute an expectation from counts and say when it does not exist.
