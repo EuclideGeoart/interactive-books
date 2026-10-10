@@ -1,0 +1,279 @@
+---
+kind: chapter
+curriculumId: I.5
+title: "Functions as input → transformation → output"
+hero: "What does a function do with *one* input?"
+lede: "A function is a machine: one input goes in, steps are carried out in a fixed order, and exactly one output comes out. We follow a value through each step, find the inputs a machine refuses, ask which inputs give a chosen output, wire two machines together in both orders, and run a machine backwards."
+description: "Functions as rules with a domain, an image and a graph; domain restrictions from division and square roots; inputs that share an output; composition and why the order matters; inverse functions and why a restriction is needed; executable Python; exercises with feedback."
+---
+import '../../styles/chapters/functions.css';
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import Xref from '../../shell/Xref.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import FunctionStage from '../../lessons/functions/FunctionStage';
+import HeightStage from '../../lessons/functions/HeightStage';
+import CompositionStage from '../../lessons/functions/CompositionStage';
+import InverseStage from '../../lessons/functions/InverseStage';
+import WorkedExampleStage from '../../lessons/functions/WorkedExampleStage';
+import Exercise from '../../lessons/functions/Exercise';
+import NumericsTable from '../../lessons/functions/NumericsTable.astro';
+import basicCode from '../../../code/python/functions_basic.py?raw';
+import domainCode from '../../../code/python/functions_domain.py?raw';
+import paramsCode from '../../../code/python/functions_params.py?raw';
+
+<Stage caption="A machine with a rule, an input and an output. Choose a rule, set its number a, then drag the point along the curve or type an input x. The boxes show every step the machine takes, the dashed lines on the graph show the input and the output, and the table lists some inputs and outputs. Try the rule 1/(x − a) at x = a, and the square root at an input below −a.">
+  <FunctionStage client:load />
+</Stage>
+
+Try it before reading on. Leave the rule at "subtract 2, then square" and move the input to $4$: the boxes read $4$, then $2$, then $4$. Now move the input to $0$. The output is the same, $4$. Two different inputs gave one output, and that is allowed. Then pick the rule $\sqrt{x+a}$ and drag the input to the left of $-3$: the machine stops at the square root and the point leaves the graph. By the end of the chapter you will know what a function is, how to find the inputs it accepts and the outputs it can give, how to chain two functions, and when a function can be run backwards.
+
+## Intuition: a machine with one slot
+
+Think of a vending machine that takes one coin and gives one item. It does not matter how it works inside; what matters is the *behaviour*: put in the same coin and you get the same item, and there is never a coin that gives two items at once. A **function** is the mathematical version. It takes one **input**, performs a sequence of **steps**, and gives one **output**.
+
+The picture of a pipeline is more than a metaphor. The rule $f(x)=(x-2)^{2}$ is not a mysterious symbol; it is two instructions in order: *subtract $2$*, then *square*. Evaluating $f(4)$ means carrying them out on $4$: $4-2=2$, then $2^{2}=4$. Reading a formula as a list of steps is the habit that this chapter builds, because every question about functions is a question about a step.
+
+- **What can go in?** Some steps refuse some values: you cannot divide by $0$ or take the square root of a negative number. The inputs the whole machine accepts form its **domain**.
+- **What can come out?** The outputs that really occur form the **image**.
+- **Which inputs give this output?** Asking this *runs the machine backwards*. Sometimes there is one answer, sometimes two, sometimes none.
+- **What if I wire two machines together?** The output of the first becomes the input of the second. The order matters.
+
+This chapter uses the equations of <Xref to="/chapters/algebra/">the previous chapter</Xref> (to find which inputs give an output you solve an equation, and to run a machine backwards you undo its steps in reverse order), the coordinate plane of <Xref to="/chapters/coordinates/">the second chapter</Xref> (the graph), and the squares and roots of <Xref to="/chapters/quantities/">the first</Xref>.
+
+## Definition: function, domain, image, graph
+
+**Function.** A function $f$ from a set $A$ to a set $B$ is a rule that assigns to **every** element $x$ of $A$ **exactly one** element $f(x)$ of $B$. We write $f\colon A\to B$ and $x\mapsto f(x)$, and read $f(x)$ as "$f$ of $x$" (the output of $f$ for the input $x$). It is *not* the product of $f$ and $x$.
+
+**Domain and codomain.** $A$ is the **domain**: the inputs the function is defined on. $B$ is the **codomain**: the set the outputs are drawn from. A function is not just a formula; the formula together with its domain is what makes it a function. When no domain is stated, we take the largest set of real numbers for which every step can be carried out.
+
+**Image.** The **image** of $f$ is the set of outputs that actually occur, $\{f(x)\mid x\in A\}$. It can be smaller than the codomain. For $f(x)=x^{2}$ with codomain $\R$ the image is $[0,\infty)$, because no square is negative.
+
+**Graph.** The **graph** of $f$ is the set of points $(x,f(x))$ in the plane. A curve is the graph of a function exactly when every vertical line meets it at most once (the *vertical line test*): a second point above the same $x$ would be a second output.
+
+**Preimage.** For a number $h$, the inputs $x$ with $f(x)=h$ are the **preimages** of $h$. There can be none, one, or several. Finding them means *solving the equation* $f(x)=h$.
+
+**One-to-one and onto.** $f$ is **one-to-one** (injective) when different inputs always give different outputs: no output has two preimages. $f$ is **onto** its codomain when every element of the codomain is an output: every output has at least one preimage. On a graph, "one-to-one" is the *horizontal line test*: every horizontal line meets the curve at most once.
+
+**Composition.** For $g\colon A\to B$ and $f\colon B\to C$, the composite $f\circ g$ is the function $x\mapsto f(g(x))$: apply $g$ first, then $f$. Read it right to left.
+
+**Inverse.** If $f$ is one-to-one with image $B$, its **inverse** $f^{-1}\colon B\to A$ sends each output back to the one input that produced it, so $f^{-1}(f(x))=x$ and $f(f^{-1}(y))=y$. The inverse exists exactly when $f$ is one-to-one onto its image. The notation $f^{-1}$ is *not* $1/f$.
+
+## Reading a rule as a pipeline
+
+The stage at the top offers six rules, each one or two steps:
+
+| rule | steps, in order | domain | image |
+| --- | --- | --- | --- |
+| $ax$ ($a\neq0$) | multiply by $a$ | $\R$ | $\R$ |
+| $ax^{2}$ | square, then multiply by $a$ | $\R$ | $[0,\infty)$ if $a>0$, $(-\infty,0]$ if $a<0$ |
+| $(x-a)^{2}$ | subtract $a$, then square | $\R$ | $[0,\infty)$ |
+| $\sqrt{x+a}$ | add $a$, then take the square root | $[-a,\infty)$ | $[0,\infty)$ |
+| $\dfrac{1}{x-a}$ | subtract $a$, then take the reciprocal | every real number except $a$ | every real number except $0$ |
+| $\lvert x-a\rvert$ | subtract $a$, then take the absolute value | $\R$ | $[0,\infty)$ |
+
+For $a=0$ the multiplier rules become the constant $0$ with domain $\R$ and image $\{0\}$.
+
+The stage keeps every number *exact*: $\sqrt{2}$ stays $\sqrt{2}$ and $1/3$ stays $1/3$, and the inspector says whether a value is exact or a rounded decimal. One flat state, the rule, the number $a$ and the input $x$, produces everything you see: the boxes, the point, the dashed lines, the table and the verdict. Dragging the point changes only $x$, so the curve itself does not move; changing $a$ or the rule redraws it.
+
+When a step refuses, the pipeline stops there. The boxes after the refusal are marked "not reached", the point drops to the $x$-axis, and the verdict names the step and the reason. A function has **no output** at such an input; it is not "zero" and not "infinity".
+
+### The shape of a shift
+
+Compare $x^{2}$ with $(x-2)^{2}$. The second is the first with the input moved *before* squaring: the machine subtracts $2$, so the input must be $2$ larger to reach the same value. The graph moves **to the right** by $2$, which feels backwards at first because of the minus sign. Test with the output $0$: $(x-2)^{2}=0$ when $x=2$.
+
+## Domain: where the machine refuses
+
+A step *refuses* an input when it has no answer. There are two refusals in this chapter:
+
+- the **reciprocal** of $0$ (no number multiplied by $0$ gives $1$), and
+- the **square root** of a negative number (no real number squared is negative).
+
+The domain of the whole machine is the set of inputs that no step refuses. Two ways to find it:
+
+1. **Forwards:** try an input and watch the pipeline, as the first stage does.
+2. **Backwards:** start from the *last* step and ask what it needs. $\sqrt{x+3}$ needs $x+3\ge0$, that is $x\ge-3$; the set $[-3,\infty)$ contains $-3$ because $\sqrt{0}=0$. $\dfrac{1}{x-2}$ needs $x-2\neq0$, that is $x\neq2$. For a machine with two steps, pull the requirement of the last step back through the first.
+
+The domain is the *input* side of the graph, the set of $x$ values that have a curve above or below them. At the edge of $\sqrt{x+3}$ the curve starts with a filled dot at $(-3,0)$; at $x=2$ the curve of $\dfrac{1}{x-2}$ has a gap, with a vertical dashed line (an *asymptote*) showing where it blows up.
+
+### A formula is not yet a function
+
+The formulas $\dfrac{x^{2}-4}{x-2}$ and $x+2$ agree at every $x\neq2$, and at $x=2$ the first divides by $0$ while the second gives $4$. They are different functions because their domains differ. Cancelling the common factor $(x-2)$ is the same step that <Xref to="/chapters/algebra/">lost a root</Xref> in the previous chapter: it is legal only where the factor is not $0$.
+
+## Domain, image and the inputs that give an output
+
+Fix a height $h$ and ask: **which inputs $x$ give $f(x)=h$?** On the graph, draw the horizontal line at height $h$ and read the $x$ where it meets the curve.
+
+<Stage caption="The graph of a rule and a horizontal line at height h. Drag the handle on the right up or down, or type h. The marked points are the inputs that give the output h. The bar on the x-axis is the domain and the bar on the y-axis is the image; a hollow end is not included. Try (x − 2)² with h = 4, 0 and −1, and 1/(x − 2) with h = 0.">
+  <HeightStage client:load />
+</Stage>
+
+With $(x-2)^{2}$ the line at $h=4$ meets the curve twice, at $x=0$ and $x=4$: both satisfy $(x-2)^{2}=4$, because $x-2=\pm2$. At $h=0$ it touches once, at $x=2$. At $h=-1$ it misses, since a square is never negative: the equation has no solution. The preimages come from solving, not from reading the picture: the model solves $(x-2)^{2}=h$ exactly as $x=2\pm\sqrt{h}$ for $h>0$, and the picture confirms it.
+
+Three consequences follow directly.
+
+- **The image** is the set of heights that the line meets. For $(x-2)^{2}$ it is $[0,\infty)$, the bar on the vertical axis.
+- **One-to-one** fails when some height meets the curve twice. $(x-2)^{2}$ and $\lvert x\rvert$ are not one-to-one; $ax$ (with $a\neq0$), $\sqrt{x+a}$ and $\dfrac{1}{x-a}$ are.
+- **Onto $\R$** fails when some height is missed. The line $y=-1$ misses every curve whose image is $[0,\infty)$. The curve $\dfrac{1}{x-2}$ misses $y=0$ as well: $1$ divided by any number is never $0$, so the equation $\dfrac{1}{x-2}=0$ has no solution, and the image is $\R$ without $0$.
+
+An important distinction: a function may send **two inputs to one output** (the horizontal line meets twice), but it may never send **one input to two outputs** (the vertical line would meet twice). The first is the case of $(x-2)^{2}$; the second is not a function at all.
+
+## Composition: one machine after another
+
+Let $f(x)=x^{2}$ and $g(x)=2x-1$. The composite $f\circ g$ means *first $g$, then $f$*: $f(g(x))=(2x-1)^{2}$. The composite $g\circ f$ means first $f$, then $g$: $g(f(x))=2x^{2}-1$. At $x=3$ the first gives $g(3)=5$ and $f(5)=25$; the second gives $f(3)=9$ and $g(9)=17$. **Composition is not commutative**: the order is part of the answer. The stage starts at $x=0$, where $f(g(0))=(-1)^{2}=1$ but $g(f(0))=2\cdot0-1=-1$. The graph shows heights from $-6$ to $6$, so at $x=3$ the heights $25$ and $17$ are beyond its top edge: the stage then says so and gives the exact numbers beside the graph instead of drawing a dot.
+
+<Stage caption="Two machines, f and g, and an input x. The solid curve is f after g, the dashed curve is g after f. The two rows of boxes show every value, and the number lines show the domain of each composite. Try the presets: x² after 2x − 1 at 0 and at 1, the square root after 2x − 1 at 0, and 1/x after 1/x.">
+  <CompositionStage client:load />
+</Stage>
+
+At $x=1$ the two orders happen to agree (both give $1$). Setting $(2x-1)^{2}=2x^{2}-1$ and simplifying gives $2x^{2}-4x+2=0$, that is $2(x-1)^{2}=0$, so $x=1$ is the *only* input where they agree: agreement at one input does not make the two functions equal.
+
+### The domain of a composite
+
+A composite can accept *fewer* inputs than its inner function. Take $f(x)=\sqrt{x}$ and $g(x)=2x-1$. The function $g$ accepts every real number, but $f\circ g$ needs the output of $g$ to be allowed in $f$: $2x-1\ge0$, so $x\ge\tfrac12$. The input $x=0$ is accepted by $g$, gives $-1$, and the square root refuses it. In the stage the composite $f\circ g$ at $0$ is marked undefined while $g\circ f$ is fine. The domain of a composite is **the part of the inner function's domain whose outputs the outer function accepts**.
+
+A second trap: $\sqrt{x^{2}}$ is **not** $x$. At $x=-3$ the square gives $9$ and the root gives $3$, so $\sqrt{x^{2}}=\lvert x\rvert$. Choose $f=\sqrt{x}$ and $g=x^{2}$ and set the input to $-3$ to see it.
+
+## Running a machine backwards: the inverse
+
+To find the inverse of $y=2x-1$, solve for $x$: add $1$ to both sides, then divide by $2$. The inverse is $x=\dfrac{y+1}{2}$. Its steps are the original steps **undone in the opposite order** (the last step is undone first), and each undoing step is a balanced step from <Xref to="/chapters/algebra/">the previous chapter</Xref>.
+
+<Stage caption="A function, its graph (solid), the dashed line y = x and the mirror image of the graph in that line. The boxes run the machine forwards and then the inverse backwards. Pick the function and the input. For x² choose whether every real input is allowed or only x at least 0, and see when the mirror image stops being a function.">
+  <InverseStage client:load />
+</Stage>
+
+**The graph of the inverse is the mirror image of the graph of $f$ in the line $y=x$.** Swapping the roles of input and output swaps the coordinates of every point: if $(3,5)$ is on the graph of $2x-1$, then $(5,3)$ is on the graph of its inverse. In the stage the filled dot is $(x,y)$ and the hollow dot is its mirror image $(y,x)$.
+
+**Not every function has an inverse.** On all of $\R$ the square sends $3$ and $-3$ to the same output $9$. A backward machine fed with $9$ would have to return both, and a function returns only one value. The mirror image of the parabola is a parabola on its side, which fails the vertical line test. The fix is to **restrict the domain**: if only $x\ge0$ is allowed, $3$ is the single preimage of $9$ and the inverse is the square root. A function has an inverse exactly when it is one-to-one (on the domain you chose), and the domain of the inverse is the image of the original. That is why restricting the inputs is not cheating: it changes the function.
+
+Also look at $\sqrt{x}$ and $\dfrac{1}{x}$. The inverse of $\sqrt{x}$ is the square $y^{2}$ for $y\ge0$. The reciprocal is its own inverse: $\dfrac{1}{1/x}=x$, so its graph is its own mirror image in $y=x$.
+
+## Worked examples
+
+Five complete solutions, each one a list of steps with the reason for each. They use only what this chapter defines, and each number you see is computed by the same model as the stages.
+
+<Stage caption="Choose a problem and step through the work: evaluate a function, find a domain, find an image, compose two functions, invert a function. Going back selects an earlier step; nothing is undone.">
+  <WorkedExampleStage client:load />
+</Stage>
+
+## Executable reference code
+
+The Python below is stored in the repository and executed by the test suite, so what you read is known to run. First, functions as values: evaluate, compose, tabulate and invert.
+
+<CodeFile source={basicCode} file="code/python/functions_basic.py" note="a function as a value, composition, a table, a round trip" />
+
+Then the domain. Python raises an exception exactly where the mathematics has no value, and NumPy returns `nan` instead, so the domain has to be written down.
+
+<CodeFile source={domainCode} file="code/python/functions_domain.py" note="where a machine refuses: exceptions, and masks in NumPy" />
+
+Finally the machine-learning picture: a model is a function of its input *and* of its parameters, the loss is a function of the parameters, and a layer is a composition.
+
+<CodeFile source={paramsCode} file="code/python/functions_params.py" note="a model f(x; w, b), a loss L(w, b), a layer as a composition" />
+
+Two remarks on the first file. `compose(outer, inner)` returns a new function: in Python a function is an ordinary value, which is what makes composition a one-line definition. And `len(outputs) < len(inputs)` is a finite version of "not one-to-one": if the number of distinct outputs is smaller than the number of inputs, two inputs must share an output.
+
+## Explore: change the parameters
+
+These questions have definite answers; check them against the stages.
+
+- On the first stage choose $(x-a)^{2}$ with $a=2$. Find two inputs between $-3$ and $7$ that give the output $9$. (They are $-1$ and $5$.)
+- On the first stage choose $\sqrt{x+a}$ with $a=3$. At which step does the machine stop for $x=-4$, and what is the largest whole-number input it refuses?
+- On the first stage choose $\dfrac{1}{x-a}$ with $a=2$. Which input is refused, and what happens to the output as the input gets close to $2$?
+- On the height stage choose $(x-2)^{2}$. For which heights $h$ does the line meet the curve twice, once, and not at all?
+- On the height stage choose $\lvert x-a\rvert$. Does changing $a$ change how many inputs a given positive height has?
+- On the composition stage choose $f=x^{2}$ and $g=2x-1$. Slide the input and look for an input other than $1$ at which the two orders give the same value. Is there one? (Solve $(2x-1)^{2}=2x^{2}-1$ to check.)
+- On the composition stage choose $f=\sqrt{x}$ and $g=x^{2}$ and set $x=-3$. What does the composite $f\circ g$ give, and which familiar function is it?
+- On the inverse stage choose $x^{2}$ with every real input allowed and the input $2$. Which other input has the same output, and where is its dot on the graph? Then restrict the inputs to $x\ge0$ and see what the mirror image becomes.
+
+## Common mistakes
+
+<Callout kind="misconception" title="f(x + y) = f(x) + f(y)">
+A function is not "linear" unless it is. For $f(x)=x^{2}$, $f(1+2)=9$ but $f(1)+f(2)=1+4=5$. Likewise $f(2x)$ is not $2f(x)$: $f(2\cdot3)=36$ and $2f(3)=18$. Always substitute the *whole* input into the rule.
+</Callout>
+
+<Callout kind="misconception" title="f(x) means f times x">
+$f(x)$ is the output of $f$ for the input $x$. The parentheses are not multiplication. If $f(x)=x^{2}$, then $f(3)=9$ is a single number, not $3f$.
+</Callout>
+
+<Callout kind="misconception" title="f ∘ g means f first">
+It means $g$ first, then $f$: read right to left, like a function written in code, `f(g(x))`. At $x=3$ with $f=x^{2}$ and $g=2x-1$, $f(g(3))=25$ but $g(f(3))=17$.
+</Callout>
+
+<Callout kind="misconception" title="Two inputs with the same output means it is not a function">
+That is allowed. A function may send many inputs to one output; what it may not do is send one input to two outputs. $(x-2)^{2}$ sends both $0$ and $4$ to $4$. The cost is only that such a function has no inverse on that domain.
+</Callout>
+
+<Callout kind="misconception" title="f⁻¹ is 1/f">
+$f^{-1}$ is the inverse function, which undoes $f$; $1/f$ is the reciprocal of its output. For $f(x)=2x-1$: $f^{-1}(5)=3$, but $1/f(5)=\tfrac19$. The two coincide only by accident.
+</Callout>
+
+<Callout kind="misconception" title="Every formula defines a function on all of R">
+A formula plus its domain defines a function. $\dfrac{1}{x-2}$ has no value at $2$ and $\sqrt{x+3}$ has none below $-3$. Always ask which input each step refuses before you trust an output.
+</Callout>
+
+## Numerical considerations
+
+The mathematics above is exact. A program computes with doubles, and a composition of exact inverses is not always the identity in doubles.
+
+**Squaring a square root.** $\bigl(\sqrt{x}\bigr)^{2}$ is exactly $x$ for every non-negative $x$. In doubles, `math.sqrt(2) ** 2` is `2.0000000000000004`, because the root is rounded to the nearest double before it is squared. **The reciprocal of a reciprocal** is rounded twice: `1 / (1 / 49)` is `49.00000000000001`. And **near a pole** the cancellation in $x-2$ turns a tiny rounding error into a huge relative error. The table feeds the machine $2+10^{-k}$ and prints the exact answer, which is $10^{k}$, next to the double the program holds.
+
+<NumericsTable />
+
+<Callout kind="numerical">
+The row for $k=15$ is not off by a rounding error in the last digit: the program reports $1125899906842624=2^{50}$ instead of $10^{15}$. The sum `2 + 1e-15` is the nearest double to $2.000000000000001$, whose spacing near $2$ is $2^{-51}\approx4.4\cdot10^{-16}$, so the subtraction returns $2^{-50}$ and not $10^{-15}$. At $k=16$ the sum rounds back to exactly $2.0$, the difference is $0$, and Python raises `ZeroDivisionError`. Never compare a computed input to a pole with `==`, and never trust a value computed close to one.
+</Callout>
+
+**The domain does not announce itself in NumPy.** `math.sqrt(-1)` raises a `ValueError`, but `np.sqrt(-1.0)` returns `nan` with only a warning, and `nan` then flows through every later step. The reference file masks the invalid inputs explicitly and says what to put there. A `nan` in a loss is nearly always a domain error upstream: a `sqrt`, a `log` or a division that received an input outside its domain.
+
+**Inverses are only as exact as the data.** Undoing a transformation with its inverse, such as unstandardising a feature, can differ from the original in the last digit; compare with a tolerance (`math.isclose`), not `==`.
+
+## Connections to engineering and machine learning
+
+- **A model is a function of its input and its parameters.** A linear model $f(x;w,b)=wx+b$ takes an input $x$ and has parameters $w$ and $b$. Training does not change $x$; it chooses $(w,b)$. The reference file computes the loss as a *second function*, now of the parameters, with the data held fixed: the loss is $0$ at $(2,1)$, $3.5$ at $(1,1)$ and $1$ at $(2,0)$.
+- **A network is a composition.** A layer applies an affine map and then an activation function, and a deep network composes many layers. The order matters for the reason in this chapter: $g\circ f$ and $f\circ g$ are different functions.
+- **Activations and invertibility.** The ReLU function, $\max(z,0)$, sends all negative numbers to $0$, so it is not one-to-one and cannot be undone: information is lost. The reference file shows `relu(-3.0)` and `relu(-1.0)` both giving `0.0`.
+- **Domains in code.** The functions $\sqrt{x}$, $\log x$ and $1/x$ all have restricted domains. Machine learning code guards them (`np.maximum(x, eps)`, masks, clipped probabilities) because a single input outside the domain turns into `nan` or `inf`.
+- **Undoing a transformation.** Standardising a feature is an invertible function of the data. Its inverse exists when the scale is not $0$, which is the restriction that made the earlier multiplication by $0$ impossible to undo. Likewise a probability can be mapped to an unbounded score and back by a pair of inverse functions, on the restricted domain where both are defined.
+- **Looking ahead.** The next chapter surveys the families that appear again and again (lines, powers, exponentials, logarithms and more), and each of them has a domain, an image and, sometimes, an inverse.
+
+## Exercises
+
+Answer each question and press **Check**. A wrong answer tells you *which* mistake it looks like. After one attempt you may open a worked solution.
+
+<Exercise client:load id="evaluate-shift" />
+
+<Exercise client:load id="shift-direction" />
+
+<Exercise client:load id="root-domain" />
+
+<Exercise client:load id="pole-domain" />
+
+<Exercise client:load id="stretch-image" />
+
+<Exercise client:load id="preimage-nine" />
+
+<Exercise client:load id="composition-order" />
+
+<Exercise client:load id="composite-domain" />
+
+<Exercise client:load id="construct-output" />
+
+<Exercise client:load id="square-inverse" />
+
+## Summary and checkpoints
+
+- A **function** assigns to every input in its **domain** exactly one output. A formula without a domain is not yet a function; the domain is the set of inputs for which every step can be carried out.
+- Read a rule as a **pipeline** of steps. The two refusals are the reciprocal of $0$ and the square root of a negative number; an input that is refused has no output.
+- The **image** is the set of outputs that occur. To find the inputs that give an output $h$, solve $f(x)=h$: there may be none, one or several.
+- **One input never gives two outputs; two inputs may share one.** One-to-one means no output is shared (horizontal line test).
+- In $f\circ g$ the function $g$ acts **first**. Composition is not commutative, and the domain of a composite can be smaller than the domain of the inner function.
+- An **inverse** undoes the steps in the opposite order. It exists exactly when the function is one-to-one; restricting the domain can create one (the square root for $x^{2}$ on $x\ge0$). Its graph is the mirror image in $y=x$. It is not $1/f$.
+- In code: write the domain down, do not compare a computed value with a pole using `==`, and remember that NumPy turns domain errors into `nan` silently.
+
+**Checkpoints.** You are ready to move on when you can, without looking:
+
+1. Evaluate $(x-3)^{2}$ at $x=-1$ step by step, and say what the rule does to the input first.
+2. State the domain of $\sqrt{x+3}$ and of $\dfrac{1}{x-2}$, and say which step refuses.
+3. List the inputs that give the output $9$ under $(x-2)^{2}$, and the image of $-2x^{2}$.
+4. Compute $f(g(3))$ and $g(f(3))$ for $f=x^{2}$ and $g=2x-1$, and say which acts first in each.
+5. Explain why $x^{2}$ has no inverse on all of $\R$ and what restriction gives it one.

@@ -57,7 +57,7 @@ export const parts: readonly Part[] = [
       available(2, "Coordinates and points", "coordinates"),
       available(3, "Vectors: components, magnitude, and direction", "vectors", "reference"),
       available(4, "Algebraic expressions, equations and inequalities", "algebra"),
-      planned(5, "Functions as input → transformation → output"),
+      available(5, "Functions as input → transformation → output", "functions"),
       planned(6, "Essential function families"),
       planned(7, "Sets, intervals, and relations"),
       planned(8, "Indexed quantities and summation"),

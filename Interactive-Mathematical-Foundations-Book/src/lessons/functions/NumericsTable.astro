@@ -1,0 +1,51 @@
+---
+/**
+ * Static table: what a composition of exact machines gives (the model's BigInt/surd arithmetic) next to what the same composition gives in
+ * double precision. JavaScript's number is the same binary64 format Python's float uses, and each operation here (Math.sqrt, a square, a
+ * reciprocal, one subtraction) is a single correctly rounded operation in both, so the double column is what Python prints (the oracle
+ * test recomputes every row in Python).
+ */
+import { deriveComposition } from '../../math/functions/compose';
+import { opsOf } from '../../math/functions/rule';
+import { evaluate } from '../../math/functions/value';
+import { rationalForm } from '../../math/quantity/exactform';
+import { rational } from '../../math/quantity/rational';
+
+const text = (n: ReturnType<typeof deriveComposition>['fg']['output']): string => {
+  if (n.kind === 'exact' && n.s.b === 1n) return rationalForm(n.s.u).text;
+  return n.kind === 'undefined' ? 'undefined' : String(n.kind);
+};
+
+interface Row { readonly what: string; readonly code: string; readonly exact: string; readonly double: string; readonly same: boolean }
+const rows: Row[] = [];
+
+for (const x of [2, 3, 5, 10]) {
+  const exact = text(deriveComposition({ f: 'sq', g: 'rt', x }).fg.output);
+  const double = Math.sqrt(x) ** 2;
+  rows.push({ what: `square of the root of ${x}`, code: `math.sqrt(${x}) ** 2`, exact, double: String(double), same: String(double) === exact });
+}
+for (const x of [49, 98]) {
+  const exact = text(deriveComposition({ f: 'rec', g: 'rec', x }).fg.output);
+  const double = 1 / (1 / x);
+  rows.push({ what: `reciprocal of the reciprocal of ${x}`, code: `1 / (1 / ${x})`, exact, double: String(double), same: String(double) === exact });
+}
+// the pole of 1/(x - 2): feed it 2 + 10**-k. The exact input is the rational 2 + 1/10**k, built here with BigInt.
+const steps: ReadonlyArray<readonly [number, string]> = [[1, '1e-1'], [5, '1e-5'], [10, '1e-10'], [15, '1e-15'], [16, '1e-16']];
+for (const [k, lit] of steps) {
+  const ten = 10n ** BigInt(k);
+  const exact = text(evaluate(opsOf('pole', 2), rational(2n * ten + 1n, ten)).output);
+  const x = 2 + Number(lit);
+  const double = 1 / (x - 2);
+  rows.push({
+    what: `1/(x − 2) at x = 2 + ${lit}`, code: `1 / ((2 + ${lit}) - 2)`, exact,
+    double: Number.isFinite(double) ? String(double) : 'ZeroDivisionError', same: Number.isFinite(double) && String(double) === String(Number(exact)),
+  });
+  if (exact !== String(ten)) throw new Error('the exact value at the pole row is 10^k');
+}
+---
+<div class="table-scroll" data-scrollable="Exact values versus doubles, scrollable">
+  <table class="num-table" data-table="exact-vs-double">
+    <thead><tr><th>computation</th><th>Python</th><th>exact value</th><th>double (what the program holds)</th><th>agree?</th></tr></thead>
+    <tbody>{rows.map(r => <tr data-agree={String(r.same)}><td>{r.what}</td><td><code>{r.code}</code></td><td>{r.exact}</td><td>{r.double}</td><td>{r.same ? 'yes' : '⚠ no'}</td></tr>)}</tbody>
+  </table>
+</div>
