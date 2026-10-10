@@ -141,7 +141,11 @@ function rootSentence(r: ExtraneousRoot, d: ExtraneousDerived, i: number): strin
   const rad = shifted(d.p);
   if (r.status === 'valid') {
     const squared = /[ /]/.test(t) ? `(${t})²` : `${t}²`;
-    return `Root ${i + 1}, x = ${x}${approx}: the right-hand side ${qPart} equals ${t}, which is not negative, and ${squared} = ${rad}, so √(${rad}) = ${t}. Valid.`;
+    if (r.t.b === 1n) {
+      const value = rationalForm({ num: r.t.u.num * r.t.u.num, den: r.t.u.den * r.t.u.den } as Rational).text;
+      return `Root ${i + 1}, x = ${x}${approx}: the right-hand side ${qPart} equals ${t}, which is not negative, and the radicand ${rad} equals ${value} = ${squared}, so √${value} = ${t}. Valid.`;
+    }
+    return `Root ${i + 1}, x = ${x}${approx}: the right-hand side ${qPart} equals ${t}, which is not negative, and ${squared} equals the radicand ${rad} at this x (that is what the squared equation says), so √(${squared}) = ${t}. Valid.`;
   }
   return `Root ${i + 1}, x = ${x}${approx}: the right-hand side ${qPart} equals ${t}, which is negative, and a square root is never negative. This x solves −√(${rad}) = ${qPart} instead. Extraneous.`;
 }

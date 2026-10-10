@@ -250,6 +250,10 @@ describe('extraneous-roots stage', () => {
     expect(extraneousVerdict(d)).toMatch(/Root 1, x = −1: the right-hand side x equals −1, which is negative/);
     expect(extraneousVerdict(d)).toMatch(/Extraneous\./);
     expect(extraneousVerdict(d)).toMatch(/Root 2, x = 2:.*Valid\./);
+    // the valid root is substituted, not asserted: x + 2 = 4 = 2², so √4 = 2
+    expect(extraneousVerdict(d)).toContain('the radicand x + 2 equals 4 = 2², so √4 = 2. Valid.');
+    expect(extraneousVerdict(deriveExtraneous({ p: 6, q: -6 }))).toContain('the radicand x + 6 equals 16 = 4², so √16 = 4. Valid.');
+    expect(extraneousVerdict(deriveExtraneous({ p: 1, q: 0 }))).toContain('equals the radicand x + 1 at this x');
     expect(squaredText(d)).toBe('x² − x − 2 = 0');
     expect(extraneousVerdict(deriveExtraneous({ p: 0, q: 1 }))).toMatch(/D = −3 is negative|no real root/);
   });
@@ -282,8 +286,21 @@ describe('expression stage', () => {
       const slip = deriveDistribute({ a, b, c, x, form: 'slip' });
       const harmless = a === 1 || c === 0;
       expect(slip.kind, `${a},${b},${c}`).toBe(harmless ? 'identity' : 'contradiction');
-      expect(distributeVerdict(slip), `${a},${b},${c}`).toMatch(harmless ? /harmless here only because|They agree|not by luck/ : /contradiction/);
+      expect(distributeVerdict(slip), `${a},${b},${c}`).toMatch(harmless ? /the slip is harmless/ : /contradiction/);
     }
+  });
+  it('the harmless slip says the general rule symbolically and names which condition holds here', () => {
+    const v = (a: number, c: number) => distributeVerdict(deriveDistribute({ a, b: 1, c, x: 2, form: 'slip' }));
+    for (const text of [v(1, 3), v(3, 0), v(1, 0)]) {
+      expect(text).toContain('abx + ac');
+      expect(text).toContain('abx + c');
+      expect(text).toContain('ac = c');
+    }
+    expect(v(1, 3)).toContain('Here a = 1, so the slip is harmless');
+    expect(v(3, 0)).toContain('Here c = 0, so the slip is harmless');
+    expect(v(1, 0)).toContain('Here a = 1 and c = 0, so the slip is harmless');
+    // no sentence states the general rule with the numbers already substituted
+    expect(v(1, 3)).not.toContain('In general a(bx + c) is');
   });
   it('the scene lines carry the slopes and intercepts of the model', () => {
     const s = distributeScene(deriveDistribute({ a: 2, b: 1, c: 3, x: 2, form: 'slip' }));

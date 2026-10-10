@@ -93,7 +93,10 @@ export function distributeVerdict(d: DistributeDerived): string {
     return `At x = ${at} the bracket gives ${p} and the expansion gives ${e}. They agree, and not by luck: both simplify to ${lhs}, so the equation ${lhs} = ${rhs} is true for every x. It is an identity: the distributive law.`;
   }
   if (d.kind === 'identity') {
-    return `At x = ${at} both sides are ${p}. This slip is harmless here only because a = 1 or c = 0, so that ac = c. In general a(bx + c) is ${lhs} and the slip writes ${rhs}.`;
+    const aIsOne = d.a.num === 1n && d.a.den === 1n;
+    const cIsZero = d.c.num === 0n;
+    const why = aIsOne && cIsZero ? 'a = 1 and c = 0' : aIsOne ? 'a = 1' : 'c = 0';
+    return `At x = ${at} both sides are ${p}. In general the correct expansion is abx + ac and the slip writes abx + c; they are the same expression exactly when ac = c, that is when a = 1 or c = 0. Here ${why}, so the slip is harmless: both sides simplify to ${lhs}.`;
   }
   const hereOrNot = d.agreesHere ? 'They agree here' : `They differ at x = ${at}: ${p} against ${e}, a gap of ${g}`;
   return `${hereOrNot}. The x-terms match, so the two sides differ by the same constant at EVERY x: ${lhs} = ${rhs} is a contradiction (true for no x). The slip left a·c uncounted: the second term must be multiplied by ${rationalForm(d.a).text} as well.`;
