@@ -1,0 +1,252 @@
+---
+kind: chapter
+curriculumId: I.8
+title: "Indexed quantities and summation"
+hero: "A sum is a *loop*."
+lede: Machine learning is mostly sums over examples, over features and over layers. Learn to read sigma notation as a loop with an accumulator, to count its terms without an off-by-one, and to rewrite a sum without changing its value.
+description: Sigma notation as a for-loop with an accumulator. Bounds and the number of terms, the empty sum, closed forms, linearity, shifting an index, double sums and swapping their order, with the Python index traps and floating-point addition.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import SumStage from '../../lessons/summation/SumStage';
+import LoopStage from '../../lessons/summation/LoopStage';
+import NestedStage from '../../lessons/summation/NestedStage';
+import IdentityStage from '../../lessons/summation/IdentityStage';
+import WorkedStage from '../../lessons/summation/WorkedStage';
+import Exercise from '../../lessons/summation/Exercise';
+import '../../styles/chapters/summation.css';
+import loops from '../../../code/python/summation_loops.py?raw';
+import nested from '../../../code/python/summation_nested.py?raw';
+import numerics from '../../../code/python/summation_numpy_float.py?raw';
+
+<Stage caption="Choose the terms and the two bounds, then press Play: the accumulator takes one term at a time, the matching row of the table is outlined, and the Python being run is shown next to the numbers. Try the ready-made cases, including the empty sum and a term that does not exist. Typed values that are not allowed are rejected, not changed.">
+  <SumStage client:load />
+</Stage>
+
+Try it before reading on. Press **Play** and watch the running total grow one term at a time; press **n < m: empty** and see that a sum with no terms is not an error; press **1/i through 0** and see what happens when one term does not exist. Under the picture, the verdict compares the loop with a closed-form formula whenever one applies. By the end of the chapter you will read a sum as a loop, count its terms correctly, and know which rewrites keep its value.
+
+## Intuition: a sum is a loop
+
+Every sum in a machine-learning paper is a loop in disguise. The average loss over a batch is a loop over examples. The score of a linear model is a loop over features. A dot product is a loop over coordinates. Writing the loop in mathematical notation is shorter, and the notation also tells you three things you must not get wrong: **where the loop starts**, **where it stops**, and **what is added each time**.
+
+The picture is an **accumulator**. Start with a total of $0$. For each index in turn, compute a term and add it to the total. When the indices run out, the total is the answer. Nothing else is going on: the sum symbol is the word *for*, the bounds are the range, and the body is what the loop adds.
+
+Two features of that picture need care, because they are the source of nearly every error with sums:
+
+- **Both ends are included.** In mathematics the sum from $i=m$ to $i=n$ includes the term at $n$. Python's `range` does not: `range(m, n)` stops before $n$. Counting the terms is a fencepost problem: from $3$ to $11$ there are *nine* terms, not eight.
+- **A sum can have no terms.** If the stop is below the start, the loop does nothing and the total stays at its starting value $0$. That is a number, not a failure, and it is the right answer to a question such as "the average of nothing is a sum over no examples".
+
+The index itself is a **dummy**: renaming $i$ as $k$ changes nothing, exactly as renaming a loop variable changes nothing in code. What matters is the range and the body.
+
+## Definition
+
+**Sigma notation.** For integers $m$ and $n$ and a rule that gives a number $a_i$ for each integer $i$ in the range,
+
+$$
+\sum_{i=m}^{n} a_i \;=\; a_m + a_{m+1} + \cdots + a_n .
+$$
+
+The integer $m$ is the **lower bound**, $n$ the **upper bound**, $i$ the **index** and $a_i$ the **term** (or body). Both bounds are included.
+
+**The number of terms.** If $n\ge m$, the sum has $n-m+1$ terms. The "plus one" is the fencepost: a fence from post $3$ to post $11$ has nine posts and eight gaps.
+
+**The empty sum.** If $n<m$ there are no indices, and by convention the sum equals $0$, the starting value of the accumulator. This is the only value that keeps the rules below true for every range, and it is what the loop returns.
+
+**A term that does not exist.** If the rule is not defined at some index in the range, the sum is **undefined**; it is not $0$ and the offending term is not skipped. For example $\sum_{i=-2}^{3} \frac1i$ is undefined, because $\frac10$ does not exist.
+
+**Closed forms.** Some sums have a formula that gives the result without adding the terms. For $n\ge 1$:
+
+$$
+\sum_{i=1}^{n} i=\frac{n(n+1)}{2},\qquad
+\sum_{i=1}^{n} i^2=\frac{n(n+1)(2n+1)}{6},\qquad
+\sum_{i=1}^{n} (2i-1)=n^2 .
+$$
+
+A constant added $n-m+1$ times gives $\sum_{i=m}^{n} c=(n-m+1)\,c$. A **geometric sum** has a term that is a constant ratio $r$ to the power of the index. If $r\ne1$,
+
+$$
+\sum_{i=m}^{n} r^{i}=\frac{r^{m}-r^{n+1}}{1-r},
+$$
+
+and if $r=1$ every term is $1$, so the sum is $n-m+1$. The geometric formula comes from a telescoping trick: multiplying the sum by $(1-r)$ makes every term but the first and the last cancel in pairs.
+
+**Rules for rewriting a sum.** For the same bounds on both sums and constants $c$:
+
+$$
+\sum_{i=m}^{n}\bigl(c\,a_i+b_i\bigr)=c\sum_{i=m}^{n}a_i+\sum_{i=m}^{n}b_i \quad\text{(linearity)},
+$$
+
+$$
+\sum_{i=m}^{n}a_i=\sum_{i=m}^{p}a_i+\sum_{i=p+1}^{n}a_i \quad\text{(splitting at any }p\text{ with }m-1\le p\le n\text{)},
+$$
+
+$$
+\sum_{i=m}^{n}a_i=\sum_{j=m+k}^{n+k}a_{j-k} \quad\text{(shifting the index by }k\text{)}.
+$$
+
+In the shift, $j=i+k$, so $i=j-k$: the bounds go up by $k$, and the term must be rewritten with $j-k$ wherever it had $i$.
+
+**Double sums.** A sum can have a sum as its body. In $\sum_{i=1}^{n}\sum_{j=1}^{k}a_{ij}$ the inner sum is added completely for each $i$, so the cells $a_{ij}$ of a grid are added row by row. For a finite grid the total does not depend on the order, so adding column by column gives the same number. If the inner bound depends on the outer index, as in $\sum_{i=1}^{n}\sum_{j=1}^{i}a_{ij}$, the cells form a triangle, and swapping the order means rewriting the bounds so that the same cells are visited.
+
+**Python is zero-based.** A list `a` stores its first entry at position $0$. If the mathematics indexes from $1$, then $a_i$ is `a[i - 1]`. Mixing the two conventions is the most common way to get a sum quietly wrong.
+
+## Mechanics: how to work with a sum
+
+### Off by one: five loops, one sum
+
+The four numbers $m$, $n$, the start of the range and the stop of the range are easy to mix up. The stage below runs five loops for the same sum, shows the Python of each, and reports which ones return the true value. For the sum to be informative the terms are chosen so that a mistake changes the result.
+
+<Stage caption="Choose the terms and the bounds. Each card is one loop: the indices it visits, the terms it adds, and what it returns. The correct loop and the shifted-list loop always agree with the exact sum; the others are the classic slips. With n below m no loop has any pass and all five return 0, so no off-by-one shows.">
+  <LoopStage client:load />
+</Stage>
+
+Read the cards in turn for the odd numbers from $1$ to $5$. The loop that stops one early misses the last term. The loop whose window slides down by one adds a term before the start and drops the last one. The unshifted list loop reads one position too far and Python raises an error, and a version with a negative index would not raise at all but would silently read the end of the list. Then change the terms to the whole numbers: the extra term at $i=0$ is $0$, so the slid window and the loop that stops early return the same total, and the total alone cannot tell you which slip you made. A single test case is never proof that the bounds are right.
+
+### Double sums: rows, columns and triangles
+
+<Stage caption="Choose the shape of the grid, the order in which the cells are added and the rule for the entries, then step through the cells. Each cell is outlined when it is added, and the row and column totals are listed. Choose a triangle with the data table and column-by-column order to see what happens when the bounds are not rewritten after swapping.">
+  <NestedStage client:load />
+</Stage>
+
+On a rectangle the order cannot matter: both orders add the same cells, and the stage shows the two totals agreeing. When the entry factors as a function of $i$ times a function of $j$, the double sum is a product of two single sums, which is why the first preset needs only a few additions. On a triangle the swap needs care: the inner bounds must be rewritten, and the verdict reports what the loop would return if its bounds were not rewritten: it visits the other triangle. When the entries are symmetric, such as $i\cdot j$, the other triangle happens to have the same total, so the slip goes unnoticed; a data table with unequal entries shows it.
+
+### Rewriting a sum: three rules
+
+<Stage caption="Choose the bounds, a constant c and a shift k. The left panel checks linearity for the sum of c times i plus i squared, the middle panel shifts the index with and without changing the term, and the right panel pairs the first term with the last. Every value is computed exactly.">
+  <IdentityStage client:load />
+</Stage>
+
+Three observations, each visible in the panels. Linearity lets you move a constant out of a sum and split a sum of two terms into two sums; both sides always agree, including for negative constants and for ranges that contain negative indices. Shifting the index is correct only when the **term changes with it**: moving the bounds and leaving the body alone computes a different sum. Look for the preset where the wrong shift happens to give the right number by coincidence, and notice that this is not a reason to trust it. Finally, Gauss's pairing explains the closed form for consecutive whole numbers: the first and last add to the same total as the second and second-last, and so on. When the number of terms is odd, one middle term has no partner.
+
+## Worked examples
+
+Five computations, each shown step by step with every number taken from the same model as the stages. Step forward and back with the buttons, or press **Play**; going back selects an earlier step, and nothing is undone.
+
+<Stage caption="Choose an example and step through the work: counting terms, adding the whole numbers by pairing, a geometric sum by the telescoping trick, shifting an index, and swapping the order of a triangular double sum.">
+  <WorkedStage client:load />
+</Stage>
+
+## Executable reference code
+
+The Python below is stored in the repository and executed by the test suite, so what you read is known to run. The comments record what each line returns.
+
+First the loop itself, with exact fractions so that no rounding enters. It shows the accumulator, the empty sum, the closed forms checked against the loop, the geometric sum including the case $r=1$, and the off-by-one variants on a zero-based list.
+
+<CodeFile source={loops} file="code/python/summation_loops.py" note="a sum as a loop, closed forms and off-by-one slips" />
+
+Then double sums: rows first and columns first, the triangle with the bounds rewritten, and the same triangle with the bounds kept by mistake.
+
+<CodeFile source={nested} file="code/python/summation_nested.py" note="double sums, triangles and swapping the order" />
+
+Finally the form sums take on data. NumPy is zero-based too; a dot product and a mean are sums; and the file shows that adding floating-point numbers is not exact, that the order of additions matters, and what a compensated sum does about it.
+
+<CodeFile source={numerics} file="code/python/summation_numpy_float.py" note="sigma notation with NumPy, and the limits of float addition" />
+
+## Explore: change the sum
+
+These questions have definite answers; check each against the stages above.
+
+- In the first stage, choose the whole numbers and set the bounds to $1$ and $20$. How many terms are there? What does the closed form $\frac{n(n+1)}{2}$ give, and does the loop agree?
+- Choose the squares from $-3$ to $3$. The terms are symmetric around $0$; is the total zero? Now choose the whole numbers from $-3$ to $3$. Why is the total zero this time?
+- Make the bounds equal. How many terms are there? Now set the upper bound one below the lower bound, and then three below. What do you read, and does the number of terms become negative?
+- With the powers of a ratio, set the ratio to $2$ and then to $-1$, from $0$ to $4$. Compare each total with the closed form. Then set the ratio to $1$: why does the formula have to be replaced by a count?
+- Type your own list into the first stage, for example five numbers of your choice, and read the sum from $1$ to $5$. Then read it from $1$ to $6$: the stage shows the loop that would raise an error. Why would the same slip with a negative index raise nothing?
+- In the identities stage, set the shift to $0$. Why does forgetting to change the term do no harm there? Find the preset where it does no harm by coincidence, and then change the bounds slightly to break it.
+
+## Common mistakes
+
+<Callout kind="misconception" title="The sum from m to n has n − m terms">
+It has $n-m+1$. The terms from $3$ to $11$ are $3,4,5,6,7,8,9,10,11$: nine, not eight. The same count applies to the range of a loop: `range(3, 12)`, with the stop one past the last index, visits nine values.
+</Callout>
+
+<Callout kind="misconception" title="range(m, n) adds up to n">
+Python's `range` excludes its stop. The loop that adds the terms from $m$ to $n$ is `range(m, n + 1)`. Forgetting the plus one drops the last term and the error is the size of that term, which can be tiny and easy to miss.
+</Callout>
+
+<Callout kind="misconception" title="An empty sum is an error, or nothing at all">
+It is the number $0$. A loop with no passes returns its starting value. Code that crashes on an empty batch, or that returns `None`, is treating the empty sum as something other than what it is; the right decision is usually to say that the average of nothing is undefined and not to pretend it is zero.
+</Callout>
+
+<Callout kind="misconception" title="When a term does not exist, skip it">
+Skipping changes the sum to a different one. The sum of $\frac1i$ over a range that contains $0$ is undefined; adding the other terms and moving on reports a number that is not the value of the sum. A stage that shows "undefined" with a reason is doing the honest thing.
+</Callout>
+
+<Callout kind="misconception" title="a[i] is a_i">
+Only if the list starts at index $0$ and the mathematics also starts at $0$. When the mathematics starts at $1$, the term $a_i$ is `a[i - 1]`. A negative index does not fail: `a[-1]` is the last entry, so a slip to $i=0$ reads the end of the list instead of raising an error.
+</Callout>
+
+<Callout kind="misconception" title="Shifting the index only changes the bounds">
+The term changes too. If $j=i+k$, every $i$ in the body becomes $j-k$. Moving the bounds and keeping the body computes a different sum; in a few special cases the numbers happen to agree, which is exactly why a single check is not a proof.
+</Callout>
+
+<Callout kind="misconception" title="Swapping the order of a double sum swaps the names of the indices">
+On a rectangle that is true. On a triangle the inner bound depends on the outer index, and after the swap it is the other index that must carry the new bound. If the bounds are not rewritten, the loops visit the other triangle, which has the same number of cells but different entries; when the entries are symmetric the totals agree and the mistake stays hidden.
+</Callout>
+
+<Callout kind="misconception" title="The geometric formula always works">
+It divides by $1-r$, so it fails at $r=1$, where the numerator is $0$ as well and the quotient is $\frac00$. At $r=1$ every term is $1$ and the sum is simply the number of terms.
+</Callout>
+
+## Numerical considerations
+
+Sums of whole numbers and fractions are exact. Sums of floating-point numbers are not: each addition rounds to the nearest double, the rounding errors accumulate, and the result depends on the **order** of the additions.
+
+<Callout kind="numerical">
+A double near $10^{16}$ has gaps of $2$ between neighbours, so adding $1$ to it changes nothing: in Python `(1e16 + 1.0) - 1e16` is `0.0`, while adding the small term to a small accumulator first keeps it. The same terms in a different order give different answers. The cure is not to avoid sums but to know the options: add in a better order, use `math.fsum`, which tracks the lost low-order bits, or use NumPy's `sum`, which adds pairwise and drifts much less than a left-to-right loop over many terms. If you need an exact result, keep exact values such as `Fraction`, as the stages do.
+</Callout>
+
+Two other numerical habits follow from the rest of the chapter. A closed form such as $\frac{n(n+1)}{2}$ is exact in integer arithmetic but can overflow a fixed-width integer for large $n$; Python's integers do not overflow, NumPy's integer arrays do. And a geometric sum with $\lvert r\rvert<1$ and many terms is dominated by its first few terms: the later ones are so small that adding them to a large accumulator loses them, which is harmless there but is why the order of addition matters when the terms vary in size.
+
+Finally, a sum of many terms with the terms of both signs can lose most of its significant digits to **cancellation**: two nearly equal numbers subtract to something small, and the rounding errors that were tiny compared with the numbers are no longer tiny compared with the result. Sorting by magnitude, or using a compensated sum, helps.
+
+## Connections to engineering and machine learning
+
+- **A loss is a mean over examples.** The batch loss $L=\frac1N\sum_{i}\ell_i$ is a sum divided by the number of terms. If the indices run from $0$ to $N-1$ as in code, the count is $N$, not $N-1$; the mean of a batch of nothing is undefined (a division by zero), which is a different thing from the empty sum, which is $0$.
+- **A dot product is a sum of products.** $\mathbf{w}\cdot\mathbf{x}=\sum_{i}w_ix_i$. A linear model, a neuron before its activation and the attention score are all sums of this kind. Rewriting them is sum algebra: linearity moves a constant weight out front, and splitting a sum splits a model across devices.
+- **Softmax has a sum in its denominator.** The normalizing constant $\sum_j e^{z_j}$ is a sum over all classes. The numerical care of the previous section applies directly: summing very different magnitudes is exactly where order and compensation matter.
+- **Sums over axes.** A matrix is a double sum waiting to happen. `X.sum(axis=0)` adds down the rows and `X.sum(axis=1)` along the columns; summing everything is the double sum, and the order cannot matter for a finite grid, apart from floating-point rounding.
+- **Triangular sums count pairs.** The number of pairs $(i,j)$ with $j\le i$ is a triangular number, and an algorithm with a loop inside a loop whose inner bound is the outer index has a running time proportional to $n^2$ with the constant $\tfrac12$ that the closed form gives. Comparing every example with every other example in a batch is this pattern.
+- **Geometric sums are discounting and learning-rate schedules.** A discounted return $\sum_t\gamma^{t}r_t$ and a moving average with decay both weight terms by powers of a ratio; the closed form with $\lvert r\rvert<1$ tells you how much total weight a long horizon can carry.
+
+## Exercises
+
+Answer each question and press **Check**. A wrong answer tells you *which* mistake it looks like. After one attempt you may open a worked solution.
+
+<Exercise client:load id="fencepost" />
+
+<Exercise client:load id="loop-range" />
+
+<Exercise client:load id="geometric" />
+
+<Exercise client:load id="ratio-one" />
+
+<Exercise client:load id="shift" />
+
+<Exercise client:load id="nested-count" />
+
+<Exercise client:load id="swap-bounds" />
+
+<Exercise client:load id="mean-loss" />
+
+<Exercise client:load id="product-trap" />
+
+<Exercise client:load id="float-sum" />
+
+## Summary and checkpoints
+
+- A sum is a loop with an accumulator that starts at $0$: for each index from the lower bound to the upper bound, **both included**, add the term. The index is a dummy name.
+- The number of terms is $n-m+1$. When $n<m$ the sum is empty and equals $0$. If a term is undefined, the whole sum is undefined; terms are never skipped.
+- Closed forms: $\frac{n(n+1)}{2}$ for $1,\dots,n$, $\frac{n(n+1)(2n+1)}{6}$ for the squares, $n^2$ for the first $n$ odd numbers, $(n-m+1)c$ for a constant, and $\frac{r^m-r^{n+1}}{1-r}$ for a geometric sum when $r\ne1$ (and $n-m+1$ when $r=1$).
+- Valid rewrites: pull a constant out, split a sum into two sums over the same bounds, split the range, shift the index and change the term to match. Pairing the first term with the last explains the formula for consecutive whole numbers.
+- A double sum adds a grid of cells; on a rectangle the order does not matter; on a triangle the inner bound must be rewritten when the order is swapped.
+- In Python, `range(m, n + 1)` visits $m,\dots,n$ and a list is zero-based, so a one-based $a_i$ is `a[i - 1]`; a negative index wraps silently.
+- Floating-point sums round at each step and depend on the order of the additions; keep exact values, or use a compensated or pairwise sum.
+
+**Checkpoints.** You can move on when you can, without the stage:
+
+1. Write the sum of $a_i$ from $i=m$ to $i=n$ as a Python loop, and say how many times the body runs.
+2. State what a sum with the upper bound below the lower bound equals, and what a sum with a term that does not exist equals.
+3. Use a closed form for a sum of consecutive whole numbers, and say when the geometric formula cannot be used.
+4. Shift the index of a sum by $k$ and change both the bounds and the term.
+5. Swap the order of a double sum over a triangle and write the new bounds.

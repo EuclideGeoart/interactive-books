@@ -1,0 +1,95 @@
+/* Indexed quantities and summation (I.8): stage-specific rules. Everything else comes from the shared stage and chapter styles.
+   Colour never carries meaning alone: the current row/cell has a thick outline and a bold weight, a finished one a check-free plain fill,
+   a cell that is not yet reached is dim and italic; a wrong loop is marked ✗ and a failing one ! IN WORDS as well as colour. */
+
+.set-controls { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+.presets.seqs button { font-family: var(--font-math); font-size: 1.0625rem; }
+
+/* Readout values can be long (a fraction, an error message, a list): wrap instead of running off the stage. */
+:is([data-stage='sum'], [data-stage='loops'], [data-stage='nested'], [data-stage='identities']) .inspector-row .line { white-space: normal; overflow-wrap: anywhere; }
+:is([data-stage='sum'], [data-stage='loops'], [data-stage='nested'], [data-stage='identities']) .inspector-row dd { min-width: 0; max-width: 100%; }
+
+/* ───────────── the list the learner types */
+.list-param { grid-column: 1 / -1; }
+.list-param .param-field { grid-template-columns: minmax(0, 1fr); }
+.list-param .param-field input { border: 1px solid var(--rule-strong); border-radius: var(--radius); text-align: left; padding: 0 10px; }
+.list-param .param-field input[aria-invalid='true'] { border-color: var(--c-caution); }
+.param-hint { margin-top: 5px; font: 0.8125rem/1.4 var(--font-ui); color: var(--ink-3); }
+
+/* ───────────── Python code shown beside the picture */
+.py-label { margin: 8px 0 4px; font: 600 0.875rem var(--font-ui); color: var(--ink-2); }
+.py-code { margin: 0; padding: 10px 12px; border: 1px solid var(--rule); border-left: 3px solid var(--c-derived); border-radius: 2px; background: var(--paper); font: 0.8125rem/1.5 var(--font-mono); white-space: pre-wrap; overflow-wrap: anywhere; max-width: 100%; }
+.py-code code { font: inherit; }
+
+/* ───────────── the term table beside the trace */
+.sum-plane { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; align-content: start; }
+.term-table { max-height: 300px; overflow: auto; border: 1px solid var(--rule); border-radius: 2px; background: var(--sheet); }
+.term-table:focus-visible { outline: 3px solid var(--c-primary-text); outline-offset: 2px; }
+.term-table table { width: 100%; border-collapse: collapse; font: 0.9375rem var(--font-mono); font-variant-numeric: tabular-nums; }
+.term-table thead th { position: sticky; top: 0; z-index: 1; background: var(--sheet-2); font: 600 0.8125rem var(--font-ui); color: var(--ink-2); }
+.term-table th, .term-table td { padding: 5px 10px; text-align: right; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+.term-table tbody th { text-align: center; color: var(--ink-2); font-weight: 600; }
+.term-table tr[data-state='done'] td { background: color-mix(in srgb, var(--c-primary) 9%, transparent); }
+.term-table tr[data-state='current'] { outline: 3px solid var(--ink); outline-offset: -3px; font-weight: 700; background: color-mix(in srgb, var(--c-primary) 24%, var(--sheet)); }
+.term-table tr[data-state='todo'] td, .term-table tr[data-state='unreached'] td { color: var(--ink-3); }
+.term-table tr[data-state='unreached'] { font-style: italic; }
+.term-table .missing { color: var(--c-caution-text); font-weight: 700; font-style: italic; }
+.term-table .pending { color: var(--ink-3); }
+
+/* ───────────── the five loops */
+.variant-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+@container (min-width: 760px) { .variant-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.variant-card { display: grid; gap: 8px; align-content: start; min-width: 0; padding: 10px 12px 12px; border: 1px solid var(--rule); border-left: 4px solid var(--ink-3); border-radius: 2px; background: var(--paper); }
+.variant-card[data-status='correct'] { border-left-color: var(--c-y); }
+.variant-card[data-status='wrong'] { border-left-color: var(--c-caution); border-left-style: double; border-left-width: 6px; }
+.variant-card[data-status='error'] { border-left-color: var(--c-caution); border-left-style: dashed; }
+.variant-card h4 { font: 600 0.9375rem/1.35 var(--font-ui); display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; }
+.variant-card .mark { display: inline-block; min-width: 1.2em; font-weight: 800; }
+.variant-card[data-status='correct'] .mark, .variant-card[data-status='correct'] .status-word { color: var(--c-y-text); }
+.variant-card:not([data-status='correct']) .mark, .variant-card:not([data-status='correct']) .status-word { color: var(--c-caution-text); }
+.status-word { font: 700 0.75rem var(--font-ui); letter-spacing: 0.04em; text-transform: uppercase; }
+.variant-facts { display: grid; gap: 4px; margin: 0; }
+.variant-facts > div { display: grid; grid-template-columns: minmax(0, 9.5em) minmax(0, 1fr); gap: 2px 10px; font: 0.875rem/1.4 var(--font-ui); }
+@container (max-width: 520px) { .variant-facts > div { grid-template-columns: minmax(0, 1fr); } }
+.variant-facts dt { color: var(--ink-3); }
+.variant-facts dd { margin: 0; min-width: 0; overflow-wrap: anywhere; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.variant-why { font: 0.875rem/1.5 var(--font-ui); color: var(--ink-2); }
+
+/* ───────────── the nested grid */
+.nested-controls { grid-template-columns: minmax(0, 1fr); }
+.cell-grid-wrap { max-width: 100%; overflow-x: auto; padding-bottom: 2px; }
+.cell-grid { border-collapse: separate; border-spacing: 3px; max-width: 100%; }
+.cell-grid caption { caption-side: bottom; text-align: left; padding-top: 6px; font: 0.8125rem/1.4 var(--font-ui); color: var(--ink-3); }
+.cell-grid th { min-width: 28px; padding: 2px 4px; text-align: center; font: 600 0.9375rem var(--font-mono); color: var(--ink-2); }
+.cell-grid .total-head { font: 600 0.75rem var(--font-ui); white-space: nowrap; }
+.cell-grid tfoot th { font: 600 0.75rem var(--font-ui); white-space: nowrap; }
+.cell-grid .corner { padding: 0 2px; font: 600 0.75rem var(--font-math); color: var(--ink-3); white-space: nowrap; }
+.cell-grid .axis-a { color: var(--c-x-text); }
+.cell-grid .axis-b { color: var(--c-y-text); }
+.cell { min-width: 40px; height: 40px; padding: 0 4px; text-align: center; font: 0.9375rem var(--font-mono); font-variant-numeric: tabular-nums; border: 1px solid var(--rule-strong); border-radius: 2px; background: var(--sheet); white-space: nowrap; }
+.cell.is-outside { border-style: dotted; border-color: var(--rule); background: none; color: var(--ink-3); }
+.cell.is-todo { color: var(--ink-3); font-style: italic; }
+.cell.is-done { background: color-mix(in srgb, var(--c-primary) 14%, var(--sheet)); }
+.cell.is-current { outline: 3px solid var(--ink); outline-offset: -3px; font-weight: 800; background: color-mix(in srgb, var(--c-primary) 30%, var(--sheet)); }
+.cell-grid .total { min-width: 40px; text-align: center; font: 600 0.875rem var(--font-mono); font-variant-numeric: tabular-nums; color: var(--ink-2); border-top: 1px solid var(--rule-strong); white-space: nowrap; }
+.cell-grid tbody .total { border-top: 0; border-left: 1px solid var(--rule-strong); }
+.cell-grid .total.grand { color: var(--ink); font-weight: 800; border: 2px solid var(--ink); border-radius: 2px; }
+@container (max-width: 520px) {
+  .cell-grid { border-spacing: 2px; }
+  .cell-grid th { min-width: 18px; padding: 2px 1px; }
+  .cell { min-width: 0; height: 36px; padding: 0 1px; font-size: 0.75rem; }
+  .cell-grid .total { min-width: 0; padding: 0 1px; font-size: 0.75rem; }
+}
+
+/* ───────────── the three rewriting rules */
+.identity-panels { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+.identity-panel { display: grid; gap: 6px; min-width: 0; padding: 8px 12px 12px; border: 1px solid var(--rule); border-left: 4px solid var(--c-derived); border-radius: 2px; background: var(--paper); }
+.identity-panel h4 { font: 600 1rem/1.3 var(--font-text); }
+.panel-rule { font: 0.875rem/1.5 var(--font-ui); color: var(--ink-2); }
+.panel-result { font: 0.9375rem/1.5 var(--font-ui); }
+.panel-result[data-caution='true'] { padding-left: 10px; border-left: 3px dashed var(--c-caution-text); }
+.pair-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.pair-list li { padding: 4px 10px; border: 1px solid var(--rule-strong); border-radius: 2px; background: var(--sheet); font: 0.875rem var(--font-mono); font-variant-numeric: tabular-nums; }
+.pair-list li.middle { border: 2px dashed var(--ink); font-weight: 700; }
+
+@container (min-width: 700px) { .set-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
