@@ -1,0 +1,37 @@
+---
+interface Props { ordered?: boolean }
+const { ordered = false } = Astro.props;
+---
+<div class="foundation-break" data-foundation-break data-ordered={String(ordered)}>
+  <div class="break-controls"><label>Fault to introduce<select data-fault><option value="cycle">Point a child back to root</option><option value="shared">Give one node two owning parents</option><option value="lost">Lose the left subtree</option><option value="dead">Free a child before unlinking it</option>{ordered && <option value="order">Put a larger key in the left subtree</option>}</select></label><button type="button" class="button button-primary" data-break>Introduce fault</button><button type="button" class="button" data-restore>Restore valid tree</button></div>
+  <p data-broken-note aria-live="polite">The intact tree satisfies its ownership rules.</p>
+  <div class="segmented" role="group" aria-label="Broken tree representation"><button type="button" data-view="logical" aria-pressed="true">Logical view</button><button type="button" data-view="memory" aria-pressed="false">Memory view</button></div>
+  <div class="svg-scroll" role="region" tabindex="0" aria-label="Scrollable broken tree" data-svg></div>
+  <details data-inspector-shell open><summary>Inspect faulty tree</summary><aside class="pointer-inspector" aria-label="Faulty tree inspector" data-inspector></aside></details>
+  <details class="text-fallback"><summary>Text representation</summary><code data-ascii></code></details>
+  <ul data-broken-rules></ul>
+</div>
+<script>
+import { binaryState, binaryInvariants } from '../../visualizers/binary-tree/model';
+import { binaryTreeAdapter } from '../../visualizers/binary-tree/adapter';
+import { InspectionDiagram } from '../../scripts/inspection-diagram';
+import { escapeHtml } from './primitives';
+for (const [index,root] of [...document.querySelectorAll<HTMLElement>('[data-foundation-break]')].entries()) {
+  const ordered=root.dataset.ordered==='true';
+  const fresh=()=>binaryState(ordered?[50,25,75,10,35]:[65,66,67,68,69],ordered);
+  let state=fresh();
+  const diagram=new InspectionDiagram(root,binaryTreeAdapter,state,`foundation-fault-${index}`);
+  const render=()=>{diagram.update(state,undefined,true);root.querySelector('[data-broken-rules]')!.innerHTML=binaryInvariants(state,true).map(i=>`<li class="invariant-${i.status}">${i.status==='pass'?'✓':'✕'} ${escapeHtml(i.name)} — ${escapeHtml(i.detail)}</li>`).join('');};
+  root.querySelector('[data-break]')!.addEventListener('click',()=>{
+    state=fresh();const fault=root.querySelector<HTMLSelectElement>('[data-fault]')!.value;
+    if(fault==='cycle')state.nodes[3]!.left=0;
+    else if(fault==='shared')state.nodes[2]!.left=3;
+    else if(fault==='lost')state.nodes[0]!.left=null;
+    else if(fault==='dead')state.nodes[1]!.lifetime='freed';
+    else state.nodes[1]!.value=99;
+    root.querySelector('[data-broken-note]')!.textContent='Controlled model fault only. The canonical C++ never executes this invalid operation. Restore the tree before reasoning about valid traversal.';render();
+  });
+  root.querySelector('[data-restore]')!.addEventListener('click',()=>{state=fresh();root.querySelector('[data-broken-note]')!.textContent='The intact tree satisfies its ownership rules.';render();});render();
+}
+</script>
+<style>.foundation-break{border-block:1px solid var(--border);padding-block:1rem;min-width:0}.break-controls{display:flex;gap:1rem;flex-wrap:wrap;align-items:end}label{display:grid;gap:.5rem;max-width:100%}select{max-width:100%}.pointer-inspector{margin-block:1rem}ul{display:grid;gap:.65rem}:global(.foundation-break .invariant-fail){color:var(--red)}</style>

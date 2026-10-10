@@ -1,0 +1,18 @@
+<div class="priority-break" data-priority-break>
+  <div class="break-controls"><label>Deliberate policy error<select data-fault><option value="fifo">Remove oldest regardless of priority</option><option value="ties">Newest equal priority wins</option><option value="direction">Reverse the comparator</option></select></label><button type="button" class="button button-primary" data-break>Run broken selection</button><button type="button" class="button" data-restore>Restore policy</button></div>
+  <p data-verdict aria-live="polite">Correct selection respects priority, then FIFO ties.</p>
+  <div class="table-scroll" data-break-table></div>
+</div>
+<script>
+  import { priorityFault, priorityOrder, priorityState } from '../../visualizers/priority-queue/model';
+  document.querySelectorAll<HTMLElement>('[data-priority-break]').forEach(root => {
+    const render = (broken: boolean) => {
+      const fault = priorityFault(root.querySelector<HTMLSelectElement>('[data-fault]')!.value as 'fifo'|'ties'|'direction');
+      const state = broken ? fault.state : priorityState(), expected = priorityOrder(state)[0]!, selected = broken ? fault.selected : expected;
+      root.querySelector('[data-verdict]')!.textContent = broken ? `✕ Policy broken. ${fault.message} Expected value ${state.data[expected]!.value}; chose ${state.data[selected]!.value}.` : '✓ Policy restored. Highest priority wins; equal priorities remain FIFO.';
+      root.querySelector('[data-break-table]')!.innerHTML = `<table><caption>Controlled selection ${broken ? 'fault' : 'check'} · higher first</caption><thead><tr><th>Arrival index</th><th>Value</th><th>Priority</th><th>Selection</th></tr></thead><tbody>${state.data.map((e,i) => `<tr><td>${i}</td><td>${e.value}</td><td>${e.priority}</td><td>${i===expected ? '✓ Expected' : ''}${i===selected ? ' ← Selected' : ''}</td></tr>`).join('')}</tbody></table>`;
+    };
+    root.querySelector('[data-break]')!.addEventListener('click', () => render(true)); root.querySelector('[data-restore]')!.addEventListener('click', () => render(false)); root.querySelector('[data-fault]')!.addEventListener('change', () => render(false)); render(false);
+  });
+</script>
+<style>.priority-break{border-block:1px solid var(--border);padding-block:1rem}.break-controls{display:flex;flex-wrap:wrap;gap:1rem;align-items:end}label{display:grid;gap:.5rem;max-width:100%}select{max-width:100%}</style>

@@ -1,0 +1,48 @@
+/* Part VII uses the book palette, with bounded scrolling instead of scaled text. */
+.technique-scene { padding: 14px; min-width: 0; font-size: 12px; }
+.technique-scene h4 { font-size: 13px; margin: 16px 0 10px; }
+.technique-scene h4 span { font: 11px var(--mono); color: var(--muted); display: block; margin-top: 5px; }
+.technique-focus, .technique-result { padding: 10px; background: var(--pointer-fill); border-left: 3px solid var(--pointer); overflow-wrap: anywhere; }
+.technique-result { background: var(--data-fill); border-color: var(--green); margin-top: 14px; }
+.technique-tree-scroll { overflow: auto; max-width: 100%; max-height: 340px; overscroll-behavior: contain; border: 1px solid var(--border); }
+.technique-tree-svg { display: block; max-width: none; }
+.technique-node { cursor: pointer; }
+.technique-node rect { fill: var(--surface); stroke: var(--border-strong); }
+.technique-node-label { font: 12px var(--mono); fill: var(--ink); }
+.technique-node-status { font: 10px var(--mono); fill: var(--muted); }
+.technique-node.status-current rect { fill: var(--amber-fill); stroke: var(--amber); stroke-width: 2; }
+.technique-node.status-rejected rect { fill: var(--red-fill); stroke: var(--red); stroke-dasharray: 5 3; }
+.technique-node.status-accepted rect, .technique-node.status-resolved rect, .technique-node.status-solution rect { fill: var(--data-fill); stroke: var(--green); }
+.technique-node.status-dependency rect { fill: var(--pointer-fill); stroke: var(--pointer); }
+.technique-node.selected rect, .technique-node:focus rect { stroke: var(--ink); stroke-width: 3; }
+.technique-node:focus { outline: none; }
+.technique-stack ol { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; max-height: 320px; overflow: auto; }
+.technique-stack li { padding: 10px; background: var(--surface-subtle); border: 1px solid var(--border); border-left: 3px solid var(--pointer); }
+.technique-stack .technique-top-frame { background: var(--amber-fill); border-left-color: var(--amber); }
+.technique-stack button { font: 600 12px var(--mono); padding: 6px 8px; min-height: 34px; }
+.technique-stack dl { margin: 7px 0 0; }
+.technique-stack dl div { display: grid; grid-template-columns: 95px minmax(0, 1fr); gap: 6px; }
+.technique-stack dt { color: var(--muted); }
+.technique-stack dd { margin: 0; overflow-wrap: anywhere; font-family: var(--mono); }
+.technique-table-scroll { overflow: auto; max-width: 100%; max-height: 300px; overscroll-behavior: contain; margin: 10px 0; }
+.technique-scene table { width: 100%; border-collapse: collapse; font: 11px/1.6 var(--mono); }
+.technique-scene caption { text-align: left; color: var(--muted); padding: 6px 0; }
+.technique-scene th, .technique-scene td { border: 1px solid var(--border); text-align: left; padding: 7px; white-space: nowrap; }
+.technique-scene thead th { background: var(--surface-subtle); }
+.technique-scene td.status-current, .technique-scene tr.status-current { background: var(--amber-fill); }
+.technique-scene td.status-dependency { background: var(--pointer-fill); }
+.technique-scene td.status-resolved, .technique-scene tr.status-accepted, .technique-scene tr.status-resolved, .technique-scene tr.status-solution { background: var(--data-fill); }
+.technique-scene tr.status-rejected, .technique-scene td.status-rejected { background: var(--red-fill); }
+.technique-scene [aria-pressed='true'] { outline: 2px solid var(--pointer); outline-offset: 1px; }
+.technique-scene table button, .technique-dependencies button { font: inherit; padding: 5px 8px; min-height: 34px; }
+.technique-dependencies ul { padding: 0; list-style: none; }
+.technique-dependencies li { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin-bottom: 5px; }
+[data-technique-lab] .svg-scroll { min-width: 0; overflow: auto; max-height: 850px; }
+[data-technique-lab] .lab-workspace { align-items: start; }
+[data-technique-preview] { border: 1px solid var(--border); border-radius: 6px; background: var(--surface); min-width: 0; }
+[data-technique-preview] .svg-scroll { min-width: 0; max-height: 620px; overflow: auto; }
+@media (max-width: 560px) {
+  .technique-scene { padding: 10px; }
+  .technique-stack dl div { grid-template-columns: 80px minmax(0, 1fr); }
+  .technique-scene table button, .technique-dependencies button, .technique-stack button { min-height: 40px; }
+}

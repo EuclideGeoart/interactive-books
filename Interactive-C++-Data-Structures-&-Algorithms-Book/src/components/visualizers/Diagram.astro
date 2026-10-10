@@ -1,0 +1,28 @@
+---
+import { initialState } from '../../visualizers/linked-list/model';
+import { drawLinkedList } from '../../visualizers/linked-list/diagram';
+import { pointerInspector } from '../memory/inspector';
+interface Props { id: string; compact?: boolean }
+const { id, compact = false } = Astro.props;
+const state = initialState();
+---
+<div class:list={['diagram-component', { compact }]} data-diagram data-diagram-id={id}>
+  <div class="diagram-topline">
+    <span class="diagram-caption">{compact ? 'LIVE MEMORY' : 'A CHAIN OF NODES'}</span>
+    <div class="segmented" role="group" aria-label="Diagram representation">
+      <button type="button" data-view="logical" aria-pressed="true">Logical view</button>
+      <button type="button" data-view="memory" aria-pressed="false">Memory view</button>
+    </div>
+  </div>
+  <div class="diagram-with-inspector">
+    <div class="diagram-canvas">
+      <div class="svg-scroll" tabindex="0" role="region" aria-label="Scrollable node diagram" data-svg set:html={drawLinkedList(state, id, 'logical', '0xD800')}/>
+      <p class="diagram-view-note" data-view-note>Follow the links. The nodes do not have to be neighbors in memory.</p>
+      <details class="text-fallback"><summary>Text representation</summary><code data-ascii>head → [10] → [20] → [30] → nullptr</code></details>
+    </div>
+    <details class="inspector-shell" data-inspector-shell open>
+      <summary>Inspect node &amp; references <span>Tap a node to select it</span></summary>
+      <aside class="pointer-inspector" aria-label="Pointer inspector" data-inspector set:html={pointerInspector(state, '0xD800')}/>
+    </details>
+  </div>
+</div>

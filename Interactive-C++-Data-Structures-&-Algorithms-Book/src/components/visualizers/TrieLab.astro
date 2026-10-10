@@ -1,0 +1,10 @@
+---
+import TraceLab from './TraceLab.astro';
+import source from '../../../cpp/chapter-17/Trie.hpp?raw';
+---
+<TraceLab id="trie-lab" chapter="trie" source={source} fileName="Trie.hpp" operations={[{id:'insert',label:'Insert word'},{id:'search',label:'Find complete word'},{id:'prefix',label:'Find prefix'},{id:'erase',label:'Erase / prune'}]} regions={['insert','search','walk','erase','prune']}>
+<label>Starting words<input name="words" value="cat,car,care,dog" maxlength="110" /></label>
+<label>Word / prefix<input name="word" value="car" maxlength="12" pattern="[a-z]*" /></label>
+</TraceLab>
+<p class="diagram-view-note">Up to eight starting words, each zero to twelve lowercase letters. Blank starting words means an empty trie; ε in that list denotes the empty word. A blank operation word tests the empty word or prefix.</p>
+<script>import '../../scripts/tree-labs';</script>

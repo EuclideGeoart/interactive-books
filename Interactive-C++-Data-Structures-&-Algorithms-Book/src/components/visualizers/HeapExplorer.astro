@@ -1,0 +1,18 @@
+<div class="heap-explorer" data-heap-explorer>
+  <label>Heap size: <input type="range" min="0" max="1024" value="31" data-size /></label>
+  <output data-height aria-live="polite"></output>
+  <div data-levels class="heap-levels" aria-label="Nodes per occupied level"></div>
+  <p class="fine-print">Height counts edges on the longest root-to-leaf path. Empty has no root (height −1 by this convention). Insert sifts through at most height(n+1) edges; extraction through at most height(n−1). Sift down compares children as well as parent/child, so comparisons and swaps are different counts.</p>
+  <noscript><p>1 node → height 0; 3 → 1; 7 → 2; 15 → 3; 31 → 4. Doubling the node count adds about one level.</p></noscript>
+</div>
+<script>
+  import { heapHeight } from '../../visualizers/binary-heap/model';
+  document.querySelectorAll<HTMLElement>('[data-heap-explorer]').forEach(root => {
+    const update = () => {
+      const n = Number(root.querySelector<HTMLInputElement>('[data-size]')!.value), height = heapHeight(n);
+      root.querySelector('[data-height]')!.textContent = `${n} nodes → ${n ? `height ${height}; at most ${height} edges from root to leaf` : 'empty: no path'}.`;
+      root.querySelector('[data-levels]')!.innerHTML = Array.from({length:height + 1}, (_, depth) => { const count = Math.min(2 ** depth, n - (2 ** depth - 1)); return `<div class="heap-level"><span>Level ${depth}</span><meter min="0" max="${Math.max(1, 2 ** height)}" value="${count}" aria-label="Level ${depth}: ${count} nodes"></meter><strong>${count} nodes</strong></div>`; }).join('');
+    }; root.addEventListener('input', update); update();
+  });
+</script>
+<style>.heap-explorer{border-block:1px solid var(--border);padding-block:1rem} label{display:flex;gap:1rem;flex-wrap:wrap} input{flex:1;min-width:10rem} output{display:block;margin-block:1rem;font-weight:600}.heap-levels{display:grid;gap:.4rem}:global(.heap-level){display:grid;grid-template-columns:5rem 1fr 6rem;gap:.5rem;align-items:center}:global(.heap-level meter){width:100%;accent-color:var(--green)}:global(.heap-level strong){font-size:.8rem}</style>

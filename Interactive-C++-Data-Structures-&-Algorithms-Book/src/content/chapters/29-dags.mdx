@@ -1,0 +1,90 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import Section from '../../components/book/Section.astro';
+import Callout from '../../components/book/Callout.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import GraphDagLab from '../../components/visualizers/GraphDagLab.astro';
+import GraphComplexity from '../../components/visualizers/GraphComplexity.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-29/Dag.hpp?raw';
+import main from '../../../cpp/chapter-29/main.cpp?raw';
+
+<ChapterHero number="29" title="Directed Acyclic Graphs" part="PART V / GRAPHS" overline="DEPENDENCIES WITHOUT CIRCULAR REASONING." description="A DAG describes work that depends on earlier work. Direction tells us which prerequisite comes first; acyclicity guarantees that the prerequisites can eventually be satisfied." chain="A, B → Line AB → Intersection P ← Circle C" facts={[["PROPERTY","Directed + no directed cycle"],["ORDER","Partial; often not unique"],["CHECK","O(V + E)"]]} />
+
+<Section id="mental-model" number="01" title="Construct the prerequisites first." kicker="VISUAL MENTAL MODEL">
+<StructurePreview chapter="graph-dag" id="dag-mental" operation="kahn" inputs={{preset:'geometry'}} viewLabels={{logical:'Graph view',memory:'Storage view'}} diagramNote="A dependency arrow points from prerequisite to dependent. Select a vertex to inspect incoming and outgoing dependencies." />
+A and B define Line AB. Line AB and Circle C define Intersection P. Neither endpoint depends on the line that it defines. This graph is **directed** and has **no directed cycle**. Both properties are necessary: drawing arrowheads alone does not make a DAG.
+</Section>
+
+<Section id="intuition" number="02" title="A partial order leaves some choices open." kicker="THE INTUITION">
+A **source** has indegree zero; a **sink** has outdegree zero. A is an immediate predecessor of Line AB; Line AB is a successor of A. Reachability extends this relationship transitively: A is an ancestor prerequisite of Intersection P even without a direct edge to P.
+
+A and B may be created in either order. Neither must precede the other, but both must precede Line AB. This is a **partial order**. A topological order chooses one linear sequence consistent with it. Disconnected vertices are allowed, and an empty directed graph is a DAG. A self-loop is already a directed cycle.
+
+Review <a href={`${import.meta.env.BASE_URL}chapters/28-directed-graphs/`}>directed reachability in Chapter 28</a>. Unlike a tree, a DAG may give one dependent several incoming prerequisites. A graph vertex has no implicit hierarchical parent.
+</Section>
+
+<Section id="memory" number="03" title="IDs connect records; they do not own objects." kicker="STRUCTURE / MEMORY LAYOUT">
+The canonical graph owns an edge vector and an adjacency vector of **edge indices**. An edge stores `from` and `to` vertex IDs. An ID names a slot, not a memory address. The logical graph and storage rows derive from that same data.
+
+A dependency edge carries ordering meaning; it does not imply C++ object ownership. Deleting a task record, freeing a geometry object, and removing its dependency edges are separate engineering decisions. This example borrows a const graph throughout the check; mutation during a trace is unsupported. The UI admits eight vertices, self-loops, and no parallel pairs. The native graph accepts parallel edge records and counts every record consistently.
+</Section>
+
+<Section id="operations" number="04" title="Prove that every dependency can be retired." kicker="INTERACTIVE OPERATIONS">
+<GraphDagLab id="dag-lab" title="Check the DAG" />
+The acyclicity check uses Kahn's mechanism, developed in <a href={`${import.meta.env.BASE_URL}chapters/30-topological-sort/`}>Chapter 30</a>. Count incoming dependencies, queue the sources, then retire outgoing edges after emitting ready work. If the queue empties before every vertex is emitted, a directed cycle exists.
+
+Choose **Geometry**, **Build dependencies**, **Spreadsheet calculation**, **Package dependencies**, or **Task scheduling**. In every preset the arrow means prerequisite → dependent. Package tools sometimes display dependency arrows in the reverse convention; read the meaning, not just the arrow shape.
+</Section>
+
+<Section id="implementation" number="05" title="Expose sources, sinks and an acyclicity predicate." kicker="C++ IMPLEMENTATION">
+<CanonicalSource source={source} main={main} fileName="Dag.hpp" chapter="29" />
+<p>Keep <code>Dag.hpp</code> and <code>main.cpp</code> in <code>cpp/chapter-29/</code>; keep <a href={`${import.meta.env.BASE_URL}source/chapter-30/Kahn.hpp`} download>Kahn.hpp</a> in <code>cpp/chapter-30/</code>. Compile from chapter-29. The operation lab shows that complete checker, including its queue and state arrays.</p>
+The graph validates every endpoint. Returned vectors own their IDs. Standard containers manage allocations and cleanup; the observer used in Chapter 30 receives a const state after each tagged statement. A caller can omit that observer entirely.
+</Section>
+
+<Section id="pointer-trace" number="06" title="Read the arrows as satisfied obligations." kicker="CODE + VISUALIZATION TRACE">
+Step to the first emission of A. Line AB still has both incoming edges until A → Line AB is retired. After that decrement it has one remaining prerequisite, B. Emitting B and retiring B → Line AB makes the line ready. Circle C can be processed independently, but P must wait for both the line and circle.
+
+Selection inspects arrays and adjacency without changing the algorithm. Previous restores the exact earlier snapshot, including counts and retired edges. Storage view does not invent pointer fields for an ID-based representation.
+</Section>
+
+<Section id="invariants" number="07" title="Acyclicity belongs to the entire directed graph." kicker="LIVE INVARIANTS">
+A residual indegree equals the number of counted incoming edges that have not yet been retired. Every ready-queue entry has zero residual indegree. Every emitted vertex had all its prerequisites satisfied. Acyclicity remains pending until the check completes; it passes only if the output contains all V vertices.
+
+A completed prefix is still useful evidence when a cycle blocks the rest, but it is not a complete topological order. Some residual vertices may merely depend on the cycle. Use <a href={`${import.meta.env.BASE_URL}chapters/32-cycle-detection/`}>Chapter 32's active-stack method</a> to recognize a back edge directly.
+</Section>
+
+<Section id="complexity" number="08" title="Visit vertices and dependency edges." kicker="COMPLEXITY EXPLORER">
+<GraphComplexity kind="kahn" />
+The checker counts E edges, removes each once, and queues/emits each of V vertices once: **O(V + E)** time and **O(V + E)** auxiliary state in this instrumented teaching implementation. A minimal checker can omit counted/removed diagnostic arrays and use O(V) algorithm space beyond adjacency. A matrix-based scan instead pays O(V²).
+</Section>
+
+<Section id="break-it" number="09" title="Make a dependency depend on its own result." kicker="COMMON MISTAKES / BREAK-IT MODE">
+In the lab choose **Cycle with downstream blocked work**, then After. B depends on C and C depends on B. D depends on that cycle and is blocked too, while independent A and E can still be emitted. The final acyclicity invariant fails deliberately. Try the self-loop and compare it with the valid disconnected DAG.
+
+Do not confuse a diamond with a cycle: A → B → D and A → C → D give two forward paths with no return path. Do not mistake a graph's geometric crossing for a vertex or dependency.
+</Section>
+
+<Section id="analogy" number="10" title="A recipe with independent preparations." kicker="REAL-WORLD ANALOGY">
+You can prepare a sauce and boil pasta in either order or concurrently, but both must finish before plating. Requiring the plated dish before preparing its sauce creates a circular prerequisite. The graph captures what must happen before what; it does not by itself specify duration, resource capacity, or failure handling.
+</Section>
+
+<Section id="engineering" number="11" title="Dependencies support incremental recomputation." kicker="ENGINEERING INSIGHT">
+When endpoint A changes, Line AB and then Intersection P may need recomputation; Circle C need not change. A system can first mark the affected successor closure dirty, then evaluate those dirty nodes when their prerequisites are available. The whole graph's topological order can be cached while topology stays unchanged.
+
+Build systems combine dependency ordering with content hashes, cached artifacts and worker limits. Spreadsheets track formula dependencies; package managers add version constraints; geometry engines must also represent failed or undefined constructions. A DAG alone solves none of those extra policies. Production engines need not perform a complete topological sort on every value update.
+
+Changing topology is a different operation from changing a value. Adding an edge can introduce a cycle and invalidate a cached order. A system must reject, diagnose or explicitly support that situation before treating the new graph as a DAG.
+</Section>
+
+<Section id="exercises" number="12" title="Reason about dependency direction." kicker="EXERCISES / CHALLENGES">
+<div className="exercise"><h3>Another valid order</h3><p>Can Circle C precede both A and B?</p><details><summary>Reveal reasoning</summary><p>Yes. It has no incoming dependencies. It must precede Intersection P, but A, B and Circle C are mutually unordered sources.</p></details></div>
+<div className="exercise"><h3>One added edge</h3><p>Would Intersection P → A preserve the DAG property?</p><details><summary>Reveal reasoning</summary><p>No. A → Line AB → Intersection P → A is a directed cycle.</p></details></div>
+<div className="exercise"><h3>Dirty closure</h3><p>If Circle C changes, should Line AB be recomputed?</p><details><summary>Reveal reasoning</summary><p>Not from these dependencies. P depends on Circle C; Line AB does not. Reachability follows outgoing arrows only.</p></details></div>
+</Section>
+
+<Section id="summary" number="13" title="Ordering constraints become executable structure." kicker="CHAPTER SUMMARY">
+<div className="summary-panel"><ul><li>A DAG is directed and contains no directed cycle.</li><li>Sources have no prerequisites; sinks have no dependents.</li><li>Partial order permits several valid execution sequences.</li><li>Dependency edges are distinct from ownership and layout relationships.</li><li>Recomputation policy builds on the graph; it is not the graph itself.</li></ul><button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete ✓</button></div>
+<ChapterPagination number="29" />
+</Section>

@@ -1,0 +1,13 @@
+---
+import TraceLab from './TraceLab.astro';
+import source from '../../../cpp/chapter-21/OpenAddressing.hpp?raw';
+---
+<TraceLab id="open-addressing-lab" chapter="open-addressing" source={source} fileName="OpenAddressing.hpp" operations={[{id:'insert',label:'Insert / update'},{id:'find',label:'Find'},{id:'contains',label:'Contains'},{id:'erase',label:'Erase → tombstone'},{id:'rehash',label:'Rehash'}]} regions={['insert','find','erase','rehash']} diagramNote="Select a slot. Memory view shows the actual indexed storage, not native byte offsets. Empty and tombstone have different lookup behavior.">
+<label>Starting keys<input name="keys" value="a,i,q" maxlength="430" /></label>
+<label>Erase before trace<input name="erased" value="a" maxlength="430" /></label>
+<label>Capacity<input name="capacity" type="number" value="8" min="1" max="32" /></label>
+<label>Key<input name="key" value="q" minlength="1" maxlength="12" pattern="[a-z]{1,12}" required /></label>
+<label>Value<input name="value" type="number" value="9" min="-999" max="999" /></label>
+<label>New capacity<input name="requested" type="number" value="16" min="1" max="32" /></label>
+</TraceLab>
+<script>import '../../scripts/hash-labs';</script>

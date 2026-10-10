@@ -1,0 +1,758 @@
+[
+  {
+    "slug": "03-doubly-linked-list",
+    "width": 1440,
+    "height": 1000,
+    "theme": "light",
+    "view": "logical",
+    "step": 4,
+    "path": "tests/visual/milestone-04/03-doubly-linked-list-1440-light-logical.png"
+  },
+  {
+    "slug": "03-doubly-linked-list",
+    "width": 1440,
+    "height": 1000,
+    "theme": "dark",
+    "view": "memory",
+    "step": 4,
+    "path": "tests/visual/milestone-04/03-doubly-linked-list-1440-dark-memory.png"
+  },
+  {
+    "slug": "04-memory-pool",
+    "width": 1440,
+    "height": 1000,
+    "theme": "light",
+    "view": "logical",
+    "step": 3,
+    "path": "tests/visual/milestone-04/04-memory-pool-1440-light-logical.png"
+  },
+  {
+    "slug": "04-memory-pool",
+    "width": 1440,
+    "height": 1000,
+    "theme": "dark",
+    "view": "memory",
+    "step": 3,
+    "path": "tests/visual/milestone-04/04-memory-pool-1440-dark-memory.png"
+  },
+  {
+    "slug": "07-circular-buffer",
+    "width": 1440,
+    "height": 1000,
+    "theme": "light",
+    "view": "logical",
+    "step": 2,
+    "path": "tests/visual/milestone-04/07-circular-buffer-1440-light-logical.png"
+  },
+  {
+    "slug": "07-circular-buffer",
+    "width": 1440,
+    "height": 1000,
+    "theme": "dark",
+    "view": "memory",
+    "step": 2,
+    "path": "tests/visual/milestone-04/07-circular-buffer-1440-dark-memory.png"
+  },
+  {
+    "slug": "09-binary-heap",
+    "width": 1440,
+    "height": 1000,
+    "theme": "light",
+    "view": "logical",
+    "step": 7,
+    "path": "tests/visual/milestone-04/09-binary-heap-1440-light-logical.png"
+  },
+  {
+    "slug": "09-binary-heap",
+    "width": 1440,
+    "height": 1000,
+    "theme": "dark",
+    "view": "memory",
+    "step": 7,
+    "path": "tests/visual/milestone-04/09-binary-heap-1440-dark-memory.png"
+  },
+  {
+    "slug": "14-avl-trees",
+    "width": 1440,
+    "height": 1000,
+    "theme": "light",
+    "view": "logical",
+    "step": 14,
+    "path": "tests/visual/milestone-04/14-avl-trees-1440-light-logical.png"
+  },
+  {
+    "slug": "14-avl-trees",
+    "width": 1440,
+    "height": 1000,
+    "theme": "dark",
+    "view": "memory",
+    "step": 14,
+    "path": "tests/visual/milestone-04/14-avl-trees-1440-dark-memory.png"
+  },
+  {
+    "slug": "16-b-trees",
+    "width": 1440,
+    "height": 1000,
+    "theme": "light",
+    "view": "logical",
+    "step": 17,
+    "path": "tests/visual/milestone-04/16-b-trees-1440-light-logical.png"
+  },
+  {
+    "slug": "16-b-trees",
+    "width": 1440,
+    "height": 1000,
+    "theme": "dark",
+    "view": "memory",
+    "step": 17,
+    "path": "tests/visual/milestone-04/16-b-trees-1440-dark-memory.png"
+  },
+  {
+    "slug": "17-tries",
+    "width": 1440,
+    "height": 1000,
+    "theme": "light",
+    "view": "logical",
+    "step": 5,
+    "path": "tests/visual/milestone-04/17-tries-1440-light-logical.png"
+  },
+  {
+    "slug": "17-tries",
+    "width": 1440,
+    "height": 1000,
+    "theme": "dark",
+    "view": "memory",
+    "step": 5,
+    "path": "tests/visual/milestone-04/17-tries-1440-dark-memory.png"
+  },
+  {
+    "slug": "20-separate-chaining",
+    "width": 1440,
+    "height": 1000,
+    "theme": "light",
+    "view": "logical",
+    "step": 20,
+    "path": "tests/visual/milestone-04/20-separate-chaining-1440-light-logical.png"
+  },
+  {
+    "slug": "20-separate-chaining",
+    "width": 1440,
+    "height": 1000,
+    "theme": "dark",
+    "view": "memory",
+    "step": 20,
+    "path": "tests/visual/milestone-04/20-separate-chaining-1440-dark-memory.png"
+  },
+  {
+    "slug": "21-open-addressing",
+    "width": 1440,
+    "height": 1000,
+    "theme": "light",
+    "view": "logical",
+    "step": 3,
+    "path": "tests/visual/milestone-04/21-open-addressing-1440-light-logical.png"
+  },
+  {
+    "slug": "21-open-addressing",
+    "width": 1440,
+    "height": 1000,
+    "theme": "dark",
+    "view": "memory",
+    "step": 3,
+    "path": "tests/visual/milestone-04/21-open-addressing-1440-dark-memory.png"
+  },
+  {
+    "slug": "22-robin-hood-hashing",
+    "width": 1440,
+    "height": 1000,
+    "theme": "light",
+    "view": "logical",
+    "step": 9,
+    "path": "tests/visual/milestone-04/22-robin-hood-hashing-1440-light-logical.png"
+  },
+  {
+    "slug": "22-robin-hood-hashing",
+    "width": 1440,
+    "height": 1000,
+    "theme": "dark",
+    "view": "memory",
+    "step": 9,
+    "path": "tests/visual/milestone-04/22-robin-hood-hashing-1440-dark-memory.png"
+  },
+  {
+    "slug": "25-adjacency-list-matrix",
+    "width": 1440,
+    "height": 1000,
+    "theme": "light",
+    "view": "logical",
+    "step": 2,
+    "path": "tests/visual/milestone-04/25-adjacency-list-matrix-1440-light-logical.png"
+  },
+  {
+    "slug": "25-adjacency-list-matrix",
+    "width": 1440,
+    "height": 1000,
+    "theme": "dark",
+    "view": "memory",
+    "step": 2,
+    "path": "tests/visual/milestone-04/25-adjacency-list-matrix-1440-dark-memory.png"
+  },
+  {
+    "slug": "30-topological-sort",
+    "width": 1440,
+    "height": 1000,
+    "theme": "light",
+    "view": "logical",
+    "step": 14,
+    "path": "tests/visual/milestone-04/30-topological-sort-1440-light-logical.png"
+  },
+  {
+    "slug": "30-topological-sort",
+    "width": 1440,
+    "height": 1000,
+    "theme": "dark",
+    "view": "memory",
+    "step": 14,
+    "path": "tests/visual/milestone-04/30-topological-sort-1440-dark-memory.png"
+  },
+  {
+    "slug": "33-dijkstra",
+    "width": 1440,
+    "height": 1000,
+    "theme": "light",
+    "view": "logical",
+    "step": 25,
+    "path": "tests/visual/milestone-04/33-dijkstra-1440-light-logical.png"
+  },
+  {
+    "slug": "33-dijkstra",
+    "width": 1440,
+    "height": 1000,
+    "theme": "dark",
+    "view": "memory",
+    "step": 25,
+    "path": "tests/visual/milestone-04/33-dijkstra-1440-dark-memory.png"
+  },
+  {
+    "slug": "36-union-find",
+    "width": 1440,
+    "height": 1000,
+    "theme": "light",
+    "view": "logical",
+    "step": 3,
+    "path": "tests/visual/milestone-04/36-union-find-1440-light-logical.png"
+  },
+  {
+    "slug": "36-union-find",
+    "width": 1440,
+    "height": 1000,
+    "theme": "dark",
+    "view": "memory",
+    "step": 3,
+    "path": "tests/visual/milestone-04/36-union-find-1440-dark-memory.png"
+  },
+  {
+    "slug": "03-doubly-linked-list",
+    "width": 1024,
+    "height": 900,
+    "theme": "light",
+    "view": "logical",
+    "step": 4,
+    "path": "tests/visual/milestone-04/03-doubly-linked-list-1024-light-logical.png"
+  },
+  {
+    "slug": "03-doubly-linked-list",
+    "width": 1024,
+    "height": 900,
+    "theme": "dark",
+    "view": "memory",
+    "step": 4,
+    "path": "tests/visual/milestone-04/03-doubly-linked-list-1024-dark-memory.png"
+  },
+  {
+    "slug": "04-memory-pool",
+    "width": 1024,
+    "height": 900,
+    "theme": "light",
+    "view": "logical",
+    "step": 3,
+    "path": "tests/visual/milestone-04/04-memory-pool-1024-light-logical.png"
+  },
+  {
+    "slug": "04-memory-pool",
+    "width": 1024,
+    "height": 900,
+    "theme": "dark",
+    "view": "memory",
+    "step": 3,
+    "path": "tests/visual/milestone-04/04-memory-pool-1024-dark-memory.png"
+  },
+  {
+    "slug": "07-circular-buffer",
+    "width": 1024,
+    "height": 900,
+    "theme": "light",
+    "view": "logical",
+    "step": 2,
+    "path": "tests/visual/milestone-04/07-circular-buffer-1024-light-logical.png"
+  },
+  {
+    "slug": "07-circular-buffer",
+    "width": 1024,
+    "height": 900,
+    "theme": "dark",
+    "view": "memory",
+    "step": 2,
+    "path": "tests/visual/milestone-04/07-circular-buffer-1024-dark-memory.png"
+  },
+  {
+    "slug": "09-binary-heap",
+    "width": 1024,
+    "height": 900,
+    "theme": "light",
+    "view": "logical",
+    "step": 7,
+    "path": "tests/visual/milestone-04/09-binary-heap-1024-light-logical.png"
+  },
+  {
+    "slug": "09-binary-heap",
+    "width": 1024,
+    "height": 900,
+    "theme": "dark",
+    "view": "memory",
+    "step": 7,
+    "path": "tests/visual/milestone-04/09-binary-heap-1024-dark-memory.png"
+  },
+  {
+    "slug": "14-avl-trees",
+    "width": 1024,
+    "height": 900,
+    "theme": "light",
+    "view": "logical",
+    "step": 14,
+    "path": "tests/visual/milestone-04/14-avl-trees-1024-light-logical.png"
+  },
+  {
+    "slug": "14-avl-trees",
+    "width": 1024,
+    "height": 900,
+    "theme": "dark",
+    "view": "memory",
+    "step": 14,
+    "path": "tests/visual/milestone-04/14-avl-trees-1024-dark-memory.png"
+  },
+  {
+    "slug": "16-b-trees",
+    "width": 1024,
+    "height": 900,
+    "theme": "light",
+    "view": "logical",
+    "step": 17,
+    "path": "tests/visual/milestone-04/16-b-trees-1024-light-logical.png"
+  },
+  {
+    "slug": "16-b-trees",
+    "width": 1024,
+    "height": 900,
+    "theme": "dark",
+    "view": "memory",
+    "step": 17,
+    "path": "tests/visual/milestone-04/16-b-trees-1024-dark-memory.png"
+  },
+  {
+    "slug": "17-tries",
+    "width": 1024,
+    "height": 900,
+    "theme": "light",
+    "view": "logical",
+    "step": 5,
+    "path": "tests/visual/milestone-04/17-tries-1024-light-logical.png"
+  },
+  {
+    "slug": "17-tries",
+    "width": 1024,
+    "height": 900,
+    "theme": "dark",
+    "view": "memory",
+    "step": 5,
+    "path": "tests/visual/milestone-04/17-tries-1024-dark-memory.png"
+  },
+  {
+    "slug": "20-separate-chaining",
+    "width": 1024,
+    "height": 900,
+    "theme": "light",
+    "view": "logical",
+    "step": 20,
+    "path": "tests/visual/milestone-04/20-separate-chaining-1024-light-logical.png"
+  },
+  {
+    "slug": "20-separate-chaining",
+    "width": 1024,
+    "height": 900,
+    "theme": "dark",
+    "view": "memory",
+    "step": 20,
+    "path": "tests/visual/milestone-04/20-separate-chaining-1024-dark-memory.png"
+  },
+  {
+    "slug": "21-open-addressing",
+    "width": 1024,
+    "height": 900,
+    "theme": "light",
+    "view": "logical",
+    "step": 3,
+    "path": "tests/visual/milestone-04/21-open-addressing-1024-light-logical.png"
+  },
+  {
+    "slug": "21-open-addressing",
+    "width": 1024,
+    "height": 900,
+    "theme": "dark",
+    "view": "memory",
+    "step": 3,
+    "path": "tests/visual/milestone-04/21-open-addressing-1024-dark-memory.png"
+  },
+  {
+    "slug": "22-robin-hood-hashing",
+    "width": 1024,
+    "height": 900,
+    "theme": "light",
+    "view": "logical",
+    "step": 9,
+    "path": "tests/visual/milestone-04/22-robin-hood-hashing-1024-light-logical.png"
+  },
+  {
+    "slug": "22-robin-hood-hashing",
+    "width": 1024,
+    "height": 900,
+    "theme": "dark",
+    "view": "memory",
+    "step": 9,
+    "path": "tests/visual/milestone-04/22-robin-hood-hashing-1024-dark-memory.png"
+  },
+  {
+    "slug": "25-adjacency-list-matrix",
+    "width": 1024,
+    "height": 900,
+    "theme": "light",
+    "view": "logical",
+    "step": 2,
+    "path": "tests/visual/milestone-04/25-adjacency-list-matrix-1024-light-logical.png"
+  },
+  {
+    "slug": "25-adjacency-list-matrix",
+    "width": 1024,
+    "height": 900,
+    "theme": "dark",
+    "view": "memory",
+    "step": 2,
+    "path": "tests/visual/milestone-04/25-adjacency-list-matrix-1024-dark-memory.png"
+  },
+  {
+    "slug": "30-topological-sort",
+    "width": 1024,
+    "height": 900,
+    "theme": "light",
+    "view": "logical",
+    "step": 14,
+    "path": "tests/visual/milestone-04/30-topological-sort-1024-light-logical.png"
+  },
+  {
+    "slug": "30-topological-sort",
+    "width": 1024,
+    "height": 900,
+    "theme": "dark",
+    "view": "memory",
+    "step": 14,
+    "path": "tests/visual/milestone-04/30-topological-sort-1024-dark-memory.png"
+  },
+  {
+    "slug": "33-dijkstra",
+    "width": 1024,
+    "height": 900,
+    "theme": "light",
+    "view": "logical",
+    "step": 25,
+    "path": "tests/visual/milestone-04/33-dijkstra-1024-light-logical.png"
+  },
+  {
+    "slug": "33-dijkstra",
+    "width": 1024,
+    "height": 900,
+    "theme": "dark",
+    "view": "memory",
+    "step": 25,
+    "path": "tests/visual/milestone-04/33-dijkstra-1024-dark-memory.png"
+  },
+  {
+    "slug": "36-union-find",
+    "width": 1024,
+    "height": 900,
+    "theme": "light",
+    "view": "logical",
+    "step": 3,
+    "path": "tests/visual/milestone-04/36-union-find-1024-light-logical.png"
+  },
+  {
+    "slug": "36-union-find",
+    "width": 1024,
+    "height": 900,
+    "theme": "dark",
+    "view": "memory",
+    "step": 3,
+    "path": "tests/visual/milestone-04/36-union-find-1024-dark-memory.png"
+  },
+  {
+    "slug": "03-doubly-linked-list",
+    "width": 390,
+    "height": 844,
+    "theme": "light",
+    "view": "logical",
+    "step": 4,
+    "path": "tests/visual/milestone-04/03-doubly-linked-list-390-light-logical.png"
+  },
+  {
+    "slug": "03-doubly-linked-list",
+    "width": 390,
+    "height": 844,
+    "theme": "dark",
+    "view": "memory",
+    "step": 4,
+    "path": "tests/visual/milestone-04/03-doubly-linked-list-390-dark-memory.png"
+  },
+  {
+    "slug": "04-memory-pool",
+    "width": 390,
+    "height": 844,
+    "theme": "light",
+    "view": "logical",
+    "step": 3,
+    "path": "tests/visual/milestone-04/04-memory-pool-390-light-logical.png"
+  },
+  {
+    "slug": "04-memory-pool",
+    "width": 390,
+    "height": 844,
+    "theme": "dark",
+    "view": "memory",
+    "step": 3,
+    "path": "tests/visual/milestone-04/04-memory-pool-390-dark-memory.png"
+  },
+  {
+    "slug": "07-circular-buffer",
+    "width": 390,
+    "height": 844,
+    "theme": "light",
+    "view": "logical",
+    "step": 2,
+    "path": "tests/visual/milestone-04/07-circular-buffer-390-light-logical.png"
+  },
+  {
+    "slug": "07-circular-buffer",
+    "width": 390,
+    "height": 844,
+    "theme": "dark",
+    "view": "memory",
+    "step": 2,
+    "path": "tests/visual/milestone-04/07-circular-buffer-390-dark-memory.png"
+  },
+  {
+    "slug": "09-binary-heap",
+    "width": 390,
+    "height": 844,
+    "theme": "light",
+    "view": "logical",
+    "step": 7,
+    "path": "tests/visual/milestone-04/09-binary-heap-390-light-logical.png"
+  },
+  {
+    "slug": "09-binary-heap",
+    "width": 390,
+    "height": 844,
+    "theme": "dark",
+    "view": "memory",
+    "step": 7,
+    "path": "tests/visual/milestone-04/09-binary-heap-390-dark-memory.png"
+  },
+  {
+    "slug": "14-avl-trees",
+    "width": 390,
+    "height": 844,
+    "theme": "light",
+    "view": "logical",
+    "step": 14,
+    "path": "tests/visual/milestone-04/14-avl-trees-390-light-logical.png"
+  },
+  {
+    "slug": "14-avl-trees",
+    "width": 390,
+    "height": 844,
+    "theme": "dark",
+    "view": "memory",
+    "step": 14,
+    "path": "tests/visual/milestone-04/14-avl-trees-390-dark-memory.png"
+  },
+  {
+    "slug": "16-b-trees",
+    "width": 390,
+    "height": 844,
+    "theme": "light",
+    "view": "logical",
+    "step": 17,
+    "path": "tests/visual/milestone-04/16-b-trees-390-light-logical.png"
+  },
+  {
+    "slug": "16-b-trees",
+    "width": 390,
+    "height": 844,
+    "theme": "dark",
+    "view": "memory",
+    "step": 17,
+    "path": "tests/visual/milestone-04/16-b-trees-390-dark-memory.png"
+  },
+  {
+    "slug": "17-tries",
+    "width": 390,
+    "height": 844,
+    "theme": "light",
+    "view": "logical",
+    "step": 5,
+    "path": "tests/visual/milestone-04/17-tries-390-light-logical.png"
+  },
+  {
+    "slug": "17-tries",
+    "width": 390,
+    "height": 844,
+    "theme": "dark",
+    "view": "memory",
+    "step": 5,
+    "path": "tests/visual/milestone-04/17-tries-390-dark-memory.png"
+  },
+  {
+    "slug": "20-separate-chaining",
+    "width": 390,
+    "height": 844,
+    "theme": "light",
+    "view": "logical",
+    "step": 20,
+    "path": "tests/visual/milestone-04/20-separate-chaining-390-light-logical.png"
+  },
+  {
+    "slug": "20-separate-chaining",
+    "width": 390,
+    "height": 844,
+    "theme": "dark",
+    "view": "memory",
+    "step": 20,
+    "path": "tests/visual/milestone-04/20-separate-chaining-390-dark-memory.png"
+  },
+  {
+    "slug": "21-open-addressing",
+    "width": 390,
+    "height": 844,
+    "theme": "light",
+    "view": "logical",
+    "step": 3,
+    "path": "tests/visual/milestone-04/21-open-addressing-390-light-logical.png"
+  },
+  {
+    "slug": "21-open-addressing",
+    "width": 390,
+    "height": 844,
+    "theme": "dark",
+    "view": "memory",
+    "step": 3,
+    "path": "tests/visual/milestone-04/21-open-addressing-390-dark-memory.png"
+  },
+  {
+    "slug": "22-robin-hood-hashing",
+    "width": 390,
+    "height": 844,
+    "theme": "light",
+    "view": "logical",
+    "step": 9,
+    "path": "tests/visual/milestone-04/22-robin-hood-hashing-390-light-logical.png"
+  },
+  {
+    "slug": "22-robin-hood-hashing",
+    "width": 390,
+    "height": 844,
+    "theme": "dark",
+    "view": "memory",
+    "step": 9,
+    "path": "tests/visual/milestone-04/22-robin-hood-hashing-390-dark-memory.png"
+  },
+  {
+    "slug": "25-adjacency-list-matrix",
+    "width": 390,
+    "height": 844,
+    "theme": "light",
+    "view": "logical",
+    "step": 2,
+    "path": "tests/visual/milestone-04/25-adjacency-list-matrix-390-light-logical.png"
+  },
+  {
+    "slug": "25-adjacency-list-matrix",
+    "width": 390,
+    "height": 844,
+    "theme": "dark",
+    "view": "memory",
+    "step": 2,
+    "path": "tests/visual/milestone-04/25-adjacency-list-matrix-390-dark-memory.png"
+  },
+  {
+    "slug": "30-topological-sort",
+    "width": 390,
+    "height": 844,
+    "theme": "light",
+    "view": "logical",
+    "step": 14,
+    "path": "tests/visual/milestone-04/30-topological-sort-390-light-logical.png"
+  },
+  {
+    "slug": "30-topological-sort",
+    "width": 390,
+    "height": 844,
+    "theme": "dark",
+    "view": "memory",
+    "step": 14,
+    "path": "tests/visual/milestone-04/30-topological-sort-390-dark-memory.png"
+  },
+  {
+    "slug": "33-dijkstra",
+    "width": 390,
+    "height": 844,
+    "theme": "light",
+    "view": "logical",
+    "step": 25,
+    "path": "tests/visual/milestone-04/33-dijkstra-390-light-logical.png"
+  },
+  {
+    "slug": "33-dijkstra",
+    "width": 390,
+    "height": 844,
+    "theme": "dark",
+    "view": "memory",
+    "step": 25,
+    "path": "tests/visual/milestone-04/33-dijkstra-390-dark-memory.png"
+  },
+  {
+    "slug": "36-union-find",
+    "width": 390,
+    "height": 844,
+    "theme": "light",
+    "view": "logical",
+    "step": 3,
+    "path": "tests/visual/milestone-04/36-union-find-390-light-logical.png"
+  },
+  {
+    "slug": "36-union-find",
+    "width": 390,
+    "height": 844,
+    "theme": "dark",
+    "view": "memory",
+    "step": 3,
+    "path": "tests/visual/milestone-04/36-union-find-390-dark-memory.png"
+  }
+]

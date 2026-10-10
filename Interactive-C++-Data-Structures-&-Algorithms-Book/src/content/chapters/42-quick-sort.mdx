@@ -1,0 +1,124 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import AdvancedSortLab from '../../components/visualizers/AdvancedSortLab.astro';
+import SortingComplexity from '../../components/visualizers/SortingComplexity.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-42/QuickSort.hpp?raw';
+import main from '../../../cpp/chapter-42/main.cpp?raw';
+
+<ChapterHero number="42" title="Quick sort" part="PART VI / SEARCHING & SORTING" overline="ONE PIVOT. TWO STRICTLY SMALLER RANGES." description="Partition in place around a last-element Lomuto pivot, then recurse on the ranges that exclude it." chain="[4 2 5 1 | 3 pivot] → [2 1 | 3 | 4 5]" facts={[["Partition", "Lomuto · last element"], ["Average / worst", "O(n log n) / O(n²)"], ["Swap workspace", "O(1), plus recursive stack"], ["Stability", "Not guaranteed"]]} />
+
+<Section id="mental-model" number="01" title="The pivot separates two kinds of unfinished work." kicker="VISUAL MENTAL MODEL">
+
+Choose the final record in `[low, high)` as pivot. Scan the other records with j. Index i points to the next slot available in the “less than or equal to pivot” region. A successful comparison swaps the scanned record into i, then increments i. Once scanning ends, swap the pivot into i.
+
+<StructurePreview chapter="quick-sort" id="quick-sort-preview" operation="sort" inputs={{values:'4,2,5,1,2,3'}} diagramNote="Lomuto uses i as the next ≤ pivot slot, j as the scan index, and high−1 as the saved pivot position." />
+
+The placed pivot is at its final index. The regions on either side need their own sorting; partitioning does not sort either region internally.
+
+</Section>
+
+<Section id="intuition" number="02" title="A final pivot gives two independent subproblems." kicker="THE INTUITION">
+
+All records in `[low, i)` are no greater than the pivot. After placement, all records in `(i, high)` are greater. Sorting `[low, i)` and `[i+1, high)` independently completes the range. Neither recursive call includes the pivot, so both are strictly shorter.
+
+This is one explicit Lomuto variant: last-element pivot, non-strict `<=` comparison, half-open bounds and i as the next free left slot. Do not combine its bounds with a Hoare-partition return value; those schemes make different promises.
+
+</Section>
+
+<Section id="memory" number="03" title="In-place partitioning still has a call stack." kicker="STRUCTURE / STORAGE LAYOUT">
+
+All exchanges modify the one owned vector. The algorithm uses a saved pivot key, indices and O(1) temporary swap storage, with no n-record sorting buffer. This is the usual in-place partitioning claim. Recursive quicksort additionally uses average O(log n), worst O(n), call-stack space for this unoptimized last-pivot policy.
+
+The browser's immutable history and the explicit diagnostic stack of ranges are excluded from algorithm workspace, as is ownership of the input vector. The complete observer implementation therefore allocates diagnostic state even though its partition algorithm needs constant extra storage. It does not promise constant total process memory or worst-case logarithmic recursion.
+
+</Section>
+
+<Section id="operations" number="04" title="Make every partition decision visible." kicker="INTERACTIVE OPERATIONS">
+
+<AdvancedSortLab kind="quick" />
+
+Start with the default mixed input. Locate Pivot, Compare, Swap, Grow, Advance and Place. Even swapping an index with itself is an executed swap in this canonical version and counts as two array writes.
+
+Use sorted input and all equal input to create pathological partitions. Use `2,2,1` to witness instability: moving the final 1 forward reverses the two 2 identities. Negative values and signed 32-bit extrema are supported. Blank and singleton inputs hit the base case without reading a pivot.
+
+</Section>
+
+<Section id="implementation" number="05" title="One source defines the partition scheme." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="QuickSort.hpp" chapter="42" />
+
+The header and main.cpp are standalone; save them beside one another. `quick_sort::sort(values)` runs the correct algorithm. The optional Fault enum selects guarded teaching experiments, and the optional observer reads each tagged snapshot without owning or modifying the algorithm.
+
+The size limit of 32 records bounds educational trace and recursion size. Index arithmetic uses half-open nonnegative ranges. The canonical code compares keys directly and never computes their difference. The strict-shrink construction handles empty children and all-equal inputs without infinite recursion.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="The <= region grows only after its swap." kicker="CODE + VISUALIZATION TRACE">
+
+Pivot saves both the key used for comparisons and the identity that currently occupies high−1. Scan tests whether j is still before that pivot. Compare tests the current key against the saved pivot key. A true comparison executes Swap before Grow increments i. Advance increments j whether or not a swap happened.
+
+Place exchanges input[i] with the saved final slot and updates the visible pivot index. The partition invariant is now established. Recursive Enter states show each child range; Leave restores the range that just returned, clearing obsolete child cursors. Source stepping never jumps directly from “smaller” to a magically sorted partition.
+
+</Section>
+
+<Section id="invariants" number="07" title="Partition correctness and termination are different checks." kicker="INVARIANTS">
+
+The pivot identity must remain at the final input slot throughout scanning. Every scan access must satisfy j less than high−1. After placement, left keys are ≤ pivot and right keys are > pivot. All swaps preserve the input's identity permutation.
+
+Each recursive child excludes the pivot and has smaller length than its parent. Empty ranges are valid children. The diagnostic no-progress mode reports a failure before making the invalid recursive call. Ascending order is checked at completion; stability is deliberately not promised.
+
+</Section>
+
+<Section id="complexity" number="08" title="The same code can build a shallow or deep recursion tree." kicker="COMPLEXITY EXPLORER">
+
+<SortingComplexity chapter="42" />
+
+A balanced pivot splits work into similarly sized children, giving O(n log n) comparisons. A smallest or largest last pivot leaves one child of length n−1, yielding `(n−1)+(n−2)+…+1` comparisons. For 32 sorted or equal keys the lab records 496 key comparisons and depth 32, including the base-case calls.
+
+Average O(n log n) assumes an input/pivot distribution that gives reasonable splits. This deterministic last-pivot implementation does not guarantee that distribution. Passes count nontrivial partitions; maximum recursion counts simultaneously active calls. Swaps count executions, including self-swaps, and each swap counts two vector-slot writes.
+
+</Section>
+
+<Section id="break-it" number="09" title="Catch faults before they become unsafe execution." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+Choose **Break: scan beyond bounds**. The attempted j becomes high, the exclusive endpoint; the lab stops before any read at that index. Choose **Break: move pivot early**: an actual swap relocates the pivot identity, and the saved-pivot contract fails immediately. Choose **Break: recurse on same range**: a child with the parent's length fails the strict-shrink guard before recursion.
+
+These are guarded, canonical teaching branches, not an attempt to run undefined behavior or hang the browser. A fault on empty or singleton input is unreachable because the base case needs no partition. Return the selector to Correct Lomuto to compare the repaired execution with exactly the same input.
+
+</Section>
+
+<Section id="analogy" number="10" title="Place a divider in a shelf of records." kicker="REAL-WORLD ANALOGY">
+
+Pick a reference record. As you inspect the shelf, move qualifying records into the next available slot on the left. Finally put the reference record at the divider. The left shelf now belongs before it and the right shelf after it, but each shelf still needs the same procedure. Moving a record across many others can change the order of equal records.
+
+</Section>
+
+<Section id="engineering" number="11" title="Pivot policy is part of the engineering choice." kicker="ENGINEERING INSIGHT">
+
+Quicksort offers local array mutation and often good practical locality, but this particular last-element policy is vulnerable to sorted and duplicate-heavy data. Production sort implementations use additional policies such as sampled pivots and fallback algorithms; none of those are silently present in this teaching source.
+
+If stable equal-key order is a requirement, compare <a href="../41-merge-sort/">merge sort</a>. If predictable O(n log n) worst-case time and constant algorithmic auxiliary storage matter more than stability, study <a href="../43-heap-sort/">heap sort</a>. Input distribution is part of an honest algorithm comparison.
+
+</Section>
+
+<Section id="exercises" number="12" title="Predict the exact partition boundary." kicker="EXERCISES / CHALLENGES">
+
+1. For `4,2,5,1,3`, record i and j before every comparison, then locate the final pivot.
+2. Run `2,2,1` and explain the equal-key identity reversal.
+3. Predict comparisons for eight sorted keys, then verify the count 28.
+4. Explain why replacing `[low,p)` with `[low,p+1)` can fail to shrink a range.
+5. Compare maximum recursion for mixed, sorted and all-equal inputs. Which policy change would require a new trace specification?
+
+</Section>
+
+<Section id="summary" number="13" title="Partition precisely, then exclude the pivot." kicker="CHAPTER SUMMARY">
+
+The lab follows last-pivot Lomuto with exact i/j movement, comparisons and swaps. Partitioning uses constant extra record storage, while recursion can become linear in depth. Strictly smaller children guarantee termination. Unstable equal-key order and quadratic worst-case work are real properties of this canonical version.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="42" />
+</Section>
+

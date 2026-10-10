@@ -1,0 +1,16 @@
+<div class="priority-explorer" data-priority-explorer>
+  <div class="explorer-controls"><label>Number of entries<input type="range" min="1" max="1024" value="32" data-size /></label><label>Operation<select data-work><option value="insert">Insert</option><option value="peek">Peek</option><option value="extract">Extract</option></select></label></div>
+  <output data-comparison aria-live="polite"></output>
+  <p class="fine-print">Work counts describe different units, not elapsed time: scans, shifts, and levels. Assume sufficient array capacity. Sorted storage keeps the next removable entry at the back. Dynamic vector growth occasionally costs O(n); appending is amortized O(1).</p>
+  <noscript><p>Unsorted: insert O(1) amortized, peek/extract O(n). Sorted: insert O(n), peek/extract O(1). Heap: insert/extract O(log n) repair, peek O(1).</p></noscript>
+</div>
+<script>
+  import { priorityWork, type PriorityOperation } from '../../visualizers/priority-queue/model';
+  document.querySelectorAll<HTMLElement>('[data-priority-explorer]').forEach(root => {
+    const update = () => {
+      const n = Number(root.querySelector<HTMLInputElement>('[data-size]')!.value), op = root.querySelector<HTMLSelectElement>('[data-work]')!.value as PriorityOperation, w = priorityWork(n, op);
+      root.querySelector('[data-comparison]')!.innerHTML = `<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable priority implementation comparison"><table><caption>${n} entries · ${op}</caption><thead><tr><th>Representation</th><th>Insert</th><th>Peek</th><th>Extract</th><th>This experiment</th></tr></thead><tbody><tr><th>Unsorted array</th><td>O(1) amortized</td><td>O(n)</td><td>O(n)</td><td>${w.unsorted} ${op === 'insert' ? 'append' : `priority comparisons${op === 'extract' ? ` + up to ${n - 1} shifts` : ''}`}</td></tr><tr><th>Sorted array</th><td>O(n)</td><td>O(1)</td><td>O(1)</td><td>${op === 'insert' ? `Up to ${w.sorted} shifts + finding position` : '1 back access'}</td></tr><tr><th>Binary heap</th><td>O(log n) repair</td><td>O(1)</td><td>O(log n)</td><td>${op === 'peek' ? '1 root access' : `At most ${w.heap} repair levels`}</td></tr></tbody></table></div>`;
+    }; root.addEventListener('input', update); update();
+  });
+</script>
+<style>.priority-explorer{border-block:1px solid var(--border);padding-block:1rem;min-width:0} .explorer-controls{display:flex;flex-wrap:wrap;gap:1rem} label{display:grid;gap:.5rem;flex:1;min-width:10rem} output{display:block}</style>

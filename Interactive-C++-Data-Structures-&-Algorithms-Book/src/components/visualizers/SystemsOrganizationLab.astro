@@ -1,0 +1,27 @@
+---
+import TraceLab from './TraceLab.astro';
+import '../../styles/systems-organization.css';
+import { organizationAdapter, organizationOperations, type OrganizationKind } from '../../visualizers/systems-organization/adapter';
+import sparse from '../../../cpp/chapter-54/SparseSet.hpp?raw';
+import ecs from '../../../cpp/chapter-56/ECSStorage.hpp?raw';
+import dirty from '../../../cpp/chapter-57/DirtyWorkList.hpp?raw';
+import commands from '../../../cpp/chapter-58/CommandBuffer.hpp?raw';
+interface Props { kind: OrganizationKind }
+const { kind } = Astro.props;
+const source = { sparse, ecs, dirty, commands }[kind];
+const fileName = { sparse: 'SparseSet.hpp', ecs: 'ECSStorage.hpp', dirty: 'DirtyWorkList.hpp', commands: 'CommandBuffer.hpp' }[kind];
+const regions = organizationAdapter(kind).regions('', new FormData());
+---
+<div data-organization-lab={kind}>
+<TraceLab id={`organization-${kind}-lab`} chapter={`organization-${kind}`} source={source} fileName={fileName} operations={organizationOperations[kind]} regions={regions} viewLabels={{logical: 'Membership / execution', memory: 'Owned storage / metadata'}} diagramNote="Cells use container indices, not native byte offsets. Empty capacity has no readable object fields. Tap or press Enter to inspect. Setup operations are included in counters.">
+  {(kind === 'sparse' || kind === 'dirty') && <label>Initial IDs (comma separated)<input name="ids" value={kind === 'sparse' ? '1,9,4' : '0,1,0,2'} maxlength="60" /></label>}
+  <label>{kind === 'sparse' ? 'Target ID' : kind === 'dirty' ? 'Re-dirty / target ID' : 'Handle index'}<input name="id" type="number" min="0" max={kind === 'sparse' ? '15' : '7'} step="1" value={kind === 'sparse' ? '9' : kind === 'ecs' ? '1' : '0'} required /></label>
+  {(kind === 'ecs' || kind === 'commands') && <>
+    <label>Handle generation<input name="generation" type="number" min="1" max="65535" step="1" value="1" required /></label>
+    <label>{kind === 'ecs' ? 'Component value' : 'Owned value / delta'}<input name="value" type="number" min="-100" max="100" step="1" value={kind === 'ecs' ? '7' : '5'} required /></label>
+  </>}
+  {kind === 'ecs' && <label>Component pool<select name="pool"><option value="0">Position</option><option value="1">Velocity</option></select></label>}
+  {kind === 'dirty' && <label>Explicit wave budget<input name="waves" type="number" min="1" max="3" step="1" value="1" required /></label>}
+</TraceLab>
+</div>
+<script>import '../../scripts/systems-organization-labs';</script>

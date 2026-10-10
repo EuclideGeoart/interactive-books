@@ -1,0 +1,136 @@
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import Section from '../../components/book/Section.astro';
+import Callout from '../../components/book/Callout.astro';
+import RingLab from '../../components/visualizers/RingLab.astro';
+import RingEncoding from '../../components/visualizers/RingEncoding.astro';
+import RingBreakIt from '../../components/visualizers/RingBreakIt.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-07/RingBuffer.hpp?raw';
+import main from '../../../cpp/chapter-07/main.cpp?raw';
+
+<ChapterHero number="07" part="PART II / QUEUES & ORDERED ACCESS" title="Circular Buffer" overline="MOVE THE INDICES. KEEP THE STORAGE." description="A ring buffer reuses a fixed array by wrapping its read and write positions. Logical queue order can cross the physical end without shifting a single element." chain="slots 0 → 1 → 2 → 3 → 4 ↶ 0" facts={[["STORAGE", "Five contiguous int slots"], ["INDEX STEP", "(index + 1) % capacity"], ["PUSH / POP", "O(1), no element shifts"]]} />
+
+<Section id="mental-model" number="01" title="One array. Two useful orders." kicker="VISUAL MENTAL MODEL">
+
+<StructurePreview chapter="ring" id="ring-mental" operation="push" inputs={{ preset: 'wrapped' }} viewLabels={{ logical: 'Logical queue view', memory: 'Physical storage view' }} diagramNote="Both views name the same physical slots. Select a slot, then switch views to keep following that storage." />
+
+The logical queue is `20 → 30 → 40 → 50`. In physical order its five slots are `[40,50,0,20,30]`; slot 2 is outside membership and its raw zero is still visible in physical view. **head = 3** names the next value to read. **tail = 2** names the next position to write, not the last value in the queue.
+
+Toggle the views. Logical order follows indices `3 → 4 → 0 → 1`. Physical storage stays indexed `0 → 1 → 2 → 3 → 4`. Slot selection refers to a physical index in both views, so the inspector follows the same integer when its drawn position changes.
+
+</Section>
+
+<Section id="intuition" number="02" title="After the last slot, return to zero." kicker="INTUITION">
+
+Chapter 6's naive dequeue copied all survivors toward index 0. A ring buffer leaves them in place and advances head. When an index reaches the final slot, its successor is slot 0: `(4 + 1) % 5 == 0`. The modulo operator gives the remainder after division; for nonnegative indices it keeps the result within `[0,capacity)`.
+
+The array is not physically curved and no pointer jumps between allocations. “Ring” describes reusable indexing. Values can span the end of one contiguous allocation and continue at its beginning. Five live integer objects exist even when no queue members exist.
+
+</Section>
+
+<Section id="memory" number="03" title="Three fields remove an ambiguity." kicker="STRUCTURE & MEMORY LAYOUT">
+
+The count-based design owns five raw slots plus `head`, `tail`, and `count`. Empty is `count == 0`; full is `count == 5`. In both states head can equal tail. Testing equality alone cannot tell them apart.
+
+At a stable boundary, `tail == (head + count) % capacity`. Members are the count slots starting at head, wrapping as needed. The newest element, when nonempty, lives at `(tail + capacity - 1) % capacity`. Adding capacity before subtracting prevents unsigned underflow when tail is zero.
+
+A **sentinel-slot design** instead reserves one position. Empty becomes head equal to tail, and full becomes the next write index equal to head. Five physical slots then hold at most four members. The unused slot moves with the indices; it is not a permanently unused array element. The complete `SentinelRing` alternative appears in the canonical source below.
+
+<Callout title="Raw value is not occupancy." tone="amber">Zero can be a valid queued value, and popped values can remain in unused slots. Neither zero nor any other payload is a reliable empty marker. Membership comes from indices and the chosen full/empty encoding.</Callout>
+
+</Section>
+
+<Section id="operations" number="04" title="Stop exactly when tail wraps." kicker="INTERACTIVE OPERATIONS">
+
+The trace lab implements the count-based design with **capacity five, at most five initial values, and integer payloads −999…999**. Custom head indices are 0…4. Every load starts a fresh experiment. Presets include a next-write wrap, already-wrapped membership, empty, singleton-at-last-slot, and full with equal indices.
+
+<RingLab />
+
+Choose Physical storage view and keep the default next-write-wrap preset. Enqueue writes 40 at slot 4. The next statement, `tail = (tail + 1) % capacity`, moves tail from 4 to 0; the lower return route turns amber and names that wrap. Count changes only at the following statement. Now try dequeue on the singleton-at-slot-4 preset: head wraps from 4 to 0, then count becomes zero.
+
+On the full preset, **Reject new value** throws before touching any storage. **Overwrite oldest value** explicitly discards the oldest member, writes the new one, and preserves capacity. Switch policies and compare Before/After. Front, back, empty, size and full expose the state without mutation.
+
+</Section>
+
+<Section id="implementation" number="05" title="Two encodings, explicit ownership." kicker="CANONICAL C++20">
+
+`RingBuffer` uses count and supports reject or overwrite. `SentinelRing` omits count, reserves one position and rejects on full. Both own their inline `std::array` storage, need no heap allocation during queue operations, and safely support memberwise copy/move. Moving the inline integer storage leaves the source with a valid independent copy of the same value state. No manual destructor or owning raw pointer is needed.
+
+The capacity is a nonzero compile-time constant. Indices use `std::size_t`; this small bound prevents overflow in the additions used for wrap calculations. Pop and endpoint reads guard empty before indexing. Reject-on-full throws `std::overflow_error`; empty operations throw `std::underflow_error`. No successful integer mutation can throw after the guard. The `values()` observer allocates a result vector for tests; it is not the constant-time enqueue/dequeue path.
+
+<CanonicalSource source={source} main={main} fileName="RingBuffer.hpp" chapter="07" />
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Writing is not advancing." kicker="CODE ↔ INDEX TRACE">
+
+A successful enqueue writes `data[tail]`, advances tail with modulo, then increments count. Immediately after the write, that slot can still be outside logical membership. After the index advances and before count changes, the endpoint equation is temporarily pending. The physical view exposes these real intermediate states.
+
+Dequeue advances head, then decrements count; it does not clear a payload. On a full overwrite, the first two statements advance head and decrement count to discard the oldest member. Only then does the common enqueue path write, advance tail, and restore full count. There is no hidden “drop oldest” mutation before the displayed source line.
+
+Exact native parity tests instrument the shipped header and compare every tagged condition and statement against all five raw slots and head/tail/count. The teaching model does not claim to execute native C++ inside the browser.
+
+</Section>
+
+<Section id="invariants" number="07" title="Bounds are necessary; policy matters too." kicker="INVARIANTS">
+
+Indices remain within 0…4 and count remains within 0…5. The relation `tail == (head + count) % capacity` must hold before and after a complete operation. Its brief mismatch between two tagged assignments is shown as pending, not a permanent failure. Generic playback does not know any of these circular rules; the ring domain evaluates them.
+
+A reject policy promises unread values remain intact when full. An overwrite policy promises the newest value replaces the oldest in FIFO order. Bounds can remain valid while either promise is broken. The fault experiments therefore diagnose both structural errors and observable policy violations.
+
+</Section>
+
+<Section id="complexity" number="08" title="Scale capacity without scaling the work." kicker="ENCODING & COMPLEXITY EXPLORER">
+
+<RingEncoding />
+
+A successful count-based enqueue performs one payload write, one tail update, and one count update. Dequeue performs one head update and one count update. Full overwrite adds one head and one count update before enqueue. Each path is O(1) structural work; no loop scales with queue length. Front, back, empty, full and size are O(1). The owned storage is O(capacity).
+
+The explorer compares count and sentinel encodings up to 1024 physical slots. Sentinel dequeue needs only one index update; count-based dequeue needs an additional count update but can use every slot. These small instruction counts are not hardware timings. Modulo cost, cache effects and the synchronization required by a real pipeline are separate questions.
+
+</Section>
+
+<Section id="break-it" number="09" title="Cross the boundary deliberately." kicker="COMMON MISTAKES / BREAK-IT MODE">
+
+<RingBreakIt />
+
+Forget modulo and an index leaves the array. Move tail during dequeue and unread order no longer matches head/count. Treat equal indices as empty in a full count-based ring and every member disappears logically. Overwrite without an explicit loss policy and an unread value changes silently. Read from empty and the raw int may be alive but has no queue meaning.
+
+These are bounded model corruptions with explanations, not unsafe native memory accesses. Restore returns the original preset. Use the checked C++ lab above to see the actual guard paths.
+
+</Section>
+
+<Section id="analogy" number="10" title="Numbered trays on a loop." kicker="REAL-WORLD ANALOGY">
+
+Imagine five numbered trays on a serving carousel. The reader marker identifies the oldest occupied tray; the writer marker identifies where a new item belongs. Removing one item does not require moving every other item to a lower tray number. The markers advance, and the numbers repeat after the final tray.
+
+The analogy cannot decide what happens when all trays are occupied. Rejecting a new item and discarding the oldest are different service policies, even though both use the same trays.
+
+</Section>
+
+<Section id="engineering" number="11" title="Bound memory; specify loss." kicker="ENGINEERING INSIGHT">
+
+Audio pipelines, network receive paths, telemetry buffers, event systems and producer/consumer handoffs often benefit from fixed storage and repeated reuse. A latest-samples telemetry history may intentionally overwrite old data; a work queue carrying required jobs should not silently do so. Rejection can trigger backpressure, a drop counter, or an explicit recovery path.
+
+Avoiding per-operation allocation helps predictability in fixed-memory real-time systems, but this example does not establish a hard real-time latency guarantee. It uses exceptions for checked failures and ordinary non-atomic fields. It is **single-threaded**, not a lock-free queue. Shared producer/consumer use requires a separate proof about synchronization, publication and memory ordering.
+
+Circular indexing can also support both endpoints of a deque. Chapter 8 then asks a different question: what if the next item is selected by priority instead of arrival? Chapter 9 supplies a binary heap implementation for that changed access policy.
+
+</Section>
+
+<Section id="exercises" number="12" title="Trace the index, then the membership." kicker="EXERCISES & CHALLENGES">
+
+<div className="exercise"><h3>Equal indices, different state</h3><p>Set five slots, head 3 and queued values 0, then 5 in the count explorer. Why is tail 3 in both cases?</p><details><summary>Reveal reasoning</summary><p>Both 0 and 5 contribute remainder zero modulo 5. Count distinguishes empty from full. A sentinel design forbids five members and uses that excluded state to remove the ambiguity.</p></details></div>
+<div className="exercise"><h3>Which slot is back?</h3><p>After an enqueue advances tail from 4 to 0, where is the newest value?</p><details><summary>Reveal reasoning</summary><p>Slot 4. Tail names the next write, so back is (tail + capacity − 1) % capacity. Reading data[tail] would inspect the wrong slot.</p></details></div>
+<div className="exercise"><h3>Full overwrite at head 4</h3><p>With logical [10,20,30,40,50], enqueue 60 using overwrite. Predict indices and values.</p><details><summary>Reveal reasoning</summary><p>Discard 10 by moving head 4 → 0, write 60 at the old tail 4, then move tail 4 → 0. Count returns to five; logical order is [20,30,40,50,60].</p></details></div>
+
+</Section>
+
+<Section id="summary" number="13" title="Order wraps. Storage stays put." kicker="CHAPTER SUMMARY">
+
+<div className="summary-panel"><h3>Four ideas make the ring work.</h3><ul><li>Head reads; tail identifies the next write.</li><li>Modulo returns the final index to zero without shifting values.</li><li>Count and sentinel designs encode full/empty differently.</li><li>Reject and overwrite are explicit, testable loss policies.</li></ul><button className="button button-primary" type="button" data-complete aria-pressed="false">Mark chapter complete ✓</button></div>
+<ChapterPagination number="07" />
+
+</Section>

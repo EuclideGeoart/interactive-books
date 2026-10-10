@@ -1,0 +1,122 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import SystemsMemoryPreview from '../../components/visualizers/SystemsMemoryPreview.astro';
+import SystemsMemoryLab from '../../components/visualizers/SystemsMemoryLab.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-51/FreeListStorage.hpp?raw';
+import main from '../../../cpp/chapter-51/main.cpp?raw';
+
+<ChapterHero number="51" title="Free lists" part="PART VIII / ENGINE &amp; SYSTEMS DATA STRUCTURES" overline="STORAGE REUSE WITHOUT OBJECT LIFETIME" description="Reuse fixed storage by popping and pushing a chain of available slots." chain="free head → acquire bytes → caller owns storage → return bytes" facts={[["Acquire / return", "O(1)"], ["Order", "LIFO reuse"], ["Ownership", "Raw fixed slots"], ["Not provided", "Object construction"]]} />
+
+<Section id="mental-model" number="01" title="Free order is not physical order." kicker="VISUAL MENTAL MODEL">
+
+A free list links the slots that may be reused. The physical pool remains in index order, but a returned slot becomes the new head regardless of its address. A slot absent from this chain belongs to a caller. It is not necessarily a live object: the allocator knows only whether its raw storage has been acquired.
+
+<SystemsMemoryPreview kind="free-list" />
+
+In this snapshot slots 0, 1 and 2 were acquired, then slot 0 was returned. The free chain is 0 → 3 → 4 → 5 → nullptr. Slots 1 and 2 remain occupied. Switch to Physical slots to see that no block moved. Inspect slot 0 to read its embedded next; inspect slot 1 to see why its old link is unavailable.
+
+</Section>
+
+<Section id="intuition" number="02" title="Return a slot to the front, then reuse it first." kicker="THE INTUITION">
+
+Acquisition selects the head, advances head to that slot’s next, and transfers the slot to the caller. Return writes the old head into the released storage and publishes that slot as the new head. Neither operation searches the pool. This is a stack of available storage locations, rather than a linked collection of user values.
+
+A LIFO policy favors recently returned slots and needs two link/head writes for a return. An address-ordered free list can support different locality or coalescing policies, but finding the insertion position is generally linear without another index. Fixed equal-size slots avoid variable-size holes within this pool; they still waste unused bytes inside each slot and cannot satisfy a request larger than a slot. A free list does not make fragmentation disappear.
+
+</Section>
+
+<Section id="memory" number="03" title="The next index occupies bytes only while the slot is free." kicker="STRUCTURE / MEMORY LAYOUT">
+
+The canonical pool owns six 32-byte slots aligned to `std::max_align_t`. It embeds a next index in the beginning of each free slot with `std::memcpy`. Index six is the internal null marker; the diagram writes nullptr to communicate the absent link. The teaching snapshot mirrors links and a free bitmap for validation. Acquired slots hide the link because those bytes belong to the caller and may be overwritten.
+
+This is not a typed allocator. A client that constructs an object must ensure its size and alignment fit, then destroy it before return. The allocator cannot discover an arbitrary client object’s destructor from raw bytes. Copy and move are deleted so the backing addresses do not change. Conceptual byte offsets describe the 32-byte payload sequence in the diagram, not an ABI promise about padding between aligned slots.
+
+</Section>
+
+<Section id="operations" number="04" title="Watch both writes on return." kicker="INTERACTIVE OPERATIONS">
+
+<SystemsMemoryLab kind="free-list" />
+
+Use three initial acquisitions and slot zero. Run Release / reuse and stop at Write embedded next. The released slot points at the old head, but head has not changed yet. Continue once: head now names the released slot. The next acquisition must choose that slot before older free slots.
+
+Initial acquisitions accepts one through six. Slot to return accepts zero through eight so out-of-range indices can be demonstrated as guarded errors. Try returning slot five after only one acquisition: it is already free, so the rejection must leave all links unchanged. Exhaustion consumes the remaining slots and attempts one extra acquisition. Double release performs a valid return followed by a rejected duplicate. Every operation starts with a fresh pool; Before and Previous replay immutable snapshots.
+
+</Section>
+
+<Section id="implementation" number="05" title="The storage owner checks membership before writing." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="FreeListStorage.hpp" chapter="51" />
+
+`acquire()` returns a slot index; `storage(index)` gives a byte pointer only for an acquired slot. `release(index)` rejects out-of-range and already-free slots before touching embedded metadata. The caller owns any object-lifetime work. Pool destruction frees its own automatic backing storage but does not invoke destructors for unknown client types.
+
+An optional observer exposes snapshots to validation. Observers must be nonthrowing and nonreentrant and must copy snapshots if retaining them. Observer callbacks and visualization history are outside the allocation complexity model. The native example overwrites acquired bytes before returning them, proving that acquisition does not rely on those old link bytes afterward.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="A detached free slot is an explicit intermediate state." kicker="CODE + VISUALIZATION TRACE">
+
+`fl.select` retains the chosen index. `fl.pop` advances head while that selected slot is temporarily detached. `fl.acquire` completes the transfer and makes its embedded link unavailable. During return, `fl.link` writes next before `fl.push` publishes the new head and free state. The invariant checker accounts for the one explicitly pending slot rather than declaring every intermediate state a finished structure.
+
+The highlighted statements come from the same header compiled by native tests. Step backward across `fl.push`: head returns to its predecessor value while the pending next write remains visible. Step backward across `fl.link`: that write disappears too. No movement, construction or destruction is implied by either transition.
+
+</Section>
+
+<Section id="invariants" number="07" title="Reachability and the free bitmap must agree." kicker="INVARIANTS">
+
+Every reachable index must be in bounds, and traversal must reach nullptr without revisiting a slot. At a settled boundary, the reachable set must equal the free bitmap exactly: every free slot appears once and no occupied slot appears at all. During the head-pop transition, only the explicitly detached pending slot is excluded from that equality.
+
+The bitmap catches invalid and double release in constant time. It is bookkeeping, not an object-lifetime oracle. A caller that returns storage containing a live object violates the client contract even if the free-list topology would look perfectly well formed. Chapter 53 adds a typed lifetime protocol for precisely that missing responsibility.
+
+</Section>
+
+<Section id="complexity" number="08" title="Count rewiring, then separate capacity costs." kicker="COMPLEXITY EXPLORER">
+
+Run Acquire slots with counts one, three and six. Head selections grow from one to three to six; link/head writes grow at the same rate. A valid return adds two writes. An invalid return adds none. The counters count semantic link work; clearing teaching metadata and capturing a snapshot are not native pointer operations.
+
+Each successful acquire or return costs O(1), independent of how many slots are occupied. Initial chain construction and destruction of the backing owner are separate concerns; initialization costs O(N), and storage costs O(N). The diagnostic traversal costs O(N). Fixed storage may improve predictability and avoid general-purpose allocator calls, but the counter is not evidence of a measured speedup or universal cache advantage.
+
+</Section>
+
+<Section id="break-it" number="09" title="Damage copied metadata without executing undefined behavior." kicker="COMMON MISTAKES / BREAK-IT MODE">
+
+Choose a corruption and run Break-It metadata, then go to After. Cycle makes a slot point to itself. References used slot starts traversal at acquired slot zero. Lost free slots drops the head. Invalid index sets head outside the backing array. Unchecked double return creates a repeated slot by bypassing the ordinary release guard in the simulation.
+
+The simulator follows at most six distinct indices, checks bounds before access and reports the broken invariant. It never asks native C++ to dereference a forged pointer. Contrast Unchecked double return with the ordinary Double release operation: the first demonstrates corruption; the second demonstrates the guard preventing it. Reset restores the valid initial snapshot, so the experiment cannot poison a later run.
+
+</Section>
+
+<Section id="analogy" number="10" title="A rack of reusable trays has a separate return stack." kicker="REAL-WORLD ANALOGY">
+
+Imagine numbered trays stored in fixed cubbies. A return slip names which tray is available next. Borrowing a tray removes its slip from the available stack; returning it puts its slip on top. The cubby number never changes. Cleaning or emptying a tray is a separate responsibility, just as ending an object’s lifetime precedes returning its storage.
+
+</Section>
+
+<Section id="engineering" number="11" title="Separate reclamation policy from object ownership." kicker="ENGINEERING INSIGHT">
+
+Chapter 4 introduced a memory pool; this chapter isolates its reusable-slot mechanism. Chapter 5’s intrusive hooks similarly use storage owned elsewhere, but list membership and object ownership remain different questions. A typed object pool can use a free list internally while keeping constructor/destructor rules in a higher layer.
+
+This implementation is single-threaded. Sharing its head between threads would require synchronization and a lifetime protocol; replacing head with an atomic alone is insufficient. Acquired indices can also become stale after reuse: a second release using an old index could target a new occupant. The free bitmap prevents an immediate double release, not identity confusion across reuse. Chapter 55 addresses that distinction with generation-checked tokens.
+
+</Section>
+
+<Section id="exercises" number="12" title="Predict the chain without moving storage." kicker="EXERCISES / CHALLENGES">
+
+1. Acquire slots 0, 1, 2; return 1, then 0. Write the physical occupancy and free-chain order separately.
+2. Explain why clearing a released slot before saving the old head can lose the available suffix.
+3. Identify which invariant detects a lost free slot that is not part of a cycle.
+4. Sketch an address-ordered return policy and account for its search cost.
+5. Explain why a valid free bitmap cannot prove that every client destructor has run.
+6. Design a test where an old raw index is released after the slot has already been reused. Why is this different from an immediate double release?
+
+</Section>
+
+<Section id="summary" number="13" title="Storage reuse is a small, precise responsibility." kicker="CHAPTER SUMMARY">
+
+A free list makes available slots reachable from one head. Acquire detaches the first slot; return embeds the old head and publishes a new one. Physical positions remain stable while topology changes. Bounds, cycle, membership and duplicate checks protect the structure, but object lifetime and enduring identity require separate policies.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="51" />
+</Section>
+

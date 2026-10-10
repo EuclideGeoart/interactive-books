@@ -1,0 +1,15 @@
+---
+interface Props {
+  chapter: string; id: string; operation: string; inputs?: Record<string, string>;
+  viewLabels?: { logical: string; memory: string }; diagramNote?: string;
+}
+const { chapter, id, operation, inputs = {},
+  viewLabels = { logical: 'Logical view', memory: 'Memory view' },
+  diagramNote = 'Select a node, slot, or link. Scroll horizontally if needed; the inspector follows the actual fields.',
+} = Astro.props;
+---
+<div class="interactive-frame" data-structure-preview={chapter} data-preview-id={id} data-preview-operation={operation} data-preview-inputs={JSON.stringify(inputs)}>
+  <div class="diagram-component"><div class="diagram-topline"><span class="diagram-caption">EXPLORE THE REPRESENTATION</span><div class="segmented" role="group" aria-label="Diagram representation"><button type="button" data-view="logical" aria-pressed="true">{viewLabels.logical}</button><button type="button" data-view="memory" aria-pressed="false">{viewLabels.memory}</button></div></div>
+  <div class="diagram-with-inspector"><div class="diagram-canvas"><div class="svg-scroll" tabindex="0" role="region" aria-label="Scrollable mental model diagram" data-svg></div><p class="diagram-view-note">{diagramNote}</p><details class="text-fallback"><summary>Text representation</summary><code data-ascii></code></details></div><details class="inspector-shell" data-inspector-shell open><summary>Inspect storage &amp; references <span>Tap a node or slot to select it</span></summary><aside class="pointer-inspector" aria-label="Mental model inspector" data-inspector></aside></details></div></div>
+</div>
+<script>import '../../scripts/chapter-labs';</script>

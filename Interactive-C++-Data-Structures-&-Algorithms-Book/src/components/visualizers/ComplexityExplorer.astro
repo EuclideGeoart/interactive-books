@@ -1,0 +1,34 @@
+<div class="complexity-explorer" data-complexity>
+  <div class="explorer-controls"><label>List size <select data-size><option>8</option><option selected>32</option><option>128</option><option>1024</option></select></label><label>Search target <select data-position><option value="first">First node</option><option value="middle">Middle node</option><option value="last" selected>Last node</option><option value="missing">Not present</option></select></label></div>
+  <div class="complexity-measurements"><div><span>NODES IN LIST</span><strong data-n>32</strong></div><div><span>NODES VISITED</span><strong class="amber-text" data-visited>32</strong></div><div><span>HEAD INSERTION</span><strong>2 <small>pointer writes</small></strong></div></div>
+  <div class="complexity-chart" data-chart role="img" aria-label="Search visits all 32 nodes"><div class="bar-axis"><span>0</span><span>n</span></div><div class="bar-track"><div data-search-bar class="search-bar">Search</div></div><div class="bar-track"><div data-head-bar class="head-bar"></div><span>Head insertion: 2 link/reference writes</span></div></div>
+  <p data-complexity-explanation aria-live="polite">Finding the last node requires 32 visits. Double the list, double the work: O(n).</p>
+  <p class="fine-print">Counters measure node visits and the two assignments after construction. Allocation cost is excluded from this operation-count model.</p>
+</div>
+<script>
+  import { initialState, makeTrace, measureSearch } from '../../visualizers/linked-list/model';
+  for (const root of document.querySelectorAll<HTMLElement>('[data-complexity]')) {
+    const select = (selector: string) => root.querySelector<HTMLSelectElement>(selector)!;
+    function update() {
+      const n = Number(select('[data-size]').value);
+      const position = select('[data-position]').value;
+      // Values stay within the same input domain; a missing sentinel stays absent.
+      const values = Array.from({ length: n }, (_, index) => index - Math.floor(n / 2));
+      const state = initialState(values);
+      const targetIndex = position === 'first' ? 0 : position === 'middle' ? Math.floor(n / 2) : position === 'last' ? n - 1 : -1;
+      const target = targetIndex < 0 ? 999 : values[targetIndex]!;
+      const { visits: count } = measureSearch(state, target);
+      // Same head-insertion trace as the lab, with construction writes excluded.
+      const insertion = makeTrace('insert-head', initialState([1]), 5);
+      const writes = insertion.steps.filter(step => ['head.link', 'head.publish'].includes(step.source ?? '')).length;
+      root.querySelector('[data-n]')!.textContent = String(n);
+      root.querySelector('[data-visited]')!.textContent = String(count);
+      root.querySelector<HTMLElement>('[data-search-bar]')!.style.width = `${count / n * 100}%`;
+      root.querySelector<HTMLElement>('[data-head-bar]')!.style.width = `${writes / n * 100}%`;
+      root.querySelector('[data-chart]')!.setAttribute('aria-label', `Search visits ${count} of ${n} nodes. Head insertion uses ${writes} pointer writes after construction.`);
+      root.querySelector('[data-complexity-explanation]')!.textContent = position === 'first' ? 'The first node takes one visit: best-case O(1). The worst case is still O(n).' : `This search needs ${count} visits${position === 'missing' ? ' and returns nullptr' : ''}. A sequential scan grows with the target’s distance from head: worst-case O(n).`;
+    }
+    root.addEventListener('change', update);
+    update();
+  }
+</script>

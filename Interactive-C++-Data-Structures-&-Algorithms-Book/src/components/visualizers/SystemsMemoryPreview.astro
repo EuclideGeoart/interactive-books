@@ -1,0 +1,18 @@
+---
+import '../../styles/systems-memory.css';
+import { memoryAdapter, memoryDefaults, type MemoryKind } from '../../visualizers/systems-memory/adapter';
+import { drawMemory, describeMemory, inspectMemory } from '../../visualizers/systems-memory/presentation';
+interface Props { kind: MemoryKind }
+const { kind } = Astro.props;
+const trace = memoryAdapter(kind).build(kind === 'arena' ? 'allocate' : kind === 'object-pool' ? 'lifecycle' : 'reuse',memoryDefaults());
+const wanted = { 'free-list':'fl.push', arena:'arena.reserve', 'object-pool':'pool.destroy', handles:'handle.validate' };
+const state = (kind === 'handles' ? trace.steps.filter(step=>step.source === wanted[kind]).at(-2) : kind === 'arena' ? trace.steps.filter(step=>step.source === wanted[kind])[1] : trace.steps.find(step=>step.source === wanted[kind]))?.state ?? trace.initial;
+---
+<div data-systems-memory-preview={kind} data-diagram class="diagram-component">
+  <div class="diagram-topline"><span class="diagram-caption">MENTAL MODEL · STORAGE / LIFETIME / IDENTITY</span><div class="segmented" role="group" aria-label="Preview representation"><button type="button" data-view="logical" aria-pressed="true">Logical view</button><button type="button" data-view="memory" aria-pressed="false">Memory view</button></div></div>
+  <div class="diagram-with-inspector"><div class="diagram-canvas"><div class="svg-scroll" tabindex="0" role="region" aria-label={`${kind} mental model diagram`} data-svg set:html={drawMemory(state,`${kind}-preview`,'logical',null)} />
+    <details class="text-fallback"><summary>Text representation</summary><code data-ascii>{describeMemory(state)}</code></details>
+  </div><details class="inspector-shell" data-inspector-shell><summary>Inspect storage <span>Select a slot, byte or handle</span></summary><aside class="pointer-inspector" aria-label="Memory mental model inspector" data-inspector set:html={inspectMemory(state,null)} /></details></div>
+  <script is:inline type="application/json" data-memory-state set:html={JSON.stringify(state).replace(/</g,'\\u003c')} />
+</div>
+<script>import '../../scripts/systems-memory-labs';</script>

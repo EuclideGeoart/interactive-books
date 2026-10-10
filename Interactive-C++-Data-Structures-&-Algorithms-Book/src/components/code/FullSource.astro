@@ -1,0 +1,23 @@
+---
+import { Code } from 'astro:components';
+import source from '../../../cpp/chapter-01/SinglyLinkedList.hpp?raw';
+import main from '../../../cpp/chapter-01/main.cpp?raw';
+import { cleanSource } from '../../engine/source';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<div class="full-source">
+  <div class="code-title"><span><i></i> SinglyLinkedList.hpp</span><div><a href={`${base}/source/SinglyLinkedList.hpp`} download>Download .hpp ↓</a><button type="button" data-copy-source>Copy source</button></div></div>
+  <details open><summary>Complete owning list · constructors, operations, move policy, and cleanup</summary><div class="full-code-scroll" tabindex="0" role="region" aria-label="Complete canonical C++ header"><Code code={cleanSource(source)} lang="cpp" theme="github-dark-default" /></div></details>
+  <details><summary>main.cpp · compile and exercise the implementation</summary><div class="full-code-scroll" tabindex="0" role="region" aria-label="C++ validation example"><Code code={main} lang="cpp" theme="github-dark-default" /></div><a class="download-main" href={`${base}/source/main.cpp`} download>Download main.cpp ↓</a></details>
+  <div class="compile-command"><span>COMPILE & RUN</span><code>c++ -std=c++20 -Wall -Wextra main.cpp -o list &amp;&amp; ./list</code></div>
+</div>
+<script>
+  import source from '../../../cpp/chapter-01/SinglyLinkedList.hpp?raw';
+  import { cleanSource } from '../../engine/source';
+  document.querySelector('[data-copy-source]')?.addEventListener('click', async event => {
+    const button = event.currentTarget as HTMLButtonElement;
+    try { await navigator.clipboard.writeText(cleanSource(source)); button.textContent = 'Copied ✓'; }
+    catch { button.textContent = 'Use Download .hpp'; }
+    setTimeout(() => { button.textContent = 'Copy source'; }, 2500);
+  });
+</script>

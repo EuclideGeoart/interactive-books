@@ -1,0 +1,151 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import Callout from '../../components/book/Callout.astro';
+import IntrusiveLab from '../../components/visualizers/IntrusiveLab.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-05/IntrusiveList.hpp?raw';
+import main from '../../../cpp/chapter-05/main.cpp?raw';
+
+<ChapterHero number="05" title="Intrusive list" overline="MEMBERSHIP IS NOT OWNERSHIP" description="Objects carry their own links. The list arranges their membership while an external owner keeps their lifetimes under control." chain="owner: [A] [B] [C] [D] · active: A ⇄ B ⇄ C" facts={[["Known-object unlink", "O(1)"], ["Traversal / clear", "O(n)"], ["Object lifetime", "External owner"], ["Membership proof", "Per-hook owner"]]} />
+
+<Section id="mental-model" number="01" title="The object remains after the link disappears." kicker="VISUAL MENTAL MODEL">
+
+Four objects belong to an external owner. Only three currently participate in the active list. Unlike an owning node container, this list allocates no wrapper and never deletes an object. Unlinking B changes the active relationships from A ⇄ B ⇄ C to A ⇄ C. B stays alive with its value intact.
+
+<StructurePreview chapter="intrusive" id="intrusive-preview" operation="remove-middle" inputs={{preset: 'three', hook: 'active', value: '40'}} />
+
+Select B and inspect its active hook. Then use Remove middle in the operation lab. Compare the final inspector: its links and owner token are null, but its value is still 20. Detached does not mean destroyed. Memory view orders the same stable objects by illustrative addresses, making it clear that membership order is independent of placement.
+
+</Section>
+
+<Section id="intuition" number="02" title="A relationship can borrow an object." kicker="THE INTUITION">
+
+An ordinary owning list commonly allocates a node that wraps each value. An intrusive object contains its own hook fields, so linking can reuse existing storage. That couples the object representation to the lists it may enter, but avoids a separate node allocation for each membership.
+
+The list owns its head and tail variables and controls one hook's relationships. It does not own the object lifetime. Removing an object does not run its destructor, release pool storage, or remove it from unrelated lists. The external owner must unlink every membership before destroying the object.
+
+<Callout title="Stable address is part of the contract." tone="amber">Moving or copying a linked object would leave neighbors pointing to its old identity. This example deletes object and list copy/move operations. A production owner must also choose storage that keeps object addresses stable while linked.</Callout>
+
+</Section>
+
+<Section id="memory" number="03" title="One hook for each independent relationship." kicker="STRUCTURE & MEMORY">
+
+Each `IntrusiveHook` contains prev, next, and an owner/list pointer. The owner pointer records membership even for a single-element list, where both neighbors are null. The object contains three hooks selected by `HookKind`: active, render, and dirty. A list operates on exactly one of them.
+
+| Relationship | Initial example | Independent purpose |
+| --- | --- | --- |
+| Active | A ⇄ B ⇄ C | Objects participating in an update |
+| Render | B ⇄ D | Objects queued for rendering |
+| Dirty | A ⇄ D | Objects requiring recomputation |
+
+The fields occupy storage in every object, even while detached. Three hooks mean three sets of links and membership tokens, not three copies of the value. This small fixed example uses an enum and an array; it does not attempt a generalized intrusive-container framework.
+
+</Section>
+
+<Section id="operations" number="04" title="Rewire membership. Preserve lifetime." kicker="INTERACTIVE OPERATIONS">
+
+Try Remove middle first. Advance to the forward-link assignment, then pause before the backward-link repair. The live invariant panel identifies the temporary inconsistency. Finish the operation and select B: it still exists, with no active membership.
+
+<IntrusiveLab />
+
+Empty, singleton, and three-object presets apply to the chosen hook. Push inserts externally owned D. Removing from an empty preset attempts to remove A and produces a guarded nonmember error. Reinsert unlinks A when present, then appends the same object; it performs no construction or allocation.
+
+**Independent hooks** loads the three relationships in the table above, then removes the head from the selected hook only. Switch Active / Render / Dirty and rerun the experiment. The other two chains remain unchanged. All hook-owner tokens are available in the inspector while the diagram displays the selected hook's arrows.
+
+</Section>
+
+<Section id="implementation" number="05" title="A non-owning list with explicit membership." kicker="CANONICAL C++20">
+
+The class rejects insertion when this hook already has an owner and rejects removal unless the owner is this exact list instance. Another hook on the same object may still be linked elsewhere. The list destructor calls clear, which unlinks its chain without destroying the objects.
+
+The native example declares objects before lists. C++ destroys local variables in reverse order, so list cleanup runs while the objects are still alive. Object destructors assert that every hook is detached. Assertions document and diagnose this contract; they are not a substitute for a correct lifetime order in release builds.
+
+<CanonicalSource source={source} main={main} fileName="IntrusiveList.hpp" chapter="05" />
+
+<Callout title="Never let the list outlive its borrowed objects.">An object destructor cannot safely leave its address in a neighbor's hook. Explicitly clear or erase memberships first, or place list lifetimes inside the owner's lifetime. This implementation deliberately does not hide unlinking inside an object's destructor.</Callout>
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Unlink is several visible assignments." kicker="CODE ↔ POINTER TRACE">
+
+For a middle object, the predecessor's next first skips the target. The successor's prev still names the target until the second assignment repairs it. Head and tail removal take different branches, updating the corresponding endpoint instead of dereferencing a null neighbor.
+
+The detached object's prev and next are then cleared separately. Its membership owner is cleared last. This publication order makes temporary states visible: an object can be unreachable from head for several statements while its token still identifies the list. Settled invariants must hold when the operation finishes, not after every individual pointer write.
+
+At no point does erase call delete or a destructor. Compare Chapter 3's owning deletion with this trace: unlink mechanics are related, but the ownership consequence is different. Native parity tests observe all three chains and all twelve hooks after every tagged statement, including half-rewired states.
+
+</Section>
+
+<Section id="invariants" number="07" title="A null pair does not prove detachment." kicker="INVARIANTS">
+
+| Invariant at operation boundaries | Meaning |
+| --- | --- |
+| head is null exactly when tail is null | Empty endpoints agree. |
+| head.prev and tail.next are null | The chain has explicit boundaries. |
+| next.prev and prev.next point back | Neighbor relationships are reciprocal. |
+| A reachable hook names this list as owner | Membership is explicit and specific. |
+| A detached hook has null owner, prev, and next | Reinsertion starts from a clean hook. |
+| Other hooks are unchanged | Independent memberships remain independent. |
+
+With a singleton, both neighbor pointers are null and owner is non-null. Choose A only, then Insert linked hook. The guard catches the duplicate despite the absence of neighbors. Checking only prev/next would incorrectly accept it and could create self-links or corrupt endpoint state.
+
+</Section>
+
+<Section id="complexity" number="08" title="Count links separately from object management." kicker="COMPLEXITY EXPLORER">
+
+Choose Empty, A only, and A ⇄ B ⇄ C, then compare the counters while pushing D or removing a known member. Rewiring touches a bounded number of fields, so known-object insertion and removal are O(1). Membership checking is a single owner-pointer comparison; no search is needed when you already hold the object reference.
+
+Walking forward or backward visits every member once. The live visit counter grows with the preset's length. During traversal, the inspector exposes the local `current` reference and the diagram marks its target. After return, a scope-end step removes that reference; visited highlights remain as traversal history. Clear repeatedly removes the head, so it is O(n), while each removal remains O(1). The Objects destroyed counter remains zero throughout. Object destruction belongs to the external owner, not this operation's cost.
+
+The `values()` helper collects values into a vector for a convenient demonstration, so it has O(n) output storage and can allocate. Link mutations themselves allocate no nodes. Finding an object by value would still require traversal unless an independent index is available.
+
+</Section>
+
+<Section id="mistakes" number="09" title="Break membership without invoking undefined behavior." kicker="BREAK IT — GUARDED FAILURES">
+
+**Insert linked hook** attempts a second insertion through an already-linked hook. **Remove detached object** attempts removal of D through a list it does not belong to. The canonical guards reject both before writing any links. The native tests also attempt cross-list insertion and removal with two lists selecting the same hook, proving that owner means the exact list instance.
+
+A more dangerous mistake is destroying a still-linked external object. The live browser lab never does that. Its object set stays alive for the whole experiment, and the native example exercises the safe order: lists clear before owners destroy. A dangling neighbor cannot be repaired by checking whether its stored address is non-null.
+
+Reusing one hook simultaneously for two lists would overwrite the first list's relationships. Use separate hooks for independent membership. Separate hooks do not, by themselves, make concurrent access safe; synchronization is outside this single-threaded example.
+
+</Section>
+
+<Section id="analogy" number="10" title="One person, several rosters." kicker="REAL-WORLD ANALOGY">
+
+A workshop attendee may be on an attendance roster, a presentation queue, and a follow-up list. Removing their name from the presentation queue does not remove them from the workshop or the other rosters. Each roster needs its own relationship information.
+
+The C++ difference is physical: those relationship fields live inside the object. If the object disappears while a roster still points to it, the roster now holds an invalid reference. Coordinating the lifetimes is an engineering obligation, not a side effect of changing membership.
+
+</Section>
+
+<Section id="engineering" number="11" title="Separate the scene owner from its work lists." kicker="ENGINEERING INSIGHT">
+
+A scene owner might allocate geometry objects from a pool and maintain active, render, and dirty lists through embedded hooks. Finishing a render task only removes render membership. Deleting a scene object requires removing every membership, ending the object lifetime, and finally returning its storage to the pool.
+
+This is where Chapter 4 and Chapter 5 meet: membership is a third timeline alongside object lifetime and storage lifetime. A stable pool address solves relocation, but not dangling memberships after destruction. An object can be live and detached, live and multiply linked, destroyed with storage reserved, or absent from every list while its storage becomes reusable.
+
+Intrusive lists can reduce allocation overhead and offer predictable rewiring when objects already exist, but they consume per-object space and impose lifetime discipline. Contiguous work queues can have better locality. Choose based on ownership needs, iteration patterns, and measurements, not on the word intrusive.
+
+</Section>
+
+<Section id="exercises" number="12" title="Prove that unlink preserves the object." kicker="EXERCISES & CHALLENGES">
+
+1. Remove the middle member and identify the exact snapshot where forward and backward traversal disagree. Which next statement restores reciprocity?
+2. Explain why A only has two null links but is not detached. Predict the duplicate-insertion guard result.
+3. In Independent hooks, remove Render's head. List all fields that Active and Dirty must preserve.
+4. Reinsert A at the tail. Show that the object address and value stay unchanged throughout the experiment.
+5. Construct two native lists for the same hook and try transferring a member without erasing it first. Then perform the valid erase-and-insert transfer.
+6. Sketch the shutdown order for a scene owner with three work lists and a pool. Which objects must still be alive when each list clears?
+
+</Section>
+
+<Section id="summary" number="13" title="Own lifetimes. Borrow memberships." kicker="CHAPTER SUMMARY">
+
+<div className="summary-panel"><h3>Three independent responsibilities.</h3><ul><li>The external owner controls object lifetime and stable storage.</li><li>The intrusive list controls one hook's relationships.</li><li>Unlinking keeps the object alive; destruction requires all hooks detached.</li><li>An owner pointer proves membership even for a singleton.</li><li>Several hooks let one object participate in independent lists.</li><li>Known-object rewiring is O(1); traversal and clear are O(n).</li></ul><button className="button button-primary" type="button" data-complete aria-pressed="false">Mark chapter complete</button></div>
+
+<ChapterPagination number="05" />
+
+</Section>

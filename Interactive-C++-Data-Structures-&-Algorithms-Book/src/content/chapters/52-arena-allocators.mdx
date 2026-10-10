@@ -1,0 +1,122 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import SystemsMemoryPreview from '../../components/visualizers/SystemsMemoryPreview.astro';
+import SystemsMemoryLab from '../../components/visualizers/SystemsMemoryLab.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-52/ByteArena.hpp?raw';
+import main from '../../../cpp/chapter-52/main.cpp?raw';
+
+<ChapterHero number="52" title="Arena allocators" part="PART VIII / ENGINE &amp; SYSTEMS DATA STRUCTURES" overline="ALIGN · RESERVE · ADVANCE · RESET" description="Reserve aligned byte ranges by advancing one offset, then reclaim the whole lifetime region together." chain="backing bytes → alignment padding → reserved range → bump pointer" facts={[["Allocate", "O(1) core work"], ["Reclaim", "Bulk reset"], ["Alignment", "Powers of two \u2264 16"], ["Destructors", "Caller policy"]]} />
+
+<Section id="mental-model" number="01" title="Every reservation extends one occupied prefix." kicker="VISUAL MENTAL MODEL">
+
+An arena starts with one backing buffer and offset zero. Each request rounds that offset up to an aligned beginning, reserves a contiguous byte range, then advances the bump pointer to its end. There is no search for individual holes and no per-object free list.
+
+<SystemsMemoryPreview kind="arena" />
+
+The snapshot reserves five bytes at alignment one, then eight bytes at alignment four. Offset five needs three padding bytes, so the second range starts at eight and ends at sixteen. Byte / padding view makes offsets 5, 6 and 7 visible as padding. A reservation is raw storage; neither its label nor its color claims that a C++ object was constructed there.
+
+</Section>
+
+<Section id="intuition" number="02" title="Trade individual reclamation for a shared lifetime boundary." kicker="THE INTUITION">
+
+The allocator is simple because it never asks which earlier allocation can be freed. Used space grows monotonically until reset. A parser can keep all temporary syntax-analysis scratch in one arena and reclaim it when the parse finishes. A geometry operation can give its intermediate arrays the same operation-scoped boundary.
+
+This works only when the lifetime grouping is honest. A retained result cannot keep pointing into scratch storage that will be reset for the next request. Either copy that result into longer-lived ownership or give it a different arena. An arena simplifies allocation; it does not decide which references remain valid.
+
+</Section>
+
+<Section id="memory" number="03" title="Alignment constrains the backing address and the offset." kicker="STRUCTURE / MEMORY LAYOUT">
+
+The canonical arena owns 64 bytes with backing alignment 16. Requests accept positive sizes and power-of-two alignments 1, 2, 4, 8 or 16. Because the base address satisfies those alignments, rounding the offset is enough. An alignment larger than the backing guarantee is rejected rather than assumed to work accidentally.
+
+The candidate is computed before capacity changes. Bounds are checked using size against capacity minus candidate, avoiding a potentially overflowing candidate-plus-size test. The returned `std::span<std::byte>` is a nonowning view. It must not outlive the arena, and the client contract invalidates it for use when the arena resets. Copy and move are deleted to keep the backing address stable. The diagnostic reservation ledger is metadata, not an object registry.
+
+</Section>
+
+<Section id="operations" number="04" title="Change sizes and alignment independently." kicker="INTERACTIVE OPERATIONS">
+
+<SystemsMemoryLab kind="arena" />
+
+Enter comma-separated bytes:alignment requests, for example `5:1,8:4,7:8`. Step through Round offset upward before Advance bump pointer. At the first step the candidate and prospective padding change, while offset and committed reservations remain unchanged. At the second step the reservation becomes part of the occupied prefix.
+
+Try `5:1,8:16` to increase padding, or `63:1,2:2` to demonstrate exhaustion after alignment. Requests with alignment three, zero bytes, or alignment 32 are rejected. Reset / reuse processes the requests, resets the arena, then repeats the first request at the beginning. Exhaustion fills all 64 bytes and attempts one more byte. Controls retain the failed request’s explanation while the committed offset stays unchanged.
+
+</Section>
+
+<Section id="implementation" number="05" title="Return byte views, with no implicit construction." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="ByteArena.hpp" chapter="52" />
+
+`allocate(size, alignment)` returns a span over owned backing bytes. `reset()` clears allocation bookkeeping and resets offset. It does not call `std::destroy_at` or a user destructor. A client that explicitly constructs a nontrivial object must destroy it before resetting or destroying the arena. The native example demonstrates that policy with a destructor counter.
+
+The optional observer is nonthrowing, nonreentrant, and sees snapshots only during its callback unless it copies them. The teaching ledger reserves room for 64 entries at arena construction; positive-size requests cannot exceed that many active reservations. This avoids hidden vector growth during a successful reservation, while adding metadata memory that a minimal production bump allocator need not retain.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="A candidate is not a committed reservation." kicker="CODE + VISUALIZATION TRACE">
+
+`arena.align` publishes a candidate offset for inspection. `arena.exhausted` reports an impossible range without moving the bump pointer. `arena.reserve` commits the byte range and its padding. `arena.reset` forgets all old reservations at one boundary. Each event highlights the corresponding statement in the compiled header.
+
+Use Previous across a reservation: the committed block and its charged padding disappear together, leaving the earlier candidate calculation visible. Previous across reset restores the earlier ledger for teaching playback only. Real C++ reset has no undo facility; snapshot reversal is a property of this visualization, not a promise that client objects can be resurrected.
+
+</Section>
+
+<Section id="invariants" number="07" title="Reserved ranges partition the used prefix with padding." kicker="INVARIANTS">
+
+Offset stays between zero and capacity. Every reservation begins at a multiple of its alignment, every supported alignment divides the backing guarantee, and positive-size reservations do not overlap. The gap from the preceding end to the next beginning equals that reservation’s padding. Summed reservation sizes plus summed padding equal offset.
+
+Failed requests leave committed reservations, padding totals and offset unchanged. Candidate and request diagnostics may change because a check really occurred. Reset leaves offset and current padding zero and the ledger empty. It does not prove that every external pointer was discarded: reference lifetime is a client responsibility beyond these structural invariants.
+
+</Section>
+
+<Section id="complexity" number="08" title="Padding is measurable space overhead." kicker="COMPLEXITY EXPLORER">
+
+Compare `5:1,5:1,5:1` with `5:16,5:16,5:16`. Both reserve 15 payload bytes, but the second sequence uses 22 padding bytes and ends at offset 37. Change to `16:16,16:16,16:16`: no padding is needed between these equal-size aligned blocks. The lab reports committed reservations, padding bytes, used bytes and resets.
+
+Alignment and bump advancement perform O(1) core work per request; storage is O(capacity). Resetting only the bump offset is O(1). This instrumented implementation also clears a ledger of B reservation records, whose container operation is described as O(B); callback snapshots add their own cost. Reset does not pay user destructor costs because the API performs no user destruction. Including destructors in another arena design would change its reset cost.
+
+</Section>
+
+<Section id="break-it" number="09" title="A legal byte address can still be wrong for a type." kicker="COMMON MISTAKES / BREAK-IT MODE">
+
+Run Break-It alignment and choose After. The safe metadata sandbox injects a four-aligned reservation beginning at byte three. The alignment invariant fails, and the reservation ledger may also expose overlap or an unaccounted gap. No native pointer is cast or dereferenced at the forged offset.
+
+Compare that corruption with a request such as `8:3`: the ordinary allocator rejects the unsupported alignment before committing storage. Another common mistake is treating reset as object cleanup. Use Reset / reuse and watch old records disappear without any destruction event. If a client constructed a resource-owning object and simply reset, that omitted cleanup would still be the client’s bug; the arena does not invent a destructor registry.
+
+</Section>
+
+<Section id="analogy" number="10" title="Write on a scratch roll, then replace the whole sheet." kicker="REAL-WORLD ANALOGY">
+
+A workbench covered by a paper roll gives each calculation the next unused area. Some tools need their drawing to begin on a grid line, leaving blank padding. At the end of the job the whole sheet is discarded. That action clears the workspace but does not return borrowed tools or close accounts recorded on the paper: external resources still need their own cleanup.
+
+</Section>
+
+<Section id="engineering" number="11" title="Use arenas where temporary lifetimes actually line up." kicker="ENGINEERING INSIGHT">
+
+Frame scratch, parser/compiler passes, request-local work and temporary geometry calculations often have natural bulk boundaries. A frame reset must happen after every consumer of that frame’s scratch has finished, including deferred or asynchronous work. One arena shared by unrelated lifetimes can retain unnecessary memory or invalidate live users too early.
+
+Nested markers could save an offset and rewind a temporary suffix, but they require stack-like use, alignment-aware bookkeeping, and invalidation of every escaped suffix reference. This bounded chapter deliberately exposes only full reset, keeping the raw-byte destruction policy visible. Chapter 53 addresses independently reusable typed objects; it makes a different tradeoff rather than extending this arena into one universal allocator.
+
+</Section>
+
+<Section id="exercises" number="12" title="Account for every byte and every lifetime." kicker="EXERCISES / CHALLENGES">
+
+1. Predict beginnings, padding and final offset for `3:1,5:8,8:16` before running it.
+2. Explain why rounding offset alone fails when the backing base has insufficient alignment.
+3. Show how checking candidate plus size can overflow, and why subtraction avoids that failure here.
+4. Write a client sequence that constructs, uses and explicitly destroys one object before reset.
+5. Propose a nested-marker API and state exactly which spans a rewind invalidates.
+6. Decide where a result that must survive the next frame should be stored, and justify its owner.
+
+</Section>
+
+<Section id="summary" number="13" title="Bulk lifetime is an allocation policy, not a destructor policy." kicker="CHAPTER SUMMARY">
+
+A raw-byte arena aligns the current offset, checks capacity, reserves a range and advances one bump pointer. Padding is visible overhead, failure preserves committed state, and reset reclaims all reservations together. Clients remain responsible for object construction, destruction and references that escape the arena’s lifetime boundary.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="52" />
+</Section>
+

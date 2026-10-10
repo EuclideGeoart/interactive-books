@@ -1,0 +1,127 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import Section from '../../components/book/Section.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import GraphComplexity from '../../components/visualizers/GraphComplexity.astro';
+import GraphStructureLab from '../../components/visualizers/GraphStructureLab.astro';
+import GraphStructureBreakIt from '../../components/visualizers/GraphStructureBreakIt.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-26/BFS.hpp?raw';
+import main from '../../../cpp/chapter-26/main.cpp?raw';
+
+<ChapterHero number="26" title="Breadth-First Search" overline="FIRST DISCOVERED. FIRST PROCESSED." description="Watch discovery, distance, predecessor, and enqueue happen separately. FIFO order turns an unweighted graph into distance layers." chain="queue [A] → [B,C] → [C,D,E] → [D,E]" facts={[["FRONTIER", "FIFO queue"], ["DISTANCE", "Minimum number of edges"], ["TRAVERSAL", "O(V + E)"]]} />
+
+<Section id="mental-model" number="01" title="The queue is the algorithm’s waiting room." kicker="VISUAL MENTAL MODEL">
+
+<h3>Inspect the graph and its stored relationships.</h3>
+
+<StructurePreview chapter="graph-bfs" id="graph-bfs-mental" operation="bfs" viewLabels={{logical:"Graph view",memory:"Storage view"}} diagramNote="Select a vertex or edge to inspect its identity and relationships. Positions remain stable throughout the trace." />
+
+The graph and FIFO panel show two kinds of progress: discovered vertices already have a place in the search, while processed vertices have been dequeued and appended to output. In the default graph, processing B leaves C,D,E waiting in that order. C was waiting before D and E were discovered.
+
+Select a vertex to inspect its distance and predecessor. Infinity means no distance is known yet; it does not mean the numeric weight is infinite. The tree overlay records the actual first-discovery edges.
+
+</Section>
+
+<Section id="intuition" number="02" title="FIFO creates distance layers." kicker="THE INTUITION">
+
+The source begins at distance zero. Its unseen neighbors receive distance one and join the queue. When those vertices are processed, newly discovered neighbors receive distance two, behind all remaining distance-one vertices. Inductively, no longer path can win first discovery.
+
+This is the same first-in, first-out mechanism as Chapter 6’s Queue. The result minimizes the number of edges, which also minimizes total weight only when every edge has the same positive weight. It is not a general weighted shortest-path algorithm.
+
+</Section>
+
+<Section id="memory" number="03" title="A queue owns IDs, not graph vertices." kicker="STRUCTURE / MEMORY LAYOUT">
+
+The graph owns its records. The queue stores integer vertex IDs; removing an entry does not destroy the vertex. Distance, predecessor, and color arrays each have V entries. The canonical C++ uses `deque<int>` with front, pop_front, and push_back to make FIFO ends explicit.
+
+WHITE means unseen; GRAY means discovered with processing unfinished; BLACK means all outgoing entries have been inspected. The output contains dequeued vertices, so the current GRAY vertex may already appear there. Discovered waiting vertices are those marked GRAY but not yet in output.
+
+</Section>
+
+<Section id="operations" number="04" title="Discover before scheduling." kicker="INTERACTIVE OPERATIONS">
+
+<GraphStructureLab kind="graph-bfs" />
+
+Load Standard and step through dequeue, visit, inspect, discover, distance, predecessor, and enqueue. Discovery is marked before queue insertion, preventing a diamond’s shared child from being scheduled twice. Change the source ID to explore reachability from another vertex.
+
+The graph preset is exactly the same as Chapter 27’s DFS preset. Try Empty, Single vertex, Self-loop, Diamond, and Disconnected. A single-source search leaves unreachable vertices WHITE with distance infinity and predecessor unset. Directed mode follows outgoing edges only.
+
+</Section>
+
+<Section id="implementation" number="05" title="Use adjacency once and mark at discovery." kicker="C++ IMPLEMENTATION">
+
+The standalone implementation validates the graph, constructs adjacency rows once, and owns all arrays in its returned State. It iterates each outgoing row in edge insertion order. The first valid discovery determines a predecessor; equal-length alternatives do not replace it.
+
+Distances count edges and are at most V−1 for reachable vertices. The eight-vertex input bound keeps them exact in int; weights are validated graph metadata but ignored by BFS. There is no arithmetic on edge weights, no sentinel addition, and no claim of weighted optimality.
+
+<CanonicalSource source={source} main={main} fileName="BFS.hpp" chapter="26" />
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="A predecessor appears at its assignment." kicker="CODE + VISUALIZATION TRACE">
+
+When A inspects B, B first becomes GRAY. Next B’s distance becomes 1. Then its predecessor becomes A; only then is B appended to the queue. These separate snapshots follow the tagged C++ statements. Intermediate discovery does not prematurely display a predecessor tree edge.
+
+A dequeue removes the front ID and makes it current. Visit appends it to processed output. Inspect then handles every outgoing entry, including a return edge or self-loop that discovers nothing new. Finish marks BLACK after the last adjacency entry.
+
+</Section>
+
+<Section id="invariants" number="07" title="Assigned predecessors explain distances." kicker="INVARIANTS">
+
+Every assigned predecessor p of v must be a real incoming traversal edge and satisfy distance[v] = distance[p] + 1. The source is the exception with distance zero and no predecessor. During the brief discover-before-distance step, assignment is pending rather than falsely declared broken.
+
+A vertex may appear in the queue at most once. Queued vertices are discovered and not yet processed. At completion the queue is empty. The immutable snapshots and invariant checker also support exact reverse playback.
+
+</Section>
+
+<Section id="complexity" number="08" title="Watch vertices and adjacency entries separately." kicker="COMPLEXITY EXPLORER">
+
+<GraphComplexity kind="bfs" />
+
+Choose Standard, Dense, and Disconnected and compare Output vertices with Adjacency / cell reads. A reachable undirected non-loop edge is inspected twice, once from each endpoint; a self-loop is inspected once by the chosen adjacency convention. Queue growth depends on the frontier, not the number of drawn arrow segments.
+
+After validation and adjacency preparation, BFS takes O(V + E) time and O(V) auxiliary space in the worst case; a single-source run only inspects reachable rows. Building rows costs O(V + E). The small graph validator separately compares pairs in O(V² + E²). Stored playback snapshots add teaching overhead that a normal non-tracing BFS does not retain.
+
+</Section>
+
+<Section id="break-it" number="09" title="A wrong distance can look plausible." kicker="COMMON MISTAKES / BREAK-IT MODE">
+
+Inject the distance fault below. D is two edges from A through B; changing D’s distance to 1 violates its recorded predecessor relation even if the drawing looks unchanged. Another common error marks visited only on dequeue, allowing a diamond’s child to be enqueued twice.
+
+<GraphStructureBreakIt kind="bfs" />
+
+</Section>
+
+<Section id="analogy" number="10" title="Ripples arrive by the number of steps." kicker="REAL-WORLD ANALOGY">
+
+Imagine a message spreading one relationship per round with equal delay on every edge. All one-hop recipients can be reached before any two-hop recipient needs processing. Unequal delays break that analogy and require a weighted shortest-path method.
+
+</Section>
+
+<Section id="engineering" number="11" title="Return evidence, not just an order." kicker="ENGINEERING INSIGHT">
+
+A distance array answers minimum hop-count questions. Predecessors reconstruct a shortest route by walking backward to the source, then reversing that sequence. Unreachable targets must be handled before reconstruction. The BFS tree is not a new ownership hierarchy for the graph.
+
+For nonnegative unequal edge costs, Chapter 33’s Dijkstra replaces FIFO scheduling with a priority queue. Keep the input contract visible instead of quietly reusing BFS for weighted cost.
+
+</Section>
+
+<Section id="exercises" number="12" title="Predict the frontier before pressing Next." kicker="EXERCISES / CHALLENGES">
+
+After processing B in the default graph, predict the queue and D’s predecessor. Answer: C,D,E; D’s predecessor is B and its distance is 2.
+
+Try the directed diamond. Which parent first discovers D? The edge insertion order puts B before C, so B wins; reversing A’s two outgoing edge records can select a different equally short BFS tree without changing distances.
+
+</Section>
+
+<Section id="summary" number="13" title="Queue order is a proof ingredient." kicker="CHAPTER SUMMARY">
+
+BFS marks discovery before enqueueing and processes a FIFO frontier. Its distances count edges, its predecessor edges explain those distances, and unreachable vertices remain explicit. Compare the same topology with Chapter 27’s LIFO continuation frames.
+
+Continue the connections: <a href={`${import.meta.env.BASE_URL}chapters/06-queue-deque/`}>Chapter 6 — Queue + Deque</a> · <a href={`${import.meta.env.BASE_URL}chapters/27-depth-first-search/`}>Chapter 27 — Depth-First Search</a> · <a href={`${import.meta.env.BASE_URL}chapters/33-dijkstra/`}>Chapter 33 — Dijkstra</a>.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete ✓</button>
+<ChapterPagination number="26" />
+
+</Section>

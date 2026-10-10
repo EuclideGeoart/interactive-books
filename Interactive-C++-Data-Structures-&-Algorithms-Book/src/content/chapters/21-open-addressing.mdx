@@ -1,0 +1,118 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import OpenAddressingLab from '../../components/visualizers/OpenAddressingLab.astro';
+import HashPolicyBreakIt from '../../components/visualizers/HashPolicyBreakIt.astro';
+import HashProbingExplorer from '../../components/visualizers/HashProbingExplorer.astro';
+import TeachingHashDownload from '../../components/visualizers/TeachingHashDownload.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-21/OpenAddressing.hpp?raw';
+import main from '../../../cpp/chapter-21/main.cpp?raw';
+
+<ChapterHero number="21" part="PART IV / HASHING" title="Open Addressing" overline="THE NEXT SLOT IS PART OF THE SEARCH" description="Put entries directly in the table. Follow linear probes through collisions, preserve a search path with tombstones, and rebuild when occupancy makes every search expensive." chain="home → occupied → tombstone → matching key" facts={[["Representation","Contiguous slots"],["Collision policy","Linear probing"],["Deletion","Tombstones"],["Termination","At most capacity probes"]]} />
+
+<Section id="mental-model" number="01" title="A collision changes the route, not the key." kicker="VISUAL MENTAL MODEL">
+
+At capacity eight, a, i and q all hash to home slot one under our polynomial-31 teaching hash. Insert them in that order: a occupies one, i moves to two, q moves to three. A query for q starts at one because the hash does not remember where previous collisions sent it.
+
+<StructurePreview chapter="open-addressing" id="open-preview" operation="find" inputs={{keys:'a,i,q',capacity:'8',key:'q',erased:'a'}} diagramNote="Slot one is a tombstone. Lookup must pass it to reach q. Logical and memory views retain the same indexed topology." />
+
+Select all three slots. TOMBSTONE says an entry used to occupy this position, so a displaced key might still lie farther along. EMPTY says the probe sequence may stop.
+
+</Section>
+<Section id="intuition" number="02" title="Keep walking until the table can prove absence." kicker="INTUITION">
+
+Linear probing visits `(home + distance) % capacity`. The modulo wraps the last slot back to zero. An occupied slot with a different key is a collision, not an error. A tombstone is a candidate for a later insertion, not proof that the key is missing.
+
+Insertion remembers the first tombstone but continues looking for a duplicate. If q is already farther down the chain, the operation updates q there. Reusing the tombstone immediately would create two q entries and make their values depend on which copy lookup encounters first.
+
+</Section>
+<Section id="memory" number="03" title="Three states belong to each slot." kicker="STRUCTURE / MEMORY LAYOUT">
+
+The canonical vector contains Slot records with a status, a string key and an integer value. Live key/value pairs belong directly to these slots; there are no linked entry nodes. A string may separately allocate character storage. Contiguous Slot objects therefore do not imply that every character lives inline.
+
+EMPTY, OCCUPIED and TOMBSTONE are explicit enum states. Erase clears the key/value and retains the tombstone status. Index labels are vector positions, not native byte offsets. The browser accepts capacities one through 32; native examples accept one through 4096. Keys have one through twelve lowercase ASCII letters. The shared unsigned polynomial-31 hash wraps modulo 2³² before index reduction.
+
+</Section>
+<Section id="operations" number="04" title="Update q beyond the deleted a." kicker="INTERACTIVE OPERATIONS">
+
+<OpenAddressingLab />
+
+The default fixture inserts a, i and q, then erases a before starting the trace. Insert/update q: the first tombstone is remembered, then the existing q is updated. Change the operation key to y and load again to reuse the tombstone. Find and Contains run the same bounded lookup; erase q leaves another tombstone. Rehash to sixteen recomputes homes and removes all tombstones.
+
+Each load creates a fresh experiment from the starting keys and optional pre-erases. To test wraparound, start with g,o,w at capacity eight. To test a full table, use a,e,i,m at capacity four and search or insert z. Capacity one tests the smallest full and empty cases. Blank starting keys means an empty table. Every operation tab has valid defaults.
+
+</Section>
+<Section id="implementation" number="05" title="A bounded loop makes full tables safe." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="OpenAddressing.hpp" chapter="21" />
+<TeachingHashDownload />
+
+`insert` returns true only when a new entry was added. False covers both an existing-key update and a full-table refusal; use size and find to distinguish those outcomes. The lab labels the result explicitly. Find returns an optional mapped value; erase returns whether it removed a key. There is no automatic growth: rehash is an explicit operation so capacity pressure stays visible.
+
+Inputs are validated before mutation. Insertion builds a new string before publishing the slot; an allocation failure preserves the table. Rehash fills a separate vector and swaps only after every copy succeeds, preserving the original on failure. Copy construction makes independent storage, and copy assignment uses a temporary before commit. Move is deliberately deleted to preserve the nonzero-capacity invariant without a special moved-from state. Rehash invalidates slot indices and references; no stable-entry-handle API is promised.
+
+</Section>
+<Section id="pointer-trace" number="06" title="The cursor is an index, not a node pointer." kicker="CODE + VISUALIZATION TRACE">
+
+The first source highlight computes home. Each probe then inspects one concrete slot and increments the counter. Remembering a tombstone does not count as another inspection. Finding EMPTY selects the first remembered tombstone, or that empty slot if none was seen. A full scan with only occupied slots refuses a new key; a full scan with tombstones can still reuse one after proving no duplicate exists.
+
+Rehash keeps the original row visible while a replacement row fills. Each replacement probe is counted; the old-vector iteration is a separate sequential scan and is not part of that slot-inspection counter. The final swap commits the new storage. Previous and Reset select retained snapshots, including partially built replacements. They do not execute an inverse C++ operation.
+
+</Section>
+<Section id="invariants" number="07" title="Every stored key must remain searchable." kicker="INVARIANTS">
+
+| Rule | Meaning |
+| --- | --- |
+| Capacity is positive | Modulo and bounded traversal are defined. |
+| Each key appears once | Insert updates a duplicate rather than creating another record. |
+| No EMPTY precedes a live key on its probe route | Lookup can reach every occupied slot. |
+| Size counts only OCCUPIED slots | Tombstones do not represent members. |
+| Every probe loop is bounded | Even a table with no empty slot terminates. |
+
+The invariant checker follows each live key's home-to-slot route. It rejects an early EMPTY even when the key still appears visually elsewhere in the array. Native validation additionally checks that locate returns each occupied index and that the cached size equals the occupied count.
+
+</Section>
+<Section id="complexity" number="08" title="Occupancy and clustering change the actual work." kicker="COMPLEXITY EXPLORER">
+
+<HashProbingExplorer kind="open" />
+
+The explorer constructs the selected distribution and searches for an absent key using the same model. Distinct homes leave an empty home for the missing query; concentrated hashes make the query cross the cluster. Increase occupancy toward 31 of 32 and compare actual inspections. Slot inspections exclude the cost of hashing and comparing the key's characters.
+
+With suitable hashing and controlled load, expected lookup and insertion are O(1); worst-case probing is O(capacity), commonly O(n) when capacity tracks n. A fixed bound makes termination safe, not fast. Tombstones can make searches expensive even when live load factor is low. Rehash scans the old capacity and reinserts live entries; expected rebuilding is linear in old capacity plus entries under good distribution, while repeated collisions can make reinsertion quadratic.
+
+</Section>
+<Section id="break-it" number="09" title="Replace a tombstone with EMPTY and lose q." kicker="COMMON MISTAKES / BREAK-IT">
+
+<HashPolicyBreakIt kind="open" />
+
+In the broken snapshot, slot one becomes ordinary EMPTY after deleting a. Search q stops immediately and reports absence even though q is still in slot three. Restore the correct policy and replay: q is found after three inspections. The membership route invariant fails in the broken state before any search begins. This is a logical reachability failure, not a missing allocation.
+
+Other mistakes include stopping at a tombstone, using the first tombstone before checking later duplicates, forgetting wraparound, and probing forever when no EMPTY remains. The capacity bound protects all-occupied and all-tombstone states.
+
+</Section>
+<Section id="analogy" number="10" title="A forwarding sign is different from an unused address." kicker="REAL-WORLD ANALOGY">
+
+Imagine a row of numbered lockers. A full locker sends you to the next one. Removing its owner must leave a forwarding sign because another owner may have been displaced beyond it. An unused locker has no such history and ends the search. Rebuilding assigns everyone a fresh route and discards the signs.
+
+</Section>
+<Section id="engineering" number="11" title="Locality helps; dense clusters still cost." kicker="ENGINEERING INSIGHT">
+
+Nearby probes often have useful cache locality. Tombstones avoid moving surviving entries during erase, but accumulate search work. A rebuild trades allocation and copying for shorter routes. Quadratic probing and double hashing choose different probe sequences and require their own coverage and capacity arguments; they are not interchangeable with this linear loop. The deterministic teaching hash is convenient for repeatable collisions and is not a defense against adversarial input.
+
+</Section>
+<Section id="exercises" number="12" title="Predict the route before stepping." kicker="EXERCISES / CHALLENGES">
+
+1. Delete a, then update q. Why is slot one still a tombstone afterward?
+2. Fill capacity four with a,e,i,m. Count inspections for missing z and duplicate i.
+3. Erase every initial key. Explain how insertion can succeed with no EMPTY slots.
+4. Rehash g,o,w from eight to sixteen. Predict both wraparound and new homes.
+5. Compare live load factor with the fraction of nonempty slots after many erases.
+
+</Section>
+<Section id="summary" number="13" title="Deletion must preserve the search route." kicker="CHAPTER SUMMARY">
+
+<div className="summary-panel"><h3>State determines when a probe can stop.</h3><ul><li>Linear probing keeps entries in indexed slots.</li><li>EMPTY ends lookup; TOMBSTONE preserves continuation.</li><li>Insertion searches past tombstones before updating or reusing storage.</li><li>Full-table loops are bounded, and rebuilding recomputes placement.</li></ul><button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button></div>
+<ChapterPagination number="21" />
+</Section>

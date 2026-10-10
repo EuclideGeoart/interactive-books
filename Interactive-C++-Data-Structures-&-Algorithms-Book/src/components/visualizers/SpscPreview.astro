@@ -1,0 +1,15 @@
+---
+import '../../styles/spsc.css';
+import { spscAdapter, spscDefaults } from '../../visualizers/spsc/adapter';
+const state = spscAdapter.build('publication', spscDefaults()).steps[4]!.state;
+---
+<div data-spsc-preview data-diagram class="diagram-component">
+  <h3 class="sr-only">SPSC publication mental model</h3>
+  <div class="diagram-topline"><span class="diagram-caption">PAYLOAD WRITTEN · INDEX NOT YET PUBLISHED</span></div>
+  <div class="diagram-with-inspector"><div class="diagram-canvas">
+    <div class="svg-scroll" tabindex="0" role="region" aria-label="SPSC mental model diagram" data-svg set:html={spscAdapter.draw(state, 'spsc-preview', 'logical', null)} />
+    <details class="text-fallback"><summary>Text representation</summary><code data-ascii>{spscAdapter.describe(state)}</code></details>
+  </div><details class="inspector-shell" data-inspector-shell><summary>Inspect publication <span>Choose a thread, index or slot</span></summary><aside class="pointer-inspector" aria-label="SPSC mental model inspector" data-inspector set:html={spscAdapter.inspect(state, null)} /></details></div>
+  <script type="application/json" data-spsc-state set:html={JSON.stringify(state).replace(/</g, '\\u003c')} />
+</div>
+<script>import '../../scripts/spsc-labs';</script>

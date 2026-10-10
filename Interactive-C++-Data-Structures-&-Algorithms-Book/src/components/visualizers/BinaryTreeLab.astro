@@ -1,0 +1,11 @@
+---
+import TraceLab from './TraceLab.astro';
+import source from '../../../cpp/chapter-10/BinaryTree.hpp?raw';
+const operations = [{'id': 'append', 'label': 'Append level-order'}, {'id': 'clear', 'label': 'Clear'}];
+---
+<TraceLab id="binary-tree" chapter="binary-tree" source={source} fileName="BinaryTree.hpp" operations={operations} regions={['append', 'clear']}>
+  <label>Starting tree<select name="preset"><option value="standard">A–B–C–D–E (65,66,67,68,69)</option><option value="empty">Empty tree</option><option value="single">Single root</option><option value="custom">Custom integers</option></select></label>
+  <label>Custom values (level order)<input name="values" value="65,66,67,68,69" maxlength="90" placeholder="65,66,67,68,69" /></label>
+  <label>Query / inserted value<input name="value" type="number" min="-999" max="999" step="1" value="70" /></label>
+</TraceLab>
+<script>import '../../scripts/tree-labs';</script>

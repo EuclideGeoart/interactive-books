@@ -1,0 +1,132 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import Callout from '../../components/book/Callout.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import BTreeLab from '../../components/visualizers/BTreeLab.astro';
+import TreeComplexity from '../../components/visualizers/TreeComplexity.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-16/BTree.hpp?raw';
+import plus from '../../../cpp/chapter-16/BPlusTree.hpp?raw';
+import main from '../../../cpp/chapter-16/main.cpp?raw';
+import CppPrerequisite from '../../components/book/CppPrerequisite.astro';
+
+<ChapterHero number="16" title="B-trees / B+ trees" overline="SPEND COMPARISONS TO SAVE PAGE ACCESSES" description="When reaching another page is expensive, put more keys in each node. Watch a full page split and see why B+ leaves form their own ordered scan path." chain="[20 | 40] → [5 10] · [25 30] · [50 60]" facts={[["B-tree minimum degree", "t = 2"], ["Page capacity", "3 keys / 4 children"], ["B+ records", "Leaves only"], ["B+ scan", "One descent + leaf links"]]} />
+<CppPrerequisite lesson="12" summary="Guarded mutation, exception safety and iterator ranges." />
+
+<Section id="mental-model" number="01" title="One page partitions several key intervals." kicker="VISUAL MENTAL MODEL">
+
+A binary search node chooses between two directions. A page with keys 20 and 40 chooses among three intervals: below 20, between 20 and 40, and above 40. Packing several keys and child references into one page reduces the number of levels needed to index a large dataset.
+
+<StructurePreview chapter="b-tree" id="btree-preview" operation="insert" inputs={{kind:'btree',values:'20,40,5,10,25,30,50,60',value:'35'}} />
+
+Each wide box is one separately allocated page object. Its keys are ordered slots, not miniature binary nodes. Inspect child[0], child[1] and later links to see their actual array positions. The drawing's width grows with its page label; changing to memory view does not imply that children occupy adjacent allocations.
+
+</Section>
+<Section id="intuition" number="02" title="Disk and cache misses make height expensive." kicker="THE INTUITION">
+
+If a lookup must fetch one storage page per tree level, reducing height can matter more than minimizing comparisons inside a page already in memory. A high fanout means that each level covers many more records. B-trees preserve that advantage through occupancy limits and splits, keeping all leaves at one depth.
+
+A B-tree stores records in internal pages as well as leaves: a promoted key moves into the parent. A B+ tree stores records only in leaves. Internal keys are routing copies called separators, and linked leaves support ordered range scans. Finding a separator in an internal B+ page does not mean the record has been reached; equality follows the child on its right.
+
+</Section>
+<Section id="memory" number="03" title="Define capacity before reasoning about a split." kicker="STRUCTURE / MEMORY LAYOUT">
+
+The B-tree uses **minimum degree t = 2**. Every nonroot page has 1–3 keys; each internal page has one more child than key, so it has 2–4 children. A nonempty root has at least one key. The root may itself be a leaf; the empty tree has a null root. These are exact conventions, avoiding the ambiguous word order.
+
+The B+ example also permits 1–3 keys in nonroot pages and up to four children internally. This deliberately small top-down variant splits a full leaf's three records into one left record and two right records. A leaf separator is copied from the first record of the right leaf, so that record stays in its leaf. An internal split removes the middle separator from the child and promotes it to the parent. Other B+ implementations choose different leaf capacities and minimum occupancy; their arithmetic must match their split policy.
+
+Pages contain a leaf flag, a vector of integer keys and a vector of child pointers. B+ additionally stores a non-owning next-leaf pointer. The vectors reserve their fixed teaching capacities when the page is constructed. This is a conceptual page model built from C++ objects and vectors, not a packed on-disk layout, disk I/O implementation or durable database format.
+
+</Section>
+<Section id="operations" number="04" title="Split before descending into a full page." kicker="INTERACTIVE OPERATIONS">
+
+The B-tree lab starts with a full root. Insert 40 to allocate a taller root, split the old page and choose the correct child interval. Search can stop at a record in either an internal page or a leaf.
+
+<BTreeLab />
+
+In the B+ lab, inspect the difference between internal separators and leaf records. Choose Range scan with lower 15 and upper 50. After locating the first candidate leaf, the cursor follows actual next links and emits only records inside the inclusive bounds. Output grows at each tagged append statement.
+
+<BTreeLab kind="bplus" />
+
+Both labs accept up to 24 arbitrary starting integer keys from −999 to 999. Duplicate keys are rejected before structural mutation. Empty input, missing search, a singleton, root growth and repeated internal splits all work. Range scan rejects reversed bounds in the browser; the native API returns an empty vector for a reversed range. The browser lab covers search, insertion/split and B+ range scanning; native erase APIs are described below.
+
+</Section>
+<Section id="implementation" number="05" title="Preserve ownership while widening the hierarchy." kicker="CANONICAL C++20">
+
+Both headers provide insert, contains, erase, values, empty, clear and valid. They exclusively own pages through child links. Destruction traverses children, never B+ next links. Copy and move are deleted, preventing accidental shared ownership. Search is const and does not alter pages. The shared example needs **both headers** in the same directory; download each complete implementation below.
+
+<CanonicalSource source={source} main={main} fileName="BTree.hpp" chapter="16" />
+
+<CanonicalSource source={plus} main={main} fileName="BPlusTree.hpp" chapter="16" />
+
+The B-tree erases in place, borrowing from a sufficiently occupied sibling or merging minimal children before descent. It collapses an empty internal root onto its only child. The B+ erase deliberately rebuilds from remaining sorted records into a replacement tree, then swaps roots. It is complete and correct, but costs O(n log n) time and O(n) temporary storage rather than logarithmic in-place repair. The browser does not present that rebuild as a local deletion animation.
+
+Allocation safety is explicit. Page construction reserves key/child capacities; construction failure releases partially built vectors. A split allocates its sibling before changing existing pages, then its bounded int/pointer vector mutations cannot allocate. A new root is guarded until its first split succeeds. If a deeper allocation fails, earlier completed splits may have changed shape, but membership and all invariants remain valid. B+ rebuilding erase keeps the original tree until the replacement is ready. Native failure injection checks root and deeper splits under sanitizers.
+
+</Section>
+<Section id="pointer-trace" number="06" title="A promoted separator and a published child are different writes." kicker="CODE + VISUALIZATION POINTER TRACE">
+
+The B-tree split saves the full child and median, constructs a right page, copies its high keys, transfers high child links if internal, truncates the left page, inserts the median into the parent, then inserts the right child pointer. A parent can temporarily have the new key without its matching new child link. The live invariant panel makes that incomplete state visible.
+
+A B+ leaf split additionally assigns the new leaf's next link before changing the old leaf's next link. Its promoted separator remains a record in the new right leaf. Internal B+ splits transfer children and move a routing separator upward. A split of the old root completes before the tree publishes its new root; the new page is temporarily reachable through a local pointer rather than the tree's root.
+
+The STL vector insert/assign/resize calls are each one canonical statement. The trace shows page contents at those statement boundaries; it does not invent intermediate internal vector element moves. Likewise, B+ upper_bound and binary_search are standard-library searches within a page, not a promise to animate each library comparator call.
+
+</Section>
+<Section id="invariants" number="07" title="Check intervals, occupancy and depth together." kicker="INVARIANTS">
+
+| Settled rule | B-tree / B+ meaning |
+| --- | --- |
+| Keys in a page are strictly sorted | Duplicates are rejected by the public set API. |
+| Child ranges match separator positions | Every descendant belongs in the selected interval. |
+| Internal child count is key count plus one | Every interval has one child. |
+| Pages respect the defined occupancy bounds | No empty nonroot or overfull page remains. |
+| Every leaf has the same depth | Search paths reach the leaf level consistently. |
+| Every live page has one owning path | No cycle, lost page or shared owning child exists. |
+| B+ separators equal right-subtree minima | Equality routes to the record's leaf. |
+| B+ next links match sorted leaf order | Range scan sees each leaf once, then null. |
+
+Pending split states need not satisfy every settled rule. The complete operation must. Non-owning next links do not count as extra owning parents. The B+ checker compares leaf-link order with hierarchy-derived leaf order, so a missing or reordered scan link cannot pass merely because point lookup works.
+
+</Section>
+<Section id="complexity" number="08" title="Count page levels separately from in-page work." kicker="COMPLEXITY EXPLORER">
+
+<TreeComplexity kind="btree" />
+
+Search takes logarithmically many levels at fixed fanout. In the native B-tree, an in-page scan costs O(t); the B+ variant uses binary search for routing and leaf lookup. With the teaching capacities fixed, those local costs are bounded. A real large page also spends CPU work shifting keys during insertion. Fanout, packing and access latency determine the practical tradeoff.
+
+A B+ range scan pays one root-to-leaf descent, then scans linked leaves and emits k matching records: O(log n + k) at fixed page capacity, with O(k) result storage. Full values() is O(n). B-tree in-place erase is O(log n) at fixed degree; the explicitly rebuilding B+ erase has the larger cost described above. The explorer's full-page capacity model illustrates height, not actual disk timings or the lab's exact occupancy.
+
+</Section>
+<Section id="break-it" number="09" title="Do not remove a B+ record when copying its separator." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+Compare the split snapshots from both labs. Removing a leaf median as if it were a B-tree record would lose a B+ record. Failing to insert the matching child pointer would leave the parent arity wrong. Following equality left would search the wrong B+ interval. Omitting either next-link assignment could preserve point lookup while breaking range scan.
+
+Pause after promotion and before child publication, and predict the pending rule. Then compare a B+ point search with a range covering the same key. As a native exercise, deliberately clear one leaf link and add an assertion that valid() fails. Semantic tests use that fault to verify the checker without running invalid ownership operations in C++.
+
+</Section>
+<Section id="analogy" number="10" title="Read a shelf index before opening another cabinet." kicker="REAL-WORLD ANALOGY">
+
+A cabinet page lists several boundaries so one reading tells you which next cabinet to open. In the B+ arrangement, index cabinets contain directions while all actual records live on ordered shelves. Once you reach the first relevant shelf, a next-shelf link avoids returning to the entrance for every subsequent record.
+
+</Section>
+<Section id="engineering" number="11" title="A page-shaped index is not yet a database." kicker="ENGINEERING INSIGHT">
+
+Database and filesystem indexes care about page occupancy, locality, update amplification and range access. A production design also needs serialization, stable page identifiers, crash recovery, concurrency and a reclamation policy. None is supplied by this in-memory teaching container. Leaf links are useful for scans but introduce another relationship that splits, merges and reclamation must maintain.
+
+</Section>
+<Section id="exercises" number="12" title="Track the record separately from its routing copy." kicker="EXERCISES / CHALLENGES">
+
+1. Split a full B-tree root. Identify the median's old and new ownership.
+2. Repeat with B+. Where does the promoted separator's actual record remain?
+3. Insert a longer sorted sequence until an internal page splits. Count child links on both sides.
+4. Scan an interval spanning several leaves. Locate the exact append and next-link statements.
+5. Explain why the rebuilding B+ erase preserves correctness yet changes its complexity contract.
+
+</Section>
+<Section id="summary" number="13" title="Wide nodes buy fewer levels." kicker="CHAPTER SUMMARY">
+
+<div className="summary-panel"><h3>Pages, separators and records have distinct roles.</h3><ul><li>Explicit capacities make split rules unambiguous.</li><li>B-tree promotion moves a record into its parent.</li><li>B+ leaf promotion copies a separator while keeping the record in a leaf.</li><li>All leaves share one depth.</li><li>Actual leaf links make ordered range scans efficient.</li></ul><button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button></div>
+<ChapterPagination number="16" />
+</Section>

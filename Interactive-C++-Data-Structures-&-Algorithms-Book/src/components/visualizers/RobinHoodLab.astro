@@ -1,0 +1,12 @@
+---
+import TraceLab from './TraceLab.astro';
+import source from '../../../cpp/chapter-22/RobinHood.hpp?raw';
+---
+<TraceLab id="robin-hood-lab" chapter="robin-hood" source={source} fileName="RobinHood.hpp" operations={[{id:'insert',label:'Insert / update'},{id:'find',label:'Find'},{id:'contains',label:'Contains'},{id:'erase',label:'Erase / shift backward'},{id:'rehash',label:'Rehash'}]} regions={['find','insert','erase','rehash']} diagramNote="Incoming and resident are separate records during a swap. Slot positions stay fixed. This chapter uses backward shifts, never tombstones.">
+<label>Starting keys<input name="keys" value="a,b,i" maxlength="430" /></label>
+<label>Capacity<input name="capacity" type="number" value="8" min="1" max="32" /></label>
+<label>Key<input name="key" value="q" minlength="1" maxlength="12" pattern="[a-z]{1,12}" required /></label>
+<label>Value<input name="value" type="number" value="9" min="-999" max="999" /></label>
+<label>New capacity<input name="requested" type="number" value="16" min="1" max="32" /></label>
+</TraceLab>
+<script>import '../../scripts/hash-labs';</script>

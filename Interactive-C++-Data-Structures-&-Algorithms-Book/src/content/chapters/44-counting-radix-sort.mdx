@@ -1,0 +1,125 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import AdvancedSortLab from '../../components/visualizers/AdvancedSortLab.astro';
+import SortingComplexity from '../../components/visualizers/SortingComplexity.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-44/CountingRadix.hpp?raw';
+import main from '../../../cpp/chapter-44/main.cpp?raw';
+
+<ChapterHero number="44" title="Counting / radix sort" part="PART VI / SEARCHING & SORTING" overline="COUNT THE DOMAIN. PRESERVE THE PASS ORDER." description="Use bounded nonnegative keys and stable digit passes to sort without pairwise sorting comparisons." chain="170 045 075 090 802 024 002 066 → ones → tens → hundreds" facts={[["Counting time", "O(n + k)"], ["Radix time", "O(d(n + 10))"], ["Stable placement", "Cumulative ends · reverse input"], ["Domain", "Nonnegative integer keys"]]} />
+
+<Section id="mental-model" number="01" title="A key can address its destination bucket." kicker="VISUAL MENTAL MODEL">
+
+Counting sort uses a bounded integer key as a bucket index. For `[3,1,2,3,0]`, frequencies for buckets 0 through 3 are `[1,1,1,2]`. Prefix sums turn those into exclusive bucket ends `[1,2,3,5]`. Decrement the end for a record's key to reserve its output slot, then place the whole record there.
+
+<StructurePreview chapter="counting-radix-sort" id="counting-radix-sort-preview" operation="counting" inputs={{values:'3,1,2,3,0',maxKey:'3'}} diagramNote="Input records, bucket counts and temporary output are distinct arrays; bucket labels are keys, not record identities." />
+
+Radix applies that stable placement to one digit at a time. Decimal padding makes `2` appear as `002` when the largest key has three digits. Leading zeros are display and digit-extraction semantics, not different stored integer values.
+
+</Section>
+
+<Section id="intuition" number="02" title="Stable low-digit order survives the next pass." kicker="THE INTUITION">
+
+A stable ones pass orders the least significant digit. A stable tens pass groups by tens while retaining the ones order within each tens group. Continue through hundreds and higher positions. After a pass at divisor q, the records are ordered by the digits represented by key modulo 10q.
+
+Reverse traversal is essential for this cumulative-end placement variant. The rightmost equal-key record receives the rightmost available slot in its bucket. Earlier equal records therefore remain earlier. Forward traversal with decrementing ends reverses each group and invalidates the LSD composition argument.
+
+</Section>
+
+<Section id="memory" number="03" title="The key domain controls counting-array memory." kicker="STRUCTURE / STORAGE LAYOUT">
+
+Stable counting sort allocates n output records and k bucket counts, where k is maxKey + 1. Its O(n + k) auxiliary space depends on the declared domain, even if only two keys occur. A sparse domain near the integer maximum is unsuitable for this implementation.
+
+Decimal LSD radix reuses an n-record output buffer and ten counts per pass, giving O(n + 10) algorithmic auxiliary space. Both algorithms copy records back after each completed output. Neither canonical variant is in-place. Owned input, optional-slot display metadata, observers and saved browser snapshots are excluded from auxiliary complexity. Vectors and optional values manage storage lifetime automatically.
+
+</Section>
+
+<Section id="operations" number="04" title="Switch between a complete-key bucket and a digit bucket." kicker="INTERACTIVE OPERATIONS">
+
+<AdvancedSortLab kind="counting-radix" />
+
+For counting, use the default input and set Counting maximum key to 3. Observe Count, Prefix, Reserve, Output and Copy. The maximum may be 0 through 99; every key must lie in that declared domain. Negative keys and huge sparse domains are rejected before the trace replaces the current run.
+
+For radix, select LSD radix sort and enter `170,45,75,90,802,24,2,66`. The divisor advances through 1, 10 and 100; the highlighted decimal column and zero-padded labels follow the current pass. Radix accepts nonnegative signed 32-bit values, including 2147483647. The Counting maximum field applies only to counting. Blank input performs no passes; an all-zero nonempty input performs one ones pass.
+
+</Section>
+
+<Section id="implementation" number="05" title="Reserve a slot before writing its record." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="CountingRadix.hpp" chapter="44" />
+
+The standalone header provides `integer_sort::counting(values, maxKey)` and `integer_sort::radix(values)`. Save it beside main.cpp and compile with the displayed command. Both APIs validate nonnegative keys; counting also validates the complete domain before allocating bucket storage. Teaching input is capped at 32 records.
+
+Digit extraction is integer `(key / divisor) % 10`. After each radix pass, the code checks `divisor > maximum / 10` before multiplying by ten. For the largest signed 32-bit key, the last divisor is 1000000000, and no overflowing 10000000000 multiplication is attempted. An optional observer receives exact tagged states; the optional unstable radix flag selects the deliberately incorrect forward traversal.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Frequencies become ends, then ends become remaining positions." kicker="CODE + VISUALIZATION TRACE">
+
+Clear writes zero to each count entry. Count inspects one input key or digit and increments its bucket. Prefix adds the preceding cumulative count to the current entry. At that boundary, each bucket's count is its exclusive output end.
+
+Reserve decrements the selected end and exposes output index j before a record is written. Output copies one complete record into that reserved position. Copy-back starts only after every output slot is occupied. The same count array now holds bucket starts, because each bucket's end was decremented once per member. Radix repeats the full sequence for the next divisor; Maximum scans happen once before the first pass.
+
+</Section>
+
+<Section id="invariants" number="07" title="Stability is what makes digit composition correct." kicker="INVARIANTS">
+
+All visible record identities remain attached to their original keys. Each output position is filled once, and the buffer contains no repeated identity. Bucket frequencies and boundaries stay between zero and n, so every reserved slot is within the output allocation. During partial copy-back, the input permutation can be pending while the buffer retains the complete result.
+
+At a completed stable digit pass, processed low digits are ordered and equal processed digit sequences retain their original relative order. At completion, all keys are ascending and equal full keys preserve identities. The unstable experiment is permitted to fail these checks; the failure is visible as text as well as color.
+
+</Section>
+
+<Section id="complexity" number="08" title="Domain size and digit count are actual costs." kicker="COMPLEXITY EXPLORER">
+
+<SortingComplexity chapter="44" />
+
+Counting initializes k buckets, counts n records, accumulates k−1 bucket ends, places n records and copies n records back: O(n + k). The stable variant counts zero pairwise sorting-key comparisons. Buffer writes include count-zeroing, increments, cumulative sums, end decrements and output assignments; input array writes count copy-back separately.
+
+Radix performs d stable base-10 passes: O(d(n + 10)). Maximum-finding scans are reported separately from sorting key comparisons. Each pass extracts 2n digits, once during counting and once during placement. A ten-digit maximum requires ten passes even when most other keys are short. Compare these assumptions and memory costs with comparison sorts; a smaller Big-O symbol alone does not predict elapsed time.
+
+</Section>
+
+<Section id="break-it" number="09" title="An unstable inner pass produces a wrong final order." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+Select LSD radix sort, enter `21,22,11,12`, and choose **Break: read input left to right**. The ones pass groups digits but reverses order within each group. The tens pass then reverses the lower-digit order within each tens group. After two passes, the actual result is `[12,11,22,21]`, which is unsorted.
+
+Return the selector to Stable: read input right to left. The same input becomes `[11,12,21,22]`. The incorrect mode still performs bounded, memory-safe writes; it demonstrates a semantic failure rather than undefined behavior. Counting never uses this radix-only switch. To test domain checks, choose counting with maxKey = 3 and enter a 4 or a negative value.
+
+</Section>
+
+<Section id="analogy" number="10" title="Stable mail trays preserve yesterday's ordering." kicker="REAL-WORLD ANALOGY">
+
+Sort cards into ten trays by their last digit, preserving their order within each tray. Gather the trays from 0 through 9. Sort the gathered cards into trays by the next digit, again preserving within-tray order. Reversing a tray while gathering it destroys information established by the preceding pass.
+
+</Section>
+
+<Section id="engineering" number="11" title="Non-comparison sorting needs a representation contract." kicker="ENGINEERING INSIGHT">
+
+Counting is attractive for dense, small domains such as bounded category IDs. Radix is useful when records have a suitable integer representation and predictable pass count. Signed numbers, arbitrary comparators and variable-length text require additional representation policies; this chapter explicitly rejects negative keys rather than silently shifting or reinterpreting them.
+
+Changing the radix changes both the count-array footprint and pass count. Larger buckets can reduce passes but increase initialization work and memory use. Compare the actual operation counts with <a href="../41-merge-sort/">stable merge sort</a>, while remembering that this base-10 teaching implementation prioritizes inspectable digits over a claim of peak throughput.
+
+</Section>
+
+<Section id="exercises" number="12" title="Follow the reserved output indices." kicker="EXERCISES / CHALLENGES">
+
+1. Compute frequencies and cumulative ends for `3,1,2,3,0`. List every output index reserved by reverse traversal.
+2. Run `3,1,3,0` and verify which 3 identity comes first in the result.
+3. Explain why empty input has zero passes but `[0,0]` has one radix pass.
+4. Predict pass count and digit reads for `2,45,170`, then verify the counters.
+5. Trace the unstable example `21,22,11,12` and identify the first pass where a processed-digit stability invariant fails.
+6. Explain why checking for another digit after multiplying divisor would be too late to prevent overflow.
+
+</Section>
+
+<Section id="summary" number="13" title="Linear-looking work is conditional on the domain." kicker="CHAPTER SUMMARY">
+
+Counting trades key comparisons for bucket storage and domain traversal. Stable LSD radix composes those placements across digits. Reverse input traversal with decrementing cumulative ends preserves order; the unstable counterexample shows why that matters. Counts, buffer writes, maximum scans, digit reads and pass limits make the representation costs explicit.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="44" />
+</Section>
+

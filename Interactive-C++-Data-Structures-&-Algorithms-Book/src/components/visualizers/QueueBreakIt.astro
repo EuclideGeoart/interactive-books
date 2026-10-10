@@ -1,0 +1,18 @@
+<div class="interactive-frame" data-queue-break>
+  <div class="operation-form"><label>Controlled fault<select data-fault><option value="wrong-end">Queue removes from back</option><option value="wrong-shift">Shift in the wrong direction</option><option value="miss-count">Forget singleton size update</option><option value="empty-read">Read from empty</option></select></label><button type="button" class="button" data-break>Break it</button><button type="button" class="button" data-restore>Restore</button></div>
+  <div class="svg-scroll" data-fault-svg role="region" aria-label="Queue fault diagram" tabindex="0"></div><p data-fault-result role="status"></p><details><summary>Compare with the checked operation</summary><p data-correct></p></details>
+</div>
+<script>
+  import { queueAdapter } from '../../visualizers/queue/adapter';
+  import { queueFault } from '../../visualizers/queue/faults';
+  document.querySelectorAll<HTMLElement>('[data-queue-break]').forEach(root => {
+    const render = (broken: boolean) => {
+      const f = queueFault(root.querySelector<HTMLSelectElement>('[data-fault]')!.value);
+      root.querySelector('[data-fault-svg]')!.innerHTML = queueAdapter.draw(broken ? f.broken : f.before,'queue-fault','memory',null).replaceAll('role="button" tabindex="0"','role="img"').replaceAll(' aria-pressed="false"','').replaceAll('Inspect ', '');
+      const output=root.querySelector('[data-fault-result]')!; output.textContent=broken ? `✕ ${f.detail}` : '✓ Restored starting state. These controlled model faults never run unsafe C++.'; output.className=broken ? 'invariant-fail' : 'invariant-pass';
+      root.querySelector('[data-correct]')!.textContent=queueAdapter.describe(f.correct);
+    };
+    root.querySelector('[data-break]')!.addEventListener('click',()=>render(true));root.querySelector('[data-restore]')!.addEventListener('click',()=>render(false));root.querySelector('[data-fault]')!.addEventListener('change',()=>render(false));render(false);
+  });
+</script>
+<style>.operation-form {display:flex;flex-wrap:wrap;gap:1rem;align-items:end;padding:1rem;} label {display:grid;gap:.4rem;flex:1;min-width:12rem;} [data-fault-result],details {margin:1rem;}:global([data-fault-svg] .data-node) {cursor:default;}</style>

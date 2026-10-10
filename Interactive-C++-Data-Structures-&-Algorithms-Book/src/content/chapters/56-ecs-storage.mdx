@@ -1,0 +1,123 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import SystemsOrganizationPreview from '../../components/visualizers/SystemsOrganizationPreview.astro';
+import SystemsOrganizationLab from '../../components/visualizers/SystemsOrganizationLab.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-56/ECSStorage.hpp?raw';
+import main from '../../../cpp/chapter-56/main.cpp?raw';
+
+<ChapterHero number="56" title="ECS storage patterns" part="PART VIII / ENGINE &amp; SYSTEMS DATA STRUCTURES" overline="IDENTITY, DATA, AND SYSTEMS ARE DIFFERENT ROLES" description="Sparse-set component pools organize owned data by entity identity, while systems join the component memberships they need." chain="entity identity → component membership → matching data → system work" facts={[["Entity", "Generational identity"], ["Components", "Owned sparse-set pools"], ["System", "Join by entity ID"], ["Scope", "Bounded teaching registry"]]} />
+
+<Section id="mental-model" number="01" title="Three entities do not imply three of every component." kicker="VISUAL MENTAL MODEL">
+
+The initial registry has entities E0, E1, and E2. Position owns values 10, 20, and 30 for those entities. Velocity owns values 1 and 3 for E0 and E2 only. A movement system therefore updates two entities and skips E1. An entity is an identity; a component is data; a system is an operation over matching data.
+
+<SystemsOrganizationPreview kind="ecs" />
+
+Membership view aligns components by entity ID so the intersection is visible. Storage view shows each pool's actual dense row order plus its inverse indices. After removing E1's Position, E2's Position moves into row 1 while its Velocity may occupy a different row. A join must follow IDs, not zip the vectors by index.
+
+</Section>
+
+<Section id="intuition" number="02" title="Organize the data a system actually touches." kicker="THE INTUITION">
+
+A movement system needs Position and Velocity, not every field on every object. Separate pools let it iterate one component set and probe the other. In this implementation, it always visits the Velocity pool, checks Position membership, and then performs `position += velocity` for a match. Choosing the smaller pool could reduce probes in a more general query engine; that optimization is not implemented here.
+
+A scalar Position and Velocity keep the storage mechanics visible. They represent component data, not a full physics model. More systems can use other intersections without changing what an entity handle means. This separation helps reason about data access, but an ECS label alone provides no performance guarantee.
+
+</Section>
+
+<Section id="memory" number="03" title="Each pool owns values and its own iteration order." kicker="STRUCTURE / STORAGE LAYOUT">
+
+An eight-slot registry stores alive bits and generations. Two bounded sparse-set pools each store a dense vector of owner IDs, a parallel vector of integer values, and initialized inverse indices. An append creates one ID/value row; a removal moves both halves of the last row, pops them, and repairs that pool's mapping.
+
+A destroyed entity loses both components before its alive bit is cleared and generation incremented. Freed entity slots retain identity metadata, but the diagram never reads a destroyed component's former fields. There are no raw component pointers in this API. The registry is noncopyable and nonmovable, preserving the capacity reserved for both columns. Structural mutation invalidates the meaning of saved dense positions even when an underlying allocation stays in place.
+
+</Section>
+
+<Section id="operations" number="04" title="Join, remove a middle row, and reject a stale handle." kicker="INTERACTIVE OPERATIONS">
+
+<SystemsOrganizationLab kind="ecs" />
+
+Run Position + Velocity system and compare the initial values with `[11,20,33]`. The two join probes and two updates are separate counters. Switch to storage view to inspect the owner IDs used for the join. Setup includes creation and component additions, so handle-validation counters also include that setup.
+
+Remove Position from handle index 1, generation 1. Stop at Move, Pop, Repair, and Settle to see E2's row relocate. To add a missing component, choose Velocity and target E1. To observe duplicate rejection in a fresh fixture, choose Velocity and target E0, which already owns that component. Reuse / stale handle destroys the selected entity, creates a replacement in the lowest available slot, then attempts an addition through the old handle.
+
+</Section>
+
+<Section id="implementation" number="05" title="A small registry is enough to make the boundaries concrete." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="ECSStorage.hpp" chapter="56" />
+
+`Registry` exposes `create`, `valid`, `add`, `remove`, `destroy`, and `tick`. Handle checks test range, alive state, and generation before component access. Creation returns an optional handle and can fail on exhaustion. Pool selectors outside 0/1 and component inputs outside −100 through 100 are rejected. Arithmetic overflow in a repeated movement update throws before changing that particular value; earlier updates are not rolled back.
+
+The self-contained registry uses scalar components and a deterministic lowest-free-slot scan. Generations never wrap: a destroyed slot reaching 65535 is retired, sacrificing capacity. Observer callbacks must copy snapshots they retain, be nonthrowing, and avoid reentry. The companion native program checks pools against an independent map and exercises stale references, exhaustion, and retirement.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Trace ownership movement before identity invalidation." kicker="CODE + VISUALIZATION TRACE">
+
+For component removal, `ecs.move` copies the last owner ID and value into the selected dense row. `ecs.pop` destroys the redundant final row. `ecs.repair` changes the moved owner's sparse position; `ecs.settle` restores the public invariant. These steps change a pool, not the entity's generation.
+
+Destroy runs the removal sequence for each present component, then emits `ecs.destroy` after invalidating the entity slot. Reuse creates a fresh identity at the new generation. The later `ecs.validate` still carries the old requested generation and rejects it. Previous restores the whole snapshot, including component data that existed at that earlier time; it does not imply that a destroyed object's fields remain readable now.
+
+</Section>
+
+<Section id="invariants" number="07" title="A component cannot outlive its owning entity identity." kicker="INVARIANTS">
+
+Every component pool has paired ID/value lengths. At stable boundaries its IDs are unique and every live dense row round-trips through sparse metadata. Every component owner must name a live registry slot. Generations remain inside the finite supported range, with retirement preventing wraparound in this example.
+
+The inverse-map invariant is pending during private row movement. The identity-liveness invariant remains true throughout: components are removed before the entity is invalidated. Different pools need not share dense order or size. An entity with zero components is valid, and an absent component does not make its entity handle stale.
+
+</Section>
+
+<Section id="complexity" number="08" title="Count joins separately from validation and creation." kicker="COMPLEXITY EXPLORER">
+
+Compare the default movement run with removing a component in its own fixture. Movement performs one Position probe per Velocity owner and one update per match. With v Velocity rows and m matches, its query cost is O(v) and useful updates number m. Dense storage may improve locality, while probing a second pool adds another access pattern; these counters are mechanical work, not timing benchmarks.
+
+Component add, remove, and membership use constant bounded work after reservation. Destroy removes at most the two supported component kinds. Creation scans U entity slots, so it is O(U), not a free-list O(1) acquire. Storage is O(U) per pool plus dense component rows. The displayed capacities are eight entities and two component kinds; a production registry needs explicit scaling decisions.
+
+</Section>
+
+<Section id="break-it" number="09" title="Do not confuse dense positions, old handles, and absent components." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+Use Remove on E1's Position. If a caller treated dense row 1 as permanent E1 identity, it would now read E2's data. If removal moved only the value but not its ID, the row would associate the wrong data with an entity. Inspect both fields and the repaired sparse entry to see why movement is a row operation.
+
+Use Reuse / stale handle with index 1 and generation 1. The replacement is live at generation 2 but owns no components. The old handle must fail rather than attaching data to the replacement. Try generation 2 against the initial fixture: it is also invalid there. These are validated failure experiments; intentionally corrupt component storage is not part of this registry API.
+
+</Section>
+
+<Section id="analogy" number="10" title="A staff directory and separate equipment inventories." kicker="REAL-WORLD ANALOGY">
+
+An employee number identifies a person. The laptop inventory and vehicle inventory own different records keyed by that number. An operation needing both joins the inventories by identity; it cannot assume the third laptop and third vehicle belong to the same person.
+
+Reusing a departed employee's number requires a new version so an old request cannot modify the replacement's records. Removing equipment and ending identity are related lifecycle events with distinct responsibilities. That distinction remains useful well beyond games.
+
+</Section>
+
+<Section id="engineering" number="11" title="Sparse pools and archetype chunks make different tradeoffs." kicker="ENGINEERING INSIGHT">
+
+Sparse-set pools store each component type independently. Queries join memberships, and adding one type changes that type's pool. Archetype storage instead groups entities with the same component signature, such as Position + Velocity, in matching columns within chunks. Adding or removing a type can move an entity between archetypes, while queries over a matching archetype can walk aligned columns directly.
+
+This chapter implements sparse pools only. The archetype comparison is conceptual, not a second engine or a claim that one layout always wins. Mutation frequency, query mix, component size, and migration costs matter. The sparse mechanics build on <a href="../54-sparse-sets/">Chapter 54</a>; identity checks connect to <a href="../55-generational-handles/">Chapter 55</a>. Use <a href="../58-command-buffers/">deferred commands</a> to schedule structural changes after traversal rather than modifying a pool while iterating it.
+
+</Section>
+
+<Section id="exercises" number="12" title="Separate the four questions in every operation." kicker="EXERCISES / CHALLENGES">
+
+1. Which entities match Position + Velocity in the initial fixture? Calculate the resulting values before running it.
+2. Remove E1's Position. Show the owner/value vectors and repaired inverse entry; explain why Velocity need not move.
+3. Destroy E0, reuse its slot, and compare the old and new handles. Which metadata remains readable?
+4. Extend the conceptual registry with Renderable. Explain the membership intersection for a rendering system without inventing an archetype implementation.
+5. Compare a workload that frequently adds components with one that repeatedly scans a stable signature. Which costs would you measure for sparse pools and chunks?
+6. Replace the creation scan with a free list conceptually. Which complexity changes, and which lifetime checks remain necessary?
+
+</Section>
+
+<Section id="summary" number="13" title="Storage organization does not erase ownership or identity." kicker="CHAPTER SUMMARY">
+
+An ECS registry separates generational entity identity, pool-owned component data, and operations over matching memberships. Sparse pools provide compact rows and fast membership while allowing independent order. Swap-delete must move owner and value together; entity destruction removes components before invalidating identity. Archetypes offer a different organization with migration tradeoffs, and safe structural scheduling remains a separate engineering concern.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="56" />
+</Section>

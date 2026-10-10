@@ -1,0 +1,24 @@
+---
+import SourceCode from '../code/SourceCode.astro';
+import source from '../../../cpp/chapter-23/UnorderedMap.hpp?raw';
+---
+<div class="interactive-frame" data-point-contract>
+<form class="lab-inputs">
+<label>A.x<input name="ax" type="number" min="-999" max="999" value="1" required /></label><label>A.y<input name="ay" type="number" min="-999" max="999" value="2" required /></label>
+<label>B.x<input name="bx" type="number" min="-999" max="999" value="1" required /></label><label>B.y<input name="by" type="number" min="-999" max="999" value="3" required /></label>
+<label>Equality rule<select name="policy"><option value="correct">Correct: compare x and y</option><option value="broken">Break it: compare x only</option></select></label><button type="submit" class="button button-primary">Check implication</button>
+</form><div class="svg-scroll" data-point-svg tabindex="0" role="region" aria-label="Point equality and hash implication"></div><p class="hash-result" data-result aria-live="polite"></p>
+<div class="code-pane"><div class="code-title"><span><i></i> PointKey · hash and equality</span><span>C++20</span></div><div class="operation-code" tabindex="0" role="region" aria-label="PointKey hash and equality C++ source"><SourceCode source={source} region="point" /></div></div>
+</div>
+<script>
+import {pointContract} from '../../visualizers/unordered-map/model';
+import {escapeHtml} from './primitives';
+for(const root of document.querySelectorAll<HTMLElement>('[data-point-contract]')){
+ const form=root.querySelector('form')!;
+ const render=()=>{if(!form.reportValidity())return;const f=new FormData(form),a={x:Number(f.get('ax')),y:Number(f.get('ay'))},b={x:Number(f.get('bx')),y:Number(f.get('by'))},r=pointContract(a,b,f.get('policy')==='broken');
+ const message=`${r.valid?'✓ Implication holds for this pair':'✕ BROKEN: equal keys produced different hashes'}. Equal: ${r.equal}. Hash(A): ${r.hashA}. Hash(B): ${r.hashB}. ${f.get('policy')==='broken'?'A passing pair alone does not validate the x-only predicate with this hash.':'Equality compares both coordinates. Unequal keys may collide.'}`;
+ root.querySelector('[data-result]')!.textContent=message;
+ root.querySelector('[data-point-svg]')!.innerHTML=`<svg class="hash-diagram" width="760" height="145" viewBox="0 0 760 145" role="img" aria-label="${escapeHtml(message)}"><text x="20" y="35">A (${a.x}, ${a.y}) → hash ${r.hashA}</text><text x="20" y="70">B (${b.x}, ${b.y}) → hash ${r.hashB}</text><text x="20" y="110" style="fill:var(--${r.valid?'green':'red'})">${r.equal?'EQUAL keys require equal hashes':'UNEQUAL keys: equal or different hashes are allowed'}</text></svg>`;
+ };form.addEventListener('submit',e=>{e.preventDefault();render();});form.addEventListener('change',render);render();
+}
+</script>

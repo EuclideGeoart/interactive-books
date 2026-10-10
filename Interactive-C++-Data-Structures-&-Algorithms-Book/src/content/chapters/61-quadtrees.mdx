@@ -1,0 +1,143 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import SpatialPreview from '../../components/visualizers/SpatialPreview.astro';
+import SpatialLab from '../../components/visualizers/SpatialLab.astro';
+import SpatialExplorer from '../../components/visualizers/SpatialExplorer.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-61/Quadtree.hpp?raw';
+import main from '../../../cpp/chapter-61/main.cpp?raw';
+
+<ChapterHero number="61" title="Quadtrees" part="PART IX / SPATIAL DATA STRUCTURES" overline="SPLIT CROWDED SPACE, KEEP OWNERSHIP UNIQUE" description="A point quadtree recursively divides a bounded 2D region into four quadrants when a leaf exceeds its capacity." chain="leaf → capacity exceeded → four children → redistribute → prune" facts={[["Root", "Closed [−8,8] × [−8,8]"], ["Split", "Midpoint on x and y"], ["Ownership", "One leaf per point"], ["Termination", "Capacity or maximum depth"]]} />
+
+<Section id="mental-model" number="01" title="A region splits only where occupancy demands detail." kicker="VISUAL MENTAL MODEL">
+
+The root covers the whole square. A crowded leaf creates four quadrants, and its points move into their unique child regions. Empty siblings remain real child nodes in this canonical quadtree; refinement continues only along crowded paths.
+
+<SpatialPreview kind="quadtree" />
+
+The spatial view draws those actual bounds. The hierarchy/storage view shows parent IDs, child links, and leaf member IDs. A point's position stays fixed while the hierarchy around it changes. Select nodes to inspect depth and occupancy, including the intermediate redistribution batch.
+
+</Section>
+
+<Section id="intuition" number="02" title="Capacity triggers subdivision; depth guarantees termination." kicker="THE INTUITION">
+
+With capacity 2, a leaf may hold two points without splitting. Inserting a third point first makes it overfull. If its depth is below the configured maximum, split both coordinate intervals at their midpoints, create four children, and redistribute all three points. If a child is still too full, apply the same rule there.
+
+Number child slots by xHigh + 2 × yHigh: 0 is low x/low y, 1 high x/low y, 2 low x/high y, and 3 high x/high y. Equality with either midpoint selects the high side. Drawn child closures share an edge, but ownership follows this unique routing rule.
+
+Duplicate coordinates always choose the same child. Repeated subdivision cannot separate them. At maximum depth, keep an overflow leaf instead of recursing forever. The root has depth zero, so maximum depth zero disables subdivision entirely.
+
+</Section>
+
+<Section id="memory" number="03" title="Leaves own point IDs; internal nodes own four links." kicker="STRUCTURE / MEMORY LAYOUT">
+
+Each node stores its bounds, depth, parent ID, child slots, and leaf member IDs. Internal nodes have four child links and no stored points. Leaves have no child links. The root exists even when the input is empty, so an empty quadtree differs from a null KD-tree root.
+
+During splitting, the old leaf members move into an explicit pending list before child placement begins. Each live point is owned by exactly one leaf or one pending slot. This is algorithmic state rather than a rendering trick: playback can stop after the split without losing or duplicating points.
+
+The C++ vector owns nodes by value and uses integer node indices. Inserting a child may reallocate the vector, so mutation code retains an index and reacquires the parent rather than keeping a reference across allocation. Parent IDs and diagram positions are not native addresses. Copying or moving the returned value follows normal vector ownership.
+
+</Section>
+
+<Section id="operations" number="04" title="Watch the threshold, split, and redistribution as separate events." kicker="INTERACTIVE OPERATIONS">
+
+<SpatialLab kind="quadtree" />
+
+Run Build quadtree on uniform input, then on clustered input at capacity 1. Pause after Store, when occupancy first exceeds capacity; step to Split, inspect the pending batch, and follow Redistribute into the chosen children. Set maximum depth to zero and observe legal overflow without child creation.
+
+Run Insert point with 0,0 or 8,8 to inspect midpoint and root-face behavior. Try the duplicates scene at depth 6. Run Range query with −2,−2,3,3, then a zero-area rectangle 0,0,0,0. Point lookup uses the query point as a zero-area closed range, so it returns every ID at that coordinate.
+
+Each operation begins by constructing the selected scene. Previous, Before, and After show snapshots of that run; they do not refer to an index retained from another form submission.
+
+</Section>
+
+<Section id="implementation" number="05" title="Make the storage policy explicit in the callable algorithm." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="Quadtree.hpp" chapter="61" />
+
+This canonical implementation is point-only. It accepts at most 12 unique A–Z identities, finite coordinates in [−8,8], integer capacity 1 through 8, and maximum depth 0 through 6. Closed queries accept boundary points and zero extent. Invalid/reversed bounds and out-of-root insertions are rejected. The complete header needs only the C++20 standard library.
+
+A future AABB version should retain a spanning object at its current parent and descend only when exactly one child fully contains it. Query traversal must test parent-held objects before children. That is a different storage contract from this point-only lab; the code does not silently duplicate boxes into every intersected child or pretend that a box's center represents its full extent.
+
+The observer receives const state at tagged statements. Copy it for retained history; do not mutate or reenter the run. The run owns its local vectors, so normal return or exception cleans up without manual deletion.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="An overfull leaf is a real intermediate state." kicker="CODE + VISUALIZATION TRACE">
+
+Route chooses the current node. Store appends the point and removes its pending slot. Only after that statement does the capacity condition trigger Split. Split clears the parent membership, creates its children, and records the detached batch. Redistribute identifies the next pending point; subsequent Route and Store steps restore its leaf ownership.
+
+The query starts after construction. Visit counts a node and checks its bounds. Prune rejects a disjoint region before testing its members or descendants. An overlapping leaf supplies candidates; Test applies exact closed point containment, and Accept records a result. A point on a drawn split edge may require conservative visits to both touching region closures, but it still has one stored owner.
+
+At maximum depth, Limit explains why excess occupancy is valid. At Done, all placement is complete. Source highlighting names the corresponding canonical statement rather than a drawing update.
+
+</Section>
+
+<Section id="invariants" number="07" title="Subdivision changes ownership without changing coordinates." kicker="INVARIANTS">
+
+All live points occur once across leaf storage and pending slots. Internal nodes own no points. Every child has one parent, depth parent + 1, and precisely the quadrant bounds selected by its slot. Child bounds remain inside the parent.
+
+Every stored descendant follows the high-side rule at every ancestor. Merely testing inclusive child containment would be insufficient: a point on a shared boundary geometrically lies in both drawn closures. The routing invariant checks the selected slot, so duplicate ownership cannot hide behind touching boxes.
+
+Completed leaves satisfy capacity unless their depth equals maximum depth. Before construction, placement is pending. Immediately after an overfull Store and before Split, the capacity condition is pending rather than a settled failure. No completed state may leave redistribution unfinished.
+
+</Section>
+
+<Section id="complexity" number="08" title="Refinement costs depend on depth and local crowding." kicker="COMPLEXITY EXPLORER">
+
+<SpatialExplorer kind="quadtree" />
+
+Compare uniform and clustered scenes with the same capacity. Read Visited nodes, Point tests, Pruned branches, and Tree depth. Increase maximum depth for duplicates: deeper refinement creates more nodes without separating coincident points. These counters expose mechanics; they are not timing benchmarks.
+
+With direct record access, routing to a leaf costs O(D), and a split additionally redistributes its members. Building n points is bounded by O(nD) routing work for fixed four-way branching, plus allocation, with n points and maximum depth D; node storage is O(1 + nD) in the bounded adaptive tree. A full depth-D quadtree can contain (4^(D+1) − 1) / 3 nodes. Sparse point occupancy rarely justifies that uniform expansion.
+
+For a particular range, geometric traversal costs O(V + T), where V is visited nodes and T is tested points; reporting K answers costs at least Ω(K). Worst-case traversal scans all allocated nodes and all points. A balanced-looking picture does not give a universal logarithmic range bound, and a boundary-aligned point lookup can visit multiple region closures.
+
+The teaching C++ resolves point IDs with linear scans, so its query costs O(V + Tn + K log K), including sorted output. Its repeated pending-ID erasures and point lookups make a conservative build bound O(n²(D + 1)). The TypeScript projection also resolves node IDs linearly. Every lab run rebuilds the input and copies playback snapshots; these costs are separate from displayed traversal counts.
+
+</Section>
+
+<Section id="break-it" number="09" title="Boundary and duplicate scenes challenge the split rule." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+Set capacity 1 and use several copies of 0,0. Predict the path at the root and every later split. If routing uses inclusive containment in a loop over children, a boundary point can be inserted multiple times. If equality always goes low during insertion but high during lookup, a result can disappear.
+
+Set maximum depth zero and build duplicates. Rejecting the legal overflow would confuse a stopping policy with corruption. Removing the depth guard in a local copy demonstrates why capacity alone does not terminate coincident-point subdivision.
+
+Pause at Split and predict what happens if the parent keeps its old members while children receive copies. The unique-ownership check would fail. Try an insertion outside [−8,8] or a reversed query in the safe lab to exercise input validation.
+
+</Section>
+
+<Section id="analogy" number="10" title="Split a crowded map tile into four smaller maps." kicker="REAL-WORLD ANALOGY">
+
+A surveyor begins with one map covering a district. When too many survey markers occupy it, the map gains four child tiles and delegates each marker to exactly one tile. Quiet areas retain coarse tiles. At the permitted resolution limit, several markers may share a tile; the surveyor must inspect them individually.
+
+</Section>
+
+<Section id="engineering" number="11" title="Adaptive space helps local density but needs object policy." kicker="ENGINEERING INSIGHT">
+
+Point clouds, 2D scene culling, terrain subdivisions, and spatial picking benefit when dense regions need more detail than empty ones. Midpoint splitting gives predictable regions, but strongly clustered or coincident data can create long narrow paths. A moving point may need removal and reinsertion; that lifecycle is not supplied by this chapter's point insertion API.
+
+For CAD rectangles or large game objects, retaining spanning AABBs at parents avoids ambiguous duplication, but can leave large candidate sets near the root. <a href="../64-r-trees/">R-trees</a> and <a href="../65-bounding-volume-hierarchies/">BVHs</a> organize object bounds differently. <a href="../62-octrees/">Octrees</a> add genuine depth to spatial subdivision, with a steeper memory-growth risk.
+
+</Section>
+
+<Section id="exercises" number="12" title="Prove ownership and termination before optimizing." kicker="EXERCISES / CHALLENGES">
+
+1. List the root child slot for (−1,−1), (0,−1), (−1,0), and (0,0).
+2. At capacity 2, identify the exact snapshot where inserting a third point first breaks the settled capacity condition and the snapshot that begins repair.
+3. Prove that duplicate coordinates terminate when maximum depth is finite.
+4. Explain why a closed zero-area query on a split edge may visit two children but must not return one ID twice.
+5. Derive the full-tree node count at depth 4, then compare it with the actual clustered-scene allocation.
+6. Design the parent-retained AABB extension. Specify insertion ownership, parent tests during querying, and a test for a box spanning all quadrants.
+
+</Section>
+
+<Section id="summary" number="13" title="Adaptive regions require a precise stopping and ownership rule." kicker="CHAPTER SUMMARY">
+
+A point quadtree splits crowded leaves into four midpoint regions and redistributes members through unique high-side routing. Maximum depth makes coincident points safe. Closed queries prune disjoint regions and test remaining points exactly. The hierarchy adapts to density, while explicit storage policy and metadata costs determine its real engineering behavior.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="61" />
+</Section>
+

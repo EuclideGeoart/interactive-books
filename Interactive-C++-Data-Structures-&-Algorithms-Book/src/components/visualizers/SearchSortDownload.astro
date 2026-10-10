@@ -1,0 +1,9 @@
+---
+interface Props {chapter:string}
+const {chapter}=Astro.props;
+const base=import.meta.env.BASE_URL.replace(/\/$/,'');
+---
+<div class="callout">
+  <strong>Required shared header</strong>
+  <p>Download <a href={`${base}/source/chapter-39/SortState.hpp`} download>SortState.hpp</a> as <code>chapter-39/SortState.hpp</code>. Save this chapter’s header and main.cpp in <code>chapter-{chapter}/</code>. Keep those chapter folders beside each other; compile from <code>chapter-{chapter}/</code> with the command below. The shared header defines record identity, observer state, checked input construction, and comparison helpers.</p>
+</div>

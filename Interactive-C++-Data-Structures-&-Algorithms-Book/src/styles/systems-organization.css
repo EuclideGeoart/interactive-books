@@ -1,0 +1,21 @@
+/* Chapter-owned geometry. Shared Fit/Actual Size controls target systems-diagram. */
+.organization-scene { min-width: 0; padding: 10px; }
+.organization-note { font: 12px/1.7 var(--mono); padding: 10px; border-left: 3px solid var(--pointer); background: var(--pointer-fill); overflow-wrap: anywhere; }
+.organization-diagram { display: block; max-width: none; }
+.organization-band { font: 600 13px var(--mono); fill: var(--ink); }
+.organization-cell { cursor: pointer; }
+.organization-cell rect { fill: var(--data-fill); stroke: var(--green); }
+.organization-cell text { fill: var(--ink); font: 11px var(--mono); }
+.organization-cell .organization-value { font-weight: 600; }
+.organization-cell.empty rect { fill: var(--surface-subtle); stroke: var(--border-strong); stroke-dasharray: 4 3; }
+.organization-cell.active rect { fill: var(--amber-fill); stroke: var(--amber); stroke-width: 2; }
+.organization-cell.selected rect, .organization-cell:focus rect { stroke: var(--ink); stroke-width: 3; }
+.organization-cell:focus { outline: none; }
+.organization-table-scroll { max-width: 100%; overflow: auto; max-height: 280px; overscroll-behavior: contain; }
+.organization-scene table { width: 100%; border-collapse: collapse; font: 12px/1.6 var(--mono); }
+.organization-scene caption { text-align: left; padding: 8px 0; color: var(--muted); }
+.organization-scene td, .organization-scene th { border: 1px solid var(--border); padding: 8px; text-align: left; white-space: nowrap; }
+[data-organization-lab] .lab-workspace { align-items: start; }
+[data-organization-lab] .svg-scroll, [data-organization-preview] .svg-scroll { min-width: 0; overflow: auto; max-height: 760px; }
+[data-organization-preview] { min-width: 0; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); }
+@media (max-width: 560px) { .organization-scene { padding: 6px; } }

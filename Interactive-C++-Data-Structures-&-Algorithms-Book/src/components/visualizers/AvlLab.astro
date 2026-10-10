@@ -1,0 +1,11 @@
+---
+import TraceLab from './TraceLab.astro';
+import source from '../../../cpp/chapter-14/AvlTree.hpp?raw';
+const operations=[{id:'insert',label:'Insert / rebalance'},{id:'erase',label:'Erase / rebalance'},{id:'search',label:'Search'}];
+---
+<TraceLab id="avl-lab" chapter="avl" source={source} fileName="AvlTree.hpp" operations={operations} regions={['insert','erase','search','rebalance','rotations']}>
+<label>Starting insertion order<input name="values" value="30,20" maxlength="140" aria-label="Starting insertion order" /></label>
+<label>Key<input name="value" type="number" min="-999" max="999" step="1" value="10" required /></label>
+</TraceLab>
+<p class="diagram-view-note">Up to 24 starting keys. LL: 30,20 → 10 · RR: 10,20 → 30 · LR: 30,10 → 20 · RL: 10,30 → 20. Empty starting input makes an empty tree.</p>
+<script>import '../../scripts/tree-labs';</script>

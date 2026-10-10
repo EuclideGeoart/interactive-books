@@ -1,0 +1,29 @@
+---
+import TraceLab from './TraceLab.astro';
+import { searchSortChapters, type SearchSortKey } from '../../visualizers/search-sort/adapter';
+import linear from '../../../cpp/chapter-37/LinearSearch.hpp?raw';
+import binary from '../../../cpp/chapter-38/BinarySearch.hpp?raw';
+import fundamentals from '../../../cpp/chapter-39/Fundamentals.hpp?raw';
+import elementary from '../../../cpp/chapter-40/ElementarySorts.hpp?raw';
+import '../../styles/sorting.css';
+interface Props {kind:SearchSortKey; id?:string; preset?:string; mode?:string; target?:number}
+const {kind,id=kind,preset=kind==='elementary-sorts'||kind==='sorting-fundamentals'?'mixed':'standard',mode='normal',target=40}=Astro.props;
+const searching=kind==='linear-search'||kind==='binary-search';
+const sources:Record<SearchSortKey,[string,string,string[]]>={
+  'linear-search':[linear,'LinearSearch.hpp',['linear']], 'binary-search':[binary,'BinarySearch.hpp',['binary']],
+  'sorting-fundamentals':[fundamentals,'Fundamentals.hpp',['explore']], 'elementary-sorts':[elementary,'ElementarySorts.hpp',['bubble','selection','insertion']],
+};
+const [source,fileName,regions]=sources[kind];
+const labels:Record<string,string>={linear:'Find first match',binary:'Find any match',inspect:'Count inversions',swap:'Swap records, then inspect',bubble:'Bubble sort',selection:'Selection sort',insertion:'Insertion sort'};
+---
+<TraceLab id={id} chapter={kind} source={source} fileName={fileName} regions={regions} operations={searchSortChapters[kind].map(op=>({id:op,label:labels[op]!}))} viewLabels={{logical:'Order and ranges',memory:'Indexed storage'}} diagramNote="Letters name original record identities, not current positions. Select a cell to inspect its key and ID. Indices and local storage are illustrative, not native addresses.">
+  <label>Input preset<select name="preset">
+    {Object.entries({standard:'10,20,30,40,50',mixed:'4,2,5,1,3',empty:'Empty',single:'Single: 40',sorted:'Sorted: 1,2,3,4,5',reverse:'Reverse: 5,4,3,2,1',equal:'All equal: 2,2,2,2',duplicates:'Duplicates: 1,2,2,2,3',stability:'Stability: 2A,2B,1C',nearly:'Nearly sorted: 1,2,4,3,5',negative:'Negative keys: −9,−3,0,4,9',extremes:'Extreme teaching keys',unsorted:'Unsorted: 3,1,2',custom:'Custom input below'}).map(([value,label])=><option value={value} selected={value===preset}>{label}</option>)}
+  </select></label>
+  <label>Custom keys (up to 12; comma separated)<input name="values" value="4,2,5,1,3" maxlength="120" /></label>
+  {searching?<label>Target<input name="target" type="number" value={target} min="-1000000" max="1000000" step="1" /></label>:<label>Ordering<select name="direction"><option value="ascending">Ascending</option><option value="descending">Descending</option></select></label>}
+  {kind==='sorting-fundamentals'&&<><label>Left swap index<input name="left" type="number" value="0" min="0" max="11" step="1" /></label><label>Right swap index<input name="right" type="number" value="2" min="0" max="11" step="1" /></label></>}
+  {kind==='binary-search'&&<label>Break-It mode<select name="mode">{Object.entries({normal:'Correct half-open updates',unsorted:'Check an unsorted domain (choose Unsorted preset)',update:'Wrong interval update (bounded)',nonprogress:'Retain midpoint (bounded)'}).map(([value,label])=><option value={value} selected={value===mode}>{label}</option>)}</select></label>}
+  {kind==='elementary-sorts'&&<label>Bubble tie policy<select name="mode"><option value="normal" selected={mode==='normal'}>Strict comparison: stable</option><option value="unstable-ties" selected={mode==='unstable-ties'}>Break-It: also swap equal keys</option></select></label>}
+</TraceLab>
+<script>import '../../scripts/search-labs';</script>

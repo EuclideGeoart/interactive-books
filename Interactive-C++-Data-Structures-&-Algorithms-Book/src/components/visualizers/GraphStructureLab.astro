@@ -1,0 +1,25 @@
+---
+import TraceLab from './TraceLab.astro';
+import { structureChapters, type StructureKey } from '../../visualizers/graph-structure/adapter';
+import graph from '../../../cpp/chapter-24/Graph.hpp?raw';
+import representations from '../../../cpp/chapter-25/Representations.hpp?raw';
+import bfs from '../../../cpp/chapter-26/BFS.hpp?raw';
+import dfs from '../../../cpp/chapter-27/DFS.hpp?raw';
+import directed from '../../../cpp/chapter-28/Directed.hpp?raw';
+import components from '../../../cpp/chapter-31/Components.hpp?raw';
+import cycle from '../../../cpp/chapter-32/Cycles.hpp?raw';
+interface Props { kind: StructureKey }
+const {kind}=Astro.props;
+const sources:Record<StructureKey,[string,string,string[]]>={'graph-fundamentals':[graph,'Graph.hpp',['inspect','edit']],'graph-representations':[representations,'Representations.hpp',['inspect']],'graph-bfs':[bfs,'BFS.hpp',['bfs']],'graph-dfs':[dfs,'DFS.hpp',['dfs']],'graph-directed':[directed,'Directed.hpp',['inspect','bfs']],'graph-components':[components,'Components.hpp',['components']],'graph-cycle':[cycle,'Cycles.hpp',['dfs']]};
+const labels:Record<string,string>={inspect:'Inspect neighbors',matrix:'Scan matrix row','add-vertex':'Add vertex','add-edge':'Add edge',toggle:'Toggle direction',bfs:'Breadth-first search',dfs:'Depth-first search',forest:'DFS forest',components:'Find components',cycle:'Detect cycles'};
+const [source,fileName,regions]=sources[kind];
+---
+<TraceLab id={kind} chapter={kind} source={source} fileName={fileName} regions={regions} operations={structureChapters[kind].map(id=>({id,label:labels[id]!}))} viewLabels={{logical:'Graph view',memory:'Storage view'}} diagramNote="Vertex IDs follow label order. Select a vertex, edge, or representation cell. Layout positions remain fixed during a traversal.">
+  <label>Graph preset<select name="preset"><option value="standard" selected={kind!=='graph-components'}>A–B, A–C, B–D, B–E</option><option value="disconnected" selected={kind==='graph-components'}>Three components (including isolated F)</option><option value="diamond">Diamond (shared descendant)</option><option value="cycle">Cycle and branch</option><option value="dense">Dense four vertices</option><option value="empty">Empty graph</option><option value="single">Single vertex</option><option value="loop">Self-loop</option><option value="custom">Custom graph below</option></select></label>
+  {kind!=='graph-components'&&kind!=='graph-directed'&&<label>Edge direction<select name="directed"><option value="false">Undirected</option><option value="true">Directed</option></select></label>}
+  <label>Custom vertex labels<input name="labels" value="A,B,C,D,E" maxlength="100" /></label>
+  <label>Custom edges: from,to[,weight]; …<input name="edges" value="0,1;0,2;1,3;1,4" maxlength="500" /></label>
+  {kind!=='graph-components'&&kind!=='graph-cycle'&&<label>Start / inspect vertex ID<input name="start" type="number" value="0" min="0" max="7" step="1" /></label>}
+  {kind==='graph-fundamentals'&&<><label>New label<input name="label" value="F" maxlength="16" /></label><label>Edge from ID<input name="from" type="number" value="2" min="0" max="7" step="1" /></label><label>Edge to ID<input name="to" type="number" value="3" min="0" max="7" step="1" /></label><label>Edge weight<input name="weight" type="number" value="1" min="-1000000" max="1000000" step="1" /></label></>}
+</TraceLab>
+<script>import '../../scripts/graph-labs';</script>

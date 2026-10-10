@@ -1,0 +1,124 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import GraphWeightedLab from '../../components/visualizers/GraphWeightedLab.astro';
+import GraphComplexity from '../../components/visualizers/GraphComplexity.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-35/Kruskal.hpp?raw';
+import main from '../../../cpp/chapter-35/main.cpp?raw';
+
+<ChapterHero number="35" title="Minimum spanning trees" part="PART V / GRAPHS" overline="CONNECT THE NETWORK AT MINIMUM TOTAL COST" description="Kruskal accepts the cheapest edges that join different components, producing a minimum spanning forest." chain="sort edges → compare roots → accept or reject → update total" facts={[["Input", "Undirected weighted graph"], ["Goal", "Minimum network total"], ["Disconnected input", "Minimum spanning forest"], ["Tie policy", "Weight, then edge index"]]} />
+
+<Section id="mental-model" number="01" title="Build connections, not routes from a source." kicker="VISUAL MENTAL MODEL">
+
+An MST connects every vertex of a connected graph using minimum total edge weight and no cycles. It is not a shortest-path tree. There is no distinguished source. The equal-weight preset has several equally optimal spanning trees; original edge order selects one repeatable answer.
+
+<StructurePreview chapter="kruskal" id="kruskal-preview" operation="run" viewLabels={{logical:'Graph view',memory:'Storage view'}} diagramNote="Accepted edges form a forest. The sorted queue retains original graph edge identities." />
+
+Watch the sorted edge queue alongside accepted edges, rejected edges, total weight and component count. Selection stays attached to the original edge identity even after sorting.
+
+</Section>
+
+<Section id="intuition" number="02" title="The cheapest edge across a component boundary is safe." kicker="THE INTUITION">
+
+Start with each vertex in its own component. In nondecreasing weight order, consider an edge. If its endpoints already share a representative, accepting it would close a cycle. Otherwise it safely connects two components. The cut property explains why such cheapest connections can be included in a minimum forest.
+
+Accepting an edge reduces the component count by one. A connected n-vertex result has n − 1 accepted edges. With c disconnected components, the result has n − c edges and is called a minimum spanning forest. Isolated vertices are components too. Negative weights are valid; a self-loop still cannot help connect two components.
+
+</Section>
+
+<Section id="memory" number="03" title="Graph edges and DSU parents are different relationships." kicker="STRUCTURE / STORAGE LAYOUT">
+
+The graph owns its weighted undirected edge records. A sorted vector contains original edge indices, ordered by weight and then insertion index. Parent and size arrays belong to the disjoint-set helper. These parent links describe connectivity bookkeeping; they are not accepted graph edges and need not correspond to an edge in the input.
+
+The scene draws original graph edges and accepted/rejected overlays while the field table shows representative metadata. Only root sizes describe current components; nonroot sizes are historical. This implementation uses union by size without path compression inside Kruskal, making its parent walks easy to count. Chapter 36 adds compression as a distinct operation.
+
+</Section>
+
+<Section id="operations" number="04" title="Accept the cheap connector; reject the cheap loop." kicker="INTERACTIVE OPERATIONS">
+
+<GraphWeightedLab kind="kruskal" />
+
+Run Equal weights and inspect why the last two edges are rejected even though their weights match the accepted edges. Run Disconnected + negative self-loop: the −5 self-loop is considered first and rejected; the −2 connector between D and E is accepted. The final forest has three components and total weight 1.
+
+Use Custom to test your own undirected graph. Directedness is intentionally absent: an MST here is defined on undirected input. Empty and singleton graphs are supported. Reset and Previous reveal each root lookup and the separate parent, size, acceptance and total updates.
+
+</Section>
+
+<Section id="implementation" number="05" title="Sort stable identities, then merge owned sets." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="Kruskal.hpp" chapter="35" />
+
+The standalone function validates the graph, owns its containers, and rejects directed input. std::sort uses a total comparator: weight first, original edge index second. Root walks follow parent indices. Union attaches the smaller component to the larger, with equal sizes choosing the smaller numeric root. Checked long long addition updates the forest total.
+
+The observer is optional and must be nonthrowing and nonreentrant. Without it, normal execution iterates a sorted vector; it does not repeatedly erase its first element. With it, remaining-queue copies serve the instructional snapshots. The accepted-input ceiling is eight vertices and exact integer weights within ±1,000,000.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="An accepted connection has several observable assignments." kicker="CODE + VISUALIZATION TRACE">
+
+Sort creates the edge queue. InspectEdge removes the next edge from the visible queue and selects it in the original graph. Each endpoint is followed to a root. Equal roots append the edge to the rejected list. Different roots choose a survivor, assign parent[loser], update size[survivor], decrement components, append the accepted edge, then add its weight to total.
+
+Between parent and size writes, the shape is already merged but root metadata needs repair. Between accepted-edge publication and total assignment, the new edge is visible while the old total is still displayed. Invariants mark these incomplete multi-statement transitions pending until the operation settles.
+
+</Section>
+
+<Section id="invariants" number="07" title="A forest never gains a cycle." kicker="INVARIANTS">
+
+Accepted edges must remain acyclic. Each DSU parent must reach a valid self-root. Root sizes count members, and the component count equals the number of roots after a completed union. At completion, total equals the sum of accepted edge weights and accepted count equals V − components.
+
+A self-loop necessarily compares one representative with itself. Equal weights do not require rejection: only equal representatives do. Minimum total is a mathematical property justified by ordered selection and the cut property; acyclicity alone would not prove optimality.
+
+</Section>
+
+<Section id="complexity" number="08" title="Sort once; count the parent walks." kicker="COMPLEXITY EXPLORER">
+
+<GraphComplexity kind="mst" />
+
+Sorting costs O(E log E). Union by size bounds parent depth by O(log V), so the two root lookups per edge contribute O(E log V). Total work after validation is O(V + E log E + E log V), commonly summarized as O(E log E) for a connected graph. Storage is O(V + E).
+
+The small input validator uses O(E²) duplicate-pair checks, and observer queue snapshots copy remaining edge IDs. These validation and presentation costs are separate from Kruskal's core loop. The explorer's sorting estimate is conceptual; the lab reports actual edge inspections, parent traversals and field writes.
+
+</Section>
+
+<Section id="break-it" number="09" title="Cheap does not mean safe, and shortest paths are a different goal." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+Load Disconnected + negative self-loop. Accepting the first edge because it is cheapest would immediately violate acyclicity. Treating the disconnected result as a failed MST would discard a useful minimum forest. Conversely, calling it one spanning tree would falsely claim all vertices are connected.
+
+For a shortest-path contrast, use a triangle with weights A–B = 2, B–C = 2, A–C = 3. The MST total is 4, yet its A-to-C path costs 4 while the direct shortest path costs 3. Try all-equal edge weights and reorder insertion: the chosen edge set may change while optimal total stays the same.
+
+</Section>
+
+<Section id="analogy" number="10" title="Connect buildings with the least cable." kicker="REAL-WORLD ANALOGY">
+
+A cable planner wants every building connected while minimizing cable purchased. They can add a cheap segment between two disconnected networks, but a segment within one existing network creates a redundant loop. Their goal differs from minimizing each employee's walking distance from the entrance.
+
+</Section>
+
+<Section id="engineering" number="11" title="Connectivity summaries make greedy decisions cheap." kicker="ENGINEERING INSIGHT">
+
+Network layout and clustering often use the same “merge components in sorted edge order” idea. DSU avoids rerunning traversal for every cycle check. A production design may generate edges lazily, use Prim on dense implicit graphs, or require constraints not represented by an unconstrained MST.
+
+Continue to <a href="../36-union-find/">Union-Find</a> for make-set, find, union, connected and exact compression assignments. Compare <a href="../33-dijkstra/">Dijkstra</a> to keep network total and source-path cost separate.
+
+</Section>
+
+<Section id="exercises" number="12" title="Separate a deterministic answer from a unique answer." kicker="EXERCISES / CHALLENGES">
+
+1. Reorder equal-weight input edges and compare selected trees and total weight.
+2. Prove why any accepted self-loop would violate the forest invariant.
+3. Predict the accepted-edge count for six vertices in three components.
+4. Find a graph whose MST is unique despite some equal edge weights.
+5. Explain why DSU parent arrows do not need to be edges in the MST.
+
+</Section>
+
+<Section id="summary" number="13" title="Order edges by cost, and accept only new connectivity." kicker="CHAPTER SUMMARY">
+
+Kruskal uses representative equality to reject cycle-closing edges. Deterministic sorting chooses a repeatable minimum forest, not necessarily a unique one. Disconnected graphs produce one minimum tree per connected component. An MST optimizes total network weight, not shortest paths from a source.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="35" />
+</Section>
+

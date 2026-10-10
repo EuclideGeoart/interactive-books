@@ -1,0 +1,128 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import TechniquePreview from '../../components/visualizers/TechniquePreview.astro';
+import TechniqueLab from '../../components/visualizers/TechniqueLab.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-46/Backtracking.hpp?raw';
+import main from '../../../cpp/chapter-46/main.cpp?raw';
+
+<ChapterHero number="46" title="Backtracking" part="PART VII / ALGORITHMIC TECHNIQUES" overline="MAKE A CHOICE, THEN RESTORE THE QUESTION" description="Backtracking explores candidate extensions of a partial solution, rejects impossible branches, and undoes each choice before trying the next." chain="candidate → choose → explore or prune → undo" facts={[["Example", "Increasing k-subsets of 1..n"], ["Bound", "n and k = 0..6"], ["Branch order", "Smallest candidate first"], ["Core promise", "Restore the parent prefix"]]} />
+
+<Section id="mental-model" number="01" title="Every branch starts from a particular partial solution." kicker="VISUAL MENTAL MODEL">
+
+Choose two values from 1, 2, 3, 4. Starting from an empty partial solution, choose 1, then choose 2 and save [1, 2]. Undo 2 before trying 3. Later undo 1 before starting a branch with 2. The tree records these alternatives; the shared partial vector contains only the choices currently being explored.
+
+<TechniquePreview kind="backtracking" />
+
+Unexplored nodes represent a chosen child before entry. Current nodes are being examined; accepted parents wait for children. Solution nodes contain complete answers, rejected nodes were pruned, and resolved nodes have finished their alternatives. Labels and inspector details distinguish states without relying only on color.
+
+</Section>
+
+<Section id="intuition" number="02" title="Pruning needs a proof that no completion is possible." kicker="THE INTUITION">
+
+After choosing candidate c, recurse with start = c + 1. This enforces strictly increasing choices, so [1, 2] is explored once and [2, 1] is never another branch. Reaching k chosen values saves a solution. If fewer candidates remain than empty slots, no continuation can fill the partial solution, so that branch can return immediately.
+
+For n = 4 and k = 2, choosing 4 as the first value leaves one empty slot and no larger candidate. Pruning that branch is safe. A merely unattractive partial answer would not justify pruning: the condition must rule out every completion under it.
+
+</Section>
+
+<Section id="memory" number="03" title="Frames own loop positions; one vector owns current choices." kicker="STRUCTURE / MEMORY LAYOUT">
+
+Each conceptual frame retains a start value and its current loop candidate. All calls share the partial vector by reference. A choice appends one value; undo removes exactly that last value. The saved solutions contain copies, so later mutations of partial do not change answers already found.
+
+The displayed tree is retained history, not a separate runtime invocation for every visible node. Only the current depth-first path has live frames. Conceptual IDs identify visits, and parent IDs identify the caller's search node. No diagram position or frame ID claims a native C++ address.
+
+The C++ teaching state also stores each visited prefix to make historical inspection possible. This explicit history costs more memory than a streaming enumerator that only retains the current path.
+
+</Section>
+
+<Section id="operations" number="04" title="Observe before choice, after choice, and after undo." kicker="INTERACTIVE OPERATIONS">
+
+<TechniqueLab kind="backtracking" />
+
+Run Combinations with n = 4 and k = 2. Pause on a candidate, step through Choose, then Explore, then the solution. After Return, the shared partial vector still contains the last choice. Only the next Undo restores its parent prefix. Use Previous across this boundary to compare the exact states.
+
+Try n = 0, k = 0: there is one solution, the empty combination. Try n = 2, k = 3: there are no solutions, and the root prunes immediately. Both are valid inputs. Try n = 6, k = 3 for a larger bounded tree; the drawing scrolls within its panel while positions remain fixed.
+
+</Section>
+
+<Section id="implementation" number="05" title="Save copies of answers and undo the shared mutation." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="Backtracking.hpp" chapter="46" />
+
+The helper explores candidates in increasing order. The successful base case runs before the insufficient-candidates check, which correctly preserves the empty solution when k is zero. Each successful push has one matching pop after its recursive child returns normally, including a child that pruned immediately.
+
+Inputs n and k are individually bounded from zero through six; k above n means an impossible search rather than malformed input. The optional observer receives exact tagged state and must not mutate or reenter the run. If an observer throws, the operation exits by exception; the owned local state is destroyed rather than returned as a completed enumeration.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Returning from a child does not perform the parent's undo." kicker="CODE + VISUALIZATION TRACE">
+
+Candidate selects a loop value without modifying partial. Choose appends it and publishes an unexplored child node. Enter activates that child. Solution saves a copy, while Prune marks a proven dead end. Return removes the child's frame; Undo is a separate parent statement that removes the chosen value.
+
+For [1, 2], the return event still displays [1, 2] while the resumed parent retains candidate 2. Undo changes partial back to [1]. A later candidate 3 can now begin from exactly the same parent prefix. This is why playback preserves intermediate states instead of combining return and undo into one animation.
+
+At completion, the live stack and partial vector are empty. Historical solution and rejected nodes remain inspectable without being active calls.
+
+</Section>
+
+<Section id="invariants" number="07" title="Every branch preserves feasibility and restores its prefix." kicker="INVARIANTS">
+
+Partial is strictly increasing, stays within 1 through n, and has at most k values. Saved solutions have exactly k values, contain no duplicates, and never change after being saved. Every child extends its parent's prefix by one candidate. After the caller undoes that candidate, its prefix is restored exactly.
+
+The pruning proof compares remaining capacity with unfilled demand: n − start + 1 available values versus k − partial length required values. Completion restores the empty root prefix. These checks establish valid, distinct answers; exhaustive exploration of ascending candidates establishes that none are missing.
+
+</Section>
+
+<Section id="complexity" number="08" title="The number of alternatives depends on the problem and the constraints." kicker="COMPLEXITY EXPLORER">
+
+Keep k = 2 and increase n from 2 to 4 to 6 in the lab. Compare saved solutions, Calls, Choices, Pruned branches, and Maximum depth. Then fix n = 6 and compare k = 0, 3, and 6. Depth alone does not measure search cost: many sibling branches can share the same depth.
+
+There are binomial(n, k) complete k-subsets when k is at most n. Writing all answers already takes Ω(k × binomial(n, k)) work for positive k. A coarse unpruned search bound is O(2ⁿ) visited prefixes; this capacity test reduces that tree but does not make arbitrary exhaustive search polynomial.
+
+If V prefixes are visited and S solutions are saved, this teaching implementation spends O((k + 1)V + kS) time and storage on prefix records and output, apart from observer snapshots. Its live search path uses O(k) space. A streaming version without retained tree history could use O(k) auxiliary space plus whatever output the caller retains. The lab exposes actual bounded counts, not a universal backtracking complexity formula.
+
+</Section>
+
+<Section id="break-it" number="09" title="Skipping undo changes the next question." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+Pause immediately before Undo for n = 4, k = 2. Predict what would happen if the next candidate were appended without removing the previous one: [1, 2, 3] would exceed two slots. In a local copy, removing the pop breaks restoration; in the safe lab, Previous lets you inspect the state that must be repaired.
+
+Predict the result if recursion restarted from 1 rather than candidate + 1. Values could repeat and the same set could appear in different orders. Predict the result if saved answers referred to the mutable partial vector instead of copying it: later undo would erase earlier answers.
+
+Finally try k = 0 and k above n. Treating an empty solution as “no solution” conflates two different results; the lab shows one saved empty vector in the first case and no saved vectors in the second.
+
+</Section>
+
+<Section id="analogy" number="10" title="Try a packing choice, then put the item back." kicker="REAL-WORLD ANALOGY">
+
+A planner fills a fixed number of slots from numbered items. They place an item, explore the remaining slots, and remove that item before testing another. If only one item remains but two slots are empty, the branch can end immediately. Saved photographs of completed arrangements survive after the working arrangement is dismantled.
+
+</Section>
+
+<Section id="engineering" number="11" title="Exploration, commitment, and reuse solve different problems." kicker="ENGINEERING INSIGHT">
+
+Constraint solvers and configuration searches use backtracking when decisions must be revisited. Good constraints can reject whole subtrees cheaply. State restoration is an ownership discipline: every temporary mutation must have a defined rollback path.
+
+<a href="../45-recursion/">Recursion</a> supplies the call mechanics. <a href="../48-greedy-algorithms/">Greedy Algorithms</a> commits to a justified local choice instead of exploring alternatives. <a href="../49-dynamic-programming/">Dynamic Programming</a> reuses equivalent solved states; different histories can share a DP state only if all information relevant to future decisions is preserved.
+
+</Section>
+
+<Section id="exercises" number="12" title="Prove a branch impossible before removing it." kicker="EXERCISES / CHALLENGES">
+
+1. List every solution for n = 4, k = 2 in the lab's deterministic order.
+2. Explain why [4] is pruned in that run but [3] is not.
+3. Identify the event where [1, 2] stops being a live child but remains in partial.
+4. Prove that starting the next frame at candidate + 1 generates each set exactly once.
+5. Propose a sum limit as an additional constraint. State assumptions needed before pruning a prefix whose sum exceeds the limit.
+
+</Section>
+
+<Section id="summary" number="13" title="Choose, explore, undo, and preserve every valid answer." kicker="CHAPTER SUMMARY">
+
+Backtracking enumerates alternatives from a shared partial solution. A constraint can prune a branch only when no completion remains possible. Increasing candidate order removes duplicate combinations, saved copies preserve answers, and explicit undo restores the parent before the next choice.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="46" />
+</Section>

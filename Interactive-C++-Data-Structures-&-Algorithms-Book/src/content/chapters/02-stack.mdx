@@ -1,0 +1,139 @@
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import Section from '../../components/book/Section.astro';
+import Callout from '../../components/book/Callout.astro';
+import StackLab from '../../components/visualizers/StackLab.astro';
+import StackComparison from '../../components/visualizers/StackComparison.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-02/Stack.hpp?raw';
+import main from '../../../cpp/chapter-02/main.cpp?raw';
+
+<ChapterHero number="02" title="Stack" overline="ONE RULE. TWO STORAGE STRATEGIES." description="The last value you put in is the first value you take out. LIFO describes the behavior; an array or a linked chain supplies the storage." chain="push 10 → push 20 → push 30 → pop 30" facts={[["ORDER", "Last in, first out"], ["PUSH / POP", "O(1) structural work"], ["IMPLEMENTATIONS", "Fixed array · linked nodes"]]} />
+
+<Section id="mental-model" number="01" title="Only the top is open." kicker="VISUAL MENTAL MODEL">
+
+<StructurePreview chapter="stack" id="stack-mental" operation="push" />
+
+Picture three values placed in order: 10, then 20, then 30. The next `top()` returns 30. The next `pop()` removes 30. Neither operation may silently choose 10 from the bottom. **A stack is an abstract data type: a promise about operations and observable order.** It is not a promise about addresses.
+
+<div className="analogy-panel"><span className="analogy-symbol">10 · 20 · [30] ← top</span><div><p><strong>push(value)</strong> makes a value the new top. <strong>top()</strong> reads without removing. <strong>pop()</strong> removes without returning a value in these implementations. <strong>empty()</strong> answers whether there is a top to read.</p><p>Try pushing 5 in the lab. Predict what top and pop will do before advancing the source line.</p><a href="#operations">Open the stack lab →</a></div></div>
+
+</Section>
+
+<Section id="intuition" number="02" title="Behavior stays. Representation changes." kicker="THE INTUITION">
+
+The array puts the oldest value at index 0 and the newest at `topIndex`. The linked stack puts the newest value at `topNode` and follows `next` toward older values. Their drawn directions differ, but both return the most recently pushed value first.
+
+A stack is useful when unfinished work must resume in reverse order: depth-first exploration, nested expression evaluation, and undo histories all have this shape. An undo system still needs an application policy for storing inverse actions; the stack only supplies the order.
+
+Unlike a queue, a stack does not promise fairness to the oldest item. That is a semantic choice made before selecting an implementation.
+
+</Section>
+
+<Section id="memory" number="03" title="Membership is not object lifetime." kicker="STRUCTURE & MEMORY">
+
+`ArrayStack` owns five contiguous `int` objects in `std::array<int, 5>`. Value initialization makes all five initially zero. `topIndex == -1` means no slots are members of the stack; it does not mean the array storage or its objects have disappeared. The valid member interval is inclusive: indices 0 through `topIndex`.
+
+`LinkedStack` owns separately allocated nodes. Each node stores an integer and a `next` pointer. The stack's `topNode` is an owning entry point; the links organize the objects. A successful linked push allocates and constructs a Node. Linked pop ends that Node's lifetime and releases its storage.
+
+<Callout title="Read the two views differently.">In the array lab, Memory view reveals the raw values outside logical membership. Those int objects are still alive and their values are well-defined in this implementation. In the linked lab, Memory view sorts illustrative addresses. Freed storage stays drawn as a teaching record, but its fields are unavailable.</Callout>
+
+</Section>
+
+<Section id="operations" number="04" title="Same operations. Different mechanics." kicker="INTERACTIVE OPERATIONS">
+
+Choose storage, a starting stack, and an operation. Starting values are entered **bottom to top**. Each Load operation starts a fresh experiment; it does not commit a partially played operation. Five starting values fill the fixed array, while the linked stack can still accept a sixth node.
+
+<StackLab />
+
+Try array pop on 10,20,30, then switch to Memory view. Index 2 retains 30. Try linked pop with the same values and stop on each substep of `delete oldTop`: destruction removes readable fields, freeing releases the allocation, and the saved local address dangles until scope exit.
+
+For a full array, push throws before touching either index or storage. For an empty stack, pop and top call `empty()`, test its return value, then throw. The source panel includes that helper; the jump into its body is actual execution, not an omitted step.
+
+</Section>
+
+<Section id="implementation" number="05" title="Two complete owning implementations." kicker="CANONICAL C++20">
+
+The array has fixed capacity and throws `std::overflow_error` when full. Both implementations throw `std::underflow_error` for pop or top on empty storage. These are explicit policies, not universal requirements of the Stack ADT. A production interface could choose a checked optional result instead.
+
+`LinkedStack` deletes copying and moving: implicit copying would duplicate the owning pointer and lead to double deletion. Its destructor calls iterative `clear()`. The array's default value semantics safely copy all its integers and index. The observer methods used by tests do not grant ownership of node memory.
+
+<CanonicalSource source={source} main={main} fileName="Stack.hpp" chapter="02" />
+
+<Callout title="Prepare before publishing." tone="green">Linked push allocates and constructs before changing any old link. If allocation throws, the old stack stays intact. The visual lab models successful allocation; it does not simulate allocator failure or native address reuse.</Callout>
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Pause between the statements." kicker="CODE ↔ STORAGE TRACE">
+
+Array push first executes `++topIndex`, then `data[topIndex] = value`. Between those lines the new member slot still contains its previous value. With this integer-only implementation, the subsequent assignment cannot throw. A generalized stack of arbitrary objects would need a different lifetime and exception-safety design.
+
+Linked push first stores the old top in `newNode->next`, then publishes `topNode = newNode`. Linked pop first saves `oldTop`, then moves `topNode` to the successor, then deletes `oldTop`. Assignment to the entry point does not destroy anything by itself.
+
+The visualization separates allocation from construction and destruction from freeing on their shared C++ expression lines. Native parity checks compare the final state at each completed tagged statement; semantic tests additionally check the lifetime substeps.
+
+</Section>
+
+<Section id="invariants" number="07" title="What makes this a valid stack?" kicker="INVARIANTS">
+
+For the array, `-1 ≤ topIndex < capacity` must hold. All five int objects continue to exist. A successful push increases logical size by one and a successful pop decreases it by one. Overflow and underflow leave both membership and storage unchanged.
+
+For the linked implementation, the entry point must be null or refer to a live Node, every structural link must target a live Node or null, and following next must terminate without a cycle. At the function boundary every live node must be reachable from topNode. A detached new or removed node is temporarily expected during a correct operation and is shown as pending.
+
+The local `oldTop` may still contain a freed address. Its existence is not permission to dereference it. The inspector reports the address as dangling and refuses to expose former fields.
+
+</Section>
+
+<Section id="complexity" number="08" title="Compare work, not slogans." kicker="STACK COMPARISON LAB">
+
+Change the live size and operation. The explorer counts a bounded work model up to 1024 nodes without retaining playback snapshots. Assignments include named local-pointer assignments; construction initializes fields separately. The linked clear counter walks one conceptual node per release. These counts explain growth; they are not elapsed CPU timings.
+
+<StackComparison />
+
+Array push, pop, top, empty, and resetting the logical index are O(1). Linked push, pop, top, and empty do constant structural work; allocation has implementation-dependent cost. Linked clear and destruction are O(n), because each Node must be released. Array clear here is O(1) because the elements are already-existing integers; destroying a general container of resource-owning elements need not be.
+
+Contiguous storage usually offers better locality, less metadata, and no per-push allocation within capacity. A growable contiguous stack can use `std::vector`: most pushes reuse capacity, while a growth step may allocate and move O(n) elements, giving amortized O(1) push under its growth policy. This chapter's fixed array does not grow. Linked storage avoids a fixed capacity but can still run out of memory.
+
+</Section>
+
+<Section id="break-it" number="09" title="Predict the boundary before crossing it." kicker="COMMON MISTAKES / SAFE EXPERIMENTS">
+
+Use the empty and full presets to test the actual checked failure paths. An empty array must not decrement from −1 or index its storage. A full array must not increment to 5. Step to the guard and verify that the error leaves the Before and After states equal.
+
+Three tempting mistakes change the meaning or safety of the code: incrementing after the array write targets the old top; publishing a linked new top before saving the old top can create a self-loop; deleting oldTop before reading its next field reads a dead object. The lab never executes these undefined C++ operations.
+
+<Callout title="Clearing a pointer is not clearing owned storage." tone="amber">Assigning <code>topNode = nullptr</code> alone leaks the linked chain. Array clear can reset one index precisely because its int objects remain owned by the surrounding array. Similar-looking assignments have different ownership consequences.</Callout>
+
+</Section>
+
+<Section id="analogy" number="10" title="A pile of unfinished tasks." kicker="REAL-WORLD ANALOGY">
+
+Imagine placing work notes on top of a pile. An interruption adds a new note. When that task finishes, removing its note exposes the previous task. The pile explains LIFO without requiring linked nodes: a numbered tray and individually linked note holders can implement the same retrieval rule.
+
+The analogy ends at ownership. Removing a paper note might discard it; array pop only changes the boundary. Always return to the concrete implementation when asking whether storage or an object still exists.
+
+</Section>
+
+<Section id="engineering" number="11" title="Choose a policy for the workload." kicker="ENGINEERING INSIGHT">
+
+A bounded parser or traversal may benefit from predictable fixed capacity and no allocation during operations. A dynamically sized workload may use a vector-backed stack with reserved capacity. A linked stack can preserve node addresses and expose allocation mechanics, but is not generally the fastest choice merely because push is O(1).
+
+`std::stack` is a container adapter. Its interface expresses LIFO while a selected underlying container supplies storage. Our two explicit implementations make this separation visible. Neither teaching implementation is thread-safe; concurrent access would require an entirely different synchronization argument.
+
+</Section>
+
+<Section id="exercises" number="12" title="Explain the snapshot you expect." kicker="EXERCISES & CHALLENGES">
+
+<div className="exercise"><h3>What is in the newly exposed slot?</h3><p>Load array push on 10,20,30. Pause after increment. Predict the new slot's value before the write.</p><details><summary>Reveal reasoning</summary><p>It is zero in this fresh experiment, because all five int objects were value-initialized. After a pop in a continuing native program, that slot could instead retain an earlier value.</p></details></div>
+<div className="exercise"><h3>What does constant time leave out?</h3><p>Compare clearing 1 and 1024 linked nodes. Then compare array clear at those sizes.</p><details><summary>Reveal reasoning</summary><p>The linked version performs one deletion per node. The integer array changes only its logical index. Neither count describes allocator latency, cache misses, or the complexity of a nontrivial element destructor.</p></details></div>
+<div className="exercise"><h3>Can the sole node disappear safely?</h3><p>Pop the single-node linked preset and inspect oldTop after delete.</p><details><summary>Reveal reasoning</summary><p>topNode becomes nullptr before deletion. oldTop still contains the ended object's address and cannot be read as a Node. Scope exit removes that local reference.</p></details></div>
+
+</Section>
+
+<Section id="summary" number="13" title="LIFO is the contract." kicker="CHAPTER SUMMARY">
+
+<div className="summary-panel"><h3>Separate order, storage, and lifetime.</h3><ul><li>The newest member is the next one removed.</li><li>Array pop changes a membership boundary and retains raw int contents.</li><li>Linked pop rewires, destroys, and frees in that order.</li><li>Constant structural work does not settle real-world performance.</li></ul><button className="button button-primary" type="button" data-complete aria-pressed="false">Mark chapter complete ✓</button></div>
+<ChapterPagination number="02" />
+
+</Section>

@@ -1,0 +1,141 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import SpatialPreview from '../../components/visualizers/SpatialPreview.astro';
+import SpatialLab from '../../components/visualizers/SpatialLab.astro';
+import SpatialExplorer from '../../components/visualizers/SpatialExplorer.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-60/SpatialHash.hpp?raw';
+import main from '../../../cpp/chapter-60/main.cpp?raw';
+import CppPrerequisite from '../../components/book/CppPrerequisite.astro';
+
+<ChapterHero number="60" title="Spatial Hashing" part="PART IX / SPATIAL DATA STRUCTURES" overline="COORDINATES BECOME CELL KEYS" description="Spatial hashing maps continuous coordinates to uniform cells, then hashes those full cell keys to locate nearby candidates." chain="point → floor division → cell key → hash bucket → exact test" facts={[["Geometry", "2D points; closed queries"], ["Membership", "One full cell key per point"], ["Boundary", "Negative coordinates use floor"], ["Tradeoff", "Cell visits versus candidates"]]} />
+<CppPrerequisite lesson="21" summary="Safe index arithmetic, floor division and finite coordinates." />
+
+<Section id="mental-model" number="01" title="A spatial cell and a hash bucket answer different questions." kicker="VISUAL MENTAL MODEL">
+
+Points sit at their actual coordinates. The grid divides the plane into equal squares. A point belongs to one square, while a hash bucket may contain records for several unrelated squares. Select a region to inspect both its full integer coordinate key and its bucket number.
+
+<SpatialPreview kind="spatial-hash" />
+
+A and B sharing a cell are spatially colocated at this resolution. A and C merely sharing a bucket might be far apart. The storage view makes this distinction explicit: each bucket retains a chain of full cell keys, and each cell record owns a list of point IDs. Labels and inspector text distinguish current, visited, candidate, accepted, and pruned states without relying on color alone.
+
+</Section>
+
+<Section id="intuition" number="02" title="Floor division gives every coordinate one owner." kicker="THE INTUITION">
+
+For cell width h, compute cellX = floor(x / h) and cellY = floor(y / h). The full key is the pair (cellX, cellY). A cell owns the half-open intervals [cellX × h, (cellX + 1) × h) and the corresponding y interval. With h = 4, x = −0.1 belongs to cell −1; truncation toward zero would incorrectly put it in cell 0.
+
+The teaching hash normalizes (31 × cellX + 17 × cellY) modulo 7 into bucket numbers 0 through 6. This deliberately small table makes collisions visible. Equal full keys identify the same spatial cell. Equal bucket numbers only identify the chain that must be searched.
+
+Queries are closed. Enumerate every integer cell coordinate from floor(query minimum / h) through floor(query maximum / h), inclusive. A point on the maximum query face is a valid result, even when that face starts the next grid cell. The bounded point domain includes +8; its cell may extend beyond the displayed root domain.
+
+</Section>
+
+<Section id="memory" number="03" title="Buckets own cell records; cell records own point IDs." kicker="STRUCTURE / MEMORY LAYOUT">
+
+The semantic state stores points, occupied cell records, seven bucket chains, and an explicit pending-placement list. A cell record retains both integer coordinates, its bucket index, and member IDs. Two points at identical coordinates still have distinct IDs and are stored separately. Empty cell records are removed after the last member leaves.
+
+The C++ example uses value-owned vectors and arrays. There are no shared raw owning pointers or interchapter dependencies. IDs identify records; diagram coordinates do not stand for memory addresses or byte offsets. A temporary candidate reference is used only while its backing vector is stable.
+
+A production table would normally provide direct ID lookup and a hash map keyed by the full cell coordinate. This compact teaching implementation keeps inspectable vectors and scans their metadata. The bucket chains and membership are real, but those additional linear scans matter when analyzing the actual code.
+
+</Section>
+
+<Section id="operations" number="04" title="Build, move, remove, then query the occupied grid." kicker="INTERACTIVE OPERATIONS">
+
+<SpatialLab kind="spatial-hash" />
+
+Run Build hash to step from coordinate mapping to cell storage. Compare the uniform and clustered scenes at cell sizes 1, 4, and 8. Run Insert point with −0.1,0, then compare it with 0,0. Each operation starts from the selected scene; changing the operation rebuilds that input rather than mutating a hidden persistent index.
+
+Run Move point with target A and point 5,5. The trace first erases A from its old cell, removes that record if empty, then maps and stores the new coordinate under the same ID. Remove point deletes the selected identity. An unknown target is rejected.
+
+For Range / neighborhood query, enter −2,−2,3,3. The current cell remains visible even when its key has no occupied record. Matching cell members become candidates, then an exact closed-coordinate test decides acceptance. To explore a radius neighborhood, query its enclosing square; an additional squared-distance filter would be needed for an actual circular neighborhood.
+
+</Section>
+
+<Section id="implementation" number="05" title="Keep the full key after hashing." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="SpatialHash.hpp" chapter="60" />
+
+The standalone run function accepts points, an operation name, options, and an optional observer. The callable boundary rejects non-finite or out-of-domain coordinates, invalid integer parameters, duplicate IDs, and more than 12 points. Cell sizes are integers from 1 through 8; IDs are unique A through Z. Insertion keeps the final count at most 12. Empty input is valid.
+
+C++ owns all state by value and returns the completed state. The observer receives exact statement-boundary snapshots by const reference; copy a snapshot if retaining it, and do not mutate or reenter the run. If allocation or observation throws, local ownership cleans up the unfinished run. The caller's input value is not partially edited.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Membership changes only at the store and remove statements." kicker="CODE + VISUALIZATION TRACE">
+
+Map computes a full cell coordinate and bucket while the point is still pending. Store creates a missing cell record, appends the ID, and removes that pending slot. A collision does not overwrite the existing full key. During update, Remove completes old-membership removal before Map computes the new placement.
+
+For a query, Cell selects the requested coordinate, Key compares a bucket-chain entry against that full key, Test examines a member point, and Accept records its ID once. An empty key still costs a cell visit; an unrelated key in the same bucket costs a key comparison but must not produce candidates.
+
+Use Previous across Store or Remove and compare the storage view. Immutable snapshots preserve both sides of each change. At completion the active query-cell highlight clears, while accepted points and mechanical totals remain inspectable.
+
+</Section>
+
+<Section id="invariants" number="07" title="A collision may cost work; it must never change ownership." kicker="INVARIANTS">
+
+Every live point occurs exactly once across occupied membership and the pending-placement list. Completed operations have no pending points. Every stored member's floor coordinates match its cell key, each distinct cell key appears once in the correct bucket chain, and all coordinates remain finite and bounded.
+
+Results contain distinct live IDs. Distinct points with identical coordinates are separate results; deduplication is by identity. The canonical point-only policy visits each member once for its one matching cell. When extending to boxes stored in multiple cells, use an ID set to suppress repeated candidates, and use a normalized pair key when generating unordered pairs.
+
+The Before snapshot is ready to build, so pending ownership is valid there. A completed snapshot must satisfy the stronger placement condition. These are hash-specific checks, not a universal geometry invariant engine.
+
+</Section>
+
+<Section id="complexity" number="08" title="Count cell probes separately from candidate tests." kicker="COMPLEXITY EXPLORER">
+
+<SpatialExplorer kind="spatial-hash" />
+
+Fix a range and reduce the cell size. More cells intersect it, including empty cells. Increase cell size and fewer cells are visited, but more unrelated members reach the exact test. Compare Visited cells, Cell-key comparisons, and Point tests; these are mechanical counts, not wall-clock benchmarks.
+
+For an indexed implementation with expected constant-time cell and ID lookup, range work is O(C + L + M): C enumerated cells, L collision-chain entries compared, and M candidate members tested. Adversarial collisions can increase L substantially. Typical insertion/removal is expected O(1) with suitable direct membership handles; scanning a crowded member list costs its length.
+
+The displayed C++ additionally scans the occupied-cell vector to resolve records and the point vector to resolve IDs. With G occupied cells and n points, a conservative query bound is O(C × G + H × G + M × n + K log K), where H is the number of matching occupied cells and K the returned IDs sorted at completion. A simpler safe bound is O(C × G + M × n + K log K). Build is O(n²) with these linear metadata lookups; update/removal can be O(n). State storage is O(n + G + 7). Each lab run rebuilds its scene first, and playback copies semantic snapshots; neither overhead is included in the traversal counters.
+
+</Section>
+
+<Section id="break-it" number="09" title="Use negative coordinates and collisions to expose wrong assumptions." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+Choose custom points −8,−8;−8,−1;−0.1,0;0,0;0,0 with cell size 1. The first two cells collide in the seven-bucket table, but a zero-area query −8,−8,−8,−8 must accept only the first point. Predict the false result if the code compares only bucket numbers.
+
+Compare −0.1,0 with 0,0. Replacing floor by an integer cast changes the former point's owner. Move a singleton across a cell boundary and inspect Remove: skipping it would leave stale membership and duplicate ownership. Query a maximum face exactly on a cell boundary to test the inclusive enumeration endpoint.
+
+Try cell size 0, a reversed query, or a non-finite coordinate. These fail input validation. The safe lab does not inject corrupted ownership; reproduce a proposed broken statement only in a local copy and run the native assertions.
+
+</Section>
+
+<Section id="analogy" number="10" title="A street grid and a filing cabinet are two separate systems." kicker="REAL-WORLD ANALOGY">
+
+A delivery map assigns an address to a city block. A small filing cabinet stores block folders in numbered drawers; several distant blocks may share a drawer. You must read the folder's full block label before looking up residents. The drawer number narrows storage access, while the city block determines spatial proximity.
+
+</Section>
+
+<Section id="engineering" number="11" title="Uniform cells fit workloads with a useful interaction scale." kicker="ENGINEERING INSIGHT">
+
+Particles with similar interaction radii, snapping candidates, proximity queries, and picking often have a natural cell width. Moving objects require explicit membership updates; a stale index is a correctness problem, not merely a performance issue. Very large objects or widely varying sizes can force many cell memberships or overcrowded buckets.
+
+The current implementation indexes points. A box extension would enumerate every cell touched by its closed AABB, then suppress duplicate candidate IDs before narrow testing. A broad-phase candidate is not an exact shape collision. <a href="../66-broad-phase-spatial-indexing/">Broad-phase spatial indexing</a> develops that distinction. <a href="../61-quadtrees/">Quadtrees</a> replace one uniform resolution with adaptive subdivision.
+
+</Section>
+
+<Section id="exercises" number="12" title="Derive the cells before running the trace." kicker="EXERCISES / CHALLENGES">
+
+1. Compute the cells of x = −4, −0.1, 0, and 4 when h = 4. Explain every boundary.
+2. Find two distinct full keys that share a bucket; prove their membership lists must remain separate.
+3. For a closed query [0,0] to [4,4] with h = 4, enumerate every visited cell and explain why there are four.
+4. Explain how moving a point within one cell differs from moving across a cell edge. Could a production update avoid unnecessary work?
+5. Design a box-membership extension with ID and pair deduplication. State how touching faces remain discoverable.
+6. Replace the metadata scans with direct lookup in a local copy, then distinguish improved bookkeeping from unchanged geometric candidate counts.
+
+</Section>
+
+<Section id="summary" number="13" title="Discretize space, preserve full keys, then test candidates." kicker="CHAPTER SUMMARY">
+
+Spatial hashing uses floor division for unique cell membership and a separate hash to locate cell records. Bucket collisions never imply spatial co-location. Closed queries enumerate their maximum cell, updates remove stale ownership, and exact tests filter candidates. Cell width balances probe count against crowded cells; workload and bookkeeping determine actual cost.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="60" />
+</Section>
+

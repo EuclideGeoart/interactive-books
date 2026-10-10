@@ -1,0 +1,15 @@
+---
+import TraceLab from './TraceLab.astro';
+import source from '../../../cpp/chapter-07/RingBuffer.hpp?raw';
+import { ringOperations } from '../../visualizers/ring-buffer/model';
+const labels = { push: 'Enqueue', pop: 'Dequeue', front: 'Front', back: 'Back', empty: 'Empty?', size: 'Size', full: 'Full?' };
+---
+<TraceLab id="ring" chapter="ring" source={source} fileName="RingBuffer.hpp" operations={ringOperations.map(id => ({ id, label: labels[id] }))} regions={[...ringOperations]} viewLabels={{ logical: 'Logical queue view', memory: 'Physical storage view' }} diagramNote="Select a physical slot in either view. The route below the array connects slot 4 back to slot 0; amber marks an executed wrap.">
+  <label class="ring-preset">Starting ring<select name="preset"><option value="wrap">Next write wraps: head 2, tail 4</option><option value="wrapped">Already wrapped: 20,30,40,50</option><option value="single">One element at slot 4</option><option value="empty">Empty</option><option value="full">Full, head = tail = 4</option><option value="custom">Custom</option></select></label>
+  <label>When full<select name="policy"><option value="reject">Reject new value</option><option value="overwrite">Overwrite oldest value</option></select></label>
+  <label>Custom values (front → back)<input name="values" value="20,30,40" /></label>
+  <label>Custom head index<input name="head" type="number" min="0" max="4" step="1" value="2" /></label>
+  <label>Value to enqueue<input name="value" type="number" min="-999" max="999" step="1" value="40" /></label>
+</TraceLab>
+
+<style>@media (max-width:560px) { .ring-preset:first-child {flex:1 0 100%;} .ring-preset select {width:100%;} }</style>

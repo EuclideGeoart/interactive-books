@@ -1,0 +1,146 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import Callout from '../../components/book/Callout.astro';
+import PoolLab from '../../components/visualizers/PoolLab.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-04/Pool.hpp?raw';
+import main from '../../../cpp/chapter-04/main.cpp?raw';
+import CppPrerequisite from '../../components/book/CppPrerequisite.astro';
+
+<ChapterHero number="04" title="Memory pool" overline="STORAGE IS NOT AN OBJECT" description="A fixed set of aligned blocks can host many successive object lifetimes. A free list records which blocks are available." chain="FREE → RESERVED → LIVE → DESTROYED → FREE" facts={[["Storage", "Fixed capacity"], ["Free-list rewiring", "O(1)"], ["Checked address lookup", "O(N)"], ["Ownership", "Pool owns storage"]]} />
+<CppPrerequisite lesson="09" summary="Aligned storage, object lifetime and generic construction." />
+
+<Section id="mental-model" number="01" title="The room stays. The occupant changes." kicker="VISUAL MENTAL MODEL">
+
+Imagine four aligned storage slots, initially linked into a free list. Allocation takes the first slot out of that chain. It does **not** run a constructor. Construction creates an object at the reserved address. Destruction ends that object's lifetime, while the slot remains part of the pool's storage.
+
+<div className="trace-walkthrough"><div><span className="trace-index">1</span><div><h3>Free → reserved</h3><p>Detach one block. No value exists yet.</p></div></div><div><span className="trace-index">2</span><div><h3>Reserved → live</h3><p>Placement construction begins an object lifetime.</p></div></div><div><span className="trace-index">3</span><div><h3>Live → destroyed → free</h3><p>End the lifetime, then return the block to the free list.</p></div></div></div>
+
+<StructurePreview chapter="pool" id="pool-preview" operation="allocate" inputs={{capacity: '4', value: '42'}} />
+
+The operation lab preserves every slot on screen. Follow the arrows independently of the physical slot order. A reused address will occupy the same position, even when its new object holds a different value.
+
+</Section>
+
+<Section id="intuition" number="02" title="Two resources, two responsibilities." kicker="THE INTUITION">
+
+A normal new-expression combines obtaining storage with constructing an object. A pool separates these jobs. That separation is useful when a subsystem knows a bound on simultaneous objects and wants stable storage addresses. It also introduces an obligation: return only storage whose object lifetime has ended, or whose construction never succeeded.
+
+`allocate()` returns `void*` because a reserved block is not yet a `T`. `construct()` returns the pointer produced by placement new. Use that returned pointer for the new object. Do not infer that an old pointer's identity proves that the old object is still alive.
+
+<Callout title="A pool is a policy, not a speed guarantee." tone="amber">Capacity, alignment, guard cost, object size, constructor cost, and access patterns all matter. This teaching pool checks addresses with a linear scan. Its free-list rewiring is constant-time; its checked public operations are not claimed to be constant-time.</Callout>
+
+</Section>
+
+<Section id="memory" number="03" title="One union, two possible occupants." kicker="STRUCTURE & MEMORY">
+
+Every block is a union of a `T` and a `Block*`. The language gives the union enough size and alignment for either member, including an over-aligned `T`. A plain byte array without a suitable alignment declaration would not provide this guarantee. The demonstration addresses use a fixed illustrative stride; they do not predict the size of a block on your ABI.
+
+While free, a block contains an active free-list pointer. While live, it contains a `T`. These are overlapping bytes, not two simultaneously readable fields. Outside the union, arrays record phase, the pointer returned by construction, and whether the link member may be inspected. That extra bookkeeping makes the checks and teaching observer safe.
+
+After removal from the free list, the pointer member may still be active in reserved storage. After destruction, no `T` fields are readable. Returning storage explicitly placement-constructs the pointer member before publishing the block. The inspector labels inactive members instead of interpreting their bytes.
+
+</Section>
+
+<Section id="operations" number="04" title="Separate the four operations." kicker="INTERACTIVE OPERATIONS">
+
+Start with **Full lifetime** and use Next. Stop after the free-list head changes: the block is detached before its reserved metadata is written. Stop after placement new: the object is alive before the next metadata statement marks it live. The amber invariant messages describe these temporary statement boundaries.
+
+<PoolLab />
+
+Choose **Reorder free list** to return two blocks in an order that puts slot 1 before slot 0. Choose **Reuse address** to construct a second object with value + 1 in the same block. **Exhaust pool** reserves every block and then attempts one more allocation. Each button loads a fresh bounded experiment; isolated construction starts with reserved storage, destruction starts with a live object, and return starts with destroyed storage.
+
+</Section>
+
+<Section id="implementation" number="05" title="Aligned storage with explicit lifetime rules." kicker="CANONICAL C++20">
+
+The complete class owns its block array. Copy and move are deleted because borrowed addresses must not silently change owners. The destructor ends all remaining live object lifetimes before the array's storage ends. It requires a non-throwing destructor. Reserved but unconstructed blocks require no `T` destruction.
+
+`create()` combines allocation and construction with exception cleanup. If the constructor throws, no `T` lifetime begins; the catch block returns the reserved storage and rethrows. Direct callers of `allocate()` and `construct()` must arrange the equivalent cleanup themselves. The native example checks a 128-byte-aligned type, exhaustion, invalid returns, address reuse, and throwing construction.
+
+<CanonicalSource source={source} main={main} fileName="Pool.hpp" chapter="04" />
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Change next before publishing the head." kicker="CODE ↔ STORAGE TRACE">
+
+Allocation saves `block = freeList_`, then assigns `freeList_ = block->next`. The diagram and inspector expose the local `block` reference from its declaration through the return statement. A separate scope-end step removes that local reference when the function returns; the returned storage still exists. The saved block is no longer reachable through the free-list head, although its next bytes have not been erased. Only then does the operation mark the slot reserved and return its address.
+
+Return performs the complementary sequence. It validates the address and phase, activates `block->next` with the old free-list head, marks the block free, and finally assigns `freeList_ = block`. Reversing publication and next assignment could lose the old free list or create a self-loop. The lab never shortcuts these lines into one visual jump.
+
+Construction and destruction affect a different axis: whether a `T` exists. The destructor line also clears the observer pointer, so the snapshot cannot expose dead fields. Native parity tests instrument the actual header and compare free-list head, every next member, phase, live-object flag, and available value at each tagged statement boundary.
+
+</Section>
+
+<Section id="invariants" number="07" title="Check storage and objects separately." kicker="INVARIANTS">
+
+| Property | Why it matters |
+| --- | --- |
+| Every reachable free block appears once | A cycle or duplicate could allocate the same storage twice. |
+| Reachable blocks contain active pointer members | A live object's bytes must not be interpreted as a link. |
+| Every free slot is reachable at operation boundaries | Lost free blocks silently reduce usable capacity. |
+| Live metadata matches an actual constructed object | Only a live object may expose value fields or be destroyed. |
+| Pool storage exists throughout the experiment | Destruction does not release the backing array. |
+
+Checks distinguish temporary publication/bookkeeping gaps from broken settled states. Guards reject unsafe operations before changing topology. They do not magically make arbitrary pointer dereferences safe; all access in the example goes through the checked API.
+
+</Section>
+
+<Section id="complexity" number="08" title="Count the work you actually perform." kicker="COMPLEXITY EXPLORER">
+
+Change the slot count from 1 to 6, select **Exhaust pool**, and compare the counters. Each successful allocation writes the free-list head once. Validation scans addresses until it finds the matching slot. Reserving all N slots therefore performs N head writes and 1 + 2 + … + N address comparisons in this checked implementation. No timing or benchmark result is simulated.
+
+Returning a known validated block requires two pointer writes: its next member and the head. Address validation remains O(N). Construction adds the cost of `T`'s constructor; destruction adds the cost of its destructor. Pool creation and cleanup are O(N), and backing storage is O(N × block size), plus metadata.
+
+A production system may validate with handles or a separately indexed ownership table. Pointer subtraction on a foreign pointer is not a valid replacement for this equality scan. Optimize only with a representation whose legality and ownership contract you can establish.
+
+</Section>
+
+<Section id="mistakes" number="09" title="Reject a bad transition before touching bytes." kicker="BREAK IT — GUARDED FAILURES">
+
+Try **Double return**, **Return live object**, **Read dead object**, and **Foreign address**. Each attempt ends in a checked error while leaving the free list safe. The native program exercises these guards; it does not execute undefined behavior to make the diagram interesting.
+
+Returning a live object would overwrite its bytes with a free-list pointer before its destructor runs. Returning a block twice could create a cycle. Reading a destroyed object confuses a saved storage address with a lifetime. An address owned by another pool must not enter this pool's free list, even when its numerical value looks plausible.
+
+<Callout title="The guard has a boundary." tone="amber">After a block is reused, a raw address alone cannot distinguish an old borrower from the new object at that address. This pool has no generation counter. Keep borrowed pointers within the object's lifetime; do not promise stale-handle detection after reuse.</Callout>
+
+**Constructor throws** demonstrates another failure path: link inspection is disabled, construction throws before a live object is recorded, and the wrapper returns storage. The original exception propagates. No destructor is called for the object that never completed construction.
+
+</Section>
+
+<Section id="analogy" number="10" title="A workshop with reusable workstations." kicker="REAL-WORLD ANALOGY">
+
+A workstation exists even when no project is underway. Reserving it removes it from the available list. Starting a project is a separate step, and finishing the project does not demolish the workstation. Only after tools and materials are cleared may it rejoin the available list.
+
+The analogy has a limit: C++ object lifetimes govern which operations the language permits, not merely a scheduling convention. Storage capacity cannot substitute for alignment, construction, or destruction.
+
+</Section>
+
+<Section id="engineering" number="11" title="Stable storage still needs an owner." kicker="ENGINEERING INSIGHT">
+
+A geometry editor could keep a bounded batch of temporary records in a pool and return them when an evaluation finishes. Stable addresses help borrowed links remain meaningful during that evaluation. They do not make those links owning, thread-safe, or valid after the pool is destroyed.
+
+Decide where exhaustion is handled, which scope destroys live objects, and who may keep a borrowed pointer. This pool is single-threaded, fixed-capacity, and type-specific. It is an educational storage owner, not a standard-library allocator interface and not a concurrent allocation service. Chapter 5 separates that ownership from membership in a work list.
+
+</Section>
+
+<Section id="exercises" number="12" title="Predict the next lifetime boundary." kicker="EXERCISES & CHALLENGES">
+
+1. With one slot, predict the head and phase after every line of Full lifetime. Which two intermediate snapshots need pending invariant messages?
+2. Run Reuse address with value 17. Explain why the final object has the same storage address but a different lifetime and value.
+3. Reserve a block and return it without construction in native C++. Explain why calling a destructor would be incorrect.
+4. Make a constructor throw after acquiring a separate RAII resource. Verify that the resource cleans itself up and the pool regains its block.
+5. Explain why a foreign address must be checked using equality rather than subtracting it from the first block address.
+6. Propose what extra information a generational handle would need to reject a stale borrower after reuse; do not infer it from the address alone.
+
+</Section>
+
+<Section id="summary" number="13" title="Storage persists across lifetimes." kicker="CHAPTER SUMMARY">
+
+<div className="summary-panel"><h3>Keep the two timelines separate.</h3><ul><li>Allocation reserves storage; construction starts an object lifetime.</li><li>Destruction ends the object; return publishes the block to the free list.</li><li>A union provides size and alignment for either occupant, but only its active member may be read.</li><li>Guards protect the pool's ownership and topology before mutation.</li><li>Free-list rewiring is O(1); this checked implementation also scans addresses.</li></ul><button className="button button-primary" type="button" data-complete aria-pressed="false">Mark chapter complete</button></div>
+
+<ChapterPagination number="04" />
+
+</Section>

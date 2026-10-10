@@ -1,0 +1,125 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import Section from '../../components/book/Section.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import GraphComplexity from '../../components/visualizers/GraphComplexity.astro';
+import GraphStructureLab from '../../components/visualizers/GraphStructureLab.astro';
+import GraphStructureBreakIt from '../../components/visualizers/GraphStructureBreakIt.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-27/DFS.hpp?raw';
+import main from '../../../cpp/chapter-27/main.cpp?raw';
+
+<ChapterHero number="27" title="Depth-First Search" overline="REMEMBER WHERE EACH CALLER WILL RESUME." description="An explicit frame stack exposes descent and genuine backtracking without depending on native recursion depth." chain="frames [A] → [A,B] → [A,B,D] → [A,B] → [A,B,E]" facts={[["FRONTIER", "Continuation frames"], ["ORDER", "Discovery before descendants"], ["TRAVERSAL", "O(V + E)"]]} />
+
+<Section id="mental-model" number="01" title="A frame is a vertex plus unfinished work." kicker="VISUAL MENTAL MODEL">
+
+<h3>Inspect the graph and its stored relationships.</h3>
+
+<StructurePreview chapter="graph-dfs" id="graph-dfs-mental" operation="dfs" viewLabels={{logical:"Graph view",memory:"Storage view"}} diagramNote="Select a vertex or edge to inspect its identity and relationships. Positions remain stable throughout the trace." />
+
+On the same default graph as BFS, DFS discovers A,B,D,E,C. The frame stack retains A while exploring B, and retains B while exploring D. When D is complete, its frame is removed and B resumes at its next neighbor.
+
+The auxiliary panel reads bottom to top. Each row records vertex, next adjacency index, and parent edge ID. These are actual canonical fields, not an inferred recursion animation. The graph stays in place while the work stack changes.
+
+</Section>
+
+<Section id="intuition" number="02" title="Recursion and an explicit stack share a continuation." kicker="THE INTUITION">
+
+A recursive DFS call implicitly remembers the current vertex and where its neighbor loop will continue. This implementation makes that information explicit. Pushing a frame models entry; popping a completed frame models return.
+
+Chapter 2’s stack provides last-in, first-out discipline, and Chapter 12’s tree traversal introduced suspended callers. A graph needs a discovery guard as well: cycles and shared descendants mean a neighbor may have been seen already. A tree-only recursion pattern would revisit forever on a cycle.
+
+</Section>
+
+<Section id="memory" number="03" title="Avoid references across vector growth." kicker="STRUCTURE / MEMORY LAYOUT">
+
+Each frame holds three integers. The native algorithm reads the top frame by index/access, copies the current neighbor, advances the cursor, and only then pushes a child. It does not retain a reference to a vector element across push_back, which could relocate frame storage.
+
+Color and predecessor arrays are separate from the frame stack. WHITE is unseen, GRAY is discovered and unfinished, BLACK is complete. The output records discovery order, while BLACK marks completion. Discovery order and finishing order are different quantities.
+
+</Section>
+
+<Section id="operations" number="04" title="Single-source search or a full forest." kicker="INTERACTIVE OPERATIONS">
+
+<GraphStructureLab kind="graph-dfs" />
+
+Depth-first search starts at the selected source and stops when its reachable region finishes. DFS forest launches at the next unseen vertex in ascending ID order, ignoring the source selection for seed order. Try Disconnected to see independent launches.
+
+Use the same Standard or Diamond preset as Chapter 26 and compare the output. Change edge insertion order in Custom graph to change deterministic neighbor order. Empty graphs return an empty result; self-loops and already-seen neighbors never create another frame.
+
+</Section>
+
+<Section id="implementation" number="05" title="The cursor prevents work from restarting." kicker="C++ IMPLEMENTATION">
+
+The complete standalone header returns typed state containing actual frames, colors, predecessors, output, and counters. Before a descent, the caller’s next index increments. After return, the top frame resumes from that saved index. Frame depth cannot exceed V because only WHITE vertices receive child frames.
+
+The same helper has a detection flag used by Chapter 32. Ordinary DFS does not report cycles just because it encounters seen vertices; it simply avoids revisiting them. There is no native recursion, so graph depth cannot exhaust the process call stack.
+
+<CanonicalSource source={source} main={main} fileName="DFS.hpp" chapter="27" />
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Finish before backtracking." kicker="CODE + VISUALIZATION TRACE">
+
+When a frame cursor reaches the end of its adjacency row, the vertex becomes BLACK. The next statement pops the frame. Only a later resume statement activates the caller beneath it. The brief BLACK frame is therefore a real completed-statement snapshot.
+
+Inspect advances the cursor before choosing whether to descend. The exact undirected parent edge is skipped, while other seen edges remain inspected. The predecessor assignment occurs before discovery, and the frame push follows discovery; each state is preserved independently.
+
+</Section>
+
+<Section id="invariants" number="07" title="A vertex receives at most one discovery frame." kicker="INVARIANTS">
+
+Every predecessor edge exists in the correct direction. Colors never move backward from BLACK to GRAY or GRAY to WHITE during a run. Queue uniqueness is irrelevant to DFS scheduling, but output uniqueness still holds because discovery happens once.
+
+Each frame cursor lies between zero and its adjacency row length. The frames form the active search path apart from brief statement boundaries during push/pop. Completion requires an empty frame stack. A forest additionally discovers every vertex.
+
+</Section>
+
+<Section id="complexity" number="08" title="Deep work changes space, not linear traversal time." kicker="COMPLEXITY EXPLORER">
+
+<GraphComplexity kind="dfs" />
+
+Compare Dense, Single vertex, and a custom chain. Adjacency / cell reads count each examined adjacency entry; output counts unique discoveries; Search launches counts forest roots. In a chain, the frame stack reaches V. A wide star has many neighbor reads but a shallow active stack.
+
+For prepared adjacency lists the traversal costs O(V + E), with O(V) color/predecessor arrays and at most O(V) frames. Row construction is O(V + E); the bounded pairwise validator is separate O(V² + E²) setup. Snapshot retention is visualizer overhead rather than the canonical algorithm’s auxiliary bound.
+
+</Section>
+
+<Section id="break-it" number="09" title="Pushing only vertex IDs loses the resume point." kicker="COMMON MISTAKES / BREAK-IT MODE">
+
+The fault below explains the missing-cursor bug. A stack of vertices can implement some DFS variants, but a genuine recursive-style backtrack needs a resume policy. Repeatedly restarting a row changes operation counts and can loop without a proper discovery guard.
+
+<GraphStructureBreakIt kind="dfs" />
+
+</Section>
+
+<Section id="analogy" number="10" title="Keep a finger on every unfinished page." kicker="REAL-WORLD ANALOGY">
+
+Read a nested instruction, leave a marker at its next step, and follow the newly referenced instruction. On completion, return to the most recent marker. The markers are frames; their page positions are neighbor cursors. Finishing an instruction does not erase the underlying object.
+
+</Section>
+
+<Section id="engineering" number="11" title="Explicit frames make depth and pause/resume visible." kicker="ENGINEERING INSIGHT">
+
+Compilers, graph analyzers, and dependency tools often need entry and exit semantics. An explicit frame stack can support finishing times or pause/resume without uncontrolled recursion depth. Such extra outputs would require their own fields and invariants; this chapter records discovery order and completion colors only.
+
+</Section>
+
+<Section id="exercises" number="12" title="Explain a return without moving a node." kicker="EXERCISES / CHALLENGES">
+
+At the deepest default state A,B,D, what cursor must B retain? Its parent edge to A and discovery edge to D have been examined, so the next entry is E. After D’s pop, B resumes there.
+
+Challenge: create two disconnected directed regions and compare single-source DFS with DFS forest. A forest covers all vertices but does not imply strong connectivity or one path visiting them all.
+
+</Section>
+
+<Section id="summary" number="13" title="Backtracking is restored continuation state." kicker="CHAPTER SUMMARY">
+
+DFS marks vertices once, retains a cursor for each unfinished search, and backtracks only after a row is exhausted. Explicit frames match recursion’s mechanics while bounding storage in a vector. Chapter 28 adds direction as a reachability constraint.
+
+Continue the connections: <a href={`${import.meta.env.BASE_URL}chapters/02-stack/`}>Chapter 2 — Stack</a> · <a href={`${import.meta.env.BASE_URL}chapters/12-tree-traversal/`}>Chapter 12 — Tree Traversal</a> · <a href={`${import.meta.env.BASE_URL}chapters/26-breadth-first-search/`}>Chapter 26 — Breadth-First Search</a>.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete ✓</button>
+<ChapterPagination number="27" />
+
+</Section>

@@ -1,0 +1,120 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import TechniquePreview from '../../components/visualizers/TechniquePreview.astro';
+import TechniqueLab from '../../components/visualizers/TechniqueLab.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-48/Greedy.hpp?raw';
+import main from '../../../cpp/chapter-48/main.cpp?raw';
+
+<ChapterHero number="48" title="Greedy algorithms" part="PART VII / ALGORITHMIC TECHNIQUES" overline="COMMIT ONLY WHEN THE CHOICE IS JUSTIFIED" description="A greedy algorithm commits to a locally preferred choice; correctness depends on a property of the problem, not the confidence of the choice." chain="order candidates → test compatibility → commit → justify" facts={[["Canonical problem", "Maximum interval count"], ["Safe rule", "Earliest compatible finish"], ["Counterexample", "Coins 1, 3, 4; target 6"], ["Core cost", "Sorting + one scan"]]} />
+
+<Section id="mental-model" number="01" title="Leave the most room for what comes next." kicker="VISUAL MENTAL MODEL">
+
+Imagine one meeting room and several requests. Each request has a start and finish, and every accepted meeting is worth one. Choose the largest possible number of nonoverlapping meetings. Sorting by finish makes the next safe choice visible. The lab retains every original activity identity so a rejected row does not disappear.
+
+<TechniquePreview kind="greedy" />
+
+Intervals are half-open: a meeting finishing at 2 is compatible with one starting at 2. Green accepted choices stay committed; rejected candidates overlap a commitment. Equal finish times preserve original input order.
+
+</Section>
+
+<Section id="intuition" number="02" title="An exchange argument licenses the commitment." kicker="THE INTUITION">
+
+Let g be an earliest-finishing activity and let o be the first activity of an optimal schedule. Replacing o with g cannot obstruct any later activity: g finishes no later than o. The replacement keeps the same count. Thus some optimum starts with g. Repeat the argument on activities starting after g finishes. This proves the rule, including ties.
+
+Choosing earliest start or shortest duration has no such proof. Backtracking explores alternatives and restores state; this algorithm commits without undo. Its speed comes from a theorem that makes the discarded alternatives unnecessary.
+
+</Section>
+
+<Section id="memory" number="03" title="Input identity survives sorting." kicker="STRUCTURE / STORAGE LAYOUT">
+
+The owned interval vector stores start/finish pairs. A separate vector of integer indices carries the sorted order; accepted and rejected vectors store those same indices. No diagram ID represents a native pointer or address. The last accepted finish is the only scheduling boundary needed by the scan.
+
+The companion coin operation owns a sorted denomination vector, a chosen-coin vector, and the remaining amount. There is no search tree or table of alternative solutions in that algorithm. These containers also make decisions inspectable through the optional observer.
+
+</Section>
+
+<Section id="operations" number="04" title="Watch commitment succeed, then watch it fail." kicker="INTERACTIVE OPERATIONS">
+
+<TechniqueLab kind="greedy" />
+
+Run Intervals with `0:3,1:2,2:4,3:5,4:6`. The accepted original activities are 2, 3, and 5. Inspect the candidate rows before and after each decision. Try empty input, touching endpoints, and `0:2,1:2,2:3` for stable ties. The input ceiling is eight activities with integer endpoints from 0 through 20 and positive duration.
+
+Switch to Coins with denominations `1,3,4` and target 6. Largest-first commits to 4, then 1, then 1: three coins. The representation 3 + 3 uses only two. Coins must be unique positive integers through 16, at most six denominations; target is 0 through 16. Empty denominations and target zero are supported.
+
+</Section>
+
+<Section id="implementation" number="05" title="Keep the canonical rule explicit." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="Greedy.hpp" chapter="48" />
+
+The scheduling function uses `std::stable_sort` on indices and compares finish only. The coin function sorts ascending, then visits the vector in reverse. Both validate before emitting any event, own their inputs, and return complete result state. The observer receives a const reference valid during the callback; copy it if retaining a snapshot. Observers should be nonthrowing and must not reenter the algorithm.
+
+An answer of −1 from largest-first means this heuristic became stuck. It is not a proof that the target is unreachable. The function deliberately does not pretend to solve the general optimization problem.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="One check precedes one irrevocable decision." kicker="CODE + VISUALIZATION TRACE">
+
+The source-linked sort event publishes the candidate order. Inspect increments the check count and selects an original activity. Accept appends that activity and advances the finish boundary; reject records overlap without changing that boundary. Done publishes the accepted count. Previous restores the full preceding snapshot, including candidate decisions and counters.
+
+For coins, inspect chooses a denomination. Each take appends one coin and reduces the remainder. Even when the remainder reaches zero, the canonical loop still inspects any remaining denominations. The lab counts those checks because the source performs them.
+
+</Section>
+
+<Section id="invariants" number="07" title="Feasibility alone is weaker than optimality." kicker="INVARIANTS">
+
+Accepted intervals are pairwise compatible in finish order. Every considered activity is either accepted or rejected; stable input identities keep those sets disjoint. The exchange argument, together with finish ordering, proves maximum count. A compatible schedule produced by another rule could still be suboptimal.
+
+For largest-first coins, chosen values plus remainder always equal the original target, and the remainder never becomes negative. These invariants establish accounting, not minimum coin count. A finished representation can satisfy both and still be wasteful.
+
+</Section>
+
+<Section id="complexity" number="08" title="Change candidate count and inspect the scan counter." kicker="COMPLEXITY EXPLORER">
+
+Run the lab with one, four, then eight intervals. Denomination / interval checks equals the number of intervals; acceptance does not cause another scan. Typical stable sorting with temporary storage costs O(n log n); the standard permits O(n log² n) comparisons when sufficient extra memory is unavailable. The scan costs O(n), and the retained order and decisions use O(n) storage.
+
+For k denominations and q coins actually taken, largest-first costs O(k log k + k + q) and O(k + q) returned storage. Increase target with coin 1 to expose q, then remove 1 and observe where it gets stuck. Observer copies and saved visualization snapshots are additional instructional costs, not the algorithm's working-space bound.
+
+</Section>
+
+<Section id="break-it" number="09" title="A tempting local rule can fail twice." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+For earliest-start failure, enter `0:10,1:2,2:3,3:4`. Committing to the first interval would accept only one; earliest finish accepts three. For shortest-duration failure, use `0:3,3:6,2:4`: the short middle interval blocks both others. Compare those imagined commitments with the actual finish rule.
+
+After the 1, 3, 4 counterexample, try coins `3,4`, target 6. Greedy takes 4 and gets stuck even though 3 + 3 is possible. Then try `2,4`, target 7; this target really is unreachable. Greedy's failure cannot distinguish the two cases. Zero-valued coins are rejected because subtracting zero would make the take loop fail to terminate.
+
+</Section>
+
+<Section id="analogy" number="10" title="A booking clerk needs a rule with a reason." kicker="REAL-WORLD ANALOGY">
+
+A clerk who wants the most meetings can reserve the first finishing compatible request and keep going. A clerk paid different amounts for different bookings has changed the objective. The same finish rule may then lose revenue. “Greedy” describes the commitment strategy; it does not make all scheduling objectives equivalent.
+
+</Section>
+
+<Section id="engineering" number="11" title="Transfer the proof pattern, not the surface rule." kicker="ENGINEERING INSIGHT">
+
+<a href="../35-minimum-spanning-trees/">Kruskal's algorithm</a> also commits to cheap choices, justified by a cut property rather than interval exchange. <a href="../46-backtracking/">Backtracking</a> keeps alternatives available. Weighted interval scheduling introduces a different optimization problem that benefits from reusing subproblem solutions.
+
+The failing coin example continues unchanged in <a href="../49-dynamic-programming/">Dynamic Programming</a>. We will compare all possible final coin choices through smaller amounts, retain the best count, and finally distinguish unreachable from merely unexplored.
+
+</Section>
+
+<Section id="exercises" number="12" title="Try to invalidate the theorem's assumptions." kicker="EXERCISES / CHALLENGES">
+
+1. Explain why replacing an optimum's first meeting by an earlier-finishing meeting cannot hurt its suffix.
+2. Reorder equal-finish inputs. Predict the selected identity and the maximum count separately.
+3. Find a three-interval example where a maximum-count schedule does not maximize revenue.
+4. Trace target zero with no coins. Why is the empty sum a valid answer?
+5. Explain why the coin accounting invariant cannot establish optimality, using target 6.
+
+</Section>
+
+<Section id="summary" number="13" title="A greedy choice needs a problem-specific proof." kicker="CHAPTER SUMMARY">
+
+Earliest compatible finish maximizes the count of unweighted nonoverlapping intervals. Stable ties make the execution repeatable. Largest-first coins demonstrates both suboptimal success and misleading failure. The next chapter keeps the same coin problem and replaces commitment with reuse of solved subproblems.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="48" />
+</Section>

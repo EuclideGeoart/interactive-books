@@ -1,0 +1,127 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import Section from '../../components/book/Section.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import GraphComplexity from '../../components/visualizers/GraphComplexity.astro';
+import GraphStructureLab from '../../components/visualizers/GraphStructureLab.astro';
+import GraphStructureBreakIt from '../../components/visualizers/GraphStructureBreakIt.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-32/Cycles.hpp?raw';
+import main from '../../../cpp/chapter-32/main.cpp?raw';
+
+<ChapterHero number="32" title="Cycle Detection" overline="SEEN BEFORE DOES NOT ALWAYS MEAN A CYCLE." description="Compare the undirected parent-edge rule with directed active-stack coloring. Trace actual frames and distinguish GRAY from BLACK." chain="undirected: ignore parent edge · directed: edge to GRAY ⇒ cycle" facts={[["UNDIRECTED", "Skip exact parent edge"], ["DIRECTED", "GRAY back edge"], ["LOOPS", "Cycles in both modes"]]} />
+
+<Section id="mental-model" number="01" title="Two graph kinds require two tests." kicker="VISUAL MENTAL MODEL">
+
+<h3>Inspect the graph and its stored relationships.</h3>
+
+<StructurePreview chapter="graph-cycle" id="graph-cycle-mental" operation="cycle" viewLabels={{logical:"Graph view",memory:"Storage view"}} diagramNote="Select a vertex or edge to inspect its identity and relationships. Positions remain stable throughout the trace." />
+
+The lab runs a complete DFS forest so disconnected cycles cannot be missed. In an undirected graph, encountering an already discovered vertex signals a cycle only after excluding the exact parent edge. In a directed graph, the target must be GRAY on the active search path.
+
+The frame stack and color table make the distinction inspectable. WHITE vertices are unseen, GRAY vertices are unfinished, and BLACK vertices have exhausted their outgoing rows. A self-loop points to the currently GRAY vertex and is a cycle in either mode.
+
+</Section>
+
+<Section id="intuition" number="02" title="Returning along one undirected edge is not a cycle." kicker="THE INTUITION">
+
+On A—B, DFS reaches B through edge 0. B’s row contains that same edge back to A. It must be skipped as the parent edge; otherwise every nontrivial tree would appear cyclic. The implementation compares edge IDs, which expresses the reason more precisely than just comparing parent labels.
+
+In a directed diamond A→B, A→C, B→D, C→D, D may already be BLACK when C inspects it. That edge does not return to an active ancestor. A GRAY target, however, lies on the current path and closes a directed cycle.
+
+</Section>
+
+<Section id="memory" number="03" title="Colors and parent edges are real state." kicker="STRUCTURE / MEMORY LAYOUT">
+
+Each continuation frame stores vertex, next neighbor index, and parent edge ID. The graph retains stable edge IDs in insertion order. A child frame carries the edge used to discover it; the root uses −1. No native recursion is used.
+
+Color completion and frame removal are separate statements. During the brief snapshot after marking BLACK and before popping, the frame is complete and no longer a GRAY ancestor. The cycle flag is a persistent result: once true it remains true while the forest continues.
+
+</Section>
+
+<Section id="operations" number="04" title="Compare a tree, diamond, loop, and real back edge." kicker="INTERACTIVE OPERATIONS">
+
+<GraphStructureLab kind="graph-cycle" />
+
+Select Standard and keep Undirected: the result is no cycle. Select Diamond: undirected mode finds a cycle, directed mode does not. Select Self-loop: both modes find a cycle. Select Cycle and branch: both modes find a cycle under the preset’s orientation.
+
+Use Custom to place a cycle in a component disconnected from A. The ascending seed scan still finds it. This experiment reports whether any cycle exists; it does not enumerate all cycles or return a minimal cycle witness.
+
+</Section>
+
+<Section id="implementation" number="05" title="One traversal, explicitly different predicates." kicker="C++ IMPLEMENTATION">
+
+The standalone header implements iterative DFS with a detect flag. For an undirected edge matching the top frame’s parent edge, it continues without a cycle test. An unseen neighbor receives a predecessor, becomes GRAY, and gets a frame. For a seen neighbor, directed mode checks GRAY while undirected mode accepts any non-parent seen target.
+
+The graph policy rejects parallel pairs and permits self-loops. If parallel undirected edges were added in a future model, edge identity would be essential to distinguish the parent edge from a second edge closing a two-edge cycle. That multigraph extension is not silently supported here.
+
+<CanonicalSource source={source} main={main} fileName="Cycles.hpp" chapter="32" />
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="A cycle flag changes on the decisive edge." kicker="CODE + VISUALIZATION TRACE">
+
+Inspect first advances the current frame’s cursor and highlights its edge. Parent-edge rejection clears that highlight in a separate tagged step. A valid non-parent seen edge then sets cycle=true at the tagged assignment; the renderer does not infer it from red styling.
+
+For directed mode, pause before an edge to BLACK and verify that no cycle event follows. Pause at an edge to GRAY and observe the flag change. Reverse playback restores the earlier false flag exactly, even after the rest of the forest has finished.
+
+</Section>
+
+<Section id="invariants" number="07" title="The active path justifies the directed rule." kicker="INVARIANTS">
+
+The current GRAY path contains the unfinished DFS ancestors. A directed edge back to one of them combines with the tree path to form a cycle. An edge to BLACK may connect to a finished branch and proves no cycle by itself.
+
+Undirected parent edges are inspected but excluded from the cycle predicate. A full forest is necessary before “no cycle” is final. During a partial trace the result reads not yet / none when complete so lack of evidence is not mistaken for a completed proof.
+
+</Section>
+
+<Section id="complexity" number="08" title="A forest still performs linear adjacency work." kicker="COMPLEXITY EXPLORER">
+
+<GraphComplexity kind="dfs" />
+
+Use Standard, Dense, and Disconnected presets and watch Search launches and adjacency reads. The detector keeps traversing after the first cycle to show the complete forest, so its work remains bounded by all vertices and adjacency entries.
+
+For prepared lists, time is O(V + E) and auxiliary space O(V), including the explicit frame stack. Undirected non-loops contribute two adjacency reads and loops one. The bounded graph validator and retained trace snapshots have their own setup/storage costs, not the canonical traversal bound.
+
+</Section>
+
+<Section id="break-it" number="09" title="GRAY and visited are not interchangeable." kicker="COMMON MISTAKES / BREAK-IT MODE">
+
+The fault control demonstrates both false-positive traps: a parent edge in an undirected tree and an edge to a BLACK descendant in a directed diamond. A single visited boolean is enough to suppress revisits, but not enough to implement the directed cycle predicate.
+
+<GraphStructureBreakIt kind="cycle" />
+
+</Section>
+
+<Section id="analogy" number="10" title="A dependency can return to an unfinished task." kicker="REAL-WORLD ANALOGY">
+
+Suppose completing task A requires B, and B eventually requires A. Following dependencies returns to an unfinished ancestor, which is the GRAY condition. A dependency on an already completed task is different; merely recognizing its name does not prove a cycle.
+
+</Section>
+
+<Section id="engineering" number="11" title="Use the result to enforce the right contract." kicker="ENGINEERING INSIGHT">
+
+A DAG must be directed and pass a complete directed cycle check. Chapter 29 uses that property to represent dependencies; Chapter 30 detects an obstruction through incomplete Kahn output. The two techniques answer related questions using different observable state.
+
+A detected cycle is not automatically corruption. Road networks and general relations legitimately contain cycles. Whether to reject one depends on the application’s invariant, not on the graph container itself.
+
+</Section>
+
+<Section id="exercises" number="12" title="Explain a false positive before fixing it." kicker="EXERCISES / CHALLENGES">
+
+On A—B, name the exact edge that B must skip. Then run the directed diamond and identify the BLACK target that must not trigger a cycle.
+
+Challenge: add C→A to A→B→C. Which inspection first proves a directed cycle, and which ancestor is GRAY? C’s edge to A closes the active A,B,C path. Add an isolated D and explain why forest coverage still matters when reporting no cycle.
+
+</Section>
+
+<Section id="summary" number="13" title="A cycle rule needs the right context." kicker="CHAPTER SUMMARY">
+
+Undirected detection excludes the parent edge; directed detection distinguishes unfinished GRAY vertices from completed BLACK vertices. Stable edge identity, explicit frames, and full forest coverage make those rules mechanically visible.
+
+Continue the connections: <a href={`${import.meta.env.BASE_URL}chapters/27-depth-first-search/`}>Chapter 27 — Depth-First Search</a> · <a href={`${import.meta.env.BASE_URL}chapters/29-dags/`}>Chapter 29 — DAGs</a> · <a href={`${import.meta.env.BASE_URL}chapters/30-topological-sort/`}>Chapter 30 — Topological Sorting</a>.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete ✓</button>
+<ChapterPagination number="32" />
+
+</Section>

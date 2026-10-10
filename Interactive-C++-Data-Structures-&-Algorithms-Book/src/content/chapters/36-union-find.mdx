@@ -1,0 +1,124 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import GraphWeightedLab from '../../components/visualizers/GraphWeightedLab.astro';
+import GraphComplexity from '../../components/visualizers/GraphComplexity.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-36/UnionFind.hpp?raw';
+import main from '../../../cpp/chapter-36/main.cpp?raw';
+
+<ChapterHero number="36" title="Union-Find / disjoint set" part="PART V / GRAPHS" overline="MANY MEMBERS, ONE REPRESENTATIVE" description="Maintain a partition with owned parent arrays, union by size and path compression." chain="before: D → C → A ↺ · after find(D): D → A ↺" facts={[["Operations", "make-set \u00b7 find \u00b7 union \u00b7 connected"], ["Union policy", "Size, then numeric root"], ["Compression", "Exact parent assignments"], ["Amortized work", "O(\u03b1(n)) per operation"]]} />
+
+<Section id="mental-model" number="01" title="A root points to itself; every member reaches a root." kicker="VISUAL MENTAL MODEL">
+
+The preset is built by actual unions: A with B, C with D, then A with C. Equal-size ties choose the smaller numeric root, producing D → C → A with A → A. E and F remain singleton roots. This is a forest of parent arrows, not the original edges of a graph problem.
+
+<StructurePreview chapter="union-find" id="union-find-preview" operation="find" viewLabels={{logical:'Graph view',memory:'Storage view'}} diagramNote="Follow D → C → A. Root self-links are real parent fields, not null terminators." />
+
+Select D and inspect parent C. Step through find(D), then compare after: D now points directly to A, while A still points to itself. Stable authored positions make the one changed arrow visible.
+
+</Section>
+
+<Section id="intuition" number="02" title="Connectivity is equality of representatives." kicker="THE INTUITION">
+
+A disjoint set represents a partition: every member belongs to exactly one component. find follows parent links to a self-root. connected compares two find results. union changes the partition only when the representatives differ. make-set appends a new singleton.
+
+Union by size attaches the smaller root beneath the larger root; equal sizes choose the smaller numeric ID. A root can change after a later union, so it is a representative, not a permanent component identity. Compression changes the route to a representative without changing which set contains the vertex.
+
+</Section>
+
+<Section id="memory" number="03" title="Own the arrays, and keep parent IDs within that owner." kicker="STRUCTURE / STORAGE LAYOUT">
+
+UnionFind owns vectors for parent, size and labels. Public IDs are numeric indices into this instance. The API checks bounds before traversing or mutating either operand; an ID from a different instance has no cross-owner meaning even if the integer is in range. Vectors manage lifetime; copying the object copies an independent partition, while moving transfers its containers. There are no borrowed parent buffers or exposed mutable parent pointers.
+
+Only root size entries describe current component membership. An attached root's old size remains historical and must not be used as the current size of that nonroot. The graph projection derives exactly one outgoing edge from each parent entry, including root self-loops. Label identities and positions remain stable during compression. Storage view's adjacency representations describe this current parent relation.
+
+</Section>
+
+<Section id="operations" number="04" title="Follow a chain, then publish each shortcut." kicker="INTERACTIVE OPERATIONS">
+
+<GraphWeightedLab kind="union-find" />
+
+Find / compress with vertex A = 3 follows D → C → A and writes parent[D] = A. Vertex A and Vertex B fields are numeric IDs, not literal labels A and B. Connected? compares vertices 3 and 4: the answer is false until their sets merge. Union by size joins their roots. Make set appends the New singleton label and gives it a self-parent.
+
+Each Load operation rebuilds the specified initial unions before tracing the chosen operation. To inspect a deeper valid tree, use eight labels and initial unions 0 1;2 3;4 5;6 7;0 2;4 6;0 4, then find vertex 7. Several parent assignments become visible. Blank labels and blank unions create an empty owner; make-set can create its first member.
+
+</Section>
+
+<Section id="implementation" number="05" title="Two-pass compression keeps reads and writes explicit." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="UnionFind.hpp" chapter="36" />
+
+The first pass records the nonroot path while following parents to the representative. The second pass assigns each saved vertex directly to that representative only when its parent differs. This makes a genuine before/after chain visible and avoids pretending that all arrows changed at once.
+
+The teaching owner accepts at most eight distinct nonempty labels. make_set validates and reserves every growing vector before publishing a new member, preserving logical membership if allocation fails before publication. Invalid union operands are both checked before either find begins, so invalid input cannot partially compress a valid operand. A const state view supports inspection; observer callbacks must be nonthrowing and nonreentrant. The header is standalone and requires no file from Kruskal.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Path discovery and compression are different phases." kicker="CODE + VISUALIZATION TRACE">
+
+Find starts with an empty saved path and a cursor at the requested ID. FollowParent appends the current nonroot ID, then reads its parent. Root identifies the self-parent endpoint. CompressPath is emitted once per actual parent assignment; already-direct children produce no fake write. Return publishes the representative only after compression finishes.
+
+Union performs two finds before comparing roots. Different roots choose a survivor by size, assign the losing root's parent, update the winning size, and decrement the component count. A failed “already connected” union may still compress paths during its two finds: no partition change does not mean no storage mutation.
+
+</Section>
+
+<Section id="invariants" number="07" title="Every owned vertex must reach one owned self-root." kicker="INVARIANTS">
+
+Parent indices must remain within the owner, and every parent chain must terminate at a self-root. Cycles longer than one are invalid. Root size must equal the number of members reaching it, and component count must equal the number of roots. Compression preserves all representatives and sizes.
+
+The invariant walker guards visited IDs, so a malformed cycle is reported instead of hanging. Parent assignment during union temporarily makes root size and component count stale; subsequent statements repair them. Those transitions remain pending during playback and must pass at completion. A root self-loop is valid and required, unlike a cycle-closing edge rejected by Kruskal.
+
+</Section>
+
+<Section id="complexity" number="08" title="A sequence becomes cheap as paths flatten." kicker="COMPLEXITY EXPLORER">
+
+<GraphComplexity kind="dsu" />
+
+Union by size alone limits depth to O(log n): whenever a root becomes a child, its new component is at least twice as large. Path compression shortens later finds. Together they give O(α(n)) amortized time per operation over a sequence, after O(n) initialization. Inverse Ackermann grows so slowly that this is near-constant for practical sizes, but it is not a worst-case claim that every individual find reads one parent.
+
+Watch the traversal and write counters on the genuine chain. A first find(D) crosses two links and rewrites one; a subsequent find in that compressed state would cross one and rewrite none. The lab resets from its declared unions on each Load, so use the after snapshot to reason about the next call. Saved-path storage uses O(log n) temporary entries under union by size; trace snapshots add teaching overhead.
+
+</Section>
+
+<Section id="break-it" number="09" title="A parent self-loop is essential; a two-vertex loop is corruption." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+Try an out-of-range vertex ID and load: validation rejects it before mutation. Attempt make-set with an existing label: no duplicate member is published. Reverse the order of equal-size union operands and verify that the lower numeric root still wins. Repeat a union in Initial unions: connectivity stays the same and root size must not be doubled.
+
+After D compresses, reading the historical size stored at C as D's set size would be wrong; first find the root, then read its size. Replacing A → A with null would contradict this representation. Joining arbitrary vertices rather than roots can lose the size guarantee or even create a nontrivial cycle.
+
+</Section>
+
+<Section id="analogy" number="10" title="A directory routes every member to one coordinator." kicker="REAL-WORLD ANALOGY">
+
+Each team member knows a contact. Following contacts eventually reaches a coordinator who names themselves. When teams merge, the smaller team's coordinator points to the larger team's coordinator. After asking through a chain, a member remembers the final coordinator directly. Membership stays the same; the next lookup takes fewer hops.
+
+</Section>
+
+<Section id="engineering" number="11" title="Representatives solve merging, not arbitrary graph updates." kicker="ENGINEERING INSIGHT">
+
+DSU is useful when connectivity only grows: Kruskal, offline connectivity, component labeling and equivalence-class construction. Ordinary path compression mutates state even during a query, which matters for concurrent readers, persistence and rollback. Removing an arbitrary edge does not translate into one inverse union.
+
+<a href="../35-minimum-spanning-trees/">Kruskal</a> uses find to reject cycle-closing edges. <a href="../31-connected-components/">Traversal-based components</a> can enumerate components of a static graph, while DSU maintains membership under unions. Neither parent shape nor representative ID is a geometric or application-level identity.
+
+</Section>
+
+<Section id="exercises" number="12" title="Name exactly which parent entries change." kicker="EXERCISES / CHALLENGES">
+
+1. For D → C → A, list parent values before and after find(D). Which write is skipped?
+2. Build the eight-vertex balanced preset and count actual assignments during find(7).
+3. Explain why connected can mutate parent storage while preserving the partition.
+4. Reverse union operands in equal-size sets and predict the chosen representative.
+5. Explain why deleting an arbitrary original graph edge cannot be implemented by setting one DSU parent back to itself.
+
+</Section>
+
+<Section id="summary" number="13" title="Union changes the partition; compression changes access paths." kicker="CHAPTER SUMMARY">
+
+Owned parent indices end at self-roots. Union by size controls depth and uses explicit deterministic ties. Two-pass compression publishes exact parent assignments while preserving membership. Bounds, root sizes and component counts make the representation inspectable. Near-constant amortized work applies to sequences, not every individual find.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="36" />
+</Section>
+

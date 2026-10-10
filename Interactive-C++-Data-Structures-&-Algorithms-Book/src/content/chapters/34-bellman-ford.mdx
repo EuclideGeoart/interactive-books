@@ -1,0 +1,124 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import GraphWeightedLab from '../../components/visualizers/GraphWeightedLab.astro';
+import GraphComplexity from '../../components/visualizers/GraphComplexity.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-34/BellmanFord.hpp?raw';
+import main from '../../../cpp/chapter-34/main.cpp?raw';
+
+<ChapterHero number="34" title="Bellman–Ford" part="PART V / GRAPHS" overline="RELAX AGAIN, THEN TEST ONCE MORE" description="Compute shortest paths with negative edges and detect negative cycles reachable from the chosen source." chain="V − 1 passes → extra detection scan → finite result or reachable-cycle failure" facts={[["Allows", "Negative weights"], ["Worst-case work", "O(VE)"], ["Early exit", "No distance changed"], ["Failure condition", "Reachable negative cycle"]]} />
+
+<Section id="mental-model" number="01" title="A later edge can improve an earlier result." kicker="VISUAL MENTAL MODEL">
+
+The initial route A → B costs 4, but A → C → B costs 5 − 3 = 2. Bellman–Ford keeps reconsidering every edge, so it can repair B even after B's outgoing edge was inspected earlier in a pass.
+
+<StructurePreview chapter="bellman-ford" id="bellman-ford-preview" operation="run" viewLabels={{logical:'Graph view',memory:'Storage view'}} diagramNote="Distances are tentative during passes. Reachable negative-cycle outcomes withhold a finite shortest-path result." />
+
+The pass counter, candidate value, distance table and highlighted edge make propagation visible. Graph geometry stays fixed throughout all passes.
+
+</Section>
+
+<Section id="intuition" number="02" title="At most V − 1 edges are needed by a simple shortest path." kicker="THE INTUITION">
+
+If no reachable negative cycle exists, a shortest walk can be reduced to a simple path without increasing its cost. A simple path visits at most V vertices, so V − 1 full edge passes suffice. In-place relaxation may propagate several edges during one pass; favorable insertion order can finish earlier.
+
+If another improvement remains possible after these passes, a reachable negative cycle exists. Repeating that cycle makes some walk costs arbitrarily low. There is no minimum finite cost for vertices reachable from such a cycle. A negative cycle in a disconnected, unreachable region does not invalidate this source's result.
+
+</Section>
+
+<Section id="memory" number="03" title="Keep distances optional and distinguish provisional values." kicker="STRUCTURE / STORAGE LAYOUT">
+
+The graph owns labels and weighted edge records. Directed edges become one relaxation arc; undirected non-self edges become two, in insertion order, forward then reverse. A self-loop produces one arc. Arrays hold optional distances, predecessor vertex IDs and predecessor-edge IDs. The state also owns pass, changed and negative-cycle flags.
+
+Distance absence means unreachable, not an enormous arithmetic sentinel. On a reachable negative-cycle outcome, stored numeric values are diagnostic values from the passes, not promised shortest distances. This teaching API conservatively withholds the whole finite-path result instead of claiming which unaffected vertices still have valid finite answers. The UI labels every distance provisional in that outcome.
+
+</Section>
+
+<Section id="operations" number="04" title="Compare propagation, early exit and detection." kicker="INTERACTIVE OPERATIONS">
+
+<GraphWeightedLab kind="bellman-ford" />
+
+Run the negative-edge preset and follow B's improvement to 2, then D's improvement to 4. Load Reachable negative cycle: repeated passes keep reducing costs, and the extra scan reports failure. Load Unreachable negative cycle: the unreachable component cannot seed a candidate and does not cause failure.
+
+For a slow-propagation experiment choose custom edges 2 1 1;1 0 1, source 2, and compare with reverse insertion order. The source and graph are identical but pass-by-pass progress changes. A singleton with a negative self-loop has zero ordinary passes and is still caught by the detection scan.
+
+</Section>
+
+<Section id="implementation" number="05" title="An extra scan tests without publishing distances." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="BellmanFord.hpp" chapter="34" />
+
+The standalone header owns all input and output containers. Validation rejects invalid IDs, duplicate label identities and parallel pairs. Both positive and negative exact integer weights are accepted within ±1,000,000; checked long long addition protects arithmetic. Empty graphs return an empty result, while any nonempty graph requires a valid source.
+
+The optional observer exposes tagged snapshots and must be nonthrowing and nonreentrant. A caller must check negative before treating returned distances or predecessors as a shortest-path answer. There is no path reconstruction method that can accidentally chase cyclic predecessor links in a failing result.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="One pass contains many separate relaxations." kicker="CODE + VISUALIZATION TRACE">
+
+BeginPass resets changed to false. InspectEdge selects one arc and clears the old candidate. An unreachable source skips arithmetic. Otherwise Candidate computes a sum, Compare tests it, and distinct events assign distance, predecessor and predecessor-edge ID. Mark records that this pass changed at least one distance.
+
+EarlyExit stops ordinary passes only after a complete pass makes no update. The extra detection scan still runs. Detection computes candidates and records whether any remaining improvement exists; it does not write the distance or predecessor arrays. A displayed detection pass number V denotes the extra scan, even if early exit skipped earlier passes.
+
+</Section>
+
+<Section id="invariants" number="07" title="Reachability controls which edges may relax." kicker="INVARIANTS">
+
+Only a finite source distance may form a candidate. Every published predecessor names a real incoming edge in the chosen direction. Each successful relaxation strictly reduces a destination or replaces infinity. Arithmetic always remains exact within the accepted input bound.
+
+During execution predecessor and distance writes are separate, and a predecessor's distance can improve before its outgoing edge is revisited. Therefore equality along every predecessor is a completion condition, not a universal intermediate invariant. In a reachable negative cycle, predecessor chains may cycle; the outcome flag overrides any finite-path interpretation.
+
+</Section>
+
+<Section id="complexity" number="08" title="Repeated full scans trade speed for a wider input domain." kicker="COMPLEXITY EXPLORER">
+
+<GraphComplexity kind="bellman-ford" />
+
+At most V − 1 ordinary passes plus one detection scan inspect every arc: O(VE) work and O(V + E) storage for this materialized arc representation. A no-update pass exits early, often reducing observed work. The counter includes the detection scan; undirected edges can contribute two arc inspections.
+
+Validation uses a simple O(E²) parallel-pair check for the bounded eight-vertex API. Snapshot copying is teaching instrumentation, excluded from the relaxation-loop estimate. Increase density and vertex count in the explorer, then compare actual scans between the two custom edge orders.
+
+</Section>
+
+<Section id="break-it" number="09" title="A negative edge is not a negative cycle." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+Use the negative-edge preset to disprove “negative implies failure.” Then change to Reachable negative cycle and observe repeated strict decreases. Finally use Unreachable negative cycle to disprove “any negative cycle invalidates every source.”
+
+Try an undirected custom edge 0 1 -1. Traversing it forward and back is a negative closed walk, so shortest walks are unbounded; it must fail. Omitting the extra scan would publish plausible-looking but invalid finite numbers. Adding to a numeric infinity sentinel could also invent reachability, which is why this source uses optional distances.
+
+</Section>
+
+<Section id="analogy" number="10" title="Repeatedly revise a cost ledger." kicker="REAL-WORLD ANALOGY">
+
+Each edge offers a rule: reaching its destination can cost no more than reaching its source plus that edge's cost. Sweep the ledger repeatedly until none of the rules improves a number. A reachable cycle of discounts that pays you more on every lap prevents the ledger from having a lowest total.
+
+</Section>
+
+<Section id="engineering" number="11" title="Report failure semantics as part of the API." kicker="ENGINEERING INSIGHT">
+
+Difference constraints and cost models with negative adjustments need more than a faster priority queue. They need an explicit answer when no finite optimum exists. A production API may classify each vertex as unreachable, finite, or negatively unbounded by propagating from detected cycle witnesses. This bounded example deliberately reports a source-level failure and keeps intermediate values diagnostic.
+
+Compare <a href="../33-dijkstra/">Dijkstra</a> for nonnegative inputs and <a href="../32-cycle-detection/">cycle detection</a> for topology alone. A directed cycle is not automatically a negative cycle; edge weights determine this failure condition.
+
+</Section>
+
+<Section id="exercises" number="12" title="Predict the next pass." kicker="EXERCISES / CHALLENGES">
+
+1. Reverse edge insertion order and count how many ordinary passes change a distance.
+2. Explain why the extra scan is still useful for a one-vertex negative self-loop.
+3. Add an edge from the source component into an unreachable negative cycle. Which result flag changes?
+4. Construct a directed positive cycle and verify that it does not imply failure.
+5. Sketch how an extended API could distinguish unaffected finite vertices from vertices downstream of a negative cycle.
+
+</Section>
+
+<Section id="summary" number="13" title="Relax enough times, then test whether improvement should still be possible." kicker="CHAPTER SUMMARY">
+
+Bellman–Ford accepts negative edges, runs at most V − 1 ordinary passes with early exit, then performs a separate detection scan. Only reachable negative cycles invalidate the source-level finite answer. Provisional numeric values in a failing result are never advertised as shortest paths.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="34" />
+</Section>
+

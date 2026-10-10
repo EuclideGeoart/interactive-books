@@ -1,0 +1,12 @@
+---
+import { chapters } from '../../content/book';
+interface Props { number: string }
+const { number } = Astro.props;
+const i = chapters.findIndex(chapter => chapter.number === number);
+const previous = chapters[i - 1], next = chapters[i + 1];
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<nav class="chapter-pagination" aria-label="Adjacent chapters">
+  {previous ? <a href={`${base}/chapters/${previous.slug}/`}>← {previous.number} / {previous.title}</a> : <span>Start of Part 0</span>}
+  {next ? <a href={`${base}/chapters/${next.slug}/`}>{next.number} / {next.title} →</a> : <span>End of this chapter bundle</span>}
+</nav>

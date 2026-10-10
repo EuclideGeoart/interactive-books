@@ -1,0 +1,21 @@
+---
+interface Props { kind: 'bfs' | 'dfs' | 'components' | 'cycle' | 'representation' }
+const {kind}=Astro.props;
+---
+<div class="interactive-frame" data-graph-structure-break={kind}>
+  <label>Controlled misconception<select data-fault><option value="valid">Valid reference state</option><option value="fault">Inject chapter mistake</option></select></label>
+  <button type="button" class="button" data-restore>Restore</button>
+  <p role="status" aria-live="polite" data-fault-result>Valid reference state. Choose a fault to inspect its consequence.</p>
+</div>
+<script>
+import {structureFault,type StructureFault} from '../../visualizers/graph-structure/model';
+for(const root of document.querySelectorAll<HTMLElement>('[data-graph-structure-break]')){
+ const select=root.querySelector<HTMLSelectElement>('[data-fault]')!,result=root.querySelector<HTMLElement>('[data-fault-result]')!;
+ const update=()=>{
+  if(select.value==='valid'){result.textContent='PASS — valid reference state restored.';return;}
+  const fault=structureFault(root.dataset.graphStructureBreak as StructureFault);
+  result.textContent=`FAIL — Expected: ${fault.expected}. Broken: ${fault.broken}. ${fault.detail} The controlled experiment does not run unsafe native code.`;
+ };
+ select.addEventListener('change',update);root.querySelector('[data-restore]')!.addEventListener('click',()=>{select.value='valid';update();});
+}
+</script>

@@ -1,0 +1,12 @@
+---
+import TraceLab from './TraceLab.astro';
+import source from '../../../cpp/chapter-11/BinarySearchTree.hpp?raw';
+import base from '../../../cpp/chapter-10/BinaryTree.hpp?raw';
+const operations = [{'id': 'insert', 'label': 'Insert'}, {'id': 'search', 'label': 'Search'}, {'id': 'minimum', 'label': 'Minimum'}, {'id': 'maximum', 'label': 'Maximum'}, {'id': 'successor', 'label': 'Successor'}, {'id': 'predecessor', 'label': 'Predecessor'}, {'id': 'erase', 'label': 'Erase'}, {'id': 'clear', 'label': 'Clear'}];
+---
+<TraceLab id="bst" chapter="bst" source={source + "\n" + base} fileName="BinarySearchTree.hpp" operations={operations} regions={['insert', 'search', 'minimum', 'maximum', 'successor', 'predecessor', 'erase', 'clear']}>
+  <label>Starting tree<select name="preset"><option value="standard">50, 25, 75, 10, 35, 60, 90, 62</option><option value="successor">Deep successor: 50,25,75,60,90,55,57</option><option value="skewed">Right chain: 10,20,30,40,50,60</option><option value="duplicates">Duplicates: 50,25,75,25,50</option><option value="empty">Empty tree</option><option value="single">Single root</option><option value="custom">Custom integers</option></select></label>
+  <label>Custom values (insertion order)<input name="values" value="50,25,75,10,35,60,90,62" maxlength="90" placeholder="50,25,75,10,35,60,90,62" /></label>
+  <label>Query / inserted value<input name="value" type="number" min="-999" max="999" step="1" value="62" /></label>
+</TraceLab>
+<script>import '../../scripts/tree-labs';</script>

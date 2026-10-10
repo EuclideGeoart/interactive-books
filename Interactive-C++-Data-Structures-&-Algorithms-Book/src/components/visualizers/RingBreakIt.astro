@@ -1,0 +1,18 @@
+<div class="interactive-frame" data-ring-break>
+  <div class="operation-form"><label>Controlled fault<select data-fault><option value="no-modulo">Forget modulo</option><option value="wrong-index">Confuse head and tail</option><option value="full-empty">Treat full as empty</option><option value="overwrite-unread">Overwrite unread data silently</option><option value="empty-read">Read from empty</option></select></label><button type="button" class="button" data-break>Break it</button><button type="button" class="button" data-restore>Restore</button></div>
+  <div class="svg-scroll" data-fault-svg role="region" aria-label="Ring fault diagram" tabindex="0"></div><p data-fault-result role="status"></p><details><summary>Compare with the checked operation</summary><p data-correct></p></details>
+</div>
+<script>
+  import { ringAdapter } from '../../visualizers/ring-buffer/adapter';
+  import { ringFault } from '../../visualizers/ring-buffer/faults';
+  document.querySelectorAll<HTMLElement>('[data-ring-break]').forEach(root => {
+    const render = (broken: boolean) => {
+      const f = ringFault(root.querySelector<HTMLSelectElement>('[data-fault]')!.value);
+      root.querySelector('[data-fault-svg]')!.innerHTML = ringAdapter.draw(broken ? f.broken : f.before,'ring-fault','memory',null).replaceAll('role="button" tabindex="0"','role="img"').replaceAll(' aria-pressed="false"','').replaceAll('Inspect ', '');
+      const output=root.querySelector('[data-fault-result]')!; output.textContent=broken ? `✕ ${f.detail}` : '✓ Restored starting state. Faults modify the teaching model; no out-of-bounds C++ is executed.'; output.className=broken ? 'invariant-fail' : 'invariant-pass';
+      root.querySelector('[data-correct]')!.textContent=ringAdapter.describe(f.correct);
+    };
+    root.querySelector('[data-break]')!.addEventListener('click',()=>render(true));root.querySelector('[data-restore]')!.addEventListener('click',()=>render(false));root.querySelector('[data-fault]')!.addEventListener('change',()=>render(false));render(false);
+  });
+</script>
+<style>.operation-form {display:flex;flex-wrap:wrap;gap:1rem;align-items:end;padding:1rem;} label {display:grid;gap:.4rem;flex:1;min-width:12rem;} [data-fault-result],details {margin:1rem;}:global([data-fault-svg] .data-node) {cursor:default;}</style>

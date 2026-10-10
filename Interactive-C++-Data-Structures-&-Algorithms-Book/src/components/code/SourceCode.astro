@@ -1,0 +1,16 @@
+---
+import { codeToTokens } from 'shiki';
+import { sourceLines } from '../../engine/source';
+interface Props { source: string; region?: string; interactive?: boolean }
+const { source, region, interactive = false } = Astro.props;
+const lines = sourceLines(source, region);
+const { tokens } = await codeToTokens(lines.map(line => line.text).join('\n'), { lang: 'cpp', theme: 'github-dark-default' });
+---
+<div class="source-code" data-code-region={region} hidden={interactive && region !== 'insert-head'}>
+  {lines.map((line, index) => (
+    <div class="source-row" data-source={line.tag}>
+      {interactive && line.tag ? <button type="button" class="line-number" data-jump={line.tag} aria-label={`Jump to C++ line ${line.number}`}>{line.number}</button> : <span class="line-number">{line.number}</span>}
+      <code>{tokens[index]?.map(token => <span style={{ color: token.color }}>{token.content}</span>)}</code>
+    </div>
+  ))}
+</div>

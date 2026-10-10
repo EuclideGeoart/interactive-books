@@ -1,0 +1,145 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import SpatialPreview from '../../components/visualizers/SpatialPreview.astro';
+import SpatialLab from '../../components/visualizers/SpatialLab.astro';
+import SpatialExplorer from '../../components/visualizers/SpatialExplorer.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-62/Octree.hpp?raw';
+import main from '../../../cpp/chapter-62/main.cpp?raw';
+
+<ChapterHero number="62" title="Octrees" part="PART IX / SPATIAL DATA STRUCTURES" overline="SPARSE SPACE HAS THREE COORDINATES" description="An octree refines a 3D region into eight octants while allocating only the occupied children needed by its points." chain="3D point → x/y/z half tests → octant → sparse refinement → volume query" facts={[["Geometry", "Real 3D points and bounds"], ["Children", "Eight slots; sparse allocation"], ["Ownership", "High-side midpoint ties"], ["Limit", "Overflow at maximum depth"]]} />
+
+<Section id="mental-model" number="01" title="The picture is a projection; the index remains three-dimensional." kicker="VISUAL MENTAL MODEL">
+
+An octree region is a box, not a flat square. Splitting at its x, y, and z midpoints creates eight possible octants. Two points with identical x and y can occupy different children because their z coordinates differ.
+
+<SpatialPreview kind="octree" />
+
+The SVG presents a deterministic projection. Inspect a node to read its full z interval and its actual child IDs. Screen overlap does not imply 3D overlap. The hierarchy view shows which octants exist and which child links remain null. Point positions come from the same 3D semantic coordinates throughout playback.
+
+</Section>
+
+<Section id="intuition" number="02" title="Three binary decisions choose one of eight octants." kicker="THE INTUITION">
+
+Compute xHigh, yHigh, and zHigh by comparing the point with each midpoint; equality chooses high. The child slot is xHigh + 2 × yHigh + 4 × zHigh. Bits 0, 1, and 2 encode those choices. The root is closed [−8,8] on all three axes.
+
+A leaf holds points until its capacity is exceeded. If depth allows, it becomes internal with eight null child slots. Redistribution allocates a child only when a point routes there. That child can split in turn. Empty octants consume a null slot rather than an allocated subtree.
+
+As with quadtrees, duplicates do not become separable merely by increasing depth. An overfull leaf at maximum depth is retained. The canonical policy indexes points only; it does not treat a volume as its center or distribute boxes among multiple octants.
+
+</Section>
+
+<Section id="memory" number="03" title="Sparse children avoid allocating empty volumes." kicker="STRUCTURE / MEMORY LAYOUT">
+
+A node stores a 3D AABB, depth, parent ID, and either point IDs or eight child slots. The sparse root may have only two occupied octants even though it has eight possible directions. Unallocated octants have no node ID and are not visited by a query.
+
+Splitting detaches the old leaf IDs into pending ownership. Each redistributed point creates or reuses its unique octant, then moves into leaf storage. Semantic snapshots record that transient batch explicitly. All nodes and points are value-owned vectors in C++; stable integer indices identify nodes across vector growth.
+
+A complete uniform depth-D octree has (8^(D+1) − 1) / 7 nodes. Depth 6 would require 299,593 nodes even before storing points. This bounded sparse implementation allocates only paths demanded by at most 12 input points, with depth at most 6. Sparse occupancy changes allocation dramatically; it does not make unnecessary depth free.
+
+</Section>
+
+<Section id="operations" number="04" title="Separate points that share a 2D projection." kicker="INTERACTIVE OPERATIONS">
+
+<SpatialLab kind="octree" />
+
+Choose custom points 0,0,−3;0,0,3;0,0,3 and capacity 1. Build the tree and inspect the root's high/low z slots. Query the volume −1,−1,2,1,1,4: only the two points at z = 3 are accepted, despite their identical projected x/y position with the negative-z point.
+
+The custom box format is minX,minY,minZ,maxX,maxY,maxZ. Insert point and Point lookup require x,y,z. Use 8,8,8 to test the closed root corner, and the duplicates scene to test maximum-depth overflow. Set maximum depth zero to retain all points in one leaf.
+
+Use Previous across Split and Allocate occupied octant to distinguish an eight-slot internal node from eight allocated children. Each form submission rebuilds the selected scene before its requested operation; the diagram is not a persistent voxel editor.
+
+</Section>
+
+<Section id="implementation" number="05" title="Carry z through every geometry operation." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="Octree.hpp" chapter="62" />
+
+The standalone C++ header defines its own Vec3 and AABB3 aliases over small value structs. Bounds and point tests include all three axes. Finite input coordinates are restricted to [−8,8]; IDs are unique A through Z; at most 12 points are allowed after insertion. Capacity is an integer 1 through 8 and maximum depth 0 through 6.
+
+Queries use closed bounds and allow zero extent on any axis. Reversed bounds, non-finite values, wrong tuple dimensions, and out-of-root points are rejected at the callable/UI boundaries. The header's AABB aggregate stores x/y bounds first and z bounds last; the browser's documented six-value text format is parsed into those named fields.
+
+Observers receive tagged const state and must not mutate or reenter execution. Copy state if retaining it. The implementation keeps node indices across allocations and reacquires the parent, avoiding references invalidated by vector reallocation. No external geometry library or other chapter header is required.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Allocation, routing, and acceptance are distinct decisions." kicker="CODE + VISUALIZATION TRACE">
+
+Route identifies a region and the midpoint decisions that lead toward a leaf. Store changes point ownership. Split creates the internal eight-slot record and detaches its members. Allocate occupied octant creates only the child required by the next route. Redistribute repeats this for each pending ID.
+
+A volume query visits an allocated node and compares all six faces with the query. If any axis is disjoint, Prune rejects the whole subtree. Otherwise leaf points become candidates and Test checks all three coordinate intervals. Accept records the ID only after this exact test.
+
+A projected rectangle intersection is insufficient evidence for a 3D visit or acceptance. Read the z bounds when a visually overlapping projected node is pruned. The drawing cannot determine results; the authoritative 3D model already made that decision.
+
+</Section>
+
+<Section id="invariants" number="07" title="Octant routing must agree on all three axes." kicker="INVARIANTS">
+
+Each point has one leaf owner or one pending slot. An internal node owns no points and has eight child slots; leaves have no children. Allocated child bounds are precisely the octant selected by their slot, lie within the parent, and advance depth by one.
+
+Every stored descendant follows all three high-side tie rules at each ancestor. Null slots represent genuinely absent subtrees. Capacity may be exceeded only at maximum depth in completed states; during split repair, pending placement and temporary overflow are explicitly marked.
+
+A query result contains distinct live IDs. Equal coordinates are separate identities and may all be returned. These conditions are checked on semantic state, including intermediate mutation snapshots; the SVG projection is not used as an invariant oracle.
+
+</Section>
+
+<Section id="complexity" number="08" title="One more dimension changes both query shape and memory growth." kicker="COMPLEXITY EXPLORER">
+
+<SpatialExplorer kind="octree" />
+
+Compare uniform, clustered, and duplicate scenes at the same capacity. Increase maximum depth and inspect Tree depth, Visited nodes, and Point tests. Sparse allocation reduces empty nodes, but a narrow occupied path still costs repeated routing and bounds storage.
+
+With direct lookups, insertion follows O(D) levels plus any redistribution. Building n points costs O(nD) routing work for fixed eight-way branching, and sparse node storage is O(1 + nD). A particular volume query costs O(V + T) geometric work for V allocated nodes visited and T candidate points tested; the worst case visits every allocated node and tests all points. Output alone costs Ω(K).
+
+The canonical code's linear point-ID lookup and pending-ID erasure increase its conservative build bound to O(n²(D + 1)). Query work is O(V + Tn + K log K), including final output sorting. The TypeScript model also resolves node IDs linearly. The lab constructs the selected scene and copies snapshots for each run; counters deliberately describe traversal rather than end-to-end timing.
+
+Uniform refinement grows as 8^D, versus 4^D in a quadtree. Raising depth to compensate for noisy dense data may increase memory and traversal without improving discrimination. Sparse children and a meaningful resolution limit address different parts of that problem.
+
+</Section>
+
+<Section id="break-it" number="09" title="A missing z test can look convincing in a flat picture." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+Use points 0,0,−3 and 0,0,3, then query a thin positive-z slab. Predict the incorrect result if containment checks x and y only. A correct projection may overlap their glyphs, but the inspector and answer IDs must separate the two coordinates.
+
+Build duplicates at capacity 1 and maximum depth 6. Skipping the depth limit produces endless attempts to separate identical points. Allocating all eight children eagerly would preserve correctness but waste empty nodes; compare the observed sparse child count with that alternative.
+
+Enter only x,y for a 3D insertion, or reverse the minimum and maximum z of a volume. The lab rejects the input. To experiment with a deliberately missing z comparison, change a local copy of the canonical code and run the independent native volume oracle.
+
+</Section>
+
+<Section id="analogy" number="10" title="Divide a warehouse volume, not only its floor plan." kicker="REAL-WORLD ANALOGY">
+
+A warehouse is split left/right, front/back, and lower/upper. A stored item belongs to one of eight volumes. Only occupied volumes need detailed shelves. Two items above the same floor tile may be on different levels, so a floor-plan overlap does not establish that a robot's 3D search box reaches both.
+
+</Section>
+
+<Section id="engineering" number="11" title="Choose sparse resolution to match the physical question." kicker="ENGINEERING INSIGHT">
+
+Point clouds, sparse voxel spaces, 3D scene culling, and volumetric broad-phase queries benefit from hierarchical spatial cells. This chapter stores points, not voxel material values or mesh triangles. Extending it requires an explicit payload and ownership contract.
+
+For AABBs, a consistent extension retains spanning objects at the current parent and descends only into a unique fully containing octant. Queries then test parent-held objects as well as children. Duplicating a large object across many octants would require explicit deduplication and different memory analysis.
+
+Dense uniform voxel fields can fit flat arrays better than pointer-like hierarchies. Moving objects may favor a refitted <a href="../65-bounding-volume-hierarchies/">BVH</a>. Static low-dimensional points motivate the alternating-coordinate partition of <a href="../63-kd-trees/">KD-trees</a>.
+
+</Section>
+
+<Section id="exercises" number="12" title="Treat the third coordinate as a correctness requirement." kicker="EXERCISES / CHALLENGES">
+
+1. Compute the child slot for (0,0,0), (−1,0,−1), and (1,−1,1) in the root.
+2. Construct two points with identical x/y but different z that a thin slab query separates.
+3. Derive the total node count for a fully allocated depth-3 octree. Compare it with a sparse tree containing one point.
+4. Explain why an absent child can be skipped without a query-box test against an allocated node.
+5. Show why high-side equality gives unique ownership at a corner shared by eight drawn region closures.
+6. Propose a finite-resolution rule based on physical voxel width, then explain how it interacts with capacity and duplicate points.
+
+</Section>
+
+<Section id="summary" number="13" title="Sparse occupancy and genuine volume tests define this octree." kicker="CHAPTER SUMMARY">
+
+An octree makes three midpoint decisions per level, owns each point uniquely, and allocates only occupied octants. Volume queries inspect z as well as x/y, regardless of projection overlap. Maximum depth bounds duplicate refinement, while sparse allocation controls empty-volume cost. Neither feature guarantees every workload benefits from a deeper tree.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="62" />
+</Section>
+

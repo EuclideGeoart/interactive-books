@@ -1,0 +1,32 @@
+---
+import TraceLab from './TraceLab.astro';
+import '../../styles/techniques.css';
+import { techniqueAdapter, techniqueOperations, type TechniqueKind } from '../../visualizers/techniques/adapter';
+import recursion from '../../../cpp/chapter-45/Recursion.hpp?raw';
+import backtracking from '../../../cpp/chapter-46/Backtracking.hpp?raw';
+import divide from '../../../cpp/chapter-47/DivideConquer.hpp?raw';
+import greedy from '../../../cpp/chapter-48/Greedy.hpp?raw';
+import dp from '../../../cpp/chapter-49/DynamicProgramming.hpp?raw';
+import memo from '../../../cpp/chapter-50/MemoTabulation.hpp?raw';
+interface Props { kind: TechniqueKind }
+const { kind } = Astro.props;
+const sources = { recursion, backtracking, 'divide-conquer': divide, greedy, 'dynamic-programming': dp, 'memo-tabulation': memo };
+const names = { recursion: 'Recursion.hpp', backtracking: 'Backtracking.hpp', 'divide-conquer': 'DivideConquer.hpp', greedy: 'Greedy.hpp', 'dynamic-programming': 'DynamicProgramming.hpp', 'memo-tabulation': 'MemoTabulation.hpp' };
+const operations = techniqueOperations[kind];
+const adapter = techniqueAdapter(kind);
+const regions = [...new Set(operations.flatMap(op => adapter.regions(op.id, new FormData())))];
+---
+<div data-technique-lab={kind}>
+<TraceLab id={`${kind}-lab`} chapter={`technique-${kind}`} source={sources[kind]} fileName={names[kind]} operations={operations} regions={regions} viewLabels={{logical:'Execution view', memory:'State / stack view'}} diagramNote="Frames retain arguments, locals and a conceptual resume point. Cells use indices, not machine addresses. Select a state with Enter or tap; diagrams scroll within this panel.">
+  {(kind === 'recursion' || kind === 'backtracking') && <label>Input n<input type="number" name="n" min="0" max={kind === 'recursion' ? '8' : '6'} step="1" value="4" required /></label>}
+  {kind === 'backtracking' && <label>Choose k<input type="number" name="k" min="0" max="6" step="1" value="2" required /></label>}
+  {kind === 'divide-conquer' && <label>Values (up to 8 integers)<input name="values" value="7,2,5,2,9,1" maxlength="100" /></label>}
+  {kind === 'greedy' && <label data-technique-input="intervals">Activities: start:end<input name="intervals" value="0:3,1:2,2:4,3:5,4:6" maxlength="100" /></label>}
+  {kind === 'dynamic-programming' && <label data-technique-input="fibonacci">Fibonacci n<input name="n" type="number" min="0" max="6" step="1" value="5" required /></label>}
+  {['greedy', 'dynamic-programming', 'memo-tabulation'].includes(kind) && <>
+    <label data-technique-input="coins">Coin denominations<input name="coins" value="1,3,4" maxlength="40" /></label>
+    <label data-technique-input="coins">Target amount<input name="target" type="number" min="0" max="16" step="1" value="6" required /></label>
+  </>}
+</TraceLab>
+</div>
+<script>import '../../scripts/technique-labs';</script>

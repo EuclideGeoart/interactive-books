@@ -1,0 +1,12 @@
+---
+import TraceLab from './TraceLab.astro';
+import source from '../../../cpp/chapter-05/IntrusiveList.hpp?raw';
+const operations = [
+  ['push-front', 'Push front'], ['push-back', 'Push back'], ['remove-head', 'Remove head'], ['remove-tail', 'Remove tail'], ['remove-middle', 'Remove middle'], ['clear', 'Clear / unlink'], ['reinsert', 'Reinsert object'], ['forward', 'Walk forward'], ['backward', 'Walk backward'], ['double-insert', 'Insert linked hook'], ['wrong-list', 'Remove detached object'], ['multiple-hooks', 'Independent hooks'],
+].map(([id, label]) => ({ id: id!, label: label! }));
+---
+<TraceLab id="intrusive-lab" chapter="intrusive" source={source} fileName="IntrusiveList.hpp" operations={operations} regions={['push-front', 'push-back', 'erase', 'clear', 'traversal', 'hook']}>
+  <label>Starting membership<select name="preset"><option value="three">A ⇄ B ⇄ C</option><option value="single">A only</option><option value="empty">Empty list</option></select></label>
+  <label>Hook to operate on<select name="hook"><option value="active">Active hook</option><option value="render">Render hook</option><option value="dirty">Dirty hook</option></select></label>
+  <label>Object D value<input name="value" type="number" min="-999" max="999" step="1" value="40" required /></label>
+</TraceLab>

@@ -1,0 +1,125 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import Section from '../../components/book/Section.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import GraphComplexity from '../../components/visualizers/GraphComplexity.astro';
+import GraphStructureLab from '../../components/visualizers/GraphStructureLab.astro';
+import GraphStructureBreakIt from '../../components/visualizers/GraphStructureBreakIt.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-24/Graph.hpp?raw';
+import main from '../../../cpp/chapter-24/main.cpp?raw';
+
+<ChapterHero number="24" title="Graph Fundamentals" overline="RELATIONSHIPS WITHOUT A REQUIRED ROOT." description="A graph gives objects identities and relationships. Inspect neighbors, add a vertex or edge, and change direction while the topology remains explicit." chain="A — B — D · A — C · B — E" facts={[["VERTICES", "Stable numeric IDs"], ["EDGES", "Relationships, optional weights"], ["MODEL", "Self-loops yes · parallel edges no"]]} />
+
+<Section id="mental-model" number="01" title="A graph is a set of objects and relationships." kicker="VISUAL MENTAL MODEL">
+
+<h3>Inspect the graph and its stored relationships.</h3>
+
+<StructurePreview chapter="graph-fundamentals" id="graph-fundamentals-mental" operation="inspect" viewLabels={{logical:"Graph view",memory:"Storage view"}} diagramNote="Select a vertex or edge to inspect its identity and relationships. Positions remain stable throughout the trace." />
+
+A vertex is an object; an edge relates two vertices. The drawing has no privileged root and no required parent–child hierarchy. Select B to inspect its three neighbors A, D, and E. A graph can contain isolated vertices, several disconnected components, cycles, and self-loops.
+
+The IDs are the positions in the label array: A is 0, B is 1, and so on. An edge stores endpoint IDs, not addresses. The stable drawing helps you follow a relationship even when its algorithmic role changes.
+
+</Section>
+
+<Section id="intuition" number="02" title="Direction and weight answer different questions." kicker="THE INTUITION">
+
+An undirected A—B edge is traversable both ways. A directed A→B edge permits outgoing traversal from A to B; it does not imply B→A. A weight attaches a number such as cost or length to the relationship. Negative and zero weights are valid graph data here; whether an algorithm accepts them is a separate contract.
+
+A walk may repeat vertices and edges. A path does not repeat vertices. A cycle returns to its starting vertex without repeating other vertices. Under this chapter’s policy a self-loop is a one-edge cycle. Parallel edges between the same pair are rejected; opposite directed arcs are distinct.
+
+</Section>
+
+<Section id="memory" number="03" title="IDs connect records; vectors own storage." kicker="STRUCTURE / MEMORY LAYOUT">
+
+The graph owns a vector of labels and a vector of edge records. Each record stores from, to, and weight. The storage view shows those logical records, not fabricated C++ addresses or byte offsets. Vector growth can relocate records while numeric IDs remain meaningful because this editor only appends vertices.
+
+The adjacency helper derives rows from edges in insertion order. An undirected non-loop edge contributes two neighbor entries, but a loop contributes one. Mathematical undirected degree counts a self-loop twice; therefore degree and the number of distinct adjacency entries need not agree. Directed loops contribute one incoming and one outgoing incidence.
+
+</Section>
+
+<Section id="operations" number="04" title="Make one controlled edit and inspect its result." kicker="INTERACTIVE OPERATIONS">
+
+<GraphStructureLab kind="graph-fundamentals" />
+
+Choose a preset or select Custom graph to use the label and edge fields. Custom endpoints are numeric IDs: `0,1;0,2,5` means A—B with default weight 1 and A—C with weight 5. Add vertex uses New label; Add edge uses from/to/weight. Inspect neighbors uses Start / inspect vertex ID.
+
+Each Load operation starts a reproducible experiment from the selected input graph. Edits are not accumulated across loads; enter the previous result as Custom graph to continue a sequence. Toggle direction preserves edge record orientation. Converting reciprocal directed arcs to undirected would create a parallel pair, so the entire edit is rejected before any change.
+
+</Section>
+
+<Section id="implementation" number="05" title="Validate a candidate, then commit it." kicker="C++ IMPLEMENTATION">
+
+The complete standalone header defines Graph, Edge, the adjacency builder, validation, controlled edits, and neighbor inspection. The edit first copies the graph, changes the candidate, validates all endpoints and pairs, then replaces the state. A validation failure leaves the original graph unchanged. Standard containers own their allocations; there are no owning raw pointers.
+
+The teaching model accepts at most eight vertices, unique nonblank labels, and integer weights between −1,000,000 and 1,000,000. Self-loops are supported consistently. The native representation uses int for this bounded domain; it does not perform weighted path arithmetic.
+
+<CanonicalSource source={source} main={main} fileName="Graph.hpp" chapter="24" />
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="An edge is a record before it is a line." kicker="CODE + VISUALIZATION TRACE">
+
+Select Add edge for C—D. The atomic commit adds exactly one edge record. Both undirected neighbor rows derive from that record; adding two independent records would be a parallel edge error. Step backward to see the unchanged original graph, then forward to restore the same committed result.
+
+Inspect neighbors reads one adjacency entry per step and appends its neighbor to the output. Selection is an inspection action, not a topology mutation. A directed edge inspector exposes which endpoint is the source and which is the destination.
+
+</Section>
+
+<Section id="invariants" number="07" title="Every endpoint must name a live vertex." kicker="INVARIANTS">
+
+Graph validity requires bounded endpoint IDs, unique nonblank labels, bounded integer weights, and no duplicate pair under the selected direction rule. A self-loop satisfies endpoint validity. It is not an ownership cycle: all records are values owned by vectors.
+
+The lab reports invalid input before creating a trace. During algorithms, predecessor fields must identify an actual edge in the permitted direction. These are algorithm references; they do not claim that graph vertices have intrinsic parents.
+
+</Section>
+
+<Section id="complexity" number="08" title="Count records and neighbor reads." kicker="COMPLEXITY EXPLORER">
+
+<GraphComplexity kind="representations" />
+
+Compare Standard, Dense four vertices, and Single vertex. The lab counters show V, E, and actual adjacency entries inspected. Inspecting vertex u through a prepared adjacency list takes O(deg(u)); an isolated vertex produces no neighbor reads. Building the adjacency lists takes O(V + E) storage and time.
+
+The deliberately small input validator compares labels and edge pairs directly, costing O(V² + E²) before the experiment. Copying a candidate also has a cost. The displayed neighbor count measures the operation after setup, not parsing, validation, copying, rendering, or native allocation time.
+
+</Section>
+
+<Section id="break-it" number="09" title="Do not invent a reverse relationship." kicker="COMMON MISTAKES / BREAK-IT MODE">
+
+Use the controlled fault below to see why directed rows cannot be mirrored automatically. Also try duplicate labels, an endpoint 8 in the five-vertex preset, or adding the existing edge 0–1: validation rejects each one. A loop at 0 is valid and should not be rejected merely because from equals to.
+
+<GraphStructureBreakIt kind="representation" />
+
+</Section>
+
+<Section id="analogy" number="10" title="A transit map need not be a family tree." kicker="REAL-WORLD ANALOGY">
+
+Stops are vertices and direct services are edges. A bidirectional service differs from a one-way service; a fare differs from connectivity. The map may contain isolated routes and return trips. This analogy explains relationships, but it does not determine whether the application’s weight means time, cost, or something else.
+
+</Section>
+
+<Section id="engineering" number="11" title="Keep identity independent of layout." kicker="ENGINEERING INSIGHT">
+
+Applications such as dependency editors, road networks, and CAD relation graphs need stable identity even when positions move. Here a label index is the identity and the deterministic layout is presentation. A future deleting editor would need an explicit policy for remapping IDs or stable handles; silently treating vector indices as permanent across erase would be incorrect.
+
+</Section>
+
+<Section id="exercises" number="12" title="Explain the same topology three ways." kicker="EXERCISES / CHALLENGES">
+
+Predict B’s neighbors in the default graph, then inspect it. Toggle direction and explain why A disappears from B’s outgoing row. Add a self-loop to C and distinguish its single adjacency entry from its two undirected degree incidences.
+
+Challenge: enter A→B and B→A as custom edges, then toggle direction. Why must the operation reject rather than silently discard one weight? The undirected model permits one edge per pair, so merging the two records needs a policy this editor does not invent.
+
+</Section>
+
+<Section id="summary" number="13" title="Identity and adjacency are separate." kicker="CHAPTER SUMMARY">
+
+A graph describes relationships without imposing a tree hierarchy. Direction constrains traversal; weights decorate edges; components describe reachability. One authoritative edge set derives every representation. Next compare its storage choices in Chapter 25.
+
+Continue the connections: <a href={`${import.meta.env.BASE_URL}chapters/25-adjacency-list-matrix/`}>Chapter 25 — Adjacency List vs Matrix</a>.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete ✓</button>
+<ChapterPagination number="24" />
+
+</Section>

@@ -1,0 +1,146 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import SpscPreview from '../../components/visualizers/SpscPreview.astro';
+import SpscLab from '../../components/visualizers/SpscLab.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-59/SpscRing.hpp?raw';
+import main from '../../../cpp/chapter-59/main.cpp?raw';
+import CppPrerequisite from '../../components/book/CppPrerequisite.astro';
+
+<ChapterHero number="59" title="Lock-free structures introduction" part="PART VIII / ENGINE & SYSTEMS" overline="PUBLICATION IS A PERMISSION TRANSFER" description="Follow one producer and one consumer as they publish payloads and return slots. Atomic indices coordinate ordinary data; their ordering is part of the algorithm." chain="write payload → release → acquire → read payload → release slot" facts={[["Canonical structure", "Bounded SPSC ring"], ["Usable capacity", "N − 1 integer entries"], ["Ownership", "One writer per index"], ["Scope", "No dynamic reclamation"]]} />
+<CppPrerequisite lesson="24" summary="Atomic publication and acquire/release syntax." />
+
+<Section id="mental-model" number="01" title="The payload can exist before it is safe to consume." kicker="VISUAL MENTAL MODEL">
+
+Chapter 7's ring already had storage and circular indices. Sharing it between threads adds a question: when may another thread read or overwrite an ordinary payload? This SPSC queue gives each index exactly one writer. The producer owns `write`; the consumer owns `read`. Each thread observes the other's index before touching a slot.
+
+<SpscPreview />
+
+The preview pauses after writing 42 but before publishing it. Both published indices are still zero: the queue is empty from the consumer's perspective. The stored integer exists, but it has not become a consumable queue entry. Select the slot and producer to inspect those distinct facts.
+
+</Section>
+
+<Section id="intuition" number="02" title="Two handoffs protect the same storage." kicker="THE INTUITION">
+
+The producer first obtains permission to reuse a slot. It writes the payload and then publishes a new write index. The consumer observes that publication, copies the payload, and only then publishes a new read index. The first handoff protects a read from an unfinished write. The second protects that read from the next overwrite.
+
+An atomic variable is accessed indivisibly; that fact alone does not order nearby ordinary memory. A release operation and an acquire operation that reads from that release, or its release sequence, establish synchronization. Here this makes writes before publication visible to the observer after acquisition. Relaxed atomic access does not provide that ordering. See the [C++20 draft's ordering rules](https://timsong-cpp.github.io/cppwp/n4861/atomics.order).
+
+The lab selects concrete interleavings and current index observations. Real executions can observe an older index and conservatively report full or empty. An acquire is not a demand to retrieve the latest wall-clock value. Do not use the animation as a catalogue of all C++ memory-model executions.
+
+</Section>
+
+<Section id="memory" number="03" title="Storage lifetime, membership, and access permission differ." kicker="STRUCTURE / STORAGE LAYOUT">
+
+The queue owns `std::array<int, N>` plus two `std::atomic<std::size_t>` indices. Every integer is initialized and remains alive until the queue is destroyed. Popping does not destroy an integer or erase its old bits. An AVAILABLE slot may still display its last value; that value is not a queued message.
+
+The circular half-open range from `read` to `write` contains published, unreleased entries. Equal indices mean empty. If the position after `write` equals `read`, the queue is full. Reserving one slot makes those cases distinguishable without a shared mutable count. Four physical slots therefore hold three entries. Only the inspector is a conceptual snapshot: the C++ API deliberately exposes no concurrent payload-dump operation.
+
+Construct the queue before launching either worker. Join both workers before destroying it. Copy and move are deleted, and there is no concurrent reset. Adding multiple producers, consumers, arbitrary nontrivial payloads, resizing, or cancellation requires a new ownership and synchronization argument.
+
+</Section>
+
+<Section id="operations" number="04" title="Stop on either side of a publication." kicker="INTERACTIVE OPERATIONS">
+
+<SpscLab />
+
+Try push and pop use your initial queue and physical slot count. Use an empty initial queue to test failed pop; fill N−1 entries to test failed push. Full / empty / wrap starts empty, fills to capacity, attempts one extra push, drains, attempts one extra pop, and repeats across the circular boundary. Physical slot positions remain fixed.
+
+Publication handoff pauses a producer after writing its payload, lets the consumer report empty, then publishes and lets the consumer succeed. Slot reuse handoff starts full and pauses a consumer after its payload copy. A producer still reports full until that consumer releases its slot. Switch to Slots / thread locals to see acquired observations separately from published indices.
+
+CAS success and CAS mismatch use a separate scalar initialized to 7, with desired value 9. On mismatch, compare-and-exchange updates the caller's expected value to the observed current value. Strong CAS does not fail spuriously; weak CAS may and normally requires an appropriate retry loop. The SPSC ring does not need CAS because each index has one writer.
+
+</Section>
+
+<Section id="implementation" number="05" title="A small API with a narrow concurrency contract." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="SpscRing.hpp" chapter="59" />
+
+Both try operations return promptly with success or a full/empty result; they contain no user-level retry loop, allocation, or mutex. Producer and consumer each load their own index with relaxed ordering. They acquire the other thread's index, then publish their own with release. Replacing those cross-thread operations with relaxed access removes a required payload-ordering edge. Making only the indices atomic does not fix a payload race.
+
+The integer payload copy cannot throw. A failed push changes no queue state; a failed pop leaves its output argument unchanged. The capacity is a compile-time template argument of at least two physical slots. The visual domain is bounded to 2–8, but the supplied main also exercises a 17-slot queue. Compile the standalone example with `g++ -std=c++20 -pthread main.cpp -o example`.
+
+The scalar CAS and ABA functions do not allocate nodes, retain pointers, or implement a concurrent stack. Their extra atomic operations belong to those demonstrations, not to the queue's algorithm.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Follow source order and cross-thread visibility separately." kicker="CODE + VISUALIZATION TRACE">
+
+Push emits own-index load, next-index computation, acquire load, capacity check, payload write, and release store. Pop emits own-index load, acquire load, availability check, payload copy, next-index computation, and release store. Failed operations stop at their check. Every ordinary step highlights its canonical statement; Before/After and Previous restore immutable snapshots, including locals and counters.
+
+The key visibility paths are producer payload write → release write → consumer acquire write → payload read, and consumer payload read → release read → producer acquire read → overwrite. The release/acquire pair must communicate through the relevant atomic index. Moving a release earlier cannot publish a payload write that has not happened yet.
+
+The native parity fixture executes tagged statements from the actual header in sequential scenarios. Separate controlled-thread tests pause those statements at handoff boundaries, and the standalone main transfers an ordered sequence using two real threads. These checks have different purposes: matching a diagram, exercising a schedule, and detecting observable FIFO errors.
+
+</Section>
+
+<Section id="invariants" number="07" title="Exclusive roles make the proof small." kicker="INVARIANTS">
+
+Only the producer mutates `write`, and only the consumer mutates `read`. Indices stay within N physical slots. At most N−1 entries are queued. A producer writes only after the acquired read position proves space; a consumer reads only after the acquired write position proves availability. Consumed values follow successful pushes in FIFO order.
+
+Publication is after payload initialization, and reuse permission is after payload consumption. A pending copy still retains its slot. The slot's integer lifetime continues in all these states. The lab's invariant panel checks membership against a separate accepted/consumed sequence and rejects the synthetic publication fault. It does not constitute a formal proof over every hardware execution.
+
+The single-producer and single-consumer requirements are external preconditions. Passing tests cannot make a two-producer caller safe. Likewise, atomics do not extend the lifetime of the queue object.
+
+</Section>
+
+<Section id="complexity" number="08" title="Bounded work is not a portable latency promise." kicker="COMPLEXITY EXPLORER">
+
+Successful push and pop each perform two atomic loads, one ordinary payload access, and one atomic store. Failed attempts perform two loads and no payload access or store. Arithmetic and checks are O(1); storage is O(N). Compare the successful and rejected operations in the counters, then increase physical capacity. The per-attempt operation counts stay constant.
+
+A blocking algorithm may depend on a stalled lock holder. Lock-free progress concerns the system: some operation can complete despite interference, without promising fairness to each caller. Wait-free progress bounds each operation's own steps. C++ distinguishes lock-free atomic execution from broader thread progress guarantees; the [C++20 progress specification](https://timsong-cpp.github.io/cppwp/n4861/intro.progress) does not turn arbitrary atomic code into a wait-free algorithm.
+
+`std::atomic<std::size_t>` is not guaranteed lock-free on every implementation. The example reports `is_lock_free()`. These queue bodies have bounded source-level work; a portable strict wait-free claim would additionally need guarantees about the underlying atomic operations. Retrying until an item arrives, as the demonstration driver does, can wait indefinitely if its peer stops. Those retries are outside the try operation.
+
+Cache coherence and contention can dominate runtime even when Big-O is constant. The indices may share a cache line, but padding every object is not automatically an improvement. This chapter measures operations, not throughput, and makes no speed claim against mutex queues.
+
+</Section>
+
+<Section id="break-it" number="09" title="An atomic index cannot rescue an invalid publication." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+Choose Break publication. The synthetic producer advertises a payload before writing it. The invariant panel fails, and the inspector refuses to invent a valid queue value. A real consumer read racing with a later ordinary write would be undefined behavior; it would not reliably read zero or an old value. No broken native C++ is executed.
+
+Choose ABA history. An observer remembers head index A. Intervening operations change it to B, then A again. CAS from A to C succeeds because its comparison is about the current bits. It does not certify that a previously saved next link or object identity is still valid. This is a scalar history illustration, not a faulty production stack.
+
+Making a pointer atomic does not stop another thread from deleting its target. Hazard pointers publish protection and require validation and coordinated retirement. Epoch schemes defer reclamation until relevant readers have passed a safe boundary; stalled readers can delay reclamation. Tagged pointers can distinguish versions until tag rollover, but a tag alone does not keep memory alive. These are advanced reclamation concepts, not features of this bounded ring. Chapter 55's generations similarly address identity, not a blanket right to dereference concurrently reclaimed storage.
+
+</Section>
+
+<Section id="analogy" number="10" title="A tray and two permission cards." kicker="REAL-WORLD ANALOGY">
+
+A producer places an item on a tray, then turns a card to “ready.” A consumer observes the card, copies the item, then turns a second card to “available.” Turning the first card before filling the tray is wrong. Turning the second while the consumer is still copying is also wrong. The tray exists throughout; the cards change who may use it.
+
+The analogy explains the order, not a hardware implementation. CPU caches are not workers reading handwritten cards, and atomic operations do not promise a particular elapsed time.
+
+</Section>
+
+<Section id="engineering" number="11" title="Choose the concurrency boundary before the container." kicker="ENGINEERING INSIGHT">
+
+This ring fits a fixed producer/consumer channel: one audio or telemetry producer, one processing consumer, a bounded queue, and an explicit full policy. Returning false lets the caller choose drop, retry, backpressure, or error handling. It does not silently overwrite unread work. Queue ownership, thread shutdown, and overload policy remain application responsibilities.
+
+Part VIII separated free storage, bulk allocation, object lifetime, dense membership, generational identity, component organization, dirty scheduling, and deferred mutation. Concurrency adds another independent constraint. A generational handle is not a mutex, a command buffer is not automatically thread-safe, and a dirty wave is not automatically a concurrent queue. Prefer a simpler synchronized design when it meets the workload; specialized lock-free code earns its complexity through a proven need and a carefully stated contract.
+
+ASan and UBSan help detect memory and undefined-behavior errors in exercised paths; they do not establish race freedom. ThreadSanitizer can detect races in observed executions when supported, but a clean run is still not a proof. The validation report records which tools actually ran and which scheduling and FIFO checks passed.
+
+</Section>
+
+<Section id="exercises" number="12" title="Explain the edge that makes each access safe." kicker="EXERCISES / CHALLENGES">
+
+1. With N=4, fill the queue, pop one entry, then push again. Track both indices through wraparound.
+2. Pause Publication handoff before the release. Why can a stored 42 coexist with an empty queue?
+3. Pause Slot reuse after the copy. Which later statement grants the producer permission to overwrite?
+4. Why does a failed CAS update expected? What changes when using weak rather than strong CAS?
+5. Explain why an acquire load is not guaranteed to see the most recent wall-clock store.
+6. Identify the distinct missing arguments when changing this API to two producers, nontrivial payloads, or a linked stack.
+7. Compare a finite generation tag and a reclamation scheme. Which solves identity reuse, which keeps memory accessible, and where can their responsibilities overlap?
+
+</Section>
+
+<Section id="summary" number="13" title="Correct publication is part of the data structure." kicker="CHAPTER SUMMARY">
+
+The bounded SPSC ring shares ordinary integer storage through two atomic index handoffs. Payload publication precedes reading; read completion precedes reuse. Fixed storage avoids dynamic reclamation, and single-writer ownership avoids CAS in the ring. Separate CAS and ABA demonstrations expose the limits of value equality. This completes Part VIII through Chapter 59: memory, identity, membership, scheduling, and concurrency remain distinct engineering concerns.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="59" />
+</Section>

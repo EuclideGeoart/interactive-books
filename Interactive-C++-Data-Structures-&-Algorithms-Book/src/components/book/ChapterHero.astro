@@ -1,0 +1,11 @@
+---
+interface Props { number: string; title: string; overline: string; description: string; chain: string; facts: [string, string][]; part?: string }
+const { number, title, overline, description, chain, facts, part = Number(Astro.props.number) >= 18 && Number(Astro.props.number) <= 23 ? 'PART IV / HASHING' : Number(Astro.props.number) >= 10 && Number(Astro.props.number) <= 17 ? 'PART III / TREES' : 'PART I / LINEAR STRUCTURES & MEMORY' } = Astro.props;
+---
+<header class="chapter-hero bundle-hero" id="top">
+  <div class="hero-top"><span class="eyebrow">{part}</span><span class="hero-edition">C++20 · CHAPTER {number}</span></div>
+  <div class="hero-title"><div><p class="hero-overline">{overline}</p><h1>{title}<span class="title-dot">.</span></h1></div><span class="hero-number" aria-hidden="true">{number}</span></div>
+  <p class="hero-description">{description}</p>
+  <div class="hero-chain chapter-chain"><code>{chain}</code></div>
+  <div class="hero-facts" style={`--fact-count:${facts.length}`}>{facts.map(([label, value]) => <div><span>{label}</span><strong>{value}</strong></div>)}</div>
+</header>

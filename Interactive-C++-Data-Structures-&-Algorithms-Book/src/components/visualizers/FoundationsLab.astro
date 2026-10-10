@@ -1,0 +1,97 @@
+---
+import SourceCode from '../code/SourceCode.astro';
+import source from '../../../cpp/chapter-00/CppFoundations.hpp?raw';
+import type { LabKind } from '../../visualizers/foundations/model';
+interface Props { kind: LabKind }
+const { kind } = Astro.props;
+const specs: Record<LabKind, { title: string; region: string; actions: [string, string][] }> = {
+  pointer: { title: 'Pointer explorer', region: 'pointer', actions: [['a', 'Point to A'], ['b', 'Point to B'], ['null', 'Set nullptr'], ['read', 'Guard and read']] },
+  slot: { title: 'Owning slot', region: 'owning-slot', actions: [['address', 'Address root field'], ['replace', 'Replace root with B']] },
+  lifetime: { title: 'Object lifetime', region: 'lifetime', actions: [['allocate', 'Allocate storage'], ['construct', 'Construct'], ['destroy', 'Destroy object'], ['release', 'Release storage']] },
+  vector: { title: 'Array versus vector', region: 'vector-growth', actions: [['push', 'push_back'], ['pop', 'pop_back']] },
+  copy: { title: 'Copy versus move', region: 'copy-move', actions: [['construct', 'Construct A'], ['copy', 'Copy A → B'], ['move', 'Move A → C'], ['destroy', 'Exit scope / destroy']] },
+  alignment: { title: 'Alignment and placement', region: 'alignment', actions: [['next', 'Next address'], ['toggle', 'Change alignment'], ['construct', 'construct_at'], ['destroy', 'destroy_at']] },
+  contracts: { title: 'Guard or assert?', region: 'contracts', actions: [['valid', 'Valid request'], ['full', 'Full container'], ['broken', 'Broken invariant']] },
+  iterators: { title: 'Which handle survives?', region: 'iterator-erase', actions: [['erase', 'Erase index 1'], ['grow', 'Reallocate vector']] },
+  integer: { title: 'Index arithmetic', region: 'integer', actions: [['midpoint', 'Safe midpoint'], ['wrap', 'Wrap index'], ['unsigned', 'Unsigned boundary'], ['floor', 'Negative cell']] },
+  optional: { title: 'Explicit absence', region: 'optional-view', actions: [['empty', 'Empty'], ['zero', 'Present index 0'], ['two', 'Present index 2']] },
+};
+const spec = specs[kind];
+---
+<div class="foundation-lab interactive-frame" data-foundations-lab={kind}>
+  <div class="foundation-lab-heading"><span class="eyebrow">INTERACTIVE C++ MECHANICS</span><h3>{spec.title}</h3></div>
+  <div class="foundation-controls" role="group" aria-label={`${spec.title} actions`}>
+    {spec.actions.map(([action, label]) => <button type="button" data-action={action}>{label}</button>)}
+    <button type="button" data-action="reset" class="foundation-reset">Reset</button>
+  </div>
+  <div class="foundation-lab-body">
+    <div class="foundation-visual" role="img" aria-label={`${spec.title} state diagram`} data-lab-visual></div>
+    <div class="foundation-source" tabindex="0" role="region" aria-label={`${spec.title} canonical C++ source`}><div class="foundation-source-label">CANONICAL C++20 · ACTIVE LINE HIGHLIGHTED</div><SourceCode source={source} region={spec.region} />{kind === 'alignment' && <SourceCode source={source} region="lifetime" />}{kind === 'iterators' && <SourceCode source={source} region="vector-growth" />}</div>
+  </div>
+  <p class="foundation-state" data-lab-message role="status" aria-live="polite">Choose an action to inspect the state.</p>
+</div>
+
+<script>
+  import { initial, step, alignUp, type LabKind, type LabState } from '../../visualizers/foundations/model';
+  const chip = (label: string, value: string, tone = '') => `<div class="foundation-chip ${tone}"><small>${label}</small><strong>${value}</strong></div>`;
+  const arrow = '<span class="foundation-arrow" aria-hidden="true">→</span>';
+  function visual(s: LabState): string {
+    switch (s.kind) {
+      case 'pointer': return `<div class="foundation-flow">${chip('Node* p', s.pointer ? `0x${s.pointer === 'A' ? 'A100' : 'B200'}` : 'nullptr', s.pointer ? 'reference' : 'fault')}${arrow}${s.pointer ? chip(`object ${s.pointer}`, `value ${s.pointer === 'A' ? 10 : 20}`, 'valid') : chip('Target', 'No object', 'fault')}</div><div class="foundation-subflow">${chip('Node& ref', 'A · fixed alias', 'reference')}${chip('object A · 0xA100', '10', s.pointer === 'A' ? 'selected' : '')}${chip('object B · 0xB200', '20', s.pointer === 'B' ? 'selected' : '')}</div><p class="foundation-ascii">${s.pointer ? `p → ${s.pointer} · *p is live` : 'p → nullptr · dereference blocked'}; ref → A throughout.</p>`;
+      case 'slot': return `<div class="foundation-flow">${chip('Node** slot', '&root', 'reference')}${arrow}${chip('root pointer', `0x${s.root === 'A' ? 'A100' : 'B200'}`, 'selected')}${arrow}${chip(`Node ${s.root}`, s.root === 'A' ? '10' : '20', 'valid')}</div><p class="foundation-ascii">slot → [root pointer] → Node ${s.root}. The pointer field is the object being updated.</p>`;
+      case 'lifetime': {
+        const stages: [string, string][] = [['unallocated', 'No storage'], ['storage', 'Raw storage'], ['live', 'Live object'], ['destroyed', 'Dead object']];
+        return `<div class="foundation-flow">${stages.map(([id, label], i) => `${i ? arrow : ''}${chip(`0${i + 1}`, label, s.phase === id ? id === 'live' ? 'valid selected' : id === 'destroyed' ? 'fault selected' : 'selected' : '')}`).join('')}</div><p class="foundation-ascii">${s.phase === 'live' ? 'Tracked{42} is readable.' : s.phase === 'destroyed' ? 'Destructor ran; bytes remain reserved. Do not read Tracked fields.' : s.phase === 'storage' ? 'Storage exists; no Tracked lifetime has begun.' : 'No allocation remains.'}</p>`;
+      }
+      case 'vector': {
+        const cells = (items: (number | string)[], tone = '') => `<div class="foundation-cells">${items.map(item => `<span class="foundation-cell ${tone}">${item}</span>`).join('')}</div>`;
+        return `<div class="foundation-storage"><div><small>std::array&lt;int, 5&gt; · fixed extent 5</small>${cells([10, 20, 30, 0, 0])}</div><div><small>std::vector&lt;int&gt; · size ${s.values.length} · illustrative capacity ${s.capacity}</small>${cells([...s.values, ...Array(Math.max(0, s.capacity - s.values.length)).fill('·')])}</div></div>${s.generation ? `<p class="foundation-ascii fault-text">Old allocation generation 0 → INVALID handles. Current allocation generation ${s.generation}.</p>` : '<p class="foundation-ascii">Pointer to first element → valid until reallocation or erasure at/before it.</p>'}<p class="fine-print">The standard does not prescribe a growth factor; the diagram uses doubling to expose relocation.</p>`;
+      }
+      case 'copy': return `<div class="foundation-owner-grid">${chip('A · Buffer', s.ownerA ? '→ resource α · 7' : 'empty / not constructed', s.ownerA ? 'reference' : '')}${chip('B · copy', s.ownerB ? '→ resource β · 7' : 'not constructed / destroyed', s.ownerB ? 'valid' : '')}${chip('C · move', s.ownerC ? '→ resource α · 7' : 'not constructed / destroyed', s.ownerC ? 'valid' : '')}</div><p class="foundation-ascii">${s.ownerB ? 'α ≠ β: copying made an independent allocation.' : 'Construct A, then copy it to create an independent resource.'} ${s.ownerC ? 'The move transferred α from A to C.' : ''}</p>`;
+      case 'alignment': {
+        const aligned = alignUp(s.address, s.alignment);
+        const start = Math.max(0, s.address - 1);
+        return `<div class="foundation-cells foundation-addresses">${Array.from({ length: Math.max(8, aligned - start + 2) }, (_, i) => start + i).map(n => `<span class="foundation-cell ${n === aligned ? 'valid' : n >= s.address && n < aligned ? 'padding' : ''}"><small>${n}</small>${n === aligned ? 'T' : n >= s.address && n < aligned ? 'pad' : '·'}</span>`).join('')}</div><p class="foundation-ascii">address ${s.address} · alignof(T) ${s.alignment} → start ${aligned} · padding ${aligned - s.address} byte(s) · ${s.phase === 'live' ? 'object alive' : s.phase === 'destroyed' ? 'object destroyed, storage retained' : 'raw storage only'}</p>`;
+      }
+      case 'contracts': return `<div class="foundation-flow">${chip('Precondition', s.scenario === 'valid' ? 'size < limit' : s.scenario === 'full' ? 'size = limit' : 'size > limit', s.scenario === 'broken' ? 'fault' : '')}${arrow}${chip('Decision', s.scenario === 'full' ? 'throw' : s.scenario === 'broken' ? 'assert fails' : 'push_back', s.scenario === 'valid' ? 'valid' : 'fault')}${arrow}${chip('State', s.scenario === 'valid' ? 'size + 1' : 'unchanged', s.scenario === 'valid' ? 'valid' : '')}</div><p class="foundation-ascii">${s.scenario === 'broken' ? 'assert is a debug invariant check, never ordinary input handling.' : s.scenario === 'full' ? 'The exception is a user-visible rejection before mutation.' : 'The operation preserves the invariant.'}</p>`;
+      case 'iterators': {
+        const afterErase = s.handle === 'after-erase';
+        const afterGrowth = s.handle === 'after-growth';
+        return `<div class="foundation-cells">${(afterErase ? [10, 30] : [10, 20, 30]).map(n => `<span class="foundation-cell">${n}</span>`).join('')}</div><div class="foundation-owner-grid">${chip('iterator to 10', afterGrowth ? 'INVALID' : 'valid', afterGrowth ? 'fault' : 'valid')}${chip('iterator to 20', s.handle === 'all' ? 'valid' : 'INVALID', s.handle === 'all' ? 'valid' : 'fault')}${chip('old end()', s.handle === 'all' ? 'one-past' : 'INVALID', s.handle === 'all' ? 'reference' : 'fault')}</div><p class="foundation-ascii">${afterErase ? 'erase invalidates at or after its position.' : afterGrowth ? 'reallocation invalidates every old vector handle.' : 'end() is a position, not a dereferenceable element.'}</p>`;
+      }
+      case 'integer': {
+        const displays: Record<string, string> = { valid: '8 + (12 − 8) / 2 = 10', midpoint: '8 + (12 − 8) / 2 = 10', wrap: '(4 + 1) % 5 = 0', unsigned: 'i = 0 ⇒ guard before i − 1', floor: 'floor(−1 / 4) = −1' };
+        return `<div class="foundation-math">${displays[s.scenario]}</div><p class="foundation-ascii">${s.scenario === 'floor' ? 'C++ integer / truncates toward zero; adjust a negative remainder for grid cells.' : s.scenario === 'unsigned' ? 'std::size_t cannot represent −1; subtraction at zero wraps.' : s.scenario === 'wrap' ? 'Remainder wraps a bounded nonnegative ring index.' : 'Half-open or closed bounds need consistent updates; this is the closed-bound midpoint.'}</p>`;
+      }
+      case 'optional': return `<div class="foundation-flow">${chip('optional<size_t>', s.optional === null ? 'EMPTY' : 'HAS VALUE', s.optional === null ? 'reference' : 'valid')}${arrow}${chip('Index', s.optional === null ? 'none' : String(s.optional), s.optional === null ? '' : 'valid')}</div><p class="foundation-ascii">${s.optional === null ? 'std::nullopt is absence.' : `The found index is ${s.optional}; zero is still a present result.`}</p>`;
+    }
+  }
+  for (const root of document.querySelectorAll<HTMLElement>('[data-foundations-lab]')) {
+    let state = initial(root.dataset.foundationsLab as LabKind);
+    function render() {
+      root.querySelector<HTMLElement>('[data-lab-visual]')!.innerHTML = visual(state);
+      root.querySelector<HTMLElement>('[data-lab-message]')!.textContent = state.message;
+      root.querySelectorAll<HTMLElement>('[data-source]').forEach(line => line.classList.toggle('foundation-active-line', line.dataset.source === state.tag));
+      root.querySelectorAll<HTMLButtonElement>('[data-action]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.action !== 'reset' && button.dataset.action === state.scenario)));
+    }
+    root.querySelectorAll<HTMLButtonElement>('[data-action]').forEach(button => button.addEventListener('click', () => { state = step(state, button.dataset.action!); render(); }));
+    render();
+  }
+</script>
+
+<style>
+  .foundation-lab { margin: 22px 0 28px; }
+  .foundation-lab-heading { padding: 18px 20px 8px; }
+  .foundation-lab-heading h3 { margin-top: 5px; }
+  .foundation-controls { display: flex; flex-wrap: wrap; gap: 8px; padding: 10px 20px 18px; }
+  .foundation-controls button { min-height: 42px; padding: 8px 12px; font-size: 12px; scroll-margin-top: 90px; }
+  .foundation-controls button:focus-visible { outline-offset: 2px; }
+  .foundation-controls button[aria-pressed='true'] { background: var(--pointer-fill); border-color: var(--pointer); }
+  .foundation-reset { margin-left: auto; }
+  .foundation-lab-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(290px, .9fr); border-top: 1px solid var(--border); }
+  .foundation-visual { padding: 26px 20px; min-width: 0; background: var(--surface-subtle); }
+  .foundation-source { min-width: 0; max-height: 310px; border-left: 1px solid var(--border); background: var(--code); overflow: auto; }
+  .foundation-source-label { padding: 13px 16px 5px; color: #b6cbd6; font: 9px var(--mono); letter-spacing: 1px; }
+  .foundation-state { min-height: 48px; padding: 13px 20px; border-top: 1px solid var(--border); color: var(--ink); font-size: 13px; }
+  @media (max-width: 1020px) { .foundation-lab-body { grid-template-columns: 1fr; } .foundation-source { border-left: 0; border-top: 1px solid var(--border); } }
+</style>

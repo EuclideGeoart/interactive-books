@@ -1,0 +1,124 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import GraphWeightedLab from '../../components/visualizers/GraphWeightedLab.astro';
+import GraphComplexity from '../../components/visualizers/GraphComplexity.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-33/Dijkstra.hpp?raw';
+import main from '../../../cpp/chapter-33/main.cpp?raw';
+
+<ChapterHero number="33" title="Shortest paths / Dijkstra" part="PART V / GRAPHS" overline="NEAREST FIRST, WITH A PROOF" description="Find minimum total path weights from one source when every edge weight is nonnegative." chain="A:0 → C:2 → B:3 → D:5 · E:∞" facts={[["Requires", "Nonnegative weights"], ["Frontier", "Min priority queue"], ["Relaxation", "Strict improvement"], ["Typical work", "O((V + E) log V)"]]} />
+
+<Section id="mental-model" number="01" title="A shorter route can replace an older candidate." kicker="VISUAL MENTAL MODEL">
+
+A initially offers B a route costing 9. Reaching C for 2 reveals C → B for 1, improving B to 3. Both queue entries for B remain: (3, B) will be useful; (9, B) will eventually be stale. The drawing shows the original weighted graph while the table records the algorithm's changing knowledge.
+
+<StructurePreview chapter="dijkstra" id="dijkstra-preview" operation="run" viewLabels={{logical:'Graph view',memory:'Storage view'}} diagramNote="Distances and predecessor fields live in arrays indexed by vertex ID; graph edges remain fixed." />
+
+Select B, then inspect the adjacency matrix or list. An edge's weight is a cost, not its screen length. E is an isolated vertex: infinity is a meaningful unreachable result.
+
+</Section>
+
+<Section id="intuition" number="02" title="Nonnegative edges make nearest-first finalization safe." kicker="THE INTUITION">
+
+When the smallest current tentative distance leaves the queue, every route through a still-unsettled vertex costs at least that much. A nonnegative next edge cannot improve it. This is why the selected vertex can be finalized. A negative edge destroys that argument; the input is rejected, even if a particular negative-edge example might accidentally produce a correct answer.
+
+Relaxation asks whether dist[u] + weight(u,v) improves dist[v]. Only a strict improvement changes the distance and predecessor. Equal alternatives are valid shortest routes; this implementation keeps the first discovered one. Queue ties choose the smaller numeric vertex ID, and neighbors follow edge insertion order.
+
+</Section>
+
+<Section id="memory" number="03" title="Store the graph, distances, predecessors and queued candidates separately." kicker="STRUCTURE / STORAGE LAYOUT">
+
+The canonical graph owns vertex labels and edge records. Dijkstra builds nested adjacency vectors once, preserving insertion order and listing an undirected self-loop once. Distance is a vector of optional long long values: an empty optional is infinity, so the algorithm never adds a weight to a large sentinel. Separate predecessor and predecessor-edge arrays describe a shortest-path tree after completion.
+
+The min-priority queue stores (distance, vertex) pairs and permits duplicates. It does not support decrease-key. The visible queue is sorted dequeue order, not a diagram of the heap's backing array. Its STALE marker is derived by comparing each stored distance with the current distance array. Storage view shows graph representations and algorithm fields; it does not invent C++ object addresses.
+
+</Section>
+
+<Section id="operations" number="04" title="Watch the candidate before watching the assignment." kicker="INTERACTIVE OPERATIONS">
+
+<GraphWeightedLab kind="dijkstra" />
+
+Load the default graph. Step until B changes from 9 to 3, then continue until (9, B) leaves the queue. It must produce a stale event without reprocessing B's edges. D likewise receives 10 before 5, creating another stale entry. E never enters the queue.
+
+Use Equal weights to see deterministic choice among multiple valid routes. Use Custom to change labels, directedness and integer-weight edges. Source IDs are zero-based label indices. The negative-edge preset deliberately shows the validation failure. Empty and singleton inputs are explicit presets. Reset, Previous and the scrubber select retained snapshots; reverse playback does not run an inverse shortest-path algorithm.
+
+</Section>
+
+<Section id="implementation" number="05" title="One complete, independently compilable header." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="Dijkstra.hpp" chapter="33" />
+
+The function takes an owned graph value and returns owned vectors. Standard containers handle destruction and copying. Source bounds, labels, endpoints, parallel pairs and weight limits are validated before execution. All edges must be nonnegative. Checked addition protects long long arithmetic independently of the small teaching bounds. An optional observer receives const snapshots after tagged statements; leave it empty for normal use. Observer callbacks must not throw or reenter the algorithm.
+
+The teaching API accepts at most eight vertices and weights within ±1,000,000, matching the lab. It is deliberately bounded, rather than a production graph library. The header includes all its dependencies; download main.cpp beside it and use the displayed compile command.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="A candidate is a local value until dist changes." kicker="CODE + VISUALIZATION TRACE">
+
+Extract first removes the queue entry and exposes its distance as the candidate. A stale check occurs before finalization. For each outgoing edge, inspection chooses the edge, candidate calculation performs checked addition, and comparison decides whether an improvement exists. A successful relaxation then assigns distance, assigns predecessor, records the predecessor edge, and pushes a new queue entry as separate source events.
+
+Pause immediately after the distance write: the predecessor still contains its old value. This temporary mismatch is the actual statement order, not a rendering error. The following assignment repairs it. The graph's original edges never move; predecessor overlays derive from the current predecessor-edge array.
+
+</Section>
+
+<Section id="invariants" number="07" title="Finalization depends on the accepted input domain." kicker="INVARIANTS">
+
+Every accepted weight is nonnegative. Every finite distance is an exact integer; infinity remains absent. Each settled distance is final. Predecessors must reference actual graph edges, and at completion each reachable non-source vertex's predecessor supports its distance. During a relaxation, predecessor publication follows the distance write.
+
+A queued entry may disagree with the current distance; this is expected stale state, not a broken invariant. Discarding it is essential. A finalized vertex can appear in stale entries, so queue membership does not mean unsettled. Native parity tests compare every tagged statement, including these states.
+
+</Section>
+
+<Section id="complexity" number="08" title="Count pushes, pops and edge inspections." kicker="COMPLEXITY EXPLORER">
+
+<GraphComplexity kind="dijkstra" />
+
+Each reachable adjacency arc is inspected once when its source settles. Every successful relaxation adds one queue entry; every entry is eventually popped, including stale ones. For this simple graph, heap work is O((V + E) log V), often written O((V + E) log(E + 1)) for the duplicate-entry implementation. Space is O(V + E), including potentially O(E) queue entries.
+
+These are algorithm costs after input validation. The tiny canonical validator checks edge pairs directly in O(E²). Observer queue snapshots additionally copy and drain a heap to expose dequeue order; trace retention also costs memory. These teaching and validation costs are not hidden in the priority-queue complexity claim. The lab counters report semantic queue operations, field writes and inspected edges.
+
+</Section>
+
+<Section id="break-it" number="09" title="Try the input that invalidates the proof." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+Select Negative edge and load: Dijkstra refuses it before changing state. The repair is choosing Bellman–Ford, not deleting the input check. With custom edges 0 1 4;0 2 5;2 1 -3, a vertex considered final at 4 could later improve to 2.
+
+In the default trace, predict what happens if stale checks are omitted: obsolete entries cause extra work and make a “finalized once” explanation dishonest. Confusing absence with zero also breaks zero-weight edges. Compare the self-loop preset with an empty graph: zero cost and no path are different facts.
+
+</Section>
+
+<Section id="analogy" number="10" title="Dispatch the cheapest known arrival next." kicker="REAL-WORLD ANALOGY">
+
+Imagine travel times that can never be negative. Dispatch the earliest known arrival; newly discovered legs cannot bring you back before that arrival time. An old reservation can remain on the board after a better one is booked, but it must be recognized and discarded when its turn arrives.
+
+</Section>
+
+<Section id="engineering" number="11" title="Choose the frontier and numeric model deliberately." kicker="ENGINEERING INSIGHT">
+
+Routing, weighted navigation and cost-based state search often need this distinction between tentative and final knowledge. Real workloads may prefer indexed heaps, bucket queues, A* heuristics or implicit neighbor generation. This chapter makes the duplicate-entry policy explicit before introducing those choices.
+
+<a href="../26-breadth-first-search/">BFS</a> counts edges for unweighted paths. <a href="../08-priority-queue/">Priority queues</a> select by priority. <a href="../34-bellman-ford/">Bellman–Ford</a> handles negative edges. An <a href="../35-minimum-spanning-trees/">MST</a> minimizes the total connection network, a different objective.
+
+</Section>
+
+<Section id="exercises" number="12" title="Explain both copies of B." kicker="EXERCISES / CHALLENGES">
+
+1. List every queue entry involving B in the default graph and identify when each becomes stale.
+2. Pause between distance and predecessor assignment. Which array is already updated?
+3. Change C → B from 1 to 7. Explain the strict-improvement tie behavior.
+4. Start from E. Predict the number of settled vertices and edge inspections.
+5. Construct two equally short routes and explain why this implementation chooses one without proving it unique.
+
+</Section>
+
+<Section id="summary" number="13" title="The queue stores candidates; the table stores current knowledge." kicker="CHAPTER SUMMARY">
+
+Nonnegative weights justify finalization. Relaxation separates candidate arithmetic from exact field assignments. Duplicate queue entries are real, and stale entries must be shown and discarded. Unreachable vertices remain infinity. Deterministic tie rules choose a repeatable shortest-path tree without implying uniqueness.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="33" />
+</Section>
+

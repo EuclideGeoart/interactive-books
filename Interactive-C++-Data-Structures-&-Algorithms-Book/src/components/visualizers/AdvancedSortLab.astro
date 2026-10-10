@@ -1,0 +1,28 @@
+---
+import TraceLab from './TraceLab.astro';
+import merge from '../../../cpp/chapter-41/MergeSort.hpp?raw';
+import quick from '../../../cpp/chapter-42/QuickSort.hpp?raw';
+import heap from '../../../cpp/chapter-43/HeapSort.hpp?raw';
+import integer from '../../../cpp/chapter-44/CountingRadix.hpp?raw';
+interface Props { kind: 'merge' | 'quick' | 'heap' | 'counting-radix' }
+const { kind } = Astro.props;
+const config = {
+  merge: { source: merge, file: 'MergeSort.hpp', values: '8,3,5,1,6,2,7,4' },
+  quick: { source: quick, file: 'QuickSort.hpp', values: '4,2,5,1,2,3' },
+  heap: { source: heap, file: 'HeapSort.hpp', values: '4,10,3,5,1,2' },
+  'counting-radix': { source: integer, file: 'CountingRadix.hpp', values: '3,1,2,3,0' },
+}[kind];
+const chapter = `${kind}-sort`;
+---
+<TraceLab id={`${chapter}-lab`} chapter={chapter} source={config.source} fileName={config.file}
+  operations={kind === 'counting-radix' ? [{id:'counting',label:'Stable counting sort'},{id:'radix',label:'LSD radix sort'}] : [{id:'sort',label:'Sort / trace'}]}
+  regions={kind === 'counting-radix' ? ['counting','radix'] : [kind]}
+  diagramNote="Records retain their original identities. Indices are logical array positions, not native byte addresses. Temporary buffers are separate allocations.">
+  <label>Input keys (blank = empty)<input name="values" value={config.values} maxlength="420" /></label>
+  {kind === 'quick' && <label>Partition experiment<select name="fault"><option value="none">Correct Lomuto</option><option value="bounds">Break: scan beyond bounds</option><option value="pivot">Break: move pivot early</option><option value="no-progress">Break: recurse on same range</option></select></label>}
+  {kind === 'counting-radix' && <>
+    <label>Counting maximum key<input name="maxKey" type="number" min="0" max="99" value="9" /></label>
+    <label>Radix inner pass<select name="unstable"><option value="no">Stable: read input right to left</option><option value="yes">Break: read input left to right</option></select></label>
+  </>}
+</TraceLab>
+<script>import '../../scripts/sorting-advanced-labs';</script>

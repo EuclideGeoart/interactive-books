@@ -1,0 +1,12 @@
+---
+import TraceLab from './TraceLab.astro';
+import source from '../../../cpp/chapter-09/BinaryHeap.hpp?raw';
+const operations = [{id:'insert',label:'Insert / sift up'},{id:'peek',label:'Peek root'},{id:'extract',label:'Extract / sift down'},{id:'build',label:'Build heap'}];
+---
+<TraceLab id="heap" chapter="heap" source={source} fileName="BinaryHeap.hpp" operations={operations} regions={['heap-insert','heap-peek','heap-extract','heap-build','heap-up','heap-down']} viewLabels={{logical:'Tree + array',memory:'Index formulas'}} diagramNote="Tree and array are simultaneous views of one state. Select either occurrence of an index: both highlight. Scroll within the diagram for larger heaps.">
+  <label>Heap order<select name="mode"><option value="max">Max heap</option><option value="min">Min heap</option></select></label>
+  <label>Starting array / build input<select name="preset"><option value="standard">Six ordered values</option><option value="empty">Empty</option><option value="single">One value</option><option value="ties">Equal values</option><option value="unordered">Unordered (Build heap only)</option><option value="custom">Custom array</option></select></label>
+  <label>Custom array<input name="values" value="90,70,60,40,50,20" aria-describedby="heap-bound" /></label>
+  <label>Value to insert<input name="value" type="number" min="-999" max="999" value="95" /></label>
+  <p id="heap-bound" class="fine-print">At most 15 values (14 before insertion), −999…999. Insert/peek/extract require an ordered starting heap. Build accepts any order and starts with an empty destination.</p>
+</TraceLab>

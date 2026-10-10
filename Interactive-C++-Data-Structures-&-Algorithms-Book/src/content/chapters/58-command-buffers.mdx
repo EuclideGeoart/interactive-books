@@ -1,0 +1,124 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import SystemsOrganizationPreview from '../../components/visualizers/SystemsOrganizationPreview.astro';
+import SystemsOrganizationLab from '../../components/visualizers/SystemsOrganizationLab.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-58/CommandBuffer.hpp?raw';
+import main from '../../../cpp/chapter-58/main.cpp?raw';
+
+<ChapterHero number="58" title="Command buffers" part="PART VIII / ENGINE &amp; SYSTEMS DATA STRUCTURES" overline="RECORD INTENT NOW, VALIDATE AND MUTATE LATER" description="A command buffer owns ordered mutation records and applies them at a stable boundary with explicit per-command validation and failure reports." chain="owned record → append → traversal ends → validate → execute → report" facts={[["Payloads", "Owned scalar values"], ["Ordering", "Append order"], ["Failure policy", "Best effort; continue"], ["Replay", "Same log + same initial world"]]} />
+
+<Section id="mental-model" number="01" title="The log changes before the world does." kicker="VISUAL MENTAL MODEL">
+
+The world initially owns one live scalar value 10 at handle index 0, generation 1. Recording a Create, Move, or Delete only appends a record. It neither creates an object nor moves or destroys the existing one. Flush is the explicit boundary that applies those deferred intentions in order.
+
+<SystemsOrganizationPreview kind="commands" />
+
+The default log creates value 11, moves its known fixture handle by 5, deletes the initial object, tries to move that now-stale handle, creates value 22 in the freed slot, and moves the replacement using generation 2. The stale move fails; the later create and move still execute. Inspect commands for their owned payloads and world slots for current lifetime metadata.
+
+</Section>
+
+<Section id="intuition" number="02" title="Delay structural mutation until traversal has finished." kicker="THE INTUITION">
+
+Deleting a component directly while iterating its dense pool can move another row into the current position or invalidate iteration state. Recording a Delete intention leaves the traversed structure unchanged. After traversal ends, a flush applies those changes under a stated ordering policy.
+
+Deferral does not make every recorded reference valid. Earlier commands or external changes may end a target's lifetime before its command executes. Therefore a Move or Delete validates its generational handle at execution time. Recording-time validation alone cannot guarantee safety. The command owns its delta value, but it does not own the target object's lifetime.
+
+</Section>
+
+<Section id="memory" number="03" title="Owned records and world values have separate lifetimes." kicker="STRUCTURE / STORAGE LAYOUT">
+
+The buffer stores at most sixteen records, each with an explicit operation enum, target handle, and scalar payload. Create uses the payload as its initial value, Move as its delta, and Delete uses its target. There are no borrowed strings, raw object pointers, or type-erased callbacks hiding payload lifetime requirements.
+
+The eight-slot world stores optional integer objects plus generation metadata. An empty optional means no live value; generation remains readable for identity checks. Delete resets the optional before advancing generation. A slot reaching the terminal generation is retired rather than wrapped. Reports retain command indices, outcome codes, and result or target handles after consumed command records are cleared.
+
+</Section>
+
+<Section id="operations" number="04" title="Compare record-only, ordered flush, failure, and replay." kicker="INTERACTIVE OPERATIONS">
+
+<SystemsOrganizationLab kind="commands" />
+
+Run Record only and go to After: the log contains six commands but the world still has only value 10. Run Ordered best-effort flush with delta 5 and step through every validation and report. The final world has value 27 at index 0, generation 2, and value 16 at index 1, generation 1. Exactly one command failed.
+
+Delete then stale move uses the selected handle, records a deletion and move, then a creation. Try a nonexistent handle or a mismatched generation: failures are recorded and creation still runs. Creation exhaustion attempts nine creates against seven free slots, recording two failures. Replay from initial world repeats the default log against a freshly constructed identical world; it does not apply the same records a second time to an already changed world.
+
+</Section>
+
+<Section id="implementation" number="05" title="Make failure reports part of the canonical API." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="CommandBuffer.hpp" chapter="58" />
+
+`CommandBuffer::record` owns a copied command. It rejects unknown operation enums, payloads outside −100 through 100, capacity overflow, or recording while flushing. `flush` iterates in append order and reports stale handles, world exhaustion, or arithmetic overflow as per-command outcomes. A failure leaves that command's world mutation unapplied and proceeds to the next record. This is best-effort execution with no rollback.
+
+The world is deliberately local to this teaching example and starts with one known live object. The buffer is noncopyable and nonmovable, preserving its pre-reserved record and report capacity. Nonthrowing, nonreentrant observers can inspect snapshots. Observer exceptions are outside the contract. Reserved bounded records and reports avoid allocation during normal flush after construction.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Follow execution order through a stale reference." kicker="CODE + VISUALIZATION TRACE">
+
+`commands.record` changes only the owned log. `commands.begin` starts the stable mutation phase. Create chooses the lowest free nonretired slot; Move and Delete first emit `commands.validate`. A successful mutation gets its own source event, then `commands.report` records the completed attempt and advances the cursor.
+
+The stale move has a validation event followed by a failure report, with no intervening move event. The later creation is still executed. `commands.end` consumes the log and retains reports. Reverse playback restores an earlier complete snapshot rather than undoing the live C++ world. An undo system would need additional inverse data and its own semantics.
+
+</Section>
+
+<Section id="invariants" number="07" title="Failure is an outcome; it does not erase earlier success." kicker="INVARIANTS">
+
+During a flush, reports follow command order and every completed attempt has exactly one report. The failure counter equals the number of failed reports. Every live slot has a finite generation and an owned value; absent values have metadata but no readable former object fields. The default trace's successful creation before a stale failure remains successful afterward.
+
+The canonical buffer supports multiple flushes: each new flush replaces the previous report vector, while cumulative execution counters continue. The lab creates a new world for each run, so its report-count invariant compares one flush's attempts. It never claims atomic transaction commit or all-or-nothing behavior. A failure report refers to the target that failed, not a new valid handle.
+
+</Section>
+
+<Section id="complexity" number="08" title="Count recording, execution, validation, and allocation scans." kicker="COMPLEXITY EXPLORER">
+
+Record only increases the recorded count while executed and validations remain zero. The default flush executes all six commands and validates the four Move/Delete records, including the stale one. Change the delta: the number of operations remains the same even though world values change. Creation exhaustion still executes every attempt and increments failures for unavailable slots.
+
+Recording is O(1) within reserved capacity. Move/Delete execution and validation use O(1) work. Create scans U slots, so flushing m commands with c creations costs O(m + cU) in this simple implementation. Storage is O(U + m) for the bounded world, records, and reports. Deferral offers a controlled mutation phase; these counters do not demonstrate parallel execution or benchmark superiority.
+
+</Section>
+
+<Section id="break-it" number="09" title="Try an old generation after a valid deletion." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+Use Delete then stale move on handle index 0, generation 1. Deletion succeeds, advances the generation, and leaves no live value. The old move fails. Creation then reuses the slot with the newer generation. This shows why a raw index alone would have been insufficient: a different ordering could make that index refer to a replacement object.
+
+Recording a pointer to a caller's temporary payload would introduce another stale-reference risk, so this example copies scalar values. Replaying a log against a different initial world can also change results. The default log knows its fixture's deterministic future handles; general client code should consume creation reports or define a separate symbolic-reference protocol. That protocol is not silently provided by this buffer.
+
+</Section>
+
+<Section id="analogy" number="10" title="A numbered maintenance request ledger." kicker="REAL-WORLD ANALOGY">
+
+A clerk records “create a fixture,” “move fixture A,” and “remove fixture B.” The maintenance team later processes those requests by number and checks that each referenced fixture is still the intended one. If a fixture has already been removed, that request receives a failure note and the team proceeds.
+
+A numbered request list provides ordering and accountability. It does not promise that all jobs succeed together, that a completed job can be undone, or that the ledger itself keeps fixtures alive. Those are additional policies rather than consequences of deferral.
+
+</Section>
+
+<Section id="engineering" number="11" title="Choose the command contract before extending the machinery." kicker="ENGINEERING INSIGHT">
+
+ECS deferred structural changes use the same separation between traversal and mutation seen in <a href="../56-ecs-storage/">Chapter 56</a>. <a href="../57-dirty-work-lists/">Dirty work lists</a> usually deduplicate IDs; command buffers often preserve repeated ordered records because two moves may mean two deltas. Coalescing commands changes semantics unless justified for the exact operations involved.
+
+Undo commands retain inverse information. Event queues describe events or messages. GPU command buffers have device-specific synchronization and resource-lifetime rules. These concepts share some vocabulary, but this scalar best-effort buffer implements none of those larger contracts. Deterministic replay here requires the same initial world, generations, append order, arithmetic, and lowest-free allocation rule. Thread-safe recording and concurrent flush are separate problems.
+
+</Section>
+
+<Section id="exercises" number="12" title="Predict outcomes before treating a log as a transaction." kicker="EXERCISES / CHALLENGES">
+
+1. Calculate all six default command outcomes and final values for delta −3.
+2. Swap Delete and the stale Move in the default log. Which report changes and why?
+3. Explain why creation returns its handle in a report and why a general caller cannot safely guess it.
+4. Propose a symbolic temporary-ID scheme for targeting newly created objects within one log. Define failure propagation before choosing its representation.
+5. State what extra data and exception policy an undoable Move/Delete system would require.
+6. Compare best-effort and transactional execution when the third of five commands fails. Which successful mutations remain visible under each policy?
+
+</Section>
+
+<Section id="summary" number="13" title="Deferral requires explicit ownership, ordering, and failure semantics." kicker="CHAPTER SUMMARY">
+
+A command buffer owns mutation intentions until a stable execution boundary. This implementation uses value records, validates generational targets immediately before mutation, executes in append order, records every outcome, and continues after failures. It consumes records without claiming rollback or undo. Replay is deterministic only with the same initial world and policy; lifetime and synchronization remain explicit responsibilities.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="58" />
+</Section>
+

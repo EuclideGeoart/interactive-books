@@ -1,0 +1,215 @@
+/* Graph-owned extensions of the existing book palette and inspection system. */
+.graph-state-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+  font: 12px var(--mono);
+}
+.graph-node .graph-label {
+  fill: var(--ink);
+  font: 13px var(--mono);
+  font-weight: 650;
+}
+.graph-status {
+  fill: var(--muted);
+  font: 10px var(--mono);
+}
+.graph-node.current rect {
+  fill: var(--amber-fill);
+  stroke: var(--amber);
+  stroke-width: 3;
+}
+.graph-node.discovered rect {
+  fill: var(--pointer-fill);
+  stroke: var(--pointer);
+  stroke-dasharray: 5 3;
+}
+.graph-node.visited rect {
+  fill: var(--data-fill);
+  stroke: var(--green);
+  stroke-width: 2;
+}
+.graph-node.selected rect {
+  stroke: var(--ink);
+  stroke-width: 3;
+}
+.graph-node:focus,
+.graph-edge:focus {
+  outline: none;
+}
+.graph-node:focus rect,
+.graph-edge:focus .reference-arrow {
+  stroke: var(--ink);
+  stroke-width: 4;
+}
+.graph-edge {
+  cursor: pointer;
+}
+.graph-edge.active .reference-arrow {
+  stroke: var(--amber);
+  stroke-width: 4;
+}
+.graph-edge.tree .reference-arrow,
+.graph-edge.accepted .reference-arrow {
+  stroke: var(--green);
+  stroke-width: 4;
+}
+.graph-edge.rejected .reference-arrow {
+  stroke: var(--red);
+  stroke-dasharray: 5 4;
+}
+.graph-edge.graph-selected-edge .reference-arrow {
+  stroke-width: 4;
+}
+.graph-weight-background {
+  fill: var(--surface);
+  stroke: var(--border);
+}
+.graph-weight {
+  fill: var(--ink);
+  font: 12px var(--mono);
+}
+.graph-panels {
+  padding: 1rem;
+  min-width: 0;
+}
+.graph-auxiliary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  font: 12px var(--mono);
+}
+.graph-auxiliary strong {
+  color: var(--pointer);
+}
+.graph-auxiliary p {
+  overflow-wrap: anywhere;
+  line-height: 1.8;
+  margin: 0.5rem 0;
+}
+.graph-auxiliary p span {
+  display: inline-block;
+  padding: 0.1rem 0.35rem;
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+}
+.graph-result {
+  grid-column: 1/-1;
+}
+.graph-table-scroll {
+  max-width: 100%;
+  overflow: auto;
+  margin: 0.7rem 0;
+}
+.graph-table-scroll table {
+  border-collapse: collapse;
+  width: 100%;
+  font: 12px var(--mono);
+}
+.graph-table-scroll caption {
+  text-align: left;
+  padding: 0.6rem 0;
+  color: var(--muted);
+}
+.graph-table-scroll td,
+.graph-table-scroll th {
+  border: 1px solid var(--border);
+  padding: 0.55rem;
+  text-align: left;
+  white-space: nowrap;
+}
+.graph-table-scroll th {
+  font-weight: 600;
+  background: var(--surface-subtle);
+}
+.graph-table-scroll button,
+.graph-representations button {
+  min-width: 32px;
+  min-height: 32px;
+  padding: 0.25rem;
+  color: var(--pointer);
+  font: inherit;
+}
+.graph-representations {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.8rem;
+}
+.graph-representations ul {
+  list-style: none;
+  margin: 0.5rem 0;
+  padding: 0;
+  font: 12px var(--mono);
+}
+.graph-representations li {
+  margin: 0.25rem 0;
+}
+.graph-representations .graph-corresponding,
+.graph-current-row td {
+  background: var(--amber-fill);
+  color: var(--ink);
+  outline: 2px solid var(--amber);
+  outline-offset: -2px;
+}
+[data-chapter-lab] .svg-scroll:has(.graph-diagram),
+[data-structure-preview] .svg-scroll:has(.graph-diagram) {
+  max-height: 550px;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.graph-complexity {
+  border: 1px solid var(--border);
+  padding: 1.25rem;
+}
+.graph-complexity label {
+  display: block;
+  margin: 0.7rem 0;
+}
+.graph-complexity output {
+  display: block;
+  font: 13px var(--mono);
+  line-height: 1.8;
+  white-space: pre-line;
+}
+@media (max-width: 560px) {
+  [data-chapter-lab] .svg-scroll:has(.graph-diagram),
+  [data-structure-preview] .svg-scroll:has(.graph-diagram) {
+    max-height: 360px;
+  }
+  .graph-table-scroll td,
+  .graph-table-scroll th {
+    padding: 0.35rem;
+  }
+}
+
+.graph-label-leader {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1;
+  stroke-dasharray: 2 2;
+}
+
+@media (max-width: 560px) {
+  .graph-lab .lab-inputs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: end;
+  }
+  .graph-lab .lab-inputs label {
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+  }
+  .graph-lab .lab-inputs label:has([name="preset"]),
+  .graph-lab .lab-inputs label:has([name="labels"]),
+  .graph-lab .lab-inputs label:has([name="edges"]),
+  .graph-lab .lab-inputs label:has([name="unions"]),
+  .graph-lab .lab-inputs button[type="submit"] {
+    grid-column: 1/-1;
+  }
+  .graph-lab .lab-inputs input,
+  .graph-lab .lab-inputs select {
+    width: 100%;
+  }
+}

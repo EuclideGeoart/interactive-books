@@ -1,0 +1,10 @@
+---
+import TraceLab from './TraceLab.astro';
+import source from '../../../cpp/chapter-15/RedBlackTree.hpp?raw';
+---
+<TraceLab id="red-black-lab" chapter="red-black" source={source} fileName="RedBlackTree.hpp" operations={[{id:'insert',label:'Insert / repair'},{id:'search',label:'Search'}]} regions={['insert','search','repair','rotations']}>
+<label>Starting insertion order<input name="values" value="30,20" maxlength="140" /></label>
+<label>Key<input name="value" type="number" min="-999" max="999" step="1" value="10" required /></label>
+</TraceLab>
+<p class="diagram-view-note">The main lab covers insertion and search. P, U, G identify the active parent, uncle and grandparent. Full deletion repair is implemented and tested in the canonical header.</p>
+<script>import '../../scripts/tree-labs';</script>

@@ -1,0 +1,15 @@
+---
+import TraceLab from './TraceLab.astro';
+import '../../styles/spsc.css';
+import { spscOperations } from '../../visualizers/spsc/adapter';
+import source from '../../../cpp/chapter-59/SpscRing.hpp?raw';
+---
+<div data-spsc-lab>
+<TraceLab id="spsc-lab" chapter="spsc" source={source} fileName="SpscRing.hpp" operations={spscOperations} regions={['spsc-push', 'spsc-pop', 'spsc-cas', 'spsc-aba']} viewLabels={{logical:'Publication view', memory:'Slots / thread locals'}} diagramNote="A selected interleaving of one producer and one consumer. Fixed int objects remain alive. Fit shows all slots; Actual size and the inspector expose detail.">
+  <label data-spsc-input="ring">Physical slots N<input name="slots" type="number" min="2" max="8" step="1" value="4" required /></label>
+  <label data-spsc-input="initial">Initial queue<input name="values" value="10,20" maxlength="80" /></label>
+  <label data-spsc-input="value">Producer payload<input name="value" type="number" min="-1000000" max="1000000" step="1" value="42" required /></label>
+</TraceLab>
+<p class="diagram-view-note">Full/empty/wrap and publication start empty. Slot reuse starts full. These presets ignore Initial queue. CAS and ABA use separate scalar examples.</p>
+</div>
+<script>import '../../scripts/spsc-labs';</script>

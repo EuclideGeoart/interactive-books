@@ -1,0 +1,136 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import Section from '../../components/book/Section.astro';
+import Callout from '../../components/book/Callout.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import BinaryTreeLab from '../../components/visualizers/BinaryTreeLab.astro';
+import TreeComplexity from '../../components/visualizers/TreeComplexity.astro';
+import TreeFoundationsBreakIt from '../../components/visualizers/TreeFoundationsBreakIt.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-10/BinaryTree.hpp?raw';
+import main from '../../../cpp/chapter-10/main.cpp?raw';
+
+<ChapterHero number="10" title="Binary Trees" overline="TWO CHILD SLOTS. A WHOLE HIERARCHY." description="A tree records containment and branching. Start with the relationships, then separate that logical shape from the individually allocated C++ objects." chain="A → { B → { D, E }, C }" facts={[["ROOT", "One entry point"], ["CHILDREN", "At most two per node"], ["MEMORY", "Independent allocations"]]} />
+
+<Section id="mental-model" number="01" title="Five nodes, one hierarchy." kicker="VISUAL MENTAL MODEL">
+
+<StructurePreview chapter="binary-tree" id="binary-tree-mental" operation="append" />
+
+A is the **root**. Its left child is B and its right child is C. B has children D and E. Select B to highlight the subtree rooted there: B, D, and E. Select or follow its left link to inspect D. D, E, and C are **leaves** because both child slots are null; A and B are **internal nodes** because at least one child exists.
+
+A **parent** is the node whose child link reaches a node. Each non-root node has exactly one parent in a valid tree. A root has none. A **subtree** includes a node and every descendant reachable from it. It is itself a tree, with that node as its local root.
+
+<Callout title="Node names are teaching labels.">The canonical Node stores an <code>int value</code>. In this preset, values 65–69 are displayed as A–E; the inspector always shows the actual integer field. Custom inputs display integers directly. Labels do not add a character field to the C++ object.</Callout>
+
+</Section>
+
+<Section id="intuition" number="02" title="Branching is the structural promise." kicker="THE INTUITION">
+
+A binary tree has two named child positions, **left** and **right**. A node may have zero, one, or two children. A node with only a right child is valid. “Binary” does not mean every node has two children, that levels are full, or that keys are sorted. Those are additional properties.
+
+A node's **depth** counts edges from the overall root, so A has depth 0, B and C depth 1, and D and E depth 2. This chapter numbers **levels** from 0, equal to depth. A node's **height** counts the longest downward path in edges: leaves have height 0 and A has height 2. The empty tree has height −1 and zero levels. A nonempty tree has height + 1 levels. Compact node badges use d for depth and h for height.
+
+Chapter 14's AVL implementation stores a different convenient convention: null height 0, leaf height 1. Subtract one from a nonempty AVL node's stored height to obtain the edge height used here. Neither convention changes which tree is balanced.
+
+</Section>
+
+<Section id="memory" number="03" title="A shape does not specify addresses." kicker="STRUCTURE / MEMORY LAYOUT">
+
+Each Node has exactly three fields: an integer value, a left pointer, and a right pointer. The tree owns `root_`; its child links collectively own every descendant. There is **no parent pointer**. The visualization can derive a parent from incoming edges, but the canonical object stores no such field.
+
+Logical view places a child below its parent to explain hierarchy. Memory view lays out separate allocations at deterministic illustrative addresses. Neither left/right position nor depth implies contiguous storage, an address ordering, a particular allocator, or a fixed portable Node size. Alignment and pointer width affect actual layout.
+
+`nullptr` means that a child position or root entry has no node. It is not an allocated empty Node. In the empty preset there are no Node objects. Local pointers observe existing objects without taking another ownership share; copying one does not clone a subtree. Public Node fields make the mechanics inspectable, but this is not a hardened encapsulation boundary: callers must treat borrowed child pointers as read-only and must never rewire or delete them.
+
+</Section>
+
+<Section id="operations" number="04" title="Build a shape, then dismantle it." kicker="INTERACTIVE OPERATIONS">
+
+<BinaryTreeLab />
+
+Append scans level order for the first vacant child slot, checking left before right. This is a **complete-shape construction policy**, chosen to reproduce A–B–C–D–E; it is not part of the definition of every binary tree and performs no value ordering. Append F (integer 70) and find the first vacancy under C. Duplicate integer values are permitted in this general, unordered tree.
+
+Try empty and single-root states. Enter at most 15 custom integers from −999 to 999 in level order; one append may produce a sixteenth node. Each load begins a fresh bounded experiment. The native class does not have that pedagogical node-count limit.
+
+Clear exposes an iterative, allocation-free cleanup. It first moves left subtrees upward using separate pointer assignments, then deletes roots that have no left child. This avoids recursive destruction even for a deep tree. The intermediate shape changes because all nodes are about to be released, not because clear is a balancing operation.
+
+</Section>
+
+<Section id="implementation" number="05" title="One owner, explicit lifetime." kicker="C++ IMPLEMENTATION">
+
+`BinaryTree` is the shared representation for Chapters 10–13. A nested public `Node` names the actual fields; `root()` returns a const observer. `append()` uses a standard vector as a queue with a monotonically increasing index, and `clear()` needs no auxiliary container. The destructor calls clear. Its virtual declaration permits safe destruction through a BinaryTree base pointer; the BST uses private inheritance to restrict its public API.
+
+Copy and move construction and assignment are explicitly deleted. A shallow owning-root copy would create competing owners; deep copying and ownership transfer need deliberate semantics and are outside this teaching class. Node's raw child pointers do not recursively destroy their targets. The owning tree performs all deletions.
+
+<CanonicalSource source={source} main={main} fileName="BinaryTree.hpp" chapter="10" />
+
+Append allocates only after its queue search completes. If queue growth or Node allocation throws, existing links remain intact. Once the new Node exists, publishing its pointer cannot throw. The lab shows successful allocation, not allocator failures or address reuse. The integer field cannot throw during initialization.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="An address of a link is a local tool." kicker="CODE + VISUALIZATION POINTER TRACE">
+
+`Node** slot` points to an existing pointer field: initially `&root_`, later `&current->left` or `&current->right`. Assigning `slot` only changes the local address of the vacancy. It does not change the tree. Only `*slot = fresh` publishes the newly constructed node. The auxiliary panel names the field whose address is stored; the `*slot` reference shows that field's current target.
+
+Pause between allocation and construction, then between construction and publication. Raw storage exists before the Node lifetime begins. A freshly constructed but detached Node is safe because the local fresh pointer still owns the pending publication. At the method boundary every live allocation must be reachable.
+
+Clear first saves `pivot`, transfers `pivot->right` into the old root's left field, attaches the old root through `pivot->right`, and finally replaces `root_`. In the deletion branch it saves old, replaces root with old's right child, then deletes old. `delete` ends lifetime and releases storage; the visualization splits those phases on the same source line.
+
+</Section>
+
+<Section id="invariants" number="07" title="Ownership gives a tree its boundary." kicker="INVARIANTS">
+
+The root and all child fields must target live Nodes or null. The owning structure must be acyclic; root has no incoming owning edge, and each other reachable node has exactly one. At settled boundaries, every live Node must be reachable from root. A shared child would give two paths responsibility for the same allocation.
+
+Temporary detachment during construction or clear is shown as pending, not as a final valid tree. A child link into destroyed or freed storage is always a failure. Local observers are not counted as additional parents. Ended objects expose no former fields in the inspector.
+
+</Section>
+
+<Section id="complexity" number="08" title="Height is a property of the shape." kicker="COMPLEXITY EXPLORER">
+
+<TreeComplexity kind="binary" />
+
+The explorer constructs reference BST shapes to isolate height: both are still binary trees. A well-filled tree has about logarithmic height; a chain has height n − 1. The search experiment relies on ordering, which this chapter's general BinaryTree does not provide. Inspecting an arbitrary unordered tree for a value can require O(n) visits.
+
+Complete-shape append scans O(n) nodes in the worst case and uses O(n) temporary queue storage. Clear does O(n) pointer work and deletions with O(1) auxiliary space. The allocation footprint is O(n). Height computation for the teaching badges traverses the bounded snapshot; badges are derived metadata, not stored C++ fields.
+
+</Section>
+
+<Section id="break-it" number="09" title="A second parent changes ownership." kicker="COMMON MISTAKES / BREAK-IT MODE">
+
+<TreeFoundationsBreakIt />
+
+Create a cycle, share a child, drop an entire subtree, or leave a link into freed storage. The checker distinguishes these faults without executing undefined C++. Losing root or a subtree pointer does not release any allocation. Nulling a link is therefore not sufficient cleanup.
+
+An empty tree, a root-only tree, repeated values, and nodes with one child are all valid. A full level is not an invariant. Do not mistake a valid binary shape for a BST: numeric order is deliberately absent here.
+
+</Section>
+
+<Section id="analogy" number="10" title="A branching decision document." kicker="REAL-WORLD ANALOGY">
+
+Imagine a yes/no decision page linking to two later pages. Following references explains parent, child, subtree, and depth without requiring neighboring pages on disk. A page with no onward links is a leaf. The analogy stops if two decisions share the same destination: that creates a directed graph with shared descendants, not this singly owned tree.
+
+</Section>
+
+<Section id="engineering" number="11" title="Representation follows the workload." kicker="ENGINEERING INSIGHT">
+
+Binary expression trees combine two operands under an operator. Bounding-volume hierarchies partition spatial objects into child regions. Their value semantics and balancing rules differ, but both need clear ownership and predictable traversal. A pointer representation exposes topology directly and keeps node addresses stable until deletion; a packed array can improve locality with a different indexing discipline.
+
+Depth matters beyond asymptotic search cost. Recursive traversal consumes call-stack space proportional to height, even though this implementation's cleanup is iterative. A production system handling adversarially deep input may choose an explicit traversal stack or bounded depth.
+
+</Section>
+
+<Section id="exercises" number="12" title="Name the relationship before the address." kicker="EXERCISES / CHALLENGES">
+
+<div className="exercise"><h3>Depth is not height</h3><p>What are B's depth and height? What are C's?</p><details><summary>Reveal reasoning</summary><p>B has depth 1 and height 1. C has depth 1 and height 0. Depth looks upward to the overall root; height looks downward to the deepest leaf.</p></details></div>
+<div className="exercise"><h3>Where does F go?</h3><p>Append 70 to A–B–C–D–E. Which field changes?</p><details><summary>Reveal reasoning</summary><p>C.left was the first vacancy in level order. The new allocation becomes its target; existing node values and B's children are unchanged.</p></details></div>
+<div className="exercise"><h3>Why not delete root alone?</h3><p>Predict the result of deleting only A.</p><details><summary>Reveal reasoning</summary><p>The raw child pointers do not own through their destructors. B–E would remain allocated and become unreachable. The tree's clear algorithm must explicitly release every node.</p></details></div>
+
+</Section>
+
+<Section id="summary" number="13" title="Topology and storage answer different questions." kicker="CHAPTER SUMMARY">
+
+<div className="summary-panel"><h3>Start with the links.</h3><ul><li>Binary means two named child positions, not sorting or balance.</li><li>Depth starts at the root; height measures the longest downward path.</li><li>Logical neighbors may be far apart in memory.</li><li>Every live allocation needs exactly one owning path at settled boundaries.</li></ul><button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete ✓</button></div>
+<ChapterPagination number="10" />
+
+</Section>

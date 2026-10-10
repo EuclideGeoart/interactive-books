@@ -1,0 +1,124 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import SystemsOrganizationPreview from '../../components/visualizers/SystemsOrganizationPreview.astro';
+import SystemsOrganizationLab from '../../components/visualizers/SystemsOrganizationLab.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-57/DirtyWorkList.hpp?raw';
+import main from '../../../cpp/chapter-57/main.cpp?raw';
+
+<ChapterHero number="57" title="Dirty sets / work lists" part="PART VIII / ENGINE &amp; SYSTEMS DATA STRUCTURES" overline="PROCESS CHANGED WORK AT EXPLICIT BOUNDARIES" description="A dirty scheduler deduplicates pending IDs and freezes each processing wave while new marks accumulate for a later wave." chain="mark → deduplicate → CURRENT → process → NEXT → boundary" facts={[["Mark", "O(1) bounded domain"], ["Process", "O(k) queued entries"], ["Policy", "Marks during work enter NEXT"], ["Termination", "Explicit wave budget"]]} />
+
+<Section id="mental-model" number="01" title="CURRENT is a promise about this traversal." kicker="VISUAL MENTAL MODEL">
+
+Suppose 10,000 objects exist but only 37 need recomputation. A work list visits those pending IDs instead of scanning every object. The small lab uses IDs 0 through 7, making the scheduling contract visible. Its initial marks `0,1,0,2` create CURRENT `[0,1,2]`; the second mark of 0 is deduplicated.
+
+<SystemsOrganizationPreview kind="dirty" />
+
+Once processing begins, CURRENT is frozen. Marks go to NEXT even when they name an ID that is still waiting in CURRENT. One ID may appear once in each wave. The queue represents scheduled work, not object ownership, and a processed entry remains visible until the wave boundary.
+
+</Section>
+
+<Section id="intuition" number="02" title="Being scheduled now differs from needing another update later." kicker="THE INTUITION">
+
+A change can arrive while an object is being recomputed. Clearing one shared dirty bit and immediately adding to the same vector mixes two questions: has this wave scheduled the object, and does a future wave need it? The chosen policy uses separate membership flags and queues for those questions.
+
+During processing, every mark targets NEXT. This can schedule a redundant future update when an object has not yet been reached in CURRENT, but the rule is simple and deterministic. It avoids silently extending the active traversal. Other policies are possible; changing the policy requires changing the proof, not only a queue push.
+
+</Section>
+
+<Section id="memory" number="03" title="Two vectors, two flag arrays, one cursor." kicker="STRUCTURE / STORAGE LAYOUT">
+
+CURRENT and NEXT are owning vectors of integer IDs. Each has an eight-element membership array. A cursor records how many current entries have been processed, and a teaching history records their IDs. Queue slots beyond size are empty capacity; the objects identified by queued IDs are owned elsewhere.
+
+At a boundary, the vectors swap, the old current vector is cleared, next-wave flags become current flags, and the next flags are cleared. Processing then stops unless the caller explicitly starts another wave. No callback mutates the current vector. The example exposes `process_one` so a caller can do work and mark dependencies between processing steps without retaining an iterator into a growing vector.
+
+</Section>
+
+<Section id="operations" number="04" title="Watch a current ID acquire next-wave membership." kicker="INTERACTIVE OPERATIONS">
+
+<SystemsOrganizationLab kind="dirty" />
+
+Run Process bounded waves with the defaults and one wave. After processing the first entry, the scenario marks target 0 twice. NEXT receives one 0 and one dedupe, while CURRENT remains `[0,1,2]`. After all three visits, the boundary promotes NEXT to CURRENT `[0]` and returns control. That nonempty result is pending work, not a failed scheduler.
+
+Increase the explicit budget to three, then try Self re-dirty. Each processed ID marks itself twice, so every completed wave leaves another wave pending. The trace still terminates at the requested budget. Use Mark / dedupe with an already queued ID, an empty initial list, or a new ID. Clear at boundary deliberately discards pending work; it does not compute the missing results.
+
+</Section>
+
+<Section id="implementation" number="05" title="The public API makes wave transitions explicit." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="DirtyWorkList.hpp" chapter="57" />
+
+`mark` enqueues once per destination wave. `begin_wave` freezes nonempty CURRENT, `process_one` consumes one current ID, and `finish_wave` requires all current entries to have been consumed before promotion. `clear` is permitted only while idle. Invalid IDs, nested wave starts, processing without a wave, and premature finish are rejected.
+
+The work-list owner is noncopyable and nonmovable. Its vectors reserve the bounded domain and processed history reserves one ordinary wave. The optional observer must not throw or reenter and must copy retained snapshots. Actual dependency recomputation belongs to the caller between steps; this scheduler demonstrates work selection and sequencing, not an automatic dependency evaluator or exception-retry engine.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Keep membership until the stable boundary." kicker="CODE + VISUALIZATION TRACE">
+
+`dirty.mark` modifies only the queue and flags selected by processing state. `dirty.dedupe` increments the counter without a second insertion. `dirty.begin` freezes CURRENT, and `dirty.process` advances the cursor while keeping current flags set. A current flag means membership in this wave, not “still unprocessed.”
+
+`dirty.boundary` promotes the complete NEXT set only after the cursor reaches current size. Previous restores both wave vectors, both flag arrays, the cursor, history, and counters. Marking a processed ID during the wave and marking it after the boundary can therefore target different containers; the source and diagram show precisely when that policy changes.
+
+</Section>
+
+<Section id="invariants" number="07" title="Deduplication is per wave, not global forever." kicker="INVARIANTS">
+
+Each wave contains every ID at most once. Its membership flags equal the set of IDs in its vector. The processing cursor remains inside the frozen current range. Duplicate IDs across CURRENT and NEXT are valid because they describe separate scheduled updates.
+
+At a stable boundary, NEXT is empty and all pending work is CURRENT. An empty CURRENT is settled for the work known to this scheduler at that instant. A nonempty CURRENT after exhausting a wave budget is explicitly unfinished. These conditions do not prove a dependency graph is acyclic or that repeated recomputation will converge.
+
+</Section>
+
+<Section id="complexity" number="08" title="Count changes and actual visits separately." kicker="COMPLEXITY EXPLORER">
+
+Run initial marks `0,0,0,0`, then `0,1,2,3`. The first has four mark attempts, three dedupes, and one scheduled entry; the second has four entries. Compare visits with marks rather than assuming every mark causes work. Increase the wave budget on Self re-dirty: the visit count grows even though the number of distinct IDs stays fixed.
+
+For a bounded domain U, mark is O(1) after reservation and one wave visits O(k) current entries. This implementation copies and clears U flags at every boundary, so the full boundary cost is O(U), not O(1) merely because the vectors swap. Storage is O(U). Avoiding a full scan of external objects does not eliminate scheduler bookkeeping or prove a measured speedup.
+
+</Section>
+
+<Section id="break-it" number="09" title="Make duplicate work and premature flag clearing visible." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+Break: duplicate work appends a queued ID without its membership guard. The invariant panel reports repeated work in CURRENT. Break: early flag clear removes a current membership bit while leaving that ID in the queue. A later mark could now append the same ID again. Both corruptions operate on safe bounded model storage and stop for inspection.
+
+Self re-dirty is a different experiment: it preserves every invariant while demonstrating nonconvergence. A faulty “drain until empty” loop could run forever even with perfect deduplication. The lab enforces an explicit budget of one through three waves. Mutating CURRENT during traversal would also change the promised range and might invalidate vector iterators in a different implementation; our normal API routes those marks to NEXT.
+
+</Section>
+
+<Section id="analogy" number="10" title="A maintenance crew closes one route before planning another." kicker="REAL-WORLD ANALOGY">
+
+CURRENT is today's printed route. A new repair request received during that route goes on the next route, even if the address already appears today. Repeated requests for the same next-route address merge into one visit. Finishing today's route is the point at which tomorrow's route becomes current.
+
+This rule favors a clear scheduling boundary over trying to revise an active itinerary. A building that continually develops new faults can keep appearing on future routes; deduplication does not guarantee that all maintenance eventually ends.
+
+</Section>
+
+<Section id="engineering" number="11" title="A work list is a scheduling mechanism, not a graph proof." kicker="ENGINEERING INSIGHT">
+
+Dirty scheduling appears in dependency recomputation, editor updates, cached geometry, and incremental rendering. A DAG can supply a separate dependency order, while a cyclic system may require iteration, fixed-point rules, or a budget. This scheduler implements none of those mathematical convergence policies. It preserves a bounded, understandable mutation boundary.
+
+If an object can be destroyed while its ID waits in a queue, add a lifetime policy such as validating a <a href="../55-generational-handles/">generational handle</a> when processing. The current example assumes its fixed ID domain remains meaningful for the run. An <a href="../05-intrusive-list/">intrusive list</a> is another possible work-list representation, with different lifetime and link ownership obligations. Use <a href="../58-command-buffers/">command buffers</a> when the deferred work must carry an ordered mutation payload rather than only an ID.
+
+</Section>
+
+<Section id="exercises" number="12" title="Explain why a valid scheduler can still have work forever." kicker="EXERCISES / CHALLENGES">
+
+1. List both queues and flag arrays after CURRENT `[0,1,2]` processes 0 and then marks 0 twice.
+2. Mark ID 2 while it is still waiting in CURRENT. Explain why it also enters NEXT under this policy.
+3. Calculate marks, dedupes, and visits for three Self re-dirty waves of two distinct IDs.
+4. Show how clearing a current flag early can create duplicate work without changing the queue immediately.
+5. Design a failure policy for recomputation that throws after `process_one` advances the cursor. Decide whether and where retry work belongs.
+6. Compare epoch-stamped membership with clearing U flags. Include finite epoch rollover and initialization costs.
+
+</Section>
+
+<Section id="summary" number="13" title="A stable boundary makes deferred work understandable." kicker="CHAPTER SUMMARY">
+
+A dirty work list stores pending IDs, deduplicates within each wave, and keeps processing independent of new marks. CURRENT stays frozen; NEXT accumulates future work; an explicit boundary promotes it. Membership flags describe wave membership, while a cursor describes progress. Correct deduplication does not ensure convergence, so callers control the wave budget and any lifetime or dependency-order policy.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="57" />
+</Section>
+

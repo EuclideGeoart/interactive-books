@@ -1,0 +1,133 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import SpatialPreview from '../../components/visualizers/SpatialPreview.astro';
+import SpatialLab from '../../components/visualizers/SpatialLab.astro';
+import SpatialExplorer from '../../components/visualizers/SpatialExplorer.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-66/BroadPhase.hpp?raw';
+import main from '../../../cpp/chapter-66/main.cpp?raw';
+
+<ChapterHero number="66" title="Broad-phase spatial indexing" part="PART IX / SPATIAL DATA STRUCTURES" overline="FIND POSSIBLE PAIRS BEFORE EXPENSIVE CONTACT TESTS" description="Broad-phase indexing conservatively generates object pairs that may need detailed collision or intersection tests." chain="closed AABBs → occupied cells → unique candidates → exact AABB filter → geometry test" facts={[["Goal", "No missed AABB overlaps"], ["Canonical index", "Full AABB grid membership"], ["Dimensions", "Real 2D or 3D"], ["Candidate", "Not a collision"]]} />
+
+<Section id="mental-model" number="01" title="A candidate is a reason to test, not proof of collision." kicker="VISUAL MENTAL MODEL">
+
+<SpatialPreview kind="broad-phase" />
+
+With n objects there are n(n − 1) / 2 unordered pairs. Broad phase tries to avoid considering most of them in detail. This chapter inserts each complete object AABB into every touched grid cell, enumerates pairs within cells, then deduplicates pairs by object identity.
+
+Objects sharing a cell become candidates even if their AABBs do not overlap. The optional filter removes these cell-level false positives using exact closed-AABB tests. Even an accepted AABB overlap does not prove that the actual polygons, curves or solids collide. Detailed geometry belongs to a later narrow phase, which is not implemented here.
+
+</Section>
+
+<Section id="intuition" number="02" title="Cover the whole box, then suppress repeated pairs." kicker="THE INTUITION">
+
+For every axis, enumerate integer cells from floor(min / cellSize) through floor(max / cellSize), inclusive. An object spanning several cells appears in each. This is deliberately conservative at a closed maximum face: boxes touching exactly on a cell boundary share a cell and cannot be missed.
+
+For each cell, enumerate distinct object pairs. Canonicalize by sorting the two IDs, and publish only pairs not already seen. Two objects spanning ten common cells still produce one candidate. After all cell enumeration, test each unique candidate AABB exactly once. Spatial co-location is defined by the full integer cell key; it is unrelated to collisions inside a hash table's bucket implementation.
+
+</Section>
+
+<Section id="memory" number="03" title="Cell memberships and pair identities are separate state." kicker="STRUCTURE / STORAGE LAYOUT">
+
+Objects own their closed bounds. Cells store integer coordinates and object indices. A set owns canonical pair keys, while a vector preserves deterministic first-discovery order for playback and filtering. The native teaching implementation uses `std::map` for exact cell lookup and `std::set` for pair deduplication, avoiding a distracting custom hash implementation.
+
+A 3D cell has three integer coordinates and an object's z interval is real semantic data. The SVG projects these volumes into a readable drawing; inspection retains all three coordinates. Two boxes may overlap on screen in X/Y yet be separated along Z. Empty cells are not materialized.
+
+</Section>
+
+<Section id="operations" number="04" title="Use the same pair pipeline in two and three dimensions." kicker="INTERACTIVE OPERATIONS">
+
+<SpatialLab kind="broad-phase" />
+
+Generate candidates stops after cell enumeration and pair deduplication. Filter exact AABB overlaps additionally tests each candidate once. Compare the pair table before and after filtering. Try uniform, clustered, large overlap, sorted, duplicate, boundary, singleton and empty scenes. Change cell size to see occupancy and candidate counts change.
+
+In 3D custom mode enter six coordinates per box: `minX,minY,minZ,maxX,maxY,maxZ`. Try `0,0,0,1,1,1;0,0,2,1,1,3` at cell size 4: both share a cell and become candidates, but their z intervals reject the exact overlap. Try `-1,-1,-1,0,0,0;0,0,0,1,1,1`: touching at one point is accepted.
+
+Inputs use finite coordinates [−8, 8], cell sizes 1 through 8 and at most 12 custom initial objects. A run exceeding 4,096 total cell memberships is rejected; reduce box sizes or increase cell size. The overlap scene at size 1 in 3D exceeds that budget; size 2 is supported. The trace records each object's completed cell insertion, not thousands of per-cell snapshots, and never silently drops memberships or pairs.
+
+</Section>
+
+<Section id="implementation" number="05" title="One conservative index, one complete pair pipeline." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="BroadPhase.hpp" chapter="66" />
+
+The header is standalone C++20, with small AABB and object structs. Dimension is validated as 2 or 3 before grid enumeration, and all active coordinates and bounds are checked. The callable example accepts at most 16 objects and shares the 4,096-membership guard with the lab. Empty scenes return no pairs.
+
+The callback sees the state after one object's full insertion, after each newly published pair, after each unique exact test, and at completion. Repeated pair attempts still increment their counter but do not create repeated candidates or exact tests. Observer callbacks must be nonthrowing and nonreentrant, and retained histories must copy the const state.
+
+</Section>
+
+<Section id="pointer-trace" number="06" title="Candidate generation finishes before exact filtering begins." kicker="CODE + VISUALIZATION TRACE">
+
+Follow an object insertion and inspect all its occupied cells. Next, follow a candidate publication and locate its witness cell. A pair encountered again in a later cell is suppressed by the seen set, while the local pair-attempt counter continues to count the work. Each recorded state is a complete snapshot of the semantic grid and pair lists.
+
+The filter event increments AABB tests and conditionally appends the exact-overlap pair. It never runs a polygon, mesh or solid intersection test. Candidate and accepted labels therefore describe stages of this AABB pipeline. One object can participate in both accepted and rejected pairs, so use the pair table for pair-specific meaning.
+
+</Section>
+
+<Section id="invariants" number="07" title="Completeness matters more than eliminating every false positive." kicker="INVARIANTS">
+
+Every pair contains two distinct valid IDs in canonical order, and no candidate is repeated. At completed candidate generation, every true closed-AABB overlap must be present in the candidate set. False positives are permitted. During enumeration this completeness rule remains pending because not all cells have been processed.
+
+Why is coverage complete? If two closed intervals overlap, they share a coordinate; the floor cell of that coordinate belongs to both enumerated integer intervals. Apply this independently in each active dimension to obtain a shared cell. That cell enumerates the pair. Deduplication removes repeats, not the first occurrence.
+
+Every exact result was a candidate and passed all active-axis overlap checks. At filter completion, exact results equal the exhaustive AABB pair scan. These guarantees assume the supplied AABBs enclose the actual geometry; the code cannot verify an absent geometric shape.
+
+</Section>
+
+<Section id="complexity" number="08" title="Count memberships and local pairs before claiming efficiency." kicker="COMPLEXITY EXPLORER">
+
+<SpatialExplorer kind="broad-phase" />
+
+Compare occupied cells, total cell memberships, local pair attempts, unique candidates and exact tests. A small cell can explode memberships for large boxes; a large cell can place unrelated objects together. Clustered or highly overlapping scenes can still generate all n(n − 1) / 2 pairs. No universal cell size or index wins every workload.
+
+Let G be occupied cells, L total memberships, P the sum over cells of k_cell choose 2, and C unique candidates. Native ordered cell lookup costs O(L log(G + 1)); ordered pair deduplication costs O(P log(C + 1)). This intentionally small implementation scans the object vector to resolve each candidate's IDs during filtering, adding O(C n) work and exactly C AABB tests. Indexed pair handles could remove that scan. The TypeScript teaching model also linearly locates cells, costing O(LG); counters expose algorithmic work but are not a claim of equal runtime across languages.
+
+Core storage is O(n + G + L + C). AABB filtering is constant-dimensional. Snapshot recording adds copying proportional to the current state per event. If all objects overlap, even an ideal correct broad phase must output quadratically many pairs.
+
+</Section>
+
+<Section id="break-it" number="09" title="Center-only insertion misses boxes spanning cell boundaries." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+Construct two long overlapping boxes whose centers lie in different cells. A faulty center-only index would lose their pair; inspect the complete memberships that prevent that failure here. At negative coordinates, truncation toward zero is also wrong: floor(−0.1 / 4) is −1, not 0.
+
+At a shared maximum face, replacing closed max-cell enumeration with an exclusive endpoint could lose a touching pair. Use the boundary fixture to inspect this case. Disabling pair deduplication would repeat exact tests and could apply a collision response multiple times. Finally, the separated-z fixture shows why a 2D drawing must not substitute for a 3D overlap test.
+
+</Section>
+
+<Section id="analogy" number="10" title="A shortlist is useful because it is conservative." kicker="REAL-WORLD ANALOGY">
+
+A library search first selects shelves that might contain a requested topic, then checks books on those shelves. An extra shelf costs work, but skipping the only correct shelf loses the answer. Broad phase plays the same role: conservative inclusion followed by a more precise decision.
+
+</Section>
+
+<Section id="engineering" number="11" title="Select the index from object shape, motion and query type." kicker="ENGINEERING INSIGHT">
+
+Spatial hashing suits roughly uniform scales and frequent updates; tune cell size and distinguish hash collisions from shared cells. Quadtrees adapt a 2D region to uneven occupancy, with an explicit policy for objects spanning children. Octrees extend adaptive regions to 3D, where eight-way subdivision and empty space can increase memory costs. KD-trees suit point range and nearest-neighbor searches, particularly static low-dimensional data; point search alone is not a complete large-AABB collision index.
+
+R-trees group variable-sized object envelopes for GIS, CAD and database lookup, but sibling overlap can amplify traversal. BVHs group object bounds for culling and collision candidates; refit supports motion while rebuild repairs grouping quality. For large overlapping boxes, any index may offer little rejection. These are qualitative selection rules, not fabricated comparative benchmark numbers.
+
+Moving scenes need updated cell memberships or refreshed tree bounds before queries. Static scenes can justify more expensive construction. Picking, snapping and FluxGeo-like geometry workflows often need conservative candidates followed by domain-specific tests; no FluxGeo implementation dependency is introduced. Continuous motion additionally needs swept bounds or another continuous-collision policy, which this instantaneous AABB example does not implement.
+
+</Section>
+
+<Section id="exercises" number="12" title="Prove coverage, then improve the workload fit." kicker="EXERCISES / CHALLENGES">
+
+1. Enumerate every cell of a box crossing the origin at cell size 2 in both dimensions.
+2. Prove that shared closed-AABB overlap implies a shared enumerated cell in 3D.
+3. Construct a cell-level false positive and a separate AABB-level false positive for two detailed shapes.
+4. Explain why candidate count alone hides repeated pair attempts across cells.
+5. Choose an index for moving same-sized particles, static nearest-point queries, and variable-sized GIS polygons. State the assumptions behind each choice.
+6. Design a safe cell-membership update for a moved object and identify which stale entries must be removed.
+
+</Section>
+
+<Section id="summary" number="13" title="A useful broad phase rejects work without losing required pairs." kicker="CHAPTER SUMMARY">
+
+Part IX connects uniform grids, adaptive quadtrees and octrees, coordinate-splitting KD-trees, object-envelope R-trees and BVHs. The complete grid trace demonstrates conservative AABB coverage, canonical pair deduplication and one exact AABB test per candidate. Candidate does not mean collision, and no spatial index is universally best. The sequence ends at Chapter 66.
+
+<button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button>
+<ChapterPagination number="66" />
+</Section>
+

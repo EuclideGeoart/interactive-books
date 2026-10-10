@@ -1,0 +1,12 @@
+---
+interface Props { id: string; fundamentals?: boolean }
+const { id, fundamentals = false } = Astro.props;
+---
+<div class="operation-lab" id={id} data-hash-break data-fundamentals={String(fundamentals)}>
+<div class="lab-heading"><div><span class="eyebrow">BREAK IT / RESTORE</span><h3>{fundamentals ? 'A bucket is not a key.' : 'Ownership is part of correctness.'}</h3></div></div>
+<form class="lab-inputs"><label>Fault<select name="fault">{fundamentals ? <><option value="equality">Treat a matching bucket as equality</option><option value="old-bucket">Keep old indices after growing</option></> : <><option value="lost-link">Forget the remaining chain</option><option value="duplicate">Insert a duplicate key</option><option value="old-bucket">Grow without remapping</option></>}</select></label><button class="button button-primary" type="submit">Inject fault</button><button class="button" type="button" data-restore>Restore valid state</button></form>
+<p class="hash-result" data-fault-result aria-live="polite"></p>
+<div class="svg-scroll" data-fault-svg role="region" tabindex="0" aria-label="Fault experiment topology"></div>
+<ul class="hash-result" data-fault-invariants></ul>
+</div>
+<script>import '../../scripts/hash-foundations-experiments';</script>

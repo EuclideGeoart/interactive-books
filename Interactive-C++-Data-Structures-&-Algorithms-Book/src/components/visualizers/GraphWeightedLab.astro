@@ -1,0 +1,40 @@
+---
+import TraceLab from './TraceLab.astro';
+import dijkstra from '../../../cpp/chapter-33/Dijkstra.hpp?raw';
+import bellman from '../../../cpp/chapter-34/BellmanFord.hpp?raw';
+import kruskal from '../../../cpp/chapter-35/Kruskal.hpp?raw';
+import unionfind from '../../../cpp/chapter-36/UnionFind.hpp?raw';
+import type { WeightedKind } from '../../visualizers/graph-weighted/model';
+interface Props {kind:WeightedKind}
+const {kind}=Astro.props;
+const sources={dijkstra,['bellman-ford']:bellman,kruskal,['union-find']:unionfind};
+const names={dijkstra:'Dijkstra.hpp',['bellman-ford']:'BellmanFord.hpp',kruskal:'Kruskal.hpp',['union-find']:'UnionFind.hpp'};
+const dsu=kind==='union-find';
+---
+<TraceLab id={`${kind}-lab`} chapter={kind} source={sources[kind]} fileName={names[kind]} regions={[kind]} operations={dsu?[{id:'find',label:'Find / compress'},{id:'union',label:'Union by size'},{id:'connected',label:'Connected?'},{id:'make-set',label:'Make set'}]:[{id:'run',label:kind==='kruskal'?'Build minimum forest':'Find shortest distances'}]} viewLabels={{logical:'Graph view',memory:'Storage view'}} diagramNote={dsu?'Every vertex keeps its position. Each arrow is the actual parent field; roots point to themselves.':'Vertex IDs are label indices. Select vertices, edges, or adjacency cells; storage and graph derive from the same state.'}>
+{dsu?<>
+<label>Labels (owned IDs 0…n−1)<input name="labels" value="A,B,C,D,E,F" maxlength="80" /></label>
+<label>Initial unions (ID pairs)<input name="unions" value="0 1;2 3;0 2" maxlength="160" /></label>
+<label>Vertex A<input name="a" type="number" min="0" max="7" value="3" /></label>
+<label>Vertex B<input name="b" type="number" min="0" max="7" value="4" /></label>
+<label>New singleton label<input name="newLabel" value="G" maxlength="12" /></label>
+</>:<>
+<label>Graph / edge-case experiment<select name="preset">
+<option value="stale" selected={kind==='dijkstra'}>Duplicate + stale queue entries</option>
+<option value="negative" selected={kind==='bellman-ford'}>Negative edge, no negative cycle</option>
+<option value="cycle">Reachable negative cycle</option>
+<option value="unreachableCycle">Unreachable negative cycle</option>
+<option value="equal" selected={kind==='kruskal'}>Equal weights / multiple valid answers</option>
+<option value="forest">Disconnected + negative self-loop</option>
+<option value="self">Singleton zero self-loop</option>
+<option value="empty">Empty graph</option>
+<option value="custom">Custom labels / edges below</option>
+</select></label>
+{kind!=='kruskal'&&<label>Source vertex ID<input name="source" type="number" min="0" max="7" value="0" /></label>}
+<label>Custom labels<input name="labels" value="A,B,C,D" maxlength="80" /></label>
+<label>Custom edges: from to weight<input name="edges" value="0 1 4;0 2 1;2 1 2;1 3 3" maxlength="700" /></label>
+{kind!=='kruskal'&&<label>Custom direction<select name="directed"><option value="true">Directed</option><option value="false">Undirected</option></select></label>}
+</>}
+</TraceLab>
+<p class="diagram-view-note">Up to eight vertices. Edge endpoints are numeric label indices; weights are exact integers from −1,000,000 to 1,000,000. No parallel edges. Self-loops are retained. Initial inputs rebuild the same starting state on each load.</p>
+<script>import '../../scripts/graph-labs';</script>

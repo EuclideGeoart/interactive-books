@@ -1,0 +1,122 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import Callout from '../../components/book/Callout.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import TrieLab from '../../components/visualizers/TrieLab.astro';
+import TreeComplexity from '../../components/visualizers/TreeComplexity.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-17/Trie.hpp?raw';
+import main from '../../../cpp/chapter-17/main.cpp?raw';
+
+<ChapterHero number="17" title="Tries / prefix trees" overline="A STRING IS A PATH" description="Share prefixes one character at a time. Distinguish an existing path from a complete word, then erase a word without destroying another word's prefix." chain="root → c → a → r* → e* · a → t* · * = terminal" facts={[["Search depends on", "Word length L"], ["Child representation", "Sparse ordered map"], ["Word membership", "Terminal flag"], ["Erase", "Unmark + prune safely"]]} />
+
+<Section id="mental-model" number="01" title="The same path can be a word and a prefix." kicker="VISUAL MENTAL MODEL">
+
+The words cat, car and care share the path c → a. The node reached by car is terminal because car is a stored word, and it also has an e child because care is another word. The ca node exists but is not terminal. Dog starts a separate branch at the root.
+
+<StructurePreview chapter="trie" id="trie-preview" operation="search" inputs={{words:'cat,car,care,dog',word:'car'}} />
+
+Select a node and read its terminal flag. Character labels belong to child edges in the canonical map. The inspector's path is explicitly derived by walking from the root; the node does not store a duplicated full word or an invented parent pointer.
+
+</Section>
+<Section id="intuition" number="02" title="Consume a character instead of comparing a whole key." kicker="THE INTUITION">
+
+An ordered numeric tree asks whether a key is smaller or larger at each branch. A trie follows the next character. If that child edge is absent, the word and every longer word with that path are absent. If the whole query path exists, a prefix lookup succeeds. A complete-word lookup must additionally check terminal.
+
+Inserting care after car reuses c, a and r, adds e, then marks e terminal. Inserting car after care creates no new path; it sets terminal on r. Repeating either complete word is rejected as a duplicate membership. Shared prefixes are structural sharing inside one owner, not shared ownership of the same node from multiple parents.
+
+</Section>
+<Section id="memory" number="03" title="Spend storage on existing edges." kicker="STRUCTURE / MEMORY LAYOUT">
+
+A node contains a terminal boolean and `std::map<char, Node*>` children. Each map entry associates one lowercase ASCII character with one owned child. Sparse maps avoid a 26-pointer array in every node, but each edge has map allocation and lookup overhead. There is no parent pointer and no stored character member in Node. The root corresponds to the empty prefix.
+
+This implementation accepts lowercase ASCII a–z, including the empty string. An empty word is represented by a terminal root. An empty trie has a null root; a trie containing only the empty word has one terminal root. A prefix query for the empty string succeeds exactly when a root exists, meaning at least one word is stored. These are explicit API choices rather than accidental edge behavior.
+
+Native words are limited to 64 characters to bound recursive cleanup and pruning. The browser allows up to eight initial words and twelve characters per word so the diagram stays usable. Neither API silently lowercases Unicode or removes punctuation; invalid input is rejected before mutation.
+
+</Section>
+<Section id="operations" number="04" title="Search car. Search ca. Then erase car." kicker="INTERACTIVE OPERATIONS">
+
+<TrieLab />
+
+Load Find complete word with car, then with ca. Repeat ca using Find prefix: the same endpoint now answers a different question. Insert cart to extend the shared path. Erase car while care remains: terminal on r clears, but its e child and the whole care path survive.
+
+Next erase care. The now-unused e is unlinked and destroyed; r can then be pruned if it is neither terminal nor a parent of another child. The shared c → a path remains while cat exists. Erasing cat eventually removes that branch while dog stays intact. Missing words and paths return false without changing membership.
+
+Blank starting input creates an empty trie. To include the empty word among starting words, write ε as one list entry. A blank operation word inserts, searches or erases that empty word directly. Reset and reverse select retained snapshots, so pruning can be inspected backward without pretending that C++ resurrects freed objects.
+
+</Section>
+<Section id="implementation" number="05" title="Exclusive ownership with a sparse alphabet." kicker="CANONICAL C++20">
+
+The complete header provides insert, contains, starts_with, erase, words(prefix), empty, clear and valid. Enumeration collects terminal paths in lexicographic order because the child map is ordered. Copy and move are deleted to keep ownership explicit. Destruction recursively follows children; each node is freed once. The maximum native word length bounds recursion depth independently of the number of stored words.
+
+<CanonicalSource source={source} main={main} fileName="Trie.hpp" chapter="17" />
+
+Insertion validates the full word first. It constructs a missing child before inserting its map entry. If that map insertion throws, the unpublished child is destroyed. If any allocation fails later in a new suffix, an allocation-free cleanup removes only nonterminal dead ends, preserving all previously stored words and a valid usable trie. Native tests inject failure at both node and map allocations, including partial words and an initially empty trie.
+
+The public methods return booleans for changed or found membership; invalid characters or excessive length throw invalid_argument. Enumeration allocates its result vector and strings. It does not expose owning node pointers to callers, and this example supplies no concurrent readers or persistent snapshots.
+
+</Section>
+<Section id="pointer-trace" number="06" title="A character link and a terminal flag are different facts." kicker="CODE + VISUALIZATION POINTER TRACE">
+
+For insertion, each character first looks up the map. A missing child is constructed, then published under that character, then the cursor advances. Reaching the final node does not make a word until the separate terminal assignment. The map operation is one tagged canonical statement; the trace does not animate internal red-black nodes inside std::map.
+
+Erase recursively follows the character path. At the endpoint it checks and clears terminal. On return, the caller prunes a child only if that child is nonterminal and has no children. It removes the map entry before deleting the saved child pointer. The temporary child reference may therefore point to a detached but still-live node for one snapshot, then to an ended allocation whose fields cannot be inspected. The final empty root is similarly saved, unlinked, then deleted.
+
+Each helper's local current and child references belong to its own recursion frame. On return, the trace removes the helper's references and restores the caller's. A failed follow returns null to contains; the final terminal check does not accidentally inspect the last existing prefix node.
+
+</Section>
+<Section id="invariants" number="07" title="Paths define prefixes; terminal flags define the dictionary." kicker="INVARIANTS">
+
+| Settled rule | Why it matters |
+| --- | --- |
+| Each child label is one lowercase ASCII character | The representation matches the validated alphabet. |
+| A parent has at most one child per character | Following a word has one deterministic path. |
+| Every live node has exactly one owning root path | No cycles, shared children or lost suffix nodes exist. |
+| Terminal is a boolean membership flag | Prefix existence cannot substitute for complete-word membership. |
+| No unused nonterminal leaf remains | Successful erase and allocation rollback finish pruning. |
+
+The empty root is released when the last word disappears. Terminal nodes may have children: requiring all words to end at leaves would make car and care impossible together. The invariant walker guards visited identities, so malformed model edges can be reported without looping forever. During construction and pruning, temporary detached nodes or nonterminal leaves remain pending until the operation ends.
+
+</Section>
+<Section id="complexity" number="08" title="Count characters and the cost of choosing a child." kicker="COMPLEXITY EXPLORER">
+
+<TreeComplexity kind="trie" />
+
+For word length L and alphabet size σ, sparse ordered-map child lookup costs O(log σ) per character, so insertion, lookup and path deletion take O(L log σ), excluding allocation overhead. Here σ is bounded by 26, giving O(L) as the fixed-alphabet summary. It is not a claim that each map lookup performs exactly one comparison. The lab counts character/map decisions, while the explorer counts character transitions.
+
+A successful lookup depends primarily on the query length, rather than on all stored words. Enumeration additionally visits the selected subtree and copies its output words; it cannot be O(L) when it returns a large dictionary. Memory follows the number of distinct prefix nodes plus map entries and allocator overhead. Long unshared suffixes can consume far more storage than a compact sorted string table.
+
+</Section>
+<Section id="break-it" number="09" title="Deleting a word is not deleting its entire path." kicker="COMMON MISTAKES / BREAK-IT EXPERIMENTS">
+
+Treating ca as a word because its path exists ignores terminal. Deleting the whole car path would destroy care. Deleting only terminal and never pruning is logically correct membership but retains unused nodes; this implementation deliberately promises to prune them. Reading a node after delete is invalid even if the browser retains a tombstone for explanation.
+
+Use erase car and pause after unmark: care must still be enumerated. Then erase care and pause between unlink and delete. Predict whether c and a can disappear while cat remains. A deliberate uppercase map label in a model snapshot fails the alphabet checker; the public native API rejects such input before it can create that state. Native rollback tests ensure failed insertion does not leave an empty nonterminal suffix behind.
+
+</Section>
+<Section id="analogy" number="10" title="Shared streets, separate destinations." kicker="REAL-WORLD ANALOGY">
+
+Words follow routes through a street network whose turns are characters. Several destinations may share the first streets. Removing one destination marker does not justify demolishing a street used by another destination. A street with no destinations beyond it can be removed while walking backward toward the shared portion.
+
+</Section>
+<Section id="engineering" number="11" title="Choose the alphabet and compression policy deliberately." kicker="ENGINEERING INSIGHT">
+
+Autocomplete, dictionaries, token indexes and prefix matching use the relationship between words and shared prefixes. Routing tables often use bitwise tries with a different alphabet and longest-prefix semantics; this character trie is not a routing-table implementation. Unicode normalization, case folding, ranked suggestions and compressed radix edges are separate design choices. A sparse map is easy to explain and correct, but flat child arrays, compact vectors or radix compression may improve locality or memory use for a particular workload.
+
+</Section>
+<Section id="exercises" number="12" title="Preserve every other word while pruning one." kicker="EXERCISES / CHALLENGES">
+
+1. Explain the three outcomes for ca, car and care under complete-word search and prefix search.
+2. Insert car into a trie containing only care. Which allocation count should change?
+3. Erase car, then care, while cat remains. List the nodes that can be pruned at each return.
+4. Store the empty word alongside dog, erase it, and inspect the surviving root.
+5. Compare sparse maps, 26-pointer arrays and compressed edges for a dictionary with many long unshared suffixes.
+
+</Section>
+<Section id="summary" number="13" title="A path is a prefix. A flag makes it a word." kicker="CHAPTER SUMMARY">
+
+<div className="summary-panel"><h3>Strings become shared structure.</h3><ul><li>Characters select child edges, one step per query character.</li><li>Terminal distinguishes complete words from existing prefixes.</li><li>Erase clears membership, then prunes only unused suffix nodes.</li><li>Sparse maps trade child-array space for per-edge overhead.</li><li>Validation and rollback preserve a well-formed trie on every public return.</li></ul><button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button></div>
+<ChapterPagination number="17" />
+</Section>

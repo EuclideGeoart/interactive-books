@@ -1,0 +1,119 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import ChainingLab from '../../components/visualizers/ChainingLab.astro';
+import HashDistribution from '../../components/visualizers/HashDistribution.astro';
+import HashBreakIt from '../../components/visualizers/HashBreakIt.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-20/ChainedMap.hpp?raw';
+import main from '../../../cpp/chapter-20/main.cpp?raw';
+export const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+<ChapterHero number="20" title="Separate Chaining" overline="ONE BUCKET, ONE OWNING CHAIN" description="Resolve collisions by traversing a linked chain. Compare full keys, reconnect the right owning link, and rehash without relocating nodes." chain="bucket → [key | value | next] → [key | value | next] → nullptr" facts={[["Ownership", "unique_ptr links"], ["Equality", "Full key bytes"], ["Erase", "Detach → reconnect → destroy"], ["Rehash", "Stable node addresses"]]} />
+
+<Section id="mental-model" number="01" title="A bucket owns a chain, not one exclusive slot." kicker="VISUAL MENTAL MODEL">
+
+<StructurePreview chapter="chaining" id="chaining-preview" operation="find" inputs={{entries:'a:1,i:2,q:3,b:4',key:'a',value:'7'}} />
+
+At capacity 8, a, i and q all select bucket 1. Head insertion gives q → i → a → nullptr. Bucket 2 owns b → nullptr. An empty bucket owns nullptr. These are one-way next links: there is no prev field, no sentinel and no circular edge. Screen positions stay stable during an experiment, so use the arrows rather than spatial order to read the chain.
+
+</Section>
+<Section id="intuition" number="02" title="First choose the chain, then compare its keys." kicker="THE INTUITION">
+
+Find a computes its hash and chooses bucket 1. It compares q with a, follows next, compares i with a, follows next, then matches a and returns its value. A missing key that maps to the same bucket must walk to nullptr. A matching hash alone is insufficient; this implementation compares the full key at each visited node.
+
+Insert-or-assign performs that same search. A match changes the value without adding a node. Absence creates one new node and publishes it at the head. Chains may grow beyond the bucket count; they do not have a full-table condition like a fixed open-addressed array.
+
+</Section>
+<Section id="memory" number="03" title="Ownership follows bucket heads and next links." kicker="STRUCTURE / MEMORY LAYOUT">
+
+The map stores a vector of `std::unique_ptr<Node>` bucket heads. Each Node owns a string key, int value, cached uint32 hash and `unique_ptr<Node> next`. These unique pointers transfer ownership through moves; raw pointers used by find are temporary nonowning cursors. Erase uses a pointer to the owning unique_ptr, so the same code can change a bucket head or a predecessor's next field.
+
+The memory view orders illustrative addresses by allocation identity. The logical view groups nodes by their initial bucket and retains those positions through rehash. Neither view claims a native ABI layout. Key strings may have their own implementation-dependent storage; their allocator internals are outside this diagram.
+
+</Section>
+<Section id="operations" number="04" title="Inspect a middle deletion before destroying anything." kicker="INTERACTIVE OPERATIONS">
+
+<ChainingLab />
+
+Choose erase with key i in the default list. The owning link is q.next. Detach i into a local unique_ptr, then move i.next into q.next. Only after the surviving chain is reconnected does `removed.reset()` destroy i. Repeat with q for a head deletion and a for a tail deletion. With starting a:1, erase a produces an empty bucket and size zero. Erasing a missing key reports absence without changing membership.
+
+Use find a to distinguish bucket selection, visitation and actual key comparison. Use insert e to trigger the 8 → 16 rehash. Existing-key updates preserve the allocation identity; insertion creates a new one. The lab allows at most eight starting entries and keeps freed storage visible for explanation, while refusing to expose its former fields in the inspector.
+
+</Section>
+<Section id="implementation" number="05" title="Make each transfer explicit and cleanup iterative." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="ChainedMap.hpp" chapter="20" />
+
+Also download <a href={`${base}/source/chapter-18/TeachingHash.hpp`} download>TeachingHash.hpp</a>. Keep it in sibling directory chapter-18; ChainedMap includes `../chapter-18/TeachingHash.hpp`. Build from chapter-20 using the shown command. The header uses the same validated lowercase policy as every other Part IV implementation.
+
+Copy construction, copy assignment, move construction and move assignment are deliberately deleted. This avoids accidental duplicate ownership and avoids leaving a moved-from object with an unusable zero-capacity bucket array. The design could support explicit deep copy and a defined moved-from state, but this chapter supplies neither. Destruction calls iterative clear, extracting each next owner before destroying the current node, so even a long chain does not recursively consume the call stack.
+
+Insertion provides a strong guarantee for map contents and capacity on allocation failure: allocate the fresh node first, then allocate any replacement bucket array, then perform only nonthrowing ownership transfers. Existing int assignment is nonthrowing. A failed operation may have advanced the diagnostic comparison counter. Rehash rejects shrinking, permits equal capacity, and preserves node addresses; it may reverse chain order. Erase and clear invalidate observers of destroyed nodes. No iterators, concurrency or persistent snapshots are exposed by the native API.
+
+</Section>
+<Section id="pointer-trace" number="06" title="A detached node still has a live owner." kicker="CODE + VISUALIZATION POINTER TRACE">
+
+The bucket-selection event chooses the array index. The start event sets a cursor or owning-link pointer. Comparison increments only when two keys are actually tested. Following next is its own event. This makes a three-comparison lookup visibly different from three units of arbitrary animation.
+
+When erase detaches a node, the old owning link temporarily becomes null; the local removed owner still owns the node and its remaining suffix. Reconnect transfers that suffix to the old link. Destroy releases only the removed node, then size is decremented. During rehash the same detach/reconnect pattern drains each old bucket into replacement buckets. The final swap commits the replacement capacity. Temporary unreachable-from-buckets nodes are amber pending conditions, not automatically leaks.
+
+The trace retains immutable snapshots for Previous and Reset. That browser retention does not keep native erased objects alive. Native parity checks execute instrumented copies of the shipped header and compare canonical tag order and bucket topology at each tagged statement.
+
+</Section>
+<Section id="invariants" number="07" title="Every entry has one route from an owning bucket." kicker="INVARIANTS">
+
+| Rule | Failure it detects |
+| --- | --- |
+| Chains are acyclic with exclusive reachable ownership | Repeated nodes, cycles, or shared links. |
+| Each distinct key occurs once | Duplicate insertion instead of assignment. |
+| Cached hash matches the immutable stored key | A key changed without remapping. |
+| Each node maps to its owning array's bucket | Copying old indices into a larger array. |
+| Settled size equals reachable live nodes | Lost links or wrong size bookkeeping. |
+
+The invariant walker bounds traversal with visited identities and never follows freed model storage. While two arrays coexist, each uses its own capacity. The inspector reports actual ownership separately from the destination predicted under the replacement capacity. Positions and addresses are independent of ownership so half-rewired states remain inspectable.
+
+</Section>
+<Section id="complexity" number="08" title="Count the chain you really traversed." kicker="COMPLEXITY EXPLORER">
+
+<HashDistribution id="chaining-distribution" />
+
+With bounded key length, a useful hash distribution and load factor α, expected lookup work is O(1 + α). The worst chain has n entries, giving O(n) lookup, update and erase. The head insertion link changes themselves are constant work, but the preceding duplicate-key search is not necessarily constant. Rehash walks n nodes and initializes m_new bucket heads, costing O(n + m_new).
+
+Counters measure key comparisons, not allocator latency, cache misses, key-byte comparisons inside string equality, or CPU time. Geometric growth maintains a useful load bound for the native map; the explorer intentionally fixes capacity to isolate distribution. Equal load factors can still produce very different comparison counts.
+
+</Section>
+<Section id="break-it" number="09" title="A correct delete must preserve the surviving suffix." kicker="COMMON MISTAKES / BREAK-IT MODE">
+
+<HashBreakIt id="chaining-break" />
+
+Forgetting a reconnect loses entries that were not requested for deletion. Duplicating a key makes assignment ambiguous. Growing the array without recomputing buckets makes valid keys invisible to ordinary lookup. Each fault is injected only into a copied browser model and checked without executing unsafe native code. Restore rebuilds all three distinct keys and valid ownership.
+
+</Section>
+<Section id="analogy" number="10" title="A rack label selects a folder of records." kicker="REAL-WORLD ANALOGY">
+
+A bucket label selects a folder; the records inside still need their full names checked. Removing one record should leave the folder's other records accessible. Moving records to more folders changes their membership without changing the identity of the paper record itself.
+
+</Section>
+<Section id="engineering" number="11" title="Stable addresses cost indirection and allocation." kicker="ENGINEERING INSIGHT">
+
+Chaining can keep node addresses stable across rehash because only owners change. It pays for next pointers, separately allocated nodes and a bucket array; string storage may add more allocations. Pointer chasing can hurt cache locality compared with contiguous slot storage. Pools or arenas can change allocation costs, but they introduce different lifetime and reclamation responsibilities.
+
+Adversarial keys can deliberately create long chains. Merely doubling bucket count cannot separate keys with equal full hashes, and predictable hashes can still produce concentration after modulo. Production systems may use keyed hashing or collision defenses suited to their threat model. Chaining is useful when its ownership and stability tradeoffs fit the workload; it is not universally better or worse than open addressing.
+
+</Section>
+<Section id="exercises" number="12" title="Name the owner before changing the link." kicker="EXERCISES / CHALLENGES">
+
+1. For q → i → a, identify the unique_ptr that owns each node before and after erasing i.
+2. Why would destroying i before moving i.next risk deleting the whole suffix?
+3. Find a, a missing colliding key, and a key whose bucket is empty. Predict comparison counts.
+4. Explain why rehash can preserve node addresses yet change traversal order.
+5. Design a deep-copy policy on paper. Which allocations can fail, and how would partial copies be cleaned up?
+
+</Section>
+<Section id="summary" number="13" title="Collisions become ordinary linked-list work." kicker="CHAPTER SUMMARY">
+
+<div className="summary-panel"><h3>Ownership makes the mechanics precise.</h3><ul><li>Select a bucket, traverse its next links, compare complete keys.</li><li>Duplicate keys assign a value rather than create a second entry.</li><li>Erase detaches, reconnects, destroys and updates size.</li><li>Rehash changes bucket ownership while retaining node addresses.</li><li>Distribution, allocation and locality all matter alongside big-O.</li></ul><button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button></div>
+<ChapterPagination number="20" />
+</Section>

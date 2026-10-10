@@ -1,0 +1,115 @@
+import ChapterHero from '../../components/book/ChapterHero.astro';
+import ChapterPagination from '../../components/book/ChapterPagination.astro';
+import Section from '../../components/book/Section.astro';
+import StructurePreview from '../../components/visualizers/StructurePreview.astro';
+import ChainingLab from '../../components/visualizers/ChainingLab.astro';
+import HashDistribution from '../../components/visualizers/HashDistribution.astro';
+import HashBreakIt from '../../components/visualizers/HashBreakIt.astro';
+import CanonicalSource from '../../components/code/CanonicalSource.astro';
+import source from '../../../cpp/chapter-19/HashTable.hpp?raw';
+import main from '../../../cpp/chapter-19/main.cpp?raw';
+export const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+<ChapterHero number="19" title="Hash Tables" overline="A MAP CONTRACT, A STORAGE CHOICE" description="Insert a key, find its value, update it, and erase it. Then grow the bucket array without losing what the map means." chain="key → bucket → equality → mapped value" facts={[["ADT", "Key → value map"], ["Expected lookup", "O(1), bounded load"], ["Worst lookup", "O(n)"], ["Growth example", "8 → 16 buckets"]]} />
+
+<Section id="mental-model" number="01" title="A map associates one value with each distinct key." kicker="VISUAL MENTAL MODEL">
+
+<StructurePreview chapter="hash-table" id="hash-table-preview" operation="find" inputs={{entries:'a:1,i:2,q:3,b:4,c:5,d:6',key:'a',value:'7'}} />
+
+The conceptual object is a map: a maps to 1, i to 2 and q to 3. The implementation shown here resolves bucket collisions with **separate chaining**, the exact representation developed in Chapter 20. The chains are explicit so this chapter does not invent a second collision policy. Chapter 21 will implement the same map operations with entries stored directly in slots.
+
+</Section>
+<Section id="intuition" number="02" title="The operation contract survives a representation change." kicker="THE INTUITION">
+
+Insert a new key increases size. Assigning an existing key changes its mapped value and keeps size unchanged. Find returns an optional integer; a missing key is different from a key mapped to zero. Contains returns whether a key exists. Erase reports whether it removed an entry. Capacity counts buckets, and α = size / capacity measures average bucket occupancy.
+
+Update here means `insert_or_assign`: an absent key is inserted. It does not provide an update-only operation that fails on absence. The two lab buttons share this documented contract. Choosing a collision policy changes the mechanics, not these meanings.
+
+</Section>
+<Section id="memory" number="03" title="The bucket array is not the entry array." kicker="STRUCTURE / MEMORY LAYOUT">
+
+Each bucket stores an owning pointer to its first node. Each node stores a key, mapped integer, cached full hash and owning next link. Empty buckets contain nullptr. Size counts nodes, not nonempty buckets: three entries in bucket 1 still contribute three to size. Separate chaining can hold more entries than buckets.
+
+The initial six distinct keys occupy an 8-bucket map. Load is 6 / 8 = 0.75. Before adding a seventh distinct key, this example doubles capacity. Duplicate assignment checks equality first and does not trigger unnecessary growth. The policy is a teaching choice, not a universal requirement of hash tables or `std::unordered_map`.
+
+</Section>
+<Section id="operations" number="04" title="Insert e and watch every old key remap." kicker="INTERACTIVE OPERATIONS">
+
+<ChainingLab conceptual />
+
+Load the default insertion and step from capacity 8 to 16. Existing a and q remain in bucket 1, while i moves from bucket 1 to 9. The full hashes do not change. The pending new node e is privately owned until the replacement bucket array is committed and insertion publishes it.
+
+Try finding a to traverse past q and i. Update a to zero and confirm it remains present. Erase i to remove a middle link. Clear the starting entries to test empty lookup or singleton insertion. Size, capacity, load factor and actual key comparisons remain visible throughout each trace. Reloading starts an independent experiment, so a partial trace is never silently committed.
+
+</Section>
+<Section id="implementation" number="05" title="Use the concrete implementation behind the contract." kicker="CANONICAL C++20">
+
+<CanonicalSource source={source} main={main} fileName="HashTable.hpp" chapter="19" />
+
+This header intentionally aliases the canonical ChainedMap from Chapter 20. Download its dependencies: <a href={`${base}/source/chapter-20/ChainedMap.hpp`} download>ChainedMap.hpp</a> and <a href={`${base}/source/chapter-18/TeachingHash.hpp`} download>TeachingHash.hpp</a>. Preserve sibling directories `chapter-18`, `chapter-19`, and `chapter-20`, then compile main.cpp from chapter-19. The synchronized lab displays the actual ChainedMap operations rather than a hand-written duplicate.
+
+Nodes have exclusive ownership. Copy and move are disabled. New-key insertion allocates its node before growth; rehash allocates the replacement array before moving any ownership. Those potentially throwing steps therefore preserve existing membership if allocation fails. Relinking unique pointers and unsigned index arithmetic do not allocate. Invalid teaching keys are rejected before mutation. Chapter 20 gives the complete header and ownership discussion.
+
+</Section>
+<Section id="pointer-trace" number="06" title="A resize is a sequence of transfers." kicker="CODE + VISUALIZATION POINTER TRACE">
+
+Rehash first creates empty replacement heads. It detaches one old head into a local owner, reconnects the old bucket to its remaining chain, recomputes the detached node's bucket using the new capacity, attaches that new bucket's existing chain to the node, and publishes the node. Only after all entries move does it swap bucket arrays.
+
+Two arrays coexist during this trace. Their capacities differ, so their mapping invariants use their own capacities. A temporary detached node is still live and owned locally. Node positions and illustrative addresses stay fixed; arrows describe the transfer. The final array swap changes the published capacity. Rehash may change traversal order and does not promise a sorted iteration order.
+
+</Section>
+<Section id="invariants" number="07" title="Map membership is independent of bucket history." kicker="INVARIANTS">
+
+| Settled invariant | Evidence in the lab |
+| --- | --- |
+| Exactly one node per distinct key | Existing-key assignment leaves size unchanged. |
+| Every live node is reachable once | No lost links, shared owners or cycles. |
+| Stored hash agrees with the key | All chapters use the same validated policy. |
+| Bucket equals hash modulo its array capacity | Rehash visits every entry. |
+| Size equals the number of live entries | Empty buckets do not contribute. |
+
+During a multi-statement update, the checker distinguishes a temporary locally owned node from a settled leak. A structural link to invalid storage remains a failure. Reverse playback selects previous snapshots; it does not execute inverse C++ mutations.
+
+</Section>
+<Section id="complexity" number="08" title="Expected constant time needs a distribution assumption." kicker="COMPLEXITY EXPLORER">
+
+<HashDistribution id="hash-table-distribution" />
+
+For bounded-size keys, useful distribution and bounded load factor, chained lookup has expected O(1 + α) work and therefore expected O(1) at a bounded α. The worst case remains O(n): all entries can share one bucket. The explorer measures real equality comparisons for every successful lookup. In a chain of n entries that total is n(n + 1) / 2, so the mean is (n + 1) / 2 and the longest lookup is n comparisons.
+
+For arbitrary string length L, computing the hash and comparing keys also cost time; a blanket O(1) string lookup hides that dependence. Our teaching keys are bounded to twelve bytes. Rehashing costs O(n + m_new) here because it initializes the new array and relinks all nodes. Geometric growth spreads that cost over later insertions for expected amortized constant insertion under the stated assumptions. One insertion that grows the array is still expensive.
+
+</Section>
+<Section id="break-it" number="09" title="More buckets alone do not repair the mapping." kicker="COMMON MISTAKES / BREAK-IT MODE">
+
+<HashBreakIt id="hash-table-break" />
+
+Grow without remapping and i remains in old bucket 1 instead of new bucket 9. Insert a duplicate and the map no longer has one value per key. Forget a chain link and size can still report three although lookup can reach only one. The broken states are isolated browser models; Restore rebuilds a valid map.
+
+</Section>
+<Section id="analogy" number="10" title="Reorganize a warehouse without changing its inventory." kicker="REAL-WORLD ANALOGY">
+
+A product key identifies a bin's contents. Adding aisles changes the routing directory, so every product must be assigned under the new rule. The inventory count does not increase because there are more aisles. Updating the quantity for an existing product does not create a second product identity.
+
+</Section>
+<Section id="engineering" number="11" title="The ADT does not choose locality or ordering for you." kicker="ENGINEERING INSIGHT">
+
+Chaining buys simple collision handling and stable node addresses during rehash at the cost of pointer storage and separate allocations. Open addressing will place entries in one array and replace pointer traversal with a probe policy. An ordered map offers sorted traversal but different search mechanics. A small contiguous collection may beat hashing when allocation and indirection dominate. Choose using workload and contract requirements, not an unqualified complexity slogan.
+
+This example exposes no iterators. A const bucket accessor exists for demonstrations and tests; its node pointers are observers and must never be deleted or rewired by callers. Public operations maintain exclusive ownership. Native pointer stability is meaningful only until that node is erased or the map is destroyed.
+
+</Section>
+<Section id="exercises" number="12" title="Keep the map contract while changing capacity." kicker="EXERCISES / CHALLENGES">
+
+1. Why does assigning a new value to a leave size and capacity unchanged at load 0.75?
+2. Predict a, i and q's buckets after 8 → 16 → 32 growth.
+3. Compare missing-key lookup in an empty bucket with missing-key lookup after a long chain.
+4. Which costs does the comparison counter omit?
+5. Explain why a chain can legally contain more entries than the total bucket count.
+
+</Section>
+<Section id="summary" number="13" title="Preserve key/value meaning through every storage change." kicker="CHAPTER SUMMARY">
+
+<div className="summary-panel"><h3>A map is a contract backed by mechanics.</h3><ul><li>Insert, find, assign, contains and erase operate on full keys.</li><li>Size counts entries; capacity counts buckets.</li><li>Load factor and distribution explain expected lookup work.</li><li>Rehash recomputes bucket mappings and preserves entries.</li><li>Worst-case lookup remains linear under collision concentration.</li></ul><button type="button" className="button button-primary" data-complete aria-pressed="false">Mark chapter complete</button></div>
+<ChapterPagination number="19" />
+</Section>
