@@ -1,0 +1,14 @@
+---
+/**
+ * Show a real source file, verbatim. The file under /code/ is the file the oracle test executes, so the
+ * code on the page cannot drift from code that is known to run (plan §13 D).
+ */
+import { Code } from 'astro:components';
+import type { ComponentProps } from 'astro/types';
+interface Props { source: string; file: string; lang?: ComponentProps<typeof Code>['lang']; note?: string }
+const { source, file, lang = 'python', note } = Astro.props;
+---
+<figure class="code-file">
+  <figcaption><span class="file">{file}</span>{note && <span class="note">{note}</span>}</figcaption>
+  <div class="code-scroll" data-scrollable="Source code, scrollable"><Code code={source.trimEnd()} lang={lang} theme="css-variables" /></div>
+</figure>

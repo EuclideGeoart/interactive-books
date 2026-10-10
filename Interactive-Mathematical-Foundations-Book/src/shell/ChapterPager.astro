@@ -1,0 +1,21 @@
+---
+import { neighbours, type ChapterRef } from '../curriculum/queries';
+import { href } from './href';
+interface Props { current?: ChapterRef }
+const { current } = Astro.props;
+const around = current ? neighbours(current) : {};
+const cell = (ref: ChapterRef | undefined, direction: 'previous' | 'next') => ref ? { ref, direction } : null;
+const cells = [cell(around.previous, 'previous'), cell(around.next, 'next')];
+---
+<nav class="chapter-pager" aria-label="Neighbouring chapters">
+  {current
+    ? cells.map(c => c
+        ? (c.ref.chapter.status === 'available' && c.ref.chapter.slug
+            ? <a class={`pager-${c.direction}`} href={href(`/chapters/${c.ref.chapter.slug}/`)}><span class="dir">{c.direction === 'previous' ? '← Previous' : 'Next →'}</span><span class="what">{c.ref.id} · {c.ref.chapter.title}</span></a>
+            : <p class={`pager-${c.direction} is-planned`}><span class="dir">{c.direction === 'previous' ? '← Previous' : 'Next →'} · planned</span><span class="what">{c.ref.id} · {c.ref.chapter.title}</span></p>)
+        : <span />)
+    : <>
+        <a class="pager-previous" href={href('/contents/')}><span class="dir">← Back to</span><span class="what">The map of the book</span></a>
+        <p class="pager-next is-planned"><span class="dir">Next milestone · planned</span><span class="what">I.3 · Vectors: components, magnitude, and direction</span></p>
+      </>}
+</nav>

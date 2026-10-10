@@ -1,0 +1,44 @@
+---
+/**
+ * The eight Parts and their chapters, rendered from data. Used twice: as the book-map dialog and as the
+ * /contents/ page. `idPrefix` keeps fragment ids unique when both are on one page.
+ * Planned chapters are plain text with a visible status; only available chapters are links.
+ */
+import { parts } from '../curriculum/curriculum';
+import { chapterAnchor, chapterId, partAnchor, partStats } from '../curriculum/queries';
+import { href } from './href';
+import PartEmblem from './PartEmblem.astro';
+interface Props { idPrefix?: string; headingLevel?: 2 | 3; showEmblems?: boolean }
+const { idPrefix = '', headingLevel = 2, showEmblems = true } = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
+---
+<div class="curriculum">
+  {parts.map(part => {
+    const stats = partStats(part);
+    return (
+      <section class="part" id={`${idPrefix}${partAnchor(part)}`} aria-labelledby={`${idPrefix}${partAnchor(part)}-title`} data-part={part.index}>
+        <header class="part-head">
+          {showEmblems && <PartEmblem index={part.index} class="part-emblem" />}
+          <div>
+            <p class="part-numeral">Part {part.numeral}</p>
+            <Heading id={`${idPrefix}${partAnchor(part)}-title`}>{part.title}</Heading>
+            <p class="part-tagline">{part.tagline}</p>
+            <p class="part-count">{stats.available === 0 ? `${stats.total} chapters · none written yet` : `${stats.available} of ${stats.total} chapters written`}</p>
+          </div>
+        </header>
+        <ol class="chapter-list">
+          {part.chapters.map(chapter => (
+            <li id={`${idPrefix}${chapterAnchor(part, chapter)}`} class={`chapter-item status-${chapter.status}`} data-status={chapter.status} data-chapter-id={chapterId(part, chapter)}>
+              <span class="chapter-id">{chapterId(part, chapter)}</span>
+              {chapter.status === 'available' && chapter.slug
+                ? <a class="chapter-title" href={href(`/chapters/${chapter.slug}/`)}>{chapter.title}</a>
+                : <span class="chapter-title">{chapter.title}</span>}
+              {chapter.role && <span class="chapter-role">{chapter.role === 'reference' ? 'reference chapter' : 'flagship chapter'}</span>}
+              <span class="chapter-status">{chapter.status === 'available' ? 'available' : 'planned'}</span>
+            </li>
+          ))}
+        </ol>
+      </section>
+    );
+  })}
+</div>

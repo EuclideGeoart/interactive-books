@@ -5,7 +5,7 @@ An independently buildable collection of visual-first, interactive books for com
 | Book | Status | Source |
 | --- | --- | --- |
 | **I — Interactive C++ Data Structures & Algorithms** | Completed and release-validated; installable PWA | [Book I](Interactive-C++-Data-Structures-&-Algorithms-Book/) |
-| **II — Interactive Mathematical Foundations** | In active development in its original worktree; will be imported here later with its Git history preserved | Pending |
+| **II — Interactive Mathematical Foundations** | M0/M2 foundation complete; REF-1 Vectors awaits independent review | [Book II](Interactive-Mathematical-Foundations-Book/) |
 | **III — Machine Learning** | Planned | Pending |
 | **IV — Neural Networks, Transformers & LLMs** | Planned | Pending |
 
@@ -19,13 +19,24 @@ npm ci
 
 Book I includes 67 chapters, executable C++20 examples, deterministic interactive traces, visual regression tests, and base-path-aware PWA support. See the [Book I README](Interactive-C++-Data-Structures-&-Algorithms-Book/README.md) and [final release review](Interactive-C++-Data-Structures-&-Algorithms-Book/documentation/FINAL_EDITORIAL_PWA_RELEASE_REVIEW.md).
 
+## Book II
+
+```sh
+cd 'Interactive-Mathematical-Foundations-Book'
+npm ci
+npm run oracle:setup
+npm run validate
+```
+
+The M0/M2 foundation is complete but not yet independently accepted. Its first full chapter milestone is REF-1 Vectors. See the [implementation report](Interactive-Mathematical-Foundations-Book/documentation/M0_M2_IMPLEMENTATION_REPORT.md). The master plan is currently at `Interactive-Mathematical-Foundations-Book/documentaion/INTERACTIVE_MATH_FOUNDATIONS_MASTER_PLAN.md` (directory spelling retained from the original repository).
+
 ## Repository policy
 
 - Each book owns its dependencies, tests, release process, and canonical code.
 - Shared infrastructure should be extracted **only after** multiple books demonstrate compatible requirements; avoid premature cross-book imports.
 - Keep authored code, tests, visual baselines, and reproducible build/deployment configuration in Git.
 - Exclude dependency folders, generated build output, bulky historical duplicate deliveries, and machine-local credentials.
-- Book II stays at `/work/Interactive-Mathematical-Foundations-Book/` until its current agent finishes. **Do not move, reset, or replace its existing Git history or uncommitted files.** Its import will be a separately reviewed Git operation.
+- Book II is now canonical at `Interactive-Mathematical-Foundations-Book/` within this repository, imported with all three original commits in the merge ancestry. The former `/work/Interactive-Mathematical-Foundations-Book/` checkout is a temporary recovery copy; **do not develop in both locations**. Recreate `.venv/` after relocation (do not copy the original virtual environment).
 - `/work/fluxgeo/` is unrelated and remains outside this repository.
 
 ## Publishing

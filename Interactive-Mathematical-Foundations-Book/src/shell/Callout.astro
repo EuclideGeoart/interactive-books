@@ -1,0 +1,10 @@
+---
+/** A margin-weight aside inside prose. `kind` picks the role colour AND a text label (never colour alone). */
+interface Props { kind?: 'note' | 'misconception' | 'numerical' | 'scope'; title?: string }
+const { kind = 'note', title } = Astro.props;
+const labels = { note: 'Note', misconception: 'Common mistake', numerical: 'Numerical consideration', scope: 'Scope of this page' } as const;
+---
+<aside class={`callout callout-${kind}`}>
+  <p class="callout-title">{title ?? labels[kind]}</p>
+  <div class="callout-body"><slot /></div>
+</aside>

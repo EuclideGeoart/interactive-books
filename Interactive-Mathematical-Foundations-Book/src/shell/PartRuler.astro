@@ -1,0 +1,18 @@
+---
+import { parts } from '../curriculum/curriculum';
+import { partAnchor } from '../curriculum/queries';
+import { href } from './href';
+interface Props { current?: number }
+const { current } = Astro.props;
+---
+<nav class="part-ruler" aria-label="Parts of the book">
+  <ol>
+    {parts.map(part => (
+      <li>
+        <a href={`${href('/contents/')}#${partAnchor(part)}`} aria-current={part.index === current ? 'true' : undefined} aria-label={`Part ${part.numeral}: ${part.title}`} title={`Part ${part.numeral}: ${part.title}`}>
+          <span aria-hidden="true">{part.numeral}</span>
+        </a>
+      </li>
+    ))}
+  </ol>
+</nav>

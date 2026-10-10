@@ -1,0 +1,84 @@
+---
+kind: demo
+title: Foundation demo
+hero: One mathematical state, many *views*.
+lede: This page exercises the platform every chapter will stand on. It is a demonstration of the infrastructure, not a chapter of the curriculum.
+description: A foundation demo of Interactive Mathematical Foundations. One mathematical state drives a draggable vector, an inspector, live formulas and a step-by-step computation.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import VectorStage from '../../lessons/foundation/VectorStage';
+import mechanics from '../../../code/python/vector_magnitude.py?raw';
+import practical from '../../../code/python/vector_magnitude_numpy.py?raw';
+
+<Stage caption="Drag the tip of the arrow, focus it and press the arrow keys, or type into the fields. The plane, the values, the formulas and the step-by-step work all read the same state.">
+  <VectorStage client:load />
+</Stage>
+
+<Callout kind="scope" title="This is a foundation demo, not Chapter I.3">
+The reference chapter on vectors (I.3) is the next milestone and will carry the real explanation, derivation, exercises and tests. Here the vector is only a vehicle for checking the platform.
+</Callout>
+
+## What this page checks
+
+Each row names a capability of the platform and where to see it on this page.
+
+| Capability | Where to look |
+| --- | --- |
+| One state, many views | Move the tip: the plane, the values, the formulas and the work change together. |
+| Three equivalent inputs | Drag the tip; focus it and use the arrow keys (Shift moves five steps); or type into the x and y fields. |
+| Exact versus approximate | Watch the magnitude row. Try $(3,4)$, $(2,2)$ and $(2.5,1.5)$. |
+| Undefined is a state | Set both fields to $0$: the direction becomes undefined and the arrow disappears. |
+| A visible snap policy | Switch **Snap to** between 1, ½, 0.1 and Free. |
+| Deterministic trace | Step through **Show the work**; going back selects an earlier frame. |
+| Equation overflow | The long equation below scrolls inside its own box on a narrow screen. |
+| Code that is known to run | The Python files at the end are executed by the oracle tests. |
+
+## Conventions in force
+
+These apply across the whole book (master plan §3) and are what the stage above follows.
+
+- The plane has $+x$ to the right and $+y$ **up**. Screen coordinates, where $y$ points down, are converted in exactly one place.
+- Vectors are columns, $\mathbf v=\begin{bmatrix}x\\y\end{bmatrix}$. Matrices act from the left, $\mathbf v'=A\mathbf v$, and if $A$ acts first then $B(A\mathbf v)=(BA)\mathbf v$.
+- Angles are in radians; degrees appear only as a secondary display.
+- $=$ means exactly equal and $\approx$ means a rounded approximation. A rounded number is never shown with an equals sign.
+
+## Mathematical typography
+
+Inline mathematics sits in the line: the vector $\mathbf v=(3,2)$ has components $x=3$ and $y=2$, and its length is $\lVert\mathbf v\rVert=\sqrt{x^2+y^2}$. Display mathematics gets its own line:
+
+$$
+\lVert\mathbf v\rVert=\sqrt{x^{2}+y^{2}},\qquad \theta=\operatorname{atan2}(y,x).
+$$
+
+A very long equation must never widen the page. This one is long on purpose, and on a phone it scrolls inside its own box, which becomes a keyboard-reachable region only when it actually overflows:
+
+$$
+\mathcal{L}(\theta)=-\frac{1}{N}\sum_{n=1}^{N}\sum_{i=1}^{V}y_{n,i}\,\log\frac{\exp\left(z_{n,i}\right)}{\sum_{j=1}^{V}\exp\left(z_{n,j}\right)},\qquad \mathbf{z}_n=W\mathbf{h}_n+\mathbf{b}
+$$
+
+## Exact and approximate
+
+The inspector never lets a rounded value pose as an exact one.
+
+| Quantity | Exact form | Approximation | Shown as |
+| --- | --- | --- | --- |
+| $\lVert(3,2)\rVert$ | $\sqrt{13}$ | 3.605551… | `= √13`, then `≈ 3.605551…` |
+| $\lVert(3,4)\rVert$ | $5$ | none needed | `= 5` only |
+| $\lVert(2.5,1.5)\rVert$ | not claimed | 2.915476 | `≈ 2.915476` only |
+| direction of $(0,0)$ | undefined | none | `undefined`, with the reason |
+
+The trailing "…" appears only when the exact value is known to be irrational. For $(2.5,1.5)$ the model makes no claim about an exact form, so it shows only what it computed.
+
+## Code that is known to run
+
+The mechanism comes first, written out so every step is visible; the library call comes after. Both files below are shown exactly as stored in the repository, and the oracle test suite runs them and checks their output against the values in the plan.
+
+<CodeFile source={mechanics} file="code/python/vector_magnitude.py" note="mechanics first" />
+
+<CodeFile source={practical} file="code/python/vector_magnitude_numpy.py" note="then the library form" />
+
+<Callout kind="numerical">
+`np.linalg.norm` squares before it adds, so for a tiny vector such as $(10^{-200},10^{-200})$ it returns `0.0`, although the vector is not zero. `np.hypot` and `math.hypot` rescale first and are correct. The independent Python oracle found this while checking the browser model, which uses `Math.hypot`.
+</Callout>

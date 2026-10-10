@@ -1,0 +1,130 @@
+/* ───────────────────────────────────────────── the stage: an interactive plate on the drafting sheet */
+.stage {
+  --plane-bg: var(--sheet);
+  container-type: inline-size; position: relative;
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; padding: clamp(12px, 2.4vw, 24px);
+  background: var(--sheet); border: 1px solid var(--rule-strong); border-radius: 3px;
+}
+/* crop marks: four registration ticks just outside the plate say "this region responds" */
+.stage::before {
+  content: ''; position: absolute; inset: -7px; pointer-events: none;
+  --m: var(--ink-3);
+  background:
+    linear-gradient(var(--m), var(--m)) 0 0 / 12px 1px no-repeat,    linear-gradient(var(--m), var(--m)) 0 0 / 1px 12px no-repeat,
+    linear-gradient(var(--m), var(--m)) 100% 0 / 12px 1px no-repeat, linear-gradient(var(--m), var(--m)) 100% 0 / 1px 12px no-repeat,
+    linear-gradient(var(--m), var(--m)) 0 100% / 12px 1px no-repeat, linear-gradient(var(--m), var(--m)) 0 100% / 1px 12px no-repeat,
+    linear-gradient(var(--m), var(--m)) 100% 100% / 12px 1px no-repeat, linear-gradient(var(--m), var(--m)) 100% 100% / 1px 12px no-repeat;
+}
+.stage-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 44px; }
+.stage-head h2 { font: 560 1.125rem/1.25 var(--font-text); }
+.stage-head h2 .formula { font-size: 1.05em; }
+
+/* Every track is minmax(0, 1fr): an `auto` track would grow to the widest unbreakable equation and push the
+   stage's content (and its Reset button) past the container's edge. */
+.stage > * { min-width: 0; }
+.stage-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+@container (min-width: 700px) {
+  .stage-full .stage-grid { grid-template-columns: minmax(0, 1.3fr) minmax(300px, 1fr); gap: 28px; align-items: stretch; }
+}
+@container (min-width: 470px) {
+  .stage-hero .stage-grid { grid-template-columns: minmax(0, 1.25fr) minmax(190px, 1fr); gap: 20px; align-items: start; }
+}
+
+/* ───────────── plane */
+/* The border lives on the WRAPPER, never on the <svg>: the svg's box must equal its viewBox so that 1 SVG unit is exactly
+   1 CSS pixel (a border would shrink the content box and silently rescale the whole drawing by ~0.5%). */
+.plane-wrap { position: relative; border: 1px solid var(--rule); border-radius: 2px; background: var(--plane-bg); overflow: hidden; }
+.plane { display: block; width: 100%; aspect-ratio: 1; background: var(--plane-bg); border: 0; user-select: none; -webkit-user-select: none; }
+.plane-grid line { stroke: var(--grid-minor); stroke-width: 1; shape-rendering: crispEdges; }
+.plane-axes .axis { stroke: var(--axis); stroke-width: 1.4; }
+.plane-axes .axis-head { fill: var(--axis); }
+.plane-axes .tick { stroke: var(--axis); stroke-width: 1; shape-rendering: crispEdges; }
+.plane-axes .tick-label { font: 12px var(--font-math); fill: var(--ink-3); }
+.plane-axes .axis-name { font: italic 18px KaTeX_Math, 'Times New Roman', serif; fill: var(--ink); }
+.plane .stroke { stroke: var(--role); fill: none; }
+.plane .fill { fill: var(--role); }
+.plane .dashed { stroke-dasharray: 7 6; }
+.plane .dot { fill: var(--ink); }
+.plane .right-angle { stroke: var(--ink-3); stroke-width: 1.3; }
+.plane-label { font: 600 15px var(--font-math); fill: var(--role-text, var(--ink)); paint-order: stroke; stroke: var(--plane-bg); stroke-width: 5px; stroke-linejoin: round; font-variant-numeric: lining-nums; }
+.plane-label .sym { font-family: KaTeX_Math, 'Times New Roman', serif; font-style: italic; font-weight: 400; }
+.plane-label.math { font-size: 16px; }
+.plane-label.role-primary { font-weight: 700; font-size: 20px; }
+.plane .dimension .plane-label { stroke-width: 7px; }
+
+/* the draggable handle: visible ~19px, hit target 48px */
+.drag-point { --role: var(--c-primary); cursor: grab; touch-action: none; outline: none; }
+.drag-point .hit { fill: transparent; }
+.drag-point .halo { fill: color-mix(in srgb, var(--role) 20%, transparent); }
+.drag-point .ring { fill: var(--sheet); stroke: var(--role); stroke-width: 3; }
+.drag-point .core { fill: var(--role); }
+.drag-point .focus-ring { fill: none; stroke: var(--ink); stroke-width: 2.5; stroke-dasharray: 5 4; opacity: 0; }
+.drag-point:focus-visible .focus-ring { opacity: 1; }
+.drag-point.is-dragging { cursor: grabbing; }
+.drag-point.is-dragging .halo { fill: color-mix(in srgb, var(--role) 34%, transparent); }
+@media (prefers-reduced-motion: no-preference) {
+  .drag-point .halo { transition: fill 0.12s; }
+  .stage-hero .plane [data-part='vector'] { animation: draw-in 0.9s 0.1s ease-out both; }
+  @keyframes draw-in { from { opacity: 0; } to { opacity: 1; } }
+}
+
+/* ───────────── inspector */
+.inspector { display: grid; border-top: 1px solid var(--rule); }
+.inspector-legend { margin-top: 12px; font: 0.8125rem/1.45 var(--font-ui); color: var(--ink-3); }
+.inspector-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 16px; padding: 9px 2px; border-bottom: 1px solid var(--rule); }
+.inspector-row dt { display: flex; align-items: baseline; gap: 10px; font: 0.875rem/1.3 var(--font-ui); color: var(--ink-2); }
+.inspector-row .sym { display: inline-block; min-width: 3.2em; font-size: 1.05rem; color: var(--role-text); }
+.inspector-row dd { margin-left: auto; text-align: right; font: 500 0.9375rem/1.45 var(--font-mono); font-variant-numeric: tabular-nums; }
+.inspector-row .line { display: block; white-space: nowrap; }
+.inspector-row .rel { color: var(--ink-3); margin-right: 0.6ch; }
+.inspector-row .note { display: block; margin-top: 2px; font: 0.8125rem/1.35 var(--font-ui); color: var(--c-caution-text); text-align: right; white-space: normal; }
+.inspector-row.is-secondary dt, .inspector-row.is-secondary dd { color: var(--ink-3); }
+.inspector-row[data-status='undefined'] .val { color: var(--c-caution-text); font-style: italic; }
+@container (max-width: 430px) { .inspector-row .sym { min-width: 2.6em; } .inspector-row dt { font-size: 0.8438rem; } }
+
+/* ───────────── formulas */
+.formula-panel { padding-top: 14px; border-top: 1px solid var(--rule); display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px 36px; align-items: start; }
+.formula-panel .math-scroll { min-width: 0; padding: 2px 0; }
+@container (min-width: 700px) { .stage-full .formula-panel { grid-template-columns: auto auto minmax(0, 1fr); } }
+.formula { font-size: 1em; }
+
+/* ───────────── controls */
+.stage-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px 20px; padding-top: 16px; border-top: 1px solid var(--rule); align-items: start; }
+.param-label { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; font: 500 0.875rem var(--font-ui); color: var(--ink-2); }
+.param-label .sym { color: var(--role-text, var(--ink)); font-size: 1.05rem; }
+.param[data-param='x'] { --role-text: var(--c-x-text); }
+.param[data-param='y'] { --role-text: var(--c-y-text); }
+.param-field { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; }
+.param-field input { min-width: 0; height: 44px; border: 1px solid var(--rule-strong); border-left: 0; border-right: 0; background: var(--paper); text-align: center; font: 500 1rem var(--font-mono); font-variant-numeric: tabular-nums; border-radius: 0; }
+.param-field .step { height: 44px; border: 1px solid var(--rule-strong); background: var(--sheet); font: 500 1.25rem/1 var(--font-ui); }
+.param-field .step:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+.param-field .step:last-child { border-radius: 0 var(--radius) var(--radius) 0; }
+.param-field .step:hover { background: var(--sheet-2); }
+.param-field input[aria-invalid='true'] { border-color: var(--c-caution); box-shadow: inset 0 -2px 0 var(--c-caution); }
+.param-hint { margin-top: 5px; font: 0.8125rem var(--font-ui); color: var(--ink-3); }
+.param-error { margin-top: 5px; font: 500 0.8438rem/1.35 var(--font-ui); color: var(--c-caution-text); }
+.param-error::before { content: '⚠ '; }
+
+.segmented { border: 0; margin: 0; padding: 0; min-width: 0; grid-column: 1 / -1; }
+@container (min-width: 700px) { .segmented { grid-column: auto; } }
+.segmented legend { padding: 0; margin-bottom: 6px; font: 500 0.875rem var(--font-ui); color: var(--ink-2); }
+.segments { display: inline-flex; border: 1px solid var(--rule-strong); border-radius: var(--radius); overflow: hidden; background: var(--sheet); }
+.segment { position: relative; }
+.segment input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.segment span { display: grid; place-items: center; min-width: 48px; height: 44px; padding: 0 12px; font: 500 0.9375rem var(--font-mono); border-left: 1px solid var(--rule); color: var(--ink-2); }
+.segment:first-child span { border-left: 0; }
+.segment input:checked + span { background: var(--ink); color: var(--paper); }
+.segment input:focus-visible + span { outline: 3px solid var(--focus); outline-offset: -3px; }
+
+/* ───────────── "show the work" trace */
+.stage-work { padding-top: 16px; border-top: 1px solid var(--rule); }
+.stage-work h3 { font: 600 1rem/1.3 var(--font-text); margin-bottom: 8px; }
+.trace-body { min-height: 96px; padding: 4px 0 2px; }
+.trace-caption { margin-top: 2px; font: 0.9375rem/1.45 var(--font-ui); color: var(--ink-2); }
+.trace-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; }
+.trace-controls button { min-height: 44px; padding: 0 14px; border: 1px solid var(--rule-strong); border-radius: var(--radius); background: var(--sheet); font: 500 0.9375rem var(--font-ui); }
+.trace-controls button:hover:not(:disabled) { border-color: var(--ink); }
+.trace-controls button:disabled { opacity: 0.4; }
+.trace-scrub { display: flex; align-items: center; gap: 12px; margin-left: auto; min-height: 44px; font: 0.875rem var(--font-ui); color: var(--ink-2); }
+.trace-scrub input { width: 140px; accent-color: var(--c-primary); }
+@media (max-width: 520px) { .trace-scrub { margin-left: 0; width: 100%; } .trace-scrub input { flex: 1; width: auto; } }
