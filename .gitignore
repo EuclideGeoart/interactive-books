@@ -1,0 +1,42 @@
+# Interactive learning-books monorepo.
+# Keep unrelated siblings under /work outside this Git repository.
+/*
+!/.gitignore
+!/README.md
+!/setup-learning-books-github.sh
+!/Interactive-C++-Data-Structures-&-Algorithms-Book/
+!/Interactive-Mathematical-Foundations-Book/
+
+# Generated output and machine-local state in every book
+**/node_modules/
+**/dist/
+**/.astro/
+**/.cpp-build/
+**/.aws/
+**/.codex/
+**/.agents/
+**/test-results/
+**/playwright-report/
+**/.cache/
+**/__pycache__/
+**/.pytest_cache/
+**/.venv/
+**/venv/
+**/coverage/
+**/*.pyc
+**/.DS_Store
+
+# Private credentials; allow harmless sample templates
+**/.env
+**/.env.*
+!**/.env.example
+**/*.pem
+**/*.key
+**/credentials.json
+
+# Completed Book I: keep canonical test baselines, not duplicate/generated deliveries.
+/Interactive-C++-Data-Structures-&-Algorithms-Book/artifacts/*
+!/Interactive-C++-Data-Structures-&-Algorithms-Book/artifacts/chapter-00/
+/Interactive-C++-Data-Structures-&-Algorithms-Book/part-iii-delivery/
+/Interactive-C++-Data-Structures-&-Algorithms-Book/part-iv-delivery/
+/Interactive-C++-Data-Structures-&-Algorithms-Book/documentation/validation/
