@@ -174,6 +174,11 @@ test.describe('compare stage', () => {
     await enter(stage, /input/, '7');
     await expect(stage).toHaveAttribute('data-x', '0'); // rejected, not clamped
     await expect(stage.locator('.param-error')).toBeVisible();
+    // typed values are not snapped to the 0.5 lattice: two decimals are accepted as typed
+    await enter(stage, /vertical scale/, '2.75');
+    await expect(stage).toHaveAttribute('data-a', '2.75');
+    await enter(stage, /input/, '-1.25');
+    await expect(stage).toHaveAttribute('data-x', '-1.25');
   });
   test('the model-built text alternative of the plane names the visible functions', async ({ page }) => {
     const stage = await compare(page);
@@ -219,6 +224,8 @@ test.describe('undoing stage', () => {
     await stage.locator('button[data-preset="ln-negative"]').click();
     await expect(stage).toHaveAttribute('data-returned', 'null');
     expect(await status(stage, 'step-1')).toBe('undefined');
+    await enter(stage, /input/, '709.78');
+    await expect(stage).toHaveAttribute('data-x', '709.78'); // typed values keep their two decimals (the lattice is for the handle only)
     await enter(stage, /input/, '3');
     await expect(stage).toHaveAttribute('data-x', '3');
     await expect(stage).toHaveAttribute('data-order', 'inverse-first');

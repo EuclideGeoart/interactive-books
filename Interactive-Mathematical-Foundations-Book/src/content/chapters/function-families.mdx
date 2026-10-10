@@ -60,7 +60,7 @@ Every function here has a **domain**, the inputs for which it exists, and a **ra
 This family has two knobs, $a$ and $h$. A line through $(h,0)$ with slope $a$ is a line, but only a line through the $x$-axis; $y=a(x-h)$ cannot be a horizontal line other than $y=0$. Adding a vertical shift $k$ (so $y=a\,g(x-h)+k$) or a frequency (as in $\sin 3x$) changes nothing in the reasoning below and is left out to keep the picture readable.
 </Callout>
 
-An exponential has a small surprise hidden in this pattern: shifting it and scaling it are the *same* operation, because $a\,e^{x-h}=(a\,e^{-h})\,e^{x}$. Slide $h$ and watch the curve; then change $a$ to reach the identical curve. No other family does this.
+An exponential has a small surprise hidden in this pattern: shifting it and scaling it are the *same* operation, because $a\,e^{x-h}=(a\,e^{-h})\,e^{x}$. Slide $h$ and watch the curve; then set $a$ close to $e^{-h}$ (about $0.37$ for $h=1$) and the two curves become indistinguishable. Exactly equal needs $a=e^{-h}$, an irrational number that the two-decimal field cannot hold. No other family does this.
 
 ## Mechanics: shifts, scales and inverses
 
@@ -124,10 +124,10 @@ $$
 
 The same constant gives the **doubling time**. For $b>1$ the quantity $b^{x}$ doubles every time $x$ grows by $\ln 2/\ln b$, and for $0<b<1$ it halves every $\ln 2/|\ln b|$. And it converts units of information: $\log_{2}x=\ln x/\ln 2$ counts **bits** and $\ln x$ counts **nats**.
 
-Finally, four identities hold for positive numbers and are what make logarithms useful:
+Finally, these identities hold for positive numbers and are what make logarithms useful (the last is the special case $b=2$ of the third, which is how bits are computed):
 
 $$
-\ln(ab)=\ln a+\ln b,\qquad \ln\!\left(a^{k}\right)=k\ln a,\qquad \log_{b}a=\frac{\ln a}{\ln b} .
+\ln(ab)=\ln a+\ln b,\qquad \ln\!\left(a^{k}\right)=k\ln a,\qquad \log_{b}a=\frac{\ln a}{\ln b},\qquad \log_{2}a=\frac{\ln a}{\ln 2} .
 $$
 
 <Stage caption="Choose a base and an input to see b to the x and its logarithm as mirror images. Below, the identity checker evaluates both sides of each identity on a computer and shows the difference and the tolerance it is judged against.">
