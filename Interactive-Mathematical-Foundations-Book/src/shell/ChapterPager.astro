@@ -16,6 +16,6 @@ const cells = [cell(around.previous, 'previous'), cell(around.next, 'next')];
         : <span />)
     : <>
         <a class="pager-previous" href={href('/contents/')}><span class="dir">← Back to</span><span class="what">The map of the book</span></a>
-        <p class="pager-next is-planned"><span class="dir">Next milestone · planned</span><span class="what">I.3 · Vectors: components, magnitude, and direction</span></p>
+        <a class="pager-next" href={href('/chapters/vectors/')}><span class="dir">The first chapter →</span><span class="what">I.3 · Vectors: components, magnitude, and direction</span></a>
       </>}
 </nav>

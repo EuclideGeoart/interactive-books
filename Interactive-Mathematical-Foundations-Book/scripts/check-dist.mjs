@@ -75,9 +75,12 @@ for (const f of files.filter(f => f.endsWith('.js'))) {
   if (base !== '/' && new RegExp(`["'\`]/_astro/`).test(js)) fail(rel(f), 'hard-coded root-relative /_astro/ URL in a script');
 }
 
-const need = ['index.html', 'contents/index.html', 'foundation/index.html', '404.html'];
+const need = ['index.html', 'contents/index.html', 'foundation/index.html', 'chapters/vectors/index.html', '404.html'];
 for (const n of need) if (!existsSync(join(dist, n))) fail(n, 'expected page was not built');
-if (existsSync(join(dist, 'chapters'))) fail('chapters/', 'no chapter pages should exist in the M2 foundation (REF-1 is milestone M3)');
+// Exactly the published chapters have a page (M3: only I.3 'vectors'); planned chapters must never have one.
+const publishedSlugs = ['vectors'];
+const chapterDirs = existsSync(join(dist, 'chapters')) ? readdirSync(join(dist, 'chapters')) : [];
+if (JSON.stringify([...chapterDirs].sort()) !== JSON.stringify(publishedSlugs)) fail('chapters/', `expected exactly ${publishedSlugs.join(', ')}, found ${chapterDirs.join(', ') || 'none'}`);
 
 console.log(`${distArg} @ ${base}: ${htmlFiles.length} pages, ${files.filter(f => f.endsWith('.css')).length} stylesheets, ${files.length} files checked — ${problems.length ? problems.length + ' PROBLEM(S)' : 'OK'}`);
 for (const p of problems) console.error('  ✗ ' + p);

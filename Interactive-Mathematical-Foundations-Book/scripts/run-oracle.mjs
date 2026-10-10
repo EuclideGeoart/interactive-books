@@ -14,3 +14,4 @@ console.log(`oracle interpreter: ${[cmd, ...pre].join(' ')}`);
 // -X utf8 keeps output encoding identical on Windows consoles (the oracle prints non-ASCII symbols).
 runOrExit(cmd, [...pre, '-X', 'utf8', '-m', 'unittest', 'discover', '-s', 'oracle', '-p', 'test_*.py', '-v']);
 runOrExit(cmd, [...pre, '-X', 'utf8', 'oracle/vector2_oracle.py', '--check']);
+runOrExit(cmd, [...pre, '-X', 'utf8', 'oracle/direction_oracle.py', '--check']);

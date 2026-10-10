@@ -10,9 +10,10 @@
  *    (square), so the layout does not move when that happens.
  */
 import type { ComponentChildren } from 'preact';
-import { useEffect, useId, useMemo, useRef, useState } from 'preact/hooks';
+import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { fitViewport, niceTickStep, tickPositions, visibleWorld, worldToScreen, type WorldWindow } from '../../platform/geometry/viewport';
 import { formatGiven } from '../../platform/numeric/format';
+import { useScopedId } from '../ids';
 import { PlaneContext } from './PlaneContext';
 
 export interface CoordinatePlaneProps {
@@ -68,7 +69,7 @@ function Axes({ vp }: { vp: ReturnType<typeof fitViewport> }) {
 export function CoordinatePlane({ window, label, description, initialSize = 560, children }: CoordinatePlaneProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [size, setSize] = useState({ width: initialSize, height: initialSize });
-  const descriptionId = useId();
+  const descriptionId = useScopedId();
 
   useEffect(() => {
     const svg = svgRef.current;

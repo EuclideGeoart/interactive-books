@@ -5,6 +5,7 @@ const pages = [
   { name: 'home', path: './', title: 'Interactive Mathematical Foundations — Book II', hydrated: true, math: true },
   { name: 'contents', path: 'contents/', title: 'The map of the book — Mathematical Foundations', hydrated: false, math: false },
   { name: 'foundation demo', path: 'foundation/', title: 'Foundation demo — Mathematical Foundations', hydrated: true, math: true },
+  { name: 'vectors chapter', path: 'chapters/vectors/', title: 'Vectors: components, magnitude, and direction — Mathematical Foundations', hydrated: true, math: true },
 ];
 
 /** Collect console errors and any response with status ≥ 400 while the callback runs. */

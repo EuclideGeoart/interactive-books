@@ -78,8 +78,13 @@ describe('curriculum structure', () => {
   });
 });
 
-describe('M2 scope guard', () => {
-  it('REF-1 (I.3 Vectors) is NOT delivered by this milestone: it stays "planned" until M3', () => {
-    expect(findChapter('I.3')?.chapter.status).toBe('planned');
+describe('publication scope guard', () => {
+  it('M3 publishes exactly one chapter, I.3 Vectors, under the slug "vectors"; the other 96 stay planned', () => {
+    const i3 = findChapter('I.3')!;
+    expect(i3.chapter.status).toBe('available');
+    expect(i3.chapter.slug).toBe('vectors');
+    expect(i3.chapter.role).toBe('reference');
+    expect(allChapters.filter(r => r.chapter.status === 'available').map(r => r.id)).toEqual(['I.3']);
+    expect(allChapters.filter(r => r.chapter.status === 'planned')).toHaveLength(96);
   });
 });

@@ -11,7 +11,7 @@ import { Formula } from './Formula';
 
 export interface InspectorRowData {
   readonly id: string;
-  readonly role: 'primary' | 'x' | 'y' | 'derived' | 'caution';
+  readonly role: 'primary' | 'x' | 'y' | 'derived' | 'caution' | 'ink';
   readonly symbolTex: string;
   readonly name: string;
   readonly description: ValueDescription;

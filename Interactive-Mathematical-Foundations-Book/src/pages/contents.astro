@@ -4,7 +4,7 @@ import CurriculumList from '../shell/CurriculumList.astro';
 import { availableCount, chapterCount } from '../curriculum/queries';
 import { href } from '../shell/href';
 ---
-<BaseLayout title="The map of the book" description="All eight Parts and ninety-four planned chapters of Interactive Mathematical Foundations, with the status of each.">
+<BaseLayout title="The map of the book" description={`All eight Parts and ${chapterCount} chapters of Interactive Mathematical Foundations, with the status of each: ${availableCount} written, the rest planned.`}>
   <section class="plain-page contents-page">
     <p class="chapter-label"><span class="label-chip">Contents</span></p>
     <h1 class="hero-question">The map of the <em>book</em>.</h1>

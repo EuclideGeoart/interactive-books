@@ -1,0 +1,7 @@
+---
+/** An in-book link that respects the deployment base path (plain `/foundation/` in MDX would break under a sub-path). */
+import { href } from './href';
+interface Props { to: string }
+const { to } = Astro.props;
+---
+<a href={href(to)}><slot /></a>

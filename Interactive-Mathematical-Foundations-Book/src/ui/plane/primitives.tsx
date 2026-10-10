@@ -6,7 +6,7 @@ import type { ComponentChildren } from 'preact';
 import { arcPoints, worldToScreen, type Point } from '../../platform/geometry/viewport';
 import { usePlane } from './PlaneContext';
 
-export type Role = 'primary' | 'x' | 'y' | 'derived' | 'caution';
+export type Role = 'primary' | 'x' | 'y' | 'derived' | 'caution' | 'ink';
 
 const dist = (a: Point, b: Point) => Math.hypot(b.x - a.x, b.y - a.y);
 
@@ -81,6 +81,13 @@ export function Dot({ at, radius = 3.5, role }: { at: Point; radius?: number; ro
   const { vp } = usePlane();
   const p = worldToScreen(vp, at);
   return <circle class={`dot${role ? ` role-${role}` : ''}`} cx={p.x} cy={p.y} r={radius} aria-hidden="true" />;
+}
+
+/** A filled polygon from world corners (used for the squares in the Pythagorean figure). */
+export function Polygon({ corners, role, name }: { corners: readonly Point[]; role: Role; name?: string }) {
+  const { vp } = usePlane();
+  const points = corners.map(c => worldToScreen(vp, c)).map(p => `${p.x},${p.y}`).join(' ');
+  return <polygon class={`poly role-${role}`} data-part={name} points={points} aria-hidden="true" />;
 }
 
 export type DimensionSide = 'above' | 'below' | 'left' | 'right';

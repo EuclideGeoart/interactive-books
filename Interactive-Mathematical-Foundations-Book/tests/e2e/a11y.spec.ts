@@ -10,7 +10,7 @@ async function scan(page: Page, context: string) {
   expect(summary, context).toEqual([]);
 }
 
-const pages = [{ name: 'home', path: './' }, { name: 'contents', path: 'contents/' }, { name: 'foundation demo', path: 'foundation/' }];
+const pages = [{ name: 'home', path: './' }, { name: 'contents', path: 'contents/' }, { name: 'foundation demo', path: 'foundation/' }, { name: 'vectors chapter', path: 'chapters/vectors/' }];
 
 for (const scheme of ['light', 'dark'] as const) {
   test.describe(`axe — ${scheme} theme`, () => {
@@ -19,6 +19,11 @@ for (const scheme of ['light', 'dark'] as const) {
       test(`${p.name}`, async ({ page }) => {
         await page.goto(p.path);
         if (p.path !== 'contents/') await expect(page.locator('[data-stage][data-hydrated="true"]').first()).toBeVisible();
+        if (p.path === 'chapters/vectors/') {
+          // hydrate every island: scroll each into view, then require them all to be ready
+          for (const el of await page.locator('[data-stage], [data-exercise]').all()) await el.scrollIntoViewIfNeeded();
+          await expect(page.locator('[data-stage]:not([data-hydrated="true"]), [data-exercise]:not([data-hydrated="true"])')).toHaveCount(0);
+        }
         await page.evaluate(() => document.fonts.ready);
         await scan(page, `${p.name} (${scheme})`);
       });
@@ -26,6 +31,22 @@ for (const scheme of ['light', 'dark'] as const) {
     test('the 404 page', async ({ page }) => {
       await page.goto('does-not-exist/');
       await scan(page, `404 (${scheme})`);
+    });
+    test('the chapter stages in unusual states: quadrant II, the zero vector, a wrong exercise answer', async ({ page }) => {
+      await page.goto('chapters/vectors/');
+      const direction = page.locator('[data-stage="direction"]');
+      await direction.scrollIntoViewIfNeeded();
+      await expect(direction).toHaveAttribute('data-hydrated', 'true');
+      await scan(page, `direction quadrant II (${scheme})`);
+      await direction.locator('[data-preset="zero"]').click();
+      await scan(page, `direction zero vector (${scheme})`);
+      const exercise = page.locator('[data-exercise="magnitude-5-12"]');
+      await exercise.scrollIntoViewIfNeeded();
+      await expect(exercise).toHaveAttribute('data-hydrated', 'true');
+      await exercise.locator('[data-field="length"]').fill('17');
+      await exercise.locator('[data-action="check"]').click();
+      await exercise.locator('[data-action="show-solution"]').click();
+      await scan(page, `exercise feedback (${scheme})`);
     });
     test('the book-map dialog (open, and filtered)', async ({ page }) => {
       await page.goto('foundation/');

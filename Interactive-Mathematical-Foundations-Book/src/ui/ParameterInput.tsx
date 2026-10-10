@@ -6,10 +6,11 @@
  * inside the declared domain. Invalid text is REJECTED with a message and `aria-invalid` — never clamped
  * silently, never half-applied. Escape abandons the draft.
  */
-import { useEffect, useId, useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import { MINUS, formatGiven } from '../platform/numeric/format';
 import { describeDomain, parseParam, stepValue, type Grid, type ParamSpec } from '../platform/params';
 import { Formula } from './Formula';
+import { useScopedId } from './ids';
 
 export interface ParameterInputProps {
   spec: ParamSpec;
@@ -21,7 +22,7 @@ export interface ParameterInputProps {
 const asEditable = (n: number) => formatGiven(n).text.replace(MINUS, '-');
 
 export function ParameterInput({ spec, value, grid, onCommit }: ParameterInputProps) {
-  const id = useId();
+  const id = useScopedId();
   const [draft, setDraft] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 

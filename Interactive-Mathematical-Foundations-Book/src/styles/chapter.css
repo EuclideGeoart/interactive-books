@@ -1,0 +1,35 @@
+/* Additive rules for the Vectors chapter's stages and exercises. */
+.plane .poly { fill: color-mix(in srgb, var(--role) 16%, transparent); stroke: var(--role); stroke-width: 1.6; stroke-linejoin: round; }
+.stage-note { font: 0.9375rem/1.5 var(--font-ui); color: var(--ink-2); }
+.stage-note strong { color: var(--ink); }
+.verdict { padding: 10px 12px; border-left: 3px solid var(--c-derived); background: color-mix(in srgb, var(--c-derived) 8%, transparent); font: 0.9375rem/1.5 var(--font-ui); }
+.verdict[data-agree='false'] { border-left-color: var(--c-caution); background: color-mix(in srgb, var(--c-caution) 9%, transparent); }
+.presets { display: flex; flex-wrap: wrap; gap: 8px; }
+.presets button, .example-picks button { min-height: 44px; min-width: 44px; padding: 0 12px; border: 1px solid var(--rule-strong); border-radius: var(--radius); background: var(--sheet); font: 500 0.9375rem var(--font-mono); }
+.presets button[aria-pressed='true'], .example-picks button[aria-pressed='true'] { background: var(--ink); color: var(--paper); }
+.presets-label { font: 500 0.875rem var(--font-ui); color: var(--ink-2); margin-bottom: 6px; }
+.example-picks { display: flex; flex-wrap: wrap; gap: 8px; }
+.exercise { border: 1px solid var(--rule-strong); border-radius: 3px; padding: 16px; margin: 20px 0; background: var(--sheet); }
+.exercise h3 { font: 600 1.0625rem/1.3 var(--font-text); margin-bottom: 8px; }
+.exercise-kind { font: 600 0.75rem/1 var(--font-ui); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px; }
+.exercise fieldset { border: 0; padding: 0; margin: 12px 0; min-width: 0; }
+.exercise legend { font: 500 0.9375rem/1.4 var(--font-ui); margin-bottom: 6px; }
+.exercise label.choice { display: flex; gap: 10px; align-items: flex-start; min-height: 44px; padding: 6px 0; font: 0.9375rem/1.45 var(--font-ui); }
+.exercise .fields { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0; }
+.exercise .fields label { display: grid; gap: 4px; font: 500 0.875rem var(--font-ui); color: var(--ink-2); }
+.exercise input[type='text'] { height: 44px; width: 7.5em; border: 1px solid var(--rule-strong); background: var(--paper); text-align: center; font: 500 1rem var(--font-mono); border-radius: var(--radius); }
+.exercise-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.exercise-actions button { min-height: 44px; padding: 0 16px; border: 1px solid var(--rule-strong); border-radius: var(--radius); background: var(--sheet); font: 500 0.9375rem var(--font-ui); }
+.exercise-actions button.primary { background: var(--ink); color: var(--paper); }
+.feedback { margin-top: 12px; padding: 10px 12px; border-left: 3px solid var(--rule-strong); font: 0.9375rem/1.5 var(--font-ui); }
+.feedback[data-result='correct'] { border-left-color: var(--c-x); }
+.feedback[data-result='incorrect'] { border-left-color: var(--c-caution); }
+.feedback .solution { margin-top: 8px; color: var(--ink-2); }
+.num-table td, .num-table th { font-variant-numeric: tabular-nums; }
+
+/* The stage grid sizes its formula columns for three equations; these stages show one or two. */
+@container (min-width: 700px) {
+  .stage-full[data-stage='pythagoras'] .formula-panel { grid-template-columns: minmax(0, 1fr); }
+  .stage-full[data-stage='placement'] .formula-panel,
+  .stage-full[data-stage='direction'] .formula-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

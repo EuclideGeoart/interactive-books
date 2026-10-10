@@ -1,0 +1,6859 @@
+{
+ "schema": "book2.vector2.direction.fixtures/1",
+ "generatedBy": "oracle/direction_oracle.py",
+ "conventions": {
+  "ratio": "y/x as one correctly rounded division; null when x = 0 (undefined, not +-Infinity)",
+  "naive": "atan(y/x) in (-pi/2, pi/2); null when the ratio is undefined",
+  "halfTurns": "atan2 = atan + halfTurns*pi with halfTurns in {-1, 0, 1}; x>0: 0, x<0 and y>=0: +1, x<0 and y<0: -1; null when x = 0",
+  "location": "origin | I | II | III | IV | +x | −x | +y | −y",
+  "placement": "tip = tail + v and measured = tip - tail in exact decimal arithmetic rounded to 9 places"
+ },
+ "tolerance": {
+  "unit": "ulps of the expected value (math.ulp)",
+  "ratio": 0,
+  "naiveRadians": 4,
+  "atan2Radians": 4,
+  "placement": 0,
+  "rationale": "y/x is one correctly rounded division in both languages (0 ulps). Math.atan and Math.atan2 need not be correctly rounded; the tolerance leaves headroom for other engines. Locations, halfTurns, null/undefined policies and placement sums must match EXACTLY."
+ },
+ "direction": [
+  {
+   "id": "canonical_3_2",
+   "tags": [
+    "plan-15.3",
+    "quadrant"
+   ],
+   "input": {
+    "x": 3,
+    "y": 2
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -3.0,
+     "y": -2.0
+    },
+    "atan2Radians": 0.5880026035475675,
+    "ratio": 0.6666666666666666,
+    "naiveRadians": 0.5880026035475675,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "quadrant_2",
+   "tags": [
+    "quadrant"
+   ],
+   "input": {
+    "x": -3,
+    "y": 2
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 3.0,
+     "y": -2.0
+    },
+    "atan2Radians": 2.5535900500422257,
+    "ratio": -0.6666666666666666,
+    "naiveRadians": -0.5880026035475675,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "quadrant_3",
+   "tags": [
+    "quadrant"
+   ],
+   "input": {
+    "x": -3,
+    "y": -2
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 3.0,
+     "y": 2.0
+    },
+    "atan2Radians": -2.5535900500422257,
+    "ratio": 0.6666666666666666,
+    "naiveRadians": 0.5880026035475675,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "quadrant_4",
+   "tags": [
+    "quadrant"
+   ],
+   "input": {
+    "x": 3,
+    "y": -2
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -3.0,
+     "y": 2.0
+    },
+    "atan2Radians": -0.5880026035475675,
+    "ratio": -0.6666666666666666,
+    "naiveRadians": -0.5880026035475675,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "zero",
+   "tags": [
+    "zero-vector"
+   ],
+   "input": {
+    "x": 0,
+    "y": 0
+   },
+   "expected": {
+    "location": "origin",
+    "mirror": {
+     "x": 0.0,
+     "y": 0.0
+    },
+    "atan2Radians": null,
+    "ratio": null,
+    "naiveRadians": null,
+    "halfTurns": null,
+    "naiveIsCorrect": null
+   }
+  },
+  {
+   "id": "negative_zero_both",
+   "tags": [
+    "zero-vector",
+    "negative-zero"
+   ],
+   "input": {
+    "x": -0.0,
+    "y": -0.0
+   },
+   "expected": {
+    "location": "origin",
+    "mirror": {
+     "x": 0.0,
+     "y": 0.0
+    },
+    "atan2Radians": null,
+    "ratio": null,
+    "naiveRadians": null,
+    "halfTurns": null,
+    "naiveIsCorrect": null
+   }
+  },
+  {
+   "id": "axis_pos_x",
+   "tags": [
+    "axis"
+   ],
+   "input": {
+    "x": 5,
+    "y": 0
+   },
+   "expected": {
+    "location": "+x",
+    "mirror": {
+     "x": -5.0,
+     "y": 0.0
+    },
+    "atan2Radians": 0.0,
+    "ratio": 0.0,
+    "naiveRadians": 0.0,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "axis_neg_x",
+   "tags": [
+    "axis",
+    "branch-cut"
+   ],
+   "input": {
+    "x": -5,
+    "y": 0
+   },
+   "expected": {
+    "location": "−x",
+    "mirror": {
+     "x": 5.0,
+     "y": 0.0
+    },
+    "atan2Radians": 3.141592653589793,
+    "ratio": 0.0,
+    "naiveRadians": 0.0,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "axis_neg_x_negative_zero_y",
+   "tags": [
+    "axis",
+    "branch-cut",
+    "negative-zero"
+   ],
+   "input": {
+    "x": -5,
+    "y": -0.0
+   },
+   "expected": {
+    "location": "−x",
+    "mirror": {
+     "x": 5.0,
+     "y": 0.0
+    },
+    "atan2Radians": 3.141592653589793,
+    "ratio": 0.0,
+    "naiveRadians": 0.0,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "axis_pos_y",
+   "tags": [
+    "axis",
+    "ratio-undefined"
+   ],
+   "input": {
+    "x": 0,
+    "y": 5
+   },
+   "expected": {
+    "location": "+y",
+    "mirror": {
+     "x": 0.0,
+     "y": -5.0
+    },
+    "atan2Radians": 1.5707963267948966,
+    "ratio": null,
+    "naiveRadians": null,
+    "halfTurns": null,
+    "naiveIsCorrect": null
+   }
+  },
+  {
+   "id": "axis_neg_y",
+   "tags": [
+    "axis",
+    "ratio-undefined"
+   ],
+   "input": {
+    "x": 0,
+    "y": -5
+   },
+   "expected": {
+    "location": "−y",
+    "mirror": {
+     "x": 0.0,
+     "y": 5.0
+    },
+    "atan2Radians": -1.5707963267948966,
+    "ratio": null,
+    "naiveRadians": null,
+    "halfTurns": null,
+    "naiveIsCorrect": null
+   }
+  },
+  {
+   "id": "axis_pos_y_negative_zero_x",
+   "tags": [
+    "axis",
+    "ratio-undefined",
+    "negative-zero"
+   ],
+   "input": {
+    "x": -0.0,
+    "y": 5
+   },
+   "expected": {
+    "location": "+y",
+    "mirror": {
+     "x": 0.0,
+     "y": -5.0
+    },
+    "atan2Radians": 1.5707963267948966,
+    "ratio": null,
+    "naiveRadians": null,
+    "halfTurns": null,
+    "naiveIsCorrect": null
+   }
+  },
+  {
+   "id": "tiny_equal",
+   "tags": [
+    "tiny"
+   ],
+   "input": {
+    "x": 1e-200,
+    "y": 1e-200
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -1e-200,
+     "y": -1e-200
+    },
+    "atan2Radians": 0.7853981633974483,
+    "ratio": 1.0,
+    "naiveRadians": 0.7853981633974483,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "tiny_third_quadrant",
+   "tags": [
+    "tiny"
+   ],
+   "input": {
+    "x": -1e-200,
+    "y": -1e-200
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 1e-200,
+     "y": 1e-200
+    },
+    "atan2Radians": -2.356194490192345,
+    "ratio": 1.0,
+    "naiveRadians": 0.7853981633974483,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "tiny_x_small_ratio_huge",
+   "tags": [
+    "tiny",
+    "ratio-overflows"
+   ],
+   "input": {
+    "x": 1e-300,
+    "y": 1e+300
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -1e-300,
+     "y": -1e+300
+    },
+    "atan2Radians": 1.5707963267948966,
+    "ratio": "Infinity",
+    "naiveRadians": 1.5707963267948966,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "large_equal",
+   "tags": [
+    "large"
+   ],
+   "input": {
+    "x": 1e+200,
+    "y": 1e+200
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -1e+200,
+     "y": -1e+200
+    },
+    "atan2Radians": 0.7853981633974483,
+    "ratio": 1.0,
+    "naiveRadians": 0.7853981633974483,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "large_second_quadrant",
+   "tags": [
+    "large"
+   ],
+   "input": {
+    "x": -1e+200,
+    "y": 1e+200
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 1e+200,
+     "y": -1e+200
+    },
+    "atan2Radians": 2.356194490192345,
+    "ratio": -1.0,
+    "naiveRadians": -0.7853981633974483,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "ratio_underflows",
+   "tags": [
+    "ratio-underflows"
+   ],
+   "input": {
+    "x": 1e+300,
+    "y": 1e-300
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -1e+300,
+     "y": -1e-300
+    },
+    "atan2Radians": 0.0,
+    "ratio": 0.0,
+    "naiveRadians": 0.0,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_-4_-4",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -4,
+    "y": -4
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 4.0,
+     "y": 4.0
+    },
+    "atan2Radians": -2.356194490192345,
+    "ratio": 1.0,
+    "naiveRadians": 0.7853981633974483,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-4_-3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -4,
+    "y": -3
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 4.0,
+     "y": 3.0
+    },
+    "atan2Radians": -2.498091544796509,
+    "ratio": 0.75,
+    "naiveRadians": 0.6435011087932844,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-4_-2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -4,
+    "y": -2
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 4.0,
+     "y": 2.0
+    },
+    "atan2Radians": -2.677945044588987,
+    "ratio": 0.5,
+    "naiveRadians": 0.4636476090008061,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-4_-1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -4,
+    "y": -1
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 4.0,
+     "y": 1.0
+    },
+    "atan2Radians": -2.896613990462929,
+    "ratio": 0.25,
+    "naiveRadians": 0.24497866312686414,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-4_0",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -4,
+    "y": 0
+   },
+   "expected": {
+    "location": "−x",
+    "mirror": {
+     "x": 4.0,
+     "y": 0.0
+    },
+    "atan2Radians": 3.141592653589793,
+    "ratio": 0.0,
+    "naiveRadians": 0.0,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-4_1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -4,
+    "y": 1
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 4.0,
+     "y": -1.0
+    },
+    "atan2Radians": 2.896613990462929,
+    "ratio": -0.25,
+    "naiveRadians": -0.24497866312686414,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-4_2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -4,
+    "y": 2
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 4.0,
+     "y": -2.0
+    },
+    "atan2Radians": 2.677945044588987,
+    "ratio": -0.5,
+    "naiveRadians": -0.4636476090008061,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-4_3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -4,
+    "y": 3
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 4.0,
+     "y": -3.0
+    },
+    "atan2Radians": 2.498091544796509,
+    "ratio": -0.75,
+    "naiveRadians": -0.6435011087932844,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-4_4",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -4,
+    "y": 4
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 4.0,
+     "y": -4.0
+    },
+    "atan2Radians": 2.356194490192345,
+    "ratio": -1.0,
+    "naiveRadians": -0.7853981633974483,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-3_-4",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -3,
+    "y": -4
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 3.0,
+     "y": 4.0
+    },
+    "atan2Radians": -2.214297435588181,
+    "ratio": 1.3333333333333333,
+    "naiveRadians": 0.9272952180016122,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-3_-3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -3,
+    "y": -3
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 3.0,
+     "y": 3.0
+    },
+    "atan2Radians": -2.356194490192345,
+    "ratio": 1.0,
+    "naiveRadians": 0.7853981633974483,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-3_-2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -3,
+    "y": -2
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 3.0,
+     "y": 2.0
+    },
+    "atan2Radians": -2.5535900500422257,
+    "ratio": 0.6666666666666666,
+    "naiveRadians": 0.5880026035475675,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-3_-1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -3,
+    "y": -1
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 3.0,
+     "y": 1.0
+    },
+    "atan2Radians": -2.819842099193151,
+    "ratio": 0.3333333333333333,
+    "naiveRadians": 0.3217505543966422,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-3_0",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -3,
+    "y": 0
+   },
+   "expected": {
+    "location": "−x",
+    "mirror": {
+     "x": 3.0,
+     "y": 0.0
+    },
+    "atan2Radians": 3.141592653589793,
+    "ratio": 0.0,
+    "naiveRadians": 0.0,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-3_1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -3,
+    "y": 1
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 3.0,
+     "y": -1.0
+    },
+    "atan2Radians": 2.819842099193151,
+    "ratio": -0.3333333333333333,
+    "naiveRadians": -0.3217505543966422,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-3_2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -3,
+    "y": 2
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 3.0,
+     "y": -2.0
+    },
+    "atan2Radians": 2.5535900500422257,
+    "ratio": -0.6666666666666666,
+    "naiveRadians": -0.5880026035475675,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-3_3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -3,
+    "y": 3
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 3.0,
+     "y": -3.0
+    },
+    "atan2Radians": 2.356194490192345,
+    "ratio": -1.0,
+    "naiveRadians": -0.7853981633974483,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-3_4",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -3,
+    "y": 4
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 3.0,
+     "y": -4.0
+    },
+    "atan2Radians": 2.214297435588181,
+    "ratio": -1.3333333333333333,
+    "naiveRadians": -0.9272952180016122,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-2_-4",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -2,
+    "y": -4
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 2.0,
+     "y": 4.0
+    },
+    "atan2Radians": -2.0344439357957027,
+    "ratio": 2.0,
+    "naiveRadians": 1.1071487177940904,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-2_-3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -2,
+    "y": -3
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 2.0,
+     "y": 3.0
+    },
+    "atan2Radians": -2.158798930342464,
+    "ratio": 1.5,
+    "naiveRadians": 0.982793723247329,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-2_-2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -2,
+    "y": -2
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 2.0,
+     "y": 2.0
+    },
+    "atan2Radians": -2.356194490192345,
+    "ratio": 1.0,
+    "naiveRadians": 0.7853981633974483,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-2_-1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -2,
+    "y": -1
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 2.0,
+     "y": 1.0
+    },
+    "atan2Radians": -2.677945044588987,
+    "ratio": 0.5,
+    "naiveRadians": 0.4636476090008061,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-2_0",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -2,
+    "y": 0
+   },
+   "expected": {
+    "location": "−x",
+    "mirror": {
+     "x": 2.0,
+     "y": 0.0
+    },
+    "atan2Radians": 3.141592653589793,
+    "ratio": 0.0,
+    "naiveRadians": 0.0,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-2_1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -2,
+    "y": 1
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 2.0,
+     "y": -1.0
+    },
+    "atan2Radians": 2.677945044588987,
+    "ratio": -0.5,
+    "naiveRadians": -0.4636476090008061,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-2_2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -2,
+    "y": 2
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 2.0,
+     "y": -2.0
+    },
+    "atan2Radians": 2.356194490192345,
+    "ratio": -1.0,
+    "naiveRadians": -0.7853981633974483,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-2_3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -2,
+    "y": 3
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 2.0,
+     "y": -3.0
+    },
+    "atan2Radians": 2.158798930342464,
+    "ratio": -1.5,
+    "naiveRadians": -0.982793723247329,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-2_4",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -2,
+    "y": 4
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 2.0,
+     "y": -4.0
+    },
+    "atan2Radians": 2.0344439357957027,
+    "ratio": -2.0,
+    "naiveRadians": -1.1071487177940904,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-1_-4",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -1,
+    "y": -4
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 1.0,
+     "y": 4.0
+    },
+    "atan2Radians": -1.8157749899217608,
+    "ratio": 4.0,
+    "naiveRadians": 1.3258176636680326,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-1_-3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -1,
+    "y": -3
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 1.0,
+     "y": 3.0
+    },
+    "atan2Radians": -1.892546881191539,
+    "ratio": 3.0,
+    "naiveRadians": 1.2490457723982544,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-1_-2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -1,
+    "y": -2
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 1.0,
+     "y": 2.0
+    },
+    "atan2Radians": -2.0344439357957027,
+    "ratio": 2.0,
+    "naiveRadians": 1.1071487177940904,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-1_-1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -1,
+    "y": -1
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 1.0,
+     "y": 1.0
+    },
+    "atan2Radians": -2.356194490192345,
+    "ratio": 1.0,
+    "naiveRadians": 0.7853981633974483,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-1_0",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -1,
+    "y": 0
+   },
+   "expected": {
+    "location": "−x",
+    "mirror": {
+     "x": 1.0,
+     "y": 0.0
+    },
+    "atan2Radians": 3.141592653589793,
+    "ratio": 0.0,
+    "naiveRadians": 0.0,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-1_1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -1,
+    "y": 1
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 1.0,
+     "y": -1.0
+    },
+    "atan2Radians": 2.356194490192345,
+    "ratio": -1.0,
+    "naiveRadians": -0.7853981633974483,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-1_2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -1,
+    "y": 2
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 1.0,
+     "y": -2.0
+    },
+    "atan2Radians": 2.0344439357957027,
+    "ratio": -2.0,
+    "naiveRadians": -1.1071487177940904,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-1_3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -1,
+    "y": 3
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 1.0,
+     "y": -3.0
+    },
+    "atan2Radians": 1.892546881191539,
+    "ratio": -3.0,
+    "naiveRadians": -1.2490457723982544,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_-1_4",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -1,
+    "y": 4
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 1.0,
+     "y": -4.0
+    },
+    "atan2Radians": 1.8157749899217608,
+    "ratio": -4.0,
+    "naiveRadians": -1.3258176636680326,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "grid_0_-4",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 0,
+    "y": -4
+   },
+   "expected": {
+    "location": "−y",
+    "mirror": {
+     "x": 0.0,
+     "y": 4.0
+    },
+    "atan2Radians": -1.5707963267948966,
+    "ratio": null,
+    "naiveRadians": null,
+    "halfTurns": null,
+    "naiveIsCorrect": null
+   }
+  },
+  {
+   "id": "grid_0_-3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 0,
+    "y": -3
+   },
+   "expected": {
+    "location": "−y",
+    "mirror": {
+     "x": 0.0,
+     "y": 3.0
+    },
+    "atan2Radians": -1.5707963267948966,
+    "ratio": null,
+    "naiveRadians": null,
+    "halfTurns": null,
+    "naiveIsCorrect": null
+   }
+  },
+  {
+   "id": "grid_0_-2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 0,
+    "y": -2
+   },
+   "expected": {
+    "location": "−y",
+    "mirror": {
+     "x": 0.0,
+     "y": 2.0
+    },
+    "atan2Radians": -1.5707963267948966,
+    "ratio": null,
+    "naiveRadians": null,
+    "halfTurns": null,
+    "naiveIsCorrect": null
+   }
+  },
+  {
+   "id": "grid_0_-1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 0,
+    "y": -1
+   },
+   "expected": {
+    "location": "−y",
+    "mirror": {
+     "x": 0.0,
+     "y": 1.0
+    },
+    "atan2Radians": -1.5707963267948966,
+    "ratio": null,
+    "naiveRadians": null,
+    "halfTurns": null,
+    "naiveIsCorrect": null
+   }
+  },
+  {
+   "id": "grid_0_0",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 0,
+    "y": 0
+   },
+   "expected": {
+    "location": "origin",
+    "mirror": {
+     "x": 0.0,
+     "y": 0.0
+    },
+    "atan2Radians": null,
+    "ratio": null,
+    "naiveRadians": null,
+    "halfTurns": null,
+    "naiveIsCorrect": null
+   }
+  },
+  {
+   "id": "grid_0_1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 0,
+    "y": 1
+   },
+   "expected": {
+    "location": "+y",
+    "mirror": {
+     "x": 0.0,
+     "y": -1.0
+    },
+    "atan2Radians": 1.5707963267948966,
+    "ratio": null,
+    "naiveRadians": null,
+    "halfTurns": null,
+    "naiveIsCorrect": null
+   }
+  },
+  {
+   "id": "grid_0_2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 0,
+    "y": 2
+   },
+   "expected": {
+    "location": "+y",
+    "mirror": {
+     "x": 0.0,
+     "y": -2.0
+    },
+    "atan2Radians": 1.5707963267948966,
+    "ratio": null,
+    "naiveRadians": null,
+    "halfTurns": null,
+    "naiveIsCorrect": null
+   }
+  },
+  {
+   "id": "grid_0_3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 0,
+    "y": 3
+   },
+   "expected": {
+    "location": "+y",
+    "mirror": {
+     "x": 0.0,
+     "y": -3.0
+    },
+    "atan2Radians": 1.5707963267948966,
+    "ratio": null,
+    "naiveRadians": null,
+    "halfTurns": null,
+    "naiveIsCorrect": null
+   }
+  },
+  {
+   "id": "grid_0_4",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 0,
+    "y": 4
+   },
+   "expected": {
+    "location": "+y",
+    "mirror": {
+     "x": 0.0,
+     "y": -4.0
+    },
+    "atan2Radians": 1.5707963267948966,
+    "ratio": null,
+    "naiveRadians": null,
+    "halfTurns": null,
+    "naiveIsCorrect": null
+   }
+  },
+  {
+   "id": "grid_1_-4",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 1,
+    "y": -4
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -1.0,
+     "y": 4.0
+    },
+    "atan2Radians": -1.3258176636680326,
+    "ratio": -4.0,
+    "naiveRadians": -1.3258176636680326,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_1_-3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 1,
+    "y": -3
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -1.0,
+     "y": 3.0
+    },
+    "atan2Radians": -1.2490457723982544,
+    "ratio": -3.0,
+    "naiveRadians": -1.2490457723982544,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_1_-2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 1,
+    "y": -2
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -1.0,
+     "y": 2.0
+    },
+    "atan2Radians": -1.1071487177940904,
+    "ratio": -2.0,
+    "naiveRadians": -1.1071487177940904,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_1_-1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 1,
+    "y": -1
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -1.0,
+     "y": 1.0
+    },
+    "atan2Radians": -0.7853981633974483,
+    "ratio": -1.0,
+    "naiveRadians": -0.7853981633974483,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_1_0",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 1,
+    "y": 0
+   },
+   "expected": {
+    "location": "+x",
+    "mirror": {
+     "x": -1.0,
+     "y": 0.0
+    },
+    "atan2Radians": 0.0,
+    "ratio": 0.0,
+    "naiveRadians": 0.0,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_1_1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 1,
+    "y": 1
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -1.0,
+     "y": -1.0
+    },
+    "atan2Radians": 0.7853981633974483,
+    "ratio": 1.0,
+    "naiveRadians": 0.7853981633974483,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_1_2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 1,
+    "y": 2
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -1.0,
+     "y": -2.0
+    },
+    "atan2Radians": 1.1071487177940904,
+    "ratio": 2.0,
+    "naiveRadians": 1.1071487177940904,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_1_3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 1,
+    "y": 3
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -1.0,
+     "y": -3.0
+    },
+    "atan2Radians": 1.2490457723982544,
+    "ratio": 3.0,
+    "naiveRadians": 1.2490457723982544,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_1_4",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 1,
+    "y": 4
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -1.0,
+     "y": -4.0
+    },
+    "atan2Radians": 1.3258176636680326,
+    "ratio": 4.0,
+    "naiveRadians": 1.3258176636680326,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_2_-4",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 2,
+    "y": -4
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -2.0,
+     "y": 4.0
+    },
+    "atan2Radians": -1.1071487177940904,
+    "ratio": -2.0,
+    "naiveRadians": -1.1071487177940904,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_2_-3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 2,
+    "y": -3
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -2.0,
+     "y": 3.0
+    },
+    "atan2Radians": -0.982793723247329,
+    "ratio": -1.5,
+    "naiveRadians": -0.982793723247329,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_2_-2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 2,
+    "y": -2
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -2.0,
+     "y": 2.0
+    },
+    "atan2Radians": -0.7853981633974483,
+    "ratio": -1.0,
+    "naiveRadians": -0.7853981633974483,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_2_-1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 2,
+    "y": -1
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -2.0,
+     "y": 1.0
+    },
+    "atan2Radians": -0.4636476090008061,
+    "ratio": -0.5,
+    "naiveRadians": -0.4636476090008061,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_2_0",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 2,
+    "y": 0
+   },
+   "expected": {
+    "location": "+x",
+    "mirror": {
+     "x": -2.0,
+     "y": 0.0
+    },
+    "atan2Radians": 0.0,
+    "ratio": 0.0,
+    "naiveRadians": 0.0,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_2_1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 2,
+    "y": 1
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -2.0,
+     "y": -1.0
+    },
+    "atan2Radians": 0.4636476090008061,
+    "ratio": 0.5,
+    "naiveRadians": 0.4636476090008061,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_2_2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 2,
+    "y": 2
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -2.0,
+     "y": -2.0
+    },
+    "atan2Radians": 0.7853981633974483,
+    "ratio": 1.0,
+    "naiveRadians": 0.7853981633974483,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_2_3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 2,
+    "y": 3
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -2.0,
+     "y": -3.0
+    },
+    "atan2Radians": 0.982793723247329,
+    "ratio": 1.5,
+    "naiveRadians": 0.982793723247329,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_2_4",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 2,
+    "y": 4
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -2.0,
+     "y": -4.0
+    },
+    "atan2Radians": 1.1071487177940904,
+    "ratio": 2.0,
+    "naiveRadians": 1.1071487177940904,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_3_-4",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 3,
+    "y": -4
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -3.0,
+     "y": 4.0
+    },
+    "atan2Radians": -0.9272952180016122,
+    "ratio": -1.3333333333333333,
+    "naiveRadians": -0.9272952180016122,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_3_-3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 3,
+    "y": -3
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -3.0,
+     "y": 3.0
+    },
+    "atan2Radians": -0.7853981633974483,
+    "ratio": -1.0,
+    "naiveRadians": -0.7853981633974483,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_3_-2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 3,
+    "y": -2
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -3.0,
+     "y": 2.0
+    },
+    "atan2Radians": -0.5880026035475675,
+    "ratio": -0.6666666666666666,
+    "naiveRadians": -0.5880026035475675,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_3_-1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 3,
+    "y": -1
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -3.0,
+     "y": 1.0
+    },
+    "atan2Radians": -0.3217505543966422,
+    "ratio": -0.3333333333333333,
+    "naiveRadians": -0.3217505543966422,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_3_0",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 3,
+    "y": 0
+   },
+   "expected": {
+    "location": "+x",
+    "mirror": {
+     "x": -3.0,
+     "y": 0.0
+    },
+    "atan2Radians": 0.0,
+    "ratio": 0.0,
+    "naiveRadians": 0.0,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_3_1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 3,
+    "y": 1
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -3.0,
+     "y": -1.0
+    },
+    "atan2Radians": 0.3217505543966422,
+    "ratio": 0.3333333333333333,
+    "naiveRadians": 0.3217505543966422,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_3_2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 3,
+    "y": 2
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -3.0,
+     "y": -2.0
+    },
+    "atan2Radians": 0.5880026035475675,
+    "ratio": 0.6666666666666666,
+    "naiveRadians": 0.5880026035475675,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_3_3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 3,
+    "y": 3
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -3.0,
+     "y": -3.0
+    },
+    "atan2Radians": 0.7853981633974483,
+    "ratio": 1.0,
+    "naiveRadians": 0.7853981633974483,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_3_4",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 3,
+    "y": 4
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -3.0,
+     "y": -4.0
+    },
+    "atan2Radians": 0.9272952180016122,
+    "ratio": 1.3333333333333333,
+    "naiveRadians": 0.9272952180016122,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_4_-4",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 4,
+    "y": -4
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -4.0,
+     "y": 4.0
+    },
+    "atan2Radians": -0.7853981633974483,
+    "ratio": -1.0,
+    "naiveRadians": -0.7853981633974483,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_4_-3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 4,
+    "y": -3
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -4.0,
+     "y": 3.0
+    },
+    "atan2Radians": -0.6435011087932844,
+    "ratio": -0.75,
+    "naiveRadians": -0.6435011087932844,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_4_-2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 4,
+    "y": -2
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -4.0,
+     "y": 2.0
+    },
+    "atan2Radians": -0.4636476090008061,
+    "ratio": -0.5,
+    "naiveRadians": -0.4636476090008061,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_4_-1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 4,
+    "y": -1
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -4.0,
+     "y": 1.0
+    },
+    "atan2Radians": -0.24497866312686414,
+    "ratio": -0.25,
+    "naiveRadians": -0.24497866312686414,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_4_0",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 4,
+    "y": 0
+   },
+   "expected": {
+    "location": "+x",
+    "mirror": {
+     "x": -4.0,
+     "y": 0.0
+    },
+    "atan2Radians": 0.0,
+    "ratio": 0.0,
+    "naiveRadians": 0.0,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_4_1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 4,
+    "y": 1
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -4.0,
+     "y": -1.0
+    },
+    "atan2Radians": 0.24497866312686414,
+    "ratio": 0.25,
+    "naiveRadians": 0.24497866312686414,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_4_2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 4,
+    "y": 2
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -4.0,
+     "y": -2.0
+    },
+    "atan2Radians": 0.4636476090008061,
+    "ratio": 0.5,
+    "naiveRadians": 0.4636476090008061,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_4_3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 4,
+    "y": 3
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -4.0,
+     "y": -3.0
+    },
+    "atan2Radians": 0.6435011087932844,
+    "ratio": 0.75,
+    "naiveRadians": 0.6435011087932844,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "grid_4_4",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 4,
+    "y": 4
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -4.0,
+     "y": -4.0
+    },
+    "atan2Radians": 0.7853981633974483,
+    "ratio": 1.0,
+    "naiveRadians": 0.7853981633974483,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_000",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 1.5,
+    "y": -0.1
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -1.5,
+     "y": 0.1
+    },
+    "atan2Radians": -0.06656816377582381,
+    "ratio": -0.06666666666666667,
+    "naiveRadians": -0.06656816377582381,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_001",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 5.2,
+    "y": 0.1
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -5.2,
+     "y": -0.1
+    },
+    "atan2Radians": 0.019228399099707208,
+    "ratio": 0.019230769230769232,
+    "naiveRadians": 0.019228399099707208,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_002",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 4.7,
+    "y": -2.2
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -4.7,
+     "y": 2.2
+    },
+    "atan2Radians": -0.4377913036415464,
+    "ratio": -0.46808510638297873,
+    "naiveRadians": -0.4377913036415464,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_003",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -4.7,
+    "y": 3.2
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 4.7,
+     "y": -3.2
+    },
+    "atan2Radians": 2.5438342619967114,
+    "ratio": -0.6808510638297872,
+    "naiveRadians": -0.5977583915930821,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_004",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 2.0,
+    "y": 3.9
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -2.0,
+     "y": -3.9
+    },
+    "atan2Radians": 1.0969449903001363,
+    "ratio": 1.95,
+    "naiveRadians": 1.0969449903001363,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_005",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -1.6,
+    "y": 3.5
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 1.6,
+     "y": -3.5
+    },
+    "atan2Radians": 1.999574354240913,
+    "ratio": -2.1875,
+    "naiveRadians": -1.1420182993488803,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_006",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 0.9,
+    "y": -4.6
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -0.9,
+     "y": 4.6
+    },
+    "atan2Radians": -1.3775848429470905,
+    "ratio": -5.111111111111111,
+    "naiveRadians": -1.3775848429470905,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_007",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -0.1,
+    "y": 5.5
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 0.1,
+     "y": -5.5
+    },
+    "atan2Radians": 1.588976141867875,
+    "ratio": -55.0,
+    "naiveRadians": -1.5526165117219184,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_008",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -0.3,
+    "y": -4.4
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 0.3,
+     "y": 4.4
+    },
+    "atan2Radians": -1.6388727850528961,
+    "ratio": 14.666666666666668,
+    "naiveRadians": 1.5027198685368972,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_009",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 5.9,
+    "y": 1.9
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -5.9,
+     "y": -1.9
+    },
+    "atan2Radians": 0.3115468269026879,
+    "ratio": 0.3220338983050847,
+    "naiveRadians": 0.3115468269026879,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_010",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 2.6,
+    "y": -1.1
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -2.6,
+     "y": 1.1
+    },
+    "atan2Radians": -0.40024065703397416,
+    "ratio": -0.4230769230769231,
+    "naiveRadians": -0.40024065703397416,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_011",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 1.8,
+    "y": -3.8
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -1.8,
+     "y": 3.8
+    },
+    "atan2Radians": -1.1284221038181517,
+    "ratio": -2.111111111111111,
+    "naiveRadians": -1.1284221038181517,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_012",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 3.2,
+    "y": -4.3
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -3.2,
+     "y": 4.3
+    },
+    "atan2Radians": -0.9310265439682709,
+    "ratio": -1.3437499999999998,
+    "naiveRadians": -0.9310265439682709,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_013",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -0.2,
+    "y": 2.4
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 0.2,
+     "y": -2.4
+    },
+    "atan2Radians": 1.6539375586833378,
+    "ratio": -11.999999999999998,
+    "naiveRadians": -1.4876550949064553,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_014",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -1.3,
+    "y": 0.6
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 1.3,
+     "y": -0.6
+    },
+    "atan2Radians": 2.7091848780192556,
+    "ratio": -0.4615384615384615,
+    "naiveRadians": -0.43240777557053783,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_015",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 5.0,
+    "y": -5.7
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -5.0,
+     "y": 5.7
+    },
+    "atan2Radians": -0.8507256330207998,
+    "ratio": -1.1400000000000001,
+    "naiveRadians": -0.8507256330208,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_016",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -2.2,
+    "y": 4.8
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 2.2,
+     "y": -4.8
+    },
+    "atan2Radians": 2.000558605891585,
+    "ratio": -2.1818181818181817,
+    "naiveRadians": -1.1410340476982082,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_017",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 1.1,
+    "y": 5.2
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -1.1,
+     "y": -5.2
+    },
+    "atan2Radians": 1.3623311084149088,
+    "ratio": 4.727272727272727,
+    "naiveRadians": 1.3623311084149088,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_018",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -5.3,
+    "y": -5.5
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 5.3,
+     "y": 5.5
+    },
+    "atan2Radians": -2.3376780881243358,
+    "ratio": 1.0377358490566038,
+    "naiveRadians": 0.8039145654654574,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_019",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 4.2,
+    "y": -1.1
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -4.2,
+     "y": 1.1
+    },
+    "atan2Radians": -0.25615138256560344,
+    "ratio": -0.2619047619047619,
+    "naiveRadians": -0.25615138256560344,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_020",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -3.2,
+    "y": -3.3
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 3.2,
+     "y": 3.3
+    },
+    "atan2Radians": -2.34081108841175,
+    "ratio": 1.0312499999999998,
+    "naiveRadians": 0.8007815651780433,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_021",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 4.8,
+    "y": 1.4
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -4.8,
+     "y": -1.4
+    },
+    "atan2Radians": 0.2837941092083278,
+    "ratio": 0.2916666666666667,
+    "naiveRadians": 0.28379410920832787,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_022",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 1.7,
+    "y": -0.8
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -1.7,
+     "y": 0.8
+    },
+    "atan2Radians": -0.4398425828157362,
+    "ratio": -0.4705882352941177,
+    "naiveRadians": -0.43984258281573624,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_023",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 0.4,
+    "y": 4.7
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -0.4,
+     "y": -4.7
+    },
+    "atan2Radians": 1.4858945333451747,
+    "ratio": 11.75,
+    "naiveRadians": 1.4858945333451747,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_024",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -4.3,
+    "y": 4.4
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 4.3,
+     "y": -4.4
+    },
+    "atan2Radians": 2.3447007434773144,
+    "ratio": -1.0232558139534884,
+    "naiveRadians": -0.7968919101124788,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_025",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 0.2,
+    "y": -1.8
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -0.2,
+     "y": 1.8
+    },
+    "atan2Radians": -1.460139105621001,
+    "ratio": -9.0,
+    "naiveRadians": -1.460139105621001,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_026",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 2.4,
+    "y": -3.4
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -2.4,
+     "y": 3.4
+    },
+    "atan2Radians": -0.9561333748727311,
+    "ratio": -1.4166666666666667,
+    "naiveRadians": -0.9561333748727311,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_027",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 0.1,
+    "y": -5.6
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -0.1,
+     "y": 5.6
+    },
+    "atan2Radians": -1.5529410816553442,
+    "ratio": -55.99999999999999,
+    "naiveRadians": -1.5529410816553442,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_028",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 0.1,
+    "y": -5.3
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -0.1,
+     "y": 5.3
+    },
+    "atan2Radians": -1.5519306407732258,
+    "ratio": -52.99999999999999,
+    "naiveRadians": -1.5519306407732258,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_029",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 5.3,
+    "y": -3.9
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -5.3,
+     "y": 3.9
+    },
+    "atan2Radians": -0.634382820476089,
+    "ratio": -0.7358490566037736,
+    "naiveRadians": -0.634382820476089,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_030",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 1.4,
+    "y": -3.5
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -1.4,
+     "y": 3.5
+    },
+    "atan2Radians": -1.1902899496825317,
+    "ratio": -2.5,
+    "naiveRadians": -1.1902899496825317,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_031",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -5.5,
+    "y": 2.7
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 5.5,
+     "y": -2.7
+    },
+    "atan2Radians": 2.6852441850326842,
+    "ratio": -0.49090909090909096,
+    "naiveRadians": -0.456348468557109,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_032",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -5.7,
+    "y": 0.2
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 5.7,
+     "y": -0.2
+    },
+    "atan2Radians": 3.1065193230565677,
+    "ratio": -0.03508771929824561,
+    "naiveRadians": -0.035073330533225366,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_033",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -3.0,
+    "y": -6.0
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 3.0,
+     "y": 6.0
+    },
+    "atan2Radians": -2.0344439357957027,
+    "ratio": 2.0,
+    "naiveRadians": 1.1071487177940904,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_034",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 4.6,
+    "y": -5.0
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -4.6,
+     "y": 5.0
+    },
+    "atan2Radians": -0.8270407424960368,
+    "ratio": -1.0869565217391306,
+    "naiveRadians": -0.8270407424960368,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_035",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 4.1,
+    "y": -4.4
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -4.1,
+     "y": 4.4
+    },
+    "atan2Radians": -0.8206776369910397,
+    "ratio": -1.0731707317073174,
+    "naiveRadians": -0.8206776369910397,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_036",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -2.0,
+    "y": 0.3
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 2.0,
+     "y": -0.3
+    },
+    "atan2Radians": 2.992702705980296,
+    "ratio": -0.15,
+    "naiveRadians": -0.14888994760949725,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_037",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -4.7,
+    "y": 4.0
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 4.7,
+     "y": -4.0
+    },
+    "atan2Radians": 2.4364813054753616,
+    "ratio": -0.851063829787234,
+    "naiveRadians": -0.7051113481144319,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_038",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 3.5,
+    "y": -4.1
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -3.5,
+     "y": 4.1
+    },
+    "atan2Radians": -0.864182124386592,
+    "ratio": -1.1714285714285713,
+    "naiveRadians": -0.864182124386592,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_039",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 5.5,
+    "y": -2.4
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -5.5,
+     "y": 2.4
+    },
+    "atan2Radians": -0.41145624341370224,
+    "ratio": -0.43636363636363634,
+    "naiveRadians": -0.41145624341370224,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_040",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 4.5,
+    "y": -2.5
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -4.5,
+     "y": 2.5
+    },
+    "atan2Radians": -0.507098504392337,
+    "ratio": -0.5555555555555556,
+    "naiveRadians": -0.507098504392337,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_041",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 5.1,
+    "y": 5.4
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -5.1,
+     "y": -5.4
+    },
+    "atan2Radians": 0.8139618212362084,
+    "ratio": 1.058823529411765,
+    "naiveRadians": 0.8139618212362084,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_042",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 5.1,
+    "y": 4.6
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -5.1,
+     "y": -4.6
+    },
+    "atan2Radians": 0.7338973524462228,
+    "ratio": 0.9019607843137255,
+    "naiveRadians": 0.7338973524462229,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_043",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -0.7,
+    "y": -5.0
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 0.7,
+     "y": 5.0
+    },
+    "atan2Radians": -1.709892268276968,
+    "ratio": 7.142857142857143,
+    "naiveRadians": 1.4317003853128254,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_044",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 4.2,
+    "y": 3.7
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -4.2,
+     "y": -3.7
+    },
+    "atan2Radians": 0.722191331499988,
+    "ratio": 0.8809523809523809,
+    "naiveRadians": 0.722191331499988,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_045",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -1.4,
+    "y": -2.6
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 1.4,
+     "y": 2.6
+    },
+    "atan2Radians": -2.0647376957144776,
+    "ratio": 1.8571428571428574,
+    "naiveRadians": 1.0768549578753155,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_046",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 2.2,
+    "y": -0.9
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -2.2,
+     "y": 0.9
+    },
+    "atan2Radians": -0.388318718172466,
+    "ratio": -0.40909090909090906,
+    "naiveRadians": -0.388318718172466,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_047",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -5.4,
+    "y": -0.8
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 5.4,
+     "y": 0.8
+    },
+    "atan2Radians": -2.994514298201391,
+    "ratio": 0.14814814814814814,
+    "naiveRadians": 0.1470783553884025,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_048",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 4.3,
+    "y": 4.6
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -4.3,
+     "y": -4.6
+    },
+    "atan2Radians": 0.8190932707434646,
+    "ratio": 1.069767441860465,
+    "naiveRadians": 0.8190932707434646,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_049",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 4.7,
+    "y": -5.6
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -4.7,
+     "y": 5.6
+    },
+    "atan2Radians": -0.8725554379517315,
+    "ratio": -1.1914893617021276,
+    "naiveRadians": -0.8725554379517315,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_050",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -4.8,
+    "y": -0.5
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 4.8,
+     "y": 0.5
+    },
+    "atan2Radians": -3.0378003131327502,
+    "ratio": 0.10416666666666667,
+    "naiveRadians": 0.10379234045704283,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_051",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 0.4,
+    "y": 0.7
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -0.4,
+     "y": -0.7
+    },
+    "atan2Radians": 1.0516502125483735,
+    "ratio": 1.7499999999999998,
+    "naiveRadians": 1.0516502125483735,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_052",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 4.4,
+    "y": -2.1
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -4.4,
+     "y": 2.1
+    },
+    "atan2Radians": -0.4453010438876858,
+    "ratio": -0.47727272727272724,
+    "naiveRadians": -0.4453010438876858,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_053",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -5.8,
+    "y": -0.7
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 5.8,
+     "y": 0.7
+    },
+    "atan2Radians": -3.0214839180228803,
+    "ratio": 0.12068965517241378,
+    "naiveRadians": 0.12010873556691287,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_054",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 1.6,
+    "y": 0.4
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -1.6,
+     "y": -0.4
+    },
+    "atan2Radians": 0.24497866312686414,
+    "ratio": 0.25,
+    "naiveRadians": 0.24497866312686414,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_055",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -2.8,
+    "y": -2.7
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 2.8,
+     "y": 2.7
+    },
+    "atan2Radians": -2.3743743052653232,
+    "ratio": 0.9642857142857144,
+    "naiveRadians": 0.7672183483244701,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_056",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -2.2,
+    "y": -5.1
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 2.2,
+     "y": 5.1
+    },
+    "atan2Radians": -1.9780521748697435,
+    "ratio": 2.318181818181818,
+    "naiveRadians": 1.1635404787200498,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_057",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 1.3,
+    "y": -1.3
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -1.3,
+     "y": 1.3
+    },
+    "atan2Radians": -0.7853981633974483,
+    "ratio": -1.0,
+    "naiveRadians": -0.7853981633974483,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_058",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -3.5,
+    "y": -3.8
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 3.5,
+     "y": 3.8
+    },
+    "atan2Radians": -2.3151217116018907,
+    "ratio": 1.0857142857142856,
+    "naiveRadians": 0.8264709419879024,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_059",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -0.5,
+    "y": 5.1
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 0.5,
+     "y": -5.1
+    },
+    "atan2Radians": 1.6685232341536154,
+    "ratio": -10.2,
+    "naiveRadians": -1.473069419436178,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_060",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 0.1,
+    "y": 0.6
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -0.1,
+     "y": -0.6
+    },
+    "atan2Radians": 1.4056476493802699,
+    "ratio": 5.999999999999999,
+    "naiveRadians": 1.4056476493802696,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_061",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 0.2,
+    "y": 4.8
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -0.2,
+     "y": -4.8
+    },
+    "atan2Radians": 1.5291537476963082,
+    "ratio": 23.999999999999996,
+    "naiveRadians": 1.5291537476963082,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_062",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 3.0,
+    "y": 1.5
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -3.0,
+     "y": -1.5
+    },
+    "atan2Radians": 0.4636476090008061,
+    "ratio": 0.5,
+    "naiveRadians": 0.4636476090008061,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_063",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -4.1,
+    "y": -4.2
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 4.1,
+     "y": 4.2
+    },
+    "atan2Radians": -2.3441468803381587,
+    "ratio": 1.024390243902439,
+    "naiveRadians": 0.7974457732516343,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_064",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -4.1,
+    "y": 3.7
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 4.1,
+     "y": -3.7
+    },
+    "atan2Radians": 2.4074316575957635,
+    "ratio": -0.902439024390244,
+    "naiveRadians": -0.7341609959940296,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_065",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -3.7,
+    "y": -4.8
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 3.7,
+     "y": 4.8
+    },
+    "atan2Radians": -2.227497988914331,
+    "ratio": 1.2972972972972971,
+    "naiveRadians": 0.9140946646754624,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_066",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -4.2,
+    "y": 4.1
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 4.2,
+     "y": -4.1
+    },
+    "atan2Radians": 2.368242100046531,
+    "ratio": -0.976190476190476,
+    "naiveRadians": -0.7733505535432622,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_067",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 5.0,
+    "y": 3.6
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -5.0,
+     "y": -3.6
+    },
+    "atan2Radians": 0.6240230529767569,
+    "ratio": 0.72,
+    "naiveRadians": 0.6240230529767569,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_068",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -2.2,
+    "y": -2.2
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 2.2,
+     "y": 2.2
+    },
+    "atan2Radians": -2.356194490192345,
+    "ratio": 1.0,
+    "naiveRadians": 0.7853981633974483,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_069",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -4.1,
+    "y": 2.3
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 4.1,
+     "y": -2.3
+    },
+    "atan2Radians": 2.6303619413120036,
+    "ratio": -0.5609756097560976,
+    "naiveRadians": -0.5112307122777896,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_070",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 2.0,
+    "y": 5.1
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -2.0,
+     "y": -5.1
+    },
+    "atan2Radians": 1.197069506829343,
+    "ratio": 2.55,
+    "naiveRadians": 1.197069506829343,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_071",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 4.8,
+    "y": 3.8
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -4.8,
+     "y": -3.8
+    },
+    "atan2Radians": 0.6696389456766376,
+    "ratio": 0.7916666666666666,
+    "naiveRadians": 0.6696389456766376,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_072",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -3.9,
+    "y": 2.1
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 3.9,
+     "y": -2.1
+    },
+    "atan2Radians": 2.647651284670212,
+    "ratio": -0.5384615384615385,
+    "naiveRadians": -0.4939413689195813,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_073",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -0.3,
+    "y": -2.4
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 0.3,
+     "y": 2.4
+    },
+    "atan2Radians": -1.695151321341658,
+    "ratio": 8.0,
+    "naiveRadians": 1.446441332248135,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_074",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 3.3,
+    "y": 0.0
+   },
+   "expected": {
+    "location": "+x",
+    "mirror": {
+     "x": -3.3,
+     "y": 0.0
+    },
+    "atan2Radians": 0.0,
+    "ratio": 0.0,
+    "naiveRadians": 0.0,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_075",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -4.5,
+    "y": -3.8
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 4.5,
+     "y": 3.8
+    },
+    "atan2Radians": -2.440332730723516,
+    "ratio": 0.8444444444444444,
+    "naiveRadians": 0.7012599228662774,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_076",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 5.4,
+    "y": 5.0
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -5.4,
+     "y": -5.0
+    },
+    "atan2Radians": 0.7469555733762603,
+    "ratio": 0.9259259259259258,
+    "naiveRadians": 0.7469555733762603,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_077",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -2.6,
+    "y": -4.1
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 2.6,
+     "y": 4.1
+    },
+    "atan2Radians": -2.135945766801656,
+    "ratio": 1.5769230769230766,
+    "naiveRadians": 1.0056468867881372,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_078",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -0.1,
+    "y": -1.4
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 0.1,
+     "y": 1.4
+    },
+    "atan2Radians": -1.642103791580187,
+    "ratio": 13.999999999999998,
+    "naiveRadians": 1.4994888620096063,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_079",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 2.4,
+    "y": -1.9
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -2.4,
+     "y": 1.9
+    },
+    "atan2Radians": -0.6696389456766376,
+    "ratio": -0.7916666666666666,
+    "naiveRadians": -0.6696389456766376,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_080",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -4.5,
+    "y": 1.4
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 4.5,
+     "y": -1.4
+    },
+    "atan2Radians": 2.8399736073235538,
+    "ratio": -0.3111111111111111,
+    "naiveRadians": -0.3016190462662397,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_081",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -4.2,
+    "y": 3.7
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 4.2,
+     "y": -3.7
+    },
+    "atan2Radians": 2.419401322089805,
+    "ratio": -0.8809523809523809,
+    "naiveRadians": -0.722191331499988,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_082",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 3.2,
+    "y": 0.6
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -3.2,
+     "y": -0.6
+    },
+    "atan2Radians": 0.18534794999569476,
+    "ratio": 0.18749999999999997,
+    "naiveRadians": 0.18534794999569473,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_083",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -3.0,
+    "y": -1.8
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 3.0,
+     "y": 1.8
+    },
+    "atan2Radians": -2.601173153319209,
+    "ratio": 0.6,
+    "naiveRadians": 0.5404195002705842,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_084",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 4.4,
+    "y": -3.1
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -4.4,
+     "y": 3.1
+    },
+    "atan2Radians": -0.6137700950165683,
+    "ratio": -0.7045454545454545,
+    "naiveRadians": -0.6137700950165683,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_085",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -1.9,
+    "y": -5.7
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 1.9,
+     "y": 5.7
+    },
+    "atan2Radians": -1.8925468811915387,
+    "ratio": 3.0000000000000004,
+    "naiveRadians": 1.2490457723982544,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_086",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 2.6,
+    "y": -4.4
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -2.6,
+     "y": 4.4
+    },
+    "atan2Radians": -1.0370881351556351,
+    "ratio": -1.6923076923076923,
+    "naiveRadians": -1.0370881351556351,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_087",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 4.9,
+    "y": 2.8
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -4.9,
+     "y": -2.8
+    },
+    "atan2Radians": 0.5191461142465229,
+    "ratio": 0.5714285714285714,
+    "naiveRadians": 0.5191461142465229,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_088",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -5.8,
+    "y": -3.4
+   },
+   "expected": {
+    "location": "III",
+    "mirror": {
+     "x": 5.8,
+     "y": 3.4
+    },
+    "atan2Radians": -2.611376880813163,
+    "ratio": 0.5862068965517241,
+    "naiveRadians": 0.5302157727766299,
+    "halfTurns": -1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_089",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 4.0,
+    "y": -2.1
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -4.0,
+     "y": 2.1
+    },
+    "atan2Radians": -0.483447001567199,
+    "ratio": -0.525,
+    "naiveRadians": -0.483447001567199,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_090",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -0.1,
+    "y": 2.4
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 0.1,
+     "y": -2.4
+    },
+    "atan2Radians": 1.6124389058934852,
+    "ratio": -23.999999999999996,
+    "naiveRadians": -1.5291537476963082,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_091",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -1.3,
+    "y": 4.1
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 1.3,
+     "y": -4.1
+    },
+    "atan2Radians": 1.8778420588136875,
+    "ratio": -3.1538461538461533,
+    "naiveRadians": -1.2637505947761059,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_092",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 3.7,
+    "y": 1.2
+   },
+   "expected": {
+    "location": "I",
+    "mirror": {
+     "x": -3.7,
+     "y": -1.2
+    },
+    "atan2Radians": 0.31362065221669827,
+    "ratio": 0.3243243243243243,
+    "naiveRadians": 0.31362065221669827,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_093",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -3.6,
+    "y": 2.6
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 3.6,
+     "y": -2.6
+    },
+    "atan2Radians": 2.516107613350564,
+    "ratio": -0.7222222222222222,
+    "naiveRadians": -0.625485040239229,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_094",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -0.6,
+    "y": 3.1
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 0.6,
+     "y": -3.1
+    },
+    "atan2Radians": 1.761980786391911,
+    "ratio": -5.166666666666667,
+    "naiveRadians": -1.379611867197882,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_095",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -5.6,
+    "y": 5.3
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 5.6,
+     "y": -5.3
+    },
+    "atan2Radians": 2.3837104794777995,
+    "ratio": -0.9464285714285715,
+    "naiveRadians": -0.757882174111994,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_096",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 1.1,
+    "y": 0.0
+   },
+   "expected": {
+    "location": "+x",
+    "mirror": {
+     "x": -1.1,
+     "y": 0.0
+    },
+    "atan2Radians": 0.0,
+    "ratio": 0.0,
+    "naiveRadians": 0.0,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_097",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 3.9,
+    "y": -2.2
+   },
+   "expected": {
+    "location": "IV",
+    "mirror": {
+     "x": -3.9,
+     "y": 2.2
+    },
+    "atan2Radians": -0.513606004722749,
+    "ratio": -0.5641025641025642,
+    "naiveRadians": -0.513606004722749,
+    "halfTurns": 0,
+    "naiveIsCorrect": true
+   }
+  },
+  {
+   "id": "random_dec_098",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -5.8,
+    "y": 2.9
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 5.8,
+     "y": -2.9
+    },
+    "atan2Radians": 2.677945044588987,
+    "ratio": -0.5,
+    "naiveRadians": -0.4636476090008061,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  },
+  {
+   "id": "random_dec_099",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -0.2,
+    "y": 1.1
+   },
+   "expected": {
+    "location": "II",
+    "mirror": {
+     "x": 0.2,
+     "y": -1.1
+    },
+    "atan2Radians": 1.750649826587375,
+    "ratio": -5.5,
+    "naiveRadians": -1.3909428270024184,
+    "halfTurns": 1,
+    "naiveIsCorrect": false
+   }
+  }
+ ],
+ "placement": [
+  {
+   "id": "canonical_origin_tail",
+   "tags": [],
+   "input": {
+    "tx": 0,
+    "ty": 0,
+    "vx": 3,
+    "vy": 2
+   },
+   "expected": {
+    "tip": {
+     "x": 3.0,
+     "y": 2.0
+    },
+    "measured": {
+     "x": 3.0,
+     "y": 2.0
+    }
+   }
+  },
+  {
+   "id": "shifted_tail",
+   "tags": [],
+   "input": {
+    "tx": 1,
+    "ty": -1,
+    "vx": 3,
+    "vy": 2
+   },
+   "expected": {
+    "tip": {
+     "x": 4.0,
+     "y": 1.0
+    },
+    "measured": {
+     "x": 3.0,
+     "y": 2.0
+    }
+   }
+  },
+  {
+   "id": "negative_tail",
+   "tags": [],
+   "input": {
+    "tx": -2,
+    "ty": -1,
+    "vx": 3,
+    "vy": 2
+   },
+   "expected": {
+    "tip": {
+     "x": 1.0,
+     "y": 1.0
+    },
+    "measured": {
+     "x": 3.0,
+     "y": 2.0
+    }
+   }
+  },
+  {
+   "id": "decimal_2_3_plus_0_1",
+   "tags": [
+    "decimal"
+   ],
+   "input": {
+    "tx": 2.3,
+    "ty": 0,
+    "vx": 0.1,
+    "vy": 0
+   },
+   "expected": {
+    "tip": {
+     "x": 2.4,
+     "y": 0.0
+    },
+    "measured": {
+     "x": 0.1,
+     "y": 0.0
+    }
+   }
+  },
+  {
+   "id": "decimal_0_1_plus_0_2",
+   "tags": [
+    "decimal"
+   ],
+   "input": {
+    "tx": 0.1,
+    "ty": 0.2,
+    "vx": 0.2,
+    "vy": 0.1
+   },
+   "expected": {
+    "tip": {
+     "x": 0.3,
+     "y": 0.3
+    },
+    "measured": {
+     "x": 0.2,
+     "y": 0.1
+    }
+   }
+  },
+  {
+   "id": "negative_zero_result",
+   "tags": [
+    "negative-zero"
+   ],
+   "input": {
+    "tx": -3,
+    "ty": 2,
+    "vx": 3,
+    "vy": -2
+   },
+   "expected": {
+    "tip": {
+     "x": 0.0,
+     "y": 0.0
+    },
+    "measured": {
+     "x": 3.0,
+     "y": -2.0
+    }
+   }
+  },
+  {
+   "id": "zero_vector",
+   "tags": [
+    "zero-vector"
+   ],
+   "input": {
+    "tx": 4,
+    "ty": -4,
+    "vx": 0,
+    "vy": 0
+   },
+   "expected": {
+    "tip": {
+     "x": 4.0,
+     "y": -4.0
+    },
+    "measured": {
+     "x": 0.0,
+     "y": 0.0
+    }
+   }
+  },
+  {
+   "id": "random_000",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 2.6,
+    "ty": -3.1,
+    "vx": 2.9,
+    "vy": -3.4
+   },
+   "expected": {
+    "tip": {
+     "x": 5.5,
+     "y": -6.5
+    },
+    "measured": {
+     "x": 2.9,
+     "y": -3.4
+    }
+   }
+  },
+  {
+   "id": "random_001",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -3.1,
+    "ty": -3.7,
+    "vx": -2.6,
+    "vy": 0.1
+   },
+   "expected": {
+    "tip": {
+     "x": -5.7,
+     "y": -3.6
+    },
+    "measured": {
+     "x": -2.6,
+     "y": 0.1
+    }
+   }
+  },
+  {
+   "id": "random_002",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -1.6,
+    "ty": -1.5,
+    "vx": 2.7,
+    "vy": 3.7
+   },
+   "expected": {
+    "tip": {
+     "x": 1.1,
+     "y": 2.2
+    },
+    "measured": {
+     "x": 2.7,
+     "y": 3.7
+    }
+   }
+  },
+  {
+   "id": "random_003",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -0.8,
+    "ty": 3.4,
+    "vx": -0.5,
+    "vy": -0.3
+   },
+   "expected": {
+    "tip": {
+     "x": -1.3,
+     "y": 3.1
+    },
+    "measured": {
+     "x": -0.5,
+     "y": -0.3
+    }
+   }
+  },
+  {
+   "id": "random_004",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -2.8,
+    "ty": -3.7,
+    "vx": -3.5,
+    "vy": 2.6
+   },
+   "expected": {
+    "tip": {
+     "x": -6.3,
+     "y": -1.1
+    },
+    "measured": {
+     "x": -3.5,
+     "y": 2.6
+    }
+   }
+  },
+  {
+   "id": "random_005",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 2.8,
+    "ty": 2.7,
+    "vx": -3.2,
+    "vy": 0.5
+   },
+   "expected": {
+    "tip": {
+     "x": -0.4,
+     "y": 3.2
+    },
+    "measured": {
+     "x": -3.2,
+     "y": 0.5
+    }
+   }
+  },
+  {
+   "id": "random_006",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 2.4,
+    "ty": -3.2,
+    "vx": 2.5,
+    "vy": -2.4
+   },
+   "expected": {
+    "tip": {
+     "x": 4.9,
+     "y": -5.6
+    },
+    "measured": {
+     "x": 2.5,
+     "y": -2.4
+    }
+   }
+  },
+  {
+   "id": "random_007",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 2.7,
+    "ty": -2.0,
+    "vx": -4.0,
+    "vy": 2.1
+   },
+   "expected": {
+    "tip": {
+     "x": -1.3,
+     "y": 0.1
+    },
+    "measured": {
+     "x": -4.0,
+     "y": 2.1
+    }
+   }
+  },
+  {
+   "id": "random_008",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 1.3,
+    "ty": -1.0,
+    "vx": -1.0,
+    "vy": -2.1
+   },
+   "expected": {
+    "tip": {
+     "x": 0.3,
+     "y": -3.1
+    },
+    "measured": {
+     "x": -1.0,
+     "y": -2.1
+    }
+   }
+  },
+  {
+   "id": "random_009",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -0.7,
+    "ty": -0.8,
+    "vx": 1.1,
+    "vy": 1.3
+   },
+   "expected": {
+    "tip": {
+     "x": 0.4,
+     "y": 0.5
+    },
+    "measured": {
+     "x": 1.1,
+     "y": 1.3
+    }
+   }
+  },
+  {
+   "id": "random_010",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -0.1,
+    "ty": 1.1,
+    "vx": -0.8,
+    "vy": -2.9
+   },
+   "expected": {
+    "tip": {
+     "x": -0.9,
+     "y": -1.8
+    },
+    "measured": {
+     "x": -0.8,
+     "y": -2.9
+    }
+   }
+  },
+  {
+   "id": "random_011",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 1.5,
+    "ty": 2.1,
+    "vx": 3.6,
+    "vy": 2.1
+   },
+   "expected": {
+    "tip": {
+     "x": 5.1,
+     "y": 4.2
+    },
+    "measured": {
+     "x": 3.6,
+     "y": 2.1
+    }
+   }
+  },
+  {
+   "id": "random_012",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -3.7,
+    "ty": -0.3,
+    "vx": -3.4,
+    "vy": 1.2
+   },
+   "expected": {
+    "tip": {
+     "x": -7.1,
+     "y": 0.9
+    },
+    "measured": {
+     "x": -3.4,
+     "y": 1.2
+    }
+   }
+  },
+  {
+   "id": "random_013",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 1.6,
+    "ty": 2.0,
+    "vx": -2.0,
+    "vy": -1.5
+   },
+   "expected": {
+    "tip": {
+     "x": -0.4,
+     "y": 0.5
+    },
+    "measured": {
+     "x": -2.0,
+     "y": -1.5
+    }
+   }
+  },
+  {
+   "id": "random_014",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -0.1,
+    "ty": 0.0,
+    "vx": 1.1,
+    "vy": 1.7
+   },
+   "expected": {
+    "tip": {
+     "x": 1.0,
+     "y": 1.7
+    },
+    "measured": {
+     "x": 1.1,
+     "y": 1.7
+    }
+   }
+  },
+  {
+   "id": "random_015",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -3.5,
+    "ty": -2.2,
+    "vx": 3.3,
+    "vy": 3.5
+   },
+   "expected": {
+    "tip": {
+     "x": -0.2,
+     "y": 1.3
+    },
+    "measured": {
+     "x": 3.3,
+     "y": 3.5
+    }
+   }
+  },
+  {
+   "id": "random_016",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -1.9,
+    "ty": -3.7,
+    "vx": -1.4,
+    "vy": 0.3
+   },
+   "expected": {
+    "tip": {
+     "x": -3.3,
+     "y": -3.4
+    },
+    "measured": {
+     "x": -1.4,
+     "y": 0.3
+    }
+   }
+  },
+  {
+   "id": "random_017",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 3.6,
+    "ty": 3.1,
+    "vx": -2.9,
+    "vy": 1.8
+   },
+   "expected": {
+    "tip": {
+     "x": 0.7,
+     "y": 4.9
+    },
+    "measured": {
+     "x": -2.9,
+     "y": 1.8
+    }
+   }
+  },
+  {
+   "id": "random_018",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -2.6,
+    "ty": 0.3,
+    "vx": 3.3,
+    "vy": -0.9
+   },
+   "expected": {
+    "tip": {
+     "x": 0.7,
+     "y": -0.6
+    },
+    "measured": {
+     "x": 3.3,
+     "y": -0.9
+    }
+   }
+  },
+  {
+   "id": "random_019",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 2.2,
+    "ty": -0.3,
+    "vx": 1.4,
+    "vy": 4.0
+   },
+   "expected": {
+    "tip": {
+     "x": 3.6,
+     "y": 3.7
+    },
+    "measured": {
+     "x": 1.4,
+     "y": 4.0
+    }
+   }
+  },
+  {
+   "id": "random_020",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 3.8,
+    "ty": -1.8,
+    "vx": 0.5,
+    "vy": 0.7
+   },
+   "expected": {
+    "tip": {
+     "x": 4.3,
+     "y": -1.1
+    },
+    "measured": {
+     "x": 0.5,
+     "y": 0.7
+    }
+   }
+  },
+  {
+   "id": "random_021",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -2.2,
+    "ty": 2.3,
+    "vx": -3.4,
+    "vy": -2.4
+   },
+   "expected": {
+    "tip": {
+     "x": -5.6,
+     "y": -0.1
+    },
+    "measured": {
+     "x": -3.4,
+     "y": -2.4
+    }
+   }
+  },
+  {
+   "id": "random_022",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -1.5,
+    "ty": -3.8,
+    "vx": -4.0,
+    "vy": 3.9
+   },
+   "expected": {
+    "tip": {
+     "x": -5.5,
+     "y": 0.1
+    },
+    "measured": {
+     "x": -4.0,
+     "y": 3.9
+    }
+   }
+  },
+  {
+   "id": "random_023",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 3.9,
+    "ty": -0.4,
+    "vx": -3.3,
+    "vy": -2.5
+   },
+   "expected": {
+    "tip": {
+     "x": 0.6,
+     "y": -2.9
+    },
+    "measured": {
+     "x": -3.3,
+     "y": -2.5
+    }
+   }
+  },
+  {
+   "id": "random_024",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -1.8,
+    "ty": -3.7,
+    "vx": 3.8,
+    "vy": -2.1
+   },
+   "expected": {
+    "tip": {
+     "x": 2.0,
+     "y": -5.8
+    },
+    "measured": {
+     "x": 3.8,
+     "y": -2.1
+    }
+   }
+  },
+  {
+   "id": "random_025",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -2.5,
+    "ty": 2.6,
+    "vx": 3.2,
+    "vy": -3.1
+   },
+   "expected": {
+    "tip": {
+     "x": 0.7,
+     "y": -0.5
+    },
+    "measured": {
+     "x": 3.2,
+     "y": -3.1
+    }
+   }
+  },
+  {
+   "id": "random_026",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 0.0,
+    "ty": 0.5,
+    "vx": 0.7,
+    "vy": -0.9
+   },
+   "expected": {
+    "tip": {
+     "x": 0.7,
+     "y": -0.4
+    },
+    "measured": {
+     "x": 0.7,
+     "y": -0.9
+    }
+   }
+  },
+  {
+   "id": "random_027",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -1.3,
+    "ty": 3.3,
+    "vx": -0.8,
+    "vy": 2.0
+   },
+   "expected": {
+    "tip": {
+     "x": -2.1,
+     "y": 5.3
+    },
+    "measured": {
+     "x": -0.8,
+     "y": 2.0
+    }
+   }
+  },
+  {
+   "id": "random_028",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 1.5,
+    "ty": 2.1,
+    "vx": -3.6,
+    "vy": 2.6
+   },
+   "expected": {
+    "tip": {
+     "x": -2.1,
+     "y": 4.7
+    },
+    "measured": {
+     "x": -3.6,
+     "y": 2.6
+    }
+   }
+  },
+  {
+   "id": "random_029",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -2.7,
+    "ty": -1.7,
+    "vx": -3.8,
+    "vy": -1.4
+   },
+   "expected": {
+    "tip": {
+     "x": -6.5,
+     "y": -3.1
+    },
+    "measured": {
+     "x": -3.8,
+     "y": -1.4
+    }
+   }
+  },
+  {
+   "id": "random_030",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 1.0,
+    "ty": 0.3,
+    "vx": 1.4,
+    "vy": 1.8
+   },
+   "expected": {
+    "tip": {
+     "x": 2.4,
+     "y": 2.1
+    },
+    "measured": {
+     "x": 1.4,
+     "y": 1.8
+    }
+   }
+  },
+  {
+   "id": "random_031",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 0.9,
+    "ty": -0.2,
+    "vx": -1.8,
+    "vy": -0.9
+   },
+   "expected": {
+    "tip": {
+     "x": -0.9,
+     "y": -1.1
+    },
+    "measured": {
+     "x": -1.8,
+     "y": -0.9
+    }
+   }
+  },
+  {
+   "id": "random_032",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -2.0,
+    "ty": 2.0,
+    "vx": 0.7,
+    "vy": -1.5
+   },
+   "expected": {
+    "tip": {
+     "x": -1.3,
+     "y": 0.5
+    },
+    "measured": {
+     "x": 0.7,
+     "y": -1.5
+    }
+   }
+  },
+  {
+   "id": "random_033",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -2.1,
+    "ty": 3.1,
+    "vx": -2.5,
+    "vy": 3.2
+   },
+   "expected": {
+    "tip": {
+     "x": -4.6,
+     "y": 6.3
+    },
+    "measured": {
+     "x": -2.5,
+     "y": 3.2
+    }
+   }
+  },
+  {
+   "id": "random_034",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -2.8,
+    "ty": -1.3,
+    "vx": 0.5,
+    "vy": 2.6
+   },
+   "expected": {
+    "tip": {
+     "x": -2.3,
+     "y": 1.3
+    },
+    "measured": {
+     "x": 0.5,
+     "y": 2.6
+    }
+   }
+  },
+  {
+   "id": "random_035",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -2.8,
+    "ty": -2.2,
+    "vx": 0.8,
+    "vy": -2.1
+   },
+   "expected": {
+    "tip": {
+     "x": -2.0,
+     "y": -4.3
+    },
+    "measured": {
+     "x": 0.8,
+     "y": -2.1
+    }
+   }
+  },
+  {
+   "id": "random_036",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 2.0,
+    "ty": 3.2,
+    "vx": 1.5,
+    "vy": -2.0
+   },
+   "expected": {
+    "tip": {
+     "x": 3.5,
+     "y": 1.2
+    },
+    "measured": {
+     "x": 1.5,
+     "y": -2.0
+    }
+   }
+  },
+  {
+   "id": "random_037",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -3.5,
+    "ty": -2.6,
+    "vx": -1.6,
+    "vy": -2.2
+   },
+   "expected": {
+    "tip": {
+     "x": -5.1,
+     "y": -4.8
+    },
+    "measured": {
+     "x": -1.6,
+     "y": -2.2
+    }
+   }
+  },
+  {
+   "id": "random_038",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -0.1,
+    "ty": 3.7,
+    "vx": -1.6,
+    "vy": -0.7
+   },
+   "expected": {
+    "tip": {
+     "x": -1.7,
+     "y": 3.0
+    },
+    "measured": {
+     "x": -1.6,
+     "y": -0.7
+    }
+   }
+  },
+  {
+   "id": "random_039",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -1.5,
+    "ty": 0.1,
+    "vx": -3.6,
+    "vy": 1.1
+   },
+   "expected": {
+    "tip": {
+     "x": -5.1,
+     "y": 1.2
+    },
+    "measured": {
+     "x": -3.6,
+     "y": 1.1
+    }
+   }
+  },
+  {
+   "id": "random_040",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -0.8,
+    "ty": -3.4,
+    "vx": -2.2,
+    "vy": -1.8
+   },
+   "expected": {
+    "tip": {
+     "x": -3.0,
+     "y": -5.2
+    },
+    "measured": {
+     "x": -2.2,
+     "y": -1.8
+    }
+   }
+  },
+  {
+   "id": "random_041",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -1.5,
+    "ty": -3.9,
+    "vx": 3.3,
+    "vy": -2.3
+   },
+   "expected": {
+    "tip": {
+     "x": 1.8,
+     "y": -6.2
+    },
+    "measured": {
+     "x": 3.3,
+     "y": -2.3
+    }
+   }
+  },
+  {
+   "id": "random_042",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 0.7,
+    "ty": -3.6,
+    "vx": 2.4,
+    "vy": -2.0
+   },
+   "expected": {
+    "tip": {
+     "x": 3.1,
+     "y": -5.6
+    },
+    "measured": {
+     "x": 2.4,
+     "y": -2.0
+    }
+   }
+  },
+  {
+   "id": "random_043",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 1.6,
+    "ty": 0.4,
+    "vx": 0.6,
+    "vy": -2.7
+   },
+   "expected": {
+    "tip": {
+     "x": 2.2,
+     "y": -2.3
+    },
+    "measured": {
+     "x": 0.6,
+     "y": -2.7
+    }
+   }
+  },
+  {
+   "id": "random_044",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -2.1,
+    "ty": -3.9,
+    "vx": -1.7,
+    "vy": 2.9
+   },
+   "expected": {
+    "tip": {
+     "x": -3.8,
+     "y": -1.0
+    },
+    "measured": {
+     "x": -1.7,
+     "y": 2.9
+    }
+   }
+  },
+  {
+   "id": "random_045",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -0.2,
+    "ty": -3.4,
+    "vx": 3.8,
+    "vy": -0.4
+   },
+   "expected": {
+    "tip": {
+     "x": 3.6,
+     "y": -3.8
+    },
+    "measured": {
+     "x": 3.8,
+     "y": -0.4
+    }
+   }
+  },
+  {
+   "id": "random_046",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -4.0,
+    "ty": 0.7,
+    "vx": 0.4,
+    "vy": -0.6
+   },
+   "expected": {
+    "tip": {
+     "x": -3.6,
+     "y": 0.1
+    },
+    "measured": {
+     "x": 0.4,
+     "y": -0.6
+    }
+   }
+  },
+  {
+   "id": "random_047",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 1.9,
+    "ty": -2.1,
+    "vx": 1.7,
+    "vy": 3.9
+   },
+   "expected": {
+    "tip": {
+     "x": 3.6,
+     "y": 1.8
+    },
+    "measured": {
+     "x": 1.7,
+     "y": 3.9
+    }
+   }
+  },
+  {
+   "id": "random_048",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -1.6,
+    "ty": 1.5,
+    "vx": -1.2,
+    "vy": -2.0
+   },
+   "expected": {
+    "tip": {
+     "x": -2.8,
+     "y": -0.5
+    },
+    "measured": {
+     "x": -1.2,
+     "y": -2.0
+    }
+   }
+  },
+  {
+   "id": "random_049",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 3.9,
+    "ty": -0.7,
+    "vx": 1.2,
+    "vy": 1.7
+   },
+   "expected": {
+    "tip": {
+     "x": 5.1,
+     "y": 1.0
+    },
+    "measured": {
+     "x": 1.2,
+     "y": 1.7
+    }
+   }
+  },
+  {
+   "id": "random_050",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -0.4,
+    "ty": -4.0,
+    "vx": 1.8,
+    "vy": 3.1
+   },
+   "expected": {
+    "tip": {
+     "x": 1.4,
+     "y": -0.9
+    },
+    "measured": {
+     "x": 1.8,
+     "y": 3.1
+    }
+   }
+  },
+  {
+   "id": "random_051",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 2.7,
+    "ty": -2.7,
+    "vx": -0.5,
+    "vy": 0.6
+   },
+   "expected": {
+    "tip": {
+     "x": 2.2,
+     "y": -2.1
+    },
+    "measured": {
+     "x": -0.5,
+     "y": 0.6
+    }
+   }
+  },
+  {
+   "id": "random_052",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -2.8,
+    "ty": -3.4,
+    "vx": -0.4,
+    "vy": 0.3
+   },
+   "expected": {
+    "tip": {
+     "x": -3.2,
+     "y": -3.1
+    },
+    "measured": {
+     "x": -0.4,
+     "y": 0.3
+    }
+   }
+  },
+  {
+   "id": "random_053",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 0.8,
+    "ty": -3.7,
+    "vx": 0.3,
+    "vy": 0.5
+   },
+   "expected": {
+    "tip": {
+     "x": 1.1,
+     "y": -3.2
+    },
+    "measured": {
+     "x": 0.3,
+     "y": 0.5
+    }
+   }
+  },
+  {
+   "id": "random_054",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -1.0,
+    "ty": -2.7,
+    "vx": -0.2,
+    "vy": -0.2
+   },
+   "expected": {
+    "tip": {
+     "x": -1.2,
+     "y": -2.9
+    },
+    "measured": {
+     "x": -0.2,
+     "y": -0.2
+    }
+   }
+  },
+  {
+   "id": "random_055",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 1.7,
+    "ty": -2.9,
+    "vx": 3.5,
+    "vy": 3.2
+   },
+   "expected": {
+    "tip": {
+     "x": 5.2,
+     "y": 0.3
+    },
+    "measured": {
+     "x": 3.5,
+     "y": 3.2
+    }
+   }
+  },
+  {
+   "id": "random_056",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 3.6,
+    "ty": -0.8,
+    "vx": 3.4,
+    "vy": 0.1
+   },
+   "expected": {
+    "tip": {
+     "x": 7.0,
+     "y": -0.7
+    },
+    "measured": {
+     "x": 3.4,
+     "y": 0.1
+    }
+   }
+  },
+  {
+   "id": "random_057",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -3.4,
+    "ty": 3.3,
+    "vx": 2.9,
+    "vy": -3.2
+   },
+   "expected": {
+    "tip": {
+     "x": -0.5,
+     "y": 0.1
+    },
+    "measured": {
+     "x": 2.9,
+     "y": -3.2
+    }
+   }
+  },
+  {
+   "id": "random_058",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -3.3,
+    "ty": 3.6,
+    "vx": -3.4,
+    "vy": 0.0
+   },
+   "expected": {
+    "tip": {
+     "x": -6.7,
+     "y": 3.6
+    },
+    "measured": {
+     "x": -3.4,
+     "y": 0.0
+    }
+   }
+  },
+  {
+   "id": "random_059",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 2.4,
+    "ty": -0.7,
+    "vx": 3.1,
+    "vy": -1.5
+   },
+   "expected": {
+    "tip": {
+     "x": 5.5,
+     "y": -2.2
+    },
+    "measured": {
+     "x": 3.1,
+     "y": -1.5
+    }
+   }
+  },
+  {
+   "id": "random_060",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -3.3,
+    "ty": 4.0,
+    "vx": 2.1,
+    "vy": 3.7
+   },
+   "expected": {
+    "tip": {
+     "x": -1.2,
+     "y": 7.7
+    },
+    "measured": {
+     "x": 2.1,
+     "y": 3.7
+    }
+   }
+  },
+  {
+   "id": "random_061",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 2.9,
+    "ty": 3.7,
+    "vx": -0.6,
+    "vy": -2.0
+   },
+   "expected": {
+    "tip": {
+     "x": 2.3,
+     "y": 1.7
+    },
+    "measured": {
+     "x": -0.6,
+     "y": -2.0
+    }
+   }
+  },
+  {
+   "id": "random_062",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -0.2,
+    "ty": 3.1,
+    "vx": 3.1,
+    "vy": -2.9
+   },
+   "expected": {
+    "tip": {
+     "x": 2.9,
+     "y": 0.2
+    },
+    "measured": {
+     "x": 3.1,
+     "y": -2.9
+    }
+   }
+  },
+  {
+   "id": "random_063",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 1.2,
+    "ty": -3.9,
+    "vx": -2.1,
+    "vy": -1.2
+   },
+   "expected": {
+    "tip": {
+     "x": -0.9,
+     "y": -5.1
+    },
+    "measured": {
+     "x": -2.1,
+     "y": -1.2
+    }
+   }
+  },
+  {
+   "id": "random_064",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 0.3,
+    "ty": 4.0,
+    "vx": -3.7,
+    "vy": -3.7
+   },
+   "expected": {
+    "tip": {
+     "x": -3.4,
+     "y": 0.3
+    },
+    "measured": {
+     "x": -3.7,
+     "y": -3.7
+    }
+   }
+  },
+  {
+   "id": "random_065",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 2.4,
+    "ty": -2.0,
+    "vx": 2.4,
+    "vy": 0.0
+   },
+   "expected": {
+    "tip": {
+     "x": 4.8,
+     "y": -2.0
+    },
+    "measured": {
+     "x": 2.4,
+     "y": 0.0
+    }
+   }
+  },
+  {
+   "id": "random_066",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -2.4,
+    "ty": 3.4,
+    "vx": -0.8,
+    "vy": 0.6
+   },
+   "expected": {
+    "tip": {
+     "x": -3.2,
+     "y": 4.0
+    },
+    "measured": {
+     "x": -0.8,
+     "y": 0.6
+    }
+   }
+  },
+  {
+   "id": "random_067",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -3.6,
+    "ty": 3.3,
+    "vx": -0.1,
+    "vy": -3.1
+   },
+   "expected": {
+    "tip": {
+     "x": -3.7,
+     "y": 0.2
+    },
+    "measured": {
+     "x": -0.1,
+     "y": -3.1
+    }
+   }
+  },
+  {
+   "id": "random_068",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 2.6,
+    "ty": 3.2,
+    "vx": -1.5,
+    "vy": -1.4
+   },
+   "expected": {
+    "tip": {
+     "x": 1.1,
+     "y": 1.8
+    },
+    "measured": {
+     "x": -1.5,
+     "y": -1.4
+    }
+   }
+  },
+  {
+   "id": "random_069",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -2.0,
+    "ty": -3.4,
+    "vx": -3.5,
+    "vy": 0.4
+   },
+   "expected": {
+    "tip": {
+     "x": -5.5,
+     "y": -3.0
+    },
+    "measured": {
+     "x": -3.5,
+     "y": 0.4
+    }
+   }
+  },
+  {
+   "id": "random_070",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 0.7,
+    "ty": 0.9,
+    "vx": 3.2,
+    "vy": 1.7
+   },
+   "expected": {
+    "tip": {
+     "x": 3.9,
+     "y": 2.6
+    },
+    "measured": {
+     "x": 3.2,
+     "y": 1.7
+    }
+   }
+  },
+  {
+   "id": "random_071",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -2.3,
+    "ty": 4.0,
+    "vx": -3.7,
+    "vy": 3.9
+   },
+   "expected": {
+    "tip": {
+     "x": -6.0,
+     "y": 7.9
+    },
+    "measured": {
+     "x": -3.7,
+     "y": 3.9
+    }
+   }
+  },
+  {
+   "id": "random_072",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -2.2,
+    "ty": 0.0,
+    "vx": 0.7,
+    "vy": 3.8
+   },
+   "expected": {
+    "tip": {
+     "x": -1.5,
+     "y": 3.8
+    },
+    "measured": {
+     "x": 0.7,
+     "y": 3.8
+    }
+   }
+  },
+  {
+   "id": "random_073",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 3.0,
+    "ty": 2.5,
+    "vx": 1.6,
+    "vy": 1.7
+   },
+   "expected": {
+    "tip": {
+     "x": 4.6,
+     "y": 4.2
+    },
+    "measured": {
+     "x": 1.6,
+     "y": 1.7
+    }
+   }
+  },
+  {
+   "id": "random_074",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -0.8,
+    "ty": 2.6,
+    "vx": -2.5,
+    "vy": -3.6
+   },
+   "expected": {
+    "tip": {
+     "x": -3.3,
+     "y": -1.0
+    },
+    "measured": {
+     "x": -2.5,
+     "y": -3.6
+    }
+   }
+  },
+  {
+   "id": "random_075",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -0.4,
+    "ty": 0.6,
+    "vx": -1.6,
+    "vy": -1.8
+   },
+   "expected": {
+    "tip": {
+     "x": -2.0,
+     "y": -1.2
+    },
+    "measured": {
+     "x": -1.6,
+     "y": -1.8
+    }
+   }
+  },
+  {
+   "id": "random_076",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -3.0,
+    "ty": -1.6,
+    "vx": 0.3,
+    "vy": -3.2
+   },
+   "expected": {
+    "tip": {
+     "x": -2.7,
+     "y": -4.8
+    },
+    "measured": {
+     "x": 0.3,
+     "y": -3.2
+    }
+   }
+  },
+  {
+   "id": "random_077",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -0.2,
+    "ty": -3.2,
+    "vx": 0.3,
+    "vy": -3.7
+   },
+   "expected": {
+    "tip": {
+     "x": 0.1,
+     "y": -6.9
+    },
+    "measured": {
+     "x": 0.3,
+     "y": -3.7
+    }
+   }
+  },
+  {
+   "id": "random_078",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -3.9,
+    "ty": -0.2,
+    "vx": -0.6,
+    "vy": 3.4
+   },
+   "expected": {
+    "tip": {
+     "x": -4.5,
+     "y": 3.2
+    },
+    "measured": {
+     "x": -0.6,
+     "y": 3.4
+    }
+   }
+  },
+  {
+   "id": "random_079",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -3.9,
+    "ty": 2.7,
+    "vx": -1.7,
+    "vy": 2.0
+   },
+   "expected": {
+    "tip": {
+     "x": -5.6,
+     "y": 4.7
+    },
+    "measured": {
+     "x": -1.7,
+     "y": 2.0
+    }
+   }
+  },
+  {
+   "id": "random_080",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 0.2,
+    "ty": 2.4,
+    "vx": 3.4,
+    "vy": -1.8
+   },
+   "expected": {
+    "tip": {
+     "x": 3.6,
+     "y": 0.6
+    },
+    "measured": {
+     "x": 3.4,
+     "y": -1.8
+    }
+   }
+  },
+  {
+   "id": "random_081",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 1.6,
+    "ty": 3.9,
+    "vx": 3.2,
+    "vy": 2.3
+   },
+   "expected": {
+    "tip": {
+     "x": 4.8,
+     "y": 6.2
+    },
+    "measured": {
+     "x": 3.2,
+     "y": 2.3
+    }
+   }
+  },
+  {
+   "id": "random_082",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -1.6,
+    "ty": 0.8,
+    "vx": 0.2,
+    "vy": -0.7
+   },
+   "expected": {
+    "tip": {
+     "x": -1.4,
+     "y": 0.1
+    },
+    "measured": {
+     "x": 0.2,
+     "y": -0.7
+    }
+   }
+  },
+  {
+   "id": "random_083",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 0.3,
+    "ty": -1.9,
+    "vx": 2.0,
+    "vy": -0.4
+   },
+   "expected": {
+    "tip": {
+     "x": 2.3,
+     "y": -2.3
+    },
+    "measured": {
+     "x": 2.0,
+     "y": -0.4
+    }
+   }
+  },
+  {
+   "id": "random_084",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 0.3,
+    "ty": -0.5,
+    "vx": -0.4,
+    "vy": -2.4
+   },
+   "expected": {
+    "tip": {
+     "x": -0.1,
+     "y": -2.9
+    },
+    "measured": {
+     "x": -0.4,
+     "y": -2.4
+    }
+   }
+  },
+  {
+   "id": "random_085",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 3.0,
+    "ty": 1.4,
+    "vx": -3.3,
+    "vy": -4.0
+   },
+   "expected": {
+    "tip": {
+     "x": -0.3,
+     "y": -2.6
+    },
+    "measured": {
+     "x": -3.3,
+     "y": -4.0
+    }
+   }
+  },
+  {
+   "id": "random_086",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 0.4,
+    "ty": -2.6,
+    "vx": 3.4,
+    "vy": -2.9
+   },
+   "expected": {
+    "tip": {
+     "x": 3.8,
+     "y": -5.5
+    },
+    "measured": {
+     "x": 3.4,
+     "y": -2.9
+    }
+   }
+  },
+  {
+   "id": "random_087",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 3.1,
+    "ty": 2.4,
+    "vx": -3.3,
+    "vy": 2.1
+   },
+   "expected": {
+    "tip": {
+     "x": -0.2,
+     "y": 4.5
+    },
+    "measured": {
+     "x": -3.3,
+     "y": 2.1
+    }
+   }
+  },
+  {
+   "id": "random_088",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 0.7,
+    "ty": 2.3,
+    "vx": 3.3,
+    "vy": -3.3
+   },
+   "expected": {
+    "tip": {
+     "x": 4.0,
+     "y": -1.0
+    },
+    "measured": {
+     "x": 3.3,
+     "y": -3.3
+    }
+   }
+  },
+  {
+   "id": "random_089",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 0.5,
+    "ty": -1.7,
+    "vx": 0.8,
+    "vy": 1.1
+   },
+   "expected": {
+    "tip": {
+     "x": 1.3,
+     "y": -0.6
+    },
+    "measured": {
+     "x": 0.8,
+     "y": 1.1
+    }
+   }
+  },
+  {
+   "id": "random_090",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 0.1,
+    "ty": 2.9,
+    "vx": 0.2,
+    "vy": 1.0
+   },
+   "expected": {
+    "tip": {
+     "x": 0.3,
+     "y": 3.9
+    },
+    "measured": {
+     "x": 0.2,
+     "y": 1.0
+    }
+   }
+  },
+  {
+   "id": "random_091",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -0.2,
+    "ty": -1.1,
+    "vx": 3.3,
+    "vy": -1.4
+   },
+   "expected": {
+    "tip": {
+     "x": 3.1,
+     "y": -2.5
+    },
+    "measured": {
+     "x": 3.3,
+     "y": -1.4
+    }
+   }
+  },
+  {
+   "id": "random_092",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -2.9,
+    "ty": -2.3,
+    "vx": 2.3,
+    "vy": 3.7
+   },
+   "expected": {
+    "tip": {
+     "x": -0.6,
+     "y": 1.4
+    },
+    "measured": {
+     "x": 2.3,
+     "y": 3.7
+    }
+   }
+  },
+  {
+   "id": "random_093",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -0.1,
+    "ty": 2.8,
+    "vx": 0.5,
+    "vy": 3.4
+   },
+   "expected": {
+    "tip": {
+     "x": 0.4,
+     "y": 6.2
+    },
+    "measured": {
+     "x": 0.5,
+     "y": 3.4
+    }
+   }
+  },
+  {
+   "id": "random_094",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -2.8,
+    "ty": -3.8,
+    "vx": 2.1,
+    "vy": -1.3
+   },
+   "expected": {
+    "tip": {
+     "x": -0.7,
+     "y": -5.1
+    },
+    "measured": {
+     "x": 2.1,
+     "y": -1.3
+    }
+   }
+  },
+  {
+   "id": "random_095",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -0.8,
+    "ty": 2.1,
+    "vx": 0.4,
+    "vy": -3.6
+   },
+   "expected": {
+    "tip": {
+     "x": -0.4,
+     "y": -1.5
+    },
+    "measured": {
+     "x": 0.4,
+     "y": -3.6
+    }
+   }
+  },
+  {
+   "id": "random_096",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -0.5,
+    "ty": -2.3,
+    "vx": 0.3,
+    "vy": 2.8
+   },
+   "expected": {
+    "tip": {
+     "x": -0.2,
+     "y": 0.5
+    },
+    "measured": {
+     "x": 0.3,
+     "y": 2.8
+    }
+   }
+  },
+  {
+   "id": "random_097",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 3.1,
+    "ty": 3.5,
+    "vx": 2.9,
+    "vy": 2.0
+   },
+   "expected": {
+    "tip": {
+     "x": 6.0,
+     "y": 5.5
+    },
+    "measured": {
+     "x": 2.9,
+     "y": 2.0
+    }
+   }
+  },
+  {
+   "id": "random_098",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": 1.2,
+    "ty": -0.1,
+    "vx": 1.9,
+    "vy": -2.1
+   },
+   "expected": {
+    "tip": {
+     "x": 3.1,
+     "y": -2.2
+    },
+    "measured": {
+     "x": 1.9,
+     "y": -2.1
+    }
+   }
+  },
+  {
+   "id": "random_099",
+   "tags": [
+    "random"
+   ],
+   "input": {
+    "tx": -3.0,
+    "ty": -3.7,
+    "vx": -3.0,
+    "vy": -0.8
+   },
+   "expected": {
+    "tip": {
+     "x": -6.0,
+     "y": -4.5
+    },
+    "measured": {
+     "x": -3.0,
+     "y": -0.8
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,18 @@
+---
+/** Static table: what each formula returns for probe vectors. Every cell is computed by the direction model at build time. */
+import { compareDirections, describeLocation } from '../../math/vector2/direction';
+import { formatApprox, formatGiven } from '../../platform/numeric/format';
+const FORMAT = { digits: 4, scientificAbove: 1e6 };
+const PROBES = [[3, 2], [-3, 2], [-3, -2], [3, -2], [-4, 0], [0, 4], [0, -4], [0, 0]] as const;
+const num = (n: number | null, none = 'undefined') => (n === null ? none : formatApprox(n, FORMAT).text);
+const rows = PROBES.map(([x, y]) => {
+  const c = compareDirections({ x, y });
+  return { v: `(${formatGiven(x).text}, ${formatGiven(y).text})`, where: describeLocation(c.location), ratio: num(c.ratio), naive: num(c.naiveRadians), truth: num(c.atan2Radians), verdict: c.location.kind === 'origin' ? 'no direction' : c.halfTurns === null ? 'atan has no answer' : c.halfTurns === 0 ? 'agree' : c.halfTurns === 1 ? 'differ by +π' : 'differ by −π' };
+});
+---
+<div class="table-scroll" data-scrollable="Probe table, scrollable">
+  <table class="num-table" data-table="probes">
+    <thead><tr><th>vector</th><th>where</th><th>y/x</th><th>atan(y/x)</th><th>atan2(y, x)</th><th>verdict</th></tr></thead>
+    <tbody>{rows.map(r => <tr><td>{r.v}</td><td>{r.where}</td><td>{r.ratio}</td><td>{r.naive}</td><td>{r.truth}</td><td>{r.verdict}</td></tr>)}</tbody>
+  </table>
+</div>

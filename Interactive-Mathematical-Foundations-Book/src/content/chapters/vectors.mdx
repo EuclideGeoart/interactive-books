@@ -1,0 +1,232 @@
+---
+kind: chapter
+curriculumId: I.3
+title: "Vectors: components, magnitude, and direction"
+hero: "What does a vector actually *store*?"
+lede: A vector is a displacement, and two numbers describe it. From those numbers we read its length with Pythagoras and its direction with atan2, and we find out why the obvious formula for direction quietly fails.
+description: Vectors as displacements in the plane. Components, magnitude from Pythagoras, direction with atan2 rather than atan, the difference between points and vectors, executable Python and NumPy, and exercises with feedback.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import Xref from '../../shell/Xref.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import VectorStage from '../../lessons/foundation/VectorStage';
+import PythagorasStage from '../../lessons/vectors/PythagorasStage';
+import PlacementStage from '../../lessons/vectors/PlacementStage';
+import DirectionStage from '../../lessons/vectors/DirectionStage';
+import WorkedExampleStage from '../../lessons/vectors/WorkedExampleStage';
+import Exercise from '../../lessons/vectors/Exercise';
+import ProbeTable from '../../lessons/vectors/ProbeTable.astro';
+import NumericsTable from '../../lessons/vectors/NumericsTable.astro';
+import magnitude from '../../../code/python/vector_magnitude.py?raw';
+import magnitudeNumpy from '../../../code/python/vector_magnitude_numpy.py?raw';
+import direction from '../../../code/python/vector_direction.py?raw';
+import displacement from '../../../code/python/vector_displacement.py?raw';
+import batch from '../../../code/python/vector_batch_numpy.py?raw';
+
+<Stage caption="Drag the tip of the arrow, use the arrow keys on it, or type into the fields. The two numbers are the whole vector; everything else on the plane and in the table is computed from them.">
+  <VectorStage client:load />
+</Stage>
+
+Try it before reading on. Pull the tip into each quadrant, then onto an axis, then onto the origin. Two numbers $x$ and $y$ are all the page stores; the length, the angle and the triangle are *derived* from them every time. By the end of the chapter you will know why the length is $\sqrt{x^2+y^2}$, why the direction needs a function called $\operatorname{atan2}$ and not just $\arctan$, and what a vector is *not*.
+
+## Intuition: a vector is a move
+
+Walk three blocks east and two blocks north. That instruction is a **displacement**: it says how far to move, not where you are. It means the same thing from your front door and from the library; only the place you end up changes.
+
+A vector in the plane is exactly such a move, written as two numbers, a column:
+
+$$
+\mathbf v=\begin{bmatrix}x\\y\end{bmatrix}=\begin{bmatrix}3\\2\end{bmatrix}
+$$
+
+The first number is the movement along $x$ (right is positive) and the second is the movement along $y$ (up is positive). We draw it as an arrow, but the arrow is a picture of the move; the two numbers are the move.
+
+## Points and displacements
+
+A **point** is a place: $P=(1,-1)$ names a location. A **vector** is a move. They are written with the same two numbers, which is the source of a lot of confusion, so it is worth separating them carefully.
+
+The two are tied by two equations: applying a move to a point gives another point, and two points give the move between them.
+
+$$
+Q=P+\mathbf v,\qquad \mathbf v=Q-P .
+$$
+
+<Stage caption="Drag P: the whole arrow slides and the displacement v does not change. Drag Q: P stays and v changes. The dashed grey arrow is v drawn from the origin.">
+  <PlacementStage client:load />
+</Stage>
+
+Slide the arrow around and watch the inspector. The points $P$ and $Q$ change; $\mathbf v$, its length and its direction do not. Now move only the tip: the displacement changes, because it is *defined* as the difference of the two points. An arrow drawn starting at the origin is the special case $P=(0,0)$, called standard position; it is the one place where the point $Q$ and the vector $\mathbf v$ happen to have the same numbers.
+
+<Callout kind="misconception" title="The vector is not its starting point">
+An arrow starting at $(1,-1)$ and an arrow starting at $(-2,4)$ are the *same vector* if they have the same components. Where the arrow is drawn is a choice about the picture; what it stores is only the move.
+</Callout>
+
+## Definition
+
+A **vector in the plane** is an ordered pair of real numbers, written as a column,
+
+$$
+\mathbf v=\begin{bmatrix}x\\y\end{bmatrix},
+$$
+
+where $x$ is the **horizontal component** and $y$ is the **vertical component**. Two vectors are equal exactly when both components are equal. The **zero vector** $\mathbf 0=\begin{bmatrix}0\\0\end{bmatrix}$ is the move that goes nowhere.
+
+Throughout this book the plane has $+x$ to the right and $+y$ **up**, vectors are columns, and angles are in radians measured counter-clockwise from the $+x$ axis. A vector has two derived quantities: its **magnitude** $\lVert\mathbf v\rVert$ (how long the move is) and, when it is not the zero vector, its **direction** $\theta$ (which way).
+
+## Magnitude: Pythagoras on the components
+
+The move $\mathbf v=(x,y)$ goes $x$ across and $y$ up. Those two legs meet at a right angle, so the straight-line length of the arrow is the hypotenuse:
+
+$$
+\lVert\mathbf v\rVert=\sqrt{x^{2}+y^{2}} .
+$$
+
+Pythagoras' theorem says the *areas* of the squares on the legs add up to the area of the square on the hypotenuse. Here that is literal: drag the vector and compare the three squares.
+
+<Stage caption="The square on the x-leg has area x², the square on the y-leg has area y², and the square on the arrow has area ‖v‖². The two small areas always add to the large one.">
+  <PythagorasStage client:load />
+</Stage>
+
+Notice what the inspector says for $(3,2)$: the square on the arrow has area $13$, exactly, so the side is $\sqrt{13}$ exactly, and $\sqrt{13}\approx 3.605551$ is only a *rounding*. For $(3,4)$ the area is $25$ and the length is exactly $5$. The book writes $=$ for the first kind of statement and $\approx$ for the second, and never mixes them.
+
+Two properties follow at once from the formula. The length is never negative, and it is $0$ only for the zero vector, because a sum of squares is $0$ only when both squares are. And $\lVert -\mathbf v\rVert=\lVert\mathbf v\rVert$, since squaring erases signs: reversing a move does not change how long it is.
+
+## Direction: the angle from the x-axis
+
+The direction of a nonzero vector is the angle $\theta$ that the arrow makes with the positive $x$ axis, counter-clockwise. In the right triangle, $\tan\theta$ is rise over run, so for a vector pointing into the right half-plane
+
+$$
+\theta=\arctan\frac{y}{x}\qquad (x>0).
+$$
+
+That is a perfectly good formula, for a vector pointing right. The trouble is everything else.
+
+## Why $\arctan(y/x)$ is not enough
+
+Take $\mathbf v=(-3,2)$, which points up and to the left. Then $y/x=-2/3$ and $\arctan(-2/3)\approx-0.588$ radians, which is a direction pointing **down and to the right**: exactly backwards. The vector $-\mathbf v=(3,-2)$ has the identical ratio $-2/3$, so a formula that sees only the ratio *cannot tell $\mathbf v$ from $-\mathbf v$*. And $\arctan$ is only able to answer between $-\pi/2$ and $\pi/2$, the right half-plane, so for a vector in the left half-plane it is wrong by exactly half a turn.
+
+<Stage caption="Jump between quadrants and axes. The dashed line through the origin holds v and −v, which share one ratio; the red arrow is where arctan(y/x) points when it disagrees with the true direction.">
+  <DirectionStage client:load />
+</Stage>
+
+The function that fixes this is $\operatorname{atan2}(y,x)$. It takes the two components separately, so it can see their signs, and returns the angle in $(-\pi,\pi]$. For $x>0$ it equals $\arctan(y/x)$. For $x<0$ it equals $\arctan(y/x)+\pi$ when $y\ge0$ and $\arctan(y/x)-\pi$ when $y<0$. On the axes it does not divide at all: $\operatorname{atan2}(y,0)=\pm\pi/2$ for $y\gtrless0$.
+
+$$
+\theta=\operatorname{atan2}(y,x),\qquad \operatorname{atan2}(y,x)-\arctan\frac{y}{x}\in\{0,\ \pi,\ -\pi\}.
+$$
+
+The correction is *exactly* $0$, $\pi$ or $-\pi$, decided by the signs of $x$ and $y$ alone. Here is the whole picture in one table, every cell computed by the same model the stage above uses.
+
+<ProbeTable />
+
+And there is one vector for which **neither** formula has a right answer: the zero vector. It has no direction, because it points nowhere. The stage shows this as an *undefined* state, not as the number $0$.
+
+## Worked examples
+
+Four vectors, worked step by step: the length first, then the direction. The last one, $(0,-5)$, is the case where $y/x$ does not exist.
+
+<Stage caption="Choose a vector and step through the work. Going back selects an earlier step; nothing is undone.">
+  <WorkedExampleStage client:load />
+</Stage>
+
+## Executable reference code
+
+The Python below is stored in the repository and executed by the test suite, so what you read is known to run. First the mechanics, written out so every step is visible.
+
+<CodeFile source={magnitude} file="code/python/vector_magnitude.py" note="length, step by step" />
+
+<CodeFile source={direction} file="code/python/vector_direction.py" note="naive versus atan2, and the zero vector" />
+
+<CodeFile source={displacement} file="code/python/vector_displacement.py" note="points and displacements" />
+
+Then the practical form. NumPy stores many vectors at once, one per **row**, and works on all of them in a single call. (Rows are a storage layout for a *batch*; each vector is still a column in the mathematics.)
+
+<CodeFile source={magnitudeNumpy} file="code/python/vector_magnitude_numpy.py" note="one vector, library form" />
+
+<CodeFile source={batch} file="code/python/vector_batch_numpy.py" note="many vectors at once" />
+
+## Explore: change the parameters
+
+Use the stages above as a laboratory. These questions have definite answers; check them against the inspector.
+
+- On the Pythagoras stage, which integer vectors have a whole-number length? Try $(3,4)$, $(4,3)$, $(0,4)$. Which others can you find with components up to $4$?
+- On the points stage, move $P$ to the origin. What do $Q$ and $\mathbf v$ now have in common?
+- On the direction stage, press **−x axis** and then **+y axis**. Which has a ratio $y/x$ and which does not, and what does $\operatorname{atan2}$ return for each?
+- Walk a vector around the origin counter-clockwise through all four quadrants. Where does $\arctan(y/x)$ jump, and where does $\operatorname{atan2}$ jump?
+
+## Common mistakes
+
+<Callout kind="misconception" title="Adding the components to get the length">
+$\lVert(5,12)\rVert$ is $13$, not $17$. Components are the legs of a right triangle; lengths add only along a straight line.
+</Callout>
+
+<Callout kind="misconception" title="Using arctan(y/x) as the direction">
+It is right only when $x>0$. For $x<0$ it is half a turn off, and for $x=0$ it divides by zero. Always use $\operatorname{atan2}(y,x)$.
+</Callout>
+
+<Callout kind="misconception" title="The zero vector points along the x-axis">
+`math.atan2(0.0, 0.0)` returns `0.0` without complaint. That is a convention, not a direction: the zero vector has none. Check for it explicitly.
+</Callout>
+
+<Callout kind="misconception" title="A vector lives where it is drawn">
+Sliding an arrow changes the points $P$ and $Q$, never the vector $\mathbf v=Q-P$.
+</Callout>
+
+## Numerical considerations
+
+Mathematically $\lVert\mathbf v\rVert=\sqrt{x^2+y^2}$. In floating point, squaring first can lose the answer completely: $(10^{-200})^2=10^{-400}$ is smaller than the smallest double, and $(10^{200})^2$ is larger than the largest. The library function `hypot` avoids both by rescaling before it squares.
+
+<NumericsTable />
+
+<Callout kind="numerical">
+Use `math.hypot` or `np.hypot`, not `sqrt(x*x + y*y)`. Note that `np.linalg.norm` squares first, so it can return `0.0` for a tiny nonzero vector. Compare lengths with a tolerance rather than `==`, and keep exact values (such as $\sqrt{13}$) as exact values until you must print them.
+</Callout>
+
+Two more points. Negative zero exists: $-0.0$ equals $0.0$ in comparisons but `atan2(0.0, -0.0)` returns $\pi$ while `atan2(0.0, 0.0)` returns $0$. The stages here normalise $-0$ to $0$ so the displayed direction is stable. And the angle from `atan2` jumps from $\pi$ to $-\pi$ across the negative $x$ axis; that is a feature of the *range*, not a change of direction.
+
+## Connections to engineering and machine learning
+
+- **Features as vectors.** A data point with two measurements is a vector; its length is its distance from the origin, the Euclidean norm that appears everywhere from nearest-neighbour search to regularisation.
+- **Normalisation.** Dividing a vector by its length gives a unit vector that keeps the direction and discards the scale; cosine similarity compares directions only. The zero vector has no direction, so normalising it needs a guard (the usual `eps` in code).
+- **Robotics and graphics.** Headings, velocities and forces are vectors; `atan2` is how a robot turns a displacement to a target into a heading, and why it is the standard function in every such library.
+- **Gradients.** The gradient of a function is a vector; its length is the steepness and its direction is the way uphill.
+
+## Exercises
+
+Answer each question and press **Check**. A wrong answer tells you *which* mistake it looks like. After one attempt you may open a worked solution.
+
+<Exercise client:load id="magnitude-5-12" />
+
+<Exercise client:load id="exact-vs-approx" />
+
+<Exercise client:load id="translation" />
+
+<Exercise client:load id="same-magnitude" />
+
+<Exercise client:load id="atan-predict" />
+
+<Exercise client:load id="atan2-value" />
+
+<Exercise client:load id="same-ratio" />
+
+<Exercise client:load id="numerics" />
+
+<Exercise client:load id="zero-direction" />
+
+## Summary and checkpoints
+
+- A vector in the plane is a column of two numbers, a displacement: *how far*, not *where*. Points are places; $Q=P+\mathbf v$ and $\mathbf v=Q-P$.
+- Its magnitude is $\lVert\mathbf v\rVert=\sqrt{x^2+y^2}$, Pythagoras on the components. It is exact when the sum is a perfect square or a known radical, and otherwise a rounding.
+- Its direction is $\theta=\operatorname{atan2}(y,x)$, not $\arctan(y/x)$, which is wrong by $\pm\pi$ in the left half-plane and does not exist on the $y$-axis.
+- The zero vector has length $0$ and **no direction**.
+- In code: `hypot` for length, `atan2` for direction, an explicit guard for zero.
+
+**Checkpoints.** You are ready to move on when you can, without looking:
+
+1. Say why $(-3,2)$ and $(3,-2)$ have the same $y/x$ but different directions.
+2. Compute $\lVert(5,12)\rVert$ and state whether the answer is exact.
+3. Explain why sliding an arrow does not change the vector.
+4. Say what $\operatorname{atan2}$ returns for $(0,4)$, $(-4,0)$ and $(0,0)$.
+
+The platform this chapter stands on is demonstrated, separately, in the <Xref to="/foundation/">foundation demo</Xref>.

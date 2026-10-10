@@ -1,6 +1,6 @@
 # Authoring a chapter on the Book II platform
 
-This is the practical pattern. It is deliberately small; it will be hardened by the first real chapter (REF-1, I.3 *Vectors*). The governing rules are in the master plan (§2, §5, §6, §13, §21); this page says *where things go*.
+This is the practical pattern. It is deliberately small; it was first exercised by the reference chapter (REF-1, I.3 *Vectors*, `src/content/chapters/vectors.mdx`). The governing rules are in the master plan (§2, §5, §6, §13, §21); this page says *where things go*.
 
 ## 1. The rule that organises everything
 
@@ -22,7 +22,7 @@ Mathematical state  →  derived quantities  →  every view
 | Interactive stage | `src/lessons/<chapter>/<Name>Stage.tsx` | Preact island composing `src/ui/` primitives |
 | Oracle + fixture (if the maths is duplicated in Python) | `oracle/`, `fixtures/` | see §5 |
 | Reference code | `code/python/*.py` | shown on the page with `?raw`; **executed by the oracle tests** |
-| Status | `src/curriculum/curriculum.ts` | replace `planned(n, "Title")` by an `available` entry with its `slug` |
+| Status | `src/curriculum/curriculum.ts` | replace `planned(n, "Title")` by `available(n, "Title", "slug", role?)`, for example `available(3, "Vectors: components, magnitude, and direction", "vectors", "reference")` |
 
 `src/curriculum/curriculum.ts` already contains the chapter; the *only* edit there is flipping its status. A test checks that every `available` chapter has exactly one MDX file and every `kind: chapter` file names an available chapter.
 
@@ -32,14 +32,14 @@ Mathematical state  →  derived quantities  →  every view
 ---
 kind: chapter                 # "demo" for platform demonstrations (not part of the curriculum)
 curriculumId: I.3             # required for kind: chapter, must exist and be available
-title: Vectors: components, magnitude, and direction
+title: "Vectors: components, magnitude, and direction"   # quote titles that contain a colon
 hero: What does a vector actually *store*?     # the hero question; one *word* for the italic
 lede: One or two sentences that give the chapter a reason to exist.
 description: 20–300 characters for the meta description and the book map.
 ---
 ```
 
-The route `src/pages/chapters/[slug].astro` is already in place: it generates a page for each `kind: chapter` entry (none exist yet). The foundation demo (`kind: demo`) lives at `/foundation/` and is never listed as a chapter.
+The route `src/pages/chapters/[slug].astro` is already in place: it generates a page for each `kind: chapter` entry (I.3 is the first). The foundation demo (`kind: demo`) lives at `/foundation/` and is never listed as a chapter.
 
 ## 4. Page structure (master plan §5, in the order of the priority ladder)
 

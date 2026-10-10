@@ -5,7 +5,7 @@
  */
 import { expect, test, type Page } from '@playwright/test';
 
-const SEED = ['./', 'contents/', 'foundation/'];
+const SEED = ['./', 'contents/', 'foundation/', 'chapters/vectors/'];
 
 test('the suite really runs against the intended deployment (root vs sub-directory)', async ({ page, baseURL }) => {
   const intended = (process.env.BOOK_TEST_BASE ?? '/').replace(/\/?$/, '/');

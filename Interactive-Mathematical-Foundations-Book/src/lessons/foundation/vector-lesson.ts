@@ -1,5 +1,5 @@
 /**
- * Foundation-demo lesson model: the 2D vector endpoint (NOT the REF-1 chapter — see the page label).
+ * Foundation-demo lesson model: the 2D vector endpoint (shared by the foundation demo and the Vectors chapter, I.3).
  *
  *   Vector2 (state)  →  Vector2Derived  →  { inspector rows, formulas, spoken text, world-space scene, work frames }
  *
@@ -36,17 +36,17 @@ export const FORMULA_FORMAT: NumberFormat = { ...FORMAT, trimZeros: true };
 /** Shorter precision for text a screen reader will speak. */
 export const SPOKEN_FORMAT: NumberFormat = { digits: 3, scientificAbove: 1e6 };
 
-const RADIANS: Unit = { text: 'rad', tex: '\\mathrm{rad}', spoken: 'radians' };
-const DEGREES: Unit = { text: '°', tex: '^{\\circ}', spoken: 'degrees', attached: true };
+export const RADIANS: Unit = { text: 'rad', tex: '\\mathrm{rad}', spoken: 'radians' };
+export const DEGREES: Unit = { text: '°', tex: '^{\\circ}', spoken: 'degrees', attached: true };
 export const ZERO_VECTOR_REASON = 'The zero vector has no direction.';
 
 // ---------------------------------------------------------------------------------------------- helpers
 export type Role = 'primary' | 'x' | 'y' | 'derived';
 
-const exactValue = (d: Vector2Derived): Value =>
+export const exactValue = (d: Vector2Derived): Value =>
   d.exactMagnitude ? { kind: 'exact', exact: toExactForm(d.exactMagnitude), approx: d.magnitude } : { kind: 'numeric', value: d.magnitude };
 
-const directionValue = (d: Vector2Derived, unit: 'rad' | 'deg'): Value =>
+export const directionValue = (d: Vector2Derived, unit: 'rad' | 'deg'): Value =>
   d.directionRadians === null
     ? { kind: 'undefined', reason: ZERO_VECTOR_REASON }
     : { kind: 'numeric', value: unit === 'rad' ? d.directionRadians : (d.directionDegrees as number) };
@@ -56,7 +56,7 @@ const directionValue = (d: Vector2Derived, unit: 'rad' | 'deg'): Value =>
  * negatives need parentheses to square correctly, and scientific notation would otherwise produce a
  * double superscript (`10^{-7}^{2}`), which is not valid LaTeX.
  */
-const given = (n: number, asPowerBase = false): string => {
+export const given = (n: number, asPowerBase = false): string => {
   const t = formatGiven(n).tex;
   return asPowerBase && (n < 0 || t.includes('\\times')) ? `(${t})` : t;
 };
@@ -92,7 +92,7 @@ export function inspectorRows(d: Vector2Derived): InspectorRow[] {
 }
 
 // ---------------------------------------------------------------------------------------------- formulas
-const aligned = (lines: readonly string[]): string => `\\begin{aligned}${lines.join('\\\\')}\\end{aligned}`;
+export const aligned = (lines: readonly string[]): string => `\\begin{aligned}${lines.join('\\\\')}\\end{aligned}`;
 
 /**
  * Display equations (LaTeX) for the live formula panel: the column vector, then the derivation of ‖v‖ and of

@@ -1,0 +1,17 @@
+---
+/** Static table: sqrt(x*x + y*y) versus Math.hypot at extreme scales, computed at build time in IEEE doubles. */
+const SCALES = [1, 1e-100, 1e-200, 1e150, 1e200];
+const sci = (n: number) => (Number.isFinite(n) ? (n === 0 ? '0' : n.toExponential(4)) : String(n).replace('Infinity', '∞'));
+const rows = SCALES.map(s => {
+  const naive = Math.sqrt(s * s + s * s);
+  const safe = Math.hypot(s, s);
+  const bad = !(Number.isFinite(naive) && naive > 0 && Math.abs(naive - safe) <= 1e-12 * safe);
+  return { v: `(${sci(s)}, ${sci(s)})`, naive: sci(naive), safe: sci(safe), bad };
+});
+---
+<div class="table-scroll" data-scrollable="Numerics table, scrollable">
+  <table class="num-table" data-table="numerics">
+    <thead><tr><th>vector (x, y)</th><th>√(x² + y²)</th><th>hypot(x, y)</th><th>naive formula</th></tr></thead>
+    <tbody>{rows.map(r => <tr><td>{r.v}</td><td>{r.naive}</td><td>{r.safe}</td><td>{r.bad ? '⚠ wrong' : 'fine'}</td></tr>)}</tbody>
+  </table>
+</div>

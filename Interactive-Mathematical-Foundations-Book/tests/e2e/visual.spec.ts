@@ -102,3 +102,30 @@ test('a long equation scrolls inside its own region on a phone', async ({ page }
   await wide.scrollIntoViewIfNeeded();
   await expect(wide).toHaveScreenshot('equation-overflow.png');
 });
+
+test.describe('vectors chapter', () => {
+  const stageOf = async (page: Page, name: string) => {
+    await page.goto('chapters/vectors/');
+    const stage = page.locator(`[data-stage="${name}"]`);
+    await stage.scrollIntoViewIfNeeded();
+    await expect(stage).toHaveAttribute('data-hydrated', 'true');
+    await settle(page);
+    return stage;
+  };
+  test('placement stage — canonical', async ({ page }) => {
+    await expect(await stageOf(page, 'placement')).toHaveScreenshot('chapter-placement.png');
+  });
+  test('pythagoras stage — canonical', async ({ page }) => {
+    await expect(await stageOf(page, 'pythagoras')).toHaveScreenshot('chapter-pythagoras.png');
+  });
+  test('direction stage — quadrant II, naive arrow disagrees', async ({ page }) => {
+    await expect(await stageOf(page, 'direction')).toHaveScreenshot('chapter-direction.png');
+  });
+  test('direction stage — zero vector', async ({ page }) => {
+    test.skip(page.viewportSize()!.width !== 1440, 'desktop only');
+    const stage = await stageOf(page, 'direction');
+    await stage.locator('[data-preset="zero"]').click();
+    await settle(page);
+    await expect(stage).toHaveScreenshot('chapter-direction-zero.png');
+  });
+});

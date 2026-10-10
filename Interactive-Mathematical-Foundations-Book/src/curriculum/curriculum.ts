@@ -6,8 +6,9 @@
  * `tests/unit/curriculum.test.ts` (a drift test that re-parses the plan), so editing one without the other
  * fails the build. Taglines are Book II copy and are not part of the plan.
  *
- * To publish a chapter: add its MDX under `src/content/chapters/`, then replace `planned(...)` by
- * `available(..., slug)`. Nothing else needs to change.
+ * To publish a chapter: add `src/content/chapters/<slug>.mdx` (`kind: chapter`, `curriculumId`), then replace
+ * `planned(n, title[, role])` by `available(n, title, slug[, role])` — same number, same title, same role.
+ * Nothing else needs to change; `tests/unit/content.test.ts` and `curriculum.test.ts` check the pairing.
  */
 
 export type ChapterStatus = 'planned' | 'available';
@@ -39,6 +40,8 @@ export interface Part {
 }
 
 const planned = (n: number, title: string, role?: ChapterRole): ChapterEntry => ({ n, title, role, status: 'planned' });
+/** A published chapter: it has a page at `/chapters/<slug>/` (an MDX file named `<slug>.mdx`). */
+const available = (n: number, title: string, slug: string, role?: ChapterRole): ChapterEntry => ({ n, title, role, status: 'available', slug });
 
 export const parts: readonly Part[] = [
   {
@@ -52,7 +55,7 @@ export const parts: readonly Part[] = [
     chapters: [
       planned(1, "Scalars, quantities, units, powers and roots"),
       planned(2, "Coordinates and points"),
-      planned(3, "Vectors: components, magnitude, and direction", "reference"),
+      available(3, "Vectors: components, magnitude, and direction", "vectors", "reference"),
       planned(4, "Algebraic expressions, equations and inequalities"),
       planned(5, "Functions as input → transformation → output"),
       planned(6, "Essential function families"),

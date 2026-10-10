@@ -4,9 +4,9 @@
  *   one lesson state (x, y)  →  deriveVector2  →  plane · inspector · formulas · spoken text · work frames
  *
  * Nothing in this file computes a magnitude, an angle or a square. It maps derived quantities to views.
- * This is NOT the REF-1 chapter: it exists to exercise the platform (see the page label).
+ * The foundation demo and the Vectors chapter (I.3) both open with this stage; the chapter's other stages live in src/lessons/vectors/.
  */
-import { useEffect, useId, useMemo, useState } from 'preact/hooks';
+import { useEffect, useMemo, useState } from 'preact/hooks';
 import { deriveVector2, type Vector2, type Vector2Derived } from '../../math/vector2/vector2';
 import { niceTickStep, pixelsToWorld, worldToScreen, type Point } from '../../platform/geometry/viewport';
 import { formatGiven } from '../../platform/numeric/format';
@@ -18,6 +18,7 @@ import { MathScroll } from '../../ui/MathScroll';
 import { ParameterInput } from '../../ui/ParameterInput';
 import { SegmentedControl } from '../../ui/SegmentedControl';
 import { TraceStepper } from '../../ui/TraceStepper';
+import { IdScope, useScopedId } from '../../ui/ids';
 import { useLesson } from '../../ui/useLesson';
 import { CoordinatePlane } from '../../ui/plane/CoordinatePlane';
 import { usePlane } from '../../ui/plane/PlaneContext';
@@ -118,15 +119,15 @@ function VectorDrawing({ d, scene, grid, onChange, onCommit, hintId }: {
   );
 }
 
-export default function VectorStage({ variant = 'full' }: { variant?: StageVariant }) {
+function VectorStageInner({ variant = 'full' }: { variant?: StageVariant }) {
   const lesson = useLesson<Vector2, Vector2Derived>(CANONICAL_VECTOR, deriveVector2);
   const d = lesson.derived;
   const [snap, setSnap] = useState<SnapId>('1');
   const [cursor, setCursor] = useState<TraceCursor>(() => cursorAt(4));
   const [announcement, setAnnouncement] = useState('');
   const [hydrated, setHydrated] = useState(false);
-  const headingId = useId();
-  const hintId = useId();
+  const headingId = useScopedId();
+  const hintId = useScopedId();
   useEffect(() => setHydrated(true), []);
 
   const grid = gridOf(snap);
@@ -204,3 +205,10 @@ export default function VectorStage({ variant = 'full' }: { variant?: StageVaria
   );
 }
 
+export default function VectorStage({ variant = 'full' }: { variant?: StageVariant }) {
+  return (
+    <IdScope name={`vector-${variant}`}>
+      <VectorStageInner variant={variant} />
+    </IdScope>
+  );
+}
