@@ -89,6 +89,8 @@ describe('publication scope guard', () => {
   it('only Part I is published (M5), and the total stays 97', () => {
     const published = allChapters.filter(r => r.chapter.status === 'available');
     expect(published.every(r => r.part.numeral === 'I')).toBe(true);
+    expect(published.map(r => r.id)).toEqual(['I.1', 'I.2', 'I.3', 'I.4', 'I.5', 'I.6', 'I.7', 'I.8', 'I.9']);
+    expect(allChapters.filter(r => r.chapter.status === 'planned')).toHaveLength(88);
     expect(published.length + allChapters.filter(r => r.chapter.status === 'planned').length).toBe(97);
   });
 });
