@@ -1,0 +1,25 @@
+---
+/**
+ * Static table: eˣ as a double near the two ends of its range. The values come from the round-trip model's first step (ln(eˣ) with
+ * the forward step e^x), which classifies each result as a finite double, an overflow or an underflow.
+ */
+import { roundTrip } from '../../math/families/roundtrip';
+import { describeStep } from './view';
+const XS = [1, 10, 100, 700, 709, 710, -700, -745, -746, -800];
+const rows = XS.map(x => {
+  const first = roundTrip({ family: 'exp', order: 'forward-first', x }).steps[0].output;
+  const d = describeStep(first);
+  const line = d.lines[0]!;
+  return {
+    x: String(x).replace('-', '−'),
+    shown: `${line.relation} ${line.text}`,
+    status: first.kind === 'overflow' ? 'overflow: the true value is too large for a double' : first.kind === 'underflow' ? 'underflow: the true value is too small for a double' : 'a finite double',
+  };
+});
+---
+<div class="table-scroll" data-scrollable="Exponential limits table, scrollable">
+  <table class="num-table" data-table="exp-limits">
+    <thead><tr><th>x</th><th>eˣ as a double</th><th>what happened</th></tr></thead>
+    <tbody>{rows.map(r => <tr><td>{r.x}</td><td>{r.shown}</td><td>{r.status}</td></tr>)}</tbody>
+  </table>
+</div>

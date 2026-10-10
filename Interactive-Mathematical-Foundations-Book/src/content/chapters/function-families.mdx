@@ -1,0 +1,270 @@
+---
+kind: chapter
+curriculumId: I.6
+title: "Essential function families"
+hero: "Which curve is *which*?"
+lede: Six curves carry most of applied mathematics. Learn to recognise each one, to see what its parameters do, and to know where it stops being defined or stops being computable.
+description: Lines, parabolas, exponentials, logarithms, sine and cosine on one plane. Shifts and scales, inverse pairs with their honest domains, the unit circle, change of base, and the floating-point limits of exp and log.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import CompareStage from '../../lessons/families/CompareStage';
+import UndoStage from '../../lessons/families/UndoStage';
+import CircleStage from '../../lessons/families/CircleStage';
+import BaseStage from '../../lessons/families/BaseStage';
+import WorkedStage from '../../lessons/families/WorkedStage';
+import Exercise from '../../lessons/families/Exercise';
+import SpecialAnglesTable from '../../lessons/families/SpecialAnglesTable.astro';
+import ExpLimitsTable from '../../lessons/families/ExpLimitsTable.astro';
+import '../../styles/chapters/function-families.css';
+import expLog from '../../../code/python/families_exp_log.py?raw';
+import trig from '../../../code/python/families_trig.py?raw';
+import stable from '../../../code/python/families_stable_exp_numpy.py?raw';
+
+<Stage caption="Switch curves on and off, drag the input along the x-axis, and change a and h. Every value in the readout is computed from the same model, and the dash pattern and the label on each curve say which is which, not only its colour.">
+  <CompareStage client:load variant="hero" />
+</Stage>
+
+Try it before reading on. Switch the curves on one at a time and drag the input $x$ along the axis, then press **who wins?** and watch how quickly $e^{x}$ leaves the plane on the right. Three of these curves, $x$, $x^{2}$ and $e^{x}$, all climb; they do not climb in the same way. Switch on $\ln x$ and drag $x$ to the left of zero: its row turns into a message, not a number. By the end of the chapter you will be able to say which curve is which from its shape, to read what two parameters do to any of them, and to say exactly where each stops being defined and where each stops being *computable* on a real machine.
+
+## Intuition: shape first
+
+Most of the functions an engineer or a machine-learning practitioner meets are built from six simple shapes. Learn the shapes first; the formulas then explain them.
+
+- **The line**, $y=x$. Steady change: each step right adds the same amount. Its graph is straight.
+- **The parabola**, $y=x^{2}$. Change that speeds up away from the bottom. It is symmetric: $x$ and $-x$ give the same value, so squaring forgets signs.
+- **The exponential**, $y=e^{x}$. Change in proportion to the amount already there. It is always positive, it never reaches the axis, and on the right it grows faster than any line or parabola, although not immediately.
+- **The logarithm**, $y=\ln x$. The exponential read backwards: it asks *what power of $e$ gives $x$?* It exists only for $x>0$, falls without bound as $x$ approaches $0$, and climbs more and more slowly to the right.
+- **The sine and the cosine**, $y=\sin x$ and $y=\cos x$. A wave that repeats every $2\pi$ and never leaves the band from $-1$ to $1$. The cosine is the sine started a quarter of a period earlier.
+
+Here $e\approx 2.718282$ is the number for which the exponential has the pleasant property that its steepness at any point equals its height there. The book writes $\approx$ because $e$ is irrational and the digits are a rounding; the stage above uses the same rule, and it writes $=$ only for values that are exactly known.
+
+## Definition
+
+All six share one pattern. Take a basic function $g$ from the list and two numbers $a$ and $h$:
+
+$$
+y=a\,g(x-h),\qquad g\in\{\,x,\ x^{2},\ e^{x},\ \ln x,\ \sin x,\ \cos x\,\}.
+$$
+
+The number $a$ is the **vertical scale**: it stretches the graph away from the $x$-axis, and a negative $a$ also flips it upside down. The number $h$ is the **horizontal shift**: the graph of $g(x-h)$ is the graph of $g$ moved *right* by $h$, which is the opposite of what the minus sign tempts you to expect (the value $g$ had at $0$ is now found at $x=h$).
+
+Every function here has a **domain**, the inputs for which it exists, and a **range**, the outputs it can produce. These come from $g$ and the shift, and they are the first thing to know:
+
+- $x$ and $x^{2}$ and $e^{x}$ and $\sin x$ and $\cos x$ accept every real number; $\ln x$ accepts only $x>0$, so $a\ln(x-h)$ exists only for $x>h$, with a vertical asymptote at $x=h$.
+- The range of $a\sin(x-h)$ is the interval from $-|a|$ to $|a|$. The range of $a\,e^{x-h}$ is the positive numbers when $a>0$ and the negative numbers when $a<0$. The range of $a\ln(x-h)$ is every real number.
+- If $a=0$ the result is the constant $0$ (where it exists), whichever $g$ you chose. The stage flags that as a special case, because the shape disappears.
+
+<Callout kind="scope" title="What the parameters leave out">
+This family has two knobs, $a$ and $h$. A line through $(h,0)$ with slope $a$ is a line, but only a line through the $x$-axis; $y=a(x-h)$ cannot be a horizontal line other than $y=0$. Adding a vertical shift $k$ (so $y=a\,g(x-h)+k$) or a frequency (as in $\sin 3x$) changes nothing in the reasoning below and is left out to keep the picture readable.
+</Callout>
+
+An exponential has a small surprise hidden in this pattern: shifting it and scaling it are the *same* operation, because $a\,e^{x-h}=(a\,e^{-h})\,e^{x}$. Slide $h$ and watch the curve; then change $a$ to reach the identical curve. No other family does this.
+
+## Mechanics: shifts, scales and inverses
+
+### Shifts and scales
+
+Use the stage at the top (or the full copy in the **Explore** section) to see the two parameters act. Set only $\ln$ on, then raise $h$: the curve and its vertical asymptote move right together, and the thick bar on the $x$-axis, where $\ln$ has no value, grows with them. Set only the sine on and raise $a$ to $3$: the range becomes $[-3,3]$ and the zeros do not move, because a vertical stretch never moves the points where a function is $0$. Raise $h$ instead and the zeros slide.
+
+### Inverse pairs and their honest domains
+
+Two functions are **inverses** when each undoes the other. The exponential and the logarithm are one such pair, and squaring and the square root are another. On a graph, inverses are mirror images across the line $y=x$, because undoing a function swaps the roles of input and output, and swapping coordinates is exactly that mirror.
+
+The honest statement of the pair needs the domains:
+
+$$
+\ln\!\left(e^{x}\right)=x\ \text{ for every real }x,\qquad e^{\ln x}=x\ \text{ only for }x>0 .
+$$
+
+The first holds everywhere because $e^{x}$ is defined and positive for every $x$. The second needs $x>0$ because $\ln x$ does not exist otherwise. The square-and-root pair has the same trap in a different place: $\sqrt{x^{2}}=|x|$, which equals $x$ only when $x\ge0$, and $\left(\sqrt{x}\right)^{2}=x$ only for $x\ge0$, since $\sqrt{x}$ does not exist for negative $x$.
+
+<Stage caption="Choose a pair and an order, then drag x or type it. The dashed line is y = x; a point and its mirror image swap coordinates, and the open ring marks a point that comes back somewhere other than where it started.">
+  <UndoStage client:load />
+</Stage>
+
+Try the presets in turn. $\ln(e^{1.5})$ comes back, and so does $\ln(e^{-3})$: negative inputs are fine for the exponential. $e^{\ln(-2)}$ cannot even start, because the first step has no value. $\sqrt{(-2)^{2}}$ comes back as $2$, not $-2$: the square forgot the sign, and the stage shows where the lost point lands on the other branch of the parabola. And the two overflow presets show that a round trip that is mathematically perfect can still fail on a computer; the row says so, labelled "as a double".
+
+### The unit circle
+
+Trigonometry begins with one circle. The **unit circle** is the circle of radius $1$ centred at the origin. Start at $(1,0)$ and walk counter-clockwise a distance $\theta$ along the circle; the point you reach is, by definition,
+
+$$
+(\cos\theta,\ \sin\theta).
+$$
+
+The distance walked, $\theta$, is measured in **radians**: one full turn is $2\pi$ because the circumference of a circle of radius $1$ is $2\pi$. So $\pi$ is a half-turn, $\pi/2$ a quarter-turn, and $180^{\circ}=\pi$ radians. Walking clockwise is a negative angle, matching the convention used for vector directions in the vectors chapter. Walking a whole turn more brings you back to the same point, which is why both functions repeat: $\sin(\theta+2\pi)=\sin\theta$.
+
+Because the point lies on the circle, its coordinates satisfy $\cos^{2}\theta+\sin^{2}\theta=1$: it is Pythagoras applied to the right triangle with the radius as hypotenuse.
+
+<Stage caption="Drag the point round the circle, use the arrow keys on it (Shift for bigger steps), or type an angle. The horizontal leg is cos θ, the vertical leg is sin θ, and the two graphs below show the same two numbers as θ varies.">
+  <CircleStage client:load />
+</Stage>
+
+Some angles have exact coordinates built from $\sqrt2$, $\sqrt3$ and small fractions. The stage in its exact mode snaps to multiples of $\pi/12$ and shows them with $=$. The table lists the first half-turn, straight from the model:
+
+<SpecialAnglesTable />
+
+The other quadrants follow from the first by reflection. Take the **reference angle**, the acute angle between the radius and the $x$-axis, read its unsigned values from the table, and put the signs back from the quadrant: in quadrant II cosine is negative and sine positive, in quadrant III both are negative, in quadrant IV cosine is positive and sine negative.
+
+Two inverse functions go with the circle, and both have limited ranges. $\arcsin$ returns only angles from $-\pi/2$ to $\pi/2$, so $\arcsin(\sin\theta)=\theta$ only for those $\theta$; for $\theta=2$ it returns $\pi-2$, the other angle with the same sine. The two-argument function $\operatorname{atan2}(y,x)$, met in the vectors chapter, returns the angle in $(-\pi,\pi]$ from *both* coordinates, so it recovers $\theta$ up to whole turns. The verdict line under the stage says, for each angle, whether $\arcsin$ and $\operatorname{atan2}$ give the angle back.
+
+### Changing the base
+
+The exponential $e^{x}$ is one member of a family. For any base $b>0$ with $b\ne1$ we have $b^{x}=e^{x\ln b}$, so every exponential is the natural one with the input rescaled by the constant $\ln b$. The inverse of $b^{x}$ is the **logarithm to the base $b$**, written $\log_{b}x$: the power of $b$ that gives $x$. It exists for $x>0$ only.
+
+Base $1$ is excluded because $1^{x}=1$ for every $x$: it is a constant, not an exponential, and its "logarithm" would have to answer *what power of $1$ gives $7$?* — nothing does. For a base between $0$ and $1$ the curve falls instead of rising (halving rather than doubling).
+
+Any logarithm is a natural logarithm divided by a constant, which is how a computer evaluates all of them:
+
+$$
+\log_{b}x=\frac{\ln x}{\ln b}\qquad(x>0,\ b>0,\ b\ne1).
+$$
+
+The same constant gives the **doubling time**. For $b>1$ the quantity $b^{x}$ doubles every time $x$ grows by $\ln 2/\ln b$, and for $0<b<1$ it halves every $\ln 2/|\ln b|$. And it converts units of information: $\log_{2}x=\ln x/\ln 2$ counts **bits** and $\ln x$ counts **nats**.
+
+Finally, four identities hold for positive numbers and are what make logarithms useful:
+
+$$
+\ln(ab)=\ln a+\ln b,\qquad \ln\!\left(a^{k}\right)=k\ln a,\qquad \log_{b}a=\frac{\ln a}{\ln b} .
+$$
+
+<Stage caption="Choose a base and an input to see b to the x and its logarithm as mirror images. Below, the identity checker evaluates both sides of each identity on a computer and shows the difference and the tolerance it is judged against.">
+  <BaseStage client:load />
+</Stage>
+
+Exact mathematics says both sides of each identity are equal. The computer rounds every step, so the two sides can differ in the last digits; the stage shows that difference and a tolerance of a few units in the last place. The checker also shows when an identity cannot be checked at all: if $a$ is not positive, $\ln a$ does not exist and the card says so, rather than inventing a number.
+
+## Worked examples
+
+Four computations, each shown step by step with every number taken from the same model as the stages. Step forward and back with the buttons; going back selects an earlier step, and nothing is undone.
+
+<Stage caption="Choose an example and step through the work. The first is a shifted and scaled logarithm, the second a round trip, the third a point on the unit circle, and the last a change of base.">
+  <WorkedStage client:load />
+</Stage>
+
+## Executable reference code
+
+The Python below is stored in the repository and executed by the test suite, so what you read is known to run. The comments record what each line returns.
+
+First the exponential and the logarithm: the round trip, the places where each fails, a square and its root, change of base, and bits and nats. Notice the line `math.log(1000, 10)`: it returns `2.9999999999999996`, because it divides two rounded logarithms, while `math.log10(1000.0)` is built for the job and returns `3.0`.
+
+<CodeFile source={expLog} file="code/python/families_exp_log.py" note="exp, ln and their limits" />
+
+Then trigonometry. All Python trigonometric functions take radians. The file shows that $\sin\pi$ is not zero (it is about $1.2\times10^{-16}$), why you compare with a tolerance, and the two behaviours from the unit circle: $\arcsin(\sin 2)$ is not $2$, and `atan2` returns the angle modulo a turn.
+
+<CodeFile source={trig} file="code/python/families_trig.py" note="radians, periodicity, arcsin versus atan2" />
+
+Finally the practical form of the exponential in machine learning: the softmax, which overflows if written naively, and the standard shift that fixes it.
+
+<CodeFile source={stable} file="code/python/families_stable_exp_numpy.py" note="overflow and the stable softmax" />
+
+## Explore: change the parameters
+
+This is the whole comparison on one plane, with the facts about each visible curve in cards underneath: domain, range, zeros, asymptote, behaviour and symmetry. These questions have definite answers; check them against the stage.
+
+<Stage caption="The full comparison. Turn families on, change a and h, and read the facts for every visible curve. The thick bar on the x-axis marks where the logarithm has no value.">
+  <CompareStage client:load variant="full" />
+</Stage>
+
+- Switch on $x$, $x^{2}$ and $e^{x}$ together with $a=1$ and $h=0$. Where do the line and the parabola cross? Does $e^{x}$ ever fall below $x^{2}$? (For positive $x$ it never does: the smallest ratio $e^{x}/x^{2}$ is $e^{2}/4\approx1.85$, at $x=2$. For negative $x$ it does, until they cross near $x\approx-0.70$.) The exercise below asks the same question for $2^{x}$, where the answer is different.
+- Turn $\ln$ on and raise $h$ to $3$. Where is its zero, and where is its asymptote? Why is the zero not at the asymptote?
+- Set $a=-1$ on the parabola. What happens to its range, and to the facts card?
+- Turn on the sine and cosine with $a=1$. Which value of $h$ for the sine brings it closest to the cosine? (Think of a quarter of a period, and of the direction a positive $h$ moves a graph. The exact answer is $-\pi/2\approx-1.571$; the arrows and the buttons step by $0.5$, so they reach $-1.5$; typing a value allows two decimals.)
+- Make $a=0$. What do all the families have in common?
+
+## Common mistakes
+
+<Callout kind="misconception" title="ln(a + b) is not ln a + ln b">
+$\ln(2+3)=\ln 5\approx1.609$, but $\ln2+\ln3=\ln6\approx1.792$. The logarithm turns *products* into sums: $\ln(ab)=\ln a+\ln b$. It does nothing useful with a sum inside.
+</Callout>
+
+<Callout kind="misconception" title="The square root undoes the square">
+Only for non-negative numbers. $\sqrt{(-7)^{2}}=\sqrt{49}=7$, not $-7$: squaring maps both $7$ and $-7$ to $49$, so no function can recover the sign.
+</Callout>
+
+<Callout kind="misconception" title="Degrees go into sin and cos">
+`math.sin(30)` is not $1/2$. It is the sine of $30$ *radians*, which is about $-0.988$. Convert first with `math.radians(30)`, or better, work in radians throughout.
+</Callout>
+
+<Callout kind="misconception" title="arcsin(sin x) = x">
+Only for $x$ between $-\pi/2$ and $\pi/2$. For $x=2$ you get $\pi-2\approx1.1416$, the other angle with the same sine. A sine value of $1/2$ is shared by *two* angles in every turn, and $\arcsin$ reports just one.
+</Callout>
+
+<Callout kind="misconception" title="An exponential beats a power straight away">
+It wins *eventually*, not immediately. $2^{x}$ and $x^{2}$ are equal at $x=2$ and $x=4$, and in between $x^{2}$ is larger ($2^{3}=8<9$). After $x=4$ the exponential never looks back.
+</Callout>
+
+<Callout kind="misconception" title="A positive shift moves the graph left">
+$g(x-h)$ moves the graph of $g$ to the *right* by $h$. The value that used to occur at $x=0$ now occurs at $x=h$. To see it, check where $\ln(x-h)$ has its zero: at $x=h+1$.
+</Callout>
+
+<Callout kind="misconception" title="log means the same thing everywhere">
+In Python `math.log` and `np.log` are the **natural** logarithm; `math.log10` and `np.log10` are base $10$; `math.log2` is base $2$. Many textbooks write $\log$ for base $10$ and some for base $2$. State the base.
+</Callout>
+
+## Numerical considerations
+
+The exponential has a narrow window in which a double can hold it. The largest double is about $1.8\times10^{308}$, so $e^{x}$ overflows just above $x=709.78$; the smallest positive double is about $5\times10^{-324}$, so $e^{x}$ underflows to exactly $0$ just below $x=-745.13$. The table is computed by the same model as the stages above.
+
+<ExpLimitsTable />
+
+When the stored value is $\infty$ or $0$, the stage writes $=$ because it is stating a fact about the *double* ("the stored value is $\infty$"), and it adds a note giving the truth: the real value is finite and large, or positive and tiny. Python and NumPy even disagree on what to do. `math.exp(710.0)` raises `OverflowError`; `np.exp(710.0)` quietly returns `inf`, and `inf / inf` is `nan`, which then poisons every number it touches.
+
+<Callout kind="numerical">
+Never compute $e^{x}$ for a large $x$ directly if you only need a ratio or a logarithm of a sum. Subtract the largest exponent first, so that every exponent is at most $0$ and the largest term is exactly $e^{0}=1$. Compare floating-point results with `math.isclose` (a tolerance), never `==`, and keep exact values (such as $\sqrt3/2$) as exact values until you must print them.
+</Callout>
+
+Three more places where the machine and the mathematics part ways. First, $e^{\ln x}$ is $x$ only up to rounding: `math.exp(math.log(10.0))` is `10.000000000000002`. Second, $\pi$ is stored rounded, so $\sin\pi$ is about $1.2\times10^{-16}$, not $0$, and $\cos(\pi/2)$ is about $6\times10^{-17}$. Third, `math.log(1000, 10)` is `2.9999999999999996` but `math.log10(1000.0)` is `3.0`: when a dedicated function for your base exists, use it.
+
+## Connections to engineering and machine learning
+
+- **Softmax and log-sum-exp.** A classifier turns scores $s_i$ into probabilities $e^{s_i}/\sum_j e^{s_j}$. With scores near $1000$ the exponentials overflow. Subtracting the largest score $m$ multiplies the top and the bottom by the same number $e^{-m}$, so the probabilities do not change, and every exponent becomes at most $0$. The same shift gives $\ln\sum_j e^{s_j}=m+\ln\sum_j e^{s_j-m}$, the standard stable form used in the loss functions of almost every framework.
+- **Logarithms turn products into sums.** The likelihood of $1000$ independent events each with probability $0.01$ is $10^{-2000}$, which underflows to $0$ in a double. The log-likelihood is $1000\ln 0.01\approx-4605.17$, an ordinary number. This is why models are trained on the log-likelihood.
+- **Bits and nats.** Cross-entropy and information are measured in nats when computed with $\ln$ (the default in most libraries) and in bits with $\log_2$; one nat is $1/\ln2\approx1.4427$ bits. Telling $1024$ equally likely cases apart takes $\log_21024=10$ bits.
+- **Exponential growth and decay.** Compound growth, radioactive decay, learning-rate schedules and the attenuation of a signal are all $a\,b^{x}$; the doubling or halving time $\ln2/|\ln b|$ is the one number that describes them.
+- **Sine and cosine.** Every periodic signal is built from them, and a rotation of the plane by $\theta$ is the matrix whose entries are $\cos\theta$ and $\sin\theta$. Positional encodings in transformers use sines and cosines of many frequencies; all of them take radians.
+- **The logarithm as a compressor.** On a log axis, multiplying a quantity by a fixed factor moves it a fixed distance. This is why spectra, learning curves and file sizes are plotted that way.
+
+## Exercises
+
+Answer each question and press **Check**. A wrong answer tells you *which* mistake it looks like. After one attempt you may open a worked solution.
+
+<Exercise client:load id="exp-overtakes-square" />
+
+<Exercise client:load id="inverse-domains" />
+
+<Exercise client:load id="root-of-square" />
+
+<Exercise client:load id="cosine-quadrant" />
+
+<Exercise client:load id="arcsin-of-sin" />
+
+<Exercise client:load id="sine-solutions" />
+
+<Exercise client:load id="log-bits" />
+
+<Exercise client:load id="exp-overflow" />
+
+<Exercise client:load id="softmax-shift" />
+
+<Exercise client:load id="find-the-shift" />
+
+## Summary and checkpoints
+
+- Six shapes carry most of the work: the line, the parabola, the exponential, the logarithm, the sine and the cosine. Each is $a\,g(x-h)$ for a basic $g$: $a$ stretches vertically, $h$ shifts right.
+- Domains matter. $\ln$ exists only for positive inputs; $\sqrt{}$ only for non-negative ones. $\ln(e^{x})=x$ for every $x$, but $e^{\ln x}=x$ only for $x>0$, and $\sqrt{x^{2}}=|x|$.
+- Inverse functions are mirror images across $y=x$.
+- On the unit circle, $(\cos\theta,\sin\theta)$ is the point at distance $\theta$ (radians) from $(1,0)$, and $\cos^{2}\theta+\sin^{2}\theta=1$. $\arcsin$ returns only angles in $[-\pi/2,\pi/2]$; $\operatorname{atan2}$ returns angles in $(-\pi,\pi]$.
+- $\log_{b}x=\ln x/\ln b$; the doubling time is $\ln2/\ln b$; bits use base $2$, nats use base $e$.
+- In code: radians everywhere, tolerances instead of `==`, shift exponents before using them, and expect `exp` to overflow near $709.78$.
+
+**Checkpoints.** You are ready to move on when you can, without looking:
+
+1. Sketch $\ln(x-2)$ and name its domain, its asymptote and its zero.
+2. Say why $\sqrt{x^{2}}$ is not always $x$, and for which $x$ it is.
+3. Give $\cos$ and $\sin$ of $7\pi/6$, with signs, and say which quadrant that is.
+4. Explain why $\arcsin(\sin 2)\ne2$, and what it equals.
+5. Compute $\log_{2}1024$ and explain how it differs from $\ln1024$.
+6. Say what happens to $e^{710}$ in Python and in NumPy, and how to avoid the overflow in a softmax.

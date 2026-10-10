@@ -58,7 +58,7 @@ export const parts: readonly Part[] = [
       available(3, "Vectors: components, magnitude, and direction", "vectors", "reference"),
       planned(4, "Algebraic expressions, equations and inequalities"),
       planned(5, "Functions as input → transformation → output"),
-      planned(6, "Essential function families"),
+      available(6, "Essential function families", "function-families"),
       planned(7, "Sets, intervals, and relations"),
       planned(8, "Indexed quantities and summation"),
       planned(9, "The notation map for ML"),

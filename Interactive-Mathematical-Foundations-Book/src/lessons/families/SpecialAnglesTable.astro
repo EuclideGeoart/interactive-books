@@ -1,0 +1,14 @@
+---
+/** Static table of the special angles kπ/12 for k = 0…12 (the first two quadrants and the half-turn), straight from the model: exact radicals with the doubles beside them. */
+import { exactTrig, piMultiple } from '../../math/families/circle';
+const rows = Array.from({ length: 13 }, (_, k) => {
+  const t = exactTrig(k);
+  return { angle: piMultiple(k).text, deg: `${k * 15}°`, cos: t.cos.text, sin: t.sin.text, cosN: t.cos.numeric.toFixed(6).replace('-', '−'), sinN: t.sin.numeric.toFixed(6).replace('-', '−') };
+});
+---
+<div class="table-scroll" data-scrollable="Special angles table, scrollable">
+  <table class="num-table" data-table="special-angles">
+    <thead><tr><th>angle θ</th><th>degrees</th><th>cos θ (exact)</th><th>sin θ (exact)</th><th>cos θ ≈</th><th>sin θ ≈</th></tr></thead>
+    <tbody>{rows.map(r => <tr><td>{r.angle}</td><td>{r.deg}</td><td>{r.cos}</td><td>{r.sin}</td><td>{r.cosN}</td><td>{r.sinN}</td></tr>)}</tbody>
+  </table>
+</div>
