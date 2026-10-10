@@ -1,0 +1,9 @@
+---
+/** Breakout wrapper for an interactive stage island: full chapter width, with an optional caption. */
+interface Props { caption?: string }
+const { caption } = Astro.props;
+---
+<figure class="stage-block">
+  <slot />
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>

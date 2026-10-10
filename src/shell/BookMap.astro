@@ -1,0 +1,26 @@
+---
+import { chapterCount, availableCount } from '../curriculum/queries';
+import { href } from './href';
+import CurriculumList from './CurriculumList.astro';
+---
+<dialog class="book-map" data-map aria-labelledby="map-title">
+  <div class="map-head">
+    <div>
+      <h2 id="map-title">The map of the book</h2>
+      <p class="map-sub">{availableCount} of {chapterCount} chapters written · eight Parts</p>
+    </div>
+    <button type="button" class="topbar-button icon-only" data-map-close aria-label="Close the map">
+      <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true" focusable="false"><path d="M5 5l10 10M15 5L5 15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="map-tools">
+    <label class="sr-only" for="map-filter">Filter parts and chapters</label>
+    <input id="map-filter" type="search" data-map-filter placeholder="Filter: try “matrix”, “Bayes”, “softmax”…" autocomplete="off" spellcheck="false" />
+    <p class="sr-only" role="status" aria-live="polite" data-map-count></p>
+  </div>
+  <div class="map-platform">
+    <a href={href('/foundation/')}><span class="chip">demo</span> <span class="link-text">Foundation demo</span> <span class="aside">platform check, not a chapter</span></a>
+    <a href={href('/contents/')}><span class="link-text">Open as a page</span></a>
+  </div>
+  <div class="map-body" tabindex="0" role="region" aria-label="Parts and chapters"><CurriculumList idPrefix="map-" headingLevel={3} showEmblems={false} /></div>
+</dialog>

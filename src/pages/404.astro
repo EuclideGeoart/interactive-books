@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../shell/BaseLayout.astro';
+import { href } from '../shell/href';
+---
+<BaseLayout title="Page not found" description="This page does not exist. Chapters that are not yet written appear in the book map as planned.">
+  <section class="plain-page">
+    <p class="chapter-label"><span class="label-chip">404</span></p>
+    <h1 class="hero-question">There is no page at <em>this</em> address.</h1>
+    <p class="lede">A chapter that has not been written yet appears in the map as <strong>planned</strong> and has no page. Everything that exists is reachable from the map.</p>
+    <p class="actions"><a class="button primary" href={href('/contents/')}>Open the map of the book</a> <a class="button" href={href('/')}>Back to the start</a></p>
+  </section>
+</BaseLayout>

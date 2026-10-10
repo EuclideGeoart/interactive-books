@@ -1,0 +1,11 @@
+---
+import { chapterCount, availableCount } from '../curriculum/queries';
+import { href } from './href';
+---
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p class="footer-title"><strong>Interactive Mathematical Foundations</strong> for Computing &amp; Machine Learning · Book II</p>
+    <p class="footer-status">Foundation milestone: the platform is in place; {availableCount} of {chapterCount} chapters are written.</p>
+    <nav aria-label="Footer"><a href={href('/contents/')}>Contents</a><a href={href('/foundation/')}>Foundation demo</a><a href="#top">Back to top</a></nav>
+  </div>
+</footer>

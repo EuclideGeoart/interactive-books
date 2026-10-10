@@ -1,0 +1,6829 @@
+{
+ "schema": "book2.vector2.fixtures/1",
+ "generatedBy": "oracle/vector2_oracle.py",
+ "conventions": {
+  "coordinates": "+x right, +y up",
+  "angle": "radians in (-pi, pi]; the zero vector has no direction (null)",
+  "negativeZero": "-0 components are canonicalised to +0 before evaluation",
+  "exact": "||v|| = coefficient * sqrt(radicand), radicand square-free; integer components only"
+ },
+ "exactRadicandLimit": "1000000000000",
+ "tolerance": {
+  "unit": "ulps of the expected value (math.ulp); the smallest subnormal spacing is used at 0",
+  "magnitude": 4,
+  "magnitudeSquared": 4,
+  "directionRadians": 4,
+  "directionDegrees": 8,
+  "rationale": "Math.hypot, Math.atan2 and libm need not be correctly rounded and may differ in the last bits; x*x + y*y rounds up to three times. Observed maxima against this oracle on Node 24 / V8: magnitude 2, magnitudeSquared 1, directionRadians 1, directionDegrees 3 ulps; the tolerances leave headroom for other engines yet stay ~1e-15 relative. These are test tolerances, not mathematical equalities (plan §10.4). Exact forms and zero/undefined policies must match EXACTLY."
+ },
+ "cases": [
+  {
+   "id": "canonical_3_2",
+   "tags": [
+    "plan-9.4",
+    "plan-15.3",
+    "irrational-exact"
+   ],
+   "input": {
+    "x": 3,
+    "y": 2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.605551275463989,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "13",
+    "magnitudeSquared": 13.0,
+    "directionRadians": 0.5880026035475675,
+    "directionDegrees": 33.690067525979785,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "13",
+     "text": "√13",
+     "tex": "\\sqrt{13}"
+    }
+   }
+  },
+  {
+   "id": "pythagorean_3_4",
+   "tags": [
+    "exact-integer"
+   ],
+   "input": {
+    "x": 3,
+    "y": 4
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "25",
+    "magnitudeSquared": 25.0,
+    "directionRadians": 0.9272952180016122,
+    "directionDegrees": 53.13010235415598,
+    "exact": {
+     "coefficient": "5",
+     "radicand": "1",
+     "text": "5",
+     "tex": "5"
+    }
+   }
+  },
+  {
+   "id": "diagonal_1_1",
+   "tags": [
+    "exact-irrational"
+   ],
+   "input": {
+    "x": 1,
+    "y": 1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 1.4142135623730951,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "2",
+    "magnitudeSquared": 2.0,
+    "directionRadians": 0.7853981633974483,
+    "directionDegrees": 45.0,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "2",
+     "text": "√2",
+     "tex": "\\sqrt{2}"
+    }
+   }
+  },
+  {
+   "id": "zero",
+   "tags": [
+    "zero-vector",
+    "plan-15.4"
+   ],
+   "input": {
+    "x": 0,
+    "y": 0
+   },
+   "expected": {
+    "isZero": true,
+    "magnitude": 0.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "0",
+    "magnitudeSquared": 0.0,
+    "directionRadians": null,
+    "directionDegrees": null,
+    "exact": {
+     "coefficient": "0",
+     "radicand": "1",
+     "text": "0",
+     "tex": "0"
+    }
+   }
+  },
+  {
+   "id": "negative_zero_both",
+   "tags": [
+    "zero-vector",
+    "negative-zero"
+   ],
+   "input": {
+    "x": -0.0,
+    "y": -0.0
+   },
+   "expected": {
+    "isZero": true,
+    "magnitude": 0.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "0",
+    "magnitudeSquared": 0.0,
+    "directionRadians": null,
+    "directionDegrees": null,
+    "exact": {
+     "coefficient": "0",
+     "radicand": "1",
+     "text": "0",
+     "tex": "0"
+    }
+   }
+  },
+  {
+   "id": "negative_zero_x",
+   "tags": [
+    "zero-vector",
+    "negative-zero"
+   ],
+   "input": {
+    "x": -0.0,
+    "y": 0
+   },
+   "expected": {
+    "isZero": true,
+    "magnitude": 0.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "0",
+    "magnitudeSquared": 0.0,
+    "directionRadians": null,
+    "directionDegrees": null,
+    "exact": {
+     "coefficient": "0",
+     "radicand": "1",
+     "text": "0",
+     "tex": "0"
+    }
+   }
+  },
+  {
+   "id": "axis_pos_x",
+   "tags": [
+    "axis"
+   ],
+   "input": {
+    "x": 5,
+    "y": 0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "25",
+    "magnitudeSquared": 25.0,
+    "directionRadians": 0.0,
+    "directionDegrees": 0.0,
+    "exact": {
+     "coefficient": "5",
+     "radicand": "1",
+     "text": "5",
+     "tex": "5"
+    }
+   }
+  },
+  {
+   "id": "axis_pos_y",
+   "tags": [
+    "axis"
+   ],
+   "input": {
+    "x": 0,
+    "y": 5
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "25",
+    "magnitudeSquared": 25.0,
+    "directionRadians": 1.5707963267948966,
+    "directionDegrees": 90.0,
+    "exact": {
+     "coefficient": "5",
+     "radicand": "1",
+     "text": "5",
+     "tex": "5"
+    }
+   }
+  },
+  {
+   "id": "axis_neg_x",
+   "tags": [
+    "axis",
+    "branch-cut"
+   ],
+   "input": {
+    "x": -5,
+    "y": 0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "25",
+    "magnitudeSquared": 25.0,
+    "directionRadians": 3.141592653589793,
+    "directionDegrees": 180.0,
+    "exact": {
+     "coefficient": "5",
+     "radicand": "1",
+     "text": "5",
+     "tex": "5"
+    }
+   }
+  },
+  {
+   "id": "axis_neg_y",
+   "tags": [
+    "axis"
+   ],
+   "input": {
+    "x": 0,
+    "y": -5
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "25",
+    "magnitudeSquared": 25.0,
+    "directionRadians": -1.5707963267948966,
+    "directionDegrees": -90.0,
+    "exact": {
+     "coefficient": "5",
+     "radicand": "1",
+     "text": "5",
+     "tex": "5"
+    }
+   }
+  },
+  {
+   "id": "branch_cut_negative_zero_y",
+   "tags": [
+    "axis",
+    "branch-cut",
+    "negative-zero"
+   ],
+   "input": {
+    "x": -1,
+    "y": -0.0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 1.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "1",
+    "magnitudeSquared": 1.0,
+    "directionRadians": 3.141592653589793,
+    "directionDegrees": 180.0,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "1",
+     "text": "1",
+     "tex": "1"
+    }
+   }
+  },
+  {
+   "id": "quadrant_1",
+   "tags": [
+    "quadrant"
+   ],
+   "input": {
+    "x": 3,
+    "y": 2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.605551275463989,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "13",
+    "magnitudeSquared": 13.0,
+    "directionRadians": 0.5880026035475675,
+    "directionDegrees": 33.690067525979785,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "13",
+     "text": "√13",
+     "tex": "\\sqrt{13}"
+    }
+   }
+  },
+  {
+   "id": "quadrant_2",
+   "tags": [
+    "quadrant"
+   ],
+   "input": {
+    "x": -3,
+    "y": 2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.605551275463989,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "13",
+    "magnitudeSquared": 13.0,
+    "directionRadians": 2.5535900500422257,
+    "directionDegrees": 146.30993247402023,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "13",
+     "text": "√13",
+     "tex": "\\sqrt{13}"
+    }
+   }
+  },
+  {
+   "id": "quadrant_3",
+   "tags": [
+    "quadrant"
+   ],
+   "input": {
+    "x": -3,
+    "y": -2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.605551275463989,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "13",
+    "magnitudeSquared": 13.0,
+    "directionRadians": -2.5535900500422257,
+    "directionDegrees": -146.30993247402023,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "13",
+     "text": "√13",
+     "tex": "\\sqrt{13}"
+    }
+   }
+  },
+  {
+   "id": "quadrant_4",
+   "tags": [
+    "quadrant"
+   ],
+   "input": {
+    "x": 3,
+    "y": -2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.605551275463989,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "13",
+    "magnitudeSquared": 13.0,
+    "directionRadians": -0.5880026035475675,
+    "directionDegrees": -33.690067525979785,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "13",
+     "text": "√13",
+     "tex": "\\sqrt{13}"
+    }
+   }
+  },
+  {
+   "id": "exact_2_2",
+   "tags": [
+    "exact-irrational"
+   ],
+   "input": {
+    "x": 2,
+    "y": 2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.8284271247461903,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "8",
+    "magnitudeSquared": 8.0,
+    "directionRadians": 0.7853981633974483,
+    "directionDegrees": 45.0,
+    "exact": {
+     "coefficient": "2",
+     "radicand": "2",
+     "text": "2√2",
+     "tex": "2\\sqrt{2}"
+    }
+   }
+  },
+  {
+   "id": "exact_4_4",
+   "tags": [
+    "exact-irrational"
+   ],
+   "input": {
+    "x": 4,
+    "y": 4
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.656854249492381,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "32",
+    "magnitudeSquared": 32.0,
+    "directionRadians": 0.7853981633974483,
+    "directionDegrees": 45.0,
+    "exact": {
+     "coefficient": "4",
+     "radicand": "2",
+     "text": "4√2",
+     "tex": "4\\sqrt{2}"
+    }
+   }
+  },
+  {
+   "id": "exact_1_2",
+   "tags": [
+    "exact-irrational"
+   ],
+   "input": {
+    "x": 1,
+    "y": 2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.23606797749979,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "5",
+    "magnitudeSquared": 5.0,
+    "directionRadians": 1.1071487177940904,
+    "directionDegrees": 63.43494882292201,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "5",
+     "text": "√5",
+     "tex": "\\sqrt{5}"
+    }
+   }
+  },
+  {
+   "id": "exact_3_6",
+   "tags": [
+    "exact-irrational"
+   ],
+   "input": {
+    "x": 3,
+    "y": 6
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 6.708203932499369,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "45",
+    "magnitudeSquared": 45.0,
+    "directionRadians": 1.1071487177940904,
+    "directionDegrees": 63.43494882292201,
+    "exact": {
+     "coefficient": "3",
+     "radicand": "5",
+     "text": "3√5",
+     "tex": "3\\sqrt{5}"
+    }
+   }
+  },
+  {
+   "id": "exact_7_1",
+   "tags": [
+    "exact-irrational"
+   ],
+   "input": {
+    "x": 7,
+    "y": 1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 7.0710678118654755,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "50",
+    "magnitudeSquared": 50.0,
+    "directionRadians": 0.14189705460416394,
+    "directionDegrees": 8.13010235415598,
+    "exact": {
+     "coefficient": "5",
+     "radicand": "2",
+     "text": "5√2",
+     "tex": "5\\sqrt{2}"
+    }
+   }
+  },
+  {
+   "id": "exact_12_16",
+   "tags": [
+    "exact-integer"
+   ],
+   "input": {
+    "x": 12,
+    "y": 16
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 20.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "400",
+    "magnitudeSquared": 400.0,
+    "directionRadians": 0.9272952180016122,
+    "directionDegrees": 53.13010235415598,
+    "exact": {
+     "coefficient": "20",
+     "radicand": "1",
+     "text": "20",
+     "tex": "20"
+    }
+   }
+  },
+  {
+   "id": "exact_6_0",
+   "tags": [
+    "exact-integer",
+    "axis"
+   ],
+   "input": {
+    "x": 6,
+    "y": 0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 6.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "36",
+    "magnitudeSquared": 36.0,
+    "directionRadians": 0.0,
+    "directionDegrees": 0.0,
+    "exact": {
+     "coefficient": "6",
+     "radicand": "1",
+     "text": "6",
+     "tex": "6"
+    }
+   }
+  },
+  {
+   "id": "exact_999999_0",
+   "tags": [
+    "exact-integer",
+    "large"
+   ],
+   "input": {
+    "x": 999999,
+    "y": 0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 999999.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "999998000001",
+    "magnitudeSquared": 999998000001.0,
+    "directionRadians": 0.0,
+    "directionDegrees": 0.0,
+    "exact": {
+     "coefficient": "999999",
+     "radicand": "1",
+     "text": "999999",
+     "tex": "999999"
+    }
+   }
+  },
+  {
+   "id": "exact_limit_exceeded",
+   "tags": [
+    "exact-not-attempted",
+    "large"
+   ],
+   "input": {
+    "x": 1000000,
+    "y": 1000000
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 1414213.562373095,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "2000000000000",
+    "magnitudeSquared": 2000000000000.0,
+    "directionRadians": 0.7853981633974483,
+    "directionDegrees": 45.0,
+    "exact": null
+   }
+  },
+  {
+   "id": "decimal_half_half",
+   "tags": [
+    "numeric-only"
+   ],
+   "input": {
+    "x": 0.5,
+    "y": 0.5
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 0.7071067811865476,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 0.5,
+    "directionRadians": 0.7853981633974483,
+    "directionDegrees": 45.0,
+    "exact": null
+   }
+  },
+  {
+   "id": "decimal_2_5_6",
+   "tags": [
+    "numeric-only"
+   ],
+   "input": {
+    "x": 2.5,
+    "y": 6
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 6.5,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 42.25,
+    "directionRadians": 1.176005207095135,
+    "directionDegrees": 67.38013505195957,
+    "exact": null
+   }
+  },
+  {
+   "id": "decimal_0_1_0_2",
+   "tags": [
+    "numeric-only"
+   ],
+   "input": {
+    "x": 0.1,
+    "y": 0.2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 0.223606797749979,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 0.05,
+    "directionRadians": 1.1071487177940904,
+    "directionDegrees": 63.43494882292201,
+    "exact": null
+   }
+  },
+  {
+   "id": "decimal_neg_2_3_1_1",
+   "tags": [
+    "numeric-only"
+   ],
+   "input": {
+    "x": -2.3,
+    "y": 1.1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.5495097567963922,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 6.499999999999999,
+    "directionRadians": 2.6954871046463897,
+    "directionDegrees": 154.4400348281762,
+    "exact": null
+   }
+  },
+  {
+   "id": "tiny_1e-200",
+   "tags": [
+    "tiny",
+    "underflow-in-square"
+   ],
+   "input": {
+    "x": 1e-200,
+    "y": 1e-200
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 1.414213562373095e-200,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 0.0,
+    "directionRadians": 0.7853981633974483,
+    "directionDegrees": 45.0,
+    "exact": null
+   }
+  },
+  {
+   "id": "tiny_asymmetric",
+   "tags": [
+    "tiny",
+    "underflow-in-square"
+   ],
+   "input": {
+    "x": 1e-160,
+    "y": 3e-160
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.162277660168379e-160,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 1e-319,
+    "directionRadians": 1.2490457723982544,
+    "directionDegrees": 71.56505117707799,
+    "exact": null
+   }
+  },
+  {
+   "id": "tiny_subnormal",
+   "tags": [
+    "tiny",
+    "subnormal"
+   ],
+   "input": {
+    "x": 5e-324,
+    "y": 5e-324
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5e-324,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 0.0,
+    "directionRadians": 0.7853981633974483,
+    "directionDegrees": 45.0,
+    "exact": null
+   }
+  },
+  {
+   "id": "large_1e154",
+   "tags": [
+    "large"
+   ],
+   "input": {
+    "x": 1e+154,
+    "y": 1e+154
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 1.414213562373095e+154,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "200000000000000014779018275223290889416593667423717320136257813097774147842184021610730683132486804922576358191019443277340957433152582676270654571226692145495733782088784484850270275373447066231807630625446262065160844740154066577594534435587504184726008922229341647555076905672332383730378660151708769845248",
+    "magnitudeSquared": null,
+    "magnitudeSquaredStatus": "overflow",
+    "directionRadians": 0.7853981633974483,
+    "directionDegrees": 45.0,
+    "exact": null
+   }
+  },
+  {
+   "id": "large_square_overflows",
+   "tags": [
+    "large",
+    "overflow-in-square"
+   ],
+   "input": {
+    "x": 1.5e+154,
+    "y": 1.5e+154
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.1213203435596427e+154,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "450000000000000077909762339974494614417207536495681156701457854134829075104349102235295414267145084363280205010764792231313930466730212714004503289303154903913413228543381035199538118730652571960873221161550986517090416326632970876206831483088587702852403357392267063157554908883023084767983203864083670499328",
+    "magnitudeSquared": null,
+    "magnitudeSquaredStatus": "overflow",
+    "directionRadians": 0.7853981633974483,
+    "directionDegrees": 45.0,
+    "exact": null
+   }
+  },
+  {
+   "id": "large_1e200",
+   "tags": [
+    "large",
+    "overflow-in-square"
+   ],
+   "input": {
+    "x": 1e+200,
+    "y": 1e+200
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 1.414213562373095e+200,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "19999999999999998789324888500414484700657951074874244944679563241254108417375447260547606160038642661084611167893505786466497614046559057088643231044320497858249332288192539123066291122329476979966795242184644416277261989450427494702380770193237510512154534945172936435472937367222796845768243465225340793390607788851890448662308966955926793810891523431866879040041645686674228076628999817893047697408",
+    "magnitudeSquared": null,
+    "magnitudeSquaredStatus": "overflow",
+    "directionRadians": 0.7853981633974483,
+    "directionDegrees": 45.0,
+    "exact": null
+   }
+  },
+  {
+   "id": "large_max_axis",
+   "tags": [
+    "large",
+    "axis"
+   ],
+   "input": {
+    "x": 1.7976931348623157e+308,
+    "y": 0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 1.7976931348623157e+308,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "32317006071311000124898031224579573843090711673822037420515886478292823994993138674481962506230793058252225437079377520911390436322902341314641236089996355364796691954597073853311793036545971292569645384902133615799048012694523410766823033186436078386283980618856409414727255160864941408179785673109070764255405637712243926106187827619681103765980839692792678566601744461466064161002824604681821655448893368564971987952030936037618568570402780985198765871366912294273978744000867803517844511960663770511714396491833489777196039378614590009350301843409097727866829659250630381092655193582908396093955942605036059623424",
+    "magnitudeSquared": null,
+    "magnitudeSquaredStatus": "overflow",
+    "directionRadians": 0.0,
+    "directionDegrees": 0.0,
+    "exact": null
+   }
+  },
+  {
+   "id": "large_magnitude_overflows",
+   "tags": [
+    "large",
+    "overflow-in-magnitude"
+   ],
+   "input": {
+    "x": 1.7976931348623157e+308,
+    "y": 1.7976931348623157e+308
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": null,
+    "magnitudeStatus": "overflow",
+    "magnitudeSquaredExact": "64634012142622000249796062449159147686181423347644074841031772956585647989986277348963925012461586116504450874158755041822780872645804682629282472179992710729593383909194147706623586073091942585139290769804267231598096025389046821533646066372872156772567961237712818829454510321729882816359571346218141528510811275424487852212375655239362207531961679385585357133203488922932128322005649209363643310897786737129943975904061872075237137140805561970397531742733824588547957488001735607035689023921327541023428792983666979554392078757229180018700603686818195455733659318501260762185310387165816792187911885210072119246848",
+    "magnitudeSquared": null,
+    "magnitudeSquaredStatus": "overflow",
+    "directionRadians": 0.7853981633974483,
+    "directionDegrees": 45.0,
+    "exact": null
+   }
+  },
+  {
+   "id": "grid_-3_-3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -3,
+    "y": -3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.242640687119285,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "18",
+    "magnitudeSquared": 18.0,
+    "directionRadians": -2.356194490192345,
+    "directionDegrees": -135.0,
+    "exact": {
+     "coefficient": "3",
+     "radicand": "2",
+     "text": "3√2",
+     "tex": "3\\sqrt{2}"
+    }
+   }
+  },
+  {
+   "id": "grid_-3_-2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -3,
+    "y": -2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.605551275463989,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "13",
+    "magnitudeSquared": 13.0,
+    "directionRadians": -2.5535900500422257,
+    "directionDegrees": -146.30993247402023,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "13",
+     "text": "√13",
+     "tex": "\\sqrt{13}"
+    }
+   }
+  },
+  {
+   "id": "grid_-3_-1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -3,
+    "y": -1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.1622776601683795,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "10",
+    "magnitudeSquared": 10.0,
+    "directionRadians": -2.819842099193151,
+    "directionDegrees": -161.565051177078,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "10",
+     "text": "√10",
+     "tex": "\\sqrt{10}"
+    }
+   }
+  },
+  {
+   "id": "grid_-3_0",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -3,
+    "y": 0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "9",
+    "magnitudeSquared": 9.0,
+    "directionRadians": 3.141592653589793,
+    "directionDegrees": 180.0,
+    "exact": {
+     "coefficient": "3",
+     "radicand": "1",
+     "text": "3",
+     "tex": "3"
+    }
+   }
+  },
+  {
+   "id": "grid_-3_1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -3,
+    "y": 1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.1622776601683795,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "10",
+    "magnitudeSquared": 10.0,
+    "directionRadians": 2.819842099193151,
+    "directionDegrees": 161.565051177078,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "10",
+     "text": "√10",
+     "tex": "\\sqrt{10}"
+    }
+   }
+  },
+  {
+   "id": "grid_-3_2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -3,
+    "y": 2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.605551275463989,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "13",
+    "magnitudeSquared": 13.0,
+    "directionRadians": 2.5535900500422257,
+    "directionDegrees": 146.30993247402023,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "13",
+     "text": "√13",
+     "tex": "\\sqrt{13}"
+    }
+   }
+  },
+  {
+   "id": "grid_-3_3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -3,
+    "y": 3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.242640687119285,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "18",
+    "magnitudeSquared": 18.0,
+    "directionRadians": 2.356194490192345,
+    "directionDegrees": 135.0,
+    "exact": {
+     "coefficient": "3",
+     "radicand": "2",
+     "text": "3√2",
+     "tex": "3\\sqrt{2}"
+    }
+   }
+  },
+  {
+   "id": "grid_-2_-3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -2,
+    "y": -3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.605551275463989,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "13",
+    "magnitudeSquared": 13.0,
+    "directionRadians": -2.158798930342464,
+    "directionDegrees": -123.69006752597979,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "13",
+     "text": "√13",
+     "tex": "\\sqrt{13}"
+    }
+   }
+  },
+  {
+   "id": "grid_-2_-2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -2,
+    "y": -2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.8284271247461903,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "8",
+    "magnitudeSquared": 8.0,
+    "directionRadians": -2.356194490192345,
+    "directionDegrees": -135.0,
+    "exact": {
+     "coefficient": "2",
+     "radicand": "2",
+     "text": "2√2",
+     "tex": "2\\sqrt{2}"
+    }
+   }
+  },
+  {
+   "id": "grid_-2_-1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -2,
+    "y": -1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.23606797749979,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "5",
+    "magnitudeSquared": 5.0,
+    "directionRadians": -2.677945044588987,
+    "directionDegrees": -153.434948822922,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "5",
+     "text": "√5",
+     "tex": "\\sqrt{5}"
+    }
+   }
+  },
+  {
+   "id": "grid_-2_0",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -2,
+    "y": 0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "4",
+    "magnitudeSquared": 4.0,
+    "directionRadians": 3.141592653589793,
+    "directionDegrees": 180.0,
+    "exact": {
+     "coefficient": "2",
+     "radicand": "1",
+     "text": "2",
+     "tex": "2"
+    }
+   }
+  },
+  {
+   "id": "grid_-2_1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -2,
+    "y": 1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.23606797749979,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "5",
+    "magnitudeSquared": 5.0,
+    "directionRadians": 2.677945044588987,
+    "directionDegrees": 153.434948822922,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "5",
+     "text": "√5",
+     "tex": "\\sqrt{5}"
+    }
+   }
+  },
+  {
+   "id": "grid_-2_2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -2,
+    "y": 2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.8284271247461903,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "8",
+    "magnitudeSquared": 8.0,
+    "directionRadians": 2.356194490192345,
+    "directionDegrees": 135.0,
+    "exact": {
+     "coefficient": "2",
+     "radicand": "2",
+     "text": "2√2",
+     "tex": "2\\sqrt{2}"
+    }
+   }
+  },
+  {
+   "id": "grid_-2_3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -2,
+    "y": 3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.605551275463989,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "13",
+    "magnitudeSquared": 13.0,
+    "directionRadians": 2.158798930342464,
+    "directionDegrees": 123.69006752597979,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "13",
+     "text": "√13",
+     "tex": "\\sqrt{13}"
+    }
+   }
+  },
+  {
+   "id": "grid_-1_-3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -1,
+    "y": -3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.1622776601683795,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "10",
+    "magnitudeSquared": 10.0,
+    "directionRadians": -1.892546881191539,
+    "directionDegrees": -108.43494882292202,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "10",
+     "text": "√10",
+     "tex": "\\sqrt{10}"
+    }
+   }
+  },
+  {
+   "id": "grid_-1_-2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -1,
+    "y": -2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.23606797749979,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "5",
+    "magnitudeSquared": 5.0,
+    "directionRadians": -2.0344439357957027,
+    "directionDegrees": -116.56505117707799,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "5",
+     "text": "√5",
+     "tex": "\\sqrt{5}"
+    }
+   }
+  },
+  {
+   "id": "grid_-1_-1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -1,
+    "y": -1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 1.4142135623730951,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "2",
+    "magnitudeSquared": 2.0,
+    "directionRadians": -2.356194490192345,
+    "directionDegrees": -135.0,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "2",
+     "text": "√2",
+     "tex": "\\sqrt{2}"
+    }
+   }
+  },
+  {
+   "id": "grid_-1_0",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -1,
+    "y": 0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 1.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "1",
+    "magnitudeSquared": 1.0,
+    "directionRadians": 3.141592653589793,
+    "directionDegrees": 180.0,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "1",
+     "text": "1",
+     "tex": "1"
+    }
+   }
+  },
+  {
+   "id": "grid_-1_1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -1,
+    "y": 1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 1.4142135623730951,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "2",
+    "magnitudeSquared": 2.0,
+    "directionRadians": 2.356194490192345,
+    "directionDegrees": 135.0,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "2",
+     "text": "√2",
+     "tex": "\\sqrt{2}"
+    }
+   }
+  },
+  {
+   "id": "grid_-1_2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -1,
+    "y": 2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.23606797749979,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "5",
+    "magnitudeSquared": 5.0,
+    "directionRadians": 2.0344439357957027,
+    "directionDegrees": 116.56505117707799,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "5",
+     "text": "√5",
+     "tex": "\\sqrt{5}"
+    }
+   }
+  },
+  {
+   "id": "grid_-1_3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": -1,
+    "y": 3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.1622776601683795,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "10",
+    "magnitudeSquared": 10.0,
+    "directionRadians": 1.892546881191539,
+    "directionDegrees": 108.43494882292202,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "10",
+     "text": "√10",
+     "tex": "\\sqrt{10}"
+    }
+   }
+  },
+  {
+   "id": "grid_0_-3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 0,
+    "y": -3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "9",
+    "magnitudeSquared": 9.0,
+    "directionRadians": -1.5707963267948966,
+    "directionDegrees": -90.0,
+    "exact": {
+     "coefficient": "3",
+     "radicand": "1",
+     "text": "3",
+     "tex": "3"
+    }
+   }
+  },
+  {
+   "id": "grid_0_-2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 0,
+    "y": -2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "4",
+    "magnitudeSquared": 4.0,
+    "directionRadians": -1.5707963267948966,
+    "directionDegrees": -90.0,
+    "exact": {
+     "coefficient": "2",
+     "radicand": "1",
+     "text": "2",
+     "tex": "2"
+    }
+   }
+  },
+  {
+   "id": "grid_0_-1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 0,
+    "y": -1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 1.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "1",
+    "magnitudeSquared": 1.0,
+    "directionRadians": -1.5707963267948966,
+    "directionDegrees": -90.0,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "1",
+     "text": "1",
+     "tex": "1"
+    }
+   }
+  },
+  {
+   "id": "grid_0_0",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 0,
+    "y": 0
+   },
+   "expected": {
+    "isZero": true,
+    "magnitude": 0.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "0",
+    "magnitudeSquared": 0.0,
+    "directionRadians": null,
+    "directionDegrees": null,
+    "exact": {
+     "coefficient": "0",
+     "radicand": "1",
+     "text": "0",
+     "tex": "0"
+    }
+   }
+  },
+  {
+   "id": "grid_0_1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 0,
+    "y": 1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 1.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "1",
+    "magnitudeSquared": 1.0,
+    "directionRadians": 1.5707963267948966,
+    "directionDegrees": 90.0,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "1",
+     "text": "1",
+     "tex": "1"
+    }
+   }
+  },
+  {
+   "id": "grid_0_2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 0,
+    "y": 2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "4",
+    "magnitudeSquared": 4.0,
+    "directionRadians": 1.5707963267948966,
+    "directionDegrees": 90.0,
+    "exact": {
+     "coefficient": "2",
+     "radicand": "1",
+     "text": "2",
+     "tex": "2"
+    }
+   }
+  },
+  {
+   "id": "grid_0_3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 0,
+    "y": 3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "9",
+    "magnitudeSquared": 9.0,
+    "directionRadians": 1.5707963267948966,
+    "directionDegrees": 90.0,
+    "exact": {
+     "coefficient": "3",
+     "radicand": "1",
+     "text": "3",
+     "tex": "3"
+    }
+   }
+  },
+  {
+   "id": "grid_1_-3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 1,
+    "y": -3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.1622776601683795,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "10",
+    "magnitudeSquared": 10.0,
+    "directionRadians": -1.2490457723982544,
+    "directionDegrees": -71.56505117707799,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "10",
+     "text": "√10",
+     "tex": "\\sqrt{10}"
+    }
+   }
+  },
+  {
+   "id": "grid_1_-2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 1,
+    "y": -2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.23606797749979,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "5",
+    "magnitudeSquared": 5.0,
+    "directionRadians": -1.1071487177940904,
+    "directionDegrees": -63.43494882292201,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "5",
+     "text": "√5",
+     "tex": "\\sqrt{5}"
+    }
+   }
+  },
+  {
+   "id": "grid_1_-1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 1,
+    "y": -1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 1.4142135623730951,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "2",
+    "magnitudeSquared": 2.0,
+    "directionRadians": -0.7853981633974483,
+    "directionDegrees": -45.0,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "2",
+     "text": "√2",
+     "tex": "\\sqrt{2}"
+    }
+   }
+  },
+  {
+   "id": "grid_1_0",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 1,
+    "y": 0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 1.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "1",
+    "magnitudeSquared": 1.0,
+    "directionRadians": 0.0,
+    "directionDegrees": 0.0,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "1",
+     "text": "1",
+     "tex": "1"
+    }
+   }
+  },
+  {
+   "id": "grid_1_1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 1,
+    "y": 1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 1.4142135623730951,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "2",
+    "magnitudeSquared": 2.0,
+    "directionRadians": 0.7853981633974483,
+    "directionDegrees": 45.0,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "2",
+     "text": "√2",
+     "tex": "\\sqrt{2}"
+    }
+   }
+  },
+  {
+   "id": "grid_1_2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 1,
+    "y": 2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.23606797749979,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "5",
+    "magnitudeSquared": 5.0,
+    "directionRadians": 1.1071487177940904,
+    "directionDegrees": 63.43494882292201,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "5",
+     "text": "√5",
+     "tex": "\\sqrt{5}"
+    }
+   }
+  },
+  {
+   "id": "grid_1_3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 1,
+    "y": 3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.1622776601683795,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "10",
+    "magnitudeSquared": 10.0,
+    "directionRadians": 1.2490457723982544,
+    "directionDegrees": 71.56505117707799,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "10",
+     "text": "√10",
+     "tex": "\\sqrt{10}"
+    }
+   }
+  },
+  {
+   "id": "grid_2_-3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 2,
+    "y": -3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.605551275463989,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "13",
+    "magnitudeSquared": 13.0,
+    "directionRadians": -0.982793723247329,
+    "directionDegrees": -56.309932474020215,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "13",
+     "text": "√13",
+     "tex": "\\sqrt{13}"
+    }
+   }
+  },
+  {
+   "id": "grid_2_-2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 2,
+    "y": -2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.8284271247461903,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "8",
+    "magnitudeSquared": 8.0,
+    "directionRadians": -0.7853981633974483,
+    "directionDegrees": -45.0,
+    "exact": {
+     "coefficient": "2",
+     "radicand": "2",
+     "text": "2√2",
+     "tex": "2\\sqrt{2}"
+    }
+   }
+  },
+  {
+   "id": "grid_2_-1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 2,
+    "y": -1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.23606797749979,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "5",
+    "magnitudeSquared": 5.0,
+    "directionRadians": -0.4636476090008061,
+    "directionDegrees": -26.56505117707799,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "5",
+     "text": "√5",
+     "tex": "\\sqrt{5}"
+    }
+   }
+  },
+  {
+   "id": "grid_2_0",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 2,
+    "y": 0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "4",
+    "magnitudeSquared": 4.0,
+    "directionRadians": 0.0,
+    "directionDegrees": 0.0,
+    "exact": {
+     "coefficient": "2",
+     "radicand": "1",
+     "text": "2",
+     "tex": "2"
+    }
+   }
+  },
+  {
+   "id": "grid_2_1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 2,
+    "y": 1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.23606797749979,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "5",
+    "magnitudeSquared": 5.0,
+    "directionRadians": 0.4636476090008061,
+    "directionDegrees": 26.56505117707799,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "5",
+     "text": "√5",
+     "tex": "\\sqrt{5}"
+    }
+   }
+  },
+  {
+   "id": "grid_2_2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 2,
+    "y": 2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.8284271247461903,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "8",
+    "magnitudeSquared": 8.0,
+    "directionRadians": 0.7853981633974483,
+    "directionDegrees": 45.0,
+    "exact": {
+     "coefficient": "2",
+     "radicand": "2",
+     "text": "2√2",
+     "tex": "2\\sqrt{2}"
+    }
+   }
+  },
+  {
+   "id": "grid_2_3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 2,
+    "y": 3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.605551275463989,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "13",
+    "magnitudeSquared": 13.0,
+    "directionRadians": 0.982793723247329,
+    "directionDegrees": 56.309932474020215,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "13",
+     "text": "√13",
+     "tex": "\\sqrt{13}"
+    }
+   }
+  },
+  {
+   "id": "grid_3_-3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 3,
+    "y": -3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.242640687119285,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "18",
+    "magnitudeSquared": 18.0,
+    "directionRadians": -0.7853981633974483,
+    "directionDegrees": -45.0,
+    "exact": {
+     "coefficient": "3",
+     "radicand": "2",
+     "text": "3√2",
+     "tex": "3\\sqrt{2}"
+    }
+   }
+  },
+  {
+   "id": "grid_3_-2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 3,
+    "y": -2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.605551275463989,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "13",
+    "magnitudeSquared": 13.0,
+    "directionRadians": -0.5880026035475675,
+    "directionDegrees": -33.690067525979785,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "13",
+     "text": "√13",
+     "tex": "\\sqrt{13}"
+    }
+   }
+  },
+  {
+   "id": "grid_3_-1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 3,
+    "y": -1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.1622776601683795,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "10",
+    "magnitudeSquared": 10.0,
+    "directionRadians": -0.3217505543966422,
+    "directionDegrees": -18.43494882292201,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "10",
+     "text": "√10",
+     "tex": "\\sqrt{10}"
+    }
+   }
+  },
+  {
+   "id": "grid_3_0",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 3,
+    "y": 0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "9",
+    "magnitudeSquared": 9.0,
+    "directionRadians": 0.0,
+    "directionDegrees": 0.0,
+    "exact": {
+     "coefficient": "3",
+     "radicand": "1",
+     "text": "3",
+     "tex": "3"
+    }
+   }
+  },
+  {
+   "id": "grid_3_1",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 3,
+    "y": 1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.1622776601683795,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "10",
+    "magnitudeSquared": 10.0,
+    "directionRadians": 0.3217505543966422,
+    "directionDegrees": 18.43494882292201,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "10",
+     "text": "√10",
+     "tex": "\\sqrt{10}"
+    }
+   }
+  },
+  {
+   "id": "grid_3_2",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 3,
+    "y": 2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.605551275463989,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "13",
+    "magnitudeSquared": 13.0,
+    "directionRadians": 0.5880026035475675,
+    "directionDegrees": 33.690067525979785,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "13",
+     "text": "√13",
+     "tex": "\\sqrt{13}"
+    }
+   }
+  },
+  {
+   "id": "grid_3_3",
+   "tags": [
+    "grid"
+   ],
+   "input": {
+    "x": 3,
+    "y": 3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.242640687119285,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "18",
+    "magnitudeSquared": 18.0,
+    "directionRadians": 0.7853981633974483,
+    "directionDegrees": 45.0,
+    "exact": {
+     "coefficient": "3",
+     "radicand": "2",
+     "text": "3√2",
+     "tex": "3\\sqrt{2}"
+    }
+   }
+  },
+  {
+   "id": "random_int_000",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -2,
+    "y": 1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.23606797749979,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "5",
+    "magnitudeSquared": 5.0,
+    "directionRadians": 2.677945044588987,
+    "directionDegrees": 153.434948822922,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "5",
+     "text": "√5",
+     "tex": "\\sqrt{5}"
+    }
+   }
+  },
+  {
+   "id": "random_int_001",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 12,
+    "y": 8
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 14.422205101855956,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "208",
+    "magnitudeSquared": 208.0,
+    "directionRadians": 0.5880026035475675,
+    "directionDegrees": 33.690067525979785,
+    "exact": {
+     "coefficient": "4",
+     "radicand": "13",
+     "text": "4√13",
+     "tex": "4\\sqrt{13}"
+    }
+   }
+  },
+  {
+   "id": "random_int_002",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -8,
+    "y": 2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 8.246211251235321,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "68",
+    "magnitudeSquared": 68.0,
+    "directionRadians": 2.896613990462929,
+    "directionDegrees": 165.96375653207352,
+    "exact": {
+     "coefficient": "2",
+     "radicand": "17",
+     "text": "2√17",
+     "tex": "2\\sqrt{17}"
+    }
+   }
+  },
+  {
+   "id": "random_int_003",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 12,
+    "y": 7
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 13.892443989449804,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "193",
+    "magnitudeSquared": 193.0,
+    "directionRadians": 0.5280744484263596,
+    "directionDegrees": 30.256437163529263,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "193",
+     "text": "√193",
+     "tex": "\\sqrt{193}"
+    }
+   }
+  },
+  {
+   "id": "random_int_004",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 1,
+    "y": -8
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 8.06225774829855,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "65",
+    "magnitudeSquared": 65.0,
+    "directionRadians": -1.446441332248135,
+    "directionDegrees": -82.8749836510982,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "65",
+     "text": "√65",
+     "tex": "\\sqrt{65}"
+    }
+   }
+  },
+  {
+   "id": "random_int_005",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 2,
+    "y": -12
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 12.165525060596439,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "148",
+    "magnitudeSquared": 148.0,
+    "directionRadians": -1.4056476493802699,
+    "directionDegrees": -80.53767779197439,
+    "exact": {
+     "coefficient": "2",
+     "radicand": "37",
+     "text": "2√37",
+     "tex": "2\\sqrt{37}"
+    }
+   }
+  },
+  {
+   "id": "random_int_006",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -11,
+    "y": -10
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 14.866068747318506,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "221",
+    "magnitudeSquared": 221.0,
+    "directionRadians": -2.403777593469328,
+    "directionDegrees": -137.72631099390625,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "221",
+     "text": "√221",
+     "tex": "\\sqrt{221}"
+    }
+   }
+  },
+  {
+   "id": "random_int_007",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -9,
+    "y": 8
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 12.041594578792296,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "145",
+    "magnitudeSquared": 145.0,
+    "directionRadians": 2.4149503129080676,
+    "directionDegrees": 138.3664606634298,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "145",
+     "text": "√145",
+     "tex": "\\sqrt{145}"
+    }
+   }
+  },
+  {
+   "id": "random_int_008",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -5,
+    "y": 5
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 7.0710678118654755,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "50",
+    "magnitudeSquared": 50.0,
+    "directionRadians": 2.356194490192345,
+    "directionDegrees": 135.0,
+    "exact": {
+     "coefficient": "5",
+     "radicand": "2",
+     "text": "5√2",
+     "tex": "5\\sqrt{2}"
+    }
+   }
+  },
+  {
+   "id": "random_int_009",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 9,
+    "y": -1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 9.055385138137417,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "82",
+    "magnitudeSquared": 82.0,
+    "directionRadians": -0.11065722117389565,
+    "directionDegrees": -6.34019174590991,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "82",
+     "text": "√82",
+     "tex": "\\sqrt{82}"
+    }
+   }
+  },
+  {
+   "id": "random_int_010",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 1,
+    "y": 12
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 12.041594578792296,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "145",
+    "magnitudeSquared": 145.0,
+    "directionRadians": 1.4876550949064553,
+    "directionDegrees": 85.23635830927383,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "145",
+     "text": "√145",
+     "tex": "\\sqrt{145}"
+    }
+   }
+  },
+  {
+   "id": "random_int_011",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -7,
+    "y": -12
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 13.892443989449804,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "193",
+    "magnitudeSquared": 193.0,
+    "directionRadians": -2.0988707752212563,
+    "directionDegrees": -120.25643716352927,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "193",
+     "text": "√193",
+     "tex": "\\sqrt{193}"
+    }
+   }
+  },
+  {
+   "id": "random_int_012",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -5,
+    "y": -1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.0990195135927845,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "26",
+    "magnitudeSquared": 26.0,
+    "directionRadians": -2.9441970937399127,
+    "directionDegrees": -168.6900675259798,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "26",
+     "text": "√26",
+     "tex": "\\sqrt{26}"
+    }
+   }
+  },
+  {
+   "id": "random_int_013",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 1,
+    "y": 2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.23606797749979,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "5",
+    "magnitudeSquared": 5.0,
+    "directionRadians": 1.1071487177940904,
+    "directionDegrees": 63.43494882292201,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "5",
+     "text": "√5",
+     "tex": "\\sqrt{5}"
+    }
+   }
+  },
+  {
+   "id": "random_int_014",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 8,
+    "y": -11
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 13.601470508735444,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "185",
+    "magnitudeSquared": 185.0,
+    "directionRadians": -0.9420000403794636,
+    "directionDegrees": -53.97262661489639,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "185",
+     "text": "√185",
+     "tex": "\\sqrt{185}"
+    }
+   }
+  },
+  {
+   "id": "random_int_015",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -1,
+    "y": -12
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 12.041594578792296,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "145",
+    "magnitudeSquared": 145.0,
+    "directionRadians": -1.6539375586833378,
+    "directionDegrees": -94.76364169072617,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "145",
+     "text": "√145",
+     "tex": "\\sqrt{145}"
+    }
+   }
+  },
+  {
+   "id": "random_int_016",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -11,
+    "y": -7
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 13.038404810405298,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "170",
+    "magnitudeSquared": 170.0,
+    "directionRadians": -2.5748634360662868,
+    "directionDegrees": -147.52880770915152,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "170",
+     "text": "√170",
+     "tex": "\\sqrt{170}"
+    }
+   }
+  },
+  {
+   "id": "random_int_017",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 9,
+    "y": -6
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 10.816653826391969,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "117",
+    "magnitudeSquared": 117.0,
+    "directionRadians": -0.5880026035475675,
+    "directionDegrees": -33.690067525979785,
+    "exact": {
+     "coefficient": "3",
+     "radicand": "13",
+     "text": "3√13",
+     "tex": "3\\sqrt{13}"
+    }
+   }
+  },
+  {
+   "id": "random_int_018",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 8,
+    "y": 7
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 10.63014581273465,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "113",
+    "magnitudeSquared": 113.0,
+    "directionRadians": 0.7188299996216245,
+    "directionDegrees": 41.18592516570965,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "113",
+     "text": "√113",
+     "tex": "\\sqrt{113}"
+    }
+   }
+  },
+  {
+   "id": "random_int_019",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -7,
+    "y": 0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 7.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "49",
+    "magnitudeSquared": 49.0,
+    "directionRadians": 3.141592653589793,
+    "directionDegrees": 180.0,
+    "exact": {
+     "coefficient": "7",
+     "radicand": "1",
+     "text": "7",
+     "tex": "7"
+    }
+   }
+  },
+  {
+   "id": "random_int_020",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 8,
+    "y": -3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 8.54400374531753,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "73",
+    "magnitudeSquared": 73.0,
+    "directionRadians": -0.35877067027057225,
+    "directionDegrees": -20.556045219583467,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "73",
+     "text": "√73",
+     "tex": "\\sqrt{73}"
+    }
+   }
+  },
+  {
+   "id": "random_int_021",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 11,
+    "y": 2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 11.180339887498949,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "125",
+    "magnitudeSquared": 125.0,
+    "directionRadians": 0.17985349979247828,
+    "directionDegrees": 10.304846468766033,
+    "exact": {
+     "coefficient": "5",
+     "radicand": "5",
+     "text": "5√5",
+     "tex": "5\\sqrt{5}"
+    }
+   }
+  },
+  {
+   "id": "random_int_022",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -8,
+    "y": -1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 8.06225774829855,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "65",
+    "magnitudeSquared": 65.0,
+    "directionRadians": -3.017237659043032,
+    "directionDegrees": -172.8749836510982,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "65",
+     "text": "√65",
+     "tex": "\\sqrt{65}"
+    }
+   }
+  },
+  {
+   "id": "random_int_023",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 3,
+    "y": 12
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 12.36931687685298,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "153",
+    "magnitudeSquared": 153.0,
+    "directionRadians": 1.3258176636680326,
+    "directionDegrees": 75.96375653207353,
+    "exact": {
+     "coefficient": "3",
+     "radicand": "17",
+     "text": "3√17",
+     "tex": "3\\sqrt{17}"
+    }
+   }
+  },
+  {
+   "id": "random_int_024",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 1,
+    "y": 11
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 11.045361017187261,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "122",
+    "magnitudeSquared": 122.0,
+    "directionRadians": 1.4801364395941514,
+    "directionDegrees": 84.8055710922652,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "122",
+     "text": "√122",
+     "tex": "\\sqrt{122}"
+    }
+   }
+  },
+  {
+   "id": "random_int_025",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 11,
+    "y": -2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 11.180339887498949,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "125",
+    "magnitudeSquared": 125.0,
+    "directionRadians": -0.17985349979247828,
+    "directionDegrees": -10.304846468766033,
+    "exact": {
+     "coefficient": "5",
+     "radicand": "5",
+     "text": "5√5",
+     "tex": "5\\sqrt{5}"
+    }
+   }
+  },
+  {
+   "id": "random_int_026",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 5,
+    "y": -4
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 6.4031242374328485,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "41",
+    "magnitudeSquared": 41.0,
+    "directionRadians": -0.6747409422235526,
+    "directionDegrees": -38.65980825409009,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "41",
+     "text": "√41",
+     "tex": "\\sqrt{41}"
+    }
+   }
+  },
+  {
+   "id": "random_int_027",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -11,
+    "y": 9
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 14.212670403551895,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "202",
+    "magnitudeSquared": 202.0,
+    "directionRadians": 2.455863142683507,
+    "directionDegrees": 140.71059313749967,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "202",
+     "text": "√202",
+     "tex": "\\sqrt{202}"
+    }
+   }
+  },
+  {
+   "id": "random_int_028",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 11,
+    "y": 10
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 14.866068747318506,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "221",
+    "magnitudeSquared": 221.0,
+    "directionRadians": 0.7378150601204649,
+    "directionDegrees": 42.27368900609374,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "221",
+     "text": "√221",
+     "tex": "\\sqrt{221}"
+    }
+   }
+  },
+  {
+   "id": "random_int_029",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 10,
+    "y": 8
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 12.806248474865697,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "164",
+    "magnitudeSquared": 164.0,
+    "directionRadians": 0.6747409422235526,
+    "directionDegrees": 38.65980825409009,
+    "exact": {
+     "coefficient": "2",
+     "radicand": "41",
+     "text": "2√41",
+     "tex": "2\\sqrt{41}"
+    }
+   }
+  },
+  {
+   "id": "random_int_030",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 0,
+    "y": 2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "4",
+    "magnitudeSquared": 4.0,
+    "directionRadians": 1.5707963267948966,
+    "directionDegrees": 90.0,
+    "exact": {
+     "coefficient": "2",
+     "radicand": "1",
+     "text": "2",
+     "tex": "2"
+    }
+   }
+  },
+  {
+   "id": "random_int_031",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 8,
+    "y": -10
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 12.806248474865697,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "164",
+    "magnitudeSquared": 164.0,
+    "directionRadians": -0.8960553845713439,
+    "directionDegrees": -51.34019174590991,
+    "exact": {
+     "coefficient": "2",
+     "radicand": "41",
+     "text": "2√41",
+     "tex": "2\\sqrt{41}"
+    }
+   }
+  },
+  {
+   "id": "random_int_032",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -4,
+    "y": 7
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 8.06225774829855,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "65",
+    "magnitudeSquared": 65.0,
+    "directionRadians": 2.0899424410414196,
+    "directionDegrees": 119.74488129694222,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "65",
+     "text": "√65",
+     "tex": "\\sqrt{65}"
+    }
+   }
+  },
+  {
+   "id": "random_int_033",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 3,
+    "y": 0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "9",
+    "magnitudeSquared": 9.0,
+    "directionRadians": 0.0,
+    "directionDegrees": 0.0,
+    "exact": {
+     "coefficient": "3",
+     "radicand": "1",
+     "text": "3",
+     "tex": "3"
+    }
+   }
+  },
+  {
+   "id": "random_int_034",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -9,
+    "y": 3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 9.486832980505138,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "90",
+    "magnitudeSquared": 90.0,
+    "directionRadians": 2.819842099193151,
+    "directionDegrees": 161.565051177078,
+    "exact": {
+     "coefficient": "3",
+     "radicand": "10",
+     "text": "3√10",
+     "tex": "3\\sqrt{10}"
+    }
+   }
+  },
+  {
+   "id": "random_int_035",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -2,
+    "y": -12
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 12.165525060596439,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "148",
+    "magnitudeSquared": 148.0,
+    "directionRadians": -1.7359450042095235,
+    "directionDegrees": -99.46232220802563,
+    "exact": {
+     "coefficient": "2",
+     "radicand": "37",
+     "text": "2√37",
+     "tex": "2\\sqrt{37}"
+    }
+   }
+  },
+  {
+   "id": "random_int_036",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -1,
+    "y": -12
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 12.041594578792296,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "145",
+    "magnitudeSquared": 145.0,
+    "directionRadians": -1.6539375586833378,
+    "directionDegrees": -94.76364169072617,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "145",
+     "text": "√145",
+     "tex": "\\sqrt{145}"
+    }
+   }
+  },
+  {
+   "id": "random_int_037",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 11,
+    "y": 10
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 14.866068747318506,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "221",
+    "magnitudeSquared": 221.0,
+    "directionRadians": 0.7378150601204649,
+    "directionDegrees": 42.27368900609374,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "221",
+     "text": "√221",
+     "tex": "\\sqrt{221}"
+    }
+   }
+  },
+  {
+   "id": "random_int_038",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -10,
+    "y": -11
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 14.866068747318506,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "221",
+    "magnitudeSquared": 221.0,
+    "directionRadians": -2.3086113869153615,
+    "directionDegrees": -132.27368900609375,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "221",
+     "text": "√221",
+     "tex": "\\sqrt{221}"
+    }
+   }
+  },
+  {
+   "id": "random_int_039",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 2,
+    "y": 2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.8284271247461903,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "8",
+    "magnitudeSquared": 8.0,
+    "directionRadians": 0.7853981633974483,
+    "directionDegrees": 45.0,
+    "exact": {
+     "coefficient": "2",
+     "radicand": "2",
+     "text": "2√2",
+     "tex": "2\\sqrt{2}"
+    }
+   }
+  },
+  {
+   "id": "random_int_040",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 7,
+    "y": 8
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 10.63014581273465,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "113",
+    "magnitudeSquared": 113.0,
+    "directionRadians": 0.8519663271732721,
+    "directionDegrees": 48.81407483429036,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "113",
+     "text": "√113",
+     "tex": "\\sqrt{113}"
+    }
+   }
+  },
+  {
+   "id": "random_int_041",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -8,
+    "y": 8
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 11.313708498984761,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "128",
+    "magnitudeSquared": 128.0,
+    "directionRadians": 2.356194490192345,
+    "directionDegrees": 135.0,
+    "exact": {
+     "coefficient": "8",
+     "radicand": "2",
+     "text": "8√2",
+     "tex": "8\\sqrt{2}"
+    }
+   }
+  },
+  {
+   "id": "random_int_042",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -5,
+    "y": -12
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 13.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "169",
+    "magnitudeSquared": 169.0,
+    "directionRadians": -1.965587446494658,
+    "directionDegrees": -112.61986494804043,
+    "exact": {
+     "coefficient": "13",
+     "radicand": "1",
+     "text": "13",
+     "tex": "13"
+    }
+   }
+  },
+  {
+   "id": "random_int_043",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -4,
+    "y": -1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.123105625617661,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "17",
+    "magnitudeSquared": 17.0,
+    "directionRadians": -2.896613990462929,
+    "directionDegrees": -165.96375653207352,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "17",
+     "text": "√17",
+     "tex": "\\sqrt{17}"
+    }
+   }
+  },
+  {
+   "id": "random_int_044",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -8,
+    "y": -4
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 8.94427190999916,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "80",
+    "magnitudeSquared": 80.0,
+    "directionRadians": -2.677945044588987,
+    "directionDegrees": -153.434948822922,
+    "exact": {
+     "coefficient": "4",
+     "radicand": "5",
+     "text": "4√5",
+     "tex": "4\\sqrt{5}"
+    }
+   }
+  },
+  {
+   "id": "random_int_045",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 7,
+    "y": -10
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 12.206555615733702,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "149",
+    "magnitudeSquared": 149.0,
+    "directionRadians": -0.960070362405688,
+    "directionDegrees": -55.00797980144134,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "149",
+     "text": "√149",
+     "tex": "\\sqrt{149}"
+    }
+   }
+  },
+  {
+   "id": "random_int_046",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -8,
+    "y": -6
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 10.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "100",
+    "magnitudeSquared": 100.0,
+    "directionRadians": -2.498091544796509,
+    "directionDegrees": -143.13010235415598,
+    "exact": {
+     "coefficient": "10",
+     "radicand": "1",
+     "text": "10",
+     "tex": "10"
+    }
+   }
+  },
+  {
+   "id": "random_int_047",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 12,
+    "y": 8
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 14.422205101855956,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "208",
+    "magnitudeSquared": 208.0,
+    "directionRadians": 0.5880026035475675,
+    "directionDegrees": 33.690067525979785,
+    "exact": {
+     "coefficient": "4",
+     "radicand": "13",
+     "text": "4√13",
+     "tex": "4\\sqrt{13}"
+    }
+   }
+  },
+  {
+   "id": "random_int_048",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 3,
+    "y": -11
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 11.40175425099138,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "130",
+    "magnitudeSquared": 130.0,
+    "directionRadians": -1.3045442776439713,
+    "directionDegrees": -74.74488129694222,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "130",
+     "text": "√130",
+     "tex": "\\sqrt{130}"
+    }
+   }
+  },
+  {
+   "id": "random_int_049",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 5,
+    "y": -3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.830951894845301,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "34",
+    "magnitudeSquared": 34.0,
+    "directionRadians": -0.5404195002705842,
+    "directionDegrees": -30.96375653207352,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "34",
+     "text": "√34",
+     "tex": "\\sqrt{34}"
+    }
+   }
+  },
+  {
+   "id": "random_int_050",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -3,
+    "y": -7
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 7.615773105863909,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "58",
+    "magnitudeSquared": 58.0,
+    "directionRadians": -1.97568811307998,
+    "directionDegrees": -113.19859051364818,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "58",
+     "text": "√58",
+     "tex": "\\sqrt{58}"
+    }
+   }
+  },
+  {
+   "id": "random_int_051",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -10,
+    "y": -10
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 14.142135623730951,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "200",
+    "magnitudeSquared": 200.0,
+    "directionRadians": -2.356194490192345,
+    "directionDegrees": -135.0,
+    "exact": {
+     "coefficient": "10",
+     "radicand": "2",
+     "text": "10√2",
+     "tex": "10\\sqrt{2}"
+    }
+   }
+  },
+  {
+   "id": "random_int_052",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -1,
+    "y": 5
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.0990195135927845,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "26",
+    "magnitudeSquared": 26.0,
+    "directionRadians": 1.7681918866447774,
+    "directionDegrees": 101.30993247402021,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "26",
+     "text": "√26",
+     "tex": "\\sqrt{26}"
+    }
+   }
+  },
+  {
+   "id": "random_int_053",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 11,
+    "y": -10
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 14.866068747318506,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "221",
+    "magnitudeSquared": 221.0,
+    "directionRadians": -0.7378150601204649,
+    "directionDegrees": -42.27368900609374,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "221",
+     "text": "√221",
+     "tex": "\\sqrt{221}"
+    }
+   }
+  },
+  {
+   "id": "random_int_054",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 9,
+    "y": -7
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 11.40175425099138,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "130",
+    "magnitudeSquared": 130.0,
+    "directionRadians": -0.6610431688506869,
+    "directionDegrees": -37.874983651098205,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "130",
+     "text": "√130",
+     "tex": "\\sqrt{130}"
+    }
+   }
+  },
+  {
+   "id": "random_int_055",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 7,
+    "y": 3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 7.615773105863909,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "58",
+    "magnitudeSquared": 58.0,
+    "directionRadians": 0.40489178628508343,
+    "directionDegrees": 23.19859051364819,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "58",
+     "text": "√58",
+     "tex": "\\sqrt{58}"
+    }
+   }
+  },
+  {
+   "id": "random_int_056",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -9,
+    "y": -2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 9.219544457292887,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "85",
+    "magnitudeSquared": 85.0,
+    "directionRadians": -2.922923707715851,
+    "directionDegrees": -167.47119229084848,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "85",
+     "text": "√85",
+     "tex": "\\sqrt{85}"
+    }
+   }
+  },
+  {
+   "id": "random_int_057",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -2,
+    "y": -3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.605551275463989,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "13",
+    "magnitudeSquared": 13.0,
+    "directionRadians": -2.158798930342464,
+    "directionDegrees": -123.69006752597979,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "13",
+     "text": "√13",
+     "tex": "\\sqrt{13}"
+    }
+   }
+  },
+  {
+   "id": "random_int_058",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 5,
+    "y": 12
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 13.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "169",
+    "magnitudeSquared": 169.0,
+    "directionRadians": 1.176005207095135,
+    "directionDegrees": 67.38013505195957,
+    "exact": {
+     "coefficient": "13",
+     "radicand": "1",
+     "text": "13",
+     "tex": "13"
+    }
+   }
+  },
+  {
+   "id": "random_int_059",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 10,
+    "y": -2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 10.198039027185569,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "104",
+    "magnitudeSquared": 104.0,
+    "directionRadians": -0.19739555984988075,
+    "directionDegrees": -11.309932474020213,
+    "exact": {
+     "coefficient": "2",
+     "radicand": "26",
+     "text": "2√26",
+     "tex": "2\\sqrt{26}"
+    }
+   }
+  },
+  {
+   "id": "random_int_060",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 6,
+    "y": 10
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 11.661903789690601,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "136",
+    "magnitudeSquared": 136.0,
+    "directionRadians": 1.0303768265243125,
+    "directionDegrees": 59.03624346792648,
+    "exact": {
+     "coefficient": "2",
+     "radicand": "34",
+     "text": "2√34",
+     "tex": "2\\sqrt{34}"
+    }
+   }
+  },
+  {
+   "id": "random_int_061",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 5,
+    "y": -10
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 11.180339887498949,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "125",
+    "magnitudeSquared": 125.0,
+    "directionRadians": -1.1071487177940904,
+    "directionDegrees": -63.43494882292201,
+    "exact": {
+     "coefficient": "5",
+     "radicand": "5",
+     "text": "5√5",
+     "tex": "5\\sqrt{5}"
+    }
+   }
+  },
+  {
+   "id": "random_int_062",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -4,
+    "y": 0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "16",
+    "magnitudeSquared": 16.0,
+    "directionRadians": 3.141592653589793,
+    "directionDegrees": 180.0,
+    "exact": {
+     "coefficient": "4",
+     "radicand": "1",
+     "text": "4",
+     "tex": "4"
+    }
+   }
+  },
+  {
+   "id": "random_int_063",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 1,
+    "y": -11
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 11.045361017187261,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "122",
+    "magnitudeSquared": 122.0,
+    "directionRadians": -1.4801364395941514,
+    "directionDegrees": -84.8055710922652,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "122",
+     "text": "√122",
+     "tex": "\\sqrt{122}"
+    }
+   }
+  },
+  {
+   "id": "random_int_064",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 8,
+    "y": -9
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 12.041594578792296,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "145",
+    "magnitudeSquared": 145.0,
+    "directionRadians": -0.844153986113171,
+    "directionDegrees": -48.366460663429805,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "145",
+     "text": "√145",
+     "tex": "\\sqrt{145}"
+    }
+   }
+  },
+  {
+   "id": "random_int_065",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 8,
+    "y": 4
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 8.94427190999916,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "80",
+    "magnitudeSquared": 80.0,
+    "directionRadians": 0.4636476090008061,
+    "directionDegrees": 26.56505117707799,
+    "exact": {
+     "coefficient": "4",
+     "radicand": "5",
+     "text": "4√5",
+     "tex": "4\\sqrt{5}"
+    }
+   }
+  },
+  {
+   "id": "random_int_066",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -10,
+    "y": 2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 10.198039027185569,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "104",
+    "magnitudeSquared": 104.0,
+    "directionRadians": 2.9441970937399127,
+    "directionDegrees": 168.6900675259798,
+    "exact": {
+     "coefficient": "2",
+     "radicand": "26",
+     "text": "2√26",
+     "tex": "2\\sqrt{26}"
+    }
+   }
+  },
+  {
+   "id": "random_int_067",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -5,
+    "y": -1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.0990195135927845,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "26",
+    "magnitudeSquared": 26.0,
+    "directionRadians": -2.9441970937399127,
+    "directionDegrees": -168.6900675259798,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "26",
+     "text": "√26",
+     "tex": "\\sqrt{26}"
+    }
+   }
+  },
+  {
+   "id": "random_int_068",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -8,
+    "y": -11
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 13.601470508735444,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "185",
+    "magnitudeSquared": 185.0,
+    "directionRadians": -2.1995926132103296,
+    "directionDegrees": -126.02737338510362,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "185",
+     "text": "√185",
+     "tex": "\\sqrt{185}"
+    }
+   }
+  },
+  {
+   "id": "random_int_069",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 6,
+    "y": 2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 6.324555320336759,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "40",
+    "magnitudeSquared": 40.0,
+    "directionRadians": 0.3217505543966422,
+    "directionDegrees": 18.43494882292201,
+    "exact": {
+     "coefficient": "2",
+     "radicand": "10",
+     "text": "2√10",
+     "tex": "2\\sqrt{10}"
+    }
+   }
+  },
+  {
+   "id": "random_int_070",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -10,
+    "y": 6
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 11.661903789690601,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "136",
+    "magnitudeSquared": 136.0,
+    "directionRadians": 2.601173153319209,
+    "directionDegrees": 149.03624346792648,
+    "exact": {
+     "coefficient": "2",
+     "radicand": "34",
+     "text": "2√34",
+     "tex": "2\\sqrt{34}"
+    }
+   }
+  },
+  {
+   "id": "random_int_071",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -11,
+    "y": 12
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 16.278820596099706,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "265",
+    "magnitudeSquared": 265.0,
+    "directionRadians": 2.312743594800814,
+    "directionDegrees": 132.51044707800085,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "265",
+     "text": "√265",
+     "tex": "\\sqrt{265}"
+    }
+   }
+  },
+  {
+   "id": "random_int_072",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -9,
+    "y": -7
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 11.40175425099138,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "130",
+    "magnitudeSquared": 130.0,
+    "directionRadians": -2.4805494847391065,
+    "directionDegrees": -142.12501634890182,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "130",
+     "text": "√130",
+     "tex": "\\sqrt{130}"
+    }
+   }
+  },
+  {
+   "id": "random_int_073",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -11,
+    "y": 9
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 14.212670403551895,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "202",
+    "magnitudeSquared": 202.0,
+    "directionRadians": 2.455863142683507,
+    "directionDegrees": 140.71059313749967,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "202",
+     "text": "√202",
+     "tex": "\\sqrt{202}"
+    }
+   }
+  },
+  {
+   "id": "random_int_074",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 9,
+    "y": -10
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 13.45362404707371,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "181",
+    "magnitudeSquared": 181.0,
+    "directionRadians": -0.83798122500839,
+    "directionDegrees": -48.01278750418334,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "181",
+     "text": "√181",
+     "tex": "\\sqrt{181}"
+    }
+   }
+  },
+  {
+   "id": "random_int_075",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 5,
+    "y": 6
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 7.810249675906654,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "61",
+    "magnitudeSquared": 61.0,
+    "directionRadians": 0.8760580505981934,
+    "directionDegrees": 50.19442890773481,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "61",
+     "text": "√61",
+     "tex": "\\sqrt{61}"
+    }
+   }
+  },
+  {
+   "id": "random_int_076",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -2,
+    "y": -7
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 7.280109889280518,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "53",
+    "magnitudeSquared": 53.0,
+    "directionRadians": -1.849095985800008,
+    "directionDegrees": -105.94539590092286,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "53",
+     "text": "√53",
+     "tex": "\\sqrt{53}"
+    }
+   }
+  },
+  {
+   "id": "random_int_077",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 11,
+    "y": -10
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 14.866068747318506,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "221",
+    "magnitudeSquared": 221.0,
+    "directionRadians": -0.7378150601204649,
+    "directionDegrees": -42.27368900609374,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "221",
+     "text": "√221",
+     "tex": "\\sqrt{221}"
+    }
+   }
+  },
+  {
+   "id": "random_int_078",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -5,
+    "y": 3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.830951894845301,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "34",
+    "magnitudeSquared": 34.0,
+    "directionRadians": 2.601173153319209,
+    "directionDegrees": 149.03624346792648,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "34",
+     "text": "√34",
+     "tex": "\\sqrt{34}"
+    }
+   }
+  },
+  {
+   "id": "random_int_079",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -7,
+    "y": 3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 7.615773105863909,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "58",
+    "magnitudeSquared": 58.0,
+    "directionRadians": 2.7367008673047097,
+    "directionDegrees": 156.80140948635182,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "58",
+     "text": "√58",
+     "tex": "\\sqrt{58}"
+    }
+   }
+  },
+  {
+   "id": "random_int_080",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -8,
+    "y": 7
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 10.63014581273465,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "113",
+    "magnitudeSquared": 113.0,
+    "directionRadians": 2.4227626539681686,
+    "directionDegrees": 138.81407483429035,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "113",
+     "text": "√113",
+     "tex": "\\sqrt{113}"
+    }
+   }
+  },
+  {
+   "id": "random_int_081",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 7,
+    "y": -5
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 8.602325267042627,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "74",
+    "magnitudeSquared": 74.0,
+    "directionRadians": -0.6202494859828215,
+    "directionDegrees": -35.53767779197438,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "74",
+     "text": "√74",
+     "tex": "\\sqrt{74}"
+    }
+   }
+  },
+  {
+   "id": "random_int_082",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 8,
+    "y": -8
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 11.313708498984761,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "128",
+    "magnitudeSquared": 128.0,
+    "directionRadians": -0.7853981633974483,
+    "directionDegrees": -45.0,
+    "exact": {
+     "coefficient": "8",
+     "radicand": "2",
+     "text": "8√2",
+     "tex": "8\\sqrt{2}"
+    }
+   }
+  },
+  {
+   "id": "random_int_083",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 10,
+    "y": -12
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 15.620499351813308,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "244",
+    "magnitudeSquared": 244.0,
+    "directionRadians": -0.8760580505981934,
+    "directionDegrees": -50.19442890773481,
+    "exact": {
+     "coefficient": "2",
+     "radicand": "61",
+     "text": "2√61",
+     "tex": "2\\sqrt{61}"
+    }
+   }
+  },
+  {
+   "id": "random_int_084",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 11,
+    "y": 0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 11.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "121",
+    "magnitudeSquared": 121.0,
+    "directionRadians": 0.0,
+    "directionDegrees": 0.0,
+    "exact": {
+     "coefficient": "11",
+     "radicand": "1",
+     "text": "11",
+     "tex": "11"
+    }
+   }
+  },
+  {
+   "id": "random_int_085",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 12,
+    "y": -2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 12.165525060596439,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "148",
+    "magnitudeSquared": 148.0,
+    "directionRadians": -0.16514867741462683,
+    "directionDegrees": -9.462322208025617,
+    "exact": {
+     "coefficient": "2",
+     "radicand": "37",
+     "text": "2√37",
+     "tex": "2\\sqrt{37}"
+    }
+   }
+  },
+  {
+   "id": "random_int_086",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 4,
+    "y": 10
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 10.770329614269007,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "116",
+    "magnitudeSquared": 116.0,
+    "directionRadians": 1.1902899496825317,
+    "directionDegrees": 68.19859051364818,
+    "exact": {
+     "coefficient": "2",
+     "radicand": "29",
+     "text": "2√29",
+     "tex": "2\\sqrt{29}"
+    }
+   }
+  },
+  {
+   "id": "random_int_087",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -5,
+    "y": -2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.385164807134504,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "29",
+    "magnitudeSquared": 29.0,
+    "directionRadians": -2.761086276477428,
+    "directionDegrees": -158.19859051364818,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "29",
+     "text": "√29",
+     "tex": "\\sqrt{29}"
+    }
+   }
+  },
+  {
+   "id": "random_int_088",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -9,
+    "y": -8
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 12.041594578792296,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "145",
+    "magnitudeSquared": 145.0,
+    "directionRadians": -2.4149503129080676,
+    "directionDegrees": -138.3664606634298,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "145",
+     "text": "√145",
+     "tex": "\\sqrt{145}"
+    }
+   }
+  },
+  {
+   "id": "random_int_089",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -5,
+    "y": 4
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 6.4031242374328485,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "41",
+    "magnitudeSquared": 41.0,
+    "directionRadians": 2.4668517113662407,
+    "directionDegrees": 141.34019174590992,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "41",
+     "text": "√41",
+     "tex": "\\sqrt{41}"
+    }
+   }
+  },
+  {
+   "id": "random_int_090",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 4,
+    "y": 11
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 11.704699910719626,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "137",
+    "magnitudeSquared": 137.0,
+    "directionRadians": 1.2220253232109897,
+    "directionDegrees": 70.01689347810003,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "137",
+     "text": "√137",
+     "tex": "\\sqrt{137}"
+    }
+   }
+  },
+  {
+   "id": "random_int_091",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -4,
+    "y": -4
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.656854249492381,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "32",
+    "magnitudeSquared": 32.0,
+    "directionRadians": -2.356194490192345,
+    "directionDegrees": -135.0,
+    "exact": {
+     "coefficient": "4",
+     "radicand": "2",
+     "text": "4√2",
+     "tex": "4\\sqrt{2}"
+    }
+   }
+  },
+  {
+   "id": "random_int_092",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 10,
+    "y": -1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 10.04987562112089,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "101",
+    "magnitudeSquared": 101.0,
+    "directionRadians": -0.09966865249116202,
+    "directionDegrees": -5.710593137499642,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "101",
+     "text": "√101",
+     "tex": "\\sqrt{101}"
+    }
+   }
+  },
+  {
+   "id": "random_int_093",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 12,
+    "y": 3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 12.36931687685298,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "153",
+    "magnitudeSquared": 153.0,
+    "directionRadians": 0.24497866312686414,
+    "directionDegrees": 14.036243467926479,
+    "exact": {
+     "coefficient": "3",
+     "radicand": "17",
+     "text": "3√17",
+     "tex": "3\\sqrt{17}"
+    }
+   }
+  },
+  {
+   "id": "random_int_094",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -3,
+    "y": -9
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 9.486832980505138,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "90",
+    "magnitudeSquared": 90.0,
+    "directionRadians": -1.892546881191539,
+    "directionDegrees": -108.43494882292202,
+    "exact": {
+     "coefficient": "3",
+     "radicand": "10",
+     "text": "3√10",
+     "tex": "3\\sqrt{10}"
+    }
+   }
+  },
+  {
+   "id": "random_int_095",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -2,
+    "y": 5
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.385164807134504,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "29",
+    "magnitudeSquared": 29.0,
+    "directionRadians": 1.9513027039072615,
+    "directionDegrees": 111.80140948635182,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "29",
+     "text": "√29",
+     "tex": "\\sqrt{29}"
+    }
+   }
+  },
+  {
+   "id": "random_int_096",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -5,
+    "y": 3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.830951894845301,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "34",
+    "magnitudeSquared": 34.0,
+    "directionRadians": 2.601173153319209,
+    "directionDegrees": 149.03624346792648,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "34",
+     "text": "√34",
+     "tex": "\\sqrt{34}"
+    }
+   }
+  },
+  {
+   "id": "random_int_097",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -11,
+    "y": 10
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 14.866068747318506,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "221",
+    "magnitudeSquared": 221.0,
+    "directionRadians": 2.403777593469328,
+    "directionDegrees": 137.72631099390625,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "221",
+     "text": "√221",
+     "tex": "\\sqrt{221}"
+    }
+   }
+  },
+  {
+   "id": "random_int_098",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": 11,
+    "y": 4
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 11.704699910719626,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "137",
+    "magnitudeSquared": 137.0,
+    "directionRadians": 0.348771003583907,
+    "directionDegrees": 19.98310652189998,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "137",
+     "text": "√137",
+     "tex": "\\sqrt{137}"
+    }
+   }
+  },
+  {
+   "id": "random_int_099",
+   "tags": [
+    "random",
+    "integer"
+   ],
+   "input": {
+    "x": -5,
+    "y": 1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.0990195135927845,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "26",
+    "magnitudeSquared": 26.0,
+    "directionRadians": 2.9441970937399127,
+    "directionDegrees": 168.6900675259798,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "26",
+     "text": "√26",
+     "tex": "\\sqrt{26}"
+    }
+   }
+  },
+  {
+   "id": "random_dec_000",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 3.3,
+    "y": -4.3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.420332093147061,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 29.38,
+    "directionRadians": -0.9162255594715053,
+    "directionDegrees": -52.49585763972986,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_001",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 1.9,
+    "y": -2.2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.906888370749727,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 8.450000000000001,
+    "directionRadians": -0.8584387287005677,
+    "directionDegrees": -49.18491612511842,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_002",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -1.8,
+    "y": -0.8
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 1.969771560359221,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 3.8800000000000003,
+    "directionRadians": -2.723368324010564,
+    "directionDegrees": -156.03751102542182,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_003",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -1.3,
+    "y": 4.2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.396589587396122,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 19.330000000000002,
+    "directionRadians": 1.8709674976250086,
+    "directionDegrees": 107.19854122006586,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_004",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 0.8,
+    "y": -1.2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 1.4422205101855956,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 2.08,
+    "directionRadians": -0.982793723247329,
+    "directionDegrees": -56.309932474020215,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_005",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -1.9,
+    "y": 1.7
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.5495097567963922,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 6.499999999999999,
+    "directionRadians": 2.4116929954380617,
+    "directionDegrees": 138.17983011986425,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_006",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 0.4,
+    "y": 2.5
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.5317977802344327,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 6.41,
+    "directionRadians": 1.4121410646084953,
+    "directionDegrees": 80.90972307917768,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_007",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -1.1,
+    "y": -2.4
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.640075756488817,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 6.97,
+    "directionRadians": -2.000558605891585,
+    "directionDegrees": -114.62356478616361,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_008",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 1.7,
+    "y": -2.2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.7802877548915688,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 7.73,
+    "directionRadians": -0.9129077216126866,
+    "directionDegrees": -52.305759533310834,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_009",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -1.2,
+    "y": -5.0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.141984052872976,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 26.44,
+    "directionRadians": -1.80634130751576,
+    "directionDegrees": -103.49573328079582,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_010",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -5.7,
+    "y": 0.2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.70350769263968,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 32.53,
+    "directionRadians": 3.1065193230565677,
+    "directionDegrees": 177.99044618697886,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_011",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 0.8,
+    "y": 5.9
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.953990258641679,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 35.45,
+    "directionRadians": 1.4360250423171654,
+    "directionDegrees": 82.27817419986903,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_012",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -1.8,
+    "y": 1.3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.220360331117452,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 4.930000000000001,
+    "directionRadians": 2.516107613350564,
+    "directionDegrees": 144.1623470457217,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_013",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 5.4,
+    "y": 0.6
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.43323108288245,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 29.520000000000003,
+    "directionRadians": 0.11065722117389563,
+    "directionDegrees": 6.340191745909909,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_014",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -0.9,
+    "y": 1.9
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.1023796041628637,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 4.42,
+    "directionRadians": 2.0131705497716417,
+    "directionDegrees": 115.3461759419467,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_015",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 5.6,
+    "y": -3.4
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 6.55133574166368,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 42.919999999999995,
+    "directionRadians": -0.5456550545269917,
+    "directionDegrees": -31.26373169437743,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_016",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 2.2,
+    "y": 1.4
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.6076809620810595,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 6.800000000000001,
+    "directionRadians": 0.5667292175235062,
+    "directionDegrees": 32.471192290848485,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_017",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 0.8,
+    "y": -4.0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.079215610874228,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 16.64,
+    "directionRadians": -1.373400766945016,
+    "directionDegrees": -78.69006752597979,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_018",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -2.5,
+    "y": -1.4
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.8653097563788807,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 8.209999999999999,
+    "directionRadians": -2.6311043316730176,
+    "directionDegrees": -150.75117366345305,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_019",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -2.3,
+    "y": 5.3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.7775427302617155,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 33.379999999999995,
+    "directionRadians": 1.9802335363210393,
+    "directionDegrees": 113.45902408146156,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_020",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -0.3,
+    "y": -5.6
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.60802995712398,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 31.449999999999996,
+    "directionRadians": -1.6243165952542118,
+    "directionDegrees": -93.0664855011259,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_021",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -3.7,
+    "y": -2.4
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.410215414239989,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 19.45,
+    "directionRadians": -2.5661680030545084,
+    "directionDegrees": -147.0305960965379,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_022",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -6.0,
+    "y": -3.6
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 6.997142273814361,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 48.96,
+    "directionRadians": -2.601173153319209,
+    "directionDegrees": -149.03624346792648,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_023",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -2.2,
+    "y": -2.0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.973213749463701,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 8.840000000000002,
+    "directionRadians": -2.403777593469328,
+    "directionDegrees": -137.72631099390625,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_024",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -0.4,
+    "y": 2.4
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.4331050121192876,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 5.92,
+    "directionRadians": 1.7359450042095235,
+    "directionDegrees": 99.46232220802563,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_025",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -3.6,
+    "y": -1.0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.736308338453881,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 13.96,
+    "directionRadians": -2.8706458032513726,
+    "directionDegrees": -164.47588900324575,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_026",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 4.2,
+    "y": -1.8
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.5694638635183455,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 20.880000000000003,
+    "directionRadians": -0.40489178628508343,
+    "directionDegrees": -23.19859051364819,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_027",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 2.2,
+    "y": -4.3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.830113870293329,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 23.33,
+    "directionRadians": -1.0978897231319673,
+    "directionDegrees": -62.9044475062482,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_028",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -5.3,
+    "y": -0.4
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.315072906367324,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 28.249999999999996,
+    "directionRadians": -3.0662637627614533,
+    "directionDegrees": -175.6839724801344,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_029",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -3.3,
+    "y": -5.6
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 6.5,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 42.24999999999999,
+    "directionRadians": -2.1033004250967475,
+    "directionDegrees": -120.51023740611556,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_030",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -4.9,
+    "y": -2.8
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.643580423808985,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 31.85,
+    "directionRadians": -2.6224465393432705,
+    "directionDegrees": -150.2551187030578,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_031",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -3.2,
+    "y": -3.2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.525483399593904,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 20.480000000000004,
+    "directionRadians": -2.356194490192345,
+    "directionDegrees": -135.0,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_032",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -2.4,
+    "y": 4.1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.750789408087881,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 22.569999999999997,
+    "directionRadians": 2.100385925576973,
+    "directionDegrees": 120.34324888423959,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_033",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 4.2,
+    "y": 2.3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.788527957525152,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 22.93,
+    "directionRadians": 0.5010133868035894,
+    "directionDegrees": 28.70595254340109,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_034",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -2.7,
+    "y": 0.3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.716615541441225,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 7.380000000000001,
+    "directionRadians": 3.0309354324158977,
+    "directionDegrees": 173.6598082540901,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_035",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 1.8,
+    "y": -0.4
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 1.8439088914585775,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 3.4000000000000004,
+    "directionRadians": -0.21866894587394198,
+    "directionDegrees": -12.528807709151511,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_036",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 2.0,
+    "y": -4.7
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.107837115648854,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 26.090000000000003,
+    "directionRadians": -1.168475228934456,
+    "directionDegrees": -66.94869908352698,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_037",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -5.0,
+    "y": -1.0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.0990195135927845,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "26",
+    "magnitudeSquared": 26.0,
+    "directionRadians": -2.9441970937399127,
+    "directionDegrees": -168.6900675259798,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "26",
+     "text": "√26",
+     "tex": "\\sqrt{26}"
+    }
+   }
+  },
+  {
+   "id": "random_dec_038",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 0.2,
+    "y": -0.1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 0.223606797749979,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 0.05,
+    "directionRadians": -0.4636476090008061,
+    "directionDegrees": -26.56505117707799,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_039",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 3.3,
+    "y": -1.8
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.7589892258425004,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 14.129999999999999,
+    "directionRadians": -0.4993467216801301,
+    "directionDegrees": -28.61045966596522,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_040",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 2.4,
+    "y": 5.1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.63648826841678,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 31.769999999999996,
+    "directionRadians": 1.1309537439791604,
+    "directionDegrees": 64.79887635452492,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_041",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 2.0,
+    "y": -4.0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.47213595499958,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "20",
+    "magnitudeSquared": 20.0,
+    "directionRadians": -1.1071487177940904,
+    "directionDegrees": -63.43494882292201,
+    "exact": {
+     "coefficient": "2",
+     "radicand": "5",
+     "text": "2√5",
+     "tex": "2\\sqrt{5}"
+    }
+   }
+  },
+  {
+   "id": "random_dec_042",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -4.1,
+    "y": 1.3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.301162633521313,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 18.499999999999996,
+    "directionRadians": 2.8345469215710026,
+    "directionDegrees": 162.40757543781842,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_043",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -0.2,
+    "y": -4.1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.104875150354758,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 16.849999999999998,
+    "directionRadians": -1.6195381781048281,
+    "directionDegrees": -92.79270236571328,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_044",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 1.1,
+    "y": -1.3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 1.7029386365926402,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 2.9000000000000004,
+    "directionRadians": -0.8685393952858895,
+    "directionDegrees": -49.76364169072618,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_045",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 4.8,
+    "y": 5.7
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 7.451845409024532,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 55.53,
+    "directionRadians": 0.870903457075653,
+    "directionDegrees": 49.899092453787766,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_046",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -3.1,
+    "y": -3.1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.384062043356595,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 19.220000000000002,
+    "directionRadians": -2.356194490192345,
+    "directionDegrees": -135.0,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_047",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -1.2,
+    "y": -6.0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 6.118823416311342,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 37.44,
+    "directionRadians": -1.7681918866447774,
+    "directionDegrees": -101.30993247402021,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_048",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 0.0,
+    "y": -6.0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 6.0,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "36",
+    "magnitudeSquared": 36.0,
+    "directionRadians": -1.5707963267948966,
+    "directionDegrees": -90.0,
+    "exact": {
+     "coefficient": "6",
+     "radicand": "1",
+     "text": "6",
+     "tex": "6"
+    }
+   }
+  },
+  {
+   "id": "random_dec_049",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -0.9,
+    "y": -3.7
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.8078865529319543,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 14.500000000000002,
+    "directionRadians": -1.8094056493030977,
+    "directionDegrees": -103.67130713219584,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_050",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 1.7,
+    "y": -5.2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.470831746635972,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 29.930000000000003,
+    "directionRadians": -1.2548260548419161,
+    "directionDegrees": -71.89623696549337,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_051",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -3.0,
+    "y": -1.0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.1622776601683795,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "10",
+    "magnitudeSquared": 10.0,
+    "directionRadians": -2.819842099193151,
+    "directionDegrees": -161.565051177078,
+    "exact": {
+     "coefficient": "1",
+     "radicand": "10",
+     "text": "√10",
+     "tex": "\\sqrt{10}"
+    }
+   }
+  },
+  {
+   "id": "random_dec_052",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 4.8,
+    "y": 1.5
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.028916384272063,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 25.29,
+    "directionRadians": 0.3028848683749714,
+    "directionDegrees": 17.35402463626132,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_053",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 2.0,
+    "y": 2.5
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.2015621187164243,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 10.25,
+    "directionRadians": 0.8960553845713439,
+    "directionDegrees": 51.34019174590991,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_054",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -6.0,
+    "y": 4.4
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 7.44043009509531,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 55.36000000000001,
+    "directionRadians": 2.50884381858761,
+    "directionDegrees": 143.7461622625552,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_055",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 1.1,
+    "y": 0.0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 1.1,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 1.2100000000000002,
+    "directionRadians": 0.0,
+    "directionDegrees": 0.0,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_056",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -1.8,
+    "y": 5.7
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.977457653551383,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 35.730000000000004,
+    "directionRadians": 1.8766751981997487,
+    "directionDegrees": 107.52556837372288,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_057",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 2.0,
+    "y": 1.6
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.5612496949731396,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 6.5600000000000005,
+    "directionRadians": 0.6747409422235527,
+    "directionDegrees": 38.659808254090095,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_058",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 3.4,
+    "y": -0.4
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.4234485537247377,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 11.719999999999999,
+    "directionRadians": -0.11710874456686429,
+    "directionDegrees": -6.7098368077569335,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_059",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 0.0,
+    "y": -1.9
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 1.9,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 3.61,
+    "directionRadians": -1.5707963267948966,
+    "directionDegrees": -90.0,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_060",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 3.6,
+    "y": 4.9
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 6.080296045424104,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 36.970000000000006,
+    "directionRadians": 0.9371633187251515,
+    "directionDegrees": 53.69550287742477,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_061",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -2.1,
+    "y": 1.7
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 2.701851217221259,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 7.3,
+    "directionRadians": 2.461071428922579,
+    "directionDegrees": 141.00900595749454,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_062",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -1.8,
+    "y": 4.4
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.753945729601885,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 22.600000000000005,
+    "directionRadians": 1.9591150449673627,
+    "directionDegrees": 112.24902365721238,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_063",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -0.1,
+    "y": 1.6
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 1.6031219541881399,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 2.5700000000000003,
+    "directionRadians": 1.633215136790854,
+    "directionDegrees": 93.57633437499736,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_064",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 3.3,
+    "y": -0.4
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.324154027718932,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 11.049999999999999,
+    "directionRadians": -0.12062366858010273,
+    "directionDegrees": -6.911227119024682,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_065",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 2.9,
+    "y": -2.1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.580502757993631,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 12.82,
+    "directionRadians": -0.6267429012110469,
+    "directionDegrees": -35.90972307917768,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_066",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 2.1,
+    "y": -4.2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.695742752749559,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 22.05,
+    "directionRadians": -1.1071487177940904,
+    "directionDegrees": -63.43494882292201,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_067",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -3.0,
+    "y": -0.6
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.059411708155671,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 9.36,
+    "directionRadians": -2.9441970937399127,
+    "directionDegrees": -168.6900675259798,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_068",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -4.2,
+    "y": 1.1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.341658669218482,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 18.85,
+    "directionRadians": 2.88544127102419,
+    "directionDegrees": 165.32360686255,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_069",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 0.1,
+    "y": 1.0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 1.004987562112089,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 1.01,
+    "directionRadians": 1.4711276743037345,
+    "directionDegrees": 84.28940686250036,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_070",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 4.8,
+    "y": -0.8
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.866210024238575,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 23.68,
+    "directionRadians": -0.16514867741462685,
+    "directionDegrees": -9.462322208025618,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_071",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -4.4,
+    "y": -0.1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.401136216933078,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 19.370000000000005,
+    "directionRadians": -3.118869292748152,
+    "directionDegrees": -178.69804732742114,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_072",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -1.1,
+    "y": 3.7
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.8600518131237567,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 14.900000000000002,
+    "directionRadians": 1.859771736787463,
+    "directionDegrees": 106.55707137563665,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_073",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 0.2,
+    "y": 5.1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.103920062069938,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 26.049999999999997,
+    "directionRadians": 1.5316007248678418,
+    "directionDegrees": 87.75425743410493,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_074",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 3.0,
+    "y": 0.8
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.104834939252005,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 9.64,
+    "directionRadians": 0.260602391747341,
+    "directionDegrees": 14.931417178137554,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_075",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 6.0,
+    "y": -0.2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 6.003332407921453,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 36.04,
+    "directionRadians": -0.033320995878247196,
+    "directionDegrees": -1.9091524329963763,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_076",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 1.3,
+    "y": -1.1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 1.7029386365926402,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 2.9000000000000004,
+    "directionRadians": -0.7022569315090071,
+    "directionDegrees": -40.236358309273825,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_077",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -4.6,
+    "y": -4.0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 6.095900261651268,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 37.16,
+    "directionRadians": -2.425849063920913,
+    "directionDegrees": -138.9909130984298,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_078",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -2.3,
+    "y": 4.0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.6141087980237305,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 21.29,
+    "directionRadians": 2.092630606609307,
+    "directionDegrees": 119.89890183861456,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_079",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -5.5,
+    "y": 5.2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 7.569015788066504,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 57.29,
+    "directionRadians": 2.384224530152191,
+    "directionDegrees": 136.60600298928225,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_080",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -3.1,
+    "y": 1.4
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.4014702703389896,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 11.57,
+    "directionRadians": 2.717398245686027,
+    "directionDegrees": 155.69545073406331,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_081",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -4.9,
+    "y": 1.3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.06951674225463,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 25.700000000000003,
+    "directionRadians": 2.8822609091891085,
+    "directionDegrees": 165.14138555207535,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_082",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -4.7,
+    "y": -2.6
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.371219600798314,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 28.85,
+    "directionRadians": -2.636302465490399,
+    "directionDegrees": -151.0490047925332,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_083",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 4.0,
+    "y": 5.7
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 6.963476143421474,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 48.49,
+    "directionRadians": 0.9588938923602299,
+    "directionDegrees": 54.940573033113026,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_084",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 5.0,
+    "y": 5.6
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 7.507329751649384,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 56.36,
+    "directionRadians": 0.8419416003422656,
+    "directionDegrees": 48.23970029610213,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_085",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 1.4,
+    "y": -4.3
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.522167621838005,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 20.45,
+    "directionRadians": -1.2560386654035878,
+    "directionDegrees": -71.96571443287014,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_086",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -2.2,
+    "y": -4.0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.565084884205331,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 20.84,
+    "directionRadians": -2.0736395377227574,
+    "directionDegrees": -118.81079374297306,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_087",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -0.7,
+    "y": 6.0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 6.040695324215583,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 36.49,
+    "directionRadians": 1.6869379536748867,
+    "directionDegrees": 96.6544250460066,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_088",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 1.8,
+    "y": -4.1
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.477722635447622,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 20.049999999999997,
+    "directionRadians": -1.1571071135160331,
+    "directionDegrees": -66.29735404903376,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_089",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 3.0,
+    "y": 1.5
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.3541019662496847,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 11.25,
+    "directionRadians": 0.4636476090008061,
+    "directionDegrees": 26.56505117707799,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_090",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -5.8,
+    "y": -4.8
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 7.528612089887485,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 56.68,
+    "directionRadians": -2.450255724820331,
+    "directionDegrees": -140.3893117599734,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_091",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -3.0,
+    "y": -3.0
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.242640687119285,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": "18",
+    "magnitudeSquared": 18.0,
+    "directionRadians": -2.356194490192345,
+    "directionDegrees": -135.0,
+    "exact": {
+     "coefficient": "3",
+     "radicand": "2",
+     "text": "3√2",
+     "tex": "3\\sqrt{2}"
+    }
+   }
+  },
+  {
+   "id": "random_dec_092",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 3.7,
+    "y": 4.4
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.748912940721924,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 33.050000000000004,
+    "directionRadians": 0.8716037370732271,
+    "directionDegrees": 49.9392155421262,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_093",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 5.5,
+    "y": 2.2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 5.923681287847955,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 35.09,
+    "directionRadians": 0.3805063771123649,
+    "directionDegrees": 21.80140948635181,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_094",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -5.8,
+    "y": 3.9
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 6.989277502002621,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 48.849999999999994,
+    "directionRadians": 2.5496218169031923,
+    "directionDegrees": 146.08256946302967,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_095",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 3.0,
+    "y": 3.2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 4.386342439892262,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 19.240000000000002,
+    "directionRadians": 0.8176450458327023,
+    "directionDegrees": 46.8476102659946,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_096",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 4.9,
+    "y": 5.2
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 7.144928271158501,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 51.050000000000004,
+    "directionRadians": 0.8150924030043578,
+    "directionDegrees": 46.701354605326124,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_097",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 3.7,
+    "y": 5.4
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 6.545991139621258,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 42.85000000000001,
+    "directionRadians": 0.9700825434839029,
+    "directionDegrees": 55.58163552094379,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_098",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": -5.2,
+    "y": -4.9
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 7.144928271158501,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 51.050000000000004,
+    "directionRadians": -2.3858887297992544,
+    "directionDegrees": -136.70135460532612,
+    "exact": null
+   }
+  },
+  {
+   "id": "random_dec_099",
+   "tags": [
+    "random",
+    "decimal"
+   ],
+   "input": {
+    "x": 3.6,
+    "y": -1.7
+   },
+   "expected": {
+    "isZero": false,
+    "magnitude": 3.9812058474788765,
+    "magnitudeStatus": "finite",
+    "magnitudeSquaredExact": null,
+    "magnitudeSquared": 15.85,
+    "directionRadians": -0.4411794804149806,
+    "directionDegrees": -25.27772223555295,
+    "exact": null
+   }
+  }
+ ]
+}

@@ -1,0 +1,2 @@
+# Cross-check only: the committed fixtures are identical with or without NumPy (see vector2_oracle.py).
+numpy==2.5.3

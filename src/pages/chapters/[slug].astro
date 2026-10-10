@@ -1,0 +1,27 @@
+---
+/**
+ * Route for curriculum chapters. Until the first chapter is published (REF-1, milestone M3) there are no
+ * paths, so nothing is generated; the shared layout is exercised by /foundation/. To publish a chapter, add
+ * its MDX (kind: chapter, curriculumId) and flip its status in src/curriculum/curriculum.ts.
+ */
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import ChapterLayout from '../../shell/ChapterLayout.astro';
+import Callout from '../../shell/Callout.astro';
+import Table from '../../shell/Table.astro';
+import { findChapter } from '../../curriculum/queries';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('chapters', entry => entry.data.kind === 'chapter');
+  return entries.map(entry => {
+    const ref = entry.data.curriculumId ? findChapter(entry.data.curriculumId) : undefined;
+    if (!ref?.chapter.slug) throw new Error(`${entry.id}: curriculumId must name an available chapter with a slug`);
+    return { params: { slug: ref.chapter.slug }, props: { entry } };
+  });
+}
+interface Props { entry: CollectionEntry<'chapters'> }
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+---
+<ChapterLayout data={entry.data} headings={headings}>
+  <Content components={{ table: Table, Callout }} />
+</ChapterLayout>

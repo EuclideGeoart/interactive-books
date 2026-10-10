@@ -1,0 +1,44 @@
+---
+/**
+ * Layout for every chapter-like page (curriculum chapters and the foundation demo).
+ * Order of the page follows the priority ladder: header → interaction (the first thing in the MDX) → prose.
+ * The outline is built from the MDX's `##` headings, so there is no second list to keep in sync.
+ */
+import type { MarkdownHeading } from 'astro';
+import { findChapter } from '../curriculum/queries';
+import BaseLayout from './BaseLayout.astro';
+import ChapterPager from './ChapterPager.astro';
+import { emphasisRuns } from './emphasis';
+
+interface Props {
+  data: { kind: 'chapter' | 'demo'; curriculumId?: string | undefined; title: string; hero: string; lede: string; description: string; label?: string | undefined };
+  headings: MarkdownHeading[];
+}
+const { data, headings } = Astro.props;
+const ref = data.curriculumId ? findChapter(data.curriculumId) : undefined;
+const label = data.label ?? (ref ? `${ref.id} · ${ref.part.title}` : 'Foundation demo');
+const outline = headings.filter(h => h.depth === 2);
+---
+<BaseLayout title={data.title} description={data.description} part={ref?.part.index} pageClass={`page-${data.kind}`}>
+  <article class={`chapter chapter-${data.kind}`}>
+    <header class="chapter-header">
+      <p class="chapter-label"><span class={`label-chip${data.kind === 'demo' ? ' is-demo' : ''}`}>{label}</span></p>
+      <h1 class="hero-question">{emphasisRuns(data.hero).map(run => run.em ? <em>{run.text}</em> : run.text)}</h1>
+      <p class="lede">{data.lede}</p>
+    </header>
+    <div class="chapter-grid">
+      <div class="chapter-body prose">
+        <slot />
+        <ChapterPager current={ref} />
+      </div>
+      {outline.length > 0 && (
+        <aside class="chapter-outline">
+          <nav aria-label="In this chapter">
+            <p class="outline-title">In this chapter</p>
+            <ol>{outline.map(h => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+          </nav>
+        </aside>
+      )}
+    </div>
+  </article>
+</BaseLayout>

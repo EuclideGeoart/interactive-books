@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../shell/BaseLayout.astro';
+import CurriculumList from '../shell/CurriculumList.astro';
+import { availableCount, chapterCount } from '../curriculum/queries';
+import { href } from '../shell/href';
+---
+<BaseLayout title="The map of the book" description="All eight Parts and ninety-four planned chapters of Interactive Mathematical Foundations, with the status of each.">
+  <section class="plain-page contents-page">
+    <p class="chapter-label"><span class="label-chip">Contents</span></p>
+    <h1 class="hero-question">The map of the <em>book</em>.</h1>
+    <p class="lede">Eight Parts, in dependency order. {availableCount} of {chapterCount} chapters are written; the rest are <strong>planned</strong> and listed here so you can see where the book is going. Only written chapters are links.</p>
+    <p class="actions"><a class="button" href={href('/foundation/')}>Open the foundation demo <span class="aside">platform check</span></a></p>
+    <CurriculumList />
+  </section>
+</BaseLayout>

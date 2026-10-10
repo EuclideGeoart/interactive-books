@@ -1,0 +1,62 @@
+/* ───────────────────────────────────────────── prose */
+.prose { counter-reset: section; padding-bottom: 1rem; }
+.prose > * { max-width: var(--measure); }
+.prose > .stage-block { max-width: none; }
+.prose > * + * { margin-top: 1.1em; }
+.prose p { text-wrap: pretty; hyphens: manual; }
+.prose > h2 { position: relative; margin-top: 3.4rem; font: 560 clamp(1.6rem, 1.3rem + 1vw, 2rem)/1.15 var(--font-text); letter-spacing: -0.015em; scroll-margin-top: calc(var(--topbar-h) + 20px); text-wrap: balance; }
+.prose > h2::before { counter-increment: section; content: counter(section); display: block; margin-bottom: 8px; font: 500 0.8125rem/1 var(--font-ui); color: var(--ink-3); }
+.prose > h3 { margin-top: 2rem; font: 600 1.25rem/1.25 var(--font-text); }
+.prose > h2 + *, .prose > h3 + * { margin-top: 0.8em; }
+.prose ul, .prose ol { padding-left: 1.3em; }
+.prose li + li { margin-top: 0.4em; }
+.prose li::marker { color: var(--ink-3); }
+.prose strong { font-weight: 640; }
+.prose hr { border: 0; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
+.prose :not(pre) > code { font: 0.86em var(--font-mono); background: var(--sheet-2); padding: 0.1em 0.35em; border-radius: 4px; overflow-wrap: anywhere; }
+.prose kbd { font: 0.8em var(--font-mono); border: 1px solid var(--rule-strong); border-bottom-width: 2px; border-radius: 4px; padding: 0.05em 0.4em; background: var(--sheet); }
+
+/* tables */
+.table-scroll { max-width: 100%; overflow-x: auto; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--sheet); }
+.table-scroll table { border-collapse: collapse; width: 100%; min-width: 34rem; font-size: 0.9688rem; line-height: 1.4; }
+.table-scroll th { text-align: left; font: 600 0.875rem var(--font-ui); padding: 10px 14px; border-bottom: 2px solid var(--ink); background: var(--sheet-2); white-space: nowrap; }
+.table-scroll td { padding: 10px 14px; border-bottom: 1px solid var(--rule); vertical-align: baseline; }
+.table-scroll tr:last-child td { border-bottom: 0; }
+.table-scroll td:first-child { font-weight: 560; }
+
+/* callouts: left rule in the role colour + a TEXT label, never colour alone */
+.callout { border: 1px solid var(--rule); border-left: 4px solid var(--role); border-radius: 0 var(--radius) var(--radius) 0; background: var(--sheet); padding: 14px 18px 16px; font-size: 1rem; line-height: 1.55; }
+.callout-note { --role: var(--c-x); --role-text: var(--c-x-text); }
+.callout-misconception { --role: var(--c-primary); --role-text: var(--c-primary-text); }
+.callout-numerical { --role: var(--c-derived); --role-text: var(--c-derived-text); }
+.callout-scope { --role: var(--c-caution); --role-text: var(--c-caution-text); }
+.callout-title { font: 600 0.8125rem/1.2 var(--font-ui); color: var(--role-text); margin-bottom: 6px; }
+.callout-body > * + * { margin-top: 0.6em; }
+
+/* code */
+.code-file { border: 1px solid var(--rule); border-radius: var(--radius); background: var(--sheet-2); overflow: hidden; }
+.code-file figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; padding: 8px 14px; border-bottom: 1px solid var(--rule); font: 0.8125rem var(--font-ui); color: var(--ink-2); }
+.code-file .file { font-family: var(--font-mono); color: var(--ink); }
+.code-scroll { overflow-x: auto; }
+.code-scroll pre, .prose pre { margin: 0; padding: 14px 16px; font: 0.875rem/1.6 var(--font-mono); tab-size: 4; overflow-x: auto; background: transparent !important; }
+.code-scroll pre code { font: inherit; }
+.prose > pre.astro-code { border: 1px solid var(--rule); border-radius: var(--radius); background: var(--sheet-2) !important; }
+
+/* ───────────────────────────────────────────── mathematics */
+.katex { font-size: 1.06em; }
+.katex-display { margin: 1.1em 0; overflow-x: auto; overflow-y: hidden; padding: 0.2em 0.1em; max-width: 100%; }
+.katex-display > .katex { white-space: nowrap; }
+.katex-display:focus-visible { outline-offset: -2px; }
+/* End padding absorbs KaTeX's sub-pixel italic overhang: without it Chrome treats the box as a scroller and adds a stray,
+   unlabelled tab stop. Only a genuinely too-wide equation scrolls (and then it is named, see platform/overflow.ts). */
+.math-scroll { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding-inline-end: 6px; }
+/* exactly ONE scroller per equation: the inner KaTeX block must not scroll on its own */
+.math-scroll .katex-display { overflow: visible; }
+.math-scroll:focus-visible { outline-offset: -2px; }
+.stage .katex-display { margin: 0.3em 0; text-align: left; }
+.stage .katex-display > .katex { text-align: left; }
+
+/* figure-like blocks */
+.stage-block { margin: 2.2rem 0 2.6rem; }
+.stage-block figcaption { margin-top: 12px; font: 0.875rem/1.45 var(--font-ui); color: var(--ink-3); max-width: var(--measure); }
+.plain-page .contents-note { color: var(--ink-3); }

@@ -1,0 +1,11 @@
+---
+import { EMBLEM_SIZE, emblemFor } from './emblems';
+interface Props { index: number; class?: string }
+const { index, class: className } = Astro.props;
+const shapes = emblemFor(index);
+---
+<svg class:list={['emblem', className]} viewBox={`0 0 ${EMBLEM_SIZE.width} ${EMBLEM_SIZE.height}`} aria-hidden="true" focusable="false">
+  {shapes.map(shape => shape.kind === 'dot'
+    ? <circle class={`role-${shape.role}`} cx={shape.at!.x} cy={shape.at!.y} r={shape.radius ?? 3} />
+    : <path class:list={[`role-${shape.role}`, { faint: shape.faint, dashed: shape.dashed, filled: shape.fill }]} d={shape.d} stroke-width={shape.width ?? 1.2} />)}
+</svg>

@@ -1,0 +1,73 @@
+/*
+ * Design tokens — see documentation/BOOK_II_DESIGN_DIRECTION.md §2.
+ * Colour uses light-dark(): one definition per token, no duplicated dark palette, and the page follows the
+ * system theme even with JavaScript off. `data-theme` on <html> (set before first paint) overrides the system.
+ * Components must use these tokens, never hex values.
+ */
+:root {
+  color-scheme: light dark;
+
+  /* surfaces and ink */
+  --paper: light-dark(#f5f2ea, #0e1214);
+  --sheet: light-dark(#fffefa, #151a1d);
+  --sheet-2: light-dark(#f0ece1, #1b2226);
+  --ink: light-dark(#1a1d21, #ece8de);
+  --ink-2: light-dark(#464c54, #bdbab0);
+  --ink-3: light-dark(#626872, #92958f);
+  --rule: light-dark(rgb(26 29 33 / 0.12), rgb(236 232 222 / 0.14));
+  --rule-strong: light-dark(rgb(26 29 33 / 0.28), rgb(236 232 222 / 0.32));
+  --focus: light-dark(#0b5e99, #7cc4f3);
+
+  /* graph paper */
+  --grid-minor: light-dark(rgb(26 29 33 / 0.07), rgb(236 232 222 / 0.08));
+  --axis: light-dark(rgb(26 29 33 / 0.72), rgb(236 232 222 / 0.76));
+
+  /* colour grammar: a hue names a mathematical ROLE (never decoration). `-text` variants are for text (≥ 4.5:1). */
+  --c-primary: light-dark(#d2501a, #ff8c5c);
+  --c-primary-text: light-dark(#b03f0e, #ff9f77);
+  --c-x: light-dark(#0b6fb5, #62b6ee);
+  --c-x-text: light-dark(#0b5e99, #7cc4f3);
+  --c-y: light-dark(#00946b, #3dd6a5);
+  --c-y-text: light-dark(#00775a, #5be0b6);
+  --c-derived: light-dark(#9a4a9e, #d997dd);
+  --c-derived-text: light-dark(#873c8b, #e3aae6);
+  --c-caution: light-dark(#b87b00, #f3c24f);
+  --c-caution-text: light-dark(#8c5f00, #f3c24f);
+
+  /* code (Shiki css-variables theme) */
+  --astro-code-color-text: var(--ink);
+  --astro-code-color-background: var(--sheet-2);
+  --astro-code-token-constant: var(--c-x-text);
+  --astro-code-token-string: var(--c-y-text);
+  --astro-code-token-comment: var(--ink-3);
+  --astro-code-token-keyword: var(--c-derived-text);
+  --astro-code-token-parameter: var(--ink);
+  --astro-code-token-function: var(--c-primary-text);
+  --astro-code-token-string-expression: var(--c-y-text);
+  --astro-code-token-punctuation: var(--ink-2);
+  --astro-code-token-link: var(--c-x-text);
+
+  /* type */
+  --font-text: 'Source Serif 4 Variable', 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --font-ui: 'Instrument Sans Variable', 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  --font-math: KaTeX_Main, 'Times New Roman', serif;
+
+  /* layout */
+  --gutter: clamp(16px, 4.5vw, 44px);
+  --page: 1180px;
+  --measure: 66ch;
+  --radius: 6px;
+  --topbar-h: 56px;
+}
+
+:root[data-theme='light'] { color-scheme: light; }
+:root[data-theme='dark'] { color-scheme: dark; }
+
+/* role scope: any element can declare `role-x` etc. and its descendants read --role / --role-text */
+.role-primary { --role: var(--c-primary); --role-text: var(--c-primary-text); }
+.role-x { --role: var(--c-x); --role-text: var(--c-x-text); }
+.role-y { --role: var(--c-y); --role-text: var(--c-y-text); }
+.role-derived { --role: var(--c-derived); --role-text: var(--c-derived-text); }
+.role-caution { --role: var(--c-caution); --role-text: var(--c-caution-text); }
+.role-ink { --role: var(--ink); --role-text: var(--ink); }
