@@ -54,7 +54,10 @@ export function parseParam(spec: ParamSpec, raw: string): ParseResult {
 export type Grid = { readonly kind: 'lattice'; readonly step: number } | { readonly kind: 'free' };
 
 /** Digits needed to write a multiple of `step` without floating-point noise. */
-const decimalsOf = (step: number): number => Math.max(0, Math.min(10, Math.ceil(-Math.log10(step) - 1e-9)));
+const decimalsOf = (step: number): number => {
+  for (let d = 0; d <= 10; d++) { const scaled = step * 10 ** d; if (Math.abs(scaled - Math.round(scaled)) < 1e-9) return d; }
+  return 10;
+};
 
 /** Snap to the grid. Lattice results are the double nearest the decimal value (23·0.1 → 2.3, not 2.3000000000000003). */
 export function snapToGrid(value: number, grid: Grid): number {

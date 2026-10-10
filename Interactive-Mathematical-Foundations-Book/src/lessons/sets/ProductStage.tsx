@@ -5,7 +5,7 @@
  * headers, one cell per ordered pair), so the whole stage works from a keyboard and a screen reader.
  */
 import { useEffect, useMemo, useState } from 'preact/hooks';
-import { FormulaScroll } from '../families/FormulaScroll';
+import { FormulaScroll } from '../../ui/FormulaScroll';
 import { Inspector } from '../../ui/Inspector';
 import { IdScope, useScopedId } from '../../ui/ids';
 import { useLesson } from '../../ui/useLesson';

@@ -7,7 +7,7 @@
  * works from a keyboard and a screen reader. The Venn is a picture of the state, not a control.
  */
 import { useEffect, useMemo, useState } from 'preact/hooks';
-import { FormulaScroll } from '../families/FormulaScroll';
+import { FormulaScroll } from '../../ui/FormulaScroll';
 import { Inspector } from '../../ui/Inspector';
 import { IdScope, useScopedId } from '../../ui/ids';
 import { useLesson } from '../../ui/useLesson';

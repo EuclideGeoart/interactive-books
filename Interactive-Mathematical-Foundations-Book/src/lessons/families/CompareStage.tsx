@@ -11,7 +11,7 @@ import { CANONICAL_COMPARE, FAMILY_IDS, deriveCompare, type CompareDerived, type
 import { toNumber } from '../../math/families/rational';
 import type { Grid } from '../../platform/params';
 import { Inspector } from '../../ui/Inspector';
-import { FormulaScroll } from './FormulaScroll';
+import { FormulaScroll } from '../../ui/FormulaScroll';
 import { ParameterInput } from '../../ui/ParameterInput';
 import { IdScope, useScopedId } from '../../ui/ids';
 import { useLesson } from '../../ui/useLesson';

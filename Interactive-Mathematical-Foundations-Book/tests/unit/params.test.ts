@@ -79,3 +79,13 @@ describe('parseParam — declared decimal precision', () => {
   });
 });
 function x6(): ParamSpec { return { id: 'x', name: 'x', symbolTex: 'x', symbolText: 'x', domain: { min: -6, max: 6 }, default: 0, step: 1, onInvalid: 'reject' }; }
+
+describe('snapToGrid with steps that are not powers of ten', () => {
+  it('keeps the digits a step needs: 0.25 and 0.125 lattices are exact', () => {
+    expect(snapToGrid(0.3, { kind: 'lattice', step: 0.25 })).toBe(0.25);
+    expect(snapToGrid(0.4, { kind: 'lattice', step: 0.25 })).toBe(0.5);
+    expect(snapToGrid(0.17, { kind: 'lattice', step: 0.125 })).toBe(0.125);
+    expect(snapToGrid(2.3, { kind: 'lattice', step: 0.1 })).toBe(2.3);
+    expect(snapToGrid(2.6, { kind: 'lattice', step: 0.5 })).toBe(2.5);
+  });
+});

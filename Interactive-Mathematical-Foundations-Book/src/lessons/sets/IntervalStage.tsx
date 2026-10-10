@@ -7,7 +7,7 @@
  */
 import { useEffect, useMemo, useState } from 'preact/hooks';
 import type { Grid } from '../../platform/params';
-import { FormulaScroll } from '../families/FormulaScroll';
+import { FormulaScroll } from '../../ui/FormulaScroll';
 import { Inspector } from '../../ui/Inspector';
 import { ParameterInput } from '../../ui/ParameterInput';
 import { SegmentedControl } from '../../ui/SegmentedControl';

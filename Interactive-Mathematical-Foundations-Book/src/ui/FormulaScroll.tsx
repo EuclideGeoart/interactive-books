@@ -7,8 +7,8 @@
  * scroller. This wrapper re-syncs on those two events; the platform helper (`syncScrollable`) does the real work.
  */
 import { useEffect, useRef } from 'preact/hooks';
-import { syncScrollable, watchScrollable } from '../../platform/overflow';
-import { Formula } from '../../ui/Formula';
+import { syncScrollable, watchScrollable } from '../platform/overflow';
+import { Formula } from './Formula';
 
 export function FormulaScroll({ tex, label }: { tex: string; label: string }) {
   const ref = useRef<HTMLDivElement>(null);

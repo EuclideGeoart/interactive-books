@@ -10,7 +10,7 @@ import { UNDO_AXIS_Y, UNDO_HANDLE_PARAM, UNDO_PRESETS, UNDO_WINDOW, UNDO_X_PARAM
 import type { RoundTrip, RoundTripState } from '../../math/families/roundtrip';
 import type { Grid } from '../../platform/params';
 import { Inspector } from '../../ui/Inspector';
-import { FormulaScroll } from './FormulaScroll';
+import { FormulaScroll } from '../../ui/FormulaScroll';
 import { ParameterInput } from '../../ui/ParameterInput';
 import { SegmentedControl } from '../../ui/SegmentedControl';
 import { IdScope, useScopedId } from '../../ui/ids';

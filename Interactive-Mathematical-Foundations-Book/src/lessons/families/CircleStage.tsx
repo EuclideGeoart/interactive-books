@@ -11,7 +11,7 @@ import { freeAngle, switchMode, type CircleDerived, type CircleState } from '../
 import { pixelsToWorld, type Point } from '../../platform/geometry/viewport';
 import type { Grid } from '../../platform/params';
 import { Inspector } from '../../ui/Inspector';
-import { FormulaScroll } from './FormulaScroll';
+import { FormulaScroll } from '../../ui/FormulaScroll';
 import { ParameterInput } from '../../ui/ParameterInput';
 import { SegmentedControl } from '../../ui/SegmentedControl';
 import { IdScope, useScopedId } from '../../ui/ids';

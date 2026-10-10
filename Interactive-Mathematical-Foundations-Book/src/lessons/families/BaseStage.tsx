@@ -9,7 +9,7 @@
 import { useEffect, useMemo, useState } from 'preact/hooks';
 import type { Grid } from '../../platform/params';
 import { Inspector } from '../../ui/Inspector';
-import { FormulaScroll } from './FormulaScroll';
+import { FormulaScroll } from '../../ui/FormulaScroll';
 import { ParameterInput } from '../../ui/ParameterInput';
 import { SegmentedControl } from '../../ui/SegmentedControl';
 import { IdScope, useScopedId } from '../../ui/ids';

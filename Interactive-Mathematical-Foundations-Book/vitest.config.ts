@@ -1,2 +1,3 @@
 import { defineConfig } from 'vitest/config';
-export default defineConfig({ test: { include: ['tests/unit/**/*.test.ts'], environment: 'node' } });
+// 20 s: the strict-KaTeX sweeps render thousands of formulas and sit near the 5 s default under load (a timing limit, not a tolerance).
+export default defineConfig({ test: { include: ['tests/unit/**/*.test.ts'], environment: 'node', testTimeout: 20_000 } });

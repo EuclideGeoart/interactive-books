@@ -1,7 +1,7 @@
 /** WorkedStage — four fixed examples, each a step-by-step trace. Going back selects an earlier frame; nothing is undone. */
 import { useEffect, useMemo, useState } from 'preact/hooks';
 import { cursorAt, reset as resetCursor, type TraceCursor } from '../../platform/trace';
-import { FormulaScroll } from '../families/FormulaScroll';
+import { FormulaScroll } from '../../ui/FormulaScroll';
 import { TraceStepper } from '../../ui/TraceStepper';
 import { IdScope, useScopedId } from '../../ui/ids';
 import { WORKED_EXAMPLES, workedFrames } from './worked-lesson';
