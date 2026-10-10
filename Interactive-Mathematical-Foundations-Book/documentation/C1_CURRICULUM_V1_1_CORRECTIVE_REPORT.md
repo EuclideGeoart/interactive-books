@@ -1,6 +1,6 @@
 # C1 — Curriculum v1.1 Integration, Visual Regression & WIN-0 Final Corrections
 
-**Baseline:** `6b8a89b` (WIN-0) · **Host:** Windows 10, PowerShell 5.1, Node 22.14.0, Python 3.13.3, Playwright 1.63.0 · **Final commit:** recorded in §8
+**Baseline:** `6b8a89b` (WIN-0) · **Host:** Windows 10, PowerShell 5.1, Node 22.14.0, Python 3.13.3, Playwright 1.63.0 · **Final commit:** `8e17e7b` (§8)
 **Not done, by instruction:** no Book I change, no REF-1, no chapter generation, no dependency upgrade, no model change, no threshold change, no performance work, no blanket snapshot regeneration, no Linux file touched. **Not claimed:** independent-reviewer approval, native Linux validation.
 
 ## 1. Curriculum v1.1 consistency (C1-A)
@@ -90,4 +90,4 @@ This pass: `src/platform/trace.ts` (one comment), `tests/e2e/stage.spec.ts` (+1 
 
 ## 8. Commit
 
-Recorded by a docs-only commit following the milestone commit (a file cannot contain its own hash); see `git log --oneline -3`.
+Milestone commit `8e17e7b`. A file cannot contain its own hash, so this line was recorded by a docs-only commit that follows it.
