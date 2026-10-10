@@ -43,8 +43,18 @@ const pick = (answer: Readonly<Record<string, string>>, correct: string, wrong: 
   return no(wrong[chosen] ?? 'Not quite.');
 };
 
-/** y/x = −2/3 ⇔ 2x + 3y = 0. The residual is judged RELATIVE to the size of its own terms, so it scales with the input. */
-export const sameRatio = (x: number, y: number): boolean => Math.abs(2 * x + 3 * y) <= 1e-12 * (2 * Math.abs(x) + 3 * Math.abs(y));
+/**
+ * y/x = −2/3 ⇔ 2x + 3y = 0. Judged on the vector SCALED by its larger component, so no intermediate can overflow (1e308 is a
+ * valid finite component) or underflow, and the 1e-12 relative tolerance is the same at every scale. A non-finite input, or the zero
+ * vector, is never accepted: the predicate cannot succeed because something became Infinity or NaN.
+ */
+export const sameRatio = (x: number, y: number): boolean => {
+  const m = Math.max(Math.abs(x), Math.abs(y));
+  if (!Number.isFinite(x) || !Number.isFinite(y) || m === 0) return false;
+  const xn = x / m;
+  const yn = y / m;
+  return Math.abs(2 * xn + 3 * yn) <= 1e-12 * (2 * Math.abs(xn) + 3 * Math.abs(yn));
+};
 
 export const EXERCISES: readonly Exercise[] = [
   {

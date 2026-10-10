@@ -18,8 +18,13 @@ Starting HEAD `cec677b`. Scope: two defects and wording; no redesign. Not pushed
 ## P1-C — wording
 `vectors.mdx` and `direction-lesson.ts` now state: counter-clockwise angles are positive and clockwise negative (with `(1,−1)` ↦ −π/4); the identity `atan2 − atan ∈ {0, π, −π}` requires `x ≠ 0`; a vertical vector has a valid direction but no defined ratio `y/x`; the dashed line "carries v and −v" and they share a ratio only where `x ≠ 0` (stage caption and the figure's text alternative say so, with a separate vertical-vector sentence). Quadrant policies and the implementation are unchanged. A browser test checks the wording.
 
-## Validation (native Linux, sequential)
-`astro check` clean; unit 775 passing; oracle 35 OK; builds and `check:dist` OK; e2e root and subpath green after the baseline update below. Tolerances unchanged; fixtures unchanged; Windows baselines untouched; 97 chapters and I.3-only publication unchanged.
+## Validation (native Linux)
+Recorded precisely, because the runs differ:
+- `astro check` clean; unit 775 passing; oracle 35 OK; root and subpath builds and `check:dist` OK.
+- **Full root e2e run (before the snapshot update): 395 passed, 8 failed, 20 skipped** — the 8 failures were exactly the chapter-stage screenshots described below.
+- **Full subpath e2e run: 376 passed, 5 skipped.**
+- After regenerating those baselines only the **visual suites** were rerun (chapter group 10 passed; whole visual spec 27 passed). The **full root e2e run was NOT repeated** after the update; M4 repeats it (see the M4 report).
+Tolerances unchanged; fixtures unchanged; Windows baselines untouched; 97 chapters and I.3-only publication unchanged.
 
 **Baselines.** Only the chapter's own baselines from M3 were regenerated (`*-chapter-{placement,pythagoras,direction,direction-zero}`), after inspection: placement gains the "up to 6 decimal places" hint; the others shift by ~1 px because the longer chapter text above moves the stage's sub-pixel position (no change inside the stage). No foundation or other baseline changed.
 

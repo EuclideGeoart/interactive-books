@@ -187,5 +187,31 @@ describe('same-ratio exercise predicate', () => {
     }
     expect(sameRatio(1e-12, 0)).toBe(false);
   });
+  it('never accepts because an intermediate overflowed, underflowed or became NaN', () => {
+    const big = '1' + '0'.repeat(308);
+    expect(sameRatio(1e308, 1e308)).toBe(false);
+    expect(sameRatio(1e308, -1e308)).toBe(false);
+    expect(sameRatio(1.7e308, 1.7e308)).toBe(false);
+    expect(sameRatio(Infinity, -Infinity)).toBe(false);
+    expect(sameRatio(NaN, 1)).toBe(false);
+    expect(sameRatio(0, 0)).toBe(false);
+    expect(sameRatio(0, 1e308)).toBe(false);
+    expect(sameRatio(1e308, 0)).toBe(false);
+    expect(g(big, big).correct).toBe(false);
+    expect(g(big, big).message).toMatch(/ratio/);
+  });
+  it('accepts the exact ratio at extreme scales, in both orientations', () => {
+    expect(sameRatio(3e307, -2e307)).toBe(true);
+    expect(sameRatio(1.5e308, -1e308)).toBe(true);
+    expect(sameRatio(-3e307, 2e307)).toBe(true); // ratio holds; direction is a separate check
+    expect(sameRatio(3e-300, -2e-300)).toBe(true);
+    expect(sameRatio(3e-320, -2e-320)).toBe(true); // subnormal
+    expect(sameRatio(3e-320, 2e-320)).toBe(false);
+    expect(sameRatio(1e-300, 0)).toBe(false);
+    const huge = '3' + '0'.repeat(307);
+    const hugeY = '2' + '0'.repeat(307);
+    expect(g(huge, '-' + hugeY).correct).toBe(true);
+    expect(g('-' + huge, hugeY).message).toMatch(/SAME way/);
+  });
   it('the worked solution is well-formed', () => { expect(exerciseById('same-ratio')!.solution).not.toMatch(/,\./); });
 });

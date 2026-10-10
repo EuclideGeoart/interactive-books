@@ -75,12 +75,20 @@ for (const f of files.filter(f => f.endsWith('.js'))) {
   if (base !== '/' && new RegExp(`["'\`]/_astro/`).test(js)) fail(rel(f), 'hard-coded root-relative /_astro/ URL in a script');
 }
 
-const need = ['index.html', 'contents/index.html', 'foundation/index.html', 'chapters/vectors/index.html', '404.html'];
+const need = ['index.html', 'contents/index.html', 'foundation/index.html', '404.html'];
 for (const n of need) if (!existsSync(join(dist, n))) fail(n, 'expected page was not built');
-// Exactly the published chapters have a page (M3: only I.3 'vectors'); planned chapters must never have one.
-const publishedSlugs = ['vectors'];
-const chapterDirs = existsSync(join(dist, 'chapters')) ? readdirSync(join(dist, 'chapters')) : [];
-if (JSON.stringify([...chapterDirs].sort()) !== JSON.stringify(publishedSlugs)) fail('chapters/', `expected exactly ${publishedSlugs.join(', ')}, found ${chapterDirs.join(', ') || 'none'}`);
+
+// Published chapters are whatever the generated contents page links to (it is rendered from the curriculum); each such link must
+// resolve to a built chapter page, and no chapter page may exist that the contents page does not link. Planned chapters have no
+// link and therefore must have no page. Adding a chapter needs no edit here.
+const contents = readFileSync(join(dist, 'contents/index.html'), 'utf8');
+const escapedBase = base.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const linkRe = new RegExp(`href="${escapedBase}chapters/([a-z0-9-]+)/"`, 'g');
+const linked = [...new Set([...contents.matchAll(linkRe)].map(m => m[1]))].sort();
+const chapterDirs = (existsSync(join(dist, 'chapters')) ? readdirSync(join(dist, 'chapters')) : []).sort();
+if (linked.length === 0) fail('contents/', 'the contents page links to no published chapter');
+for (const slug of linked) if (!existsSync(join(dist, 'chapters', slug, 'index.html'))) fail(`chapters/${slug}/`, 'linked from the contents page but not built');
+for (const dir of chapterDirs) if (!linked.includes(dir)) fail(`chapters/${dir}/`, 'built but not linked from the contents page (an unpublished chapter has a page)');
 
 console.log(`${distArg} @ ${base}: ${htmlFiles.length} pages, ${files.filter(f => f.endsWith('.css')).length} stylesheets, ${files.length} files checked — ${problems.length ? problems.length + ' PROBLEM(S)' : 'OK'}`);
 for (const p of problems) console.error('  ✗ ' + p);
