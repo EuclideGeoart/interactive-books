@@ -65,6 +65,33 @@ test.describe('publication', () => {
   });
 });
 
+test.describe('largest states fit the stage (checked at the narrowest width the project tests)', () => {
+  /** Every wide thing must end inside its stage's right edge: a clipped table would pass the page-overflow check. */
+  const insideStage = async (stage: Locator, selector: string) => {
+    const gap = await stage.evaluate((el, sel) => {
+      const edge = el.getBoundingClientRect().right;
+      return Math.max(...[...el.querySelectorAll(sel)].map(t => t.getBoundingClientRect().right - edge));
+    }, selector);
+    expect(gap, selector).toBeLessThanOrEqual(0.5);
+  };
+  test('6 × 6 pair tables, the 6 × 6 relation grid and the 12-element lists stay inside their stages', async ({ page }) => {
+    const prod = await product(page);
+    await preset(prod, 'full').click();
+    await insideStage(prod, 'table.pair-table');
+    const rel = await relation(page);
+    await rel.getByRole('radio', { name: '6' }).nth(0).check({ force: true });
+    await rel.getByRole('radio', { name: '6' }).nth(1).check({ force: true });
+    await preset(rel, 'all').click(); // 36 pairs: the longest list of pairs the stage can show
+    await insideStage(rel, 'table.relation-grid');
+    await insideStage(rel, '.inspector-row dd');
+    const sets = await setsFull(page);
+    await preset(sets, 'disjoint').click();
+    await sets.locator('button[data-op="symmetric"]').click(); // all twelve elements in the result
+    await insideStage(sets, '.inspector-row dd');
+    expect(await noPageOverflow(page)).toBe(true);
+  });
+});
+
 test.describe('finite sets', () => {
   test('starts as A = {1..5}, B = {4..7} with the union; the operations select the right elements; Reset restores', async ({ page }) => {
     const stage = await setsFull(page);

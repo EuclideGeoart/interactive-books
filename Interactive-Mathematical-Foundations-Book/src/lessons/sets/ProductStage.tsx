@@ -37,7 +37,7 @@ function Table({ t }: { t: PairTable }) {
                 {t.columns.map(c => {
                   const extra = t.extra.has(cellKey(r, c));
                   const witness = t.witness !== null && t.witness[0] === r && t.witness[1] === c;
-                  return <td key={c} class={`pair${extra ? ' is-extra' : ''}${witness ? ' is-witness' : ''}`} data-pair={`${r},${c}`} data-extra={extra}>({r}, {c}){extra ? <span class="sr-only"> (only in this product)</span> : null}</td>;
+                  return <td key={c} class={`pair${extra ? ' is-extra' : ''}${witness ? ' is-witness' : ''}`} data-pair={`${r},${c}`} data-extra={extra}>({r},{c}){extra ? <span class="sr-only"> (only in this product)</span> : null}</td>;
                 })}
               </tr>
             ))}

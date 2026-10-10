@@ -396,10 +396,11 @@ describe('exercises', () => {
     expect(fields('count-less-than', { n: String(lt) }).correct).toBe(true);
     expect(fields('count-less-than', { n: '21' }).message).toMatch(/a ≤ b/);
     // de-morgan-count on the universe of the stage
-    const d = deriveSets({ a: maskOf([1, 2, 3, 4, 5]), b: maskOf([4, 5, 6, 7]), op: 'union' });
-    expect(d.deMorgan.unionComplement).toHaveLength(5);
-    expect(fields('de-morgan-count', { n: '5' }).correct).toBe(true);
-    expect(fields('de-morgan-count', { n: '7' }).message).toMatch(/union/);
+    const d = deriveSets({ a: maskOf([1, 2, 3, 4, 5, 6]), b: maskOf([5, 6, 7, 8, 9]), op: 'union' });
+    expect(d.deMorgan.unionComplement).toEqual([10, 11, 12]);
+    expect(fields('de-morgan-count', { n: '3' }).correct).toBe(true);
+    expect(fields('de-morgan-count', { n: '9' }).message).toMatch(/union/);
+    expect(fields('de-morgan-count', { n: '1' }).message).toMatch(/overlap/);
     // split-leak: inclusion–exclusion on the train and test id lists
     expect(fields('split-leak', { n: String(1000 - 30) }).correct).toBe(true);
     expect(fields('split-leak', { n: '1000' }).message).toMatch(/twice/);

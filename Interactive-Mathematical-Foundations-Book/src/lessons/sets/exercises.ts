@@ -142,16 +142,16 @@ export const EXERCISES: readonly Exercise[] = [
   },
   {
     id: 'de-morgan-count', kind: 'calculation', title: 'Outside both sets',
-    prompt: 'In the universe U = {1, 2, …, 12}, let A = {1, 2, 3, 4, 5} and B = {4, 5, 6, 7}. How many elements of U are in neither A nor B? (That is the complement of A ∪ B, or by De Morgan the intersection of the two complements.)',
+    prompt: 'In the universe U = {1, 2, …, 12}, let A = {1, 2, 3, 4, 5, 6} and B = {5, 6, 7, 8, 9}. How many elements of U are in neither A nor B? (That is the complement of A ∪ B, or by De Morgan the intersection of the two complements.)',
     fields: [{ id: 'n', label: 'elements in neither =' }],
-    solution: 'A ∪ B = {1, 2, …, 7} has 7 elements, so exactly 12 − 7 = 5 elements of U are outside it: {8, 9, 10, 11, 12}. De Morgan says the same set is (U \\ A) ∩ (U \\ B), the elements outside A and outside B.',
+    solution: 'A ∪ B = {1, 2, …, 9} has 9 elements, so exactly 12 − 9 = 3 elements of U are outside it: {10, 11, 12}. De Morgan says the same set is (U \\ A) ∩ (U \\ B), the elements outside A and outside B.',
     grade(a) {
       const n = parseNumber(a.n);
       if (n === null) return NEED_NUMBERS;
-      if (n === 5) return ok('Yes: |A ∪ B| = 5 + 4 − 2 = 7, and 12 − 7 = 5. The elements are 8, 9, 10, 11, 12.');
-      if (n === 7) return no('7 is the size of the union. The question asks for what is OUTSIDE it, so subtract from the 12 elements of U.');
-      if (n === 3) return no('3 = 12 − 9 uses |A| + |B| = 9 without correcting for the overlap {4, 5}, which was counted twice. Find the size of the union first.');
-      return no('Find |A ∪ B| first (the elements 4 and 5 are in both sets), then subtract it from |U| = 12.');
+      if (n === 3) return ok('Yes: |A ∪ B| = 6 + 5 − 2 = 9, and 12 − 9 = 3. The elements are 10, 11, 12.');
+      if (n === 9) return no('9 is the size of the union. The question asks for what is OUTSIDE it, so subtract from the 12 elements of U.');
+      if (n === 1) return no('1 = 12 − 11 uses |A| + |B| = 11 without correcting for the overlap {5, 6}, which was counted twice. Find the size of the union first.');
+      return no('Find |A ∪ B| first (the elements 5 and 6 are in both sets), then subtract it from |U| = 12.');
     },
   },
   {

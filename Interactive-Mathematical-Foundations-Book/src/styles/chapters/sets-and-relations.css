@@ -6,8 +6,8 @@
 .presets.ops button { font-family: var(--font-math); font-size: 1.0625rem; }
 
 /* A list of elements or pairs can be long: let a readout value wrap instead of running off the stage. */
-.stage[data-stage] .inspector-row .line { white-space: normal; overflow-wrap: anywhere; }
-.stage[data-stage] .inspector-row dd { min-width: 0; max-width: 100%; }
+:is([data-stage='sets'], [data-stage='intervals'], [data-stage='product'], [data-stage='relation']) .inspector-row .line { white-space: normal; overflow-wrap: anywhere; }
+:is([data-stage='sets'], [data-stage='intervals'], [data-stage='product'], [data-stage='relation']) .inspector-row dd { min-width: 0; max-width: 100%; }
 
 /* ───────────── element chips: native toggle buttons */
 .chip-rows { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
@@ -82,9 +82,14 @@
 .pair-table caption { caption-side: top; text-align: left; padding-bottom: 6px; font: 600 0.9375rem var(--font-ui); color: var(--role-text); }
 .pair-table th { min-width: 28px; padding: 2px 4px; text-align: center; font: 600 0.9375rem var(--font-mono); color: var(--ink-2); }
 .pair-table .corner { padding: 0; }
-.pair { min-width: 46px; height: 36px; padding: 0 4px; text-align: center; font: 0.8125rem var(--font-mono); font-variant-numeric: tabular-nums; border: 1px solid var(--rule-strong); border-radius: 2px; background: var(--sheet); white-space: nowrap; }
+.pair { min-width: 40px; height: 36px; padding: 0 4px; text-align: center; font: 0.8125rem var(--font-mono); font-variant-numeric: tabular-nums; border: 1px solid var(--rule-strong); border-radius: 2px; background: var(--sheet); white-space: nowrap; }
 .pair.is-extra { border: 2px dashed var(--c-caution-text); background: color-mix(in srgb, var(--c-caution) 16%, var(--sheet)); font-weight: 700; }
 .pair.is-witness { border-style: solid; }
+@container (max-width: 520px) {
+  .pair-table { border-spacing: 2px; }
+  .pair-table th { min-width: 20px; padding: 2px 1px; }
+  .pair { min-width: 0; padding: 0 1px; font-size: 0.75rem; }
+}
 .pair-empty { padding: 10px 12px; font: italic 0.9375rem/1.4 var(--font-ui); color: var(--ink-2); }
 
 /* ───────────── the relation grid */
