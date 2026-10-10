@@ -1,25 +1,29 @@
 import { expect, test } from '@playwright/test';
+import { allChapters, availableCount, firstAvailable } from '../../src/curriculum/queries';
 import { dragHandleTo, openStage, rowLines } from './helpers';
+
+const published = allChapters.filter(r => r.chapter.status === 'available');
+const planned = allChapters.length - published.length;
 
 const PART_SIZES = [9, 19, 15, 16, 10, 10, 8, 10]; // master plan §4
 
 test.describe('the map of the book (contents page)', () => {
-  test('eight Parts, 97 chapters: 96 planned (never links) and exactly one published, I.3, which is a link', async ({ page }) => {
+  test('eight Parts, 97 chapters: the planned ones are never links, and the published ones (derived from the curriculum) are', async ({ page }) => {
     await page.goto('contents/');
     const parts = page.locator('main .part');
     await expect(parts).toHaveCount(8);
     for (const [i, size] of PART_SIZES.entries()) await expect(parts.nth(i).locator('.chapter-item')).toHaveCount(size);
     await expect(page.locator('main .chapter-item')).toHaveCount(97);
-    await expect(page.locator('main .chapter-item[data-status="planned"]')).toHaveCount(96);
-    await expect(page.locator('main .chapter-item[data-status="available"]')).toHaveCount(1);
+    await expect(page.locator('main .chapter-item[data-status="planned"]')).toHaveCount(planned);
+    await expect(page.locator('main .chapter-item[data-status="available"]')).toHaveCount(published.length);
     await expect(page.locator('main .chapter-item[data-status="planned"] a')).toHaveCount(0); // planned content is never a dead link
-    await expect(page.locator('main .chapter-item a')).toHaveCount(1);
+    await expect(page.locator('main .chapter-item a')).toHaveCount(published.length);
     const i3 = page.locator('main [data-chapter-id="I.3"]');
     await expect(i3).toContainText('Vectors: components, magnitude, and direction');
     await expect(i3).toContainText('reference chapter');
     await expect(i3).toContainText('available');
     await expect(i3.getByRole('link')).toHaveAttribute('href', /chapters\/vectors\/$/);
-    await expect(page.locator('main .lede')).toContainText('1 of 97 chapters are written');
+    await expect(page.locator('main .lede')).toContainText(`${availableCount} of 97 chapters are written`);
     await expect(page.locator('main [data-chapter-id="VI.4"]')).toContainText('flagship chapter');
   });
   test('direct access to a Part anchor lands on that Part', async ({ page }) => {
@@ -84,13 +88,14 @@ test.describe('the book-map dialog', () => {
     await expect(dialog).toBeHidden();
     await expect(opener).toBeFocused();
   });
-  test('lists planned chapters as text (only I.3 is a link) and offers the demo as a clearly labelled non-chapter', async ({ page }) => {
+  test('lists planned chapters as text (only published chapters are links) and offers the demo as a clearly labelled non-chapter', async ({ page }) => {
     await page.goto('./');
     await page.getByRole('button', { name: 'Contents' }).click();
     const dialog = page.getByRole('dialog');
     // only the published chapter (I.3) is a link; every planned chapter is plain text
-    await expect(dialog.locator('.chapter-item a')).toHaveCount(1);
-    await expect(dialog.locator('.chapter-item a')).toHaveAttribute('href', /chapters\/vectors\/$/);
+    await expect(dialog.locator('.chapter-item a')).toHaveCount(published.length);
+    await expect(dialog.locator('.chapter-item[data-status="planned"] a')).toHaveCount(0);
+    await expect(dialog.locator('.chapter-item a[href$="chapters/vectors/"]')).toHaveCount(1);
     const demo = dialog.getByRole('link', { name: /Foundation demo/ });
     await expect(demo).toContainText('platform check, not a chapter');
     await demo.click();
@@ -133,16 +138,17 @@ test.describe('theme', () => {
 });
 
 test.describe('chapter shell', () => {
-  test('the foundation demo is labelled as a demo, not a chapter, and offers the real chapter I.3 as its next page', async ({ page }) => {
+  test('the foundation demo is labelled as a demo, not a chapter, and offers the first published chapter as its next page', async ({ page }) => {
     await page.goto('foundation/');
     await expect(page.locator('.label-chip.is-demo')).toContainText('Foundation demo');
     await expect(page.getByText('This is a foundation demo, not Chapter I.3')).toBeVisible();
     const pager = page.getByRole('navigation', { name: 'Neighbouring chapters' });
     await expect(pager.locator('a')).toHaveCount(2);
-    await expect(pager.locator('.pager-next')).toContainText('I.3 · Vectors: components, magnitude, and direction');
+    // the first chapter in READING order that is published (not necessarily I.3)
+    await expect(pager.locator('.pager-next')).toContainText(`${firstAvailable!.id} · ${firstAvailable!.chapter.title}`);
     await pager.locator('.pager-next').click();
-    await expect(page).toHaveURL(/chapters\/vectors\/$/);
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('vector');
+    await expect(page).toHaveURL(new RegExp(`chapters/${firstAvailable!.chapter.slug}/$`));
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   });
   test('the in-chapter outline is built from the headings (wide screens)', async ({ page }) => {
     test.skip((page.viewportSize()?.width ?? 0) < 1180, 'the margin outline appears from 1180px');

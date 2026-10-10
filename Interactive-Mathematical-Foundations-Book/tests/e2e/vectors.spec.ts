@@ -3,6 +3,7 @@
  * independently computed pixels, never from the application's own viewport code.
  */
 import { expect, test, type Locator, type Page } from '@playwright/test';
+import { findChapter, neighbours } from '../../src/curriculum/queries';
 import { MINUS, noPageOverflow } from './helpers';
 
 const PATH = 'chapters/vectors/';
@@ -54,11 +55,16 @@ test.describe('publication and navigation', () => {
     await page.keyboard.press('Escape');
     await expect(page.locator('.topbar a[aria-current="true"]')).toHaveAttribute('title', /Part I:/);
   });
-  test('the pager has planned neighbours that are not links', async ({ page }) => {
+  test('the pager neighbours are the chapters before and after it in reading order (links when published, text when planned)', async ({ page }) => {
     await page.goto(PATH);
-    const pager = page.locator('.chapter-pager, nav.pager').first();
-    await expect(pager).toContainText('planned');
-    await expect(pager.locator('a')).toHaveCount(0);
+    const around = neighbours(findChapter('I.3')!);
+    const pager = page.locator('nav.chapter-pager');
+    for (const [side, other] of [['previous', around.previous], ['next', around.next]] as const) {
+      const cell = pager.locator(`.pager-${side}`);
+      await expect(cell).toContainText(`${other!.id} · ${other!.chapter.title}`);
+      if (other!.chapter.status === 'available') await expect(cell).toHaveAttribute('href', new RegExp(`chapters/${other!.chapter.slug}/$`));
+      else { await expect(cell).toContainText('planned'); await expect(cell).not.toHaveAttribute('href', /.*/); }
+    }
   });
   test('the foundation demo is still a separate, labelled page linking here', async ({ page }) => {
     await page.goto('foundation/');

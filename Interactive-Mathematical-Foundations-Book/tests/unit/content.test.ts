@@ -45,6 +45,12 @@ describe('chapter files ⇄ curriculum', () => {
     expect([...claimed].sort()).toEqual([...available].sort());
     for (const r of allChapters.filter(r => r.chapter.status === 'available')) expect(files, r.id).toContain(`${r.chapter.slug}.mdx`);
   });
+  it('a chapter\'s title is the curriculum title verbatim (the page title, the map and the pager must agree)', () => {
+    for (const f of files.filter(f => frontmatter(read(f)).kind === 'chapter')) {
+      const meta = frontmatter(read(f));
+      expect(meta.title!.replace(/^"|"$/g, ''), f).toBe(findChapter(meta.curriculumId!)!.chapter.title);
+    }
+  });
   it('the hero emphasis marker is balanced (an even number of asterisks)', () => {
     for (const f of files) expect((frontmatter(read(f)).hero!.match(/\*/g) ?? []).length % 2, f).toBe(0);
   });
@@ -78,6 +84,25 @@ describe('referenced files exist', () => {
     expect(page).toContain('code/python/vector_magnitude_numpy.py?raw');
     expect(readFileSync('oracle/test_vector2_oracle.py', 'utf8')).toContain('vector_magnitude.py');
     expect(readFileSync('oracle/test_vector2_oracle.py', 'utf8')).toContain('vector_magnitude_numpy.py');
+  });
+  it('every Python file a chapter shows (?raw) is executed by an oracle test, so the code on the page is known to run', () => {
+    const oracleTests = readdirSync('oracle').filter(f => /^test_.*\.py$/.test(f)).map(f => readFileSync(join('oracle', f), 'utf8')).join('\n');
+    for (const f of files) {
+      for (const m of read(f).matchAll(/from '([^']+\.py)\?raw'/g)) {
+        const name = m[1]!.split('/').at(-1)!;
+        expect(oracleTests, `${f}: ${name} is never executed by oracle/test_*.py`).toContain(name);
+      }
+    }
+  });
+  it('every oracle (oracle/*_oracle.py) writes a fixture under fixtures/ and a TypeScript parity test reads it', () => {
+    const parity = readdirSync('tests/unit').filter(f => f.includes('parity')).map(f => readFileSync(join('tests/unit', f), 'utf8')).join('\n');
+    for (const f of readdirSync('oracle').filter(f => f.endsWith('_oracle.py') && !f.startsWith('test_'))) {
+      const src = readFileSync(join('oracle', f), 'utf8');
+      const fixtures = [...src.matchAll(/([\w.-]+\.fixtures\.json)/g)].map(m => m[1]!);
+      expect(fixtures.length, `${f} names a fixture`).toBeGreaterThan(0);
+      for (const fx of fixtures) { expect(existsSync(join('fixtures', fx)), `${fx} exists`).toBe(true); expect(parity, `${fx} is read by a parity test`).toContain(fx); }
+      expect(src, `${f} supports --check`).toContain('--check');
+    }
   });
   it('the fixture consumed by the TypeScript parity test is the one the oracle writes', () => {
     expect(existsSync('fixtures/vector2.fixtures.json')).toBe(true);

@@ -79,12 +79,16 @@ describe('curriculum structure', () => {
 });
 
 describe('publication scope guard', () => {
-  it('M3 publishes exactly one chapter, I.3 Vectors, under the slug "vectors"; the other 96 stay planned', () => {
+  it('I.3 Vectors stays the reference chapter under the slug "vectors"; VI.4 stays the flagship', () => {
     const i3 = findChapter('I.3')!;
     expect(i3.chapter.status).toBe('available');
     expect(i3.chapter.slug).toBe('vectors');
     expect(i3.chapter.role).toBe('reference');
-    expect(allChapters.filter(r => r.chapter.status === 'available').map(r => r.id)).toEqual(['I.3']);
-    expect(allChapters.filter(r => r.chapter.status === 'planned')).toHaveLength(96);
+    expect(findChapter('VI.4')!.chapter.role).toBe('flagship');
+  });
+  it('only Part I is published (M5), and the total stays 97', () => {
+    const published = allChapters.filter(r => r.chapter.status === 'available');
+    expect(published.every(r => r.part.numeral === 'I')).toBe(true);
+    expect(published.length + allChapters.filter(r => r.chapter.status === 'planned').length).toBe(97);
   });
 });

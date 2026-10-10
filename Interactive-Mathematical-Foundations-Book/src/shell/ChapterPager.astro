@@ -1,5 +1,5 @@
 ---
-import { neighbours, type ChapterRef } from '../curriculum/queries';
+import { firstAvailable, neighbours, type ChapterRef } from '../curriculum/queries';
 import { href } from './href';
 interface Props { current?: ChapterRef }
 const { current } = Astro.props;
@@ -16,6 +16,6 @@ const cells = [cell(around.previous, 'previous'), cell(around.next, 'next')];
         : <span />)
     : <>
         <a class="pager-previous" href={href('/contents/')}><span class="dir">← Back to</span><span class="what">The map of the book</span></a>
-        <a class="pager-next" href={href('/chapters/vectors/')}><span class="dir">The first chapter →</span><span class="what">I.3 · Vectors: components, magnitude, and direction</span></a>
+        {firstAvailable?.chapter.slug && <a class="pager-next" href={href(`/chapters/${firstAvailable.chapter.slug}/`)}><span class="dir">The first chapter →</span><span class="what">{firstAvailable.id} · {firstAvailable.chapter.title}</span></a>}
       </>}
 </nav>

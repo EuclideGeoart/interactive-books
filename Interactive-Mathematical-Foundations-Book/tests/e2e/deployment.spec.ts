@@ -5,7 +5,10 @@
  */
 import { expect, test, type Page } from '@playwright/test';
 
-const SEED = ['./', 'contents/', 'foundation/', 'chapters/vectors/'];
+import { allChapters } from '../../src/curriculum/queries';
+
+// every published chapter is crawled; the list is derived from the curriculum, never typed here
+const SEED = ['./', 'contents/', 'foundation/', ...allChapters.filter(r => r.chapter.status === 'available').map(r => `chapters/${r.chapter.slug}/`)];
 
 test('the suite really runs against the intended deployment (root vs sub-directory)', async ({ page, baseURL }) => {
   const intended = (process.env.BOOK_TEST_BASE ?? '/').replace(/\/?$/, '/');

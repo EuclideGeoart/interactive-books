@@ -4,10 +4,8 @@
  * A trace is a list of IMMUTABLE frames (deeply frozen, detached copies — see `traceFrom`) holding mathematical states/events — not screenshots, not drawing
  * commands. Navigation selects a frame; it never "undoes" a mutation.
  *
- * Scope in M2: the frame type and a pure cursor. There is deliberately NO timer, autoplay or speed control
- * here: nothing in M2 needs one, and §2.4's full player (play / pause / speed) arrives with the first
- * chapter that does (I.8 summation, II.1 vector addition). A timer-free cursor also has nothing to
- * disable for `prefers-reduced-motion`.
+ * The cursor is pure and timer-free. Autoplay (M5, first needed by I.8 summation) lives in the stepper component
+ * as an opt-in, user-started, pausable timer with the speeds below; a stepper that does not opt in has no timer at all.
  */
 
 export interface TraceFrame<TState, TEvent = never> {
@@ -70,3 +68,9 @@ export const previous = (c: TraceCursor): TraceCursor => seek(c, c.index - 1);
 export const reset = (c: TraceCursor): TraceCursor => seek(c, 0);
 export const atStart = (c: TraceCursor): boolean => c.index === 0;
 export const atEnd = (c: TraceCursor): boolean => c.index === c.count - 1;
+
+/** Playback speeds offered by a stepper that autoplays (plan §2.4), and the pause between frames at 1×. Pure, so it is testable without timers. */
+export const PLAY_SPEEDS = [0.5, 1, 2] as const;
+export type PlaySpeed = (typeof PLAY_SPEEDS)[number];
+export const BASE_FRAME_MS = 1400;
+export const frameDelay = (speed: PlaySpeed): number => Math.round(BASE_FRAME_MS / speed);

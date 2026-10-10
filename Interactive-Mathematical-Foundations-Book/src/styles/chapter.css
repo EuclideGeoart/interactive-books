@@ -33,3 +33,12 @@
   .stage-full[data-stage='placement'] .formula-panel,
   .stage-full[data-stage='direction'] .formula-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* Function-graph primitives (shared by I.5 and I.6). Filled head = included, open head = excluded; the shape differs, never the colour alone. */
+.plane .marker { stroke: var(--role); stroke-width: 2.4; }
+.plane .marker.is-filled { fill: var(--role); }
+.plane .marker.is-open { fill: var(--sheet); }
+
+/* Opt-in autoplay controls of the trace stepper. */
+.trace-speed { display: flex; align-items: center; gap: 8px; min-height: 44px; font: 0.875rem var(--font-ui); color: var(--ink-2); }
+.trace-speed select { min-height: 44px; min-width: 64px; padding: 0 8px; border: 1px solid var(--rule-strong); border-radius: var(--radius); background: var(--sheet); font: 500 0.9375rem var(--font-mono); color: var(--ink); }

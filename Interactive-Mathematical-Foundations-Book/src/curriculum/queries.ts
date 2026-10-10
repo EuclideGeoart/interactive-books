@@ -21,6 +21,9 @@ export const allChapters: readonly ChapterRef[] = parts.flatMap(part => part.cha
 export const findChapter = (id: string): ChapterRef | undefined => allChapters.find(ref => ref.id === id);
 export const findChapterBySlug = (slug: string): ChapterRef | undefined => allChapters.find(ref => ref.chapter.slug === slug);
 
+/** The first published chapter in reading order (where a reader who has not started should begin). */
+export const firstAvailable: ChapterRef | undefined = allChapters.find(ref => ref.chapter.status === 'available');
+
 export const chapterCount = allChapters.length;
 export const availableCount = allChapters.filter(ref => ref.chapter.status === 'available').length;
 
