@@ -1,0 +1,276 @@
+---
+kind: chapter
+curriculumId: I.1
+title: "Scalars, quantities, units, powers and roots"
+hero: "Why does squaring *forget* something?"
+lede: A scalar is one number, a quantity is a number that remembers its unit, and squaring and rooting are two questions about the same square. We follow the units through every calculation, learn why powers obey their rules, and find out exactly what a root is and is not.
+description: Scalars and quantities with units tracked as exponents, integer powers and why their rules hold, nth roots with the cases that have no real answer, exact radicals versus rounded decimals, executable Python, and exercises with feedback.
+---
+import '../../styles/chapters/quantities.css';
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import Xref from '../../shell/Xref.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import SquareStage from '../../lessons/quantities/SquareStage';
+import UnitsStage from '../../lessons/quantities/UnitsStage';
+import PowersStage from '../../lessons/quantities/PowersStage';
+import RootsStage from '../../lessons/quantities/RootsStage';
+import WorkedExampleStage from '../../lessons/quantities/WorkedExampleStage';
+import Exercise from '../../lessons/quantities/Exercise';
+import NumericsTable from '../../lessons/quantities/NumericsTable.astro';
+import exactRoots from '../../../code/python/quantity_exact_roots.py?raw';
+import unitsCode from '../../../code/python/quantity_units.py?raw';
+import pitfalls from '../../../code/python/quantity_float_pitfalls.py?raw';
+
+<Stage caption="A square with side q has area q². Drag the corner on the left, use the arrow keys on it, or type a side. Switch to the area and the stage asks the reverse question: which side has this area?">
+  <SquareStage client:load />
+</Stage>
+
+Try it before reading on. Put the side at $3$, then at $-3$, and compare the areas. Then switch to *the area*, ask for area $9$, and look at how many sides the stage reports. Then ask for area $2$ and for area $-4$. By the end of the chapter you will know why squaring throws information away, why the question "which side has area $9$?" has two answers while the symbol $\sqrt{9}$ has only one, why $\sqrt 2$ is written exactly and not as a decimal, and what a unit does to every one of these calculations.
+
+## Intuition: a number and what it measures
+
+A **scalar** is a single real number: $3$, $-1.5$, $\tfrac{7}{4}$, $\sqrt 2$. The word is used to separate one number from the lists of numbers (vectors) that this Part builds up to in <Xref to="/chapters/vectors/">the Vectors chapter</Xref>. In the real world a number is almost never alone. It counts something, or measures it: $3$ *metres*, $12$ *seconds*, $5$ *kilograms*. A number together with what it measures is a **quantity**.
+
+The unit is not decoration. Three metres and two seconds cannot be added: there is no common thing to count in, so the sum has no meaning, however easy the arithmetic looks. But they can be *multiplied* or *divided*, and the result has a unit of its own: three metres by two metres is an area, six square metres; twelve metres in four seconds is a speed, three metres per second. Following the unit through the arithmetic is the oldest sanity check in engineering, and it is also the reason this chapter puts units, powers and roots in the same place. A square's side is a length. Its area is a length *squared*. Asking for the side from the area is a *root*, and a root of an area is a length again.
+
+## Definition: quantity, power and root
+
+**Quantity.** A quantity is a real number (its **value**) together with a **unit**. We write a unit as a product of three base units, metre (m), second (s) and kilogram (kg), each raised to a whole-number exponent:
+
+$$
+\text{unit}=\mathrm{m}^{a}\cdot\mathrm{s}^{b}\cdot\mathrm{kg}^{c},\qquad (a,b,c)\in\mathbb Z^{3}.
+$$
+
+The triple $(a,b,c)$ is the **exponent vector** of the unit, and it is the whole of the unit as far as arithmetic is concerned: two units are the same exactly when their exponent vectors are equal. A plain number has the vector $(0,0,0)$ and is called **dimensionless**. A speed in metres per second has $(1,-1,0)$ and an area in square metres has $(2,0,0)$.
+
+**Power.** For a real number $b$ and a positive whole number $k$, the **power** $b^{k}$ is $b$ multiplied by itself $k$ times. The exponent $0$ and the negative exponents are defined for $b\neq 0$ by
+
+$$
+b^{0}=1,\qquad b^{-k}=\frac{1}{b^{k}}.
+$$
+
+This book leaves $0^{0}$ and every negative power of $0$ *undefined*: $0^{-1}$ would be $1/0$. (Some programs define $0^0=1$ as a convenience for polynomials. That is a convention for a particular notation, not a fact about numbers, and we do not use it.)
+
+**Root.** Let $n\ge 2$ be a whole number and $A$ a real number. A real number $x$ is an **$n$th root** of $A$ when $x^{n}=A$. How many there are depends on the parity of $n$ and the sign of $A$:
+
+- **$n$ odd.** There is exactly one real root, for every $A$, and it has the sign of $A$. We write it $\sqrt[n]{A}$. For example $\sqrt[3]{-8}=-2$.
+- **$n$ even and $A>0$.** There are exactly two real roots, $r$ and $-r$. The symbol $\sqrt[n]{A}$ means the **non-negative** one, $r$. For example $\sqrt{9}=3$, while the *equation* $x^{2}=9$ has the two solutions $3$ and $-3$.
+- **$A=0$.** The only root is $0$.
+- **$n$ even and $A<0$.** There is no real root, because an even power is never negative. $\sqrt{-4}$ and $\sqrt[4]{-16}$ are undefined among the real numbers.
+
+The reasons are short. For odd $n$ the map $x\mapsto x^{n}$ is strictly increasing on all of $\mathbb R$ and takes every real value, so each $A$ is reached exactly once. For even $n$ it is strictly increasing on $[0,\infty)$, takes every non-negative value there, and satisfies $(-x)^{n}=x^{n}$, which creates the second root and keeps every value non-negative.
+
+The decision that the symbol $\sqrt{\ \ }$ means only the non-negative root is what makes it a *function*: one input, one output. It has a consequence that surprises most people at first:
+
+$$
+\sqrt{q^{2}}=\lvert q\rvert\quad\text{for every real }q,\qquad \bigl(\sqrt{A}\bigr)^{2}=A\quad\text{for }A\ge 0\text{ only.}
+$$
+
+Squaring and then rooting returns the *size* of the number but not its sign, because squaring maps $q$ and $-q$ to the same area. That is the first thing the stage above shows.
+
+## Squares, roots and the sign you lose
+
+Look again at the hero stage with side $-3$. The square has area $9$, drawn exactly as for side $3$; the picture and the number $9$ do not remember which sign you started with. Now ask the inverse question from the area, and the stage reports two sides, $+3$ and $-3$ (the equation $x^{2}=9$), and one root, $\sqrt 9=3$ (the function). A length cannot be negative, so for a physical square only the root matters. For an equation, both solutions matter. The stage keeps the two ideas apart in its verdict line.
+
+Two further facts the stage makes visible:
+
+- **Exact versus approximate.** The area $9$ has the side $\sqrt 9=3$ *exactly*. The area $2$ has the side $\sqrt 2$, which is irrational: its decimal expansion never ends and never repeats, so any decimal such as $1.414214$ is a **rounding**. The book writes $=$ for the exact statement and $\approx$ for a rounded decimal, and never swaps them. The area $12$ gives $\sqrt{12}=2\sqrt3\approx 3.464102$: the exact form takes the square factor out of the root.
+- **Units.** If the side is $3\ \mathrm m$ then the area is $9\ \mathrm m^{2}$, and the root of $9\ \mathrm m^{2}$ is $3\ \mathrm m$. Squaring doubles the exponent of the unit; rooting halves it.
+
+Why is $\sqrt2$ irrational? Suppose $\sqrt2=p/q$ with whole numbers $p,q$ that have no common factor. Then $p^{2}=2q^{2}$, so $p^{2}$ is even, so $p$ is even, say $p=2r$. Then $4r^{2}=2q^{2}$, so $q^{2}=2r^{2}$ and $q$ is even too. Both are even, which contradicts "no common factor". So no such fraction exists. The same idea shows that $\sqrt n$ is irrational unless $n$ is a perfect square; for a fraction $a/b$ in lowest terms the square root is rational exactly when both $a$ and $b$ are perfect squares.
+
+Taking a square factor out of a root rests on one line. For $a\ge0$ and $b\ge0$, the number $a\sqrt b$ is non-negative and its square is $a^{2}b$, so $\sqrt{a^{2}b}=a\sqrt b$. Repeating this with the largest square factor gives the **simplest radical form**: $\sqrt{72}=\sqrt{36\cdot 2}=6\sqrt 2$. Two more habits keep radicals in one standard form. A root in a denominator is moved to the top ($\sqrt{1/2}=\sqrt2/2$), and the fraction is reduced to lowest terms ($\sqrt{8/9}=2\sqrt2/3$).
+
+## Units are exponents
+
+A quantity is a number *and* an exponent vector, and arithmetic acts on both at once. This stage lets you choose the operation, the two numbers and their units, and shows the exponent vectors of both inputs and of the result.
+
+<Stage caption="Choose an operation, two numbers and their units. The table shows the exponent of each base unit; the verdict says which rule applied, or why there is no result.">
+  <UnitsStage client:load />
+</Stage>
+
+The rules are the whole of dimensional analysis:
+
+| Operation | Value | Exponent vector | Defined when |
+| --- | --- | --- | --- |
+| $a\times b$ | $a\cdot b$ | the vectors **add** | always |
+| $a\div b$ | $a/b$ | the vectors **subtract** | $b\neq0$ |
+| $a+b$, $a-b$ | $a\pm b$ | unchanged | the vectors are **equal** |
+| $a^{2}$ | $a\cdot a$ | doubled | always |
+| $\sqrt a$ | $\sqrt{a}$ | **halved** | $a\ge0$ and every exponent even |
+
+The reason for each is small. Addition is the distributive law: $3\ \mathrm m+2\ \mathrm m=(3+2)\ \mathrm m$, which only works because the unit is a common factor. For different units there is no common factor to pull out, so there is nothing to compute. Multiplication simply multiplies the numbers and the units separately, and the units multiply as powers: $\mathrm m^{a}\cdot\mathrm m^{b}=\mathrm m^{a+b}$ (the product rule for powers, which the next section explains). A square root needs the exponents halved, and a whole-number exponent vector has no way to represent a half: $\sqrt{9\ \mathrm m^{2}}=3\ \mathrm m$, but $\sqrt{9\ \mathrm m}$ would need $\mathrm m^{1/2}$, which this model does not have, so it is refused.
+
+Dividing two quantities of the *same* kind subtracts equal vectors and gives the zero vector: $6\ \mathrm m\div3\ \mathrm m=2$, a plain number. That is why "how many times longer" has no unit.
+
+<Callout kind="scope" title="What this unit model covers">
+The model has three base units: metre, second and kilogram. A different unit of the same kind (a kilometre, an hour) is converted into the base unit first, by multiplying by a plain number, $1\ \mathrm{km}=1000\ \mathrm m$. Angles, temperatures on offset scales and currency are outside this chapter. The exponent bookkeeping is the same in every system; the base units are what change.
+</Callout>
+
+## Powers and their rules
+
+The previous section used the fact that exponents add when quantities multiply. Here is why powers behave that way, and what the exponents $0$ and $-1$ must mean.
+
+For positive whole numbers, $b^{m}\cdot b^{n}$ is $m$ factors of $b$ followed by $n$ more, which is $m+n$ factors. So $b^{m}\cdot b^{n}=b^{m+n}$. Likewise $(b^{m})^{n}$ is $n$ groups of $m$ factors, so $(b^{m})^{n}=b^{mn}$.
+
+Extending the exponents to $0$ and below is not a free choice: we ask that the product rule *keep working*. Step down the ladder from $b^{3}$, dividing by $b$ at each step: $b^{3},b^{2},b^{1}$, and the next rung must be $b^{1}/b=1$, so $b^{0}=1$. One further step gives $b^{-1}=1/b$. The only definitions that keep $b^{m}\cdot b^{n}=b^{m+n}$ true are
+
+$$
+b^{0}=1\qquad\text{and}\qquad b^{-k}=\frac{1}{b^{k}}\qquad(b\neq0).
+$$
+
+Explore the ladder and the four rules on the stage. Every row is computed in exact arithmetic, and each rule shows its two sides.
+
+<Stage caption="Choose a base b and two exponents m and n. The ladder lists powers of b; the four rule cards check each rule in exact arithmetic and report holds, makes no claim, or fails.">
+  <PowersStage client:load />
+</Stage>
+
+Notice three things.
+
+1. **The rules never fail.** For every base and every pair of exponents where both sides exist, both sides are equal. You will not see a "fails" card for any input the stage accepts.
+2. **A rule can be silent.** For base $0$ with $m=-1$, the left side of $0^{-1}\cdot0^{1}=0^{0}$ contains $0^{-1}$, which does not exist. The rule is not false there, because there are not two numbers to compare. It makes no claim, and the stage says so. Saying "the rule is false for $0$" and saying "the rule does not apply to $0$" are different statements, and only the second is correct.
+3. **Signs follow parity.** An odd power keeps the sign of the base ($(-2)^{3}=-8$), an even power erases it ($(-2)^{2}=4$). A negative exponent never makes a number negative; it makes it a reciprocal.
+
+Two more consequences. The quotient rule follows from the two above: $b^{m}/b^{n}=b^{m}\cdot b^{-n}=b^{m-n}$. And roots are powers in disguise: $x^{n}=A$ asks for the base whose $n$th power is $A$, and the power-of-power rule says that taking the exponent $1/n$ undoes the exponent $n$, since $(A^{1/n})^{n}=A^{1}$. This book defines the exponent $1/n$ only for $A\ge0$, where $A^{1/n}=\sqrt[n]{A}$ (the non-negative root). That restriction matters in code, as the reference section below shows.
+
+## Roots as the reverse question
+
+The equation $x^{n}=A$ has a picture. Draw the curve $y=x^{n}$ and the horizontal line $y=A$. A real solution is a point where they meet, and its $x$-coordinate is the root.
+
+<Stage caption="Drag the point on the y-axis to move the level A; choose the index n. The curve y = xⁿ depends only on n and does not move when you drag A. The markers show where the line meets it.">
+  <RootsStage client:load />
+</Stage>
+
+The graph explains every case in the definition at once. For $n=3$ the curve climbs through the whole plane, so every level meets it exactly once. For $n=2$ and $n=4$ the curve is a bowl that never goes below the $x$-axis: a level above the axis meets it twice, at $r$ and $-r$; the level $0$ touches it once; a level below the axis misses it entirely, which is the picture of "no real root". Moving the level $A$ never changes the curve; changing the index $n$ does. If you see the curve move while you drag the level, something is wrong, and the page has a test for exactly that.
+
+The round trip is the last check the stage makes. For every $A$ that has a root, $\bigl(\sqrt[n]{A}\bigr)^{n}=A$. In the other direction, $\sqrt[n]{x^{n}}=x$ only for odd $n$; for even $n$ it is $\lvert x\rvert$, the sign loss again.
+
+## Worked examples
+
+Exact roots follow one method, and it is worth seeing as a method, not as a trick. For a non-negative rational number $p/q$ in lowest terms and index $n$:
+
+1. **Rationalise.** Multiply top and bottom by $q^{\,n-1}$, so that the whole number $N=p\,q^{\,n-1}$ is under the root and $q$ is outside it.
+2. **Factor** $N$ into primes.
+3. **Take out groups** of $n$ equal prime factors: each group leaves the root as one factor.
+4. **Cancel** any factor shared with the denominator.
+5. **Check** by raising the answer to the power $n$.
+
+For a negative number with an odd index, set the sign aside, root the positive number, and put the sign back. Step through four cases below. The last asks for the side of a square of area $2.25\ \mathrm{m}^{2}$, so the unit is part of the work.
+
+<Stage caption="Choose a root and step through the work. Going back selects an earlier step; nothing is undone.">
+  <WorkedExampleStage client:load />
+</Stage>
+
+## Executable reference code
+
+The Python below is stored in the repository and executed by the test suite, so what you read is known to run. First the exact arithmetic of roots with whole numbers and fractions, using the same method as the worked examples.
+
+<CodeFile source={exactRoots} file="code/python/quantity_exact_roots.py" note="exact square roots, no decimals" />
+
+Then units as exponent tuples, with the refusals written out as errors.
+
+<CodeFile source={unitsCode} file="code/python/quantity_units.py" note="quantities with units" />
+
+Finally, what Python does with floats, negative bases and zero. This is where the "exact" of the mathematics and the "rounded" of the machine meet.
+
+<CodeFile source={pitfalls} file="code/python/quantity_float_pitfalls.py" note="floats, complex surprises, zero" />
+
+## Explore: change the parameters
+
+Use the stages as a laboratory. These questions have definite answers; check them against the stage.
+
+- On the square stage, switch to the area and step the area slider from $1$ to $36$. For which areas is the side a whole number? (There are six.) For which of the presets is the side irrational?
+- On the square stage, type the side $0.1$. The area is exactly $0.01$. What does that tell you about the number of decimal places in a square?
+- On the units stage, find an operation on two *different* units that is accepted, and one that is refused. What distinguishes them?
+- On the units stage, which unit pairs make $\sqrt{a}$ accepted? Try $\mathrm m^{2}$, $\mathrm{m/s}$ and $\mathrm{m^{2}/s^{2}}$.
+- On the powers stage, set the base to $0.5$, $m=2$, $n=-3$. Which power is bigger than $1$, and why does a negative exponent do that for a base less than $1$?
+- On the roots stage, set $n=4$ and drag the level from $-8$ up through $0$. At which level does the number of solutions change, and how does it change? Repeat for $n=3$.
+
+## Common mistakes
+
+<Callout kind="misconception" title="The root undoes the square">
+$\sqrt{(-5)^{2}}=\sqrt{25}=5$, not $-5$. Squaring erased the sign, and the root function returns only the non-negative root. In general $\sqrt{q^{2}}=\lvert q\rvert$.
+</Callout>
+
+<Callout kind="misconception" title="The root of a sum is the sum of the roots">
+$\sqrt{9+16}=\sqrt{25}=5$, but $\sqrt9+\sqrt{16}=7$. Roots split over *products* ($\sqrt{ab}=\sqrt a\sqrt b$ for non-negative $a,b$), never over sums. The same mistake in another costume: $(a+b)^{2}\neq a^{2}+b^{2}$, because $(3+4)^{2}=49$ while $3^{2}+4^{2}=25$. The missing piece is $2ab$.
+</Callout>
+
+<Callout kind="misconception" title="Mixing units in a sum, or dropping them in a ratio">
+$3\ \mathrm m+2\ \mathrm s$ is not $5$ of anything. And $6\ \mathrm m\div3\ \mathrm m$ is $2$, with no unit, not $2\ \mathrm m$: the units cancelled.
+</Callout>
+
+<Callout kind="misconception" title="A negative exponent makes the number negative">
+$2^{-3}=\dfrac{1}{2^{3}}=\dfrac18$. It is positive. The minus sign in the exponent means "reciprocal".
+</Callout>
+
+<Callout kind="misconception" title="Minus sign and exponent: −2² versus (−2)²">
+Powers bind tighter than a leading minus sign. $-2^{2}=-(2^{2})=-4$, while $(-2)^{2}=4$. Programming languages follow the same convention: `-2**2` is `-4` in Python.
+</Callout>
+
+<Callout kind="misconception" title="A rule that does not apply is false">
+$0^{-1}\cdot 0^{1}=0^{0}$ is not a false equation. Its left side does not exist, so there is nothing to compare. A rule about powers makes a claim only where every power in it is defined.
+</Callout>
+
+## Numerical considerations
+
+Everything above is exact. A program, however, stores a real number in a fixed number of bits, and most numbers have to be rounded to fit. A double (Python's `float`) stores a binary fraction, so $0.1$ is not stored exactly, and operations on rounded numbers can break identities that hold exactly. The table puts the exact value from the model next to what a double holds.
+
+<NumericsTable />
+
+<Callout kind="numerical">
+Never test `math.sqrt(2) ** 2 == 2`. It is `False`, because the root was rounded before it was squared. Compare with a tolerance (`math.isclose`), or keep the exact value, such as a `Fraction` or the pair $(2,\,3)$ meaning $2\sqrt3$, until you must print a decimal. For *whole numbers*, `math.isqrt(n)` gives the exact integer square root and `3 ** 100` gives the exact integer; a float would lose the low digits.
+</Callout>
+
+Three more cautions. Squaring a large double can overflow: $10^{200}$ times itself is `inf`, even though its square root, $10^{200}$, is perfectly representable (the length of a vector gets the same warning in <Xref to="/chapters/vectors/">the vectors chapter</Xref>). `math.sqrt` accepts real numbers only and raises `ValueError` for a negative argument, but the operator `**` with a fractional exponent on a negative base quietly returns a *complex* number: `(-8) ** (1/3)` is about $1+1.732\,i$, not $-2$. To get a real cube root, root the size and restore the sign, or use `math.cbrt`. And in floating point, a very small positive number raised to a high power underflows to exactly `0.0`: `0.5 ** 1100` is `0.0`, so a loop that multiplies many probabilities should add logarithms instead.
+
+## Connections to engineering and machine learning
+
+- **Unit errors are real failures.** In 1999 the Mars Climate Orbiter was lost after one team's software produced impulse data in pound-force seconds where another expected newton seconds. A unit tracked as part of the value turns this class of error into a refusal like the ones on the units stage; libraries such as `pint` do exactly this in Python.
+- **Features with different units.** A data point with a height in metres and a duration in seconds is a vector whose two numbers cannot be compared. Distances between such points depend on the choice of units unless the features are first made dimensionless: subtracting the mean and dividing by the standard deviation (which has the same unit as the feature) is the standard way.
+- **Errors and spread.** Mean squared error is measured in the *square* of the target's unit; the root-mean-square error, its square root, is in the target's own unit, which is why RMSE is the one people read. A standard deviation is the square root of a variance for the same reason.
+- **Exponents in practice.** Geometric decay, such as a learning rate halved at each step ($0.5^{k}$), is a power with a negative-exponent mirror image in growth. Floating-point underflow at large $k$ is the numerical caution above.
+- **Looking ahead.** Squares and square roots return in <Xref to="/chapters/vectors/">vectors</Xref>, where the length of a vector is the root of a sum of squares and Pythagoras' areas are literal.
+
+## Exercises
+
+Answer each question and press **Check**. A wrong answer tells you *which* mistake it looks like. After one attempt you may open a worked solution.
+
+<Exercise client:load id="sqrt-of-square" />
+
+<Exercise client:load id="simplify-72" />
+
+<Exercise client:load id="construct-side" />
+
+<Exercise client:load id="units-meaning" />
+
+<Exercise client:load id="speed-units" />
+
+<Exercise client:load id="negative-power" />
+
+<Exercise client:load id="power-of-power" />
+
+<Exercise client:load id="zero-base" />
+
+<Exercise client:load id="odd-root" />
+
+<Exercise client:load id="even-root-count" />
+
+<Exercise client:load id="python-cube-root" />
+
+## Summary and checkpoints
+
+- A scalar is a number. A quantity is a number with a unit, and the unit is an **exponent vector** of base units that multiplication adds, division subtracts, a square root halves, and addition requires to be equal.
+- A power $b^{k}$ counts factors; $b^{0}=1$ and $b^{-k}=1/b^{k}$ are forced if $b^{m}b^{n}=b^{m+n}$ is to keep holding. $0^{0}$ and negative powers of $0$ are undefined, and a rule is *silent*, not false, where a side is undefined.
+- An $n$th root solves $x^{n}=A$. Odd $n$: always exactly one real root. Even $n$: two roots $\pm r$ for $A>0$, one for $A=0$, none for $A<0$. The symbol $\sqrt[n]{A}$ is the non-negative root, so $\sqrt{q^{2}}=\lvert q\rvert$.
+- Exact values (such as $\sqrt{72}=6\sqrt2$) are written with $=$. A decimal is a rounding and is written with $\approx$.
+- In code: keep exact values exact, compare floats with a tolerance, remember that `**` on a negative base can return a complex number.
+
+**Checkpoints.** You are ready to move on when you can, without looking:
+
+1. Say why $\sqrt{(-5)^{2}}$ is $5$ and not $-5$, and how many real solutions $x^{2}=25$ has.
+2. Simplify $\sqrt{72}$ and say whether the answer is exact.
+3. Explain why $3\ \mathrm m+2\ \mathrm s$ is undefined, but $3\ \mathrm m\times2\ \mathrm s$ is not.
+4. Compute $2^{-3}$ and $(2^{3})^{2}$ and name the rule each uses.
+5. Say, with one picture, why $x^{4}=-16$ has no real solution and $x^{3}=-8$ has exactly one.

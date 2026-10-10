@@ -53,7 +53,7 @@ export const parts: readonly Part[] = [
     purpose: "establish the notation and mental objects used by all later Parts without turning the opening of the book into a formal mathematics survey.",
     exitCondition: "a learner can read and manipulate elementary expressions, equations and core functions, and interpret the symbols used in the rest of Book II without needing an ML background.",
     chapters: [
-      planned(1, "Scalars, quantities, units, powers and roots"),
+      available(1, "Scalars, quantities, units, powers and roots", "quantities"),
       planned(2, "Coordinates and points"),
       available(3, "Vectors: components, magnitude, and direction", "vectors", "reference"),
       planned(4, "Algebraic expressions, equations and inequalities"),

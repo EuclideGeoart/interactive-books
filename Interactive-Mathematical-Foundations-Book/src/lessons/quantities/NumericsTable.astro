@@ -1,0 +1,41 @@
+---
+/**
+ * Static table: the exact value (from the rational/radical model, BigInt) next to the IEEE double a program computes, at build time.
+ * The "exact" column is the model's; the "double" column is JavaScript's number type, which is the same binary64 format Python's float uses.
+ */
+import { rationalForm } from '../../math/quantity/exactform';
+import { int, parseDecimal, power, toNumber, type Rational } from '../../math/quantity/rational';
+import { rootOf, rootPower } from '../../math/quantity/root';
+
+const exactPower = (base: Rational, k: number): Rational => {
+  const p = power(base, k);
+  if (p.kind !== 'value') throw new Error('defined');
+  return p.value;
+};
+const squareOfRoot = (n: number): Rational => {
+  const r = rootOf(int(n), 2);
+  if (r.kind !== 'exact') throw new Error('exact');
+  return rootPower(r.root);
+};
+const text = (r: Rational): string => (r.den === 1n ? r.num.toString() : rationalForm(r).text);
+
+interface Row { expr: string; exact: Rational; double: number; code: string }
+const rows: Row[] = [
+  { expr: '0.1²', code: '0.1**2', exact: exactPower(parseDecimal('0.1')!, 2), double: 0.1 ** 2 },
+  { expr: '(√2)²', code: 'math.sqrt(2)**2', exact: squareOfRoot(2), double: Math.sqrt(2) ** 2 },
+  { expr: '(√3)²', code: 'math.sqrt(3)**2', exact: squareOfRoot(3), double: Math.sqrt(3) ** 2 },
+  { expr: '(√4)²', code: 'math.sqrt(4)**2', exact: squareOfRoot(4), double: Math.sqrt(4) ** 2 },
+  { expr: '3¹⁰⁰', code: '3.0**100', exact: exactPower(int(3), 100), double: 3 ** 100 },
+];
+const cells = rows.map(r => {
+  const exactText = text(r.exact);
+  const same = Number.isFinite(r.double) && r.double === toNumber(r.exact) && Number.isInteger(r.double) === (r.exact.den === 1n) && (r.exact.den !== 1n || r.exact.num.toString() === BigInt(r.double).toString());
+  return { ...r, exactText, doubleText: String(r.double), same };
+});
+---
+<div class="table-scroll" data-scrollable="Exact values versus doubles, scrollable">
+  <table class="num-table" data-table="exact-vs-double">
+    <thead><tr><th>expression</th><th>Python</th><th>exact value</th><th>double (what the program holds)</th><th>agree?</th></tr></thead>
+    <tbody>{cells.map(c => <tr data-agree={String(c.same)}><td>{c.expr}</td><td><code>{c.code}</code></td><td>{c.exactText}</td><td>{c.doubleText}</td><td>{c.same ? 'yes' : '⚠ no'}</td></tr>)}</tbody>
+  </table>
+</div>

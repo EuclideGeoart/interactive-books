@@ -1,0 +1,72 @@
+/* I.1 Scalars, quantities, units, powers and roots: chapter-specific rules only. Everything else comes from the shared stage/chapter styles. */
+
+/* ───────── hero stage: the two choice groups sit side by side when there is room, and never overflow */
+.stage-options { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: flex-start; }
+.stage-options .segmented { grid-column: auto; }
+
+/* The shared stage sizes its formula columns for three equations; these stages show one or two (the units formulas are long, so they stack). */
+@container (min-width: 700px) {
+  .stage-full[data-stage='square'] .formula-panel,
+  .stage-full[data-stage='roots'] .formula-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stage-full[data-stage='units'] .formula-panel { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ───────── controls that are not ParameterInputs: both are held to the 44 px target */
+.slider-field { display: grid; gap: 4px; min-width: 0; }
+.slider-field label, .unit-field label { font: 500 0.875rem var(--font-ui); color: var(--ink-2); }
+.slider-field input[type='range'] { width: 100%; min-height: 44px; margin: 0; accent-color: var(--c-primary); background: transparent; }
+.unit-field { display: grid; gap: 4px; min-width: 0; }
+.unit-field select {
+  min-height: 44px; width: 100%; max-width: 100%; padding: 0 10px;
+  border: 1px solid var(--rule-strong); border-radius: var(--radius); background: var(--paper); color: var(--ink);
+  font: 500 1rem var(--font-mono);
+}
+.quantity-controls { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; min-width: 0; padding: 12px; border: 1px solid var(--rule); border-radius: var(--radius); background: color-mix(in srgb, var(--sheet-2) 55%, transparent); }
+.units-controls { grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); }
+
+/* ───────── the two small tables inside the stages (exponent vectors, powers ladder) */
+.exponent-figure, .ladder-figure { margin: 0; min-width: 0; }
+.exponent-figure figcaption, .ladder-figure figcaption { margin-top: 8px; font: 0.8438rem/1.45 var(--font-ui); color: var(--ink-2); }
+.exponent-table, .ladder {
+  width: 100%; table-layout: fixed; border-collapse: collapse; background: var(--sheet);
+  border: 1px solid var(--rule); font: 0.9063rem/1.35 var(--font-ui); font-variant-numeric: tabular-nums;
+}
+.exponent-table th, .exponent-table td, .ladder th, .ladder td { padding: 7px 6px; border-bottom: 1px solid var(--rule); text-align: center; overflow-wrap: anywhere; }
+.exponent-table thead th, .ladder thead th { background: var(--sheet-2); border-bottom: 2px solid var(--ink); font: 600 0.75rem/1.3 var(--font-ui); color: var(--ink-2); }
+.exponent-table tbody th, .ladder tbody th { text-align: left; font: 560 0.875rem/1.3 var(--font-ui); }
+.exponent-table td[data-axis] { font-family: var(--font-mono); }
+.exponent-table .unit-cell { font-family: var(--font-mono); color: var(--c-derived-text); }
+.exponent-table tr[data-defined='false'] td { color: var(--ink-3); }
+.exponent-table tr[data-row='result'] { background: color-mix(in srgb, var(--c-derived) 8%, transparent); }
+.ladder td, .ladder th[scope='row'] { text-align: left; }
+.ladder thead th:first-child { width: 34%; text-align: left; }
+.ladder thead th:nth-child(2) { text-align: left; }
+.ladder thead th:last-child { width: 4.6em; }
+.ladder .mark { width: 4.2em; text-align: center; font: 600 0.8125rem var(--font-mono); color: var(--c-primary-text); }
+.ladder tr[data-defined='false'] td { color: var(--c-caution-text); }
+.ladder tr[data-marked] { background: color-mix(in srgb, var(--c-primary) 9%, transparent); }
+.ladder tr[data-marked='mn'] { background: color-mix(in srgb, var(--c-primary) 14%, transparent); }
+.ladder .katex { font-size: 1em; }
+
+/* ───────── the four rules */
+.rule-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+.rule { min-width: 0; padding: 10px 12px; border: 1px solid var(--rule-strong); border-left-width: 4px; border-radius: var(--radius); background: var(--sheet); }
+.rule[data-status='holds'] { border-left-color: var(--c-y); }
+.rule[data-status='no-claim'] { border-left-color: var(--c-caution); border-left-style: dashed; }
+.rule[data-status='fails'] { border-left-color: var(--c-primary); }
+.rule-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; font: 0.9375rem/1.35 var(--font-ui); }
+.rule-head strong { font-weight: 650; }
+.rule-shape { color: var(--ink-2); }
+.rule-status { margin-left: auto; font: 600 0.8125rem var(--font-ui); letter-spacing: 0.02em; }
+.rule[data-status='holds'] .rule-status { color: var(--c-y-text); }
+.rule[data-status='no-claim'] .rule-status { color: var(--c-caution-text); }
+.rule[data-status='fails'] .rule-status { color: var(--c-primary-text); }
+.rule-note { margin: 4px 0 0; font: 0.875rem/1.45 var(--font-ui); color: var(--ink-2); }
+
+/* ───────── worked-example trace caption */
+.trace-caption { margin-top: 6px; }
+
+/* ───────── chapter tables built at build time */
+.table-scroll .num-table td:first-child { font-family: var(--font-mono); font-weight: 500; }
+.num-table code { white-space: nowrap; }
+.num-table td:nth-child(3), .num-table td:nth-child(4) { font-family: var(--font-mono); font-size: 0.875rem; }
