@@ -29,7 +29,7 @@ export const ORIGIN = { x: 0, y: 0 };
 export interface CompletionHandle { id: string; label: string; at: Point; xField: string; yField: string; role: Role }
 export interface CompletionScene {
   title: string; description: string; window: WorldWindow;
-  arrows: { name: string; from: Point; to: Point; role: Role; label: string }[];
+  arrows: { name: string; from: Point; to: Point; role: Role; label: string; labelDx?: number }[];
   lines: { name: string; from: Point; to: Point; role: Role; dashed?: boolean; width?: number }[];
   polygons: { name: string; corners: readonly Point[]; role: Role }[];
   handles: CompletionHandle[];

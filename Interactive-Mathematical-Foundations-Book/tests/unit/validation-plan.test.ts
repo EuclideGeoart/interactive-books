@@ -53,6 +53,13 @@ describe('conservative change-scoped validation', () => {
     }
     for(const file of ['src/math/linear-algebra/svd-deleted.ts','src/math/new-spectral-family.ts'])expect(makePlan({files:[file],chapters:['II.19']}).commands.some(c=>c.gate==='complete root browser')).toBe(true);
   });
+  it('known publication shell captures use shared coverage while unknown screenshots retain the full fallback',()=>{
+    for(const name of ['desktop-home-fold.png','desktop-home-fold-dark.png','mobile-contents-fold.png','mobile-map.png']){
+      const p=makePlan({files:[`tests/e2e/__screenshots__/visual.spec.ts/${name}`],chapters:['II.19']});expect(p.sharedExpansion).toBe(true);expect(p.completeMath).toBe(true);expect(p.commands.some(c=>c.gate==='authoritative root visuals')).toBe(true);expect(p.commands.some(c=>c.gate==='complete root browser')).toBe(false);expect(p.interactionChapters).toEqual(['II.19']);
+    }
+    expect(makePlan({files:['tests/e2e/__screenshots__/visual.spec.ts/mobile-unknown-new-case.png']}).commands.some(c=>c.gate==='complete root browser')).toBe(true);
+    const exercises=makePlan({files:['tests/unit/completion-exercises.test.ts'],chapters:['II.19']});expect(exercises.sharedExpansion).toBe(true);expect(exercises.commands.some(c=>c.gate==='complete root browser')).toBe(false);expect(exercises.units).toContain('tests/unit/completion-exercises.test.ts');
+  });
   it('limits a known affine screenshot change and expands unresolved/deleted inputs', () => {
     expect(makePlan({ files: ['tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-matrix-composition-affine.png'] }).chapters).toEqual(['II.10']);
     expect(makePlan({ files: ['src/math/quantity/deleted-helper.ts'] }).conservativeExpansion).toBe(true);

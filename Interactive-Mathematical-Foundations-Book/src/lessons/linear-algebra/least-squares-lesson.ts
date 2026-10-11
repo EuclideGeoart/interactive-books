@@ -31,6 +31,7 @@ export function deriveLeastSquares(s: LeastSquaresState): CompletionDerived {
     }
   } else {
     arrow(plot,'data',asPoint(b),'primary','b'); arrow(plot,'projected',asPoint(d.projected),'derived','p');
+    plot.arrows[0]!.labelDx=12;
     arrow(plot,'residual',asPoint(b),'caution','r',asPoint(d.projected));
     for (const [i,u] of d.gs.orthogonal.entries()) arrow(plot,`orthogonal-${i}`,asPoint(u),i?'y':'x',`u${i+1}`);
     plot.handles.push({id:'first',label:'first basis direction',at:{x:s.x1,y:s.y1},xField:'x1',yField:'y1',role:'x'},

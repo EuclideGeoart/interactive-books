@@ -1,5 +1,6 @@
 import { eliminate, inverseExact, solveExact } from '../../math/linear-algebra/elimination';
 import { exactVector, matrix, multiplyVector, type Matrix } from '../../math/linear-algebra/matrices';
+import { normalizeNumeric } from '../../math/linear-algebra/vectors';
 import { isZero, toNumber } from '../../math/quantity/rational';
 import { traceFrom } from '../../platform/trace';
 import { asPoint, arrow, exactDesc, mtex, mtext, row, scene, spec, undefinedDesc, vtex, vtext, rtex, type CompletionDerived, type CompletionFrame } from './completion-view';
@@ -84,12 +85,16 @@ export function deriveElimination(chapter: EliminationChapter, s: EliminationSta
   }
   if (chapter === 'rank' && a.rows === 2) {
     const col = (j: number) => asPoint(a.values.map(values => values[j]!));
-    const plot = scene('Image of a bounded input square', verdict);
+    const plot = scene('Image of a bounded input square', `${verdict} A null-input arrow, when present, is a normalized approximate input direction, not an output in the image space.`, a.cols===2?Math.max(6,Math.abs(s.a11)+Math.abs(s.a12)+1,Math.abs(s.a21)+Math.abs(s.a22)+1):6);
     const apply = (x: number, y: number) => ({ x: x * s.a11 + y * s.a12, y: x * s.a21 + y * s.a22 });
     if (a.cols === 2) plot.polygons.push({ name: 'image-square', role: 'derived', corners: [[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([x, y]) => apply(x!, y!)) });
     for (let j = 0; j < a.cols; j++) arrow(plot, `column-${j}`, col(j), j === 0 ? 'x' : 'y', `a${j + 1}`);
     plot.handles.push({ id: 'column-2', label: 'second column', at: col(1), xField: 'a12', yField: 'a22', role: 'y' });
-    if (a.cols === 2 && d.nullspace[0]) arrow(plot, 'null-direction', asPoint(d.nullspace[0]), 'caution', 'null input');
+    if (a.cols === 2 && d.nullspace[0]) {
+      const direction=normalizeNumeric(asPoint(d.nullspace[0]));
+      if(direction){arrow(plot, 'null-direction', direction, 'caution', 'z ≈');plot.arrows.at(-1)!.labelDx=-12;}
+      verdict+=' The gold z arrow is a normalized approximate null INPUT direction, not an output in the image space.';
+    }
     scenes.push(plot);
   }
   const frames = traceFrom(d.frames.map(frame => {

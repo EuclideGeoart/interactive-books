@@ -59,7 +59,9 @@ function Inner<S extends object>(props: Props<S>) {
             {s.polygons.map(p => <Polygon key={p.name} {...p} />)}
             {s.lines.map(line => <Segment key={line.name} {...line} />)}
             {s.arrows.map(a => <Arrow key={a.name} {...a} />)}<Dot at={{ x: 0, y: 0 }} />
-            {s.arrows.map((a, j) => <PlaneLabel key={a.name} name={`label-${a.name}`} at={a.to} role={a.role} dx={20} dy={j % 2 ? 22 : -22}>{a.label}</PlaneLabel>)}
+            {s.arrows.filter(a=>a.from.x!==a.to.x||a.from.y!==a.to.y).map((a, j) => <PlaneLabel key={a.name} name={`label-${a.name}`} at={a.to} role={a.role}
+              dx={a.labelDx??(a.to.x>=0?-12:12)} anchor={(a.labelDx??(a.to.x>=0?-12:12))<0?'end':'start'}
+              dy={a.to.y>s.window.yMax*.7?22:a.to.y<s.window.yMin*.7?-22:j%2?22:-22}>{a.label}</PlaneLabel>)}
             {s.handles.map(h => <DragPoint key={h.id} role={h.role} value={h.at} label={`${h.label} (${h.at.x}, ${h.at.y})`} hintId={hint}
               xSpec={specs[h.xField]!} ySpec={specs[h.yField]!} grid={{ kind: 'lattice', step: 0.5 }}
               onChange={(at, source) => { if (source === 'pointer') setDragWindow(current => current ?? s.window); lesson.set({ ...state, [h.xField]: at.x + 0, [h.yField]: at.y + 0 }); }}

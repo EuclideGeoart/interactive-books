@@ -2,7 +2,7 @@
 
 *For Computing & Machine Learning.* A visual-first, manipulation-driven mathematics book: **see it → manipulate it → understand the mechanism → derive the mathematics → implement/use it.**
 
-**Status: M0 + M2 foundation delivered; WIN-0 Windows portability delivered.** The platform, curriculum structure, design system and test harness are in place, together with one clearly labelled **foundation demo** (a draggable vector). The **v1.1 curriculum amendment (97 chapters)** passed the full Windows validation in C1; native Linux validation and independent review of the Windows baselines are pending. **No curriculum chapter is written yet**; the reference chapter (I.3 *Vectors*) is milestone M3 and awaits the review gate.
+**Status: M6-C completes Part II Linear Algebra.** Parts I and II provide **28 of 97 available chapters**, with 69 chapters in Parts III–VIII planned. I.3 *Vectors* remains the reference chapter; VI.4 remains the planned flagship. The separate foundation demo remains clearly labelled. See [the M6-C completion report](documentation/M6C_PART_II_COMPLETION_REPORT.md) for mathematical contracts, selective Linux validation, reviewed screenshots and deferred Windows/physical-device testing. M6-C awaits independent review and acceptance.
 
 Authority: [`documentation/INTERACTIVE_MATH_FOUNDATIONS_MASTER_PLAN.md`](documentation/INTERACTIVE_MATH_FOUNDATIONS_MASTER_PLAN.md) — **curriculum v1.1 (97 chapters)**. WIN-0 first relocated the original v1 plan byte-for-byte (original sha256 `c868e6ad…0612`); the explicitly approved v1.1 amendment subsequently changed its contents. See [`documentation/CURRICULUM_V1_1_AMENDMENT.md`](documentation/CURRICULUM_V1_1_AMENDMENT.md) for the reviewed change map.
 

@@ -115,6 +115,9 @@ export function makePlan({ mode = 'focused', files = [], chapters = [], only, pr
     if (/^(documentation\/|README\.md$|.*\.md$)/.test(file)) { reasons.push(`${file}: documentation only`); continue; }
     if (/^(src\/content\/|code\/|oracle\/|fixtures\/)/.test(file)) units.add('tests/unit/content.test.ts');
     if (file.startsWith('tests/e2e/__screenshots__/') && file.endsWith('.png')) {
+      if(file.startsWith('tests/e2e/__screenshots__/visual.spec.ts/')&&/^(desktop|tablet|mobile)-(home-fold(?:-dark)?|contents-fold|map)\.png$/.test(posix.basename(file))){
+        shared=true;reasons.push(`${file}: known publication/shell visual; all math/contracts and authoritative root visuals`);continue;
+      }
       const image = posix.basename(file).replace(/^(desktop|tablet|mobile)-/, '');
       const targets = catalog.filter(chapter => image.startsWith(`part-i-${chapter.slug}.`) ||
         (chapter.kind && image.startsWith(`ii-${chapter.family === 'matrices' ? 'matrix-' : ['elimination', 'eigenvalues', 'least_squares', 'svd'].includes(chapter.family) ? 'completion-' : ''}${chapter.kind}`)) ||
@@ -126,7 +129,7 @@ export function makePlan({ mode = 'focused', files = [], chapters = [], only, pr
       }
     }
     if (!existsSync(file)) { broad = true; reasons.push(`${file}: deleted/unresolved file; expanded conservatively`); }
-    if (/^(src\/(ui|platform|shell|curriculum|pages)\/|src\/styles\/(?!chapters\/)|public\/)/.test(file) || ['scripts/validation-plan.mjs', 'tests/unit/validation-plan.test.ts', 'tests/unit/curriculum.test.ts', 'tests/e2e/visual-linear-algebra.spec.ts'].includes(file)) {
+    if (/^(src\/(ui|platform|shell|curriculum|pages)\/|src\/styles\/(?!chapters\/)|public\/)/.test(file) || ['scripts/validation-plan.mjs', 'tests/unit/validation-plan.test.ts', 'tests/unit/curriculum.test.ts', 'tests/unit/completion-exercises.test.ts', 'tests/e2e/visual-linear-algebra.spec.ts'].includes(file)) {
       shared = true;
       reasons.push(`${file}: known shared infrastructure; all math/contracts, representative interactions/axe, all root visuals`);
       continue;

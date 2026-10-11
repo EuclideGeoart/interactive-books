@@ -41,7 +41,7 @@ test.describe('II.19: SVD',()=>{
   const s=await open(page);await s.locator('[data-preset="rank-one"]').click();await expect(s).toHaveAttribute('data-rank','1');await expect(s.locator('[data-verdict]')).toContainText('segment');await expect(s.locator('[data-quantity="sigma-2"]')).toContainText('0');
   await s.locator('[data-preset="zero"]').click();await expect(s).toHaveAttribute('data-rank','0');await expect(s.locator('[data-verdict]')).toContainText('origin');await expect(s.locator('[data-quantity="recovered"]')).toHaveAttribute('data-status','approximate');
   for(const preset of ['repeated','reflection']){await s.locator(`[data-preset="${preset}"]`).click();await expect(s.locator('[data-verdict]')).toContainText('not mathematically unique');await expect(s).toHaveAttribute('data-status','verified');}
-  await s.locator('[data-preset="near"]').click();await expect(s).toHaveAttribute('data-rank','2');await expect(s.locator('[data-verdict]')).toContainText('Ill-conditioned');await expect(s.locator('[data-quantity="sigma-2"]')).not.toContainText('≈0');
+  await s.locator('[data-preset="near"]').click();await expect(s).toHaveAttribute('data-rank','2');await expect(s.locator('[data-verdict]')).toContainText('Ill-conditioned');await expect(s.locator('[data-quantity="sigma-2"] dd')).toHaveText('≈0.000013');
  });
  test('five graded exercises explain mistakes and accept independent literal answers',async({page})=>{
   await open(page);const all=page.locator('[data-exercise]');await expect(all).toHaveCount(5);

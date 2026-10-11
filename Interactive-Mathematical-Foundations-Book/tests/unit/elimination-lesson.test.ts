@@ -1,7 +1,7 @@
 import katex from 'katex';
 import { expect, it } from 'vitest';
 import { katexMacros } from '../../src/math/katex-macros.mjs';
-import { deriveElimination, eliminationPresets, eliminationSpecs, type EliminationChapter } from '../../src/lessons/linear-algebra/elimination-lesson';
+import { deriveElimination, eliminationPresets, eliminationSpecs, ELIMINATION_CANONICAL, type EliminationChapter } from '../../src/lessons/linear-algebra/elimination-lesson';
 import { COMPLETION_EXERCISES } from '../../src/lessons/linear-algebra/completion-exercises';
 for (const chapter of ['elimination', 'rank', 'inverse'] as EliminationChapter[]) {
   for (const preset of eliminationPresets(chapter)) it(`${chapter} ${preset.id}: exact inspector, semantic trace and strict formulas`, () => {
@@ -19,3 +19,9 @@ for (const chapter of ['elimination', 'rank', 'inverse'] as EliminationChapter[]
     for (const e of exercises) { expect(e.solution).toBeTruthy(); expect(e.grade({}).correct).toBe(false); }
   });
 }
+it('rank geometry retains the full image square and a visible null direction at valid extreme inputs',()=>{
+ const d=deriveElimination('rank',{...ELIMINATION_CANONICAL.rank,a11:4,a12:4,a21:4,a22:4}),plot=d.scenes[0]!;
+ expect(d.rank).toBe(1);for(const p of plot.polygons[0]!.corners){expect(Math.abs(p.x)).toBeLessThan(plot.window.xMax);expect(Math.abs(p.y)).toBeLessThan(plot.window.yMax);}
+ const thin=deriveElimination('rank',{...ELIMINATION_CANONICAL.rank,a11:.01,a12:4,a21:0,a22:0}).scenes[0]!.arrows.find(a=>a.name==='null-direction')!;
+ expect(Math.hypot(thin.to.x,thin.to.y)).toBeCloseTo(1,14);expect(thin.to.x*.01+thin.to.y*4).toBeCloseTo(0,14);expect(thin.label).toContain('≈');
+});

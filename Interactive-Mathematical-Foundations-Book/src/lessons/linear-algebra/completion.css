@@ -4,12 +4,17 @@
 .completion-stage .drag-point.role-x { --role: var(--c-x); }
 .completion-stage .drag-point.role-y { --role: var(--c-y); }
 .completion-stage .completion-scenes { min-width: 0; }
-.completion-scenes.multiple { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.completion-scenes.multiple { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; align-content: start; }
+.completion-stage[data-stage='completion-svd'] .stage-grid,
+.completion-stage[data-stage='completion-svd'] .formula-panel { grid-template-columns: minmax(0, 1fr); }
+@container (min-width: 700px) {
+  .completion-stage[data-stage='completion-svd'] .inspector { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 1.5rem; }
+}
 .completion-scenes h3 { font-size: 1rem; margin: 0 0 .5rem; }
 .completion-scenes .poly { opacity: .15; }
 .row-matrix { max-width: 100%; overflow-x: auto; margin-block: 1rem; }
 .row-matrix table { width: 100%; font-family: var(--font-mono); text-align: center; font-size: .85rem; }
-.row-matrix caption { font-family: var(--font-body); text-align: left; margin-bottom: .5rem; }
+.row-matrix caption { font-family: var(--font-ui); text-align: left; margin-bottom: .5rem; }
 .row-matrix th, .row-matrix td { padding: .5rem; }
 .row-matrix .augmentation { border-left: 3px solid var(--ink); }
 .row-matrix [data-pivot] { color: var(--c-primary); font-weight: 700; }

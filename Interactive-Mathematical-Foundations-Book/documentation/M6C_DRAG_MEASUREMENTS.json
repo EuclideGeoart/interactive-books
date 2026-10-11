@@ -1,0 +1,48 @@
+{
+  "browser": "155.0.8059.39",
+  "platform": "linux",
+  "cpu": "12th Gen Intel(R) Core(TM) i5-12600",
+  "policy": "1× CPU, half-unit drag grid, 80 real pointer moves; next-paint scheduling included. Five M6-C opening stages expose geometric drag handles; II.14 uses exact augmented coefficient fields. Synthetic desktop experiment, not a physical touch-device benchmark.",
+  "results": [
+    {
+      "slug": "rank-invertibility",
+      "samples": 76,
+      "p50": 5.299999997019768,
+      "p95": 7.0999999940395355,
+      "max": 7.300000011920929,
+      "over16_7": 0
+    },
+    {
+      "slug": "inverse-matrices",
+      "samples": 76,
+      "p50": 5.799999997019768,
+      "p95": 6.699999988079071,
+      "max": 7.399999991059303,
+      "over16_7": 0
+    },
+    {
+      "slug": "eigenvalues-eigenvectors",
+      "samples": 76,
+      "p50": 6.699999988079071,
+      "p95": 9.700000002980232,
+      "max": 10,
+      "over16_7": 0
+    },
+    {
+      "slug": "orthogonal-least-squares",
+      "samples": 76,
+      "p50": 9.099999994039536,
+      "p95": 13.700000002980232,
+      "max": 17.900000005960464,
+      "over16_7": 1
+    },
+    {
+      "slug": "singular-value-decomposition",
+      "samples": 76,
+      "p50": 9,
+      "p95": 10.099999994039536,
+      "max": 11.199999988079071,
+      "over16_7": 0
+    }
+  ]
+}

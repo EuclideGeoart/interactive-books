@@ -1,0 +1,770 @@
+{
+  "platform": "Linux root",
+  "date": "2026-10-11",
+  "chapterImages": 87,
+  "publicationImages": 8,
+  "tolerancePolicy": "Existing Playwright tolerances unchanged; no blanket screenshot approval.",
+  "method": "Desktop/tablet originals inspected individually; every mobile image inspected in consecutive full-width 1400-pixel crops covering its entire height. Long formulas retain the frozen keyboard-focusable FormulaScroll contract.",
+  "images": [
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-eigenvalues-defective.png",
+      "width": 836,
+      "height": 1495,
+      "sha256": "fd08d219f959a912293bb14da9334dfdb0d17100ed1d8dce64d96b81216fa057",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed real-direction geometry, distinct/scalar/defective/no-real classifications, zero eigenvalue, exact/radical formulas and approximate residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-eigenvalues-radical.png",
+      "width": 836,
+      "height": 1484,
+      "sha256": "036436052e5a8d4fb6279dc4667b0aa8c099db3ccc4552a95ed9c0c4fc93d7c0",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed real-direction geometry, distinct/scalar/defective/no-real classifications, zero eigenvalue, exact/radical formulas and approximate residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-eigenvalues-rotation.png",
+      "width": 836,
+      "height": 1421,
+      "sha256": "13808530e52aa73a7ada8a7463e465a9f7b4ba97c7918919ed0ce9744621154c",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed real-direction geometry, distinct/scalar/defective/no-real classifications, zero eigenvalue, exact/radical formulas and approximate residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-eigenvalues-scalar.png",
+      "width": 836,
+      "height": 1495,
+      "sha256": "d71894363542fdd38d63a4a013fa9d294328d22052c493d391528b5979eb2a31",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed real-direction geometry, distinct/scalar/defective/no-real classifications, zero eigenvalue, exact/radical formulas and approximate residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-eigenvalues-zero-eigenvalue.png",
+      "width": 836,
+      "height": 1484,
+      "sha256": "e8712f387a10935e1c1192ae0bea0aa9f7df724ea719a5df3441674c03a00e58",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed real-direction geometry, distinct/scalar/defective/no-real classifications, zero eigenvalue, exact/radical formulas and approximate residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-eigenvalues.png",
+      "width": 836,
+      "height": 1484,
+      "sha256": "01bdd195eebef5caf15302eeb4dd9aa43ca230f9b9c2daa311432ac48df1e31d",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed real-direction geometry, distinct/scalar/defective/no-real classifications, zero eigenvalue, exact/radical formulas and approximate residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-elimination-inconsistent.png",
+      "width": 836,
+      "height": 1412,
+      "sha256": "31fb8126361495dd8cb3a5fcd9457ab31ba76654d2727c46b681fbddee25c933",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed matrix/equation linkage, augmentation boundary, exact solution classification, substitution result, trace controls and coefficient fields."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-elimination-skipped.png",
+      "width": 836,
+      "height": 1492,
+      "sha256": "48fb86ff8f0d398fcc6772858ecd9cf7978b8bc64dc4187f2bf61a48bdfc338a",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed matrix/equation linkage, augmentation boundary, exact solution classification, substitution result, trace controls and coefficient fields."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-elimination.png",
+      "width": 836,
+      "height": 1447,
+      "sha256": "4c0f85b3ca19768bd80ea43193e14cf5c107f3e775f66a5da0d3dbcbae5d0514",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed matrix/equation linkage, augmentation boundary, exact solution classification, substitution result, trace controls and coefficient fields."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-inverse-dependent.png",
+      "width": 836,
+      "height": 1342,
+      "sha256": "ce3b4bc0e54c04707e4235072c25f037591ecdd041bd90dfb45a0c1d7b49c2ed",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed original/recovered vector equality when invertible, both identity checks, truthful singular state and the small 3\u00d73 augmented matrix."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-inverse-three.png",
+      "width": 836,
+      "height": 1566,
+      "sha256": "c34a6a6ae75d2eb3dd8d2f2128c9c58c3b9c5f6ebeaf708f0ea3beb8bcf69fd9",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed original/recovered vector equality when invertible, both identity checks, truthful singular state and the small 3\u00d73 augmented matrix."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-inverse.png",
+      "width": 836,
+      "height": 1566,
+      "sha256": "9c8e2b57b246771863200cd82e32b4043ba68d43d6e8e32b973c7690d292826e",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed original/recovered vector equality when invertible, both identity checks, truthful singular state and the small 3\u00d73 augmented matrix."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-least-squares-dependent.png",
+      "width": 836,
+      "height": 1706,
+      "sha256": "cf87ba9f5c81ea67fa3121bead7596c528fb988db209cce47e3190070e1f0e35",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed fitted line/residual segments or Gram\u2013Schmidt geometry, exact orthogonality, unique/nonunique solution sets, conditioning warning and separated data/residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-least-squares-gram.png",
+      "width": 836,
+      "height": 1690,
+      "sha256": "a6399cd3fab7d7403179080596a23c4f95eb83c591232787440c1d9060318d92",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed fitted line/residual segments or Gram\u2013Schmidt geometry, exact orthogonality, unique/nonunique solution sets, conditioning warning and separated data/residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-least-squares-near.png",
+      "width": 836,
+      "height": 1619,
+      "sha256": "53403102954d85fb8ce3e1c8d6770a7d151b2a163c04ddd7c92249da1489eefb",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed fitted line/residual segments or Gram\u2013Schmidt geometry, exact orthogonality, unique/nonunique solution sets, conditioning warning and separated data/residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-least-squares-rank-deficient.png",
+      "width": 836,
+      "height": 1642,
+      "sha256": "3ec41a67586663cda969a3c98685d383b99b915c2df889a96681c5f8e44318fd",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed fitted line/residual segments or Gram\u2013Schmidt geometry, exact orthogonality, unique/nonunique solution sets, conditioning warning and separated data/residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-least-squares-zero-vector.png",
+      "width": 836,
+      "height": 1706,
+      "sha256": "598d526a2610916c0ff158f17f358f3b1f8ddb854216b495262e1be3f0011ef1",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed fitted line/residual segments or Gram\u2013Schmidt geometry, exact orthogonality, unique/nonunique solution sets, conditioning warning and separated data/residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-least-squares.png",
+      "width": 836,
+      "height": 1597,
+      "sha256": "f568900e8a5d57d21cf8fbf2b4117c00c20e0f769fdc53008eff989339029c02",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed fitted line/residual segments or Gram\u2013Schmidt geometry, exact orthogonality, unique/nonunique solution sets, conditioning warning and separated data/residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-rank-dependent.png",
+      "width": 836,
+      "height": 1433,
+      "sha256": "77f74645c1f09c123eb0b351fe46e373e1fe913604d93d13811fff450378aace",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed plane/line/point image, exact rank and nullity, normalized gold null INPUT annotation, original matrix trace and column handle."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-rank-near.png",
+      "width": 836,
+      "height": 1411,
+      "sha256": "f619cbad70e887c8a7b746e6963190c36d0060a4e2ed20705091cbda6cbde463",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed plane/line/point image, exact rank and nullity, normalized gold null INPUT annotation, original matrix trace and column handle."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-rank-zero.png",
+      "width": 836,
+      "height": 1456,
+      "sha256": "e251608827d773cb00ca8300343dabce6a4f99e6ac3e352907847098cbbc0add",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed plane/line/point image, exact rank and nullity, normalized gold null INPUT annotation, original matrix trace and column handle."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-rank.png",
+      "width": 836,
+      "height": 1411,
+      "sha256": "e29871273120f034f80976fd5a8d9cbca84575c438a696762e3d88ef52f26de1",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed plane/line/point image, exact rank and nullity, normalized gold null INPUT annotation, original matrix trace and column handle."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-svd-near.png",
+      "width": 836,
+      "height": 2717,
+      "sha256": "846ff016692d00c55a5c893e08d7f55c954b5ac867f618efa54abee6bb959a07",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed all four transformation panes on one scale, full intermediate vectors, circle/ellipse/segment/point, directions, exact rank, measured companion error versus ideal \u03c3\u2082, factor formulas and pseudoinverse."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-svd-rank-one.png",
+      "width": 836,
+      "height": 2759,
+      "sha256": "6438a07d2997b57902137bf787b6927d5ee8596541c62d26c25ff3476b71f93f",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed all four transformation panes on one scale, full intermediate vectors, circle/ellipse/segment/point, directions, exact rank, measured companion error versus ideal \u03c3\u2082, factor formulas and pseudoinverse."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-svd-reflection.png",
+      "width": 836,
+      "height": 2647,
+      "sha256": "32f0ce1537fee683448fb2c058aa9cbe2580f65bb900192794fa86e6a8c3541f",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed all four transformation panes on one scale, full intermediate vectors, circle/ellipse/segment/point, directions, exact rank, measured companion error versus ideal \u03c3\u2082, factor formulas and pseudoinverse."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-svd-repeated.png",
+      "width": 836,
+      "height": 2647,
+      "sha256": "f12d13b987d66d22b4777435e5b064e4ba6d4d985a9c4d416bb60603fa52193c",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed all four transformation panes on one scale, full intermediate vectors, circle/ellipse/segment/point, directions, exact rank, measured companion error versus ideal \u03c3\u2082, factor formulas and pseudoinverse."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-svd-thin.png",
+      "width": 836,
+      "height": 2625,
+      "sha256": "fc25a20f8f6dde99b036726e2dec7ae75803d6abcb5f133f11623ed4d696d378",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed all four transformation panes on one scale, full intermediate vectors, circle/ellipse/segment/point, directions, exact rank, measured companion error versus ideal \u03c3\u2082, factor formulas and pseudoinverse."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-svd-zero.png",
+      "width": 836,
+      "height": 2689,
+      "sha256": "a40e47ae774818a1fb929ffeaba518c38ee5a6afac91c41d534b81eb4857f9fa",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed all four transformation panes on one scale, full intermediate vectors, circle/ellipse/segment/point, directions, exact rank, measured companion error versus ideal \u03c3\u2082, factor formulas and pseudoinverse."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/desktop-ii-completion-svd.png",
+      "width": 836,
+      "height": 2693,
+      "sha256": "980c2c74cc14f6c69aeed984a5bc1b793d238ec2f713f42b978101a0ee4ffe87",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed all four transformation panes on one scale, full intermediate vectors, circle/ellipse/segment/point, directions, exact rank, measured companion error versus ideal \u03c3\u2082, factor formulas and pseudoinverse."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-eigenvalues-defective.png",
+      "width": 356,
+      "height": 2404,
+      "sha256": "d6e9c303b5c3458e1b13897a9bae82ee682f5ca1c284f43e3bcad7ab51e01a6d",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed real-direction geometry, distinct/scalar/defective/no-real classifications, zero eigenvalue, exact/radical formulas and approximate residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-eigenvalues-radical.png",
+      "width": 356,
+      "height": 2563,
+      "sha256": "06708e38d74875e0fe7c254b702c811c3778b4d60800e6a7b76be1f61d686ca5",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed real-direction geometry, distinct/scalar/defective/no-real classifications, zero eigenvalue, exact/radical formulas and approximate residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-eigenvalues-rotation.png",
+      "width": 356,
+      "height": 2243,
+      "sha256": "dea92699ede523faf1fb53b872eed696a26b20e91dfaf83a6372adc31fc2d139",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed real-direction geometry, distinct/scalar/defective/no-real classifications, zero eigenvalue, exact/radical formulas and approximate residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-eigenvalues-scalar.png",
+      "width": 356,
+      "height": 2593,
+      "sha256": "5f23d31f0e4dbcae28957a8006b4a187645a36242f7a5f078b72546c0c5ae30f",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed real-direction geometry, distinct/scalar/defective/no-real classifications, zero eigenvalue, exact/radical formulas and approximate residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-eigenvalues-zero-eigenvalue.png",
+      "width": 356,
+      "height": 2562,
+      "sha256": "9081f82d4235d524f0371b0a652bb64eff85ef365df8bd1d98d48091adb2c1a7",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed real-direction geometry, distinct/scalar/defective/no-real classifications, zero eigenvalue, exact/radical formulas and approximate residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-eigenvalues.png",
+      "width": 356,
+      "height": 2562,
+      "sha256": "2352985bee6f6e4835758f384fbafa2e96b389b3e7f7d3cf343cf02c0c1fbb15",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed real-direction geometry, distinct/scalar/defective/no-real classifications, zero eigenvalue, exact/radical formulas and approximate residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-elimination-inconsistent.png",
+      "width": 356,
+      "height": 2252,
+      "sha256": "cc431c1779d0d1b694e9b7cfeff13beae8fb0684de9f2a8acc54dc8b3ca30aa5",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed matrix/equation linkage, augmentation boundary, exact solution classification, substitution result, trace controls and coefficient fields."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-elimination-skipped.png",
+      "width": 356,
+      "height": 2503,
+      "sha256": "2740c90e27ac6d183d7ff018ce00ea948b000b7adaafb24883ad8fc7afde88ed",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed matrix/equation linkage, augmentation boundary, exact solution classification, substitution result, trace controls and coefficient fields."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-elimination.png",
+      "width": 356,
+      "height": 2287,
+      "sha256": "c30ac69beedcc3d3db987364eecf53bcd461668a04a3ef90dbc572fc73795cfb",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed matrix/equation linkage, augmentation boundary, exact solution classification, substitution result, trace controls and coefficient fields."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-inverse-dependent.png",
+      "width": 356,
+      "height": 1896,
+      "sha256": "1b6de4c57a88fc9bee8a27d0fb3556c39de0246d399962b32d99367f090af195",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed original/recovered vector equality when invertible, both identity checks, truthful singular state and the small 3\u00d73 augmented matrix."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-inverse-three.png",
+      "width": 356,
+      "height": 2393,
+      "sha256": "3c84fab5eadc404dc6bc454e5aa74fd97e8c69cb098f1491a96d223eab04577c",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed original/recovered vector equality when invertible, both identity checks, truthful singular state and the small 3\u00d73 augmented matrix."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-inverse.png",
+      "width": 356,
+      "height": 2460,
+      "sha256": "e82a43837a55f1112a444c6f3143931096bf9fbd76af03f8196be5a55a5e6521",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed original/recovered vector equality when invertible, both identity checks, truthful singular state and the small 3\u00d73 augmented matrix."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-least-squares-dependent.png",
+      "width": 356,
+      "height": 2837,
+      "sha256": "ab65549cc1c6de4716f8ada6ee8acf547fc8653e03644439c760695fc7d40ffb",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed fitted line/residual segments or Gram\u2013Schmidt geometry, exact orthogonality, unique/nonunique solution sets, conditioning warning and separated data/residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-least-squares-gram.png",
+      "width": 356,
+      "height": 2830,
+      "sha256": "9bf5cfd907ddb52471ccf247e54e0897250bbb376be2ce138ca1980ca936d27c",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed fitted line/residual segments or Gram\u2013Schmidt geometry, exact orthogonality, unique/nonunique solution sets, conditioning warning and separated data/residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-least-squares-near.png",
+      "width": 356,
+      "height": 2708,
+      "sha256": "eff450b3f332c8545f8dae78f436074d472801ff9c6fe224fbc44bd9662cddb0",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed fitted line/residual segments or Gram\u2013Schmidt geometry, exact orthogonality, unique/nonunique solution sets, conditioning warning and separated data/residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-least-squares-rank-deficient.png",
+      "width": 356,
+      "height": 2707,
+      "sha256": "96d01985b8aebe41dc17c53da2dd3eae2422fd7e580e0362d1e6d24de250eb11",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed fitted line/residual segments or Gram\u2013Schmidt geometry, exact orthogonality, unique/nonunique solution sets, conditioning warning and separated data/residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-least-squares-zero-vector.png",
+      "width": 356,
+      "height": 2837,
+      "sha256": "e367e3be89569f6610518c2e124c0e0713acbae928619207e2438063ac610d68",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed fitted line/residual segments or Gram\u2013Schmidt geometry, exact orthogonality, unique/nonunique solution sets, conditioning warning and separated data/residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-least-squares.png",
+      "width": 356,
+      "height": 2618,
+      "sha256": "1fdb0521308202cbf2715021a033a9cd678279acb14a192a33d718ed49a3f3f1",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed fitted line/residual segments or Gram\u2013Schmidt geometry, exact orthogonality, unique/nonunique solution sets, conditioning warning and separated data/residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-rank-dependent.png",
+      "width": 356,
+      "height": 2335,
+      "sha256": "db56e029ec36a9bdd57d220ed8883b231db70a2e31f323108eb8a31df32ebaa8",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed plane/line/point image, exact rank and nullity, normalized gold null INPUT annotation, original matrix trace and column handle."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-rank-near.png",
+      "width": 356,
+      "height": 2313,
+      "sha256": "eab407bf980bfe095194946da8a7596fb8fab7ad75a54981af9d27342cd57f1c",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed plane/line/point image, exact rank and nullity, normalized gold null INPUT annotation, original matrix trace and column handle."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-rank-zero.png",
+      "width": 356,
+      "height": 2358,
+      "sha256": "f37bf4e658b71be188fb026a21be852424b5e7c14930a0fa182b2036b04f4024",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed plane/line/point image, exact rank and nullity, normalized gold null INPUT annotation, original matrix trace and column handle."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-rank.png",
+      "width": 356,
+      "height": 2313,
+      "sha256": "4d318d58841657c07031c85e039c8aeadc1934e66bc9790a2aea9895a1813cfc",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed plane/line/point image, exact rank and nullity, normalized gold null INPUT annotation, original matrix trace and column handle."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-svd-near.png",
+      "width": 356,
+      "height": 4329,
+      "sha256": "398b1cb21d9e54b5fb71720d2ea174aed4eec59012ebd1ce5f7caf31b56579fe",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed all four transformation panes on one scale, full intermediate vectors, circle/ellipse/segment/point, directions, exact rank, measured companion error versus ideal \u03c3\u2082, factor formulas and pseudoinverse."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-svd-rank-one.png",
+      "width": 356,
+      "height": 4411,
+      "sha256": "e7c6441d7f9d26c124ea4786446ba762dfe11996fb32fac30d24f8657f21eec8",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed all four transformation panes on one scale, full intermediate vectors, circle/ellipse/segment/point, directions, exact rank, measured companion error versus ideal \u03c3\u2082, factor formulas and pseudoinverse."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-svd-reflection.png",
+      "width": 356,
+      "height": 4261,
+      "sha256": "8d9f982a47537ecef24bdff8fdca2d6fb23b0925b4be1a464ca820662763a232",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed all four transformation panes on one scale, full intermediate vectors, circle/ellipse/segment/point, directions, exact rank, measured companion error versus ideal \u03c3\u2082, factor formulas and pseudoinverse."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-svd-repeated.png",
+      "width": 356,
+      "height": 4261,
+      "sha256": "7ca4a907e3bd2a7faae95ae0eba4097a8a5490779553bdaa711a528f880c7d56",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed all four transformation panes on one scale, full intermediate vectors, circle/ellipse/segment/point, directions, exact rank, measured companion error versus ideal \u03c3\u2082, factor formulas and pseudoinverse."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-svd-thin.png",
+      "width": 356,
+      "height": 4194,
+      "sha256": "3a4a2716bc1d9d505513f58283a4b0d071c87743ad0aa62aecf3558516213e70",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed all four transformation panes on one scale, full intermediate vectors, circle/ellipse/segment/point, directions, exact rank, measured companion error versus ideal \u03c3\u2082, factor formulas and pseudoinverse."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-svd-zero.png",
+      "width": 356,
+      "height": 4367,
+      "sha256": "5d161e79878fd831a81fd54527b3cabb407d78cba1ff64e6a8e1a25208ca80f1",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed all four transformation panes on one scale, full intermediate vectors, circle/ellipse/segment/point, directions, exact rank, measured companion error versus ideal \u03c3\u2082, factor formulas and pseudoinverse."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-svd.png",
+      "width": 356,
+      "height": 4306,
+      "sha256": "c0cf2d187b3649fdaa80658f1f3225a7dc1fced6be2e1159b895481467ae2985",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed all four transformation panes on one scale, full intermediate vectors, circle/ellipse/segment/point, directions, exact rank, measured companion error versus ideal \u03c3\u2082, factor formulas and pseudoinverse."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-eigenvalues-defective.png",
+      "width": 748,
+      "height": 1437,
+      "sha256": "36562528e655d202fcc101eb969c50e4aa85f5203eff0d55189d50687064db6e",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed real-direction geometry, distinct/scalar/defective/no-real classifications, zero eigenvalue, exact/radical formulas and approximate residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-eigenvalues-radical.png",
+      "width": 748,
+      "height": 1544,
+      "sha256": "c10df7ecd2f2ade682bb4ab58db02b3b3a8efe9f7ad74323c946f61ac1158cb6",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed real-direction geometry, distinct/scalar/defective/no-real classifications, zero eigenvalue, exact/radical formulas and approximate residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-eigenvalues-rotation.png",
+      "width": 748,
+      "height": 1361,
+      "sha256": "d3695dfbce8cf534a3dcd999b9b6e2eb76c48d372df83136e74829090edd2a2c",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed real-direction geometry, distinct/scalar/defective/no-real classifications, zero eigenvalue, exact/radical formulas and approximate residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-eigenvalues-scalar.png",
+      "width": 748,
+      "height": 1501,
+      "sha256": "5bdbf715c35bbef528397407d00781baecda9ea2e4d7d16ed5d1da740da24d64",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed real-direction geometry, distinct/scalar/defective/no-real classifications, zero eigenvalue, exact/radical formulas and approximate residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-eigenvalues-zero-eigenvalue.png",
+      "width": 748,
+      "height": 1544,
+      "sha256": "60fc360173440fed1c8dbe97cf9daf3829c16a28a18591d2e7cdb709af49550d",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed real-direction geometry, distinct/scalar/defective/no-real classifications, zero eigenvalue, exact/radical formulas and approximate residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-eigenvalues.png",
+      "width": 748,
+      "height": 1544,
+      "sha256": "a1830c6aa9e1910430bb787391a5e28f4a6afb3726a3c94ce76813433211a7e0",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed real-direction geometry, distinct/scalar/defective/no-real classifications, zero eigenvalue, exact/radical formulas and approximate residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-elimination-inconsistent.png",
+      "width": 748,
+      "height": 1455,
+      "sha256": "2034711622c22312b38bb7b8ef5ceae4f1be6e605fdd53782f2495c637db5a6b",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed matrix/equation linkage, augmentation boundary, exact solution classification, substitution result, trace controls and coefficient fields."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-elimination-skipped.png",
+      "width": 748,
+      "height": 1535,
+      "sha256": "f318d149d8936c57db4f4b70a761324d4ce1b47bfa262bb2478738478b70e513",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed matrix/equation linkage, augmentation boundary, exact solution classification, substitution result, trace controls and coefficient fields."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-elimination.png",
+      "width": 748,
+      "height": 1490,
+      "sha256": "2f8a98e86d5f10e8329ad1dbe7cbc60826a69f8036208a96f4ee69e1812c4299",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed matrix/equation linkage, augmentation boundary, exact solution classification, substitution result, trace controls and coefficient fields."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-inverse-dependent.png",
+      "width": 748,
+      "height": 1333,
+      "sha256": "efd36fa40b2d8bf34656a2f30c50124ba6e3e2ed27f2a2cc3994e41011719a4a",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed original/recovered vector equality when invertible, both identity checks, truthful singular state and the small 3\u00d73 augmented matrix."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-inverse-three.png",
+      "width": 748,
+      "height": 1610,
+      "sha256": "cda8fe4995e4111fd31d589f4321b1a4ee6d0fccc5a1afbc56e7bc1b559d1152",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed original/recovered vector equality when invertible, both identity checks, truthful singular state and the small 3\u00d73 augmented matrix."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-inverse.png",
+      "width": 748,
+      "height": 1578,
+      "sha256": "c7cf4f7211d6b0b600c29a43f690b78c772d908d74153801597ac83b34a64c22",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed original/recovered vector equality when invertible, both identity checks, truthful singular state and the small 3\u00d73 augmented matrix."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-least-squares-dependent.png",
+      "width": 748,
+      "height": 1771,
+      "sha256": "2bbc693a22e94a710cdef0ed21f368e0ae4763181c5253d38a5e1571b8f94b51",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed fitted line/residual segments or Gram\u2013Schmidt geometry, exact orthogonality, unique/nonunique solution sets, conditioning warning and separated data/residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-least-squares-gram.png",
+      "width": 748,
+      "height": 1732,
+      "sha256": "ae52e57359e157d4b8b01f2951f79714dd492e1d8989bed99cd5cc3a84e19339",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed fitted line/residual segments or Gram\u2013Schmidt geometry, exact orthogonality, unique/nonunique solution sets, conditioning warning and separated data/residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-least-squares-near.png",
+      "width": 748,
+      "height": 1684,
+      "sha256": "0d6d6978c7e69a6682d345d8670685af8f74fe4ee2b36fc1dcba76b1e494437e",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed fitted line/residual segments or Gram\u2013Schmidt geometry, exact orthogonality, unique/nonunique solution sets, conditioning warning and separated data/residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-least-squares-rank-deficient.png",
+      "width": 748,
+      "height": 1684,
+      "sha256": "adb39cd4234f3d3f075021c911cb65a65a247cfa4c074a8407d067ad9113971a",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed fitted line/residual segments or Gram\u2013Schmidt geometry, exact orthogonality, unique/nonunique solution sets, conditioning warning and separated data/residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-least-squares-zero-vector.png",
+      "width": 748,
+      "height": 1771,
+      "sha256": "707d758bd6d4a43980d4f2499fd1419f9f3abd222ae79cc9e5e82ab272406470",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed fitted line/residual segments or Gram\u2013Schmidt geometry, exact orthogonality, unique/nonunique solution sets, conditioning warning and separated data/residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-least-squares.png",
+      "width": 748,
+      "height": 1639,
+      "sha256": "56615856b033a02ecda739df99fe14aeca4f962612afee8387c28f3f245fe475",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed fitted line/residual segments or Gram\u2013Schmidt geometry, exact orthogonality, unique/nonunique solution sets, conditioning warning and separated data/residual labels."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-rank-dependent.png",
+      "width": 748,
+      "height": 1425,
+      "sha256": "70e183933febc736be0ef2c4843095a6e4f5d03d05c3de6909a2f975c43f2a3a",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed plane/line/point image, exact rank and nullity, normalized gold null INPUT annotation, original matrix trace and column handle."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-rank-near.png",
+      "width": 748,
+      "height": 1402,
+      "sha256": "39f79aa84c6104394184d093f7ffc46550dbe8eded6a3bd959a00bb89b540bc2",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed plane/line/point image, exact rank and nullity, normalized gold null INPUT annotation, original matrix trace and column handle."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-rank-zero.png",
+      "width": 748,
+      "height": 1447,
+      "sha256": "50b1a4a9154e601892306cca4b164ce33a00ff213036ec3df260a6ca23306642",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed plane/line/point image, exact rank and nullity, normalized gold null INPUT annotation, original matrix trace and column handle."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-rank.png",
+      "width": 748,
+      "height": 1402,
+      "sha256": "7f2e5b36b0b63bb06a32fcd5e216c9449e2171206dc2d22d219c661f20f82d13",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed plane/line/point image, exact rank and nullity, normalized gold null INPUT annotation, original matrix trace and column handle."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-svd-near.png",
+      "width": 748,
+      "height": 2693,
+      "sha256": "69ce4bd22ed6b8361b008f7107af48858de26eb18fca25e498bab86d9646272d",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed all four transformation panes on one scale, full intermediate vectors, circle/ellipse/segment/point, directions, exact rank, measured companion error versus ideal \u03c3\u2082, factor formulas and pseudoinverse."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-svd-rank-one.png",
+      "width": 748,
+      "height": 2712,
+      "sha256": "2a72f709d3c1483251a42de9e6012aacaffd95043369b349a50bf331ad9faa20",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed all four transformation panes on one scale, full intermediate vectors, circle/ellipse/segment/point, directions, exact rank, measured companion error versus ideal \u03c3\u2082, factor formulas and pseudoinverse."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-svd-reflection.png",
+      "width": 748,
+      "height": 2648,
+      "sha256": "f15160291a41fcab47fc396fb8a51143f3d2748749d5583452c65340a3808ec9",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed all four transformation panes on one scale, full intermediate vectors, circle/ellipse/segment/point, directions, exact rank, measured companion error versus ideal \u03c3\u2082, factor formulas and pseudoinverse."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-svd-repeated.png",
+      "width": 748,
+      "height": 2648,
+      "sha256": "4075eea36e1284520b1bcd9e037b350edcffd5f2243f7af6a7c3d70591352637",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed all four transformation panes on one scale, full intermediate vectors, circle/ellipse/segment/point, directions, exact rank, measured companion error versus ideal \u03c3\u2082, factor formulas and pseudoinverse."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-svd-thin.png",
+      "width": 748,
+      "height": 2603,
+      "sha256": "cda44d4910f93c234e63caef61293668ab7d5b2dd49c1c0a2b58deb23a6f97f1",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed all four transformation panes on one scale, full intermediate vectors, circle/ellipse/segment/point, directions, exact rank, measured companion error versus ideal \u03c3\u2082, factor formulas and pseudoinverse."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-svd-zero.png",
+      "width": 748,
+      "height": 2714,
+      "sha256": "34ce29ad6443f7b789ec16234a592a6bed27f14590e4ba9c13ed0360e5357270",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed all four transformation panes on one scale, full intermediate vectors, circle/ellipse/segment/point, directions, exact rank, measured companion error versus ideal \u03c3\u2082, factor formulas and pseudoinverse."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/tablet-ii-completion-svd.png",
+      "width": 748,
+      "height": 2647,
+      "sha256": "a690bd66cfe33cf8ebc463bc1c2734d0ce8c8e40ae3bd83e4ebcdcd3d3da4a02",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed all four transformation panes on one scale, full intermediate vectors, circle/ellipse/segment/point, directions, exact rank, measured companion error versus ideal \u03c3\u2082, factor formulas and pseudoinverse."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual.spec.ts/desktop-contents-fold.png",
+      "width": 1440,
+      "height": 900,
+      "sha256": "8e3d850a223f49e2c8f95e5274c582f598c4d3d9b35adbdf2f33426d168f5a81",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed publication shell typography, layout and focus treatment; contents/map show 28 of 97 available. Home hero and I.3 reference demo remain readable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual.spec.ts/desktop-home-fold-dark.png",
+      "width": 1440,
+      "height": 900,
+      "sha256": "31ea8464cdb29904ab4fa598a5bd0c1868de5d5ec346d66d660663401e7aa3f6",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed publication shell typography, layout and focus treatment; contents/map show 28 of 97 available. Home hero and I.3 reference demo remain readable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual.spec.ts/desktop-home-fold.png",
+      "width": 1440,
+      "height": 900,
+      "sha256": "83871ad6ce4c388957aacb72c8e5967bb11be32db418f12541e23e07dbff2e81",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed publication shell typography, layout and focus treatment; contents/map show 28 of 97 available. Home hero and I.3 reference demo remain readable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual.spec.ts/desktop-map.png",
+      "width": 1440,
+      "height": 900,
+      "sha256": "f27cdde771e97bbc27faacb9ed59e48a397a9ad3dec8ddad6cb6670635305116",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed publication shell typography, layout and focus treatment; contents/map show 28 of 97 available. Home hero and I.3 reference demo remain readable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual.spec.ts/mobile-contents-fold.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "f1ca0bd2871cb90bbb3d1ef8479f09e1803da4d3fa43bca2ddce3683d54cae52",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed publication shell typography, layout and focus treatment; contents/map show 28 of 97 available. Home hero and I.3 reference demo remain readable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual.spec.ts/mobile-home-fold.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "1d045f0c886301889ae00005d1769fe11cb7a01f63a7234e62ff557981fb647f",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed publication shell typography, layout and focus treatment; contents/map show 28 of 97 available. Home hero and I.3 reference demo remain readable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual.spec.ts/mobile-map.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "a801c743dea0cb73a9cae547c9c5a346e739e2bc003a1efb817d3c89d749697f",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed publication shell typography, layout and focus treatment; contents/map show 28 of 97 available. Home hero and I.3 reference demo remain readable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual.spec.ts/tablet-home-fold.png",
+      "width": 820,
+      "height": 1180,
+      "sha256": "521beb8911cb6ba7afa1aa121809ac438c92f493528d2b552a01398db859e717",
+      "review": "accepted after individual pixel inspection",
+      "notes": "Reviewed publication shell typography, layout and focus treatment; contents/map show 28 of 97 available. Home hero and I.3 reference demo remain readable."
+    }
+  ]
+}

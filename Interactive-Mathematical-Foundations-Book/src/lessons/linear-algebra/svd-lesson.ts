@@ -20,8 +20,8 @@ const approximateVector=(v:NumericVector2)=>({status:'approximate' as const,line
 export function deriveSVD(s:PlanarState):CompletionDerived {
  const a=matrix([[s.a11,s.a12],[s.a21,s.a22]]),d=svd2(a),action=svdAction(d,[s.x1,s.x2]),circle=svdCircle(d);
  const verdict=`Exact rank ${d.rank}: the unit circle becomes ${d.rank===2?'an ellipse':d.rank===1?'a segment':'the origin'}. Singular values are sorted and nonnegative. ${d.repeated?'Repeated singular values: the displayed singular directions are one convenient orthogonal choice, not mathematically unique. ':''}${d.rank<2?'Zero singular values erase input directions; their orthogonal completion is also nonunique. ':''}${d.warning??'All reconstruction and orthogonality checks pass the documented binary64 tolerance.'}`;
- const radius=Math.max(4,Math.abs(action.output[0])+1,Math.abs(action.output[1])+1,d.singular[0]+1);
  const points=[action.input,action.oriented,action.scaled,action.output],curves=[circle.input,circle.oriented,circle.scaled,circle.output];
+ const radius=Math.max(4,...points.flat().map(v=>Math.abs(v)+1),d.singular[0]+1);
  const titles=['Input: the unit circle','1. Vᵀ: rotate / reflect','2. Σ: perpendicular scaling','3. U: rotate / reflect'];
  const scenes=d.reliable?curves.map((curve,i)=>{
   const plot=scene(titles[i]!,`${verdict} The selected vector is approximately (${points[i]!.map(ntext).join(', ')}). All four panes use the same coordinate scale.`,radius);
@@ -38,7 +38,7 @@ export function deriveSVD(s:PlanarState):CompletionDerived {
    const leading={x:d.U[0][0]*d.singular[0],y:d.U[1][0]*d.singular[0]},approximation=point(action2(d.rankOne,action.input));
    plot.lines.push({name:'rank-one-image',from:{x:-leading.x,y:-leading.y},to:leading,role:'y',dashed:true,width:3});
    plot.lines.push({name:'discarded-component',from:approximation,to:point(action.output),role:'y',dashed:true,width:2});
-   plot.description+=' The dashed blue segment is the image of the unit circle under the rank-one approximation. Its blue connector to the selected output shows the discarded component.';
+   plot.description+=' The dashed teal segment is the image of the unit circle under the rank-one approximation. Its teal connector to the selected output shows the discarded component.';
   }
   return plot;
  }):[];
@@ -48,14 +48,14 @@ export function deriveSVD(s:PlanarState):CompletionDerived {
   row('U','U','Left singular frame',approximateMatrix(d.U)),row('Vt','V^T','Right frame transpose',approximateMatrix(d.Vt)),
   row('reconstruction-error','\\|A-U\\Sigma V^T\\|_F','Frobenius reconstruction error',numericDesc(d.reconstructionError)),
   row('u-orthogonality','\\|U^TU-I\\|_F','U orthogonality error',numericDesc(d.uOrthogonality)),row('v-orthogonality','\\|V^TV-I\\|_F','V orthogonality error',numericDesc(d.vOrthogonality)),
-  row('rank-one-error','\\|A-A_1\\|_F','Rank-one approximation error (Frobenius)',numericDesc(d.rankOneError)),
+  row('rank-one-error','\\|A-A_1\\|_F','Measured companion error (Frobenius)',numericDesc(d.rankOneError)),
   row('pseudoinverse','A^+','Pseudoinverse companion',d.pseudoinverse?approximateMatrix(d.pseudoinverse):undefinedDesc(d.warning!)),
   row('recovered','A^+(A\\mathbf x)','Minimum-norm recovered input',action.recovered?approximateVector(action.recovered):undefinedDesc('Conditioning exceeds the recovery budget; exact rank is retained.'))];
  const formulas=[`A=${mtex(a)},\\quad A\\approx U\\Sigma V^T`,
   `U\\approx${matrixTex(d.U)},\\quad\\Sigma\\approx${matrixTex(d.Sigma)}`,
   `V^T\\approx${matrixTex(d.Vt)}`,`U\\Sigma V^T\\approx${matrixTex(d.reconstructed)}`,
   `A_1=\\sigma_1u_1v_1^T\\approx${matrixTex(d.rankOne)}`,
-  `\\|A-A_1\\|_F=\\sigma_2\\approx${ntex(d.rankOneError)}`,
+  `\\|A-A_1\\|_F=\\sigma_2\\approx${ntex(d.singular[1])}`,
   `A^+=V\\Sigma^+U^T,\\quad\\sigma_j^+=\\begin{cases}1/\\sigma_j&\\sigma_j>0\\\\0&\\sigma_j=0\\end{cases}`];
  const frames=traceFrom<CompletionFrame>([
   {state:{semantic:{matrix:a,gram:d.gram,rank:d.rank},title:'Right directions from AᵀA',detail:'AᵀA is symmetric and positive semidefinite. Its orthogonal eigen-directions are the right singular directions; squared singular values are its eigenvalues.',formula:`A^TA=${mtex(d.gram)}`}},

@@ -13,7 +13,7 @@ import Exercise from '../../lessons/linear-algebra/CompletionExercise';
 import reference from '../../../code/python/svd.py?raw';
 import practical from '../../../code/python/svd_numpy.py?raw';
 
-<Stage caption="Read the four panes from left to right, then down. The solid final curve is UΣVᵀ acting on the circle; the thin dashed overlay is A acting directly. The blue dashed segment is the rank-one image, and its connector to the selected output is the discarded component."><SVDStage client:load /></Stage>
+<Stage caption="Follow the input, Vᵀ, Σ, and U panes in order. The solid final curve is UΣVᵀ acting on the circle; the thin dashed overlay is A acting directly. The teal dashed segment is the rank-one image, and its connector to the selected output is the discarded component."><SVDStage client:load /></Stage>
 
 Drag the input vector, change a matrix entry, then replay the factor actions. Choose **Rank one** to collapse the ellipse to a segment, **Zero** to collapse everything to the origin, and **Reflection** to see why an orthogonal factor can reverse orientation. All four panes use the same coordinate scale, so a change of length is visible rather than hidden by independent zooms.
 
@@ -45,7 +45,7 @@ $$
 x\longmapsto V^Tx\longmapsto\Sigma V^Tx\longmapsto U\Sigma V^Tx=Ax.
 $$
 
-The input pane draws $v_1,v_2$; the output pane draws $\sigma_1u_1,\sigma_2u_2$. The trace contains actual factors, vector states and sampled circle states. Numeric fields and keyboard arrows update the same canonical state as dragging. Read the inspector's approximate factors and their reconstruction and orthogonality errors together.
+The input pane draws $v_1,v_2$; the output pane draws $\sigma_1u_1,\sigma_2u_2$. A very weak axis can be smaller than a screen pixel at the shared scale; the positive inspector value still distinguishes it from an exact zero. The trace contains actual factors, vector states and sampled circle states. Numeric fields and keyboard arrows update the same canonical state as dragging. Read the inspector's approximate factors and their reconstruction and orthogonality errors together.
 
 ## Derivation: why perpendicular directions exist
 
@@ -125,9 +125,13 @@ The checks require relative Frobenius reconstruction error $\|A-U\Sigma V^T\|_F/
 
 The conditioning cue appears when $\kappa_2\cdot256\varepsilon>10^{-8}$. Numerical pseudoinverse recovery is withheld if that conservative error budget reaches $10^{-4}$. These accuracy policies never truncate the small singular value or change exact rank. Reconstruction can be accurate even when inverse recovery is unreliable. Rounded factor entries cannot serve as exact identities or certify the relative precision of a tiny singular value.
 
-## Common mistakes and applications
+The inspector's measured companion error compares $A$ with the binary64 reconstruction of $A_1$. It can show a tiny roundoff residual even when the ideal theorem gives $\|A-A_1\|_F=\sigma_2=0$. The theorem and the measured numerical check answer distinct questions.
+
+## Common mistakes
 
 Singular directions need not be eigenvectors of $A$. Orthogonal includes reflections as well as rotations. A pseudoinverse cannot recover lost information. Small singular values can indicate uncertainty or a useful low-rank model, but discarding them is an explicit approximation. A repeated spectrum supplies a subspace without uniquely named axes.
+
+## Engineering and ML connections
 
 Compression stores a few outer products instead of every matrix entry; storage savings depend on rank and dimensions. PCA applies SVD to a **centered** observations-by-features matrix: right singular vectors identify feature directions, and squared singular values divided by the appropriate sample normalization describe variance. Scaling features changes that analysis. Low-rank embeddings retain strong shared patterns; their quality depends on the data, centering, objective and rank choice, rather than on a universal interpretation of “importance.”
 

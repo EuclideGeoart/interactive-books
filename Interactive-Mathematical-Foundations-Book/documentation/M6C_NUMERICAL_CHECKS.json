@@ -1,0 +1,15 @@
+{
+  "eigenCases": 57,
+  "svdCases": 76,
+  "tolerance": 5.684341886080802e-14,
+  "normalization": "Spectrum, low-rank error and reconstruction divided by max(1, Frobenius norm A); unit eigenpair residual likewise scaled. Orthogonality errors are Frobenius norms without A scaling.",
+  "worst": {
+    "eigenRelativeResidual": 2.281885771620953e-16,
+    "eigenScaledSpectrumError": 2.0409806808936045e-16,
+    "svdRelativeReconstruction": 2.964078395390601e-16,
+    "svdUOrthogonality": 4.710277376051326e-16,
+    "svdVOrthogonality": 3.1401849173675503e-16,
+    "svdScaledSpectrumError": 3.3188730337897884e-16,
+    "svdScaledRankOneError": 2.808666774861361e-16
+  }
+}
