@@ -5,6 +5,7 @@ import { TraceStepper } from '../../ui/TraceStepper';
 import { FormulaScroll } from '../../ui/FormulaScroll';
 import { Inspector } from '../../ui/Inspector';
 import { workedFrames, type Chapter } from './chapter-lesson';
+import './linear-algebra.css';
 
 function Inner({ chapter }: { chapter: Chapter }) {
   const frames = useMemo(() => workedFrames(chapter), [chapter]);

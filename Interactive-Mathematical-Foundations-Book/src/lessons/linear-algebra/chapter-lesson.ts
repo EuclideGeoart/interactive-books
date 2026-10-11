@@ -23,7 +23,7 @@ export const CANONICAL: Record<Chapter, State> = {
 };
 export const TITLES: Record<Chapter, string> = {
   addition: 'Two moves, one destination', scaling: 'Scale a move; inspect its sign', norms: 'Length, unit direction, and three unit balls',
-  dot: 'Turn two vectors; read their alignment', projection: 'Split a vector along a direction', span: 'Two sliders explore the reachable set', basis: 'Move the basis; keep the target fixed',
+  dot: 'Turn two vectors; read their alignment', projection: 'Split a vector along a direction', span: 'Two weights explore the reachable set', basis: 'Move the basis; keep the target fixed',
 };
 const FIELDS: Record<Chapter, readonly Field[]> = {
   addition: ['ux', 'uy', 'vx', 'vy'], scaling: ['vx', 'vy', 'a'], norms: ['vx', 'vy'], dot: ['ux', 'uy', 'vx', 'vy'],
@@ -164,7 +164,7 @@ export function deriveLesson(kind: Chapter, s: State): Derived {
       if (d.reach) line('reachable-line', d.reach[0]!, d.reach[3]!, 'derived', false);
       rows.push(row('a', 'a', 'first weight', rat(d.a), 'x'), row('b', 'b', 'second weight', rat(d.b), 'y'), row('w', '\\mathbf w', 'linear combination', vdesc(d.w), 'primary'), row('rank', '\\dim\\operatorname{span}', 'number of independent directions', text(String(d.rank), String(d.rank))));
       formulas = [`\\mathbf w=${rtex(d.a)}${vtex(u)}+(${rtex(d.b)})${vtex(v)}=${vtex(d.w)}`, `\\operatorname{span}\\{\\mathbf u,\\mathbf v\\}=${d.rank === 2 ? '\\mathbb R^2' : d.rank === 1 ? '\\text{a line through the origin}' : '\\{\\mathbf 0\\}'}`];
-      verdict = d.rank === 2 ? 'Unrestricted real coefficients reach the entire plane. The shaded parallelogram is only the slider window −2 ≤ a,b ≤ 2; its grid comes from these actual directions.' : d.rank === 1 ? 'The two directions are redundant: every combination stays on one line. The thick segment is the portion reached by these bounded sliders.' : 'Both directions are zero: all coefficients lead to the origin. The span is a point.';
+      verdict = d.rank === 2 ? 'Unrestricted real coefficients reach the entire plane. The shaded parallelogram is only the coefficient window −2 ≤ a,b ≤ 2; its grid comes from these actual directions.' : d.rank === 1 ? 'The two directions are redundant: every combination stays on one line. The thick segment is the portion reached by these bounded controls.' : 'Both directions are zero: all coefficients lead to the origin. The span is a point.';
       break;
     }
     case 'basis': {

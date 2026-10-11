@@ -90,9 +90,11 @@ The pedagogical version keeps chosen decimal components exact with Python fracti
 
 Return to the opening stage. Make $\mathbf u=(3,1)$ and $\mathbf v=(-3,2)$: predict a vertical sum before checking. Make the vectors equal: the arrow between their tips becomes zero, but their sum doubles the move. Finally choose opposite vectors and explain why the parallelogram collapses while the subtraction arrow remains nonzero.
 
-## Common mistakes and numerical considerations
+## Common mistakes
 
 The length of a sum is generally **not** the sum of the lengths. For $(1,0)+(0,1)$, the result has length $\sqrt2$, while the separate lengths add to $2$. Opposite unit vectors give an even stronger counterexample: their sum has length $0$. The directions determine how the moves reinforce or cancel.
+
+## Numerical considerations
 
 The stage accepts up to two decimal places and computes component arithmetic as exact rational arithmetic. For instance, its decimal $0.1+0.2$ equals $0.3$ exactly under that input contract. Ordinary binary64 arithmetic can instead store a nearby approximation. Subtracting nearly equal measured components can expose input error; exact arithmetic on the entered decimals cannot recover precision absent from the measurement. NumPy's direct sum may also overflow for sufficiently large finite inputs. The bounded stage avoids overflow; it does not promise that arbitrary floating-point data does.
 

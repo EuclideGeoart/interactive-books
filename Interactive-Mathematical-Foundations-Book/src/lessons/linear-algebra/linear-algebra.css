@@ -1,0 +1,6 @@
+/* Exact component pairs can outgrow a mobile inspector row. */
+.stage[data-stage^='la-'] .inspector-row dd { min-width: 0; max-width: 100%; }
+.stage[data-stage^='la-'] .inspector-row .line { white-space: normal; overflow-wrap: anywhere; }
+.stage[data-stage^='la-'] .drag-point.role-x { --role: var(--c-x); }
+.stage[data-stage^='la-'] .drag-point.role-y { --role: var(--c-y); }
+.stage[data-stage^='la-'] .la-behind { pointer-events: none; }

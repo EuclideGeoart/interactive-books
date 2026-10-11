@@ -9,6 +9,7 @@ import { CoordinatePlane } from '../../ui/plane/CoordinatePlane';
 import { DragPoint } from '../../ui/plane/DragPoint';
 import { Arc, Arrow, Dot, PlaneLabel, Polygon, RightAngle, Segment } from '../../ui/plane/primitives';
 import type { Point } from '../../platform/geometry/viewport';
+import './linear-algebra.css';
 
 function Inner({ chapter }: { chapter: Chapter }) {
   const derive = useMemo(() => (s: State) => deriveLesson(chapter, s), [chapter]);
@@ -31,7 +32,7 @@ function Inner({ chapter }: { chapter: Chapter }) {
       data-ux={s.ux} data-uy={s.uy} data-vx={s.vx} data-vy={s.vy} data-a={s.a} data-b={s.b} data-px={s.px} data-py={s.py}
       data-result-x={d.result?.x} data-result-y={d.result?.y} data-rank={d.rank} data-radius={scene.window.xMax}>
       <header class="stage-head">
-        <h3 id={id}>{TITLES[chapter]}</h3>
+        <h2 id={id}>{TITLES[chapter]}</h2>
         <button type="button" class="button quiet" data-action="reset" disabled={lesson.isCanonical} onClick={() => { lesson.reset(); setLast('v'); announce(CANONICAL[chapter]); }}>Reset</button>
       </header>
       <div class="presets" role="group" aria-label="Explore a configuration">
@@ -49,9 +50,12 @@ function Inner({ chapter }: { chapter: Chapter }) {
             {scene.rightAngle && <RightAngle {...scene.rightAngle} />}
             <Dot at={{ x: 0, y: 0 }} />
             {scene.arrows.filter(a => a.from.x !== a.to.x || a.from.y !== a.to.y).map((a, i) => (
-              <PlaneLabel key={a.name} name={`label-${a.name}`} at={{ x: (a.from.x + a.to.x) / 2, y: (a.from.y + a.to.y) / 2 }} dy={i % 2 ? 16 : -16} role={a.role} math>{a.label}</PlaneLabel>
+              <PlaneLabel key={a.name} name={`label-${a.name}`}
+                at={a.name === 'u' || a.name === 'v' ? a.to : { x: (a.from.x + a.to.x) / 2, y: (a.from.y + a.to.y) / 2 }}
+                dx={a.name === 'u' || a.name === 'v' ? (a.to.x < 0 ? -24 : 24) : 0}
+                dy={a.name === 'u' || a.name === 'v' ? (a.to.y < 0 ? 26 : -26) : i % 2 ? 18 : -18} role={a.role} math>{a.label}</PlaneLabel>
             ))}
-            {scene.handles.map(h => <g key={h.prefix} class={h.prefix === last ? undefined : 'behind'}>
+            {scene.handles.map(h => <g key={h.prefix} class={h.prefix !== last && scene.handles.some(other => other.prefix === last && other.at.x === h.at.x && other.at.y === h.at.y) ? 'la-behind' : undefined}>
               <DragPoint role={h.role} value={h.at} xSpec={spec[`${h.prefix}x`]} ySpec={spec[`${h.prefix}y`]} grid={grid}
                 label={`${h.prefix === 'p' ? 'target p' : `vector ${h.prefix}`} (${s[`${h.prefix}x`]}, ${s[`${h.prefix}y`]})`} hintId={hint}
                 onChange={at => { lesson.set(move(h.prefix, at)); setLast(h.prefix); }} onCommit={at => announce(move(h.prefix, at))} />

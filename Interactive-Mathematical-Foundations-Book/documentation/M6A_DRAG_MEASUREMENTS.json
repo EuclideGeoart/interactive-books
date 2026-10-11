@@ -1,0 +1,64 @@
+{
+  "browser": "154.0.8037.92",
+  "platform": "linux",
+  "cpu": "12th Gen Intel(R) Core(TM) i5-12600",
+  "policy": "1× CPU, half-unit drag grid, 80 real pointer moves; next-paint scheduling included. Synthetic desktop experiment, not a physical touch-device benchmark.",
+  "results": [
+    {
+      "slug": "vector-addition",
+      "samples": 76,
+      "p50": 6.699999999254942,
+      "p95": 9.800000000745058,
+      "max": 13.399999998509884,
+      "over16_7": 0
+    },
+    {
+      "slug": "vector-scaling",
+      "samples": 76,
+      "p50": 4.5,
+      "p95": 5.699999999254942,
+      "max": 6,
+      "over16_7": 0
+    },
+    {
+      "slug": "vector-norms",
+      "samples": 76,
+      "p50": 7.900000002235174,
+      "p95": 9.600000001490116,
+      "max": 9.800000000745058,
+      "over16_7": 0
+    },
+    {
+      "slug": "vector-dot-product",
+      "samples": 76,
+      "p50": 4.099999997764826,
+      "p95": 7.799999997019768,
+      "max": 9.100000001490116,
+      "over16_7": 0
+    },
+    {
+      "slug": "vector-projection",
+      "samples": 76,
+      "p50": 5.699999999254942,
+      "p95": 8.199999999254942,
+      "max": 10.100000001490116,
+      "over16_7": 0
+    },
+    {
+      "slug": "vector-span",
+      "samples": 76,
+      "p50": 4.599999997764826,
+      "p95": 6.400000002235174,
+      "max": 7.100000001490116,
+      "over16_7": 0
+    },
+    {
+      "slug": "vector-basis",
+      "samples": 76,
+      "p50": 7.899999998509884,
+      "p95": 11,
+      "max": 12.5,
+      "over16_7": 0
+    }
+  ]
+}
