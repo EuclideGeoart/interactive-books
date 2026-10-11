@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/production-state.mjs dist",
     "build:subpath": "node scripts/build-subpath.mjs",
     "serve": "node scripts/serve-dist.mjs dist / 4451",
     "serve:subpath": "node scripts/serve-dist.mjs dist-subpath /math-foundations 4452",
@@ -17,11 +17,18 @@
     "test": "vitest run",
     "test:oracle": "node scripts/run-oracle.mjs",
     "check:dist": "node scripts/check-dist.mjs dist / && node scripts/check-dist.mjs dist-subpath /math-foundations/",
-    "test:e2e": "playwright test",
-    "test:e2e:subpath": "playwright test --config playwright.subpath.config.ts",
+    "test:e2e": "playwright test --trace off",
+    "test:e2e:subpath": "playwright test --config playwright.subpath.config.ts --trace off",
     "measure:drag": "node scripts/measure-drag-latency.mjs",
     "oracle:setup": "node scripts/setup-oracle.mjs",
-    "validate": "npm run check && npm test && npm run test:oracle && npm run build && npm run build:subpath && npm run check:dist && npm run test:e2e && npm run test:e2e:subpath"
+    "measure:validation": "node scripts/profile-validation.mjs",
+    "validation:enumerate": "node scripts/enumerate-validation.mjs",
+    "validation:isolation": "node scripts/probe-readonly-isolation.mjs",
+    "validate:focused": "node scripts/validate.mjs focused",
+    "validate:production": "node scripts/validate.mjs focused --only production",
+    "validate:milestone": "node scripts/validate.mjs milestone",
+    "validate:exhaustive": "node scripts/validate.mjs exhaustive",
+    "validate": "node scripts/validate.mjs exhaustive"
   },
   "dependencies": {
     "@astrojs/mdx": "4.3.14",

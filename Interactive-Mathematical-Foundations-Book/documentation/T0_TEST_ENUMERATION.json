@@ -1,0 +1,149 @@
+{
+  "comparison": "Phase A (6d18b60) enumeration to final T0; no full browser execution",
+  "startingMilestone": {
+    "root": 2364,
+    "subpath": 2322,
+    "affineNewCases": [
+      "desktop | tests/e2e/matrices.spec.ts | matrices.spec.ts › II.10: affine composition agrees in the inspector, formulas, arrows, polygons and accessible description",
+      "desktop | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › matrix composition: affine translated squares and output",
+      "tablet | tests/e2e/matrices.spec.ts | matrices.spec.ts › II.10: affine composition agrees in the inspector, formulas, arrows, polygons and accessible description",
+      "tablet | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › matrix composition: affine translated squares and output",
+      "mobile | tests/e2e/matrices.spec.ts | matrices.spec.ts › II.10: affine composition agrees in the inspector, formulas, arrows, polygons and accessible description",
+      "mobile | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › matrix composition: affine translated squares and output"
+    ]
+  },
+  "before": {
+    "root": 2370,
+    "subpath": 2328,
+    "rootSHA256": "98c8c86458daf1027df691ce9294544f901ddccdff8d76fd9dae96c7aa7e1339",
+    "subpathSHA256": "67c7385f2b86c719100bbcf24019a983b4b3f4995f122e26e23f7f94d125ab3d"
+  },
+  "after": {
+    "root": 2379,
+    "subpath": 2271,
+    "rootSHA256": "f5629354b475127482ac6801bf20d779588f209442fd100ed4c891b94e6c31d5",
+    "subpathSHA256": "e9b8ecd659d1f0abf4b6d39072a46e187678b75113c30de8ff0b852c0521a186"
+  },
+  "unchangedNormalizedRootBehaviors": 2370,
+  "unchangedNormalizedSubpathFunctionalBehaviors": 2262,
+  "readOnlyMapping": {
+    "insertedNamespace": "read-only checks",
+    "independentCasesRetained": 396,
+    "checks": [
+      "metadata, one h1, structured outline, no skipped heading level",
+      "every required section of the chapter contract is present",
+      "no duplicate ids across islands, no page overflow, no raw TeX, MathML twin for every formula",
+      "previous / next follow reading order across the whole book",
+      "stage controls are at least 44 × 44 CSS px and every plane has a model-built text alternative",
+      "reduced motion: nothing is animating"
+    ]
+  },
+  "deploymentMapping": {
+    "previousCase": "every internal link, script and stylesheet resolves, stays under the base path, and never leaves the origin",
+    "newCases": [
+      "desktop | tests/e2e/deployment.spec.ts | deployment.spec.ts › every internal link, script and stylesheet resolves, stays under the base path, and never leaves the origin › route batch 1/4",
+      "desktop | tests/e2e/deployment.spec.ts | deployment.spec.ts › every internal link, script and stylesheet resolves, stays under the base path, and never leaves the origin › route batch 2/4",
+      "desktop | tests/e2e/deployment.spec.ts | deployment.spec.ts › every internal link, script and stylesheet resolves, stays under the base path, and never leaves the origin › route batch 3/4",
+      "desktop | tests/e2e/deployment.spec.ts | deployment.spec.ts › every internal link, script and stylesheet resolves, stays under the base path, and never leaves the origin › route batch 4/4",
+      "tablet | tests/e2e/deployment.spec.ts | deployment.spec.ts › every internal link, script and stylesheet resolves, stays under the base path, and never leaves the origin › route batch 1/4",
+      "tablet | tests/e2e/deployment.spec.ts | deployment.spec.ts › every internal link, script and stylesheet resolves, stays under the base path, and never leaves the origin › route batch 2/4",
+      "tablet | tests/e2e/deployment.spec.ts | deployment.spec.ts › every internal link, script and stylesheet resolves, stays under the base path, and never leaves the origin › route batch 3/4",
+      "tablet | tests/e2e/deployment.spec.ts | deployment.spec.ts › every internal link, script and stylesheet resolves, stays under the base path, and never leaves the origin › route batch 4/4",
+      "mobile | tests/e2e/deployment.spec.ts | deployment.spec.ts › every internal link, script and stylesheet resolves, stays under the base path, and never leaves the origin › route batch 1/4",
+      "mobile | tests/e2e/deployment.spec.ts | deployment.spec.ts › every internal link, script and stylesheet resolves, stays under the base path, and never leaves the origin › route batch 2/4",
+      "mobile | tests/e2e/deployment.spec.ts | deployment.spec.ts › every internal link, script and stylesheet resolves, stays under the base path, and never leaves the origin › route batch 3/4",
+      "mobile | tests/e2e/deployment.spec.ts | deployment.spec.ts › every internal link, script and stylesheet resolves, stays under the base path, and never leaves the origin › route batch 4/4"
+    ],
+    "routeBatchSize": 8,
+    "allRoutesRequired": true
+  },
+  "subpathVisualsMovedToRootOnly": [
+    "desktop | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › addition: opening and exceptional state",
+    "desktop | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › scaling: opening and exceptional state",
+    "desktop | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › norms: opening and exceptional state",
+    "desktop | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › dot: opening and exceptional state",
+    "desktop | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › projection: opening and exceptional state",
+    "desktop | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › span: opening and exceptional state",
+    "desktop | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › basis: opening and exceptional state",
+    "desktop | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › matrix transform: opening and exceptional state",
+    "desktop | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › matrix matvec: opening and exceptional state",
+    "desktop | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › matrix composition: opening and exceptional state",
+    "desktop | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › matrix orthogonality: opening and exceptional state",
+    "desktop | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › matrix determinant: opening and exceptional state",
+    "desktop | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › matrix systems: opening and exceptional state",
+    "desktop | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › matrix composition: affine translated squares and output",
+    "desktop | tests/e2e/visual-part-i.spec.ts | visual-part-i.spec.ts › quantities — opening stage",
+    "desktop | tests/e2e/visual-part-i.spec.ts | visual-part-i.spec.ts › coordinates — opening stage",
+    "desktop | tests/e2e/visual-part-i.spec.ts | visual-part-i.spec.ts › algebra — opening stage",
+    "desktop | tests/e2e/visual-part-i.spec.ts | visual-part-i.spec.ts › functions — opening stage",
+    "desktop | tests/e2e/visual-part-i.spec.ts | visual-part-i.spec.ts › function-families — opening stage",
+    "desktop | tests/e2e/visual-part-i.spec.ts | visual-part-i.spec.ts › sets-and-relations — opening stage",
+    "desktop | tests/e2e/visual-part-i.spec.ts | visual-part-i.spec.ts › summation — opening stage",
+    "desktop | tests/e2e/visual-part-i.spec.ts | visual-part-i.spec.ts › notation-map — opening stage",
+    "tablet | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › addition: opening and exceptional state",
+    "tablet | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › scaling: opening and exceptional state",
+    "tablet | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › norms: opening and exceptional state",
+    "tablet | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › dot: opening and exceptional state",
+    "tablet | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › projection: opening and exceptional state",
+    "tablet | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › span: opening and exceptional state",
+    "tablet | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › basis: opening and exceptional state",
+    "tablet | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › matrix transform: opening and exceptional state",
+    "tablet | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › matrix matvec: opening and exceptional state",
+    "tablet | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › matrix composition: opening and exceptional state",
+    "tablet | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › matrix orthogonality: opening and exceptional state",
+    "tablet | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › matrix determinant: opening and exceptional state",
+    "tablet | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › matrix systems: opening and exceptional state",
+    "tablet | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › matrix composition: affine translated squares and output",
+    "tablet | tests/e2e/visual-part-i.spec.ts | visual-part-i.spec.ts › quantities — opening stage",
+    "tablet | tests/e2e/visual-part-i.spec.ts | visual-part-i.spec.ts › coordinates — opening stage",
+    "tablet | tests/e2e/visual-part-i.spec.ts | visual-part-i.spec.ts › algebra — opening stage",
+    "tablet | tests/e2e/visual-part-i.spec.ts | visual-part-i.spec.ts › functions — opening stage",
+    "tablet | tests/e2e/visual-part-i.spec.ts | visual-part-i.spec.ts › function-families — opening stage",
+    "tablet | tests/e2e/visual-part-i.spec.ts | visual-part-i.spec.ts › sets-and-relations — opening stage",
+    "tablet | tests/e2e/visual-part-i.spec.ts | visual-part-i.spec.ts › summation — opening stage",
+    "tablet | tests/e2e/visual-part-i.spec.ts | visual-part-i.spec.ts › notation-map — opening stage",
+    "mobile | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › addition: opening and exceptional state",
+    "mobile | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › scaling: opening and exceptional state",
+    "mobile | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › norms: opening and exceptional state",
+    "mobile | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › dot: opening and exceptional state",
+    "mobile | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › projection: opening and exceptional state",
+    "mobile | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › span: opening and exceptional state",
+    "mobile | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › basis: opening and exceptional state",
+    "mobile | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › matrix transform: opening and exceptional state",
+    "mobile | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › matrix matvec: opening and exceptional state",
+    "mobile | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › matrix composition: opening and exceptional state",
+    "mobile | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › matrix orthogonality: opening and exceptional state",
+    "mobile | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › matrix determinant: opening and exceptional state",
+    "mobile | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › matrix systems: opening and exceptional state",
+    "mobile | tests/e2e/visual-linear-algebra.spec.ts | visual-linear-algebra.spec.ts › matrix composition: affine translated squares and output",
+    "mobile | tests/e2e/visual-part-i.spec.ts | visual-part-i.spec.ts › quantities — opening stage",
+    "mobile | tests/e2e/visual-part-i.spec.ts | visual-part-i.spec.ts › coordinates — opening stage",
+    "mobile | tests/e2e/visual-part-i.spec.ts | visual-part-i.spec.ts › algebra — opening stage",
+    "mobile | tests/e2e/visual-part-i.spec.ts | visual-part-i.spec.ts › functions — opening stage",
+    "mobile | tests/e2e/visual-part-i.spec.ts | visual-part-i.spec.ts › function-families — opening stage",
+    "mobile | tests/e2e/visual-part-i.spec.ts | visual-part-i.spec.ts › sets-and-relations — opening stage",
+    "mobile | tests/e2e/visual-part-i.spec.ts | visual-part-i.spec.ts › summation — opening stage",
+    "mobile | tests/e2e/visual-part-i.spec.ts | visual-part-i.spec.ts › notation-map — opening stage"
+  ],
+  "missingBehaviors": [],
+  "shards": {
+    "root": {
+      "counts": [
+        793,
+        793,
+        793
+      ],
+      "disjoint": true,
+      "completeUnion": true
+    },
+    "subpath": {
+      "counts": [
+        757,
+        757,
+        757
+      ],
+      "disjoint": true,
+      "completeUnion": true
+    }
+  }
+}

@@ -12,16 +12,27 @@ Authority: [`documentation/INTERACTIVE_MATH_FOUNDATIONS_MASTER_PLAN.md`](documen
 | [`documentation/BOOK_II_DESIGN_DIRECTION.md`](documentation/BOOK_II_DESIGN_DIRECTION.md) | The visual identity, typography, layout, navigation and interaction philosophy |
 | [`documentation/CHAPTER_AUTHORING.md`](documentation/CHAPTER_AUTHORING.md) | How to write a chapter on this platform |
 | [`documentation/M0_M2_IMPLEMENTATION_REPORT.md`](documentation/M0_M2_IMPLEMENTATION_REPORT.md) | Evidence, test results, screenshots, limitations, REF-1 prerequisites |
+| [`documentation/T0_SCALABLE_VALIDATION_REPORT.md`](documentation/T0_SCALABLE_VALIDATION_REPORT.md) | Focused, milestone and exhaustive validation commands, coverage and measured costs |
 
 ## Quick start
 
-Requires Node ≥ 22.12 and npm. Python 3 is needed only for the oracle tests; NumPy is a cross-check and is installed into a local `.venv`. Every npm script is plain Node, so the commands below run unchanged in Windows PowerShell, cmd, and POSIX shells (Git Bash is not required; in fact avoid it for `npm run serve`, since MSYS rewrites a bare `/` argument into a Windows path).
+Requires Node ≥ 22.12 and npm. Python 3 is needed only for the oracle tests; NumPy is a cross-check and is installed into a local `.venv`. Native development/build/test commands run unchanged in Windows PowerShell, cmd, and POSIX shells (Git Bash is not required; in fact avoid it for `npm run serve`, since MSYS rewrites a bare `/` argument into a Windows path). The scoped validation runners below require Linux `flock`; Windows retains its native commands and independent baselines.
 
 ```sh
 npm ci
 npm run oracle:setup      # creates .venv with NumPy (only for the oracle cross-check)
 npm run dev               # http://localhost:4321
 ```
+
+### Validation during implementation
+
+```sh
+npm run validate:focused -- --dry-run  # inspect tracked + untracked change scope
+npm run validate:focused              # execute that scope, with a saved manifest
+npm run validate:milestone -- --base <milestone-start-commit>
+```
+
+The runners serialize heavyweight work using `/tmp/imf-heavy.lock`, reuse source-matched production output, disable traces and preserve failure screenshots. Chapter/project selectors are additive; shared or unknown changes expand conservatively. Use `validate:exhaustive` for release or requested full certification. `npm run validate` below remains the legacy exhaustive workflow, not the ordinary edit loop. See the [T0 report](documentation/T0_SCALABLE_VALIDATION_REPORT.md#8-commands-for-agents) for single-chapter math/browser/visual, both-mount production and sharded CI commands.
 
 ### Everything, as a reviewer would run it
 

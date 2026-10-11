@@ -4,6 +4,7 @@ dist-subpath/
 .astro/
 test-results/
 playwright-report/
+validation-results/
 .venv/
 __pycache__/
 *.pyc

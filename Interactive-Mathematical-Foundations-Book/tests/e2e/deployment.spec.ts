@@ -6,9 +6,13 @@
 import { expect, test, type Page } from '@playwright/test';
 
 import { allChapters } from '../../src/curriculum/queries';
+import { timed } from './timing';
+import { hydrateAll } from './helpers';
+import { expectedRoutes, routeBatches, routeCoverage, visitRoutes } from './deployment-coverage';
 
 // every published chapter is crawled; the list is derived from the curriculum, never typed here
-const SEED = ['./', 'contents/', 'foundation/', ...allChapters.filter(r => r.chapter.status === 'available').map(r => `chapters/${r.chapter.slug}/`)];
+const publishedSlugs = allChapters.filter(r => r.chapter.status === 'available').map(r => r.chapter.slug!);
+const batches = routeBatches(expectedRoutes(publishedSlugs, 'http://manifest.local/'));
 
 test('the suite really runs against the intended deployment (root vs sub-directory)', async ({ page, baseURL }) => {
   const intended = (process.env.BOOK_TEST_BASE ?? '/').replace(/\/?$/, '/');
@@ -25,50 +29,83 @@ async function internalTargets(page: Page, origin: string, basePath: string) {
   return page.evaluate(({ origin, basePath }) => {
     const urls = new Set<string>();
     const problems: string[] = [];
-    for (const el of document.querySelectorAll<HTMLElement>('a[href], link[href], script[src], img[src], [component-url], [renderer-url]')) {
-      const raw = el.getAttribute('href') ?? el.getAttribute('src') ?? el.getAttribute('component-url') ?? el.getAttribute('renderer-url') ?? '';
-      if (raw === '' || raw.startsWith('#') || /^(mailto:|tel:|data:)/.test(raw)) continue;
-      const url = new URL(raw, location.href);
-      if (url.origin !== origin) { problems.push(`external: ${raw}`); continue; }
-      if (!url.pathname.startsWith(basePath)) problems.push(`outside base ${basePath}: ${raw}`);
-      urls.add(url.pathname + url.search + url.hash);
+    for (const el of document.querySelectorAll<HTMLElement>('a[href], link[href], script[src], img[src], [component-url], [renderer-url], [before-hydration-url]')) {
+      for (const attribute of ['href', 'src', 'component-url', 'renderer-url', 'before-hydration-url']) {
+        const raw = el.getAttribute(attribute);
+        if (raw === null || raw === '' || /^(mailto:|tel:|data:)/.test(raw)) continue;
+        const url = new URL(raw, location.href);
+        if (url.origin !== origin) { problems.push(`external: ${raw}`); continue; }
+        if (!url.pathname.startsWith(basePath)) problems.push(`outside base ${basePath}: ${raw}`);
+        urls.add(url.pathname + url.search + url.hash);
+      }
     }
     return { urls: [...urls], problems };
   }, { origin, basePath });
 }
 
-test('every internal link, script and stylesheet resolves, stays under the base path, and never leaves the origin', async ({ page, baseURL }) => {
-  const base = new URL(baseURL!);
-  const failed: string[] = [];
-  const foreign: string[] = [];
-  page.on('response', r => { if (r.status() >= 400) failed.push(`${r.status()} ${r.url()}`); });
-  page.on('request', r => { const u = new URL(r.url()); if (u.origin !== base.origin && !/^(data|blob):/.test(r.url())) foreign.push(r.url()); });
+test.describe('every internal link, script and stylesheet resolves, stays under the base path, and never leaves the origin', () => {
+  for (const [index, batch] of batches.entries()) test(`route batch ${index + 1}/${batches.length}`, async ({ page, baseURL }, info) => {
+    const base = new URL(baseURL!);
+    const failed: string[] = [];
+    const foreign: string[] = [];
+    page.on('response', r => { if (r.status() >= 400) failed.push(`${r.status()} ${r.url()}`); });
+    page.on('requestfailed', r => failed.push(`${r.failure()?.errorText}: ${r.url()}`));
+    page.on('pageerror', error => failed.push(`pageerror: ${error.message}`));
+    page.on('request', r => { const u = new URL(r.url()); if (u.origin !== base.origin && !/^(data|blob):/.test(r.url())) foreign.push(r.url()); });
 
-  const queue = SEED.map(p => new URL(p, base).pathname);
-  const visited = new Set<string>();
-  const problems: string[] = [];
-  while (queue.length && visited.size < 25) {
-    const path = queue.shift()!;
-    if (visited.has(path)) continue;
-    visited.add(path);
-    const response = await page.goto(path);
-    expect(response?.status(), path).toBe(200);
-    await page.evaluate(() => document.fonts.ready);
-    const { urls, problems: p } = await internalTargets(page, base.origin, base.pathname);
-    problems.push(...p.map(x => `${path}: ${x}`));
-    for (const u of urls) {
-      const target = new URL(u, base.origin);
-      if (/\.(html|\/)?$/.test(target.pathname) || target.pathname.endsWith('/')) queue.push(target.pathname);
-      else { const r = await page.request.get(target.pathname); if (r.status() >= 400) failed.push(`${r.status()} ${target.pathname} (linked from ${path})`); }
+    const publicationExpected = expectedRoutes(publishedSlugs, base.href);
+    const expected = batch.map(path => new URL(path.slice(1), base).pathname);
+    const visited = new Set<string>();
+    const problems: string[] = [];
+    const assets = new Set<string>();
+    const ids = new Map<string, Set<string>>();
+    const anchors: { from: string; path: string; fragment: string }[] = [];
+    try { await visitRoutes(expected, async path => {
+      const response = await timed('navigation', () => page.goto(path));
+      expect(response?.status(), path).toBe(200);
+      await hydrateAll(page);
+      ids.set(path, new Set(await page.locator('[id]').evaluateAll(elements => elements.map(element => element.id))));
+      const { urls, problems: p } = await internalTargets(page, base.origin, base.pathname);
+      problems.push(...p.map(x => `${path}: ${x}`));
+      for (const u of urls) {
+        const target = new URL(u, base.origin);
+        if (target.pathname.endsWith('/') || target.pathname.endsWith('.html')) {
+          if (!publicationExpected.includes(target.pathname)) problems.push(`${path}: linked route outside publication manifest: ${target.pathname}`);
+          if (target.hash.length > 1) anchors.push({ from: path, path: target.pathname, fragment: target.hash.slice(1) });
+        } else {
+          const asset = target.pathname + target.search;
+          if (!assets.has(asset)) {
+            assets.add(asset);
+            try { const r = await page.request.get(asset); if (r.status() >= 400) failed.push(`${r.status()} ${asset} (linked from ${path})`); }
+            catch (error) { failed.push(`${asset}: ${String(error)}`); }
+          }
+        }
+      }
+      // fragment targets exist on the page they point to
+      const broken = await page.evaluate(() => [...document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]')].map(a => a.getAttribute('href')!).filter(h => h.length > 1 && !document.getElementById(decodeURIComponent(h.slice(1)))));
+      expect(broken, `${path}: in-page anchors without a target`).toEqual([]);
+    }, visited);
+    for (const anchor of anchors) {
+      try {
+        if (!ids.has(anchor.path) && publicationExpected.includes(anchor.path)) {
+          const response = await page.request.get(anchor.path);
+          if (response.status() !== 200) failed.push(`${response.status()} ${anchor.path} (anchor from ${anchor.from})`);
+          ids.set(anchor.path, new Set([...(await response.text()).matchAll(/\sid="([^"]+)"/g)].map(match => match[1]!)));
+        }
+        if (!ids.get(anchor.path)?.has(decodeURIComponent(anchor.fragment))) problems.push(`${anchor.from}: broken anchor ${anchor.path}#${anchor.fragment}`);
+      }
+      catch { problems.push(`${anchor.from}: invalid fragment encoding #${anchor.fragment}`); }
     }
-    // fragment targets exist on the page they point to
-    const broken = await page.evaluate(() => [...document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]')].map(a => a.getAttribute('href')!).filter(h => h.length > 1 && !document.getElementById(decodeURIComponent(h.slice(1)))));
-    expect(broken, `${path}: in-page anchors without a target`).toEqual([]);
-  }
-  expect(visited.size).toBeGreaterThanOrEqual(3);
-  expect(problems).toEqual([]);
-  expect(failed).toEqual([]);
-  expect(foreign).toEqual([]);
+    } finally {
+      await info.attach('deployment-coverage', { body: JSON.stringify({ publicationExpected, batch: index + 1, ...routeCoverage(expected, visited), assets: [...assets], problems, failed, foreign }, null, 2), contentType: 'application/json' });
+    }
+    expect(routeCoverage(expected, visited).missing).toEqual([]);
+    expect(routeCoverage(expected, visited).unexpected).toEqual([]);
+    expect(visited.size).toBe(expected.length);
+    expect(problems).toEqual([]);
+    expect(failed).toEqual([]);
+    expect(foreign).toEqual([]);
+  });
 });
 
 test('fonts: the KaTeX and text fonts that the page uses are served (200) from the deployment, not from a CDN', async ({ page, baseURL }) => {

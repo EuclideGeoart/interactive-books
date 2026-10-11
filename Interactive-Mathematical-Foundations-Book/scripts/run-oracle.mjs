@@ -12,10 +12,14 @@ if (!cmd) {
   ({ cmd, pre } = py);
 }
 console.log(`oracle interpreter: ${[cmd, ...pre].join(' ')}`);
+const files = readdirSync('oracle').filter(f => f.endsWith('_oracle.py') && !f.startsWith('test_')).sort();
+const requested = [...new Set(process.argv.slice(2))];
+for (const family of requested) if (!files.includes(`${family}_oracle.py`)) throw new Error('Unknown oracle family: ' + family);
 // -X utf8 keeps output encoding identical on Windows consoles (the oracle prints non-ASCII symbols).
-runOrExit(cmd, [...pre, '-X', 'utf8', '-m', 'unittest', 'discover', '-s', 'oracle', '-p', 'test_*.py', '-v']);
+for (const pattern of requested.length ? requested.map(family => `test_${family}_oracle.py`) : ['test_*.py'])
+  runOrExit(cmd, [...pre, '-X', 'utf8', '-m', 'unittest', 'discover', '-s', 'oracle', '-p', pattern, '-v']);
 // Every oracle (oracle/<family>_oracle.py) must support `--check`: it fails when its committed fixture is stale. Discovered, not listed,
 // so a new chapter's oracle cannot be forgotten.
-for (const file of readdirSync('oracle').filter(f => f.endsWith('_oracle.py') && !f.startsWith('test_')).sort()) {
+for (const file of files.filter(file => !requested.length || requested.includes(file.replace('_oracle.py', '')))) {
   runOrExit(cmd, [...pre, '-X', 'utf8', `oracle/${file}`, '--check']);
 }

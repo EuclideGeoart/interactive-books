@@ -1,4 +1,13 @@
 import { expect, type Locator, type Page } from '@playwright/test';
+import { timed } from './timing';
+
+export async function hydrateAll(page: Page, phase = 'hydration') {
+  return timed(phase, async () => {
+    for (const el of await page.locator('[data-stage], [data-exercise]').all()) await el.scrollIntoViewIfNeeded();
+    await expect(page.locator('[data-stage]:not([data-hydrated="true"]), [data-exercise]:not([data-hydrated="true"])')).toHaveCount(0);
+    await page.evaluate(() => document.fonts.ready);
+  });
+}
 
 /** The plane shows [−7, 7] on both axes with ONE scale (plan §3.1, §7.3). Expected pixels are derived from that
  *  convention alone — never from the application's own viewport code. */

@@ -1,0 +1,338 @@
+{
+  "scope": "I.9 + II.10 generic contracts and unchanged axe/feedback states, representative Linux screenshots, all published-route deployment checks; one sample per configuration, not full-suite timings",
+  "units": "Phase totals are summed test time, not elapsed wall time. beforeAll setup is separately accounted in final profiles. GNU time RSS is not aggregate browser-tree memory.",
+  "runs": [
+    {
+      "label": "before",
+      "workers": 3,
+      "cases": 57,
+      "status": "passed",
+      "wallSeconds": 75.95,
+      "userSeconds": 105.11,
+      "systemSeconds": 13.7,
+      "cpuPercent": 156,
+      "maxIndividualRSSKiB": 830484,
+      "involuntaryContextSwitches": 15759,
+      "host": {
+        "parallelism": 12,
+        "loadStart": [
+          1.11,
+          0.97,
+          6.26
+        ],
+        "freeBytesStart": 20060631040,
+        "totalBytes": 33402744832,
+        "loadEnd": [
+          5.45,
+          2.33,
+          6.32
+        ],
+        "freeBytesEnd": 19695034368
+      },
+      "phaseTotalsMs": {
+        "desktop": {
+          "navigation": 9483,
+          "generic": 4027,
+          "hydration": 5872,
+          "axe": 46687,
+          "feedback": 5049,
+          "visual": 996,
+          "other": 1404,
+          "deployment": 1645
+        },
+        "tablet": {
+          "navigation": 9153,
+          "hydration": 5892,
+          "generic": 3585,
+          "axe": 44120,
+          "feedback": 4727,
+          "visual": 1035,
+          "other": 1316,
+          "deployment": 1540
+        },
+        "mobile": {
+          "navigation": 8862,
+          "hydration": 5895,
+          "generic": 4142,
+          "axe": 43458,
+          "feedback": 4699,
+          "visual": 1387,
+          "other": 1220,
+          "deployment": 1380
+        }
+      },
+      "chapterPhaseTotalsMs": {
+        "desktop": {
+          "navigation": 5566,
+          "generic": 4027,
+          "hydration": 5872,
+          "axe": 46687,
+          "feedback": 5049
+        },
+        "tablet": {
+          "navigation": 5330,
+          "hydration": 5892,
+          "generic": 3585,
+          "axe": 44120,
+          "feedback": 4727
+        },
+        "mobile": {
+          "navigation": 5267,
+          "hydration": 5895,
+          "generic": 4142,
+          "axe": 43458,
+          "feedback": 4699
+        }
+      }
+    },
+    {
+      "label": "after",
+      "workers": 3,
+      "cases": 57,
+      "status": "passed",
+      "wallSeconds": 79.74,
+      "userSeconds": 93.15,
+      "systemSeconds": 12.28,
+      "cpuPercent": 132,
+      "maxIndividualRSSKiB": 874060,
+      "involuntaryContextSwitches": 10251,
+      "host": {
+        "parallelism": 12,
+        "loadStart": [
+          0.64,
+          5.29,
+          7.75
+        ],
+        "freeBytesStart": 20088262656,
+        "totalBytes": 33402744832,
+        "loadEnd": [
+          4.1,
+          5.24,
+          7.52
+        ],
+        "freeBytesEnd": 20111282176
+      },
+      "phaseTotalsMs": {
+        "desktop": {
+          "navigation": 5905,
+          "hydration": 12453,
+          "generic": 2136,
+          "axe": 44283,
+          "feedback": 4607,
+          "visual": 867,
+          "other": 1244,
+          "deployment": 430
+        },
+        "tablet": {
+          "navigation": 6153,
+          "hydration": 12357,
+          "generic": 1964,
+          "axe": 43745,
+          "feedback": 4614,
+          "visual": 828,
+          "other": 1157,
+          "deployment": 429
+        },
+        "mobile": {
+          "navigation": 5160,
+          "hydration": 12369,
+          "generic": 2132,
+          "axe": 43291,
+          "feedback": 4546,
+          "visual": 1354,
+          "other": 1302,
+          "deployment": 407
+        }
+      },
+      "chapterPhaseTotalsMs": {
+        "desktop": {
+          "navigation": 2182,
+          "hydration": 2857,
+          "generic": 2136,
+          "axe": 44283,
+          "feedback": 4607
+        },
+        "tablet": {
+          "navigation": 2100,
+          "hydration": 2825,
+          "generic": 1964,
+          "axe": 43745,
+          "feedback": 4614
+        },
+        "mobile": {
+          "navigation": 1998,
+          "hydration": 2930,
+          "generic": 2132,
+          "axe": 43291,
+          "feedback": 4546
+        }
+      }
+    },
+    {
+      "label": "final-three-workers",
+      "workers": 3,
+      "cases": 66,
+      "status": "passed",
+      "wallSeconds": 75.64,
+      "userSeconds": 97.77,
+      "systemSeconds": 12.72,
+      "cpuPercent": 146,
+      "maxIndividualRSSKiB": 866244,
+      "involuntaryContextSwitches": 11200,
+      "host": {
+        "parallelism": 12,
+        "loadStart": [
+          0.32,
+          2.71,
+          6.03
+        ],
+        "freeBytesStart": 20108242944,
+        "totalBytes": 33402744832,
+        "loadEnd": [
+          4.04,
+          3.31,
+          5.98
+        ],
+        "freeBytesEnd": 19570995200
+      },
+      "phaseTotalsMs": {
+        "desktop": {
+          "navigation": 6693,
+          "hydration": 12529,
+          "generic": 2019,
+          "axe": 44103,
+          "feedback": 4610,
+          "deployment": 900,
+          "visual": 871,
+          "other": 1177
+        },
+        "tablet": {
+          "navigation": 6487,
+          "hydration": 12646,
+          "generic": 2112,
+          "axe": 43565,
+          "feedback": 4652,
+          "deployment": 828,
+          "visual": 923,
+          "other": 1160
+        },
+        "mobile": {
+          "navigation": 5929,
+          "hydration": 12763,
+          "generic": 2387,
+          "axe": 42840,
+          "feedback": 4598,
+          "deployment": 859,
+          "visual": 1419,
+          "other": 1189
+        }
+      },
+      "chapterPhaseTotalsMs": {
+        "desktop": {
+          "navigation": 2193,
+          "hydration": 2956,
+          "generic": 2019,
+          "axe": 44103,
+          "feedback": 4610
+        },
+        "tablet": {
+          "navigation": 2068,
+          "hydration": 2947,
+          "generic": 2112,
+          "axe": 43565,
+          "feedback": 4652
+        },
+        "mobile": {
+          "navigation": 2198,
+          "hydration": 3174,
+          "generic": 2387,
+          "axe": 42840,
+          "feedback": 4598
+        }
+      }
+    },
+    {
+      "label": "final-one-worker",
+      "workers": 1,
+      "cases": 66,
+      "status": "passed",
+      "wallSeconds": 189.9,
+      "userSeconds": 75.7,
+      "systemSeconds": 8.72,
+      "cpuPercent": 44,
+      "maxIndividualRSSKiB": 961996,
+      "involuntaryContextSwitches": 706,
+      "host": {
+        "parallelism": 12,
+        "loadStart": [
+          2.01,
+          2.82,
+          5.64
+        ],
+        "freeBytesStart": 20217724928,
+        "totalBytes": 33402744832,
+        "loadEnd": [
+          1.43,
+          2.2,
+          4.88
+        ],
+        "freeBytesEnd": 20041371648
+      },
+      "phaseTotalsMs": {
+        "desktop": {
+          "navigation": 5036,
+          "hydration": 12074,
+          "generic": 1610,
+          "axe": 37916,
+          "feedback": 3886,
+          "deployment": 655,
+          "visual": 793,
+          "other": 955
+        },
+        "tablet": {
+          "navigation": 4885,
+          "hydration": 12067,
+          "generic": 1546,
+          "axe": 37359,
+          "feedback": 3904,
+          "deployment": 597,
+          "visual": 703,
+          "other": 896
+        },
+        "mobile": {
+          "navigation": 4775,
+          "hydration": 12075,
+          "generic": 1624,
+          "axe": 36525,
+          "feedback": 3945,
+          "deployment": 728,
+          "visual": 1230,
+          "other": 913
+        }
+      },
+      "chapterPhaseTotalsMs": {
+        "desktop": {
+          "navigation": 1631,
+          "hydration": 2752,
+          "generic": 1610,
+          "axe": 37916,
+          "feedback": 3886
+        },
+        "tablet": {
+          "navigation": 1522,
+          "hydration": 2786,
+          "generic": 1546,
+          "axe": 37359,
+          "feedback": 3904
+        },
+        "mobile": {
+          "navigation": 1614,
+          "hydration": 2831,
+          "generic": 1624,
+          "axe": 36525,
+          "feedback": 3945
+        }
+      }
+    }
+  ]
+}
