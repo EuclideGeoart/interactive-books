@@ -1,0 +1,121 @@
+---
+kind: chapter
+curriculumId: II.7
+title: "Linear independence, basis, and coordinates"
+hero: "When do two directions give *unique* coordinates?"
+lede: Hold a target fixed and move the two basis vectors. Its coordinates change, its position does not, and singular directions reveal the difference between reachability and uniqueness.
+description: Linear independence, two-dimensional bases, unique coordinates, a practical determinant test, singular and nearly singular configurations, Python and NumPy, and graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import LinearStage from '../../lessons/linear-algebra/LinearStage';
+import WorkedStage from '../../lessons/linear-algebra/WorkedStage';
+import Exercise from '../../lessons/linear-algebra/Exercise';
+import reference from '../../../code/python/linear_basis.py?raw';
+import practical from '../../../code/python/linear_basis_numpy.py?raw';
+
+<Stage caption="Move u or v while keeping target p fixed. The readout solves p = au + bv exactly. Move p to test a new target. Collinear directions remove unique coordinates, and almost-collinear directions reveal sensitivity."><LinearStage chapter="basis" client:load /></Stage>
+
+Start with target $(3,0)$. Predict whether its two weights change when you move only $\mathbf u$. Then choose **Collinear directions**: the target remains where it was, but the unique coordinate rows become undefined. Move the target onto that line to see why being reachable still does not produce a unique pair.
+
+## Intuition: coordinates depend on a measuring frame
+
+The standard components $(3,0)$ describe a point relative to one horizontal and one vertical unit direction. A different pair of directions can describe the same target with different weights. Coordinates are instructions for reconstructing a vector from a chosen basis; they are not an intrinsic pair attached to the target independently of the frame.
+
+A useful basis supplies enough directions to reach every target and avoids redundant directions that would give multiple descriptions. The stage holds $\mathbf p$ fixed when a basis tip moves, so the changing coordinates reveal a change of description rather than a motion of the target.
+
+## Definition
+
+Two vectors are **linearly independent** when
+
+$$
+a\mathbf u+b\mathbf v=\mathbf0
+\quad\Longrightarrow\quad a=b=0.
+$$
+
+A **basis of $\mathbb R^2$** is an ordered pair of independent vectors that spans the plane. In two dimensions, two independent vectors already span the plane. For a chosen ordered basis $(\mathbf u,\mathbf v)$, the coordinates of $\mathbf p$ are the unique pair $(a,b)$ satisfying
+
+$$
+\mathbf p=a\mathbf u+b\mathbf v.
+$$
+
+Order matters: swapping the basis vectors swaps their coordinate roles. Orthogonality and unit lengths are convenient but are not required. A slanted, unequal-length independent pair is still a basis.
+
+## Mechanics: reconstruction and singularity
+
+The blue and green basis arrows show the two directions. The head-to-tail weighted arrows reconstruct the target. Grid lines correspond to fixed basis coefficients, so moving the basis changes the coordinate grid. The inspector keeps the standard target components separate from the solved basis coordinates.
+
+The stage's independence test is the exact two-dimensional quantity
+
+$$
+\Delta=u_xv_y-u_yv_x.
+$$
+
+This is the determinant of the two basis columns. Here it is a practical independence test; its full area, orientation, and higher-dimensional interpretation belongs to II.12. If $\Delta=0$, the pair is singular and cannot be a basis of the plane. The stage then tests whether the target lies in the surviving span, and distinguishes **no representation** from **infinitely many representations**. It never supplies a fabricated unique coordinate pair.
+
+## Derivation: an independent pair has unique weights
+
+The component equations are
+
+$$
+u_xa+v_xb=p_x,\qquad u_ya+v_yb=p_y.
+$$
+
+Multiply the first by $v_y$, the second by $v_x$, and subtract. The $b$ terms cancel, leaving $\Delta a=p_xv_y-p_yv_x$. Eliminate $a$ similarly. For $\Delta\ne0$,
+
+$$
+a=\frac{p_xv_y-p_yv_x}{\Delta},\qquad
+b=\frac{u_xp_y-u_yp_x}{\Delta}.
+$$
+
+These formulas give a representation for every target. To prove uniqueness, suppose another pair $(a',b')$ gives the same target. Subtract the two representations: $(a-a')\mathbf u+(b-b')\mathbf v=\mathbf0$. Independence forces both differences to vanish.
+
+If the two directions are collinear, a nonzero combination can cancel them. For instance, $\mathbf v=2\mathbf u$ gives $2\mathbf u-\mathbf v=\mathbf0$, proving dependence. Any reachable target then has infinitely many representations because adding a multiple of this cancelling pair changes the coefficients without changing the vector. A zero basis vector immediately creates such redundancy.
+
+## Worked examples
+
+For $\mathbf u=(2,1)$, $\mathbf v=(1,2)$, and $\mathbf p=(3,0)$, the determinant is $3$. The formulas yield $a=2$ and $b=-1$, checked by $2(2,1)-(1,2)=(3,0)$. The target's standard components $(3,0)$ and its basis coordinates $(2,-1)$ describe the same vector in different frames.
+
+<Stage caption="Inspect the determinant, solve the two coordinates, and check reconstruction."><WorkedStage chapter="basis" client:load /></Stage>
+
+For $\mathbf u=(1,1)$ and $\mathbf v=(2,2)$, target $(3,3)$ is reachable with any $a+2b=3$, including $(3,0)$ and $(1,1)$. Target $(3,0)$ is unreachable because every combination has equal components. A singular pair can therefore fail through nonuniqueness or through nonexistence, depending on the target.
+
+## Executable reference code
+
+The pedagogical code implements the elimination formulas with exact decimal fractions and checks reconstruction. The NumPy example forms an array with basis vectors as **columns** and solves for the weights. This small practical bridge follows the book's column-vector convention; a general systems chapter is still ahead. A singular solve raises an error rather than returning unique coordinates.
+
+<CodeFile source={reference} file="code/python/linear_basis.py" />
+<CodeFile source={practical} file="code/python/linear_basis_numpy.py" />
+
+## Explore
+
+Try the standard basis $(1,0),(0,1)$ and confirm that the weights match the target's components. Then double only the first basis vector: the first weight halves while the target stays fixed. Swap the two basis vectors with numeric entry and inspect the swapped coordinate roles. Make one basis vector zero, then both zero, and compare which targets remain reachable.
+
+Choose **Almost collinear**. The exact determinant is $0.0001$, so the pair remains independent. Reconstructing a target away from the narrow direction can require very large weights of opposite signs. The plane fits those actual weighted arrows; the small target may consequently occupy very little screen space. Reset returns to a comfortably separated pair.
+
+## Common mistakes
+
+Two nonzero vectors can still be dependent. Two perpendicular nonzero vectors are independent, but perpendicularity is sufficient rather than necessary. A reachable target does not prove the pair spans the plane, and a small reconstruction residual alone does not prove the computed coordinates are accurate. Also distinguish basis change from moving the target: changing the measuring frame changes the numbers describing the same vector.
+
+## Numerical considerations
+
+Exact independence asks whether $\Delta$ is zero. Numerical reliability asks how sensitive the coordinates are to errors in the vectors and target. The stage reports the relative directional separation $|\sin\theta|$, which removes the vectors' overall scale. Below $10^{-4}$ it warns about sensitivity; this warning never changes exact independence. The threshold is a teaching cue for this bounded scene, not a general solver's rank decision.
+
+Near dependence, large weighted moves nearly cancel. Rounding can then alter the final target substantially, even when each large move changes only slightly. NumPy's condition estimate previews this issue; practical rank and solver tolerances require the scale and uncertainty of actual data. Exact arithmetic on entered decimals certifies the intended reconstruction but cannot repair inaccurate measurements. The stage rejects invalid numeric input and shows fractions exactly, while rounded decimal companions use $\approx$.
+
+## Engineering and ML connections
+
+A basis is a coordinate system for signals, motions, or features. Redundant directions can create multiple parameter settings with the same output; changing a basis changes the weights without necessarily changing the represented object. The column convention also prepares a transformation view of matrices: specify where the standard basis directions go, and every other vector follows by the same weighted-combination rule.
+
+## Exercises
+
+<Exercise id="basis-coordinates" client:load />
+<Exercise id="basis-det" client:load />
+<Exercise id="basis-target" client:load />
+<Exercise id="basis-singular" client:load />
+<Exercise id="basis-condition" client:load />
+
+## Summary and checkpoints
+
+Independent directions supply unique weights; a basis makes those weights coordinates. Check that you can derive the two-coordinate formulas, distinguish unreachable from nonunique singular targets, and explain why exact independence can coexist with numerical sensitivity. You are ready for II.8, where a matrix will describe a transformation by its effect on basis directions. That chapter remains planned.

@@ -1,0 +1,120 @@
+---
+kind: chapter
+curriculumId: II.6
+title: "Linear combinations and span"
+hero: "What can two weighted *moves* reach?"
+lede: Change two coefficients and watch the destination move through a parallelogram. Change the directions themselves and see the reachable set collapse from plane to line to point.
+description: Linear combinations, span as all real weighted sums, coefficient grids, dependent directions, plane-line-point collapse, executable Python and NumPy, and exercises with feedback.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import Xref from '../../shell/Xref.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import LinearStage from '../../lessons/linear-algebra/LinearStage';
+import WorkedStage from '../../lessons/linear-algebra/WorkedStage';
+import Exercise from '../../lessons/linear-algebra/Exercise';
+import reference from '../../../code/python/linear_span.py?raw';
+import practical from '../../../code/python/linear_span_numpy.py?raw';
+
+<Stage caption="Change a and b to move w = au + bv. Drag either direction to change the reachable geometry. The shaded parallelogram is the image of the bounded coefficient square −2 ≤ a,b ≤ 2; unrestricted coefficients define the span."><LinearStage chapter="span" client:load /></Stage>
+
+Move just $a$, then just $b$, and identify the two directions of travel. Choose **Collinear directions**: two controls still work, but their effects now lie on the same line. Choose **Both directions zero**: changing either weight cannot move the result. The geometry follows the actual vectors in every case.
+
+## Intuition: directions are resources
+
+One nonzero vector supplies a line of possible moves, because its scalar multiples point along that line in either direction. Two vectors can supply two different directional resources. A weighted sum first scales each move, then adds them head-to-tail. Independent directions let the two weights navigate the plane.
+
+Two arrows do not necessarily supply two directions. If one is twice the other, changing its coefficient only changes how far you move along a line already available. Zero contributes no directional resource at all. This is why the number of controls is not the dimension of the reachable set.
+
+## Definition
+
+For real coefficients $a,b$, a **linear combination** is
+
+$$
+\mathbf w=a\mathbf u+b\mathbf v.
+$$
+
+The **span** is the set of all such combinations with unrestricted real coefficients:
+
+$$
+\operatorname{span}\{\mathbf u,\mathbf v\}
+=\{a\mathbf u+b\mathbf v:a,b\in\mathbb R\}.
+$$
+
+In the plane it can be all of $\mathbb R^2$, a line through the origin, or the singleton $\{\mathbf0\}$. It always contains zero, obtained with $a=b=0$. It is also closed under addition and scalar multiplication. These properties make it a vector subspace; a translated line that misses the origin is not a span of ordinary vectors.
+
+## Mechanics: a coefficient square becomes a parallelogram
+
+For fixed directions, varying $a$ while holding $b$ fixed traces a line parallel to $\mathbf u$. Varying $b$ traces a line parallel to $\mathbf v$. The stage's coefficient grid uses several fixed values of each weight. Every line endpoint is computed as an actual combination of the current vectors.
+
+The corners of the bounded region are $-2\mathbf u-2\mathbf v$, $2\mathbf u-2\mathbf v$, $2\mathbf u+2\mathbf v$, and $-2\mathbf u+2\mathbf v$. These are the images of the four corners of the control square. When the directions become collinear, the corners and grid collapse onto a segment. When both become zero, they collapse to the origin. Nothing remains shaded as a plane when the mathematics has only one or zero directions.
+
+<Callout kind="scope" title="A control window is not the span">
+The stage limits coefficients to $[-2,2]$ so the exploration stays readable. The definition permits all real coefficients. A target outside the shaded region can still be in the span: it may need larger weights. A point off the collinear line cannot be reached by any weights.
+</Callout>
+
+## Derivation: plane, line, or point
+
+Suppose $\mathbf v=c\mathbf u$ with $\mathbf u\ne0$. Then
+
+$$
+a\mathbf u+b\mathbf v=(a+bc)\mathbf u.
+$$
+
+Every result lies on $\mathbf u$'s line, and every point on that line is reachable by choosing $a$ appropriately. If both vectors are zero, every combination is zero. If one is zero and the other is nonzero, the nonzero vector still spans a line.
+
+When neither direction is a multiple of the other, every target in the plane can be written as a combination. To see the mechanism, begin by moving along $\mathbf u$. The second direction supplies a nonzero sideways component relative to that line; choose $b$ to match the target's sideways displacement, then choose $a$ to correct the remaining parallel displacement. The next chapter turns this argument into exact coordinate formulas and proves uniqueness.
+
+Closure under addition follows by grouping weights:
+
+$$
+(a\mathbf u+b\mathbf v)+(c\mathbf u+d\mathbf v)
+=(a+c)\mathbf u+(b+d)\mathbf v.
+$$
+
+Scaling a combination likewise scales both weights. These identities explain why linear combinations remain inside the same span.
+
+## Worked examples
+
+With $\mathbf u=(2,1)$, $\mathbf v=(1,2)$, $a=1$, and $b=-0.5$, the weighted moves are $(2,1)$ and $(-0.5,-1)$. Their sum is $(1.5,0)$, despite neither original vector lying on the horizontal axis.
+
+<Stage caption="Inspect the two scaled moves and their sum; the negative weight matters."><WorkedStage chapter="span" client:load /></Stage>
+
+For $\mathbf u=(1,2)$ and $\mathbf v=(2,4)$, the combination reduces to $(a+2b)(1,2)$. Both $(a,b)=(1,0)$ and $(-1,1)$ produce $(1,2)$. A target such as $(1,0)$ is impossible because every reachable point satisfies $y=2x$. This is a failed construction for a mathematical reason, independent of the control range.
+
+## Executable reference code
+
+The pedagogical code spells out the weighted component sums and identifies zero, one, or two directions. NumPy shows the same combination directly, then maps a small table of coefficient pairs into sample points. Those samples illustrate a bounded region; a finite sample table is never the entire continuous span.
+
+<CodeFile source={reference} file="code/python/linear_span.py" />
+<CodeFile source={practical} file="code/python/linear_span_numpy.py" />
+
+## Explore
+
+Set $a=0$ and vary $b$: only the second direction contributes. Set $b=0$ and vary $a$. Use opposite signs to reach points beyond the wedge between the positive arrows. Then change $\mathbf v$ until it lies on $\mathbf u$'s line; explain why the two families of grid lines no longer cross in distinct directions. Test a zero first vector and a nonzero second vector before setting both to zero.
+
+In the almost-collinear preset, the region is very thin but remains two-dimensional. Exact entered decimals retain two distinct directions. Targets far from that thin strip may require large unrestricted weights; being a plane-spanning pair does not guarantee that the current slider range can reach a chosen target.
+
+## Common mistakes
+
+Restricting both weights to be nonnegative gives a cone, a different set from a span. Requiring $a+b=1$ describes an affine combination, another different set. Counting two vectors without checking their directions can mistake a redundant pair for a plane-spanning one. Finally, a span always passes through the origin: it is a set of moves, not a choice of where to place a diagram.
+
+## Numerical considerations
+
+The stage forms combinations and tests collinearity exactly from the accepted decimals. With approximate measurements, nearly collinear inputs may be hard to distinguish from exact dependence. A numerical rank estimate needs a scale-aware criterion; a fixed determinant threshold confuses small lengths with small directional separation. Large weights of opposite signs can also nearly cancel, making a small output sensitive to coefficient error. The exact stage makes the intended algebra inspectable, while the NumPy code follows finite-precision array arithmetic.
+
+## Engineering and ML connections
+
+Combining actuator directions determines which displacements a mechanism can produce. Mixing feature directions determines which outputs a linear model can express. Redundant directions can add parameters without adding reachable outputs. Before asking how to fit weights, it helps to ask whether the desired result lies in the available span at all.
+
+## Exercises
+
+<Exercise id="span-combine" client:load />
+<Exercise id="span-redundant" client:load />
+<Exercise id="span-construct" client:load />
+<Exercise id="span-window" client:load />
+<Exercise id="span-point" client:load />
+
+## Summary and checkpoints
+
+Linear combinations scale and add available directions; span includes every result with unrestricted real weights. Check that you can distinguish a control window from a span, explain each collapse, and prove closure under addition and scaling. <Xref to="chapters/vector-basis/">II.7 Basis and coordinates</Xref> asks when the weights are unique.
