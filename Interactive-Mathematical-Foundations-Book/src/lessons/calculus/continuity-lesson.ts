@@ -50,7 +50,7 @@ export function deriveContinuity(s: ContinuityState): CalcDerived {
   plot.markers.push(...graphMarkers(f, CONTINUITY_WINDOW, 'ink'));
   plot.segments.push({ name: 'line-a', from: { x: s.a, y: CONTINUITY_WINDOW.yMin }, to: { x: s.a, y: CONTINUITY_WINDOW.yMax }, role: equal ? 'derived' : 'caution', dashed: true, width: 1.5 });
   if (s.kind === 'join' && s.mode === 'custom') plot.handles.push({ id: 'v', label: `assigned value f(1) = ${gtext(s.v)}`, at: { x: 1, y: s.v }, role: 'primary', xField: 'a', yField: 'v', step: 0.25,
-    spec: { ...continuitySpecs.a, domain: { min: 1, max: 1 } }, write: () => ({}) });
+    spec: { ...continuitySpecs.a, domain: { min: 1, max: 1 } }, write: (_x, y) => ({ v: y }) });
   plot.handles.push({ id: 'a', label: `point a = ${a}`, at: { x: s.a, y: CONTINUITY_WINDOW.yMin + 0.4 }, role: 'x', xField: 'a', step: 0.25 });
   plot.description = `Graph of f(x) = ${f.text}${s.kind === 'join' ? ` with c = ${gtext(s.c)}, m = ${gtext(s.m)}` : ''}. At a = ${a}: f(a) ${exists ? valueText(d.value as { value: number }) : 'undefined'}, left limit ${oneSidedText(d.left)}, right limit ${oneSidedText(d.right)}. `
     + (breaks.length ? `Discontinuities in view at x = ${breaks.map(b => gtext(b.x)).join(', ')}.` : 'No discontinuity in view.');

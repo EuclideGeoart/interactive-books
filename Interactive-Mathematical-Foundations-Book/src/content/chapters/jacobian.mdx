@@ -1,0 +1,97 @@
+---
+kind: chapter
+curriculumId: III.9
+title: "Jacobian"
+hero: "What does a curved map look like *up close*?"
+lede: Push a small square through a nonlinear map. Near a point the curved image is almost a parallelogram — the image of the square under one matrix, the Jacobian.
+description: "The Jacobian as a local linear map: input and output planes, columns and rows, shape semantics, exact prediction error against independent evaluation, singular and rectangular cases, Python and NumPy, five exercises."
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import JacobianStage from '../../lessons/calculus/JacobianStage';
+import Exercise from '../../lessons/calculus/CalculusExercise';
+import reference from '../../../code/python/calculus_jacobian.py?raw';
+import practical from '../../../code/python/calculus_jacobian_numpy.py?raw';
+
+<Stage caption="Drag the point p or the displaced point p + δ in the input plane. In the output plane, grey is the true image of the small square, purple its Jacobian image; orange is the actual change, dashed purple the prediction Jδ."><JacobianStage client:load /></Stage>
+
+The complex-square map $F(x,y)=(x^2-y^2,\,2xy)$ bends the plane. Around $p=(1,\tfrac12)$ the small grey square becomes a slightly curved shape, and the purple parallelogram — its image under the matrix $J$ — almost covers it. Try **Large displacement**: the prediction now misses visibly. Then **Singular at the origin**: $J=0$ and the square collapses.
+
+## Intuition: zoom until it is linear
+
+A differentiable function of one variable looks like a line when you zoom in. A differentiable map of the plane looks like a **linear transformation** when you zoom in: small grids become grids of parallelograms. That linear transformation is the Jacobian matrix. Its columns say where the two input step directions go; its determinant says how small areas are scaled.
+
+## Definition
+
+For $F:\mathbb R^n\to\mathbb R^m$ with components $F_1,\dots,F_m$, the **Jacobian** at $p$ is the $m\times n$ matrix
+
+$$
+J_F(p)=\left[\frac{\partial F_i}{\partial x_j}(p)\right],
+$$
+
+with one row per output and one column per input. Row $i$ is the gradient of $F_i$; column $j$ is the response of all outputs to the $j$-th input. Differentiability means
+
+$$
+F(p+\boldsymbol\delta)=F(p)+J\boldsymbol\delta+o(\|\boldsymbol\delta\|).
+$$
+
+## Mechanics: what the explorer computes
+
+The maps are polynomial, so $J$, $F(p)$, the prediction $F(p)+J\boldsymbol\delta$ and the independent evaluation $F(p+\boldsymbol\delta)$ are exact; the squared error is an exact rational. The output plane is a local window centred near $F(p)$. Its curved shape samples the true image of the square's boundary; the parallelogram and the two column arrows are drawn from $J$. The **Lift** preset maps $\mathbb R^2\to\mathbb R^3$: its $3\times2$ Jacobian multiplies 2-vectors and returns 3-vectors, so the plane shows only two of the three outputs and says so.
+
+## Derivation: from partial derivatives to a matrix
+
+Each component is a scalar function, so by III.8, $F_i(p+\boldsymbol\delta)\approx F_i(p)+\nabla F_i\cdot\boldsymbol\delta$. Stacking the $m$ rows gives the matrix–vector product $J\boldsymbol\delta$. Multiplying by $\boldsymbol\delta=\delta_1\mathbf e_1+\delta_2\mathbf e_2$ combines the columns: $J\boldsymbol\delta=\delta_1J\mathbf e_1+\delta_2J\mathbf e_2$. Shapes must agree: an $m\times n$ matrix multiplies only an $n$-vector.
+
+## Worked example
+
+For $F=(x^2-y^2,\,2xy)$ at $p=(1,\tfrac12)$:
+
+$$
+J=\begin{bmatrix}2x&-2y\\2y&2x\end{bmatrix}=\begin{bmatrix}2&-1\\1&2\end{bmatrix},
+$$
+
+so $\det J=5$.
+
+$F(p)=(\tfrac34,1)$. With $\boldsymbol\delta=(\tfrac14,\tfrac14)$, $J\boldsymbol\delta=(\tfrac14,\tfrac34)$, so the prediction is $(1,\tfrac74)$. The independent evaluation is $F(\tfrac54,\tfrac34)=(1,\tfrac{15}8)$. The error $(0,\tfrac18)$ is second order: halving $\boldsymbol\delta$ quarters it.
+
+<Stage caption="Replay: evaluate F, assemble J, predict and compare with an independent evaluation."><JacobianStage worked client:load /></Stage>
+
+## Singular and rectangular Jacobians
+
+At the origin the complex square has $J=0$: every first-order change vanishes and the square shrinks by a factor of order $\|\boldsymbol\delta\|$ more than linear scaling predicts. A square Jacobian with $\det J=0$ is not invertible, so the map cannot be locally inverted there. A rectangular Jacobian has no determinant; for $\mathbb R^2\to\mathbb R^3$ the image of a small square is a small parallelogram tilted in space. Multiplying a $2\times2$ Jacobian by a 3-vector is rejected as a shape mismatch.
+
+## Executable reference code
+
+The reference builds exact Jacobians from partial derivatives with `Fraction`, enforces shapes and checks the second-order error. The NumPy version compares $F(p+\boldsymbol\delta)-F(p)$ with $J\boldsymbol\delta$ for shrinking $\boldsymbol\delta$ and confirms that the error ratio decreases.
+
+<CodeFile source={reference} file="code/python/calculus_jacobian.py" />
+<CodeFile source={practical} file="code/python/calculus_jacobian_numpy.py" />
+
+## Explore
+
+On **Linear map**, the prediction is exact for every $\boldsymbol\delta$: the Jacobian of a linear map is the map. On **Bend**, notice that the second row never changes: $F_2=y$ has gradient $(0,1)$. Move $\boldsymbol\delta$ along $\mathbf e_1$ and watch the orange arrow align with the first column.
+
+## Common mistakes
+
+Transposing the Jacobian (rows are outputs, columns are inputs). Multiplying in the wrong order: $J\boldsymbol\delta$, not $\boldsymbol\delta J$. Expecting a determinant from a non-square Jacobian. Trusting the linear prediction far from $p$.
+
+## Numerical considerations
+
+Near-singular Jacobians make local inversion (Newton's method for systems) sensitive: small output errors become large input errors, as with ill-conditioned matrices in Part II. Finite-difference Jacobians cost one extra evaluation per input column and inherit the step-size trade-off of III.14.
+
+## Engineering and ML connections
+
+The Jacobian of each layer maps input perturbations to output perturbations; backpropagation multiplies transposed Jacobians from the loss backward (III.10). Robotics uses manipulator Jacobians to relate joint and hand velocities; change-of-variables formulas in probability use $|\det J|$.
+
+## Exercises
+
+<Exercise id="iii9-entries" client:load />
+<Exercise id="iii9-predict" client:load />
+<Exercise id="iii9-shape" client:load />
+<Exercise id="iii9-columns" client:load />
+<Exercise id="iii9-singular" client:load />
+
+## Summary and checkpoints
+
+The Jacobian is the matrix of all first partial derivatives, $m\times n$ for $F:\mathbb R^n\to\mathbb R^m$. It is the local linear transformation of the map: $F(p+\boldsymbol\delta)\approx F(p)+J\boldsymbol\delta$, with columns as input responses and rows as output gradients. Next, III.10 shows how a computer obtains such derivatives automatically from the operations of a program.

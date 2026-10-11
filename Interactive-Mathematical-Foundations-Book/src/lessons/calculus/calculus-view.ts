@@ -25,7 +25,11 @@ export const gtext = (n: number) => formatGiven(n).text;
 /** Parenthesise a negative given value inside a formula: `f(-2)` reads better as `f(−2)` but `x+h` with h=−1 needs `(−1)`. */
 export const pg = (n: number) => (n < 0 ? `(${gtex(n)})` : gtex(n));
 
-export const exactDesc = (text: string): ValueDescription => ({ status: 'exact', lines: [{ relation: '=', text, tex: `\\text{${text}}` }], spoken: text });
+/** A TeX-safe twin of plain text for `\\text{}` (the inspector shows `text`; `tex` must still parse in strict KaTeX). */
+const TEXT_SAFE: Record<string, string> = { '−': '-', '×': 'x', 'ℝ': 'R', '²': '2', '³': '3', '≠': '!=', '≈': '~', '∞': 'infinity', '—': '--', '‖': '|', '→': '->' };
+const TEX_ESCAPE: Record<string, string> = { '\\': '\\textbackslash{}', '{': '\\{', '}': '\\}', $: '\\$', '&': '\\&', '#': '\\#', '^': '\\textasciicircum{}', _: '\\_', '%': '\\%', '~': '\\textasciitilde{}' };
+const texSafe = (text: string) => text.replace(/[^\x20-\x7e]/g, c => TEXT_SAFE[c] ?? '?').replace(/[\\{}$&#^_%~]/g, c => TEX_ESCAPE[c]!);
+export const exactDesc = (text: string): ValueDescription => ({ status: 'exact', lines: [{ relation: '=', text, tex: `\\text{${texSafe(text)}}` }], spoken: text });
 export const givenDesc = (value: number): ValueDescription => describeValue({ kind: 'given', value }, FORMAT);
 export const numericDesc = (value: number): ValueDescription => describeValue({ kind: 'numeric', value }, FORMAT);
 export const ratDesc = (r: Rational): ValueDescription => describeValue({ kind: 'exact', exact: rationalForm(r), approx: toNumber(r) }, FORMAT);
@@ -53,8 +57,10 @@ export interface CalcHandle {
   step: number;
   /** Optional horizontal parameter declaration when the handle's x is not itself a state field (e.g. Q = x + h). */
   spec?: ParamSpec;
-  /** Converts the handle's horizontal world position into state fields (e.g. h = q − x); defaults to `{ [xField]: x }`. */
-  write?: (x: number) => Readonly<Record<string, number>>;
+  /** Optional vertical parameter declaration for a handle whose y is not a state field. */
+  ySpec?: ParamSpec;
+  /** Converts the handle's world position into state fields (e.g. h = q − x); defaults to `{ [xField]: x, [yField]: y }`. */
+  write?: (x: number, y: number) => Readonly<Record<string, number>>;
 }
 export interface CalcScene {
   id: string; title: string; description: string; window: WorldWindow;
@@ -140,3 +146,4 @@ export function graphMarkers(f: Univariate, window: WorldWindow, role: Role = 'p
   }
   return out;
 }
+

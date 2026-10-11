@@ -4,6 +4,9 @@ import { CALCULUS_EXERCISES } from '../../src/lessons/calculus/exercises';
 const answers: Record<string, readonly string[]> = {
   'iii1-hole': ['4'], 'iii1-sides': ['-1', '1'], 'iii2-join': ['2'], 'iii2-repair': ['6'], 'iii3-secant': ['2.5'], 'iii3-limit': ['2'],
   'iii4-model': ['9.6'], 'iii4-error': ['1/100'], 'iii4-rate': ['4', '2'], 'iii5-product': ['6'], 'iii5-quotient': ['-0.5'], 'iii5-increment': ['3/2', '1/2', '1/8'],
+  'iii7-partials': ['4', '4'], 'iii7-slice': ['4'], 'iii7-secant': ['2'], 'iii8-gradient': ['1', '2'], 'iii8-directional': ['2.2'], 'iii8-steepest': ['5'],
+  'iii9-entries': ['2', '-4', '4', '2'], 'iii9-predict': ['-14/5', '22/5'], 'iii9-shape': ['2', '3'], 'iii10-forward': ['5', '10'], 'iii10-reverse': ['7', '2'], 'iii10-square': ['3', '3', '6'],
+  'iii11-hessian': ['6', '0', '2'], 'iii11-det': ['-12'], 'iii11-curvature': ['2', '-2'],
   'iii6-chain': ['12'], 'iii6-where': ['3', '6'], 'iii6-change': ['-3/50'],
 };
 it('every Part III chapter has five exercises with globally unique identifiers', () => {

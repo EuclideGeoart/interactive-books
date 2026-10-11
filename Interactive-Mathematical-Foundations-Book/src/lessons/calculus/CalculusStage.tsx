@@ -54,9 +54,9 @@ export function SceneView({ s, hint, specs, onMove, onCommit }: {
       {s.labels.map(l => <PlaneLabel key={l.name} name={l.name} at={l.at} role={l.role} dx={l.dx ?? 0} dy={l.dy ?? -16} anchor={l.anchor ?? 'middle'}>{l.text}</PlaneLabel>)}
       {s.handles.map(h => {
         const xSpec = h.spec ?? specs[h.xField]!;
-        const ySpec: ParamSpec = h.yField ? specs[h.yField]! : { ...xSpec, id: `${h.id}-height`, domain: { min: h.at.y, max: h.at.y } };
+        const ySpec: ParamSpec = h.ySpec ?? (h.yField ? specs[h.yField]! : { ...xSpec, id: `${h.id}-height`, domain: { min: h.at.y, max: h.at.y } });
         return <DragPoint key={h.id} role={h.role} value={h.at} label={h.label} hintId={hint} xSpec={xSpec} ySpec={ySpec} grid={{ kind: 'lattice', step: h.step }}
-          onChange={(at) => onMove({ ...(h.write ? h.write(at.x + 0) : { [h.xField]: at.x + 0 }), ...(h.yField ? { [h.yField]: at.y + 0 } : {}) })}
+          onChange={(at) => onMove(h.write ? h.write(at.x + 0, at.y + 0) : { [h.xField]: at.x + 0, ...(h.yField ? { [h.yField]: at.y + 0 } : {}) })}
           onCommit={(_, source) => onCommit(source)} />;
       })}
     </CoordinatePlane>

@@ -1,0 +1,101 @@
+---
+kind: chapter
+curriculumId: III.7
+title: "Multivariable functions and partial derivatives"
+hero: "How does a surface change when only *one* input moves?"
+lede: Move a point across a contour map. Two slices through it — one along x, one along y — are ordinary curves, and their slopes are the two partial derivatives.
+description: "Partial derivatives on a contour map: draggable point, x- and y-slices with exact tangent slopes, secant evidence, Python and NumPy, and five graded exercises."
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import PartialStage from '../../lessons/calculus/PartialStage';
+import Exercise from '../../lessons/calculus/CalculusExercise';
+import reference from '../../../code/python/calculus_partials.py?raw';
+import practical from '../../../code/python/calculus_partials_numpy.py?raw';
+
+<Stage caption="Drag the point on the contour map (arrow keys move it in x and y). The blue line fixes y, the dashed green line fixes x; the two lower planes are those slices with their tangent lines."><PartialStage client:load /></Stage>
+
+On the saddle $x^2-y^2$ at $(1,\tfrac12)$, the slice along $x$ rises with slope $2$ while the slice along $y$ falls with slope $-1$. Drag the point to the origin: both slices are flat, although the surface is a saddle, not a bowl.
+
+## Intuition: one knob at a time
+
+A function $f(x,y)$ assigns a height to every point of the plane. Its **contour map** draws the curves $f=c$ at several heights, like an elevation map. Standing at a point, you can ask how the height changes if you walk east (change $x$ only) or north (change $y$ only). Each question fixes one input and leaves an ordinary function of one variable, whose derivative you already know.
+
+## Definition
+
+The **partial derivatives** of $f$ at $(a,b)$ are
+
+$$
+\frac{\partial f}{\partial x}(a,b)=\lim_{h\to0}\frac{f(a+h,b)-f(a,b)}{h},
+$$
+
+$$
+\frac{\partial f}{\partial y}(a,b)=\lim_{h\to0}\frac{f(a,b+h)-f(a,b)}{h}.
+$$
+
+Equivalently, $\partial f/\partial x$ is the derivative of the **slice** $t\mapsto f(t,b)$ at $t=a$. Other common notations are $f_x$, $\partial_x f$ and $D_1f$.
+
+## Mechanics: what the explorer computes
+
+The surfaces are polynomials with rational coefficients, so the height, both slices and both partial derivatives are exact. The contour lines are a drawing aid computed numerically on a grid; no value is read from them. Each slice plane shows the one-variable polynomial obtained by fixing the other input, and the inspector adds an exact secant along each axis with $h=0.25$ as evidence.
+
+## Derivation: differentiate the slice
+
+For $f(x,y)=x^2-y^2$ at $(1,\tfrac12)$, fix $y=\tfrac12$:
+
+$$
+f(t,\tfrac12)=t^2-\tfrac14 ,
+$$
+
+whose derivative $2t$ is $2$ at $t=1$. Fix $x=1$ instead:
+
+$$
+f(1,t)=1-t^2 ,
+$$
+
+whose derivative $-2t$ is $-1$ at $t=\tfrac12$. In practice we write this as a rule: differentiate with respect to one variable, treating the others as constants. So $\partial f/\partial x=2x$ and $\partial f/\partial y=-2y$.
+
+## Worked example
+
+Take $f(x,y)=xy$ at $(1,\tfrac12)$. The $x$-slice is $f(t,\tfrac12)=\tfrac12t$, a line of slope $\tfrac12$; the $y$-slice is $f(1,t)=t$, slope $1$. Hence $\partial f/\partial x=y=\tfrac12$ and $\partial f/\partial y=x=1$. Because $f$ is linear in each variable separately, every secant along an axis equals the partial derivative exactly.
+
+<Stage caption="Replay: hold y fixed and differentiate, then hold x fixed and differentiate."><PartialStage worked client:load /></Stage>
+
+## What partial derivatives do not say
+
+Two partial derivatives describe change along two directions only. A function can have both partial derivatives at a point and still behave badly along a diagonal; and zero partial derivatives do not identify a minimum (the saddle at the origin). III.8 combines the partials into the gradient, which describes change in every direction for differentiable functions, and III.11 uses second derivatives to classify flat points.
+
+## Executable reference code
+
+The pedagogical reference computes partial derivatives of an exact polynomial by differentiating slices with `Fraction` and checks them against exact secant limits. The NumPy version samples a surface on a grid and compares `numpy.gradient` with the analytic partials.
+
+<CodeFile source={reference} file="code/python/calculus_partials.py" />
+<CodeFile source={practical} file="code/python/calculus_partials_numpy.py" />
+
+## Explore
+
+On **Tilted plane** the partials are the same everywhere: a plane has constant slopes. On **Valley**, compare how much faster the height changes along $y$ than along $x$ — the contours are squeezed in the $y$ direction. Move the point along a contour line and notice that the height row stays fixed while the partials change.
+
+## Common mistakes
+
+Holding the wrong variable fixed, or forgetting to treat it as a constant ($\partial(x^2y)/\partial x=2xy$, not $2x$). Reading a partial derivative as the total change when both inputs move. Assuming zero partial derivatives mean a minimum.
+
+## Numerical considerations
+
+Grid-based partial derivatives (as in `numpy.gradient`) are finite differences with spacing errors; at boundaries they become one-sided and less accurate. Contour plots depend on the grid resolution and chosen levels and can miss narrow features. Exact slices avoid both issues for polynomials.
+
+## Engineering and ML connections
+
+A model's loss depends on many parameters at once. Each partial derivative measures sensitivity to one parameter while all others are fixed; together they form the gradient used by optimisation (VI.4). Partial derivatives also describe sensitivities of physical models — temperature to position, cost to each resource.
+
+## Exercises
+
+<Exercise id="iii7-partials" client:load />
+<Exercise id="iii7-slice" client:load />
+<Exercise id="iii7-secant" client:load />
+<Exercise id="iii7-hold" client:load />
+<Exercise id="iii7-zero" client:load />
+
+## Summary and checkpoints
+
+A partial derivative is the derivative of a one-variable slice, holding the other inputs fixed. Two partials give rates along the coordinate axes; they are not yet a full description of change. Next, III.8 assembles them into the gradient and measures change in any direction.

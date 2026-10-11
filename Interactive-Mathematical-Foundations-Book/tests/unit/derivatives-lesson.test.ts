@@ -28,7 +28,7 @@ describe('III.3 secant lesson', () => {
     expect(run.from).toEqual({ x: 1, y: -5 / 6 }); expect(rise.to.y).toBeCloseTo(-2 / 3, 15);
     const tan = s.segments.find(x => x.name === 'tangent')!; expect(slope(tan.from, tan.to)).toBeCloseTo(-0.5, 14);
     expect(s.handles.map(h => h.at)).toEqual([{ x: 1, y: d.metrics.py }, { x: 2, y: d.metrics.qy }]);
-    expect(s.handles[1]!.write!(1.5)).toEqual({ h: 0.5 });
+    expect(s.handles[1]!.write!(1.5, 0)).toEqual({ h: 0.5 });
     expect(d.metrics.secantExact).toBe('1/6');
   });
   it('at a corner it draws two one-sided rays instead of a tangent line', () => {

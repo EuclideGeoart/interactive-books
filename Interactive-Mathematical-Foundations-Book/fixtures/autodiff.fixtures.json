@@ -1,0 +1,774 @@
+{
+ "method": "forward-mode dual numbers over Fraction (Decimal(60) Taylor series for sin); explicit tape for shared-input contributions",
+ "tolerance": "rational outputs and derivatives exact; sin-dependent values within 8 ulps of the 60-digit reference",
+ "cases": [
+  {
+   "graph": "shared-input",
+   "inputs": [
+    "2",
+    "3"
+   ],
+   "outputs": [
+    {
+     "exact": "10"
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "exact": "7"
+     },
+     {
+      "exact": "2"
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "shared-input",
+   "inputs": [
+    "-1",
+    "0.5"
+   ],
+   "outputs": [
+    {
+     "exact": "1/2"
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "exact": "-3/2"
+     },
+     {
+      "exact": "-1"
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "shared-input",
+   "inputs": [
+    "0",
+    "0"
+   ],
+   "outputs": [
+    {
+     "exact": "0"
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "exact": "0"
+     },
+     {
+      "exact": "0"
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "shared-input",
+   "inputs": [
+    "1.5",
+    "-2"
+   ],
+   "outputs": [
+    {
+     "exact": "-3/4"
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "exact": "1"
+     },
+     {
+      "exact": "3/2"
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "shared-input",
+   "inputs": [
+    "-3.5",
+    "4"
+   ],
+   "outputs": [
+    {
+     "exact": "-7/4"
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "exact": "-3"
+     },
+     {
+      "exact": "-7/2"
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "shared-input",
+   "inputs": [
+    "0.5",
+    "0.5"
+   ],
+   "outputs": [
+    {
+     "exact": "1/2"
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "exact": "3/2"
+     },
+     {
+      "exact": "1/2"
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "sin-product",
+   "inputs": [
+    "2",
+    "3"
+   ],
+   "outputs": [
+    {
+     "value": 6.909297426825682
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "value": 2.5838531634528574
+     },
+     {
+      "value": 2.0
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "sin-product",
+   "inputs": [
+    "-1",
+    "0.5"
+   ],
+   "outputs": [
+    {
+     "value": -1.3414709848078965
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "value": 1.0403023058681398
+     },
+     {
+      "value": -1.0
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "sin-product",
+   "inputs": [
+    "0",
+    "0"
+   ],
+   "outputs": [
+    {
+     "value": 0.0
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "value": 1.0
+     },
+     {
+      "value": 0.0
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "sin-product",
+   "inputs": [
+    "1.5",
+    "-2"
+   ],
+   "outputs": [
+    {
+     "value": -2.0025050133959454
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "value": -1.9292627983322972
+     },
+     {
+      "value": 1.5
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "sin-product",
+   "inputs": [
+    "-3.5",
+    "4"
+   ],
+   "outputs": [
+    {
+     "value": -13.64921677231038
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "value": 3.0635433127092035
+     },
+     {
+      "value": -3.5
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "sin-product",
+   "inputs": [
+    "0.5",
+    "0.5"
+   ],
+   "outputs": [
+    {
+     "value": 0.729425538604203
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "value": 1.3775825618903728
+     },
+     {
+      "value": 0.5
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "quotient",
+   "inputs": [
+    "2",
+    "3"
+   ],
+   "outputs": [
+    {
+     "exact": "-2"
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "exact": "-3"
+     },
+     {
+      "exact": "2"
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "quotient",
+   "inputs": [
+    "-1",
+    "0.5"
+   ],
+   "outputs": [
+    {
+     "exact": "2/3"
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "exact": "-2/9"
+     },
+     {
+      "exact": "-4/9"
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "quotient",
+   "inputs": [
+    "0",
+    "0"
+   ],
+   "outputs": null,
+   "jacobian": null
+  },
+  {
+   "graph": "quotient",
+   "inputs": [
+    "1.5",
+    "-2"
+   ],
+   "outputs": [
+    {
+     "exact": "3/7"
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "exact": "8/49"
+     },
+     {
+      "exact": "6/49"
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "quotient",
+   "inputs": [
+    "-3.5",
+    "4"
+   ],
+   "outputs": [
+    {
+     "exact": "7/15"
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "exact": "-16/225"
+     },
+     {
+      "exact": "-14/225"
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "quotient",
+   "inputs": [
+    "0.5",
+    "0.5"
+   ],
+   "outputs": null,
+   "jacobian": null
+  },
+  {
+   "graph": "scalar-loss",
+   "inputs": [
+    "1",
+    "2",
+    "-1"
+   ],
+   "outputs": [
+    {
+     "exact": "1"
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "exact": "4"
+     },
+     {
+      "exact": "2"
+     },
+     {
+      "exact": "2"
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "scalar-loss",
+   "inputs": [
+    "0",
+    "0",
+    "0"
+   ],
+   "outputs": [
+    {
+     "exact": "0"
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "exact": "0"
+     },
+     {
+      "exact": "0"
+     },
+     {
+      "exact": "0"
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "scalar-loss",
+   "inputs": [
+    "-1.5",
+    "2.5",
+    "3"
+   ],
+   "outputs": [
+    {
+     "exact": "9/16"
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "exact": "-15/4"
+     },
+     {
+      "exact": "9/4"
+     },
+     {
+      "exact": "-3/2"
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "scalar-loss",
+   "inputs": [
+    "4",
+    "-4",
+    "0.5"
+   ],
+   "outputs": [
+    {
+     "exact": "961/4"
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "exact": "124"
+     },
+     {
+      "exact": "-124"
+     },
+     {
+      "exact": "-31"
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "many-outputs",
+   "inputs": [
+    "1.5"
+   ],
+   "outputs": [
+    {
+     "exact": "9/4"
+    },
+    {
+     "exact": "27/8"
+    },
+    {
+     "value": 0.9974949866040544
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "exact": "3"
+     }
+    ],
+    [
+     {
+      "exact": "27/4"
+     }
+    ],
+    [
+     {
+      "value": 0.0707372016677029
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "many-outputs",
+   "inputs": [
+    "0"
+   ],
+   "outputs": [
+    {
+     "exact": "0"
+    },
+    {
+     "exact": "0"
+    },
+    {
+     "value": 0.0
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "exact": "0"
+     }
+    ],
+    [
+     {
+      "exact": "0"
+     }
+    ],
+    [
+     {
+      "value": 1.0
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "many-outputs",
+   "inputs": [
+    "-2"
+   ],
+   "outputs": [
+    {
+     "exact": "4"
+    },
+    {
+     "exact": "-8"
+    },
+    {
+     "value": -0.9092974268256817
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "exact": "-4"
+     }
+    ],
+    [
+     {
+      "exact": "12"
+     }
+    ],
+    [
+     {
+      "value": -0.4161468365471424
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "many-outputs",
+   "inputs": [
+    "3.5"
+   ],
+   "outputs": [
+    {
+     "exact": "49/4"
+    },
+    {
+     "exact": "343/8"
+    },
+    {
+     "value": -0.35078322768961984
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "exact": "7"
+     }
+    ],
+    [
+     {
+      "exact": "147/4"
+     }
+    ],
+    [
+     {
+      "value": -0.9364566872907963
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "square",
+   "inputs": [
+    "1.5"
+   ],
+   "outputs": [
+    {
+     "exact": "9/4"
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "exact": "3"
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "square",
+   "inputs": [
+    "0"
+   ],
+   "outputs": [
+    {
+     "exact": "0"
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "exact": "0"
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "square",
+   "inputs": [
+    "-2"
+   ],
+   "outputs": [
+    {
+     "exact": "4"
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "exact": "-4"
+     }
+    ]
+   ]
+  },
+  {
+   "graph": "square",
+   "inputs": [
+    "3.5"
+   ],
+   "outputs": [
+    {
+     "exact": "49/4"
+    }
+   ],
+   "jacobian": [
+    [
+     {
+      "exact": "7"
+     }
+    ]
+   ]
+  }
+ ],
+ "tapes": [
+  {
+   "x": "2",
+   "y": "3",
+   "contributions": [
+    [
+     "u",
+     "z",
+     "2"
+    ],
+    [
+     "x",
+     "z",
+     "5"
+    ],
+    [
+     "x",
+     "u",
+     "2"
+    ],
+    [
+     "y",
+     "u",
+     "2"
+    ]
+   ],
+   "adjoint_x": "7",
+   "adjoint_y": "2"
+  },
+  {
+   "x": "-1",
+   "y": "0.5",
+   "contributions": [
+    [
+     "u",
+     "z",
+     "-1"
+    ],
+    [
+     "x",
+     "z",
+     "-1/2"
+    ],
+    [
+     "x",
+     "u",
+     "-1"
+    ],
+    [
+     "y",
+     "u",
+     "-1"
+    ]
+   ],
+   "adjoint_x": "-3/2",
+   "adjoint_y": "-1"
+  },
+  {
+   "x": "0",
+   "y": "4",
+   "contributions": [
+    [
+     "u",
+     "z",
+     "0"
+    ],
+    [
+     "x",
+     "z",
+     "4"
+    ],
+    [
+     "x",
+     "u",
+     "0"
+    ],
+    [
+     "y",
+     "u",
+     "0"
+    ]
+   ],
+   "adjoint_x": "4",
+   "adjoint_y": "0"
+  }
+ ]
+}

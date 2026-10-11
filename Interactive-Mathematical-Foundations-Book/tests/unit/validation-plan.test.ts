@@ -131,7 +131,8 @@ describe('Part III calculus registration', () => {
   it('discovers every published calculus chapter with its family and visual kind from the wrapper stage', () => {
     const calculus = chapterCatalog().filter(c => c.id.startsWith('III.'));
     const expected: Record<string, readonly [string, string]> = { 'III.1': ['limits', 'limits'], 'III.2': ['limits', 'continuity'], 'III.3': ['derivatives', 'secant'],
-      'III.4': ['derivatives', 'linear-model'], 'III.5': ['derivatives', 'rules'], 'III.6': ['derivatives', 'chain'] };
+      'III.4': ['derivatives', 'linear-model'], 'III.5': ['derivatives', 'rules'], 'III.6': ['derivatives', 'chain'],
+      'III.7': ['multivariable', 'partials'], 'III.8': ['multivariable', 'gradient'], 'III.9': ['multivariable', 'jacobian'], 'III.10': ['autodiff', 'autodiff'], 'III.11': ['multivariable', 'hessian'] };
     for (const [id, [family, kind]] of Object.entries(expected)) expect(calculus.find(c => c.id === id), id).toMatchObject({ family, kind });
   });
   it('a calculus model edit selects its literal consumers, units, oracles and visuals — and no Probability chapter', () => {
@@ -148,6 +149,16 @@ describe('Part III calculus registration', () => {
     const browser = p.commands.find(c => c.command.includes('tests/e2e/limits.spec.ts'))!;
     const grep = new RegExp(browser.command.at(-1)!);
     expect(grep.test('limits.spec.ts › III.1: limits')).toBe(true); expect(grep.test('limits.spec.ts › III.10: autodiff')).toBe(false);
+  });
+  it('the bivariate engine selects III.7, III.8, III.9 and III.11; the graph engine selects only III.10', () => {
+    const b = makePlan({ files: ['src/math/calculus/bivariate.ts'], catalog: withProbability() });
+    expect(b.conservativeExpansion).toBe(false); expect(b.chapters.slice().sort()).toEqual(['III.11', 'III.7', 'III.8', 'III.9']); expect(b.oracles).toEqual(['multivariable']);
+    const a = makePlan({ files: ['src/math/calculus/autodiff.ts'], catalog: withProbability() });
+    expect(a.chapters).toEqual(['III.10']); expect(a.oracles).toEqual(['autodiff']);
+    expect(a.units).toEqual(expect.arrayContaining(['tests/unit/autodiff.test.ts', 'tests/unit/autodiff.parity.test.ts', 'tests/unit/autodiff-lesson.test.ts']));
+    expect(a.units.some(u => u.includes('multivariable'))).toBe(false);
+    const grep = new RegExp(a.commands.find(c => c.command.includes('tests/e2e/autodiff.spec.ts'))!.command.at(-1)!);
+    expect(grep.test('autodiff.spec.ts › III.10: computational graphs')).toBe(true); expect(grep.test('autodiff.spec.ts › III.1: x')).toBe(false);
   });
   it('the shared univariate engine reaches every chapter that imports it, through the import closure', () => {
     const p = makePlan({ files: ['src/math/calculus/univariate.ts'], catalog: withProbability() });

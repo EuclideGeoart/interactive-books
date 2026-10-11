@@ -19,6 +19,86 @@ export function choose(id: string, title: string, prompt: string, options: reado
 }
 
 export const CALCULUS_EXERCISES: Record<string, readonly Exercise[]> = {
+  partials: [
+    calculate('iii7-partials', 'Two partial derivatives', 'f(x, y) = x²y + 3y. Give ∂f/∂x and ∂f/∂y at (1, 2).', ['∂f/∂x', '∂f/∂y'], ['4', '4'],
+      '∂f/∂x = 2xy = 4 (y held at 2); ∂f/∂y = x² + 3 = 4 (x held at 1).', 'Treat the other variable as a constant while differentiating.'),
+    calculate('iii7-slice', 'Write the slice', 'For f(x, y) = x² − y², write the slice f(x, 1) as a polynomial and give its slope at x = 2.', ['slope'], ['4'],
+      'f(x, 1) = x² − 1, a parabola in x. Its derivative 2x equals 4 at x = 2, which is ∂f/∂x(2, 1).', 'Substitute y = 1 first, then differentiate in x.'),
+    calculate('iii7-secant', 'A secant along one axis', 'f(x, y) = xy at (1, 2). Compute [f(1 + h, 2) − f(1, 2)]/h for h = 0.5.', ['quotient'], ['2'],
+      'f(1.5, 2) = 3 and f(1, 2) = 2, so (3 − 2)/0.5 = 2. Because f is linear in x, every such secant equals ∂f/∂x = y = 2.', 'Only x moves; y stays 2.'),
+    choose('iii7-hold', 'What does “partial” hold?', 'What does ∂f/∂x measure?', [
+      ['fixed', 'The rate of change of f as x varies with y held fixed.', 'It is the derivative of the slice through the point parallel to the x-axis.'],
+      ['both', 'The total change when x and y both move.', 'Moving both at once is a directional derivative (III.8).'],
+      ['part', 'A part of f that contains only x.', 'Every term changes with x unless it is constant in x; ∂f/∂x is a rate, not a piece of f.']]),
+    choose('iii7-zero', 'Two zero partials', 'At the origin, f = x² − y² has ∂f/∂x = ∂f/∂y = 0. Is the origin a minimum?', [
+      ['no', 'No: f decreases along the y-axis, so it is a saddle.', 'Zero partials say both axis slices are flat at the point; the y-slice −y² has a maximum there.'],
+      ['yes', 'Yes: zero partial derivatives mean a minimum.', 'Zero derivatives identify candidates, not minima.'],
+      ['undefined', 'The partials are undefined at the origin.', 'Both partials exist and equal 0.']]),
+  ],
+  gradient: [
+    calculate('iii8-gradient', 'Compute a gradient', 'f(x, y) = x²/2 + 2y². Give ∇f at (1, 0.5).', ['∂f/∂x', '∂f/∂y'], ['1', '2'],
+      '∂f/∂x = x = 1, ∂f/∂y = 4y = 2. So ∇f = (1, 2).', 'Collect the two partial derivatives into a vector.'),
+    calculate('iii8-directional', 'A directional derivative', 'With ∇f = (1, 2), find D_u f for u = (3/5, 4/5).', ['D_u f'], ['11/5'],
+      '∇f · u = 3/5 + 8/5 = 11/5. The vector u already has length 1.', 'Dot the gradient with the UNIT direction.'),
+    calculate('iii8-steepest', 'Steepest rate', 'With ∇f = (3, 4), what is the largest directional derivative?', ['max rate'], ['5'],
+      'D_u f = |∇f| cos θ is largest when u points along ∇f, giving |∇f| = 5.', 'The maximum of |∇f| cos θ occurs at θ = 0.'),
+    choose('iii8-perpendicular', 'Gradient and level curves', 'Why is ∇f perpendicular to the level curve through a regular point?', [
+      ['level', 'Along the level curve f does not change, so ∇f · t = 0 for its tangent t.', 'The directional derivative along the curve is zero, which is exactly orthogonality.'],
+      ['rule', 'By definition of the gradient.', 'The gradient is defined from partial derivatives; perpendicularity is a consequence.'],
+      ['always', 'It points toward the origin.', 'It points toward increasing f, which need not be the origin.']]),
+    choose('iii8-zero', 'Zero vectors', 'd = (0, 0). What is the directional derivative “in direction d”?', [
+      ['undefined', 'Undefined: d has no direction and cannot be normalised.', 'u = d/‖d‖ divides by zero. Any nonzero d gives a direction.'],
+      ['zero', '0, because d is zero.', '∇f · d = 0, but that is not a rate per unit distance in any direction.'],
+      ['gradient', 'The gradient itself.', 'Without a direction there is nothing to project onto.']]),
+  ],
+  jacobian: [
+    calculate('iii9-entries', 'Fill the Jacobian', 'F(x, y) = (x² − y², 2xy). Give the Jacobian at (1, 2) row by row.', ['∂F₁/∂x', '∂F₁/∂y', '∂F₂/∂x', '∂F₂/∂y'], ['2', '-4', '4', '2'],
+      'Row 1 = ∇F₁ = (2x, −2y) = (2, −4); row 2 = ∇F₂ = (2y, 2x) = (4, 2).', 'Row i holds the partial derivatives of the i-th OUTPUT.'),
+    calculate('iii9-predict', 'Predict with J', 'J = [[2, −4], [4, 2]] at p with F(p) = (−3, 4). Predict F(p + δ) for δ = (0.1, 0).', ['F₁', 'F₂'], ['-2.8', '4.4'],
+      'Jδ = (0.2, 0.4), the first column times 0.1. F(p) + Jδ = (−2.8, 4.4).', 'Multiply J by δ; a step along x picks out the first column.'),
+    calculate('iii9-shape', 'Count the shape', 'F: ℝ³ → ℝ² is differentiable. How many rows and columns does its Jacobian have?', ['rows', 'columns'], ['2', '3'],
+      'One row per output (2) and one column per input (3): a 2 × 3 matrix that multiplies 3-vectors.', 'Rows = outputs, columns = inputs.'),
+    choose('iii9-columns', 'Columns versus rows', 'What does the second column of J tell you?', [
+      ['column', 'How every output responds to a small step in the second input.', 'J e₂ is the response to a unit step in y; a small step δ₂ produces approximately δ₂ J e₂.'],
+      ['row', 'The gradient of the second output.', 'That is the second ROW, not the second column.'],
+      ['det', 'The area scaling.', 'Area scaling is det J, which combines all four entries.']]),
+    choose('iii9-singular', 'A zero determinant', 'det J = 0 at the origin for F = (x² − y², 2xy). What follows?', [
+      ['flat', 'Near the origin, F squashes small areas to (nearly) zero; the linear map is not invertible.', 'Both columns of J vanish at the origin; small squares map to shapes far smaller than first order.'],
+      ['nothing', 'F is undefined at the origin.', 'F is defined everywhere; only its local linear part degenerates.'],
+      ['exact', 'The prediction F(p) + Jδ is exact.', 'With J = 0 the prediction is F(p), which misses the second-order change.']]),
+  ],
+  autodiff: [
+    calculate('iii10-forward', 'Evaluate forward', 'z = (x + y)·x with u = x + y. For x = 2, y = 3 give u and z.', ['u', 'z'], ['5', '10'],
+      'Topological order: u = 2 + 3 = 5, then z = u·x = 10.', 'Evaluate each node only after its arguments.'),
+    calculate('iii10-reverse', 'Accumulate adjoints', 'Same graph at x = 2, y = 3. Give ∂z/∂x and ∂z/∂y.', ['∂z/∂x', '∂z/∂y'], ['7', '2'],
+      'z̄ = 1. The edge u → z carries ∂z/∂u = x = 2, so ū = 2. The edge x → z carries ∂z/∂x = u = 5. Then x̄ = 5 (direct) + ū·1 = 7 = 2x + y, and ȳ = ū·1 = 2 = x.', 'x reaches z along TWO paths; add their contributions.'),
+    calculate('iii10-square', 'One node, two edges', 'q = x·x at x = 3, computed as a multiplication node with the same input twice. Give each edge contribution and dq/dx.', ['edge 1', 'edge 2', 'dq/dx'], ['3', '3', '6'],
+      'Each edge carries ∂q/∂(argument) = the OTHER argument = 3. Both contributions reach x, so dq/dx = 6 = 2x.', 'A repeated argument is two edges, each with its own local derivative.'),
+    choose('iii10-cost', 'Which mode?', 'A loss depends on one million parameters. Why use reverse mode?', [
+      ['reverse', 'One backward pass gives all one million partial derivatives of the scalar loss.', 'Reverse mode costs a small multiple of one evaluation per OUTPUT; forward mode needs one pass per INPUT.'],
+      ['forward', 'Forward mode is always cheaper.', 'Forward mode would need a million passes here.'],
+      ['symbolic', 'Because reverse mode builds a symbolic derivative formula.', 'It accumulates numerical derivatives through the executed operations, without building formulas.']]),
+    choose('iii10-fd', 'What a finite difference is', 'How does automatic differentiation differ from a finite difference?', [
+      ['exact', 'AD applies exact local derivatives along the executed operations; a finite difference approximates with a step h and has truncation and rounding error.', 'AD values are exact up to the arithmetic of each operation; finite differences are a numerical check whose error depends on h.'],
+      ['same', 'They are the same up to notation.', 'A finite difference never uses the graph’s local derivatives.'],
+      ['symbolic', 'AD is symbolic differentiation.', 'Symbolic differentiation manipulates expressions; AD propagates numbers through a graph.']]),
+  ],
+  hessian: [
+    calculate('iii11-hessian', 'Compute a Hessian', 'f(x, y) = x³ − 3x + y². Give f_xx, f_xy and f_yy at (1, 0).', ['f_xx', 'f_xy', 'f_yy'], ['6', '0', '2'],
+      'f_x = 3x² − 3, f_y = 2y. Then f_xx = 6x = 6, f_xy = 0, f_yy = 2.', 'Differentiate the first partials once more; the mixed partial differentiates in x then y.'),
+    calculate('iii11-det', 'The determinant test', 'At the critical point (−1, 0) of x³ − 3x + y², give det H.', ['det H'], ['-12'],
+      'f_xx = 6x = −6, f_yy = 2, f_xy = 0, so det H = (−6)(2) − 0 = −12 < 0: a saddle.', 'det H = f_xx f_yy − f_xy².'),
+    calculate('iii11-curvature', 'Curvature in a direction', 'H = [[2, 0], [0, −2]]. Give uᵀHu for u = (1, 0) and for u = (0, 1).', ['along x', 'along y'], ['2', '-2'],
+      'uᵀHu picks out f_xx = 2 along x and f_yy = −2 along y: curving up one way and down the other.', 'For a coordinate direction, uᵀHu is the corresponding diagonal entry.'),
+    choose('iii11-inconclusive', 'det H = 0', 'At the origin, x⁴ + y⁴ and x² + y³ both have det H = 0. What can the second-derivative test conclude?', [
+      ['nothing', 'Nothing: the first has a minimum, the second neither; higher-order terms decide.', 'Both have a singular Hessian at a critical point, yet different shapes. The test is inconclusive.'],
+      ['minimum', 'Both have minima.', 'x² + y³ takes negative values along the negative y-axis.'],
+      ['saddle', 'Both are saddles.', 'x⁴ + y⁴ ≥ 0 has a minimum.']]),
+    choose('iii11-critical', 'Where the test applies', 'At a point with ∇f ≠ 0 and det H > 0, is it a local minimum?', [
+      ['no', 'No: the point is not critical, so f changes to first order and the test does not apply.', 'With ∇f ≠ 0, moving against the gradient decreases f immediately.'],
+      ['yes', 'Yes, because det H > 0.', 'The test needs ∇f = 0 first.'],
+      ['maximum', 'It is a maximum.', 'A non-critical point is neither.']]),
+  ],
   limits: [
     calculate('iii1-hole', 'Cancel, then approach', 'Find the limit of (x² − 4)/(x − 2) as x → 2.', ['limit'], ['4'],
       'For x ≠ 2, (x² − 4)/(x − 2) = (x − 2)(x + 2)/(x − 2) = x + 2, which approaches 4. The expression itself is undefined at x = 2.', 'Factor the numerator and cancel x − 2, which is allowed only because x ≠ 2.'),

@@ -1,0 +1,102 @@
+---
+kind: chapter
+curriculumId: III.10
+title: "Computational graphs and automatic differentiation"
+hero: "How does a program compute *exact* derivatives of itself?"
+lede: Break a computation into elementary operations, evaluate it forward, then send derivatives backward along every edge. When one input reaches the output along two paths, its contributions add.
+description: "Computational graphs and automatic differentiation: an interactive DAG with forward values, forward-mode tangents and reverse-mode adjoint accumulation over shared inputs, cost intuition, independent checks, Python and NumPy, five exercises."
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import AutodiffStage from '../../lessons/calculus/AutodiffStage';
+import Exercise from '../../lessons/calculus/CalculusExercise';
+import reference from '../../../code/python/calculus_autodiff.py?raw';
+import practical from '../../../code/python/calculus_autodiff_numpy.py?raw';
+
+<Stage caption="Edit the inputs, choose reverse or forward mode, and step through the trace. Every value, local derivative, contribution and adjoint on the graph comes from evaluating the graph itself."><AutodiffStage client:load /></Stage>
+
+The opening graph computes $z=(x+y)\,x$ through an intermediate node $u=x+y$. In the trace controls under the graph, press **Reset** and then **Next**: $u=5$, then $z=10$. Keep stepping backward through $z$: it sends $1\times2=2$ to $u$ and $1\times5=5$ directly to $x$. Through $u$, another $2\times1=2$ reaches $x$. The adjoint of $x$ is the **sum**, $5+2=7=2x+y$, and the adjoint of $y$ is $2=x$.
+
+## Intuition: derivatives travel along edges
+
+A program is a chain of small operations whose derivatives are known: $\partial(a+b)/\partial a=1$, $\partial(ab)/\partial a=b$, $\partial\sin a/\partial a=\cos a$. Record the operations as a **directed acyclic graph**: nodes are values, edges say which values feed which operation. Each edge carries its local derivative. The chain rule (III.6) says a derivative along a path is the product of its edge derivatives, and the total derivative is the **sum over paths**. Automatic differentiation organises that sum so it is computed once, efficiently.
+
+## Definition
+
+A **computational graph** lists nodes $v_1,\dots,v_N$ in a topological order: inputs first, every operation after its arguments. Each edge $v\to w$ carries the local partial derivative $\partial w/\partial v$, evaluated at the forward values.
+
+* **Forward mode** fixes one input $x_k$ and propagates tangents $\dot w=\sum_{v\to w}\frac{\partial w}{\partial v}\,\dot v$ with $\dot x_k=1$.
+* **Reverse mode** fixes one output $y$ and propagates adjoints backward:
+
+$$
+\bar v=\sum_{\text{edges }v\to w}\bar w\,\frac{\partial w}{\partial v},\qquad \bar y=1 .
+$$
+
+After the reverse pass, $\bar x_k=\partial y/\partial x_k$ for every input at once.
+
+## Mechanics: what the explorer computes
+
+The graph engine evaluates nodes in a deterministic topological order (ties broken by declaration order). Values stay exact rationals while every operation is rational; $\sin$ switches to binary64. Each edge stores its local derivative. Reverse mode visits nodes in reverse order and adds each contribution $\bar w\cdot\partial w/\partial v$ into $\bar v$; forward mode adds $\partial w/\partial v\cdot\dot v$ into $\dot w$. The graph view draws exactly the selected immutable trace frame: which values exist yet, which adjoints or tangents have been accumulated, and what each active edge sends.
+
+Two checks are independent of the graph engine: a hand-written analytic derivative for each example, and a central finite difference with step $10^{-6}$, which is numerical evidence with its own error.
+
+## Derivation: why contributions add
+
+For $z=u\,x$ with $u=x+y$, the variable $x$ influences $z$ directly and through $u$. By the multivariable chain rule,
+
+$$
+\begin{aligned}\frac{\partial z}{\partial x}&=\frac{\partial z}{\partial u}\frac{\partial u}{\partial x}+\frac{\partial z}{\partial x}\Big|_{u}\\ &=x\cdot1+u .\end{aligned}
+$$
+
+With $u=x+y$ this is $2x+y$, and $\partial z/\partial y=\frac{\partial z}{\partial u}\frac{\partial u}{\partial y}=x$. Reverse mode computes each product once and adds them where paths meet; a node that uses the same input twice, such as $q=x\cdot x$, has **two edges** and receives two contributions, $x+x=2x$.
+
+## Worked example
+
+At $x=2$, $y=3$: forward, $u=5$ and $z=10$. Local derivatives: $\partial u/\partial x=\partial u/\partial y=1$, $\partial z/\partial u=x=2$, $\partial z/\partial x=u=5$. Backward from $\bar z=1$: $\bar u=2$; the direct edge sends $5$ to $x$; through $u$, $\bar x$ gains $2$ and $\bar y$ gains $2$. So $\partial z/\partial x=7$ and $\partial z/\partial y=2$, matching $2x+y=7$ and $x=2$.
+
+<Stage caption="Replay the forward pass and the reverse accumulation for z = (x + y)·x at x = 2, y = 3."><AutodiffStage worked client:load /></Stage>
+
+## Forward or reverse: shapes and cost
+
+Choose **3 inputs → 1 loss**: one reverse pass returns all three partial derivatives, while forward mode needs one pass per input (select each seed in turn). Choose **1 input → 3 outputs**: now one forward pass returns all three derivatives, while reverse mode needs one pass per output. In general, for $F:\mathbb R^n\to\mathbb R^m$, forward mode builds the Jacobian one **column** per pass and reverse mode one **row** per pass. Training a model differentiates one scalar loss with respect to many parameters ($m=1$, $n$ huge), which is why backpropagation is reverse mode.
+
+## Not symbolic, not finite differences
+
+Automatic differentiation never builds a formula for the derivative: it multiplies and adds numbers along the executed operations, so its cost is a small multiple of evaluating the function. Symbolic differentiation manipulates expressions and can grow them enormously. A finite difference perturbs the input and divides by a step $h$; it has truncation and rounding error (III.14) and needs one extra evaluation per input direction. AD derivatives are exact up to the arithmetic of the operations themselves.
+
+When a node is undefined — try **x / (x − y) at x = y** — every value and derivative downstream is undefined too. The stage reports it and does not show a finite difference across the singular point, because such a quotient measures nothing about a derivative there.
+
+## Executable reference code
+
+The pedagogical reference implements forward mode with dual numbers and reverse mode with an explicit tape, independently of the browser engine, and checks both against $2x+y$ and $x$. The NumPy version vectorises a scalar loss over many parameters and compares a reverse-mode gradient with central differences.
+
+<CodeFile source={reference} file="code/python/calculus_autodiff.py" />
+<CodeFile source={practical} file="code/python/calculus_autodiff_numpy.py" />
+
+## Explore
+
+Switch the opening graph to forward mode and seed $y$: one pass gives $\partial z/\partial y$ only. Edit $x$ to $0$: the direct contribution $u$ and the path contribution $x$ change independently. In **x·x**, step the reverse pass and watch both parallel edges send their share.
+
+## Common mistakes
+
+Overwriting an adjoint instead of adding to it, which silently drops paths. Evaluating a node before its arguments. Confusing the direction of passes: forward mode moves tangents with the computation; reverse mode moves adjoints against it, after the forward values are known. Believing AD is approximate like a finite difference.
+
+## Numerical considerations
+
+Reverse mode must store forward values (or recompute them) for the backward pass; memory, not arithmetic, is often its limit. Products of many local derivatives can underflow or overflow (vanishing and exploding gradients). Finite-difference checks of an AD implementation need a well-chosen step and a tolerance that reflects their own error, and they are meaningless where the function is not differentiable.
+
+## Engineering and ML connections
+
+Deep-learning frameworks record a graph (or tape) while running the forward computation and then run exactly this reverse accumulation to obtain the gradient of the loss with respect to every parameter. The same machinery differentiates physics simulators, rendering and probabilistic programs. Book II returns to it when gradient descent (VI.4) uses these gradients.
+
+## Exercises
+
+<Exercise id="iii10-forward" client:load />
+<Exercise id="iii10-reverse" client:load />
+<Exercise id="iii10-square" client:load />
+<Exercise id="iii10-cost" client:load />
+<Exercise id="iii10-fd" client:load />
+
+## Summary and checkpoints
+
+A computational graph evaluates elementary operations in topological order; each edge carries a local derivative. Forward mode propagates tangents for one input per pass; reverse mode accumulates adjoints for one output per pass, adding contributions over every path, including repeated uses of the same input. For $z=(x+y)x$ this gives $\partial z/\partial x=2x+y$ and $\partial z/\partial y=x$. Next, III.11 differentiates once more: second derivatives and curvature.

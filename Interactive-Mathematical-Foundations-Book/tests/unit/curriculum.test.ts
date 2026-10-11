@@ -79,7 +79,7 @@ describe('curriculum structure', () => {
 });
 
 /** Part III chapters published so far on this branch; the milestone target is all fifteen (43 available, 54 planned). */
-const PART_III_PUBLISHED = ['III.1', 'III.2', 'III.3', 'III.4', 'III.5', 'III.6'];
+const PART_III_PUBLISHED = ['III.1', 'III.2', 'III.3', 'III.4', 'III.5', 'III.6', 'III.7', 'III.8', 'III.9', 'III.10', 'III.11'];
 describe('publication scope guard', () => {
   it('I.3 Vectors stays the reference chapter under the slug "vectors"; VI.4 stays the flagship', () => {
     const i3 = findChapter('I.3')!;

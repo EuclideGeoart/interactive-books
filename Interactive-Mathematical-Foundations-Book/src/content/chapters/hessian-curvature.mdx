@@ -1,0 +1,99 @@
+---
+kind: chapter
+curriculumId: III.11
+title: "Hessian and curvature"
+hero: "Is a flat point a valley, a peak — or *neither*?"
+lede: At a point where the gradient vanishes, second derivatives decide the shape — when they can. Compare a surface with its quadratic model and meet the cases where the test cannot decide.
+description: "Hessian and curvature: exact second partials, symmetry, principal curvatures, the second-derivative test for minima, maxima and saddles, inconclusive degenerate cases, the quadratic model, Python and NumPy, five exercises."
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import HessianStage from '../../lessons/calculus/HessianStage';
+import Exercise from '../../lessons/calculus/CalculusExercise';
+import reference from '../../../code/python/calculus_hessian.py?raw';
+import practical from '../../../code/python/calculus_hessian_numpy.py?raw';
+
+<Stage caption="Drag the point or choose a surface. Dashed lines on the map are the principal curvature directions; the right plane compares solid contours of f with dashed contours of its quadratic model."><HessianStage client:load /></Stage>
+
+At the bottom of the bowl $x^2+y^2$ both principal curvatures are $2$ and the test reports a minimum. Choose **Saddle**: the curvatures are $2$ and $-2$. Now choose **x⁴ + y⁴** and **x² + y³**: both have a zero gradient and a singular Hessian at the origin, the test is **inconclusive**, and indeed the first is a minimum while the second is neither a minimum nor a maximum.
+
+## Intuition: how the slope itself changes
+
+The gradient says which way is uphill. Second derivatives say how that slope changes as you move — how the surface **curves**. Along a direction $\mathbf u$, the curvature of the slice $t\mapsto f(p+t\mathbf u)$ at $t=0$ is a number; positive means the slice bends upward. A minimum curves upward in every direction, a maximum downward in every direction, and a saddle upward in some directions and downward in others.
+
+## Definition
+
+The **Hessian** of $f$ at $p$ is the matrix of second partial derivatives,
+
+$$
+H=\begin{bmatrix}f_{xx}&f_{xy}\\ f_{yx}&f_{yy}\end{bmatrix}.
+$$
+
+For smooth functions (and all polynomials) the mixed partials agree, $f_{xy}=f_{yx}$, so $H$ is symmetric. The curvature along a unit vector $\mathbf u$ is $\mathbf u^{\mathsf T}H\mathbf u$; its extreme values are the eigenvalues of $H$, the **principal curvatures**, along the eigenvector directions.
+
+**Second-derivative test.** At a critical point ($\nabla f=\mathbf 0$): if $\det H>0$ and $f_{xx}>0$, a strict local minimum; if $\det H>0$ and $f_{xx}<0$, a strict local maximum; if $\det H<0$, a saddle; if $\det H=0$, the test is inconclusive.
+
+## Mechanics: what the explorer computes
+
+All second partials, the determinant and the trace are exact; both mixed partials are computed separately and compared. The classification is an exact rational decision. Principal curvatures are binary64 roots from the exact trace and discriminant. The right plane draws contours of the **quadratic model** $Q(\boldsymbol\delta)=f(p)+\nabla f\cdot\boldsymbol\delta+\tfrac12\boldsymbol\delta^{\mathsf T}H\boldsymbol\delta$ with the same levels as $f$. If the point is not critical, the stage says that the test does not apply.
+
+## Derivation: why the determinant decides
+
+Near a critical point $f(p+\boldsymbol\delta)\approx f(p)+\tfrac12\boldsymbol\delta^{\mathsf T}H\boldsymbol\delta$. For a symmetric $H$ with eigenvalues $\lambda_1,\lambda_2$ and orthonormal eigenvectors, writing $\boldsymbol\delta$ in that basis gives
+
+$$
+\tfrac12\boldsymbol\delta^{\mathsf T}H\boldsymbol\delta=\tfrac12(\lambda_1c_1^2+\lambda_2c_2^2).
+$$
+
+If both eigenvalues are positive the quadratic is positive for every $\boldsymbol\delta\ne\mathbf 0$ (minimum); both negative, a maximum; opposite signs, a saddle. Since $\det H=\lambda_1\lambda_2$ and $\operatorname{tr}H=\lambda_1+\lambda_2$, the sign of $\det H$ tells whether the signs agree, and $f_{xx}$ (or the trace) tells which. If $\det H=0$ some eigenvalue is zero, the quadratic is flat in that direction, and higher-order terms decide.
+
+## Worked example
+
+$f(x,y)=x^3-3x+y^2$ has $\nabla f=(3x^2-3,\,2y)$, so its critical points are $(\pm1,0)$. The Hessian is
+
+$$
+H=\begin{bmatrix}6x&0\\0&2\end{bmatrix}.
+$$
+
+At $(1,0)$: $\det H=12>0$, $f_{xx}=6>0$ — a minimum. At $(-1,0)$: $\det H=-12<0$ — a saddle.
+
+<Stage caption="Replay: check criticality, compute the Hessian, apply the test at (−1, 0)."><HessianStage worked client:load /></Stage>
+
+## When the test is inconclusive
+
+For $x^4+y^4$, $x^2+y^3$ and the monkey saddle $x^3-3xy^2$, the origin is critical and $\det H=0$. The first has a minimum, the second takes negative values along the negative $y$-axis and positive values along the $x$-axis, and the monkey saddle goes down in three directions and up in three. Same Hessian test result, three different shapes: second derivatives alone cannot decide, and the quadratic model on the right is visibly degenerate.
+
+## Executable reference code
+
+The reference computes exact Hessians with `Fraction`, checks symmetry of mixed partials and classifies critical points, reporting the degenerate cases as inconclusive. The NumPy version computes eigenvalues with `numpy.linalg.eigh` and verifies that $\mathbf u^{\mathsf T}H\mathbf u$ lies between them for many directions.
+
+<CodeFile source={reference} file="code/python/calculus_hessian.py" />
+<CodeFile source={practical} file="code/python/calculus_hessian_numpy.py" />
+
+## Explore
+
+Drag the point away from a critical point: the classification becomes "not a critical point" even though the Hessian still describes curvature. Change the direction angle and watch $\mathbf u^{\mathsf T}H\mathbf u$ move between the two principal curvatures. On the double well, move from $(1,0)$ toward $(-1,0)$ and find where $\det H$ changes sign.
+
+## Common mistakes
+
+Applying the test at a point where $\nabla f\ne\mathbf 0$. Concluding "minimum" or "maximum" when $\det H=0$. Using only $f_{xx}$ and $f_{yy}$ and forgetting the mixed term $f_{xy}$, which rotates the principal directions.
+
+## Numerical considerations
+
+Deciding $\det H=0$ in floating point is a tolerance choice, not a fact: nearly singular Hessians make classification sensitive to rounding. The explorer decides exactly because its inputs are rational. Numerically, eigenvalues of symmetric matrices are well conditioned, but the eigenvectors of nearly repeated eigenvalues are not.
+
+## Engineering and ML connections
+
+Newton's method for optimisation solves $H\boldsymbol\delta=-\nabla f$; curvature also explains why gradient descent zig-zags in narrow valleys and how step sizes relate to the largest eigenvalue (VI.5). In high dimensions most critical points of loss landscapes are saddles. This chapter supplies the vocabulary; the optimisation algorithms come later.
+
+## Exercises
+
+<Exercise id="iii11-hessian" client:load />
+<Exercise id="iii11-det" client:load />
+<Exercise id="iii11-curvature" client:load />
+<Exercise id="iii11-inconclusive" client:load />
+<Exercise id="iii11-critical" client:load />
+
+## Summary and checkpoints
+
+The Hessian collects second partial derivatives and is symmetric for smooth functions. At a critical point its determinant and diagonal classify minima, maxima and saddles; when $\det H=0$ the test is inconclusive. The quadratic model is the local second-order picture. Next, III.12 turns from rates to accumulation: integrals.

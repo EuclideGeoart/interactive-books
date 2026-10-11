@@ -1,0 +1,4223 @@
+{
+ "method": "exact Lagrange interpolation of Fraction secants at h = 0 (nested for second derivatives); Decimal(60) eigenvalues",
+ "tolerance": "derivatives, classifications and Jacobian quantities exact; eigenvalues within 8 ulps scaled by max(1, |trace|)",
+ "surfaces": [
+  {
+   "surface": "bowl",
+   "x": "-2",
+   "y": "-1",
+   "f": "5",
+   "fx": "-4",
+   "fy": "-2",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    2.0
+   ],
+   "directional": [
+    "-4",
+    "2",
+    "-4",
+    "2"
+   ]
+  },
+  {
+   "surface": "bowl",
+   "x": "-2",
+   "y": "0",
+   "f": "4",
+   "fx": "-4",
+   "fy": "0",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    2.0
+   ],
+   "directional": [
+    "-12/5",
+    "16/5",
+    "-4",
+    "0"
+   ]
+  },
+  {
+   "surface": "bowl",
+   "x": "-2",
+   "y": "1",
+   "f": "5",
+   "fx": "-4",
+   "fy": "2",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    2.0
+   ],
+   "directional": [
+    "-4/5",
+    "22/5",
+    "-4",
+    "-2"
+   ]
+  },
+  {
+   "surface": "bowl",
+   "x": "-1/2",
+   "y": "-1",
+   "f": "5/4",
+   "fx": "-1",
+   "fy": "-2",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    2.0
+   ],
+   "directional": [
+    "-11/5",
+    "-2/5",
+    "-1",
+    "2"
+   ]
+  },
+  {
+   "surface": "bowl",
+   "x": "-1/2",
+   "y": "0",
+   "f": "1/4",
+   "fx": "-1",
+   "fy": "0",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    2.0
+   ],
+   "directional": [
+    "-3/5",
+    "4/5",
+    "-1",
+    "0"
+   ]
+  },
+  {
+   "surface": "bowl",
+   "x": "-1/2",
+   "y": "1",
+   "f": "5/4",
+   "fx": "-1",
+   "fy": "2",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    2.0
+   ],
+   "directional": [
+    "1",
+    "2",
+    "-1",
+    "-2"
+   ]
+  },
+  {
+   "surface": "bowl",
+   "x": "1/4",
+   "y": "-1",
+   "f": "17/16",
+   "fx": "1/2",
+   "fy": "-2",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    2.0
+   ],
+   "directional": [
+    "-13/10",
+    "-8/5",
+    "1/2",
+    "2"
+   ]
+  },
+  {
+   "surface": "bowl",
+   "x": "1/4",
+   "y": "0",
+   "f": "1/16",
+   "fx": "1/2",
+   "fy": "0",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    2.0
+   ],
+   "directional": [
+    "3/10",
+    "-2/5",
+    "1/2",
+    "0"
+   ]
+  },
+  {
+   "surface": "bowl",
+   "x": "1/4",
+   "y": "1",
+   "f": "17/16",
+   "fx": "1/2",
+   "fy": "2",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    2.0
+   ],
+   "directional": [
+    "19/10",
+    "4/5",
+    "1/2",
+    "-2"
+   ]
+  },
+  {
+   "surface": "bowl",
+   "x": "3/2",
+   "y": "-1",
+   "f": "13/4",
+   "fx": "3",
+   "fy": "-2",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    2.0
+   ],
+   "directional": [
+    "1/5",
+    "-18/5",
+    "3",
+    "2"
+   ]
+  },
+  {
+   "surface": "bowl",
+   "x": "3/2",
+   "y": "0",
+   "f": "9/4",
+   "fx": "3",
+   "fy": "0",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    2.0
+   ],
+   "directional": [
+    "9/5",
+    "-12/5",
+    "3",
+    "0"
+   ]
+  },
+  {
+   "surface": "bowl",
+   "x": "3/2",
+   "y": "1",
+   "f": "13/4",
+   "fx": "3",
+   "fy": "2",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    2.0
+   ],
+   "directional": [
+    "17/5",
+    "-6/5",
+    "3",
+    "-2"
+   ]
+  },
+  {
+   "surface": "elliptic",
+   "x": "-2",
+   "y": "-1",
+   "f": "4",
+   "fx": "-2",
+   "fy": "-4",
+   "fxx": "1",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "4",
+   "class": "not-critical",
+   "eigenvalues": [
+    4.0,
+    1.0
+   ],
+   "directional": [
+    "-22/5",
+    "-4/5",
+    "-2",
+    "4"
+   ]
+  },
+  {
+   "surface": "elliptic",
+   "x": "-2",
+   "y": "0",
+   "f": "2",
+   "fx": "-2",
+   "fy": "0",
+   "fxx": "1",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "4",
+   "class": "not-critical",
+   "eigenvalues": [
+    4.0,
+    1.0
+   ],
+   "directional": [
+    "-6/5",
+    "8/5",
+    "-2",
+    "0"
+   ]
+  },
+  {
+   "surface": "elliptic",
+   "x": "-2",
+   "y": "1",
+   "f": "4",
+   "fx": "-2",
+   "fy": "4",
+   "fxx": "1",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "4",
+   "class": "not-critical",
+   "eigenvalues": [
+    4.0,
+    1.0
+   ],
+   "directional": [
+    "2",
+    "4",
+    "-2",
+    "-4"
+   ]
+  },
+  {
+   "surface": "elliptic",
+   "x": "-1/2",
+   "y": "-1",
+   "f": "17/8",
+   "fx": "-1/2",
+   "fy": "-4",
+   "fxx": "1",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "4",
+   "class": "not-critical",
+   "eigenvalues": [
+    4.0,
+    1.0
+   ],
+   "directional": [
+    "-7/2",
+    "-2",
+    "-1/2",
+    "4"
+   ]
+  },
+  {
+   "surface": "elliptic",
+   "x": "-1/2",
+   "y": "0",
+   "f": "1/8",
+   "fx": "-1/2",
+   "fy": "0",
+   "fxx": "1",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "4",
+   "class": "not-critical",
+   "eigenvalues": [
+    4.0,
+    1.0
+   ],
+   "directional": [
+    "-3/10",
+    "2/5",
+    "-1/2",
+    "0"
+   ]
+  },
+  {
+   "surface": "elliptic",
+   "x": "-1/2",
+   "y": "1",
+   "f": "17/8",
+   "fx": "-1/2",
+   "fy": "4",
+   "fxx": "1",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "4",
+   "class": "not-critical",
+   "eigenvalues": [
+    4.0,
+    1.0
+   ],
+   "directional": [
+    "29/10",
+    "14/5",
+    "-1/2",
+    "-4"
+   ]
+  },
+  {
+   "surface": "elliptic",
+   "x": "1/4",
+   "y": "-1",
+   "f": "65/32",
+   "fx": "1/4",
+   "fy": "-4",
+   "fxx": "1",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "4",
+   "class": "not-critical",
+   "eigenvalues": [
+    4.0,
+    1.0
+   ],
+   "directional": [
+    "-61/20",
+    "-13/5",
+    "1/4",
+    "4"
+   ]
+  },
+  {
+   "surface": "elliptic",
+   "x": "1/4",
+   "y": "0",
+   "f": "1/32",
+   "fx": "1/4",
+   "fy": "0",
+   "fxx": "1",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "4",
+   "class": "not-critical",
+   "eigenvalues": [
+    4.0,
+    1.0
+   ],
+   "directional": [
+    "3/20",
+    "-1/5",
+    "1/4",
+    "0"
+   ]
+  },
+  {
+   "surface": "elliptic",
+   "x": "1/4",
+   "y": "1",
+   "f": "65/32",
+   "fx": "1/4",
+   "fy": "4",
+   "fxx": "1",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "4",
+   "class": "not-critical",
+   "eigenvalues": [
+    4.0,
+    1.0
+   ],
+   "directional": [
+    "67/20",
+    "11/5",
+    "1/4",
+    "-4"
+   ]
+  },
+  {
+   "surface": "elliptic",
+   "x": "3/2",
+   "y": "-1",
+   "f": "25/8",
+   "fx": "3/2",
+   "fy": "-4",
+   "fxx": "1",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "4",
+   "class": "not-critical",
+   "eigenvalues": [
+    4.0,
+    1.0
+   ],
+   "directional": [
+    "-23/10",
+    "-18/5",
+    "3/2",
+    "4"
+   ]
+  },
+  {
+   "surface": "elliptic",
+   "x": "3/2",
+   "y": "0",
+   "f": "9/8",
+   "fx": "3/2",
+   "fy": "0",
+   "fxx": "1",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "4",
+   "class": "not-critical",
+   "eigenvalues": [
+    4.0,
+    1.0
+   ],
+   "directional": [
+    "9/10",
+    "-6/5",
+    "3/2",
+    "0"
+   ]
+  },
+  {
+   "surface": "elliptic",
+   "x": "3/2",
+   "y": "1",
+   "f": "25/8",
+   "fx": "3/2",
+   "fy": "4",
+   "fxx": "1",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "4",
+   "class": "not-critical",
+   "eigenvalues": [
+    4.0,
+    1.0
+   ],
+   "directional": [
+    "41/10",
+    "6/5",
+    "3/2",
+    "-4"
+   ]
+  },
+  {
+   "surface": "saddle",
+   "x": "-2",
+   "y": "-1",
+   "f": "3",
+   "fx": "-4",
+   "fy": "2",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    -2.0
+   ],
+   "directional": [
+    "-4/5",
+    "22/5",
+    "-4",
+    "-2"
+   ]
+  },
+  {
+   "surface": "saddle",
+   "x": "-2",
+   "y": "0",
+   "f": "4",
+   "fx": "-4",
+   "fy": "0",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    -2.0
+   ],
+   "directional": [
+    "-12/5",
+    "16/5",
+    "-4",
+    "0"
+   ]
+  },
+  {
+   "surface": "saddle",
+   "x": "-2",
+   "y": "1",
+   "f": "3",
+   "fx": "-4",
+   "fy": "-2",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    -2.0
+   ],
+   "directional": [
+    "-4",
+    "2",
+    "-4",
+    "2"
+   ]
+  },
+  {
+   "surface": "saddle",
+   "x": "-1/2",
+   "y": "-1",
+   "f": "-3/4",
+   "fx": "-1",
+   "fy": "2",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    -2.0
+   ],
+   "directional": [
+    "1",
+    "2",
+    "-1",
+    "-2"
+   ]
+  },
+  {
+   "surface": "saddle",
+   "x": "-1/2",
+   "y": "0",
+   "f": "1/4",
+   "fx": "-1",
+   "fy": "0",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    -2.0
+   ],
+   "directional": [
+    "-3/5",
+    "4/5",
+    "-1",
+    "0"
+   ]
+  },
+  {
+   "surface": "saddle",
+   "x": "-1/2",
+   "y": "1",
+   "f": "-3/4",
+   "fx": "-1",
+   "fy": "-2",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    -2.0
+   ],
+   "directional": [
+    "-11/5",
+    "-2/5",
+    "-1",
+    "2"
+   ]
+  },
+  {
+   "surface": "saddle",
+   "x": "1/4",
+   "y": "-1",
+   "f": "-15/16",
+   "fx": "1/2",
+   "fy": "2",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    -2.0
+   ],
+   "directional": [
+    "19/10",
+    "4/5",
+    "1/2",
+    "-2"
+   ]
+  },
+  {
+   "surface": "saddle",
+   "x": "1/4",
+   "y": "0",
+   "f": "1/16",
+   "fx": "1/2",
+   "fy": "0",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    -2.0
+   ],
+   "directional": [
+    "3/10",
+    "-2/5",
+    "1/2",
+    "0"
+   ]
+  },
+  {
+   "surface": "saddle",
+   "x": "1/4",
+   "y": "1",
+   "f": "-15/16",
+   "fx": "1/2",
+   "fy": "-2",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    -2.0
+   ],
+   "directional": [
+    "-13/10",
+    "-8/5",
+    "1/2",
+    "2"
+   ]
+  },
+  {
+   "surface": "saddle",
+   "x": "3/2",
+   "y": "-1",
+   "f": "5/4",
+   "fx": "3",
+   "fy": "2",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    -2.0
+   ],
+   "directional": [
+    "17/5",
+    "-6/5",
+    "3",
+    "-2"
+   ]
+  },
+  {
+   "surface": "saddle",
+   "x": "3/2",
+   "y": "0",
+   "f": "9/4",
+   "fx": "3",
+   "fy": "0",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    -2.0
+   ],
+   "directional": [
+    "9/5",
+    "-12/5",
+    "3",
+    "0"
+   ]
+  },
+  {
+   "surface": "saddle",
+   "x": "3/2",
+   "y": "1",
+   "f": "5/4",
+   "fx": "3",
+   "fy": "-2",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    -2.0
+   ],
+   "directional": [
+    "1/5",
+    "-18/5",
+    "3",
+    "2"
+   ]
+  },
+  {
+   "surface": "product",
+   "x": "-2",
+   "y": "-1",
+   "f": "2",
+   "fx": "-1",
+   "fy": "-2",
+   "fxx": "0",
+   "fxy": "1",
+   "fyx": "1",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    1.0,
+    -1.0
+   ],
+   "directional": [
+    "-11/5",
+    "-2/5",
+    "-1",
+    "2"
+   ]
+  },
+  {
+   "surface": "product",
+   "x": "-2",
+   "y": "0",
+   "f": "0",
+   "fx": "0",
+   "fy": "-2",
+   "fxx": "0",
+   "fxy": "1",
+   "fyx": "1",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    1.0,
+    -1.0
+   ],
+   "directional": [
+    "-8/5",
+    "-6/5",
+    "0",
+    "2"
+   ]
+  },
+  {
+   "surface": "product",
+   "x": "-2",
+   "y": "1",
+   "f": "-2",
+   "fx": "1",
+   "fy": "-2",
+   "fxx": "0",
+   "fxy": "1",
+   "fyx": "1",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    1.0,
+    -1.0
+   ],
+   "directional": [
+    "-1",
+    "-2",
+    "1",
+    "2"
+   ]
+  },
+  {
+   "surface": "product",
+   "x": "-1/2",
+   "y": "-1",
+   "f": "1/2",
+   "fx": "-1",
+   "fy": "-1/2",
+   "fxx": "0",
+   "fxy": "1",
+   "fyx": "1",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    1.0,
+    -1.0
+   ],
+   "directional": [
+    "-1",
+    "1/2",
+    "-1",
+    "1/2"
+   ]
+  },
+  {
+   "surface": "product",
+   "x": "-1/2",
+   "y": "0",
+   "f": "0",
+   "fx": "0",
+   "fy": "-1/2",
+   "fxx": "0",
+   "fxy": "1",
+   "fyx": "1",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    1.0,
+    -1.0
+   ],
+   "directional": [
+    "-2/5",
+    "-3/10",
+    "0",
+    "1/2"
+   ]
+  },
+  {
+   "surface": "product",
+   "x": "-1/2",
+   "y": "1",
+   "f": "-1/2",
+   "fx": "1",
+   "fy": "-1/2",
+   "fxx": "0",
+   "fxy": "1",
+   "fyx": "1",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    1.0,
+    -1.0
+   ],
+   "directional": [
+    "1/5",
+    "-11/10",
+    "1",
+    "1/2"
+   ]
+  },
+  {
+   "surface": "product",
+   "x": "1/4",
+   "y": "-1",
+   "f": "-1/4",
+   "fx": "-1",
+   "fy": "1/4",
+   "fxx": "0",
+   "fxy": "1",
+   "fyx": "1",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    1.0,
+    -1.0
+   ],
+   "directional": [
+    "-2/5",
+    "19/20",
+    "-1",
+    "-1/4"
+   ]
+  },
+  {
+   "surface": "product",
+   "x": "1/4",
+   "y": "0",
+   "f": "0",
+   "fx": "0",
+   "fy": "1/4",
+   "fxx": "0",
+   "fxy": "1",
+   "fyx": "1",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    1.0,
+    -1.0
+   ],
+   "directional": [
+    "1/5",
+    "3/20",
+    "0",
+    "-1/4"
+   ]
+  },
+  {
+   "surface": "product",
+   "x": "1/4",
+   "y": "1",
+   "f": "1/4",
+   "fx": "1",
+   "fy": "1/4",
+   "fxx": "0",
+   "fxy": "1",
+   "fyx": "1",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    1.0,
+    -1.0
+   ],
+   "directional": [
+    "4/5",
+    "-13/20",
+    "1",
+    "-1/4"
+   ]
+  },
+  {
+   "surface": "product",
+   "x": "3/2",
+   "y": "-1",
+   "f": "-3/2",
+   "fx": "-1",
+   "fy": "3/2",
+   "fxx": "0",
+   "fxy": "1",
+   "fyx": "1",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    1.0,
+    -1.0
+   ],
+   "directional": [
+    "3/5",
+    "17/10",
+    "-1",
+    "-3/2"
+   ]
+  },
+  {
+   "surface": "product",
+   "x": "3/2",
+   "y": "0",
+   "f": "0",
+   "fx": "0",
+   "fy": "3/2",
+   "fxx": "0",
+   "fxy": "1",
+   "fyx": "1",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    1.0,
+    -1.0
+   ],
+   "directional": [
+    "6/5",
+    "9/10",
+    "0",
+    "-3/2"
+   ]
+  },
+  {
+   "surface": "product",
+   "x": "3/2",
+   "y": "1",
+   "f": "3/2",
+   "fx": "1",
+   "fy": "3/2",
+   "fxx": "0",
+   "fxy": "1",
+   "fyx": "1",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    1.0,
+    -1.0
+   ],
+   "directional": [
+    "9/5",
+    "1/10",
+    "1",
+    "-3/2"
+   ]
+  },
+  {
+   "surface": "cap",
+   "x": "-2",
+   "y": "-1",
+   "f": "-5",
+   "fx": "4",
+   "fy": "2",
+   "fxx": "-2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "not-critical",
+   "eigenvalues": [
+    -2.0,
+    -2.0
+   ],
+   "directional": [
+    "4",
+    "-2",
+    "4",
+    "-2"
+   ]
+  },
+  {
+   "surface": "cap",
+   "x": "-2",
+   "y": "0",
+   "f": "-4",
+   "fx": "4",
+   "fy": "0",
+   "fxx": "-2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "not-critical",
+   "eigenvalues": [
+    -2.0,
+    -2.0
+   ],
+   "directional": [
+    "12/5",
+    "-16/5",
+    "4",
+    "0"
+   ]
+  },
+  {
+   "surface": "cap",
+   "x": "-2",
+   "y": "1",
+   "f": "-5",
+   "fx": "4",
+   "fy": "-2",
+   "fxx": "-2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "not-critical",
+   "eigenvalues": [
+    -2.0,
+    -2.0
+   ],
+   "directional": [
+    "4/5",
+    "-22/5",
+    "4",
+    "2"
+   ]
+  },
+  {
+   "surface": "cap",
+   "x": "-1/2",
+   "y": "-1",
+   "f": "-5/4",
+   "fx": "1",
+   "fy": "2",
+   "fxx": "-2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "not-critical",
+   "eigenvalues": [
+    -2.0,
+    -2.0
+   ],
+   "directional": [
+    "11/5",
+    "2/5",
+    "1",
+    "-2"
+   ]
+  },
+  {
+   "surface": "cap",
+   "x": "-1/2",
+   "y": "0",
+   "f": "-1/4",
+   "fx": "1",
+   "fy": "0",
+   "fxx": "-2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "not-critical",
+   "eigenvalues": [
+    -2.0,
+    -2.0
+   ],
+   "directional": [
+    "3/5",
+    "-4/5",
+    "1",
+    "0"
+   ]
+  },
+  {
+   "surface": "cap",
+   "x": "-1/2",
+   "y": "1",
+   "f": "-5/4",
+   "fx": "1",
+   "fy": "-2",
+   "fxx": "-2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "not-critical",
+   "eigenvalues": [
+    -2.0,
+    -2.0
+   ],
+   "directional": [
+    "-1",
+    "-2",
+    "1",
+    "2"
+   ]
+  },
+  {
+   "surface": "cap",
+   "x": "1/4",
+   "y": "-1",
+   "f": "-17/16",
+   "fx": "-1/2",
+   "fy": "2",
+   "fxx": "-2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "not-critical",
+   "eigenvalues": [
+    -2.0,
+    -2.0
+   ],
+   "directional": [
+    "13/10",
+    "8/5",
+    "-1/2",
+    "-2"
+   ]
+  },
+  {
+   "surface": "cap",
+   "x": "1/4",
+   "y": "0",
+   "f": "-1/16",
+   "fx": "-1/2",
+   "fy": "0",
+   "fxx": "-2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "not-critical",
+   "eigenvalues": [
+    -2.0,
+    -2.0
+   ],
+   "directional": [
+    "-3/10",
+    "2/5",
+    "-1/2",
+    "0"
+   ]
+  },
+  {
+   "surface": "cap",
+   "x": "1/4",
+   "y": "1",
+   "f": "-17/16",
+   "fx": "-1/2",
+   "fy": "-2",
+   "fxx": "-2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "not-critical",
+   "eigenvalues": [
+    -2.0,
+    -2.0
+   ],
+   "directional": [
+    "-19/10",
+    "-4/5",
+    "-1/2",
+    "2"
+   ]
+  },
+  {
+   "surface": "cap",
+   "x": "3/2",
+   "y": "-1",
+   "f": "-13/4",
+   "fx": "-3",
+   "fy": "2",
+   "fxx": "-2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "not-critical",
+   "eigenvalues": [
+    -2.0,
+    -2.0
+   ],
+   "directional": [
+    "-1/5",
+    "18/5",
+    "-3",
+    "-2"
+   ]
+  },
+  {
+   "surface": "cap",
+   "x": "3/2",
+   "y": "0",
+   "f": "-9/4",
+   "fx": "-3",
+   "fy": "0",
+   "fxx": "-2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "not-critical",
+   "eigenvalues": [
+    -2.0,
+    -2.0
+   ],
+   "directional": [
+    "-9/5",
+    "12/5",
+    "-3",
+    "0"
+   ]
+  },
+  {
+   "surface": "cap",
+   "x": "3/2",
+   "y": "1",
+   "f": "-13/4",
+   "fx": "-3",
+   "fy": "-2",
+   "fxx": "-2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "not-critical",
+   "eigenvalues": [
+    -2.0,
+    -2.0
+   ],
+   "directional": [
+    "-17/5",
+    "6/5",
+    "-3",
+    "2"
+   ]
+  },
+  {
+   "surface": "plane",
+   "x": "-2",
+   "y": "-1",
+   "f": "-4",
+   "fx": "1",
+   "fy": "2",
+   "fxx": "0",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    0.0,
+    0.0
+   ],
+   "directional": [
+    "11/5",
+    "2/5",
+    "1",
+    "-2"
+   ]
+  },
+  {
+   "surface": "plane",
+   "x": "-2",
+   "y": "0",
+   "f": "-2",
+   "fx": "1",
+   "fy": "2",
+   "fxx": "0",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    0.0,
+    0.0
+   ],
+   "directional": [
+    "11/5",
+    "2/5",
+    "1",
+    "-2"
+   ]
+  },
+  {
+   "surface": "plane",
+   "x": "-2",
+   "y": "1",
+   "f": "0",
+   "fx": "1",
+   "fy": "2",
+   "fxx": "0",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    0.0,
+    0.0
+   ],
+   "directional": [
+    "11/5",
+    "2/5",
+    "1",
+    "-2"
+   ]
+  },
+  {
+   "surface": "plane",
+   "x": "-1/2",
+   "y": "-1",
+   "f": "-5/2",
+   "fx": "1",
+   "fy": "2",
+   "fxx": "0",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    0.0,
+    0.0
+   ],
+   "directional": [
+    "11/5",
+    "2/5",
+    "1",
+    "-2"
+   ]
+  },
+  {
+   "surface": "plane",
+   "x": "-1/2",
+   "y": "0",
+   "f": "-1/2",
+   "fx": "1",
+   "fy": "2",
+   "fxx": "0",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    0.0,
+    0.0
+   ],
+   "directional": [
+    "11/5",
+    "2/5",
+    "1",
+    "-2"
+   ]
+  },
+  {
+   "surface": "plane",
+   "x": "-1/2",
+   "y": "1",
+   "f": "3/2",
+   "fx": "1",
+   "fy": "2",
+   "fxx": "0",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    0.0,
+    0.0
+   ],
+   "directional": [
+    "11/5",
+    "2/5",
+    "1",
+    "-2"
+   ]
+  },
+  {
+   "surface": "plane",
+   "x": "1/4",
+   "y": "-1",
+   "f": "-7/4",
+   "fx": "1",
+   "fy": "2",
+   "fxx": "0",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    0.0,
+    0.0
+   ],
+   "directional": [
+    "11/5",
+    "2/5",
+    "1",
+    "-2"
+   ]
+  },
+  {
+   "surface": "plane",
+   "x": "1/4",
+   "y": "0",
+   "f": "1/4",
+   "fx": "1",
+   "fy": "2",
+   "fxx": "0",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    0.0,
+    0.0
+   ],
+   "directional": [
+    "11/5",
+    "2/5",
+    "1",
+    "-2"
+   ]
+  },
+  {
+   "surface": "plane",
+   "x": "1/4",
+   "y": "1",
+   "f": "9/4",
+   "fx": "1",
+   "fy": "2",
+   "fxx": "0",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    0.0,
+    0.0
+   ],
+   "directional": [
+    "11/5",
+    "2/5",
+    "1",
+    "-2"
+   ]
+  },
+  {
+   "surface": "plane",
+   "x": "3/2",
+   "y": "-1",
+   "f": "-1/2",
+   "fx": "1",
+   "fy": "2",
+   "fxx": "0",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    0.0,
+    0.0
+   ],
+   "directional": [
+    "11/5",
+    "2/5",
+    "1",
+    "-2"
+   ]
+  },
+  {
+   "surface": "plane",
+   "x": "3/2",
+   "y": "0",
+   "f": "3/2",
+   "fx": "1",
+   "fy": "2",
+   "fxx": "0",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    0.0,
+    0.0
+   ],
+   "directional": [
+    "11/5",
+    "2/5",
+    "1",
+    "-2"
+   ]
+  },
+  {
+   "surface": "plane",
+   "x": "3/2",
+   "y": "1",
+   "f": "7/2",
+   "fx": "1",
+   "fy": "2",
+   "fxx": "0",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    0.0,
+    0.0
+   ],
+   "directional": [
+    "11/5",
+    "2/5",
+    "1",
+    "-2"
+   ]
+  },
+  {
+   "surface": "double-well",
+   "x": "-2",
+   "y": "-1",
+   "f": "-1",
+   "fx": "9",
+   "fy": "-2",
+   "fxx": "-12",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    -12.0
+   ],
+   "directional": [
+    "19/5",
+    "-42/5",
+    "9",
+    "2"
+   ]
+  },
+  {
+   "surface": "double-well",
+   "x": "-2",
+   "y": "0",
+   "f": "-2",
+   "fx": "9",
+   "fy": "0",
+   "fxx": "-12",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    -12.0
+   ],
+   "directional": [
+    "27/5",
+    "-36/5",
+    "9",
+    "0"
+   ]
+  },
+  {
+   "surface": "double-well",
+   "x": "-2",
+   "y": "1",
+   "f": "-1",
+   "fx": "9",
+   "fy": "2",
+   "fxx": "-12",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    -12.0
+   ],
+   "directional": [
+    "7",
+    "-6",
+    "9",
+    "-2"
+   ]
+  },
+  {
+   "surface": "double-well",
+   "x": "-1/2",
+   "y": "-1",
+   "f": "19/8",
+   "fx": "-9/4",
+   "fy": "-2",
+   "fxx": "-3",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    -3.0
+   ],
+   "directional": [
+    "-59/20",
+    "3/5",
+    "-9/4",
+    "2"
+   ]
+  },
+  {
+   "surface": "double-well",
+   "x": "-1/2",
+   "y": "0",
+   "f": "11/8",
+   "fx": "-9/4",
+   "fy": "0",
+   "fxx": "-3",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    -3.0
+   ],
+   "directional": [
+    "-27/20",
+    "9/5",
+    "-9/4",
+    "0"
+   ]
+  },
+  {
+   "surface": "double-well",
+   "x": "-1/2",
+   "y": "1",
+   "f": "19/8",
+   "fx": "-9/4",
+   "fy": "2",
+   "fxx": "-3",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    -3.0
+   ],
+   "directional": [
+    "1/4",
+    "3",
+    "-9/4",
+    "-2"
+   ]
+  },
+  {
+   "surface": "double-well",
+   "x": "1/4",
+   "y": "-1",
+   "f": "17/64",
+   "fx": "-45/16",
+   "fy": "-2",
+   "fxx": "3/2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    1.5
+   ],
+   "directional": [
+    "-263/80",
+    "21/20",
+    "-45/16",
+    "2"
+   ]
+  },
+  {
+   "surface": "double-well",
+   "x": "1/4",
+   "y": "0",
+   "f": "-47/64",
+   "fx": "-45/16",
+   "fy": "0",
+   "fxx": "3/2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    1.5
+   ],
+   "directional": [
+    "-27/16",
+    "9/4",
+    "-45/16",
+    "0"
+   ]
+  },
+  {
+   "surface": "double-well",
+   "x": "1/4",
+   "y": "1",
+   "f": "17/64",
+   "fx": "-45/16",
+   "fy": "2",
+   "fxx": "3/2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    1.5
+   ],
+   "directional": [
+    "-7/80",
+    "69/20",
+    "-45/16",
+    "-2"
+   ]
+  },
+  {
+   "surface": "double-well",
+   "x": "3/2",
+   "y": "-1",
+   "f": "-1/8",
+   "fx": "15/4",
+   "fy": "-2",
+   "fxx": "9",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "not-critical",
+   "eigenvalues": [
+    9.0,
+    2.0
+   ],
+   "directional": [
+    "13/20",
+    "-21/5",
+    "15/4",
+    "2"
+   ]
+  },
+  {
+   "surface": "double-well",
+   "x": "3/2",
+   "y": "0",
+   "f": "-9/8",
+   "fx": "15/4",
+   "fy": "0",
+   "fxx": "9",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "not-critical",
+   "eigenvalues": [
+    9.0,
+    2.0
+   ],
+   "directional": [
+    "9/4",
+    "-3",
+    "15/4",
+    "0"
+   ]
+  },
+  {
+   "surface": "double-well",
+   "x": "3/2",
+   "y": "1",
+   "f": "-1/8",
+   "fx": "15/4",
+   "fy": "2",
+   "fxx": "9",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "not-critical",
+   "eigenvalues": [
+    9.0,
+    2.0
+   ],
+   "directional": [
+    "77/20",
+    "-9/5",
+    "15/4",
+    "-2"
+   ]
+  },
+  {
+   "surface": "monkey",
+   "x": "-2",
+   "y": "-1",
+   "f": "-2",
+   "fx": "9",
+   "fy": "-12",
+   "fxx": "-12",
+   "fxy": "6",
+   "fyx": "6",
+   "fyy": "12",
+   "class": "not-critical",
+   "eigenvalues": [
+    13.416407864998739,
+    -13.416407864998739
+   ],
+   "directional": [
+    "-21/5",
+    "-72/5",
+    "9",
+    "12"
+   ]
+  },
+  {
+   "surface": "monkey",
+   "x": "-2",
+   "y": "0",
+   "f": "-8",
+   "fx": "12",
+   "fy": "0",
+   "fxx": "-12",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "12",
+   "class": "not-critical",
+   "eigenvalues": [
+    12.0,
+    -12.0
+   ],
+   "directional": [
+    "36/5",
+    "-48/5",
+    "12",
+    "0"
+   ]
+  },
+  {
+   "surface": "monkey",
+   "x": "-2",
+   "y": "1",
+   "f": "-2",
+   "fx": "9",
+   "fy": "12",
+   "fxx": "-12",
+   "fxy": "-6",
+   "fyx": "-6",
+   "fyy": "12",
+   "class": "not-critical",
+   "eigenvalues": [
+    13.416407864998739,
+    -13.416407864998739
+   ],
+   "directional": [
+    "15",
+    "0",
+    "9",
+    "-12"
+   ]
+  },
+  {
+   "surface": "monkey",
+   "x": "-1/2",
+   "y": "-1",
+   "f": "11/8",
+   "fx": "-9/4",
+   "fy": "-3",
+   "fxx": "-3",
+   "fxy": "6",
+   "fyx": "6",
+   "fyy": "3",
+   "class": "not-critical",
+   "eigenvalues": [
+    6.708203932499369,
+    -6.708203932499369
+   ],
+   "directional": [
+    "-15/4",
+    "0",
+    "-9/4",
+    "3"
+   ]
+  },
+  {
+   "surface": "monkey",
+   "x": "-1/2",
+   "y": "0",
+   "f": "-1/8",
+   "fx": "3/4",
+   "fy": "0",
+   "fxx": "-3",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "3",
+   "class": "not-critical",
+   "eigenvalues": [
+    3.0,
+    -3.0
+   ],
+   "directional": [
+    "9/20",
+    "-3/5",
+    "3/4",
+    "0"
+   ]
+  },
+  {
+   "surface": "monkey",
+   "x": "-1/2",
+   "y": "1",
+   "f": "11/8",
+   "fx": "-9/4",
+   "fy": "3",
+   "fxx": "-3",
+   "fxy": "-6",
+   "fyx": "-6",
+   "fyy": "3",
+   "class": "not-critical",
+   "eigenvalues": [
+    6.708203932499369,
+    -6.708203932499369
+   ],
+   "directional": [
+    "21/20",
+    "18/5",
+    "-9/4",
+    "-3"
+   ]
+  },
+  {
+   "surface": "monkey",
+   "x": "1/4",
+   "y": "-1",
+   "f": "-47/64",
+   "fx": "-45/16",
+   "fy": "3/2",
+   "fxx": "3/2",
+   "fxy": "6",
+   "fyx": "6",
+   "fyy": "-3/2",
+   "class": "not-critical",
+   "eigenvalues": [
+    6.18465843842649,
+    -6.18465843842649
+   ],
+   "directional": [
+    "-39/80",
+    "63/20",
+    "-45/16",
+    "-3/2"
+   ]
+  },
+  {
+   "surface": "monkey",
+   "x": "1/4",
+   "y": "0",
+   "f": "1/64",
+   "fx": "3/16",
+   "fy": "0",
+   "fxx": "3/2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-3/2",
+   "class": "not-critical",
+   "eigenvalues": [
+    1.5,
+    -1.5
+   ],
+   "directional": [
+    "9/80",
+    "-3/20",
+    "3/16",
+    "0"
+   ]
+  },
+  {
+   "surface": "monkey",
+   "x": "1/4",
+   "y": "1",
+   "f": "-47/64",
+   "fx": "-45/16",
+   "fy": "-3/2",
+   "fxx": "3/2",
+   "fxy": "-6",
+   "fyx": "-6",
+   "fyy": "-3/2",
+   "class": "not-critical",
+   "eigenvalues": [
+    6.18465843842649,
+    -6.18465843842649
+   ],
+   "directional": [
+    "-231/80",
+    "27/20",
+    "-45/16",
+    "3/2"
+   ]
+  },
+  {
+   "surface": "monkey",
+   "x": "3/2",
+   "y": "-1",
+   "f": "-9/8",
+   "fx": "15/4",
+   "fy": "9",
+   "fxx": "9",
+   "fxy": "6",
+   "fyx": "6",
+   "fyy": "-9",
+   "class": "not-critical",
+   "eigenvalues": [
+    10.816653826391969,
+    -10.816653826391969
+   ],
+   "directional": [
+    "189/20",
+    "12/5",
+    "15/4",
+    "-9"
+   ]
+  },
+  {
+   "surface": "monkey",
+   "x": "3/2",
+   "y": "0",
+   "f": "27/8",
+   "fx": "27/4",
+   "fy": "0",
+   "fxx": "9",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-9",
+   "class": "not-critical",
+   "eigenvalues": [
+    9.0,
+    -9.0
+   ],
+   "directional": [
+    "81/20",
+    "-27/5",
+    "27/4",
+    "0"
+   ]
+  },
+  {
+   "surface": "monkey",
+   "x": "3/2",
+   "y": "1",
+   "f": "-9/8",
+   "fx": "15/4",
+   "fy": "-9",
+   "fxx": "9",
+   "fxy": "-6",
+   "fyx": "-6",
+   "fyy": "-9",
+   "class": "not-critical",
+   "eigenvalues": [
+    10.816653826391969,
+    -10.816653826391969
+   ],
+   "directional": [
+    "-99/20",
+    "-42/5",
+    "15/4",
+    "9"
+   ]
+  },
+  {
+   "surface": "quartic",
+   "x": "-2",
+   "y": "-1",
+   "f": "17",
+   "fx": "-32",
+   "fy": "-4",
+   "fxx": "48",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "12",
+   "class": "not-critical",
+   "eigenvalues": [
+    48.0,
+    12.0
+   ],
+   "directional": [
+    "-112/5",
+    "116/5",
+    "-32",
+    "4"
+   ]
+  },
+  {
+   "surface": "quartic",
+   "x": "-2",
+   "y": "0",
+   "f": "16",
+   "fx": "-32",
+   "fy": "0",
+   "fxx": "48",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    48.0,
+    0.0
+   ],
+   "directional": [
+    "-96/5",
+    "128/5",
+    "-32",
+    "0"
+   ]
+  },
+  {
+   "surface": "quartic",
+   "x": "-2",
+   "y": "1",
+   "f": "17",
+   "fx": "-32",
+   "fy": "4",
+   "fxx": "48",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "12",
+   "class": "not-critical",
+   "eigenvalues": [
+    48.0,
+    12.0
+   ],
+   "directional": [
+    "-16",
+    "28",
+    "-32",
+    "-4"
+   ]
+  },
+  {
+   "surface": "quartic",
+   "x": "-1/2",
+   "y": "-1",
+   "f": "17/16",
+   "fx": "-1/2",
+   "fy": "-4",
+   "fxx": "3",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "12",
+   "class": "not-critical",
+   "eigenvalues": [
+    12.0,
+    3.0
+   ],
+   "directional": [
+    "-7/2",
+    "-2",
+    "-1/2",
+    "4"
+   ]
+  },
+  {
+   "surface": "quartic",
+   "x": "-1/2",
+   "y": "0",
+   "f": "1/16",
+   "fx": "-1/2",
+   "fy": "0",
+   "fxx": "3",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    3.0,
+    0.0
+   ],
+   "directional": [
+    "-3/10",
+    "2/5",
+    "-1/2",
+    "0"
+   ]
+  },
+  {
+   "surface": "quartic",
+   "x": "-1/2",
+   "y": "1",
+   "f": "17/16",
+   "fx": "-1/2",
+   "fy": "4",
+   "fxx": "3",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "12",
+   "class": "not-critical",
+   "eigenvalues": [
+    12.0,
+    3.0
+   ],
+   "directional": [
+    "29/10",
+    "14/5",
+    "-1/2",
+    "-4"
+   ]
+  },
+  {
+   "surface": "quartic",
+   "x": "1/4",
+   "y": "-1",
+   "f": "257/256",
+   "fx": "1/16",
+   "fy": "-4",
+   "fxx": "3/4",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "12",
+   "class": "not-critical",
+   "eigenvalues": [
+    12.0,
+    0.75
+   ],
+   "directional": [
+    "-253/80",
+    "-49/20",
+    "1/16",
+    "4"
+   ]
+  },
+  {
+   "surface": "quartic",
+   "x": "1/4",
+   "y": "0",
+   "f": "1/256",
+   "fx": "1/16",
+   "fy": "0",
+   "fxx": "3/4",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    0.75,
+    0.0
+   ],
+   "directional": [
+    "3/80",
+    "-1/20",
+    "1/16",
+    "0"
+   ]
+  },
+  {
+   "surface": "quartic",
+   "x": "1/4",
+   "y": "1",
+   "f": "257/256",
+   "fx": "1/16",
+   "fy": "4",
+   "fxx": "3/4",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "12",
+   "class": "not-critical",
+   "eigenvalues": [
+    12.0,
+    0.75
+   ],
+   "directional": [
+    "259/80",
+    "47/20",
+    "1/16",
+    "-4"
+   ]
+  },
+  {
+   "surface": "quartic",
+   "x": "3/2",
+   "y": "-1",
+   "f": "97/16",
+   "fx": "27/2",
+   "fy": "-4",
+   "fxx": "27",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "12",
+   "class": "not-critical",
+   "eigenvalues": [
+    27.0,
+    12.0
+   ],
+   "directional": [
+    "49/10",
+    "-66/5",
+    "27/2",
+    "4"
+   ]
+  },
+  {
+   "surface": "quartic",
+   "x": "3/2",
+   "y": "0",
+   "f": "81/16",
+   "fx": "27/2",
+   "fy": "0",
+   "fxx": "27",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    27.0,
+    0.0
+   ],
+   "directional": [
+    "81/10",
+    "-54/5",
+    "27/2",
+    "0"
+   ]
+  },
+  {
+   "surface": "quartic",
+   "x": "3/2",
+   "y": "1",
+   "f": "97/16",
+   "fx": "27/2",
+   "fy": "4",
+   "fxx": "27",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "12",
+   "class": "not-critical",
+   "eigenvalues": [
+    27.0,
+    12.0
+   ],
+   "directional": [
+    "113/10",
+    "-42/5",
+    "27/2",
+    "-4"
+   ]
+  },
+  {
+   "surface": "cubic-y",
+   "x": "-2",
+   "y": "-1",
+   "f": "3",
+   "fx": "-4",
+   "fy": "3",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-6",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    -6.0
+   ],
+   "directional": [
+    "0",
+    "5",
+    "-4",
+    "-3"
+   ]
+  },
+  {
+   "surface": "cubic-y",
+   "x": "-2",
+   "y": "0",
+   "f": "4",
+   "fx": "-4",
+   "fy": "0",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    0.0
+   ],
+   "directional": [
+    "-12/5",
+    "16/5",
+    "-4",
+    "0"
+   ]
+  },
+  {
+   "surface": "cubic-y",
+   "x": "-2",
+   "y": "1",
+   "f": "5",
+   "fx": "-4",
+   "fy": "3",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "6",
+   "class": "not-critical",
+   "eigenvalues": [
+    6.0,
+    2.0
+   ],
+   "directional": [
+    "0",
+    "5",
+    "-4",
+    "-3"
+   ]
+  },
+  {
+   "surface": "cubic-y",
+   "x": "-1/2",
+   "y": "-1",
+   "f": "-3/4",
+   "fx": "-1",
+   "fy": "3",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-6",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    -6.0
+   ],
+   "directional": [
+    "9/5",
+    "13/5",
+    "-1",
+    "-3"
+   ]
+  },
+  {
+   "surface": "cubic-y",
+   "x": "-1/2",
+   "y": "0",
+   "f": "1/4",
+   "fx": "-1",
+   "fy": "0",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    0.0
+   ],
+   "directional": [
+    "-3/5",
+    "4/5",
+    "-1",
+    "0"
+   ]
+  },
+  {
+   "surface": "cubic-y",
+   "x": "-1/2",
+   "y": "1",
+   "f": "5/4",
+   "fx": "-1",
+   "fy": "3",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "6",
+   "class": "not-critical",
+   "eigenvalues": [
+    6.0,
+    2.0
+   ],
+   "directional": [
+    "9/5",
+    "13/5",
+    "-1",
+    "-3"
+   ]
+  },
+  {
+   "surface": "cubic-y",
+   "x": "1/4",
+   "y": "-1",
+   "f": "-15/16",
+   "fx": "1/2",
+   "fy": "3",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-6",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    -6.0
+   ],
+   "directional": [
+    "27/10",
+    "7/5",
+    "1/2",
+    "-3"
+   ]
+  },
+  {
+   "surface": "cubic-y",
+   "x": "1/4",
+   "y": "0",
+   "f": "1/16",
+   "fx": "1/2",
+   "fy": "0",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    0.0
+   ],
+   "directional": [
+    "3/10",
+    "-2/5",
+    "1/2",
+    "0"
+   ]
+  },
+  {
+   "surface": "cubic-y",
+   "x": "1/4",
+   "y": "1",
+   "f": "17/16",
+   "fx": "1/2",
+   "fy": "3",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "6",
+   "class": "not-critical",
+   "eigenvalues": [
+    6.0,
+    2.0
+   ],
+   "directional": [
+    "27/10",
+    "7/5",
+    "1/2",
+    "-3"
+   ]
+  },
+  {
+   "surface": "cubic-y",
+   "x": "3/2",
+   "y": "-1",
+   "f": "5/4",
+   "fx": "3",
+   "fy": "3",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-6",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    -6.0
+   ],
+   "directional": [
+    "21/5",
+    "-3/5",
+    "3",
+    "-3"
+   ]
+  },
+  {
+   "surface": "cubic-y",
+   "x": "3/2",
+   "y": "0",
+   "f": "9/4",
+   "fx": "3",
+   "fy": "0",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    0.0
+   ],
+   "directional": [
+    "9/5",
+    "-12/5",
+    "3",
+    "0"
+   ]
+  },
+  {
+   "surface": "cubic-y",
+   "x": "3/2",
+   "y": "1",
+   "f": "13/4",
+   "fx": "3",
+   "fy": "3",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "6",
+   "class": "not-critical",
+   "eigenvalues": [
+    6.0,
+    2.0
+   ],
+   "directional": [
+    "21/5",
+    "-3/5",
+    "3",
+    "-3"
+   ]
+  },
+  {
+   "surface": "bowl",
+   "x": "0",
+   "y": "0",
+   "f": "0",
+   "fx": "0",
+   "fy": "0",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "minimum",
+   "eigenvalues": [
+    2.0,
+    2.0
+   ],
+   "directional": [
+    "0",
+    "0",
+    "0",
+    "0"
+   ]
+  },
+  {
+   "surface": "elliptic",
+   "x": "0",
+   "y": "0",
+   "f": "0",
+   "fx": "0",
+   "fy": "0",
+   "fxx": "1",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "4",
+   "class": "minimum",
+   "eigenvalues": [
+    4.0,
+    1.0
+   ],
+   "directional": [
+    "0",
+    "0",
+    "0",
+    "0"
+   ]
+  },
+  {
+   "surface": "saddle",
+   "x": "0",
+   "y": "0",
+   "f": "0",
+   "fx": "0",
+   "fy": "0",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "saddle",
+   "eigenvalues": [
+    2.0,
+    -2.0
+   ],
+   "directional": [
+    "0",
+    "0",
+    "0",
+    "0"
+   ]
+  },
+  {
+   "surface": "product",
+   "x": "0",
+   "y": "0",
+   "f": "0",
+   "fx": "0",
+   "fy": "0",
+   "fxx": "0",
+   "fxy": "1",
+   "fyx": "1",
+   "fyy": "0",
+   "class": "saddle",
+   "eigenvalues": [
+    1.0,
+    -1.0
+   ],
+   "directional": [
+    "0",
+    "0",
+    "0",
+    "0"
+   ]
+  },
+  {
+   "surface": "cap",
+   "x": "0",
+   "y": "0",
+   "f": "0",
+   "fx": "0",
+   "fy": "0",
+   "fxx": "-2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "-2",
+   "class": "maximum",
+   "eigenvalues": [
+    -2.0,
+    -2.0
+   ],
+   "directional": [
+    "0",
+    "0",
+    "0",
+    "0"
+   ]
+  },
+  {
+   "surface": "plane",
+   "x": "0",
+   "y": "0",
+   "f": "0",
+   "fx": "1",
+   "fy": "2",
+   "fxx": "0",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "0",
+   "class": "not-critical",
+   "eigenvalues": [
+    0.0,
+    0.0
+   ],
+   "directional": [
+    "11/5",
+    "2/5",
+    "1",
+    "-2"
+   ]
+  },
+  {
+   "surface": "double-well",
+   "x": "0",
+   "y": "0",
+   "f": "0",
+   "fx": "-3",
+   "fy": "0",
+   "fxx": "0",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "not-critical",
+   "eigenvalues": [
+    2.0,
+    0.0
+   ],
+   "directional": [
+    "-9/5",
+    "12/5",
+    "-3",
+    "0"
+   ]
+  },
+  {
+   "surface": "monkey",
+   "x": "0",
+   "y": "0",
+   "f": "0",
+   "fx": "0",
+   "fy": "0",
+   "fxx": "0",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "0",
+   "class": "inconclusive",
+   "eigenvalues": [
+    0.0,
+    0.0
+   ],
+   "directional": [
+    "0",
+    "0",
+    "0",
+    "0"
+   ]
+  },
+  {
+   "surface": "quartic",
+   "x": "0",
+   "y": "0",
+   "f": "0",
+   "fx": "0",
+   "fy": "0",
+   "fxx": "0",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "0",
+   "class": "inconclusive",
+   "eigenvalues": [
+    0.0,
+    0.0
+   ],
+   "directional": [
+    "0",
+    "0",
+    "0",
+    "0"
+   ]
+  },
+  {
+   "surface": "cubic-y",
+   "x": "0",
+   "y": "0",
+   "f": "0",
+   "fx": "0",
+   "fy": "0",
+   "fxx": "2",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "0",
+   "class": "inconclusive",
+   "eigenvalues": [
+    2.0,
+    0.0
+   ],
+   "directional": [
+    "0",
+    "0",
+    "0",
+    "0"
+   ]
+  },
+  {
+   "surface": "double-well",
+   "x": "1",
+   "y": "0",
+   "f": "-2",
+   "fx": "0",
+   "fy": "0",
+   "fxx": "6",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "minimum",
+   "eigenvalues": [
+    6.0,
+    2.0
+   ],
+   "directional": [
+    "0",
+    "0",
+    "0",
+    "0"
+   ]
+  },
+  {
+   "surface": "double-well",
+   "x": "-1",
+   "y": "0",
+   "f": "2",
+   "fx": "0",
+   "fy": "0",
+   "fxx": "-6",
+   "fxy": "0",
+   "fyx": "0",
+   "fyy": "2",
+   "class": "saddle",
+   "eigenvalues": [
+    2.0,
+    -6.0
+   ],
+   "directional": [
+    "0",
+    "0",
+    "0",
+    "0"
+   ]
+  }
+ ],
+ "maps": [
+  {
+   "map": "square",
+   "x": "1",
+   "y": "1/2",
+   "dx": "1/4",
+   "dy": "1/4",
+   "J": [
+    [
+     "2",
+     "-1"
+    ],
+    [
+     "1",
+     "2"
+    ]
+   ],
+   "Fp": [
+    "3/4",
+    "1"
+   ],
+   "Fq": [
+    "1",
+    "15/8"
+   ],
+   "predicted": [
+    "1",
+    "7/4"
+   ],
+   "errorSquared": "1/64",
+   "det": "5"
+  },
+  {
+   "map": "square",
+   "x": "1",
+   "y": "1/2",
+   "dx": "1",
+   "dy": "-3/4",
+   "J": [
+    [
+     "2",
+     "-1"
+    ],
+    [
+     "1",
+     "2"
+    ]
+   ],
+   "Fp": [
+    "3/4",
+    "1"
+   ],
+   "Fq": [
+    "63/16",
+    "-1"
+   ],
+   "predicted": [
+    "7/2",
+    "1/2"
+   ],
+   "errorSquared": "625/256",
+   "det": "5"
+  },
+  {
+   "map": "square",
+   "x": "1",
+   "y": "1/2",
+   "dx": "0",
+   "dy": "0",
+   "J": [
+    [
+     "2",
+     "-1"
+    ],
+    [
+     "1",
+     "2"
+    ]
+   ],
+   "Fp": [
+    "3/4",
+    "1"
+   ],
+   "Fq": [
+    "3/4",
+    "1"
+   ],
+   "predicted": [
+    "3/4",
+    "1"
+   ],
+   "errorSquared": "0",
+   "det": "5"
+  },
+  {
+   "map": "square",
+   "x": "0",
+   "y": "0",
+   "dx": "1/4",
+   "dy": "1/4",
+   "J": [
+    [
+     "0",
+     "0"
+    ],
+    [
+     "0",
+     "0"
+    ]
+   ],
+   "Fp": [
+    "0",
+    "0"
+   ],
+   "Fq": [
+    "0",
+    "1/8"
+   ],
+   "predicted": [
+    "0",
+    "0"
+   ],
+   "errorSquared": "1/64",
+   "det": "0"
+  },
+  {
+   "map": "square",
+   "x": "0",
+   "y": "0",
+   "dx": "1",
+   "dy": "-3/4",
+   "J": [
+    [
+     "0",
+     "0"
+    ],
+    [
+     "0",
+     "0"
+    ]
+   ],
+   "Fp": [
+    "0",
+    "0"
+   ],
+   "Fq": [
+    "7/16",
+    "-3/2"
+   ],
+   "predicted": [
+    "0",
+    "0"
+   ],
+   "errorSquared": "625/256",
+   "det": "0"
+  },
+  {
+   "map": "square",
+   "x": "0",
+   "y": "0",
+   "dx": "0",
+   "dy": "0",
+   "J": [
+    [
+     "0",
+     "0"
+    ],
+    [
+     "0",
+     "0"
+    ]
+   ],
+   "Fp": [
+    "0",
+    "0"
+   ],
+   "Fq": [
+    "0",
+    "0"
+   ],
+   "predicted": [
+    "0",
+    "0"
+   ],
+   "errorSquared": "0",
+   "det": "0"
+  },
+  {
+   "map": "square",
+   "x": "-3/2",
+   "y": "2",
+   "dx": "1/4",
+   "dy": "1/4",
+   "J": [
+    [
+     "-3",
+     "-4"
+    ],
+    [
+     "4",
+     "-3"
+    ]
+   ],
+   "Fp": [
+    "-7/4",
+    "-6"
+   ],
+   "Fq": [
+    "-7/2",
+    "-45/8"
+   ],
+   "predicted": [
+    "-7/2",
+    "-23/4"
+   ],
+   "errorSquared": "1/64",
+   "det": "25"
+  },
+  {
+   "map": "square",
+   "x": "-3/2",
+   "y": "2",
+   "dx": "1",
+   "dy": "-3/4",
+   "J": [
+    [
+     "-3",
+     "-4"
+    ],
+    [
+     "4",
+     "-3"
+    ]
+   ],
+   "Fp": [
+    "-7/4",
+    "-6"
+   ],
+   "Fq": [
+    "-21/16",
+    "-5/4"
+   ],
+   "predicted": [
+    "-7/4",
+    "1/4"
+   ],
+   "errorSquared": "625/256",
+   "det": "25"
+  },
+  {
+   "map": "square",
+   "x": "-3/2",
+   "y": "2",
+   "dx": "0",
+   "dy": "0",
+   "J": [
+    [
+     "-3",
+     "-4"
+    ],
+    [
+     "4",
+     "-3"
+    ]
+   ],
+   "Fp": [
+    "-7/4",
+    "-6"
+   ],
+   "Fq": [
+    "-7/4",
+    "-6"
+   ],
+   "predicted": [
+    "-7/4",
+    "-6"
+   ],
+   "errorSquared": "0",
+   "det": "25"
+  },
+  {
+   "map": "shear",
+   "x": "1",
+   "y": "1/2",
+   "dx": "1/4",
+   "dy": "1/4",
+   "J": [
+    [
+     "1",
+     "1/2"
+    ],
+    [
+     "0",
+     "1"
+    ]
+   ],
+   "Fp": [
+    "9/8",
+    "1/2"
+   ],
+   "Fq": [
+    "49/32",
+    "3/4"
+   ],
+   "predicted": [
+    "3/2",
+    "3/4"
+   ],
+   "errorSquared": "1/1024",
+   "det": "1"
+  },
+  {
+   "map": "shear",
+   "x": "1",
+   "y": "1/2",
+   "dx": "1",
+   "dy": "-3/4",
+   "J": [
+    [
+     "1",
+     "1/2"
+    ],
+    [
+     "0",
+     "1"
+    ]
+   ],
+   "Fp": [
+    "9/8",
+    "1/2"
+   ],
+   "Fq": [
+    "65/32",
+    "-1/4"
+   ],
+   "predicted": [
+    "7/4",
+    "-1/4"
+   ],
+   "errorSquared": "81/1024",
+   "det": "1"
+  },
+  {
+   "map": "shear",
+   "x": "1",
+   "y": "1/2",
+   "dx": "0",
+   "dy": "0",
+   "J": [
+    [
+     "1",
+     "1/2"
+    ],
+    [
+     "0",
+     "1"
+    ]
+   ],
+   "Fp": [
+    "9/8",
+    "1/2"
+   ],
+   "Fq": [
+    "9/8",
+    "1/2"
+   ],
+   "predicted": [
+    "9/8",
+    "1/2"
+   ],
+   "errorSquared": "0",
+   "det": "1"
+  },
+  {
+   "map": "shear",
+   "x": "0",
+   "y": "0",
+   "dx": "1/4",
+   "dy": "1/4",
+   "J": [
+    [
+     "1",
+     "0"
+    ],
+    [
+     "0",
+     "1"
+    ]
+   ],
+   "Fp": [
+    "0",
+    "0"
+   ],
+   "Fq": [
+    "9/32",
+    "1/4"
+   ],
+   "predicted": [
+    "1/4",
+    "1/4"
+   ],
+   "errorSquared": "1/1024",
+   "det": "1"
+  },
+  {
+   "map": "shear",
+   "x": "0",
+   "y": "0",
+   "dx": "1",
+   "dy": "-3/4",
+   "J": [
+    [
+     "1",
+     "0"
+    ],
+    [
+     "0",
+     "1"
+    ]
+   ],
+   "Fp": [
+    "0",
+    "0"
+   ],
+   "Fq": [
+    "41/32",
+    "-3/4"
+   ],
+   "predicted": [
+    "1",
+    "-3/4"
+   ],
+   "errorSquared": "81/1024",
+   "det": "1"
+  },
+  {
+   "map": "shear",
+   "x": "0",
+   "y": "0",
+   "dx": "0",
+   "dy": "0",
+   "J": [
+    [
+     "1",
+     "0"
+    ],
+    [
+     "0",
+     "1"
+    ]
+   ],
+   "Fp": [
+    "0",
+    "0"
+   ],
+   "Fq": [
+    "0",
+    "0"
+   ],
+   "predicted": [
+    "0",
+    "0"
+   ],
+   "errorSquared": "0",
+   "det": "1"
+  },
+  {
+   "map": "shear",
+   "x": "-3/2",
+   "y": "2",
+   "dx": "1/4",
+   "dy": "1/4",
+   "J": [
+    [
+     "1",
+     "2"
+    ],
+    [
+     "0",
+     "1"
+    ]
+   ],
+   "Fp": [
+    "1/2",
+    "2"
+   ],
+   "Fq": [
+    "41/32",
+    "9/4"
+   ],
+   "predicted": [
+    "5/4",
+    "9/4"
+   ],
+   "errorSquared": "1/1024",
+   "det": "1"
+  },
+  {
+   "map": "shear",
+   "x": "-3/2",
+   "y": "2",
+   "dx": "1",
+   "dy": "-3/4",
+   "J": [
+    [
+     "1",
+     "2"
+    ],
+    [
+     "0",
+     "1"
+    ]
+   ],
+   "Fp": [
+    "1/2",
+    "2"
+   ],
+   "Fq": [
+    "9/32",
+    "5/4"
+   ],
+   "predicted": [
+    "0",
+    "5/4"
+   ],
+   "errorSquared": "81/1024",
+   "det": "1"
+  },
+  {
+   "map": "shear",
+   "x": "-3/2",
+   "y": "2",
+   "dx": "0",
+   "dy": "0",
+   "J": [
+    [
+     "1",
+     "2"
+    ],
+    [
+     "0",
+     "1"
+    ]
+   ],
+   "Fp": [
+    "1/2",
+    "2"
+   ],
+   "Fq": [
+    "1/2",
+    "2"
+   ],
+   "predicted": [
+    "1/2",
+    "2"
+   ],
+   "errorSquared": "0",
+   "det": "1"
+  },
+  {
+   "map": "linear",
+   "x": "1",
+   "y": "1/2",
+   "dx": "1/4",
+   "dy": "1/4",
+   "J": [
+    [
+     "2",
+     "1"
+    ],
+    [
+     "1",
+     "-1"
+    ]
+   ],
+   "Fp": [
+    "5/2",
+    "1/2"
+   ],
+   "Fq": [
+    "13/4",
+    "1/2"
+   ],
+   "predicted": [
+    "13/4",
+    "1/2"
+   ],
+   "errorSquared": "0",
+   "det": "-3"
+  },
+  {
+   "map": "linear",
+   "x": "1",
+   "y": "1/2",
+   "dx": "1",
+   "dy": "-3/4",
+   "J": [
+    [
+     "2",
+     "1"
+    ],
+    [
+     "1",
+     "-1"
+    ]
+   ],
+   "Fp": [
+    "5/2",
+    "1/2"
+   ],
+   "Fq": [
+    "15/4",
+    "9/4"
+   ],
+   "predicted": [
+    "15/4",
+    "9/4"
+   ],
+   "errorSquared": "0",
+   "det": "-3"
+  },
+  {
+   "map": "linear",
+   "x": "1",
+   "y": "1/2",
+   "dx": "0",
+   "dy": "0",
+   "J": [
+    [
+     "2",
+     "1"
+    ],
+    [
+     "1",
+     "-1"
+    ]
+   ],
+   "Fp": [
+    "5/2",
+    "1/2"
+   ],
+   "Fq": [
+    "5/2",
+    "1/2"
+   ],
+   "predicted": [
+    "5/2",
+    "1/2"
+   ],
+   "errorSquared": "0",
+   "det": "-3"
+  },
+  {
+   "map": "linear",
+   "x": "0",
+   "y": "0",
+   "dx": "1/4",
+   "dy": "1/4",
+   "J": [
+    [
+     "2",
+     "1"
+    ],
+    [
+     "1",
+     "-1"
+    ]
+   ],
+   "Fp": [
+    "0",
+    "0"
+   ],
+   "Fq": [
+    "3/4",
+    "0"
+   ],
+   "predicted": [
+    "3/4",
+    "0"
+   ],
+   "errorSquared": "0",
+   "det": "-3"
+  },
+  {
+   "map": "linear",
+   "x": "0",
+   "y": "0",
+   "dx": "1",
+   "dy": "-3/4",
+   "J": [
+    [
+     "2",
+     "1"
+    ],
+    [
+     "1",
+     "-1"
+    ]
+   ],
+   "Fp": [
+    "0",
+    "0"
+   ],
+   "Fq": [
+    "5/4",
+    "7/4"
+   ],
+   "predicted": [
+    "5/4",
+    "7/4"
+   ],
+   "errorSquared": "0",
+   "det": "-3"
+  },
+  {
+   "map": "linear",
+   "x": "0",
+   "y": "0",
+   "dx": "0",
+   "dy": "0",
+   "J": [
+    [
+     "2",
+     "1"
+    ],
+    [
+     "1",
+     "-1"
+    ]
+   ],
+   "Fp": [
+    "0",
+    "0"
+   ],
+   "Fq": [
+    "0",
+    "0"
+   ],
+   "predicted": [
+    "0",
+    "0"
+   ],
+   "errorSquared": "0",
+   "det": "-3"
+  },
+  {
+   "map": "linear",
+   "x": "-3/2",
+   "y": "2",
+   "dx": "1/4",
+   "dy": "1/4",
+   "J": [
+    [
+     "2",
+     "1"
+    ],
+    [
+     "1",
+     "-1"
+    ]
+   ],
+   "Fp": [
+    "-1",
+    "-7/2"
+   ],
+   "Fq": [
+    "-1/4",
+    "-7/2"
+   ],
+   "predicted": [
+    "-1/4",
+    "-7/2"
+   ],
+   "errorSquared": "0",
+   "det": "-3"
+  },
+  {
+   "map": "linear",
+   "x": "-3/2",
+   "y": "2",
+   "dx": "1",
+   "dy": "-3/4",
+   "J": [
+    [
+     "2",
+     "1"
+    ],
+    [
+     "1",
+     "-1"
+    ]
+   ],
+   "Fp": [
+    "-1",
+    "-7/2"
+   ],
+   "Fq": [
+    "1/4",
+    "-7/4"
+   ],
+   "predicted": [
+    "1/4",
+    "-7/4"
+   ],
+   "errorSquared": "0",
+   "det": "-3"
+  },
+  {
+   "map": "linear",
+   "x": "-3/2",
+   "y": "2",
+   "dx": "0",
+   "dy": "0",
+   "J": [
+    [
+     "2",
+     "1"
+    ],
+    [
+     "1",
+     "-1"
+    ]
+   ],
+   "Fp": [
+    "-1",
+    "-7/2"
+   ],
+   "Fq": [
+    "-1",
+    "-7/2"
+   ],
+   "predicted": [
+    "-1",
+    "-7/2"
+   ],
+   "errorSquared": "0",
+   "det": "-3"
+  },
+  {
+   "map": "lift",
+   "x": "1",
+   "y": "1/2",
+   "dx": "1/4",
+   "dy": "1/4",
+   "J": [
+    [
+     "1",
+     "0"
+    ],
+    [
+     "0",
+     "1"
+    ],
+    [
+     "1/2",
+     "1"
+    ]
+   ],
+   "Fp": [
+    "1",
+    "1/2",
+    "1/2"
+   ],
+   "Fq": [
+    "5/4",
+    "3/4",
+    "15/16"
+   ],
+   "predicted": [
+    "5/4",
+    "3/4",
+    "7/8"
+   ],
+   "errorSquared": "1/256",
+   "det": null
+  },
+  {
+   "map": "lift",
+   "x": "1",
+   "y": "1/2",
+   "dx": "1",
+   "dy": "-3/4",
+   "J": [
+    [
+     "1",
+     "0"
+    ],
+    [
+     "0",
+     "1"
+    ],
+    [
+     "1/2",
+     "1"
+    ]
+   ],
+   "Fp": [
+    "1",
+    "1/2",
+    "1/2"
+   ],
+   "Fq": [
+    "2",
+    "-1/4",
+    "-1/2"
+   ],
+   "predicted": [
+    "2",
+    "-1/4",
+    "1/4"
+   ],
+   "errorSquared": "9/16",
+   "det": null
+  },
+  {
+   "map": "lift",
+   "x": "1",
+   "y": "1/2",
+   "dx": "0",
+   "dy": "0",
+   "J": [
+    [
+     "1",
+     "0"
+    ],
+    [
+     "0",
+     "1"
+    ],
+    [
+     "1/2",
+     "1"
+    ]
+   ],
+   "Fp": [
+    "1",
+    "1/2",
+    "1/2"
+   ],
+   "Fq": [
+    "1",
+    "1/2",
+    "1/2"
+   ],
+   "predicted": [
+    "1",
+    "1/2",
+    "1/2"
+   ],
+   "errorSquared": "0",
+   "det": null
+  },
+  {
+   "map": "lift",
+   "x": "0",
+   "y": "0",
+   "dx": "1/4",
+   "dy": "1/4",
+   "J": [
+    [
+     "1",
+     "0"
+    ],
+    [
+     "0",
+     "1"
+    ],
+    [
+     "0",
+     "0"
+    ]
+   ],
+   "Fp": [
+    "0",
+    "0",
+    "0"
+   ],
+   "Fq": [
+    "1/4",
+    "1/4",
+    "1/16"
+   ],
+   "predicted": [
+    "1/4",
+    "1/4",
+    "0"
+   ],
+   "errorSquared": "1/256",
+   "det": null
+  },
+  {
+   "map": "lift",
+   "x": "0",
+   "y": "0",
+   "dx": "1",
+   "dy": "-3/4",
+   "J": [
+    [
+     "1",
+     "0"
+    ],
+    [
+     "0",
+     "1"
+    ],
+    [
+     "0",
+     "0"
+    ]
+   ],
+   "Fp": [
+    "0",
+    "0",
+    "0"
+   ],
+   "Fq": [
+    "1",
+    "-3/4",
+    "-3/4"
+   ],
+   "predicted": [
+    "1",
+    "-3/4",
+    "0"
+   ],
+   "errorSquared": "9/16",
+   "det": null
+  },
+  {
+   "map": "lift",
+   "x": "0",
+   "y": "0",
+   "dx": "0",
+   "dy": "0",
+   "J": [
+    [
+     "1",
+     "0"
+    ],
+    [
+     "0",
+     "1"
+    ],
+    [
+     "0",
+     "0"
+    ]
+   ],
+   "Fp": [
+    "0",
+    "0",
+    "0"
+   ],
+   "Fq": [
+    "0",
+    "0",
+    "0"
+   ],
+   "predicted": [
+    "0",
+    "0",
+    "0"
+   ],
+   "errorSquared": "0",
+   "det": null
+  },
+  {
+   "map": "lift",
+   "x": "-3/2",
+   "y": "2",
+   "dx": "1/4",
+   "dy": "1/4",
+   "J": [
+    [
+     "1",
+     "0"
+    ],
+    [
+     "0",
+     "1"
+    ],
+    [
+     "2",
+     "-3/2"
+    ]
+   ],
+   "Fp": [
+    "-3/2",
+    "2",
+    "-3"
+   ],
+   "Fq": [
+    "-5/4",
+    "9/4",
+    "-45/16"
+   ],
+   "predicted": [
+    "-5/4",
+    "9/4",
+    "-23/8"
+   ],
+   "errorSquared": "1/256",
+   "det": null
+  },
+  {
+   "map": "lift",
+   "x": "-3/2",
+   "y": "2",
+   "dx": "1",
+   "dy": "-3/4",
+   "J": [
+    [
+     "1",
+     "0"
+    ],
+    [
+     "0",
+     "1"
+    ],
+    [
+     "2",
+     "-3/2"
+    ]
+   ],
+   "Fp": [
+    "-3/2",
+    "2",
+    "-3"
+   ],
+   "Fq": [
+    "-1/2",
+    "5/4",
+    "-5/8"
+   ],
+   "predicted": [
+    "-1/2",
+    "5/4",
+    "1/8"
+   ],
+   "errorSquared": "9/16",
+   "det": null
+  },
+  {
+   "map": "lift",
+   "x": "-3/2",
+   "y": "2",
+   "dx": "0",
+   "dy": "0",
+   "J": [
+    [
+     "1",
+     "0"
+    ],
+    [
+     "0",
+     "1"
+    ],
+    [
+     "2",
+     "-3/2"
+    ]
+   ],
+   "Fp": [
+    "-3/2",
+    "2",
+    "-3"
+   ],
+   "Fq": [
+    "-3/2",
+    "2",
+    "-3"
+   ],
+   "predicted": [
+    "-3/2",
+    "2",
+    "-3"
+   ],
+   "errorSquared": "0",
+   "det": null
+  }
+ ]
+}

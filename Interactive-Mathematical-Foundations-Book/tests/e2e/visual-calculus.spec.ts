@@ -7,6 +7,11 @@ const cases: [string, string, string[]][] = [
   ['linear-model', 'derivative-rate-linear-model', ['far', 'corner']],
   ['rules', 'derivative-rules', ['quotient', 'pole']],
   ['chain', 'chain-rule', ['flat-inner', 'sin-exp']],
+  ['partials', 'partial-derivatives', ['origin', 'product']],
+  ['gradient', 'gradient-directional-derivatives', ['stationary', 'zero-direction', 'saddle']],
+  ['jacobian', 'jacobian', ['singular', 'large', 'lift']],
+  ['autodiff', 'automatic-differentiation', ['scalar-loss', 'many-outputs', 'division-by-zero']],
+  ['hessian', 'hessian-curvature', ['saddle', 'monkey', 'cubic-y', 'not-critical']],
 ];
 for (const [kind, slug, states] of cases) test(`calculus ${kind}: opening and exceptional states`, async ({ page }) => {
   await page.goto(`chapters/${slug}/`); const stage = page.locator(`[data-stage="calculus-${kind}"]`);

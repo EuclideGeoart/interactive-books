@@ -1,0 +1,103 @@
+---
+kind: chapter
+curriculumId: III.8
+title: "Gradient and directional derivatives"
+hero: "Which way is *uphill* — and how steep is every other way?"
+lede: Place a point on a contour map and aim a direction. The gradient gives the rate in that direction by a dot product, points along steepest increase and stands perpendicular to the level curve.
+description: "Gradient and directional derivatives on a contour map: draggable point and direction, steepest ascent, perpendicularity to level curves, stationary points and zero directions, Python and NumPy, five exercises."
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import GradientStage from '../../lessons/calculus/GradientStage';
+import Exercise from '../../lessons/calculus/CalculusExercise';
+import reference from '../../../code/python/calculus_gradient.py?raw';
+import practical from '../../../code/python/calculus_gradient_numpy.py?raw';
+
+<Stage caption="Drag the point or the blue direction tip. The orange arrow is the gradient at its declared drawing scale; the dashed line is tangent to the level curve; the lower plane shows the rate for every direction angle."><GradientStage client:load /></Stage>
+
+At $(1,\tfrac12)$ on the valley $x^2/2+2y^2$, the gradient is $(1,2)$. In the direction $(1,0)$ the height changes at rate $1$. Choose **Along the gradient**: the rate rises to $\|\nabla f\|=\sqrt5\approx2.236$, the largest possible. Choose **Along the level curve**: the rate is exactly $0$.
+
+## Intuition: one vector answers every direction
+
+Walking from a point in a direction $\mathbf u$, the height changes at some rate. You might expect a different calculation for every direction. For a differentiable function there is a single vector — the gradient — and the rate in direction $\mathbf u$ is just its component along $\mathbf u$. The profile plot shows the consequence: as the direction turns, the rate traces a cosine wave.
+
+## Definition
+
+The **gradient** of $f$ at $p$ is the vector of partial derivatives,
+
+$$
+\nabla f(p)=\begin{bmatrix}\partial f/\partial x\\ \partial f/\partial y\end{bmatrix}.
+$$
+
+For a **unit** vector $\mathbf u$, the **directional derivative** is
+
+$$
+D_{\mathbf u}f(p)=\lim_{h\to0}\frac{f(p+h\mathbf u)-f(p)}{h}.
+$$
+
+When $f$ is differentiable, $D_{\mathbf u}f=\nabla f\cdot\mathbf u$. A nonzero direction vector $\mathbf d$ is normalised first: $\mathbf u=\mathbf d/\|\mathbf d\|$. The zero vector has no direction.
+
+## Mechanics: what the explorer computes
+
+The gradient is exact at rational points. The unnormalised product $\nabla f\cdot\mathbf d$ is exact; dividing by $\|\mathbf d\|$ is exact when $\|\mathbf d\|^2$ is the square of a rational and is otherwise shown with $\approx$. The gradient arrow is drawn at the scale stated in the title, so its direction is faithful and its length is proportional. The level-curve tangent is perpendicular to the gradient, and the inspector checks $\nabla f\cdot\mathbf t=0$ exactly.
+
+## Derivation: why the dot product appears
+
+Differentiability means $f(p+\boldsymbol\delta)=f(p)+\nabla f\cdot\boldsymbol\delta+o(\|\boldsymbol\delta\|)$. Put $\boldsymbol\delta=h\mathbf u$ and divide by $h$:
+
+$$
+\frac{f(p+h\mathbf u)-f(p)}{h}=\nabla f\cdot\mathbf u+o(1).
+$$
+
+Letting $h\to0$ gives $D_{\mathbf u}f=\nabla f\cdot\mathbf u=\|\nabla f\|\cos\theta$, where $\theta$ is the angle between $\mathbf u$ and $\nabla f$. The rate is largest when $\theta=0$ (steepest ascent, value $\|\nabla f\|$), smallest when $\theta=\pi$, and zero when $\mathbf u\perp\nabla f$. Along a level curve $f$ is constant, so its tangent direction has zero rate: the gradient is perpendicular to regular level curves.
+
+## Worked example
+
+For $f=x^2/2+2y^2$ at $(1,\tfrac12)$: $\nabla f=(x,4y)=(1,2)$. With $\mathbf d=(3,4)$, $\|\mathbf d\|=5$, so
+
+$$
+D_{\mathbf u}f=\frac{(1,2)\cdot(3,4)}{5}=\frac{11}{5}.
+$$
+
+The steepest rate is $\sqrt{1+4}=\sqrt5$, and the tangent to the level curve is $\mathbf t=(-2,1)$, for which $\nabla f\cdot\mathbf t=0$.
+
+<Stage caption="Replay: gradient, normalisation, projection and perpendicularity."><GradientStage worked client:load /></Stage>
+
+## Stationary points and undefined cases
+
+Where $\nabla f=\mathbf 0$ (the **Stationary point** preset), every directional derivative is $0$ and there is no direction of steepest ascent; the stage draws no gradient arrow rather than an arbitrary one. A zero direction vector cannot be normalised, so the directional derivative is reported as undefined. At points where $f$ is not differentiable, the formula $\nabla f\cdot\mathbf u$ is not guaranteed even when the partials exist; the surfaces here are polynomials, which are differentiable everywhere.
+
+## Executable reference code
+
+The reference computes exact gradients and directional derivatives with `Fraction`, and confirms $D_{\mathbf u}f$ against the limit definition along rational unit directions such as $(3/5,4/5)$. The NumPy version maximises the directional derivative over many angles and finds the gradient direction.
+
+<CodeFile source={reference} file="code/python/calculus_gradient.py" />
+<CodeFile source={practical} file="code/python/calculus_gradient_numpy.py" />
+
+## Explore
+
+On **Saddle**, find two directions with rate zero: they are the two arms of the level curve through the point. On **Tilted plane**, the gradient is the same everywhere and the contours are parallel lines perpendicular to it. Shorten $\mathbf d$ without changing its direction: the directional derivative does not change, because $\mathbf d$ is normalised.
+
+## Common mistakes
+
+Using an unnormalised direction, which scales the "rate" by $\|\mathbf d\|$. Drawing the gradient tangent to the contour instead of perpendicular to it. Assuming the gradient points toward a minimum: it points toward the steepest *increase*; the steepest decrease is $-\nabla f$.
+
+## Numerical considerations
+
+Normalising a tiny direction vector divides by a tiny number and amplifies rounding; the zero vector must be rejected explicitly, not left to produce NaN. When $\nabla f$ is nearly zero its direction is numerically unreliable even if its components are accurate: steepest-ascent directions near stationary points are ill-conditioned.
+
+## Engineering and ML connections
+
+Gradient descent (VI.4) steps along $-\nabla f$ because it is locally the steepest decrease. Directional derivatives appear in line searches and in Jacobian–vector products, which automatic differentiation (III.10) computes without forming the whole gradient. Level-set geometry also underlies constraints in optimisation (VI.9).
+
+## Exercises
+
+<Exercise id="iii8-gradient" client:load />
+<Exercise id="iii8-directional" client:load />
+<Exercise id="iii8-steepest" client:load />
+<Exercise id="iii8-perpendicular" client:load />
+<Exercise id="iii8-zero" client:load />
+
+## Summary and checkpoints
+
+The gradient collects the partial derivatives; for a unit direction $\mathbf u$, $D_{\mathbf u}f=\nabla f\cdot\mathbf u$. It points along steepest increase with rate $\|\nabla f\|$ and is perpendicular to regular level curves. At stationary points it vanishes, and zero directions have no rate. Next, III.9 differentiates maps with several outputs: the Jacobian.
