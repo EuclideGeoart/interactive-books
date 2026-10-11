@@ -61,7 +61,7 @@ describe('conservative change-scoped validation', () => {
   });
   it('keeps documentation-only work cheap and refuses misspelled selectors', () => {
     expect(makePlan({ files: ['documentation/report.md'] }).commands).toEqual([]);
-    expect(() => makePlan({ chapters: ['II.14'] })).toThrow();
+    expect(() => makePlan({ chapters: ['III.1'] })).toThrow();
     expect(() => makePlan({ project: 'phone' })).toThrow();
     expect(() => makePlan({ only: 'unitt' })).toThrow();
   });

@@ -1,0 +1,103 @@
+---
+kind: chapter
+curriculumId: II.15
+title: "Rank and invertibility"
+hero: "How many independent directions survive a transformation?"
+lede: Move a matrix column and watch its image collapse from a plane to a line or point. Exact pivots count surviving directions; null vectors reveal inputs that disappear.
+description: "Rank and invertibility: exact models, live mathematical traces, exceptional systems, accessible interaction, executable Python and NumPy, and five graded exercises."
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import EliminationStage from '../../lessons/linear-algebra/EliminationStage';
+import Exercise from '../../lessons/linear-algebra/CompletionExercise';
+import reference from '../../../code/python/rank.py?raw';
+import practical from '../../../code/python/rank_numpy.py?raw';
+
+<Stage caption="Edit the exact mathematical input, then replay and inspect each immutable state."><EliminationStage chapter="rank" client:load /></Stage>
+
+Drag the second column onto the first. Compare **Repeated columns**, **Zero matrix** and **Exactly independent, close**. The last can look like a line while still having two exact pivots. Choose the rectangular presets to separate the number of inputs from the number of outputs.
+
+## Intuition: count information, not entries
+
+A matrix with two identical columns stores two lists but provides one direction. Two inputs can then produce the same output: transferring weight from one repeated column to the other changes the input without changing the result. Rank counts independent output directions, while nullity counts independent ways an input can disappear.
+
+The shaded image is the image of a bounded input square. When rank is two, the full mathematical image is the entire plane; the displayed polygon is only a finite sample. At rank one it becomes a segment along the image line. At rank zero all inputs reach the origin.
+
+## Definition
+
+The rank of $A\in\R^{m\times n}$ is the dimension of its column space, equivalently its row space or its number of pivots. The null space is
+
+$$
+\ker A=\{z\in\R^n:Az=0\}.
+$$
+
+Its dimension is the nullity. Rank-nullity states
+
+$$
+\operatorname{rank}A+\dim\ker A=n.
+$$
+
+The domain dimension is the number of columns, not the number of rows.
+
+## Mechanics: geometry and row reduction together
+
+The inspector shows the original matrix, pivot count and exact null-space basis. The replayable trace links those quantities to echelon and reduced forms. Row operations preserve dependencies among columns, but can change the literal column-space subset in output coordinates. The geometry therefore always draws the original $A$, not the row-reduced matrix.
+
+Every column can be edited numerically; the second column also has pointer and keyboard controls when the output lives in the plane. A third output dimension is represented by its exact matrix and equations rather than a pretend 2D image. Explore 2×3 and 3×2 presets to see that row count and column count impose different maximal ranks.
+
+## Derivation: each free column supplies a null direction
+
+In reduced form, pivot variables can be expressed in terms of the free variables. Set one free variable to $1$ and the others to $0$; solve the pivot entries to obtain a null vector. Doing this for every free column produces an independent null-space basis. There are $n-r$ free columns when there are $r$ pivots, proving rank-nullity in this elimination setting.
+
+A nonzero pivot row adds a constraint not implied by earlier rows. Zero rows are redundant. This also explains why independent rows and independent columns have the same count, even though the vectors live in different coordinate spaces.
+
+## Worked examples
+
+For $A=\begin{bmatrix}1&2\\2&4\end{bmatrix}$, the second column is twice the first. Elimination leaves one pivot; rank is $1$, nullity is $1$, and $z=(-2,1)$ satisfies $Az=0$. Any $x$ and $x+tz$ have the same image. Replay **Repeated columns** and reconstruct its displayed null direction by substitution.
+
+For $A=\begin{bmatrix}0&1&2\\0&2&4\end{bmatrix}$, only the middle column has a pivot. Rank is $1$ and nullity is $2$, with basis $(1,0,0)$ and $(0,-2,1)$. The skipped first column and repeated third column explain the two missing directions in different ways.
+
+The close preset has determinant $4(3.98)-(3.99)^2=-0.0001$. Its two columns are exactly independent even if the narrow image appears flat at screen resolution. Its inverse can be very sensitive to uncertain measurements; exact rank and numerical reliability answer different questions.
+
+## Full rank and invertibility
+
+For a square $n\times n$ matrix, full rank $n$ is equivalent to a trivial null space, independent columns and existence of a two-sided inverse. Every output is reachable and has exactly one input.
+
+For a rectangular matrix, **full column rank** means injectivity: no two inputs share an output. **Full row rank** means surjectivity: every output is reachable. A 2×3 rank-two map is surjective but has a one-dimensional null space. A 3×2 rank-two map is injective but cannot reach every vector in $\R^3$. Neither has an ordinary two-sided inverse.
+
+<Stage caption="Replay the canonical worked example, inspecting each exact mathematical frame."><EliminationStage chapter="rank" worked client:load /></Stage>
+
+## Executable reference code
+
+The Fraction reference reads pivots and verifies literal null vectors. NumPy uses singular values and an explicit numerical tolerance; that is a finite-precision rank estimate, not a redefinition of the exact input.
+
+<CodeFile source={reference} file="code/python/rank.py" />
+<CodeFile source={practical} file="code/python/rank_numpy.py" />
+
+## Explore
+
+Make a zero column while retaining one nonzero column. Make both zero. Replace proportional columns with a slightly independent pair. Compare a repeated row with a repeated column: both lower rank, but only columns directly show image directions. For each rectangular preset, verify rank plus nullity against the column count.
+
+## Common mistakes
+
+Rank is not the number of nonzero entries or columns. A nonzero column can be redundant. Rectangular full rank does not imply two-sided invertibility. A null vector lives in the input space. Row reduction preserves solution sets and rank but generally changes the pictured output-space basis.
+
+## Numerical considerations
+
+Exact zero decisions use rational arithmetic. Geometric pixels and rounded inspectors cannot certify dependence. Practical numerical rank uses a threshold tied to scale, uncertainty and the algorithm; one universal epsilon is inadequate. A nonzero determinant alone does not promise a well-conditioned solve.
+
+## Engineering and ML connections
+
+Rank identifies redundant features and unidentifiable parameter directions. Null spaces describe weights that change without altering predictions. Full column rank gives unique linear-model coefficients; rank deficiency leads directly to nonunique least-squares minimizers in II.18.
+
+## Exercises
+
+<Exercise id="rank-nullity" client:load />
+<Exercise id="rank-repeat" client:load />
+<Exercise id="rank-null" client:load />
+<Exercise id="rank-rectangle" client:load />
+<Exercise id="rank-small" client:load />
+
+## Summary and checkpoints
+
+Count pivots as independent directions, build null vectors from free variables, and distinguish injective, surjective and invertible. Explain why an exactly independent narrow image can still be numerically fragile.

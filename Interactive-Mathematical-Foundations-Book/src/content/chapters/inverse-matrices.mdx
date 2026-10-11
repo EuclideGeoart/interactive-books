@@ -1,0 +1,102 @@
+---
+kind: chapter
+curriculumId: II.16
+title: "Inverse matrices"
+hero: "Can a transformation recover the input it just changed?"
+lede: Transform an input vector, then recover it with an inverse constructed from exact row operations on [A | I]. Singular maps show where information has been lost.
+description: "Inverse matrices: exact models, live mathematical traces, exceptional systems, accessible interaction, executable Python and NumPy, and five graded exercises."
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import EliminationStage from '../../lessons/linear-algebra/EliminationStage';
+import Exercise from '../../lessons/linear-algebra/CompletionExercise';
+import reference from '../../../code/python/inverse.py?raw';
+import practical from '../../../code/python/inverse_numpy.py?raw';
+
+<Stage caption="Edit the exact mathematical input, then replay and inspect each immutable state."><EliminationStage chapter="inverse" client:load /></Stage>
+
+Move the input vector and compare its original position with $A^{-1}(Ax)$. Replay the construction on the identity block. Switch to **Repeated columns** and explain why no undoing map appears. The **Small 3×3** preset keeps the derivation exact without inventing a planar picture of three-dimensional action.
+
+## Intuition: an undoing transformation
+
+A rotation changes coordinates without losing information, so another rotation can recover the input. A collapse onto a line loses a direction: several inputs become the same output. No single-valued transformation can then recover which input was used.
+
+An inverse therefore describes recoverability of the whole transformation. It is not an array of entrywise reciprocals.
+
+## Definition
+
+For square $A\in\R^{n\times n}$, an inverse is a matrix $A^{-1}$ satisfying
+
+$$
+A^{-1}A=I,\qquad AA^{-1}=I.
+$$
+
+The identity sends every vector to itself. These identities imply $A^{-1}(Ax)=x$ and $A(A^{-1}y)=y$. An inverse exists exactly when $A$ has full rank. A rectangular map may have a one-sided inverse under suitable rank conditions, but the ordinary two-sided inverse taught here requires a square matrix.
+
+## Mechanics: one row operation, two blocks
+
+The live trace starts with $[A\mid I]$. Every swap, scaling and row addition acts on both blocks. If the left block reaches $I$, the right block is the inverse. If the coefficient rank is too small, the lesson reports that the inverse does not exist.
+
+The plane shows $x$, $Ax$, and the exactly reconstructed $A^{-1}Ax$ at the input tip. The inspector calculates both multiplication identities rather than accepting rounded agreement as proof. Input-vector drag, keyboard movement and numeric entry all update the same state. Exact 2×2 and small 3×3 matrices are supported.
+
+## Derivation: why the identity block becomes the inverse
+
+Each elementary row operation is left multiplication by an invertible elementary matrix. Let their composition be $E$. Applying the trace to $A$ yields $EA=I$, while applying it to the identity yields $EI=E$. The final augmented state is therefore $[I\mid E]$, with $E=A^{-1}$.
+
+This works because the same reversible operations transform every column. Equivalently, each identity column is a right-hand side: solve $Ac_j=e_j$ and collect the resulting $c_j$ as inverse columns. The derivation uses elimination already learned in II.14; it does not hide inverse construction behind a black box.
+
+## Worked examples
+
+For $A=\begin{bmatrix}2&1\\1&1\end{bmatrix}$, reducing the augmented matrix gives
+
+$$
+[A\mid I]\longrightarrow
+\left[\begin{array}{cc|cc}1&0&1&-1\\0&1&-1&2\end{array}\right].
+$$
+
+Thus $A^{-1}=\begin{bmatrix}1&-1\\-1&2\end{bmatrix}$. The opening vector $(2,1)$ becomes $(5,3)$; applying the inverse returns $(5-3,-5+6)=(2,1)$. Replay the opening trace to see where each inverse entry came from. Multiplication in either order yields diagonal entries $1$ and off-diagonal entries $0$.
+
+For $A=\begin{bmatrix}1&1&0\\0&1&1\\1&0&1\end{bmatrix}$, the inverse is
+
+$$
+\frac12\begin{bmatrix}1&-1&1\\1&1&-1\\-1&1&1\end{bmatrix}.
+$$
+
+Choose **Small 3×3** and inspect the full six-column augmented trace. For repeated columns the left block cannot become $I$; a nonzero null direction makes unique recovery impossible.
+
+<Stage caption="Replay the canonical worked example, inspecting each exact mathematical frame."><EliminationStage chapter="inverse" worked client:load /></Stage>
+
+## Executable reference code
+
+The Fraction reference constructs the inverse from the identity block and checks both products. NumPy demonstrates an inverse when the map itself is needed, then uses a direct solve when only an input is required.
+
+<CodeFile source={reference} file="code/python/inverse.py" />
+<CodeFile source={practical} file="code/python/inverse_numpy.py" />
+
+## Explore
+
+Compare an independent map, a zero map and a rank-one collapse. In the close preset, inspect the large inverse coefficients; move between exact existence and numerical sensitivity without confusing them. Recover several input vectors. Check a 3×3 inverse by multiplying one row against each original column.
+
+## Common mistakes
+
+The transpose is an inverse only for square orthogonal matrices. Entrywise reciprocals fail because matrix multiplication mixes entries. A singular map does not gain an inverse by ignoring zero rows. To undo $BA$, undo $B$ first and $A$ second: $(BA)^{-1}=A^{-1}B^{-1}$.
+
+## Numerical considerations
+
+Although $x=A^{-1}b$ is a valid identity for an invertible matrix, numerical software should generally solve $Ax=b$ directly using an appropriate factorization. Explicit inverse formation usually costs more work and can introduce avoidable error. The exact identity checks here concern entered rationals; they do not remove coefficient uncertainty or conditioning problems. An extremely thin image can be exactly invertible while giving unstable recovered coordinates.
+
+## Engineering and ML connections
+
+Inverse transforms recover coordinate systems and reversible maps. Solvers recover forces, states and parameters from constraints. Most ML least-squares problems are rectangular or noisy, so ordinary inverses are often absent; projection and pseudoinverses provide the relevant replacement in the next chapters.
+
+## Exercises
+
+<Exercise id="inv-value" client:load />
+<Exercise id="inv-recover" client:load />
+<Exercise id="inv-singular" client:load />
+<Exercise id="inv-solve" client:load />
+<Exercise id="inv-order" client:load />
+
+## Summary and checkpoints
+
+An inverse recovers every input and output through both identity products. Derive it from $[A\mid I]$, connect its existence to exact rank, and distinguish the algebraic inverse identity from the practical choice to solve directly.

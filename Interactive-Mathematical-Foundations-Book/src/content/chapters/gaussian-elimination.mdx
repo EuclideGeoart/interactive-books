@@ -1,0 +1,95 @@
+---
+kind: chapter
+curriculumId: II.14
+title: "Gaussian elimination and row operations"
+hero: "How can we simplify a system without changing its answers?"
+lede: Edit the augmented system and replay exact row operations. Each frame keeps the equations and their matrix together; a zero coefficient row can be either redundant or contradictory.
+description: "Gaussian elimination and row operations: exact models, live mathematical traces, exceptional systems, accessible interaction, executable Python and NumPy, and five graded exercises."
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import EliminationStage from '../../lessons/linear-algebra/EliminationStage';
+import Exercise from '../../lessons/linear-algebra/CompletionExercise';
+import reference from '../../../code/python/elimination.py?raw';
+import practical from '../../../code/python/elimination_numpy.py?raw';
+
+<Stage caption="Edit the exact mathematical input, then replay and inspect each immutable state."><EliminationStage chapter="elimination" client:load /></Stage>
+
+Choose **Zero pivot: swap rows**, then press Next. Choose **Skipped pivot column** and locate both free variables. Compare **Repeated columns** with **Contradiction: 0 = 1**: the coefficient rank is the same, but the answer set changes.
+
+## Intuition: replace difficult equations with equivalent ones
+
+An equation is a constraint on an input. Swapping two constraints changes their order, not their intersection. Multiplying a constraint by a nonzero number rewrites the same statement. Adding a multiple of one equation to another can cancel a variable while retaining all the information needed to recover the original equations.
+
+The augmentation bar is a reminder that the right-hand side belongs to the row. Watch it change during every operation; changing coefficients alone would describe a different system.
+
+## Definition
+
+For $A\in\R^{m\times n}$ and $b\in\R^m$, elimination rewrites the augmented matrix $[A\mid b]$ using three reversible operations:
+
+1. $R_i\leftrightarrow R_j$.
+2. $R_i\leftarrow cR_i$, with $c\ne0$.
+3. $R_i\leftarrow R_i+cR_j$, with $i\ne j$.
+
+A **pivot** is the first nonzero coefficient in a nonzero echelon row. Echelon pivots step strictly to the right, all entries below each pivot are zero, and zero coefficient rows occur at the bottom. Reduced row-echelon form additionally has unit pivots and zero entries above them.
+
+## Mechanics: follow the current equations
+
+The trace stores exact rational matrices, pivot columns and the operation used. Next, Previous, direct step selection and optional Play select immutable mathematical states. The input fields accept decimals with at most two places in $[-4,4]$; rejected text leaves the previous system intact. Keyboard stepping provides the same edits.
+
+The educational model supports one to four equations and unknowns; the explorer offers 2×2, 2×3, 3×2 and 3×3 systems. It is a bounded exact solver, not an unbounded symbolic engine. Pivot selection takes the first remaining nonzero row deterministically. A zero candidate causes a swap or a skipped column, never division by zero.
+
+## Derivation: cancellation and back substitution
+
+Suppose the pivot row begins with $p x_1+q x_2=u$ and another row begins with $r x_1+s x_2=v$. After dividing the pivot row by nonzero $p$, subtract $r$ copies of it from the other row:
+
+$$
+0x_1+(s-rq/p)x_2=v-ru/p.
+$$
+
+The second equation now determines $x_2$ when its coefficient is nonzero. Substitute that value upward to determine $x_1$. With more variables the same reasoning proceeds from the final pivot row upward. Normalizing pivots during forward elimination is convenient here; it is not required by the definition of echelon form.
+
+A skipped pivot column corresponds to a free variable. Setting free variables to zero produces one **particular** solution, not the entire answer set. The complete consistent set is $x=x_0+\sum_j t_jz_j$, where each $Az_j=0$ and each $t_j$ is arbitrary.
+
+## Worked examples
+
+The opening system is $x+y=3$, $x-y=1$. Replace $R_2$ by $R_2-R_1$ to obtain $-2y=-2$. Scale by $-1/2$, giving $y=1$, then back substitute to get $x=2$. The trace above replays these actual equations before optionally clearing above the second pivot. Verification uses the original constraints: $2+1=3$ and $2-1=1$.
+
+For $y=1$, $2x+y=3$, the first candidate coefficient is zero. Swapping rows gives a usable pivot and solution $(1,1)$. For $y+2z=1$, $2y+4z=2$, the first column is skipped and the second row becomes $0=0$. Both $x$ and $z$ are free: $(x,y,z)=(s,1-2t,t)$. If the second RHS becomes $3$, that last row instead asserts $0=1$ and there is no solution.
+
+<Stage caption="Replay the canonical worked example, inspecting each exact mathematical frame."><EliminationStage chapter="elimination" worked client:load /></Stage>
+
+## Executable reference code
+
+The Fraction implementation exposes cancellation, guards zero pivots and retains semantic snapshots. The NumPy reference shows the practical full-rank square solve after the mechanism is understood.
+
+<CodeFile source={reference} file="code/python/elimination.py" />
+<CodeFile source={practical} file="code/python/elimination_numpy.py" />
+
+## Explore
+
+Replay the fractional preset and confirm that division produces rational coefficients rather than rounded decimals. Change a redundant RHS to create a contradiction. In the tall example, ask whether all three constraints can be satisfied. In the 3×3 example, follow back substitution from the bottom upward. Use Reset to restore the opening equations.
+
+## Common mistakes
+
+A zero row is harmless only when its RHS is also zero. A zero candidate is not proof of singularity until row swapping has been considered. Multiplying a row by zero loses a constraint. Swapping columns changes variable order and is not one of the row operations used here. A free variable need not be zero.
+
+## Numerical considerations
+
+Every accepted decimal represents an exact rational; even a tiny nonzero pivot contributes rank. Exact fractions can grow, so manageable dimensions are an intentional bound. Numerical Gaussian elimination generally uses pivoting strategies to control roundoff, rather than the first-nonzero rule used for this exact educational trace. A displayed approximation is never the proof that a row is zero.
+
+## Engineering and ML connections
+
+Linear constraints appear in circuit analysis, mechanics and parameter estimation. Elimination explains why factorizations solve many such systems efficiently. Reusing a factorization across right-hand sides avoids repeating work; deriving the inverse in II.16 reuses these same row operations.
+
+## Exercises
+
+<Exercise id="elim-solve" client:load />
+<Exercise id="elim-row" client:load />
+<Exercise id="elim-zero" client:load />
+<Exercise id="elim-free" client:load />
+<Exercise id="elim-inconsistent" client:load />
+
+## Summary and checkpoints
+
+Follow every operation across the whole augmented row, identify pivot and free columns, distinguish $0=0$ from $0=1$, and verify answers in the original system. Echelon form exposes structure; back substitution reads solutions from it.

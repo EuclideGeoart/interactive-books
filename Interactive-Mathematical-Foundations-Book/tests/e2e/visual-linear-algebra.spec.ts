@@ -41,3 +41,20 @@ test('matrix composition: affine translated squares and output', async ({ page }
   await page.mouse.move(0, 0); await stage.evaluate(el => el.scrollIntoView({ block: 'start', behavior: 'instant' }));
   await expect(stage).toHaveScreenshot('ii-matrix-composition-affine.png');
 });
+
+const completionCases = [
+  ['elimination', 'gaussian-elimination', ['inconsistent', 'skipped']],
+  ['rank', 'rank-invertibility', ['zero', 'dependent', 'near']],
+  ['inverse', 'inverse-matrices', ['dependent', 'three']],
+];
+for (const [kind, slug, states] of completionCases as [string, string, string[]][]) test(`completion ${kind}: opening and exceptional states`, async ({ page }) => {
+  await page.goto(`chapters/${slug}/`); const stage = page.locator(`[data-stage="completion-${kind}"]`);
+  await expect(stage).toHaveAttribute('data-hydrated', 'true'); await page.evaluate(() => document.fonts.ready);
+  await page.addStyleTag({ content: 'html{scroll-padding:0 !important} .topbar{position:static !important;backdrop-filter:none !important} .skip-link{visibility:hidden !important} *{caret-color:transparent !important}' });
+  const capture = async (name: string) => {
+    await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur?.()); await page.mouse.move(0,0);
+    await stage.evaluate(el => el.scrollIntoView({block:'start',behavior:'instant'})); await expect(stage).toHaveScreenshot(`ii-completion-${kind}${name}.png`);
+  };
+  await capture('');
+  for (const preset of states) { await stage.locator(`[data-preset="${preset}"]`).click(); await capture(`-${preset}`); }
+});
