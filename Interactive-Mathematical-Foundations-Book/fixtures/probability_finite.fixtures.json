@@ -1,0 +1,11194 @@
+{
+  "policy": {
+    "method": "Independent Python Fraction, set operations and itertools enumeration",
+    "rational": "Reduced num/den, including 0/1 and 1/1",
+    "finite": "Nonempty nonnegative integer weights with positive sum; normalize by sum",
+    "events": "Zero-based outcome indices; duplicates denote the same set member",
+    "complement": "Complement of A in the full sample space",
+    "conditional": "P(A|B); null exactly when P(B)=0",
+    "independent": "Exact P(A intersection B)=P(A)P(B), including zero-mass events",
+    "percentages": "Numbers in [0,100], at most two decimal places; Fraction(str(value))/100",
+    "joint": [
+      "A&E",
+      "A&notE",
+      "notA&E",
+      "notA&notE"
+    ],
+    "posteriorMass": "Four cells in joint order, conditioned on selected evidence E; non-E cells zero; null if impossible",
+    "counting": "n=2..8, k=0..4; k<=n without replacement; zero-based lexicographic tuples",
+    "exampleLimit": 12,
+    "unorderedReplacement": "Counts multisets only; no claim that multisets are equiprobable"
+  },
+  "finite": [
+    {
+      "weights": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "a": [
+        1,
+        3,
+        5
+      ],
+      "b": [
+        3,
+        4,
+        5
+      ],
+      "expected": {
+        "massA": "1/2",
+        "massB": "1/2",
+        "intersection": "1/3",
+        "union": "2/3",
+        "complement": "1/2",
+        "conditional": "2/3",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "a": [
+        0,
+        2
+      ],
+      "b": [
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "2/5",
+        "massB": "1/2",
+        "intersection": "3/10",
+        "union": "3/5",
+        "complement": "3/5",
+        "conditional": "3/5",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "a": [
+        0,
+        1
+      ],
+      "b": [
+        0,
+        2
+      ],
+      "expected": {
+        "massA": "1/2",
+        "massB": "1/2",
+        "intersection": "1/4",
+        "union": "3/4",
+        "complement": "1/2",
+        "conditional": "1/2",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        2
+      ],
+      "a": [
+        0
+      ],
+      "b": [
+        1
+      ],
+      "expected": {
+        "massA": "0/1",
+        "massB": "1/3",
+        "intersection": "0/1",
+        "union": "1/3",
+        "complement": "1/1",
+        "conditional": "0/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        2
+      ],
+      "a": [
+        0,
+        1
+      ],
+      "b": [
+        0
+      ],
+      "expected": {
+        "massA": "1/3",
+        "massB": "0/1",
+        "intersection": "0/1",
+        "union": "1/3",
+        "complement": "2/3",
+        "conditional": null,
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        3
+      ],
+      "a": [
+        0
+      ],
+      "b": [
+        1
+      ],
+      "expected": {
+        "massA": "1/4",
+        "massB": "3/4",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "3/4",
+        "conditional": "0/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        3
+      ],
+      "a": [],
+      "b": [
+        0,
+        1
+      ],
+      "expected": {
+        "massA": "0/1",
+        "massB": "1/1",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "1/1",
+        "conditional": "0/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1
+      ],
+      "a": [
+        0
+      ],
+      "b": [
+        0
+      ],
+      "expected": {
+        "massA": "1/1",
+        "massB": "1/1",
+        "intersection": "1/1",
+        "union": "1/1",
+        "complement": "0/1",
+        "conditional": "1/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0,
+        0,
+        2
+      ],
+      "b": [
+        2,
+        2
+      ],
+      "expected": {
+        "massA": "2/3",
+        "massB": "1/2",
+        "intersection": "1/2",
+        "union": "2/3",
+        "complement": "1/3",
+        "conditional": "1/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1000000,
+        1,
+        1
+      ],
+      "a": [
+        1
+      ],
+      "b": [
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "1/1000002",
+        "massB": "1/500001",
+        "intersection": "1/1000002",
+        "union": "1/500001",
+        "complement": "1000001/1000002",
+        "conditional": "1/2",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [],
+      "b": [],
+      "expected": {
+        "massA": "0/1",
+        "massB": "0/1",
+        "intersection": "0/1",
+        "union": "0/1",
+        "complement": "1/1",
+        "conditional": null,
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [],
+      "b": [
+        0
+      ],
+      "expected": {
+        "massA": "0/1",
+        "massB": "1/6",
+        "intersection": "0/1",
+        "union": "1/6",
+        "complement": "1/1",
+        "conditional": "0/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [],
+      "b": [
+        1
+      ],
+      "expected": {
+        "massA": "0/1",
+        "massB": "1/3",
+        "intersection": "0/1",
+        "union": "1/3",
+        "complement": "1/1",
+        "conditional": "0/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [],
+      "b": [
+        2
+      ],
+      "expected": {
+        "massA": "0/1",
+        "massB": "1/2",
+        "intersection": "0/1",
+        "union": "1/2",
+        "complement": "1/1",
+        "conditional": "0/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [],
+      "b": [
+        0,
+        1
+      ],
+      "expected": {
+        "massA": "0/1",
+        "massB": "1/2",
+        "intersection": "0/1",
+        "union": "1/2",
+        "complement": "1/1",
+        "conditional": "0/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [],
+      "b": [
+        0,
+        2
+      ],
+      "expected": {
+        "massA": "0/1",
+        "massB": "2/3",
+        "intersection": "0/1",
+        "union": "2/3",
+        "complement": "1/1",
+        "conditional": "0/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [],
+      "b": [
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "0/1",
+        "massB": "5/6",
+        "intersection": "0/1",
+        "union": "5/6",
+        "complement": "1/1",
+        "conditional": "0/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [],
+      "b": [
+        0,
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "0/1",
+        "massB": "1/1",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "1/1",
+        "conditional": "0/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0
+      ],
+      "b": [],
+      "expected": {
+        "massA": "1/6",
+        "massB": "0/1",
+        "intersection": "0/1",
+        "union": "1/6",
+        "complement": "5/6",
+        "conditional": null,
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0
+      ],
+      "b": [
+        0
+      ],
+      "expected": {
+        "massA": "1/6",
+        "massB": "1/6",
+        "intersection": "1/6",
+        "union": "1/6",
+        "complement": "5/6",
+        "conditional": "1/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0
+      ],
+      "b": [
+        1
+      ],
+      "expected": {
+        "massA": "1/6",
+        "massB": "1/3",
+        "intersection": "0/1",
+        "union": "1/2",
+        "complement": "5/6",
+        "conditional": "0/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0
+      ],
+      "b": [
+        2
+      ],
+      "expected": {
+        "massA": "1/6",
+        "massB": "1/2",
+        "intersection": "0/1",
+        "union": "2/3",
+        "complement": "5/6",
+        "conditional": "0/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0
+      ],
+      "b": [
+        0,
+        1
+      ],
+      "expected": {
+        "massA": "1/6",
+        "massB": "1/2",
+        "intersection": "1/6",
+        "union": "1/2",
+        "complement": "5/6",
+        "conditional": "1/3",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0
+      ],
+      "b": [
+        0,
+        2
+      ],
+      "expected": {
+        "massA": "1/6",
+        "massB": "2/3",
+        "intersection": "1/6",
+        "union": "2/3",
+        "complement": "5/6",
+        "conditional": "1/4",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0
+      ],
+      "b": [
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "1/6",
+        "massB": "5/6",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "5/6",
+        "conditional": "0/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0
+      ],
+      "b": [
+        0,
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "1/6",
+        "massB": "1/1",
+        "intersection": "1/6",
+        "union": "1/1",
+        "complement": "5/6",
+        "conditional": "1/6",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        1
+      ],
+      "b": [],
+      "expected": {
+        "massA": "1/3",
+        "massB": "0/1",
+        "intersection": "0/1",
+        "union": "1/3",
+        "complement": "2/3",
+        "conditional": null,
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        1
+      ],
+      "b": [
+        0
+      ],
+      "expected": {
+        "massA": "1/3",
+        "massB": "1/6",
+        "intersection": "0/1",
+        "union": "1/2",
+        "complement": "2/3",
+        "conditional": "0/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        1
+      ],
+      "b": [
+        1
+      ],
+      "expected": {
+        "massA": "1/3",
+        "massB": "1/3",
+        "intersection": "1/3",
+        "union": "1/3",
+        "complement": "2/3",
+        "conditional": "1/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        1
+      ],
+      "b": [
+        2
+      ],
+      "expected": {
+        "massA": "1/3",
+        "massB": "1/2",
+        "intersection": "0/1",
+        "union": "5/6",
+        "complement": "2/3",
+        "conditional": "0/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        1
+      ],
+      "b": [
+        0,
+        1
+      ],
+      "expected": {
+        "massA": "1/3",
+        "massB": "1/2",
+        "intersection": "1/3",
+        "union": "1/2",
+        "complement": "2/3",
+        "conditional": "2/3",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        1
+      ],
+      "b": [
+        0,
+        2
+      ],
+      "expected": {
+        "massA": "1/3",
+        "massB": "2/3",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "2/3",
+        "conditional": "0/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        1
+      ],
+      "b": [
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "1/3",
+        "massB": "5/6",
+        "intersection": "1/3",
+        "union": "5/6",
+        "complement": "2/3",
+        "conditional": "2/5",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        1
+      ],
+      "b": [
+        0,
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "1/3",
+        "massB": "1/1",
+        "intersection": "1/3",
+        "union": "1/1",
+        "complement": "2/3",
+        "conditional": "1/3",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        2
+      ],
+      "b": [],
+      "expected": {
+        "massA": "1/2",
+        "massB": "0/1",
+        "intersection": "0/1",
+        "union": "1/2",
+        "complement": "1/2",
+        "conditional": null,
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        2
+      ],
+      "b": [
+        0
+      ],
+      "expected": {
+        "massA": "1/2",
+        "massB": "1/6",
+        "intersection": "0/1",
+        "union": "2/3",
+        "complement": "1/2",
+        "conditional": "0/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        2
+      ],
+      "b": [
+        1
+      ],
+      "expected": {
+        "massA": "1/2",
+        "massB": "1/3",
+        "intersection": "0/1",
+        "union": "5/6",
+        "complement": "1/2",
+        "conditional": "0/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        2
+      ],
+      "b": [
+        2
+      ],
+      "expected": {
+        "massA": "1/2",
+        "massB": "1/2",
+        "intersection": "1/2",
+        "union": "1/2",
+        "complement": "1/2",
+        "conditional": "1/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        2
+      ],
+      "b": [
+        0,
+        1
+      ],
+      "expected": {
+        "massA": "1/2",
+        "massB": "1/2",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "1/2",
+        "conditional": "0/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        2
+      ],
+      "b": [
+        0,
+        2
+      ],
+      "expected": {
+        "massA": "1/2",
+        "massB": "2/3",
+        "intersection": "1/2",
+        "union": "2/3",
+        "complement": "1/2",
+        "conditional": "3/4",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        2
+      ],
+      "b": [
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "1/2",
+        "massB": "5/6",
+        "intersection": "1/2",
+        "union": "5/6",
+        "complement": "1/2",
+        "conditional": "3/5",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        2
+      ],
+      "b": [
+        0,
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "1/2",
+        "massB": "1/1",
+        "intersection": "1/2",
+        "union": "1/1",
+        "complement": "1/2",
+        "conditional": "1/2",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0,
+        1
+      ],
+      "b": [],
+      "expected": {
+        "massA": "1/2",
+        "massB": "0/1",
+        "intersection": "0/1",
+        "union": "1/2",
+        "complement": "1/2",
+        "conditional": null,
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0,
+        1
+      ],
+      "b": [
+        0
+      ],
+      "expected": {
+        "massA": "1/2",
+        "massB": "1/6",
+        "intersection": "1/6",
+        "union": "1/2",
+        "complement": "1/2",
+        "conditional": "1/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0,
+        1
+      ],
+      "b": [
+        1
+      ],
+      "expected": {
+        "massA": "1/2",
+        "massB": "1/3",
+        "intersection": "1/3",
+        "union": "1/2",
+        "complement": "1/2",
+        "conditional": "1/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0,
+        1
+      ],
+      "b": [
+        2
+      ],
+      "expected": {
+        "massA": "1/2",
+        "massB": "1/2",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "1/2",
+        "conditional": "0/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0,
+        1
+      ],
+      "b": [
+        0,
+        1
+      ],
+      "expected": {
+        "massA": "1/2",
+        "massB": "1/2",
+        "intersection": "1/2",
+        "union": "1/2",
+        "complement": "1/2",
+        "conditional": "1/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0,
+        1
+      ],
+      "b": [
+        0,
+        2
+      ],
+      "expected": {
+        "massA": "1/2",
+        "massB": "2/3",
+        "intersection": "1/6",
+        "union": "1/1",
+        "complement": "1/2",
+        "conditional": "1/4",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0,
+        1
+      ],
+      "b": [
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "1/2",
+        "massB": "5/6",
+        "intersection": "1/3",
+        "union": "1/1",
+        "complement": "1/2",
+        "conditional": "2/5",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0,
+        1
+      ],
+      "b": [
+        0,
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "1/2",
+        "massB": "1/1",
+        "intersection": "1/2",
+        "union": "1/1",
+        "complement": "1/2",
+        "conditional": "1/2",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0,
+        2
+      ],
+      "b": [],
+      "expected": {
+        "massA": "2/3",
+        "massB": "0/1",
+        "intersection": "0/1",
+        "union": "2/3",
+        "complement": "1/3",
+        "conditional": null,
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0,
+        2
+      ],
+      "b": [
+        0
+      ],
+      "expected": {
+        "massA": "2/3",
+        "massB": "1/6",
+        "intersection": "1/6",
+        "union": "2/3",
+        "complement": "1/3",
+        "conditional": "1/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0,
+        2
+      ],
+      "b": [
+        1
+      ],
+      "expected": {
+        "massA": "2/3",
+        "massB": "1/3",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "1/3",
+        "conditional": "0/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0,
+        2
+      ],
+      "b": [
+        2
+      ],
+      "expected": {
+        "massA": "2/3",
+        "massB": "1/2",
+        "intersection": "1/2",
+        "union": "2/3",
+        "complement": "1/3",
+        "conditional": "1/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0,
+        2
+      ],
+      "b": [
+        0,
+        1
+      ],
+      "expected": {
+        "massA": "2/3",
+        "massB": "1/2",
+        "intersection": "1/6",
+        "union": "1/1",
+        "complement": "1/3",
+        "conditional": "1/3",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0,
+        2
+      ],
+      "b": [
+        0,
+        2
+      ],
+      "expected": {
+        "massA": "2/3",
+        "massB": "2/3",
+        "intersection": "2/3",
+        "union": "2/3",
+        "complement": "1/3",
+        "conditional": "1/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0,
+        2
+      ],
+      "b": [
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "2/3",
+        "massB": "5/6",
+        "intersection": "1/2",
+        "union": "1/1",
+        "complement": "1/3",
+        "conditional": "3/5",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0,
+        2
+      ],
+      "b": [
+        0,
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "2/3",
+        "massB": "1/1",
+        "intersection": "2/3",
+        "union": "1/1",
+        "complement": "1/3",
+        "conditional": "2/3",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        1,
+        2
+      ],
+      "b": [],
+      "expected": {
+        "massA": "5/6",
+        "massB": "0/1",
+        "intersection": "0/1",
+        "union": "5/6",
+        "complement": "1/6",
+        "conditional": null,
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        1,
+        2
+      ],
+      "b": [
+        0
+      ],
+      "expected": {
+        "massA": "5/6",
+        "massB": "1/6",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "1/6",
+        "conditional": "0/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        1,
+        2
+      ],
+      "b": [
+        1
+      ],
+      "expected": {
+        "massA": "5/6",
+        "massB": "1/3",
+        "intersection": "1/3",
+        "union": "5/6",
+        "complement": "1/6",
+        "conditional": "1/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        1,
+        2
+      ],
+      "b": [
+        2
+      ],
+      "expected": {
+        "massA": "5/6",
+        "massB": "1/2",
+        "intersection": "1/2",
+        "union": "5/6",
+        "complement": "1/6",
+        "conditional": "1/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        1,
+        2
+      ],
+      "b": [
+        0,
+        1
+      ],
+      "expected": {
+        "massA": "5/6",
+        "massB": "1/2",
+        "intersection": "1/3",
+        "union": "1/1",
+        "complement": "1/6",
+        "conditional": "2/3",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        1,
+        2
+      ],
+      "b": [
+        0,
+        2
+      ],
+      "expected": {
+        "massA": "5/6",
+        "massB": "2/3",
+        "intersection": "1/2",
+        "union": "1/1",
+        "complement": "1/6",
+        "conditional": "3/4",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        1,
+        2
+      ],
+      "b": [
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "5/6",
+        "massB": "5/6",
+        "intersection": "5/6",
+        "union": "5/6",
+        "complement": "1/6",
+        "conditional": "1/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        1,
+        2
+      ],
+      "b": [
+        0,
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "5/6",
+        "massB": "1/1",
+        "intersection": "5/6",
+        "union": "1/1",
+        "complement": "1/6",
+        "conditional": "5/6",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0,
+        1,
+        2
+      ],
+      "b": [],
+      "expected": {
+        "massA": "1/1",
+        "massB": "0/1",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "0/1",
+        "conditional": null,
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0,
+        1,
+        2
+      ],
+      "b": [
+        0
+      ],
+      "expected": {
+        "massA": "1/1",
+        "massB": "1/6",
+        "intersection": "1/6",
+        "union": "1/1",
+        "complement": "0/1",
+        "conditional": "1/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0,
+        1,
+        2
+      ],
+      "b": [
+        1
+      ],
+      "expected": {
+        "massA": "1/1",
+        "massB": "1/3",
+        "intersection": "1/3",
+        "union": "1/1",
+        "complement": "0/1",
+        "conditional": "1/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0,
+        1,
+        2
+      ],
+      "b": [
+        2
+      ],
+      "expected": {
+        "massA": "1/1",
+        "massB": "1/2",
+        "intersection": "1/2",
+        "union": "1/1",
+        "complement": "0/1",
+        "conditional": "1/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0,
+        1,
+        2
+      ],
+      "b": [
+        0,
+        1
+      ],
+      "expected": {
+        "massA": "1/1",
+        "massB": "1/2",
+        "intersection": "1/2",
+        "union": "1/1",
+        "complement": "0/1",
+        "conditional": "1/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0,
+        1,
+        2
+      ],
+      "b": [
+        0,
+        2
+      ],
+      "expected": {
+        "massA": "1/1",
+        "massB": "2/3",
+        "intersection": "2/3",
+        "union": "1/1",
+        "complement": "0/1",
+        "conditional": "1/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0,
+        1,
+        2
+      ],
+      "b": [
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "1/1",
+        "massB": "5/6",
+        "intersection": "5/6",
+        "union": "1/1",
+        "complement": "0/1",
+        "conditional": "1/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "a": [
+        0,
+        1,
+        2
+      ],
+      "b": [
+        0,
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "1/1",
+        "massB": "1/1",
+        "intersection": "1/1",
+        "union": "1/1",
+        "complement": "0/1",
+        "conditional": "1/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [],
+      "b": [],
+      "expected": {
+        "massA": "0/1",
+        "massB": "0/1",
+        "intersection": "0/1",
+        "union": "0/1",
+        "complement": "1/1",
+        "conditional": null,
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [],
+      "b": [
+        0
+      ],
+      "expected": {
+        "massA": "0/1",
+        "massB": "0/1",
+        "intersection": "0/1",
+        "union": "0/1",
+        "complement": "1/1",
+        "conditional": null,
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [],
+      "b": [
+        1
+      ],
+      "expected": {
+        "massA": "0/1",
+        "massB": "1/4",
+        "intersection": "0/1",
+        "union": "1/4",
+        "complement": "1/1",
+        "conditional": "0/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [],
+      "b": [
+        2
+      ],
+      "expected": {
+        "massA": "0/1",
+        "massB": "3/4",
+        "intersection": "0/1",
+        "union": "3/4",
+        "complement": "1/1",
+        "conditional": "0/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [],
+      "b": [
+        0,
+        1
+      ],
+      "expected": {
+        "massA": "0/1",
+        "massB": "1/4",
+        "intersection": "0/1",
+        "union": "1/4",
+        "complement": "1/1",
+        "conditional": "0/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [],
+      "b": [
+        0,
+        2
+      ],
+      "expected": {
+        "massA": "0/1",
+        "massB": "3/4",
+        "intersection": "0/1",
+        "union": "3/4",
+        "complement": "1/1",
+        "conditional": "0/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [],
+      "b": [
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "0/1",
+        "massB": "1/1",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "1/1",
+        "conditional": "0/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [],
+      "b": [
+        0,
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "0/1",
+        "massB": "1/1",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "1/1",
+        "conditional": "0/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0
+      ],
+      "b": [],
+      "expected": {
+        "massA": "0/1",
+        "massB": "0/1",
+        "intersection": "0/1",
+        "union": "0/1",
+        "complement": "1/1",
+        "conditional": null,
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0
+      ],
+      "b": [
+        0
+      ],
+      "expected": {
+        "massA": "0/1",
+        "massB": "0/1",
+        "intersection": "0/1",
+        "union": "0/1",
+        "complement": "1/1",
+        "conditional": null,
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0
+      ],
+      "b": [
+        1
+      ],
+      "expected": {
+        "massA": "0/1",
+        "massB": "1/4",
+        "intersection": "0/1",
+        "union": "1/4",
+        "complement": "1/1",
+        "conditional": "0/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0
+      ],
+      "b": [
+        2
+      ],
+      "expected": {
+        "massA": "0/1",
+        "massB": "3/4",
+        "intersection": "0/1",
+        "union": "3/4",
+        "complement": "1/1",
+        "conditional": "0/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0
+      ],
+      "b": [
+        0,
+        1
+      ],
+      "expected": {
+        "massA": "0/1",
+        "massB": "1/4",
+        "intersection": "0/1",
+        "union": "1/4",
+        "complement": "1/1",
+        "conditional": "0/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0
+      ],
+      "b": [
+        0,
+        2
+      ],
+      "expected": {
+        "massA": "0/1",
+        "massB": "3/4",
+        "intersection": "0/1",
+        "union": "3/4",
+        "complement": "1/1",
+        "conditional": "0/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0
+      ],
+      "b": [
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "0/1",
+        "massB": "1/1",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "1/1",
+        "conditional": "0/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0
+      ],
+      "b": [
+        0,
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "0/1",
+        "massB": "1/1",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "1/1",
+        "conditional": "0/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        1
+      ],
+      "b": [],
+      "expected": {
+        "massA": "1/4",
+        "massB": "0/1",
+        "intersection": "0/1",
+        "union": "1/4",
+        "complement": "3/4",
+        "conditional": null,
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        1
+      ],
+      "b": [
+        0
+      ],
+      "expected": {
+        "massA": "1/4",
+        "massB": "0/1",
+        "intersection": "0/1",
+        "union": "1/4",
+        "complement": "3/4",
+        "conditional": null,
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        1
+      ],
+      "b": [
+        1
+      ],
+      "expected": {
+        "massA": "1/4",
+        "massB": "1/4",
+        "intersection": "1/4",
+        "union": "1/4",
+        "complement": "3/4",
+        "conditional": "1/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        1
+      ],
+      "b": [
+        2
+      ],
+      "expected": {
+        "massA": "1/4",
+        "massB": "3/4",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "3/4",
+        "conditional": "0/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        1
+      ],
+      "b": [
+        0,
+        1
+      ],
+      "expected": {
+        "massA": "1/4",
+        "massB": "1/4",
+        "intersection": "1/4",
+        "union": "1/4",
+        "complement": "3/4",
+        "conditional": "1/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        1
+      ],
+      "b": [
+        0,
+        2
+      ],
+      "expected": {
+        "massA": "1/4",
+        "massB": "3/4",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "3/4",
+        "conditional": "0/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        1
+      ],
+      "b": [
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "1/4",
+        "massB": "1/1",
+        "intersection": "1/4",
+        "union": "1/1",
+        "complement": "3/4",
+        "conditional": "1/4",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        1
+      ],
+      "b": [
+        0,
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "1/4",
+        "massB": "1/1",
+        "intersection": "1/4",
+        "union": "1/1",
+        "complement": "3/4",
+        "conditional": "1/4",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        2
+      ],
+      "b": [],
+      "expected": {
+        "massA": "3/4",
+        "massB": "0/1",
+        "intersection": "0/1",
+        "union": "3/4",
+        "complement": "1/4",
+        "conditional": null,
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        2
+      ],
+      "b": [
+        0
+      ],
+      "expected": {
+        "massA": "3/4",
+        "massB": "0/1",
+        "intersection": "0/1",
+        "union": "3/4",
+        "complement": "1/4",
+        "conditional": null,
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        2
+      ],
+      "b": [
+        1
+      ],
+      "expected": {
+        "massA": "3/4",
+        "massB": "1/4",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "1/4",
+        "conditional": "0/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        2
+      ],
+      "b": [
+        2
+      ],
+      "expected": {
+        "massA": "3/4",
+        "massB": "3/4",
+        "intersection": "3/4",
+        "union": "3/4",
+        "complement": "1/4",
+        "conditional": "1/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        2
+      ],
+      "b": [
+        0,
+        1
+      ],
+      "expected": {
+        "massA": "3/4",
+        "massB": "1/4",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "1/4",
+        "conditional": "0/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        2
+      ],
+      "b": [
+        0,
+        2
+      ],
+      "expected": {
+        "massA": "3/4",
+        "massB": "3/4",
+        "intersection": "3/4",
+        "union": "3/4",
+        "complement": "1/4",
+        "conditional": "1/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        2
+      ],
+      "b": [
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "3/4",
+        "massB": "1/1",
+        "intersection": "3/4",
+        "union": "1/1",
+        "complement": "1/4",
+        "conditional": "3/4",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        2
+      ],
+      "b": [
+        0,
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "3/4",
+        "massB": "1/1",
+        "intersection": "3/4",
+        "union": "1/1",
+        "complement": "1/4",
+        "conditional": "3/4",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0,
+        1
+      ],
+      "b": [],
+      "expected": {
+        "massA": "1/4",
+        "massB": "0/1",
+        "intersection": "0/1",
+        "union": "1/4",
+        "complement": "3/4",
+        "conditional": null,
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0,
+        1
+      ],
+      "b": [
+        0
+      ],
+      "expected": {
+        "massA": "1/4",
+        "massB": "0/1",
+        "intersection": "0/1",
+        "union": "1/4",
+        "complement": "3/4",
+        "conditional": null,
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0,
+        1
+      ],
+      "b": [
+        1
+      ],
+      "expected": {
+        "massA": "1/4",
+        "massB": "1/4",
+        "intersection": "1/4",
+        "union": "1/4",
+        "complement": "3/4",
+        "conditional": "1/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0,
+        1
+      ],
+      "b": [
+        2
+      ],
+      "expected": {
+        "massA": "1/4",
+        "massB": "3/4",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "3/4",
+        "conditional": "0/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0,
+        1
+      ],
+      "b": [
+        0,
+        1
+      ],
+      "expected": {
+        "massA": "1/4",
+        "massB": "1/4",
+        "intersection": "1/4",
+        "union": "1/4",
+        "complement": "3/4",
+        "conditional": "1/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0,
+        1
+      ],
+      "b": [
+        0,
+        2
+      ],
+      "expected": {
+        "massA": "1/4",
+        "massB": "3/4",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "3/4",
+        "conditional": "0/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0,
+        1
+      ],
+      "b": [
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "1/4",
+        "massB": "1/1",
+        "intersection": "1/4",
+        "union": "1/1",
+        "complement": "3/4",
+        "conditional": "1/4",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0,
+        1
+      ],
+      "b": [
+        0,
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "1/4",
+        "massB": "1/1",
+        "intersection": "1/4",
+        "union": "1/1",
+        "complement": "3/4",
+        "conditional": "1/4",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0,
+        2
+      ],
+      "b": [],
+      "expected": {
+        "massA": "3/4",
+        "massB": "0/1",
+        "intersection": "0/1",
+        "union": "3/4",
+        "complement": "1/4",
+        "conditional": null,
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0,
+        2
+      ],
+      "b": [
+        0
+      ],
+      "expected": {
+        "massA": "3/4",
+        "massB": "0/1",
+        "intersection": "0/1",
+        "union": "3/4",
+        "complement": "1/4",
+        "conditional": null,
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0,
+        2
+      ],
+      "b": [
+        1
+      ],
+      "expected": {
+        "massA": "3/4",
+        "massB": "1/4",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "1/4",
+        "conditional": "0/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0,
+        2
+      ],
+      "b": [
+        2
+      ],
+      "expected": {
+        "massA": "3/4",
+        "massB": "3/4",
+        "intersection": "3/4",
+        "union": "3/4",
+        "complement": "1/4",
+        "conditional": "1/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0,
+        2
+      ],
+      "b": [
+        0,
+        1
+      ],
+      "expected": {
+        "massA": "3/4",
+        "massB": "1/4",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "1/4",
+        "conditional": "0/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0,
+        2
+      ],
+      "b": [
+        0,
+        2
+      ],
+      "expected": {
+        "massA": "3/4",
+        "massB": "3/4",
+        "intersection": "3/4",
+        "union": "3/4",
+        "complement": "1/4",
+        "conditional": "1/1",
+        "independent": false
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0,
+        2
+      ],
+      "b": [
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "3/4",
+        "massB": "1/1",
+        "intersection": "3/4",
+        "union": "1/1",
+        "complement": "1/4",
+        "conditional": "3/4",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0,
+        2
+      ],
+      "b": [
+        0,
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "3/4",
+        "massB": "1/1",
+        "intersection": "3/4",
+        "union": "1/1",
+        "complement": "1/4",
+        "conditional": "3/4",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        1,
+        2
+      ],
+      "b": [],
+      "expected": {
+        "massA": "1/1",
+        "massB": "0/1",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "0/1",
+        "conditional": null,
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        1,
+        2
+      ],
+      "b": [
+        0
+      ],
+      "expected": {
+        "massA": "1/1",
+        "massB": "0/1",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "0/1",
+        "conditional": null,
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        1,
+        2
+      ],
+      "b": [
+        1
+      ],
+      "expected": {
+        "massA": "1/1",
+        "massB": "1/4",
+        "intersection": "1/4",
+        "union": "1/1",
+        "complement": "0/1",
+        "conditional": "1/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        1,
+        2
+      ],
+      "b": [
+        2
+      ],
+      "expected": {
+        "massA": "1/1",
+        "massB": "3/4",
+        "intersection": "3/4",
+        "union": "1/1",
+        "complement": "0/1",
+        "conditional": "1/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        1,
+        2
+      ],
+      "b": [
+        0,
+        1
+      ],
+      "expected": {
+        "massA": "1/1",
+        "massB": "1/4",
+        "intersection": "1/4",
+        "union": "1/1",
+        "complement": "0/1",
+        "conditional": "1/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        1,
+        2
+      ],
+      "b": [
+        0,
+        2
+      ],
+      "expected": {
+        "massA": "1/1",
+        "massB": "3/4",
+        "intersection": "3/4",
+        "union": "1/1",
+        "complement": "0/1",
+        "conditional": "1/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        1,
+        2
+      ],
+      "b": [
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "1/1",
+        "massB": "1/1",
+        "intersection": "1/1",
+        "union": "1/1",
+        "complement": "0/1",
+        "conditional": "1/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        1,
+        2
+      ],
+      "b": [
+        0,
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "1/1",
+        "massB": "1/1",
+        "intersection": "1/1",
+        "union": "1/1",
+        "complement": "0/1",
+        "conditional": "1/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0,
+        1,
+        2
+      ],
+      "b": [],
+      "expected": {
+        "massA": "1/1",
+        "massB": "0/1",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "0/1",
+        "conditional": null,
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0,
+        1,
+        2
+      ],
+      "b": [
+        0
+      ],
+      "expected": {
+        "massA": "1/1",
+        "massB": "0/1",
+        "intersection": "0/1",
+        "union": "1/1",
+        "complement": "0/1",
+        "conditional": null,
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0,
+        1,
+        2
+      ],
+      "b": [
+        1
+      ],
+      "expected": {
+        "massA": "1/1",
+        "massB": "1/4",
+        "intersection": "1/4",
+        "union": "1/1",
+        "complement": "0/1",
+        "conditional": "1/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0,
+        1,
+        2
+      ],
+      "b": [
+        2
+      ],
+      "expected": {
+        "massA": "1/1",
+        "massB": "3/4",
+        "intersection": "3/4",
+        "union": "1/1",
+        "complement": "0/1",
+        "conditional": "1/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0,
+        1,
+        2
+      ],
+      "b": [
+        0,
+        1
+      ],
+      "expected": {
+        "massA": "1/1",
+        "massB": "1/4",
+        "intersection": "1/4",
+        "union": "1/1",
+        "complement": "0/1",
+        "conditional": "1/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0,
+        1,
+        2
+      ],
+      "b": [
+        0,
+        2
+      ],
+      "expected": {
+        "massA": "1/1",
+        "massB": "3/4",
+        "intersection": "3/4",
+        "union": "1/1",
+        "complement": "0/1",
+        "conditional": "1/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0,
+        1,
+        2
+      ],
+      "b": [
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "1/1",
+        "massB": "1/1",
+        "intersection": "1/1",
+        "union": "1/1",
+        "complement": "0/1",
+        "conditional": "1/1",
+        "independent": true
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        3
+      ],
+      "a": [
+        0,
+        1,
+        2
+      ],
+      "b": [
+        0,
+        1,
+        2
+      ],
+      "expected": {
+        "massA": "1/1",
+        "massB": "1/1",
+        "intersection": "1/1",
+        "union": "1/1",
+        "complement": "0/1",
+        "conditional": "1/1",
+        "independent": true
+      }
+    }
+  ],
+  "bayes": [
+    {
+      "prior": 0,
+      "sensitivity": 0,
+      "falsePositive": 0,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "0/1",
+        "posterior": null,
+        "joint": [
+          "0/1",
+          "0/1",
+          "0/1",
+          "1/1"
+        ],
+        "posteriorMass": null
+      }
+    },
+    {
+      "prior": 0,
+      "sensitivity": 0,
+      "falsePositive": 0,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "1/1",
+        "posterior": "0/1",
+        "joint": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0,
+      "sensitivity": 0,
+      "falsePositive": 1,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "1/100",
+        "posterior": "0/1",
+        "joint": [
+          "0/1",
+          "0/1",
+          "1/100",
+          "99/100"
+        ],
+        "posteriorMass": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0,
+      "sensitivity": 0,
+      "falsePositive": 1,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "99/100",
+        "posterior": "0/1",
+        "joint": [
+          "0/1",
+          "0/1",
+          "99/100",
+          "1/100"
+        ],
+        "posteriorMass": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0,
+      "sensitivity": 0,
+      "falsePositive": 100,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "1/1",
+        "posterior": "0/1",
+        "joint": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0,
+      "sensitivity": 0,
+      "falsePositive": 100,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "0/1",
+        "posterior": null,
+        "joint": [
+          "0/1",
+          "0/1",
+          "0/1",
+          "1/1"
+        ],
+        "posteriorMass": null
+      }
+    },
+    {
+      "prior": 0,
+      "sensitivity": 50,
+      "falsePositive": 0,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "0/1",
+        "posterior": null,
+        "joint": [
+          "0/1",
+          "0/1",
+          "0/1",
+          "1/1"
+        ],
+        "posteriorMass": null
+      }
+    },
+    {
+      "prior": 0,
+      "sensitivity": 50,
+      "falsePositive": 0,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "1/1",
+        "posterior": "0/1",
+        "joint": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0,
+      "sensitivity": 50,
+      "falsePositive": 1,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "1/100",
+        "posterior": "0/1",
+        "joint": [
+          "0/1",
+          "0/1",
+          "1/100",
+          "99/100"
+        ],
+        "posteriorMass": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0,
+      "sensitivity": 50,
+      "falsePositive": 1,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "99/100",
+        "posterior": "0/1",
+        "joint": [
+          "0/1",
+          "0/1",
+          "99/100",
+          "1/100"
+        ],
+        "posteriorMass": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0,
+      "sensitivity": 50,
+      "falsePositive": 100,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "1/1",
+        "posterior": "0/1",
+        "joint": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0,
+      "sensitivity": 50,
+      "falsePositive": 100,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "0/1",
+        "posterior": null,
+        "joint": [
+          "0/1",
+          "0/1",
+          "0/1",
+          "1/1"
+        ],
+        "posteriorMass": null
+      }
+    },
+    {
+      "prior": 0,
+      "sensitivity": 100,
+      "falsePositive": 0,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "0/1",
+        "posterior": null,
+        "joint": [
+          "0/1",
+          "0/1",
+          "0/1",
+          "1/1"
+        ],
+        "posteriorMass": null
+      }
+    },
+    {
+      "prior": 0,
+      "sensitivity": 100,
+      "falsePositive": 0,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "1/1",
+        "posterior": "0/1",
+        "joint": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0,
+      "sensitivity": 100,
+      "falsePositive": 1,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "1/100",
+        "posterior": "0/1",
+        "joint": [
+          "0/1",
+          "0/1",
+          "1/100",
+          "99/100"
+        ],
+        "posteriorMass": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0,
+      "sensitivity": 100,
+      "falsePositive": 1,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "99/100",
+        "posterior": "0/1",
+        "joint": [
+          "0/1",
+          "0/1",
+          "99/100",
+          "1/100"
+        ],
+        "posteriorMass": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0,
+      "sensitivity": 100,
+      "falsePositive": 100,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "1/1",
+        "posterior": "0/1",
+        "joint": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0,
+      "sensitivity": 100,
+      "falsePositive": 100,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "0/1",
+        "posterior": null,
+        "joint": [
+          "0/1",
+          "0/1",
+          "0/1",
+          "1/1"
+        ],
+        "posteriorMass": null
+      }
+    },
+    {
+      "prior": 0.01,
+      "sensitivity": 0,
+      "falsePositive": 0,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "0/1",
+        "posterior": null,
+        "joint": [
+          "0/1",
+          "1/10000",
+          "0/1",
+          "9999/10000"
+        ],
+        "posteriorMass": null
+      }
+    },
+    {
+      "prior": 0.01,
+      "sensitivity": 0,
+      "falsePositive": 0,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "1/1",
+        "posterior": "1/10000",
+        "joint": [
+          "1/10000",
+          "0/1",
+          "9999/10000",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "1/10000",
+          "0/1",
+          "9999/10000",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0.01,
+      "sensitivity": 0,
+      "falsePositive": 1,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "9999/1000000",
+        "posterior": "0/1",
+        "joint": [
+          "0/1",
+          "1/10000",
+          "9999/1000000",
+          "989901/1000000"
+        ],
+        "posteriorMass": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0.01,
+      "sensitivity": 0,
+      "falsePositive": 1,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "990001/1000000",
+        "posterior": "100/990001",
+        "joint": [
+          "1/10000",
+          "0/1",
+          "989901/1000000",
+          "9999/1000000"
+        ],
+        "posteriorMass": [
+          "100/990001",
+          "0/1",
+          "989901/990001",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0.01,
+      "sensitivity": 0,
+      "falsePositive": 100,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "9999/10000",
+        "posterior": "0/1",
+        "joint": [
+          "0/1",
+          "1/10000",
+          "9999/10000",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0.01,
+      "sensitivity": 0,
+      "falsePositive": 100,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "1/10000",
+        "posterior": "1/1",
+        "joint": [
+          "1/10000",
+          "0/1",
+          "0/1",
+          "9999/10000"
+        ],
+        "posteriorMass": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0.01,
+      "sensitivity": 50,
+      "falsePositive": 0,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "1/20000",
+        "posterior": "1/1",
+        "joint": [
+          "1/20000",
+          "1/20000",
+          "0/1",
+          "9999/10000"
+        ],
+        "posteriorMass": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0.01,
+      "sensitivity": 50,
+      "falsePositive": 0,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "19999/20000",
+        "posterior": "1/19999",
+        "joint": [
+          "1/20000",
+          "1/20000",
+          "9999/10000",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "1/19999",
+          "0/1",
+          "19998/19999",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0.01,
+      "sensitivity": 50,
+      "falsePositive": 1,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "10049/1000000",
+        "posterior": "50/10049",
+        "joint": [
+          "1/20000",
+          "1/20000",
+          "9999/1000000",
+          "989901/1000000"
+        ],
+        "posteriorMass": [
+          "50/10049",
+          "0/1",
+          "9999/10049",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0.01,
+      "sensitivity": 50,
+      "falsePositive": 1,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "989951/1000000",
+        "posterior": "50/989951",
+        "joint": [
+          "1/20000",
+          "1/20000",
+          "989901/1000000",
+          "9999/1000000"
+        ],
+        "posteriorMass": [
+          "50/989951",
+          "0/1",
+          "989901/989951",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0.01,
+      "sensitivity": 50,
+      "falsePositive": 100,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "19999/20000",
+        "posterior": "1/19999",
+        "joint": [
+          "1/20000",
+          "1/20000",
+          "9999/10000",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "1/19999",
+          "0/1",
+          "19998/19999",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0.01,
+      "sensitivity": 50,
+      "falsePositive": 100,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "1/20000",
+        "posterior": "1/1",
+        "joint": [
+          "1/20000",
+          "1/20000",
+          "0/1",
+          "9999/10000"
+        ],
+        "posteriorMass": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0.01,
+      "sensitivity": 100,
+      "falsePositive": 0,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "1/10000",
+        "posterior": "1/1",
+        "joint": [
+          "1/10000",
+          "0/1",
+          "0/1",
+          "9999/10000"
+        ],
+        "posteriorMass": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0.01,
+      "sensitivity": 100,
+      "falsePositive": 0,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "9999/10000",
+        "posterior": "0/1",
+        "joint": [
+          "0/1",
+          "1/10000",
+          "9999/10000",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0.01,
+      "sensitivity": 100,
+      "falsePositive": 1,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "10099/1000000",
+        "posterior": "100/10099",
+        "joint": [
+          "1/10000",
+          "0/1",
+          "9999/1000000",
+          "989901/1000000"
+        ],
+        "posteriorMass": [
+          "100/10099",
+          "0/1",
+          "9999/10099",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0.01,
+      "sensitivity": 100,
+      "falsePositive": 1,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "989901/1000000",
+        "posterior": "0/1",
+        "joint": [
+          "0/1",
+          "1/10000",
+          "989901/1000000",
+          "9999/1000000"
+        ],
+        "posteriorMass": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0.01,
+      "sensitivity": 100,
+      "falsePositive": 100,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "1/1",
+        "posterior": "1/10000",
+        "joint": [
+          "1/10000",
+          "0/1",
+          "9999/10000",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "1/10000",
+          "0/1",
+          "9999/10000",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0.01,
+      "sensitivity": 100,
+      "falsePositive": 100,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "0/1",
+        "posterior": null,
+        "joint": [
+          "0/1",
+          "1/10000",
+          "0/1",
+          "9999/10000"
+        ],
+        "posteriorMass": null
+      }
+    },
+    {
+      "prior": 1,
+      "sensitivity": 0,
+      "falsePositive": 0,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "0/1",
+        "posterior": null,
+        "joint": [
+          "0/1",
+          "1/100",
+          "0/1",
+          "99/100"
+        ],
+        "posteriorMass": null
+      }
+    },
+    {
+      "prior": 1,
+      "sensitivity": 0,
+      "falsePositive": 0,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "1/1",
+        "posterior": "1/100",
+        "joint": [
+          "1/100",
+          "0/1",
+          "99/100",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "1/100",
+          "0/1",
+          "99/100",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 1,
+      "sensitivity": 0,
+      "falsePositive": 1,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "99/10000",
+        "posterior": "0/1",
+        "joint": [
+          "0/1",
+          "1/100",
+          "99/10000",
+          "9801/10000"
+        ],
+        "posteriorMass": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 1,
+      "sensitivity": 0,
+      "falsePositive": 1,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "9901/10000",
+        "posterior": "100/9901",
+        "joint": [
+          "1/100",
+          "0/1",
+          "9801/10000",
+          "99/10000"
+        ],
+        "posteriorMass": [
+          "100/9901",
+          "0/1",
+          "9801/9901",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 1,
+      "sensitivity": 0,
+      "falsePositive": 100,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "99/100",
+        "posterior": "0/1",
+        "joint": [
+          "0/1",
+          "1/100",
+          "99/100",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 1,
+      "sensitivity": 0,
+      "falsePositive": 100,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "1/100",
+        "posterior": "1/1",
+        "joint": [
+          "1/100",
+          "0/1",
+          "0/1",
+          "99/100"
+        ],
+        "posteriorMass": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 1,
+      "sensitivity": 50,
+      "falsePositive": 0,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "1/200",
+        "posterior": "1/1",
+        "joint": [
+          "1/200",
+          "1/200",
+          "0/1",
+          "99/100"
+        ],
+        "posteriorMass": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 1,
+      "sensitivity": 50,
+      "falsePositive": 0,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "199/200",
+        "posterior": "1/199",
+        "joint": [
+          "1/200",
+          "1/200",
+          "99/100",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "1/199",
+          "0/1",
+          "198/199",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 1,
+      "sensitivity": 50,
+      "falsePositive": 1,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "149/10000",
+        "posterior": "50/149",
+        "joint": [
+          "1/200",
+          "1/200",
+          "99/10000",
+          "9801/10000"
+        ],
+        "posteriorMass": [
+          "50/149",
+          "0/1",
+          "99/149",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 1,
+      "sensitivity": 50,
+      "falsePositive": 1,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "9851/10000",
+        "posterior": "50/9851",
+        "joint": [
+          "1/200",
+          "1/200",
+          "9801/10000",
+          "99/10000"
+        ],
+        "posteriorMass": [
+          "50/9851",
+          "0/1",
+          "9801/9851",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 1,
+      "sensitivity": 50,
+      "falsePositive": 100,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "199/200",
+        "posterior": "1/199",
+        "joint": [
+          "1/200",
+          "1/200",
+          "99/100",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "1/199",
+          "0/1",
+          "198/199",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 1,
+      "sensitivity": 50,
+      "falsePositive": 100,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "1/200",
+        "posterior": "1/1",
+        "joint": [
+          "1/200",
+          "1/200",
+          "0/1",
+          "99/100"
+        ],
+        "posteriorMass": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 1,
+      "sensitivity": 100,
+      "falsePositive": 0,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "1/100",
+        "posterior": "1/1",
+        "joint": [
+          "1/100",
+          "0/1",
+          "0/1",
+          "99/100"
+        ],
+        "posteriorMass": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 1,
+      "sensitivity": 100,
+      "falsePositive": 0,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "99/100",
+        "posterior": "0/1",
+        "joint": [
+          "0/1",
+          "1/100",
+          "99/100",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 1,
+      "sensitivity": 100,
+      "falsePositive": 1,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "199/10000",
+        "posterior": "100/199",
+        "joint": [
+          "1/100",
+          "0/1",
+          "99/10000",
+          "9801/10000"
+        ],
+        "posteriorMass": [
+          "100/199",
+          "0/1",
+          "99/199",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 1,
+      "sensitivity": 100,
+      "falsePositive": 1,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "9801/10000",
+        "posterior": "0/1",
+        "joint": [
+          "0/1",
+          "1/100",
+          "9801/10000",
+          "99/10000"
+        ],
+        "posteriorMass": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 1,
+      "sensitivity": 100,
+      "falsePositive": 100,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "1/1",
+        "posterior": "1/100",
+        "joint": [
+          "1/100",
+          "0/1",
+          "99/100",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "1/100",
+          "0/1",
+          "99/100",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 1,
+      "sensitivity": 100,
+      "falsePositive": 100,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "0/1",
+        "posterior": null,
+        "joint": [
+          "0/1",
+          "1/100",
+          "0/1",
+          "99/100"
+        ],
+        "posteriorMass": null
+      }
+    },
+    {
+      "prior": 50,
+      "sensitivity": 0,
+      "falsePositive": 0,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "0/1",
+        "posterior": null,
+        "joint": [
+          "0/1",
+          "1/2",
+          "0/1",
+          "1/2"
+        ],
+        "posteriorMass": null
+      }
+    },
+    {
+      "prior": 50,
+      "sensitivity": 0,
+      "falsePositive": 0,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "1/1",
+        "posterior": "1/2",
+        "joint": [
+          "1/2",
+          "0/1",
+          "1/2",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "1/2",
+          "0/1",
+          "1/2",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 50,
+      "sensitivity": 0,
+      "falsePositive": 1,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "1/200",
+        "posterior": "0/1",
+        "joint": [
+          "0/1",
+          "1/2",
+          "1/200",
+          "99/200"
+        ],
+        "posteriorMass": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 50,
+      "sensitivity": 0,
+      "falsePositive": 1,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "199/200",
+        "posterior": "100/199",
+        "joint": [
+          "1/2",
+          "0/1",
+          "99/200",
+          "1/200"
+        ],
+        "posteriorMass": [
+          "100/199",
+          "0/1",
+          "99/199",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 50,
+      "sensitivity": 0,
+      "falsePositive": 100,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "1/2",
+        "posterior": "0/1",
+        "joint": [
+          "0/1",
+          "1/2",
+          "1/2",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 50,
+      "sensitivity": 0,
+      "falsePositive": 100,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "1/2",
+        "posterior": "1/1",
+        "joint": [
+          "1/2",
+          "0/1",
+          "0/1",
+          "1/2"
+        ],
+        "posteriorMass": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 50,
+      "sensitivity": 50,
+      "falsePositive": 0,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "1/4",
+        "posterior": "1/1",
+        "joint": [
+          "1/4",
+          "1/4",
+          "0/1",
+          "1/2"
+        ],
+        "posteriorMass": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 50,
+      "sensitivity": 50,
+      "falsePositive": 0,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "3/4",
+        "posterior": "1/3",
+        "joint": [
+          "1/4",
+          "1/4",
+          "1/2",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "1/3",
+          "0/1",
+          "2/3",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 50,
+      "sensitivity": 50,
+      "falsePositive": 1,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "51/200",
+        "posterior": "50/51",
+        "joint": [
+          "1/4",
+          "1/4",
+          "1/200",
+          "99/200"
+        ],
+        "posteriorMass": [
+          "50/51",
+          "0/1",
+          "1/51",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 50,
+      "sensitivity": 50,
+      "falsePositive": 1,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "149/200",
+        "posterior": "50/149",
+        "joint": [
+          "1/4",
+          "1/4",
+          "99/200",
+          "1/200"
+        ],
+        "posteriorMass": [
+          "50/149",
+          "0/1",
+          "99/149",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 50,
+      "sensitivity": 50,
+      "falsePositive": 100,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "3/4",
+        "posterior": "1/3",
+        "joint": [
+          "1/4",
+          "1/4",
+          "1/2",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "1/3",
+          "0/1",
+          "2/3",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 50,
+      "sensitivity": 50,
+      "falsePositive": 100,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "1/4",
+        "posterior": "1/1",
+        "joint": [
+          "1/4",
+          "1/4",
+          "0/1",
+          "1/2"
+        ],
+        "posteriorMass": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 50,
+      "sensitivity": 100,
+      "falsePositive": 0,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "1/2",
+        "posterior": "1/1",
+        "joint": [
+          "1/2",
+          "0/1",
+          "0/1",
+          "1/2"
+        ],
+        "posteriorMass": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 50,
+      "sensitivity": 100,
+      "falsePositive": 0,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "1/2",
+        "posterior": "0/1",
+        "joint": [
+          "0/1",
+          "1/2",
+          "1/2",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 50,
+      "sensitivity": 100,
+      "falsePositive": 1,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "101/200",
+        "posterior": "100/101",
+        "joint": [
+          "1/2",
+          "0/1",
+          "1/200",
+          "99/200"
+        ],
+        "posteriorMass": [
+          "100/101",
+          "0/1",
+          "1/101",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 50,
+      "sensitivity": 100,
+      "falsePositive": 1,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "99/200",
+        "posterior": "0/1",
+        "joint": [
+          "0/1",
+          "1/2",
+          "99/200",
+          "1/200"
+        ],
+        "posteriorMass": [
+          "0/1",
+          "0/1",
+          "1/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 50,
+      "sensitivity": 100,
+      "falsePositive": 100,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "1/1",
+        "posterior": "1/2",
+        "joint": [
+          "1/2",
+          "0/1",
+          "1/2",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "1/2",
+          "0/1",
+          "1/2",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 50,
+      "sensitivity": 100,
+      "falsePositive": 100,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "0/1",
+        "posterior": null,
+        "joint": [
+          "0/1",
+          "1/2",
+          "0/1",
+          "1/2"
+        ],
+        "posteriorMass": null
+      }
+    },
+    {
+      "prior": 100,
+      "sensitivity": 0,
+      "falsePositive": 0,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "0/1",
+        "posterior": null,
+        "joint": [
+          "0/1",
+          "1/1",
+          "0/1",
+          "0/1"
+        ],
+        "posteriorMass": null
+      }
+    },
+    {
+      "prior": 100,
+      "sensitivity": 0,
+      "falsePositive": 0,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "1/1",
+        "posterior": "1/1",
+        "joint": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 100,
+      "sensitivity": 0,
+      "falsePositive": 1,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "0/1",
+        "posterior": null,
+        "joint": [
+          "0/1",
+          "1/1",
+          "0/1",
+          "0/1"
+        ],
+        "posteriorMass": null
+      }
+    },
+    {
+      "prior": 100,
+      "sensitivity": 0,
+      "falsePositive": 1,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "1/1",
+        "posterior": "1/1",
+        "joint": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 100,
+      "sensitivity": 0,
+      "falsePositive": 100,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "0/1",
+        "posterior": null,
+        "joint": [
+          "0/1",
+          "1/1",
+          "0/1",
+          "0/1"
+        ],
+        "posteriorMass": null
+      }
+    },
+    {
+      "prior": 100,
+      "sensitivity": 0,
+      "falsePositive": 100,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "1/1",
+        "posterior": "1/1",
+        "joint": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 100,
+      "sensitivity": 50,
+      "falsePositive": 0,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "1/2",
+        "posterior": "1/1",
+        "joint": [
+          "1/2",
+          "1/2",
+          "0/1",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 100,
+      "sensitivity": 50,
+      "falsePositive": 0,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "1/2",
+        "posterior": "1/1",
+        "joint": [
+          "1/2",
+          "1/2",
+          "0/1",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 100,
+      "sensitivity": 50,
+      "falsePositive": 1,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "1/2",
+        "posterior": "1/1",
+        "joint": [
+          "1/2",
+          "1/2",
+          "0/1",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 100,
+      "sensitivity": 50,
+      "falsePositive": 1,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "1/2",
+        "posterior": "1/1",
+        "joint": [
+          "1/2",
+          "1/2",
+          "0/1",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 100,
+      "sensitivity": 50,
+      "falsePositive": 100,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "1/2",
+        "posterior": "1/1",
+        "joint": [
+          "1/2",
+          "1/2",
+          "0/1",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 100,
+      "sensitivity": 50,
+      "falsePositive": 100,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "1/2",
+        "posterior": "1/1",
+        "joint": [
+          "1/2",
+          "1/2",
+          "0/1",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 100,
+      "sensitivity": 100,
+      "falsePositive": 0,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "1/1",
+        "posterior": "1/1",
+        "joint": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 100,
+      "sensitivity": 100,
+      "falsePositive": 0,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "0/1",
+        "posterior": null,
+        "joint": [
+          "0/1",
+          "1/1",
+          "0/1",
+          "0/1"
+        ],
+        "posteriorMass": null
+      }
+    },
+    {
+      "prior": 100,
+      "sensitivity": 100,
+      "falsePositive": 1,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "1/1",
+        "posterior": "1/1",
+        "joint": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 100,
+      "sensitivity": 100,
+      "falsePositive": 1,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "0/1",
+        "posterior": null,
+        "joint": [
+          "0/1",
+          "1/1",
+          "0/1",
+          "0/1"
+        ],
+        "posteriorMass": null
+      }
+    },
+    {
+      "prior": 100,
+      "sensitivity": 100,
+      "falsePositive": 100,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "1/1",
+        "posterior": "1/1",
+        "joint": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ],
+        "posteriorMass": [
+          "1/1",
+          "0/1",
+          "0/1",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 100,
+      "sensitivity": 100,
+      "falsePositive": 100,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "0/1",
+        "posterior": null,
+        "joint": [
+          "0/1",
+          "1/1",
+          "0/1",
+          "0/1"
+        ],
+        "posteriorMass": null
+      }
+    },
+    {
+      "prior": 1,
+      "sensitivity": 90,
+      "falsePositive": 5,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "117/2000",
+        "posterior": "2/13",
+        "joint": [
+          "9/1000",
+          "1/1000",
+          "99/2000",
+          "1881/2000"
+        ],
+        "posteriorMass": [
+          "2/13",
+          "0/1",
+          "11/13",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 1,
+      "sensitivity": 90,
+      "falsePositive": 5,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "1883/2000",
+        "posterior": "2/1883",
+        "joint": [
+          "1/1000",
+          "9/1000",
+          "1881/2000",
+          "99/2000"
+        ],
+        "posteriorMass": [
+          "2/1883",
+          "0/1",
+          "1881/1883",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0.01,
+      "sensitivity": 99,
+      "falsePositive": 1,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "5049/500000",
+        "posterior": "1/102",
+        "joint": [
+          "99/1000000",
+          "1/1000000",
+          "9999/1000000",
+          "989901/1000000"
+        ],
+        "posteriorMass": [
+          "1/102",
+          "0/1",
+          "101/102",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 0.01,
+      "sensitivity": 99,
+      "falsePositive": 1,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "494951/500000",
+        "posterior": "1/989902",
+        "joint": [
+          "1/1000000",
+          "99/1000000",
+          "989901/1000000",
+          "9999/1000000"
+        ],
+        "posteriorMass": [
+          "1/989902",
+          "0/1",
+          "989901/989902",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 12.34,
+      "sensitivity": 98.76,
+      "falsePositive": 0.12,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "768261/6250000",
+        "posterior": "507791/512174",
+        "joint": [
+          "1523373/12500000",
+          "19127/12500000",
+          "13149/12500000",
+          "10944351/12500000"
+        ],
+        "posteriorMass": [
+          "507791/512174",
+          "0/1",
+          "4383/512174",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 12.34,
+      "sensitivity": 98.76,
+      "falsePositive": 0.12,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "5481739/6250000",
+        "posterior": "19127/10963478",
+        "joint": [
+          "19127/12500000",
+          "1523373/12500000",
+          "10944351/12500000",
+          "13149/12500000"
+        ],
+        "posteriorMass": [
+          "19127/10963478",
+          "0/1",
+          "10944351/10963478",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 20,
+      "sensitivity": 75,
+      "falsePositive": 25,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "7/20",
+        "posterior": "3/7",
+        "joint": [
+          "3/20",
+          "1/20",
+          "1/5",
+          "3/5"
+        ],
+        "posteriorMass": [
+          "3/7",
+          "0/1",
+          "4/7",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 20,
+      "sensitivity": 75,
+      "falsePositive": 25,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "13/20",
+        "posterior": "1/13",
+        "joint": [
+          "1/20",
+          "3/20",
+          "3/5",
+          "1/5"
+        ],
+        "posteriorMass": [
+          "1/13",
+          "0/1",
+          "12/13",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 99.99,
+      "sensitivity": 0.01,
+      "falsePositive": 99.99,
+      "evidence": "positive",
+      "expected": {
+        "evidence": "9999/50000000",
+        "posterior": "1/2",
+        "joint": [
+          "9999/100000000",
+          "99980001/100000000",
+          "9999/100000000",
+          "1/100000000"
+        ],
+        "posteriorMass": [
+          "1/2",
+          "0/1",
+          "1/2",
+          "0/1"
+        ]
+      }
+    },
+    {
+      "prior": 99.99,
+      "sensitivity": 0.01,
+      "falsePositive": 99.99,
+      "evidence": "negative",
+      "expected": {
+        "evidence": "49990001/50000000",
+        "posterior": "99980001/99980002",
+        "joint": [
+          "99980001/100000000",
+          "9999/100000000",
+          "1/100000000",
+          "9999/100000000"
+        ],
+        "posteriorMass": [
+          "99980001/99980002",
+          "0/1",
+          "1/99980002",
+          "0/1"
+        ]
+      }
+    }
+  ],
+  "counting": [
+    {
+      "n": 2,
+      "k": 0,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 2,
+      "k": 0,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 2,
+      "k": 0,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 2,
+      "k": 0,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 2,
+      "k": 1,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 2,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "n": 2,
+      "k": 1,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 2,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "n": 2,
+      "k": 1,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 2,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "n": 2,
+      "k": 1,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 2,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "n": 2,
+      "k": 2,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 1,
+        "examples": [
+          [
+            0,
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "n": 2,
+      "k": 2,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 3,
+        "examples": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "n": 2,
+      "k": 2,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 2,
+        "examples": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            0
+          ]
+        ]
+      }
+    },
+    {
+      "n": 2,
+      "k": 2,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 4,
+        "examples": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "n": 2,
+      "k": 3,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 4,
+        "examples": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "n": 2,
+      "k": 3,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 8,
+        "examples": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "n": 2,
+      "k": 4,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 5,
+        "examples": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "n": 2,
+      "k": 4,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 16,
+        "examples": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            0,
+            1,
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "n": 3,
+      "k": 0,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 3,
+      "k": 0,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 3,
+      "k": 0,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 3,
+      "k": 0,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 3,
+      "k": 1,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 3,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "n": 3,
+      "k": 1,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 3,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "n": 3,
+      "k": 1,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 3,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "n": 3,
+      "k": 1,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 3,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "n": 3,
+      "k": 2,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 3,
+        "examples": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "n": 3,
+      "k": 2,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 6,
+        "examples": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "n": 3,
+      "k": 2,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 6,
+        "examples": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "n": 3,
+      "k": 2,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 9,
+        "examples": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "n": 3,
+      "k": 3,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 1,
+        "examples": [
+          [
+            0,
+            1,
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "n": 3,
+      "k": 3,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 10,
+        "examples": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            2,
+            2
+          ],
+          [
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            2
+          ],
+          [
+            1,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "n": 3,
+      "k": 3,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 6,
+        "examples": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            2,
+            1
+          ],
+          [
+            1,
+            0,
+            2
+          ],
+          [
+            1,
+            2,
+            0
+          ],
+          [
+            2,
+            0,
+            1
+          ],
+          [
+            2,
+            1,
+            0
+          ]
+        ]
+      }
+    },
+    {
+      "n": 3,
+      "k": 3,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 27,
+        "examples": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            2,
+            0
+          ],
+          [
+            0,
+            2,
+            1
+          ],
+          [
+            0,
+            2,
+            2
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "n": 3,
+      "k": 4,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 15,
+        "examples": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            0,
+            2,
+            2
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            2,
+            2
+          ],
+          [
+            0,
+            2,
+            2,
+            2
+          ],
+          [
+            1,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "n": 3,
+      "k": 4,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 81,
+        "examples": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            0,
+            2,
+            0
+          ],
+          [
+            0,
+            0,
+            2,
+            1
+          ],
+          [
+            0,
+            0,
+            2,
+            2
+          ],
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            0,
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "n": 4,
+      "k": 0,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 4,
+      "k": 0,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 4,
+      "k": 0,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 4,
+      "k": 0,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 4,
+      "k": 1,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 4,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ]
+        ]
+      }
+    },
+    {
+      "n": 4,
+      "k": 1,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 4,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ]
+        ]
+      }
+    },
+    {
+      "n": 4,
+      "k": 1,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 4,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ]
+        ]
+      }
+    },
+    {
+      "n": 4,
+      "k": 1,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 4,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ]
+        ]
+      }
+    },
+    {
+      "n": 4,
+      "k": 2,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 6,
+        "examples": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            2,
+            3
+          ]
+        ]
+      }
+    },
+    {
+      "n": 4,
+      "k": 2,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 10,
+        "examples": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            3
+          ]
+        ]
+      }
+    },
+    {
+      "n": 4,
+      "k": 2,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 12,
+        "examples": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            3,
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "n": 4,
+      "k": 2,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 16,
+        "examples": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            2,
+            3
+          ]
+        ]
+      }
+    },
+    {
+      "n": 4,
+      "k": 3,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 4,
+        "examples": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            2,
+            3
+          ],
+          [
+            1,
+            2,
+            3
+          ]
+        ]
+      }
+    },
+    {
+      "n": 4,
+      "k": 3,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 20,
+        "examples": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            3
+          ],
+          [
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            2,
+            2
+          ],
+          [
+            0,
+            2,
+            3
+          ],
+          [
+            0,
+            3,
+            3
+          ],
+          [
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "n": 4,
+      "k": 3,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 24,
+        "examples": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            2,
+            1
+          ],
+          [
+            0,
+            2,
+            3
+          ],
+          [
+            0,
+            3,
+            1
+          ],
+          [
+            0,
+            3,
+            2
+          ],
+          [
+            1,
+            0,
+            2
+          ],
+          [
+            1,
+            0,
+            3
+          ],
+          [
+            1,
+            2,
+            0
+          ],
+          [
+            1,
+            2,
+            3
+          ],
+          [
+            1,
+            3,
+            0
+          ],
+          [
+            1,
+            3,
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "n": 4,
+      "k": 3,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 64,
+        "examples": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            3
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            2,
+            0
+          ],
+          [
+            0,
+            2,
+            1
+          ],
+          [
+            0,
+            2,
+            2
+          ],
+          [
+            0,
+            2,
+            3
+          ]
+        ]
+      }
+    },
+    {
+      "n": 4,
+      "k": 4,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 1,
+        "examples": [
+          [
+            0,
+            1,
+            2,
+            3
+          ]
+        ]
+      }
+    },
+    {
+      "n": 4,
+      "k": 4,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 35,
+        "examples": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            3
+          ],
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            0,
+            2,
+            2
+          ],
+          [
+            0,
+            0,
+            2,
+            3
+          ],
+          [
+            0,
+            0,
+            3,
+            3
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "n": 4,
+      "k": 4,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 24,
+        "examples": [
+          [
+            0,
+            1,
+            2,
+            3
+          ],
+          [
+            0,
+            1,
+            3,
+            2
+          ],
+          [
+            0,
+            2,
+            1,
+            3
+          ],
+          [
+            0,
+            2,
+            3,
+            1
+          ],
+          [
+            0,
+            3,
+            1,
+            2
+          ],
+          [
+            0,
+            3,
+            2,
+            1
+          ],
+          [
+            1,
+            0,
+            2,
+            3
+          ],
+          [
+            1,
+            0,
+            3,
+            2
+          ],
+          [
+            1,
+            2,
+            0,
+            3
+          ],
+          [
+            1,
+            2,
+            3,
+            0
+          ],
+          [
+            1,
+            3,
+            0,
+            2
+          ],
+          [
+            1,
+            3,
+            2,
+            0
+          ]
+        ]
+      }
+    },
+    {
+      "n": 4,
+      "k": 4,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 256,
+        "examples": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            3
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            0,
+            2,
+            0
+          ],
+          [
+            0,
+            0,
+            2,
+            1
+          ],
+          [
+            0,
+            0,
+            2,
+            2
+          ],
+          [
+            0,
+            0,
+            2,
+            3
+          ]
+        ]
+      }
+    },
+    {
+      "n": 5,
+      "k": 0,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 5,
+      "k": 0,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 5,
+      "k": 0,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 5,
+      "k": 0,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 5,
+      "k": 1,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 5,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ]
+      }
+    },
+    {
+      "n": 5,
+      "k": 1,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 5,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ]
+      }
+    },
+    {
+      "n": 5,
+      "k": 1,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 5,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ]
+      }
+    },
+    {
+      "n": 5,
+      "k": 1,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 5,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ]
+      }
+    },
+    {
+      "n": 5,
+      "k": 2,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 10,
+        "examples": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            3,
+            4
+          ]
+        ]
+      }
+    },
+    {
+      "n": 5,
+      "k": 2,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 15,
+        "examples": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            2,
+            4
+          ]
+        ]
+      }
+    },
+    {
+      "n": 5,
+      "k": 2,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 20,
+        "examples": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            2,
+            4
+          ]
+        ]
+      }
+    },
+    {
+      "n": 5,
+      "k": 2,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 25,
+        "examples": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "n": 5,
+      "k": 3,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 10,
+        "examples": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            1,
+            4
+          ],
+          [
+            0,
+            2,
+            3
+          ],
+          [
+            0,
+            2,
+            4
+          ],
+          [
+            0,
+            3,
+            4
+          ],
+          [
+            1,
+            2,
+            3
+          ],
+          [
+            1,
+            2,
+            4
+          ],
+          [
+            1,
+            3,
+            4
+          ],
+          [
+            2,
+            3,
+            4
+          ]
+        ]
+      }
+    },
+    {
+      "n": 5,
+      "k": 3,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 35,
+        "examples": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            3
+          ],
+          [
+            0,
+            0,
+            4
+          ],
+          [
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            1,
+            4
+          ],
+          [
+            0,
+            2,
+            2
+          ],
+          [
+            0,
+            2,
+            3
+          ],
+          [
+            0,
+            2,
+            4
+          ]
+        ]
+      }
+    },
+    {
+      "n": 5,
+      "k": 3,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 60,
+        "examples": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            1,
+            4
+          ],
+          [
+            0,
+            2,
+            1
+          ],
+          [
+            0,
+            2,
+            3
+          ],
+          [
+            0,
+            2,
+            4
+          ],
+          [
+            0,
+            3,
+            1
+          ],
+          [
+            0,
+            3,
+            2
+          ],
+          [
+            0,
+            3,
+            4
+          ],
+          [
+            0,
+            4,
+            1
+          ],
+          [
+            0,
+            4,
+            2
+          ],
+          [
+            0,
+            4,
+            3
+          ]
+        ]
+      }
+    },
+    {
+      "n": 5,
+      "k": 3,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 125,
+        "examples": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            3
+          ],
+          [
+            0,
+            0,
+            4
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            1,
+            4
+          ],
+          [
+            0,
+            2,
+            0
+          ],
+          [
+            0,
+            2,
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "n": 5,
+      "k": 4,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 5,
+        "examples": [
+          [
+            0,
+            1,
+            2,
+            3
+          ],
+          [
+            0,
+            1,
+            2,
+            4
+          ],
+          [
+            0,
+            1,
+            3,
+            4
+          ],
+          [
+            0,
+            2,
+            3,
+            4
+          ],
+          [
+            1,
+            2,
+            3,
+            4
+          ]
+        ]
+      }
+    },
+    {
+      "n": 5,
+      "k": 4,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 70,
+        "examples": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            3
+          ],
+          [
+            0,
+            0,
+            0,
+            4
+          ],
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            0,
+            1,
+            4
+          ],
+          [
+            0,
+            0,
+            2,
+            2
+          ],
+          [
+            0,
+            0,
+            2,
+            3
+          ],
+          [
+            0,
+            0,
+            2,
+            4
+          ]
+        ]
+      }
+    },
+    {
+      "n": 5,
+      "k": 4,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 120,
+        "examples": [
+          [
+            0,
+            1,
+            2,
+            3
+          ],
+          [
+            0,
+            1,
+            2,
+            4
+          ],
+          [
+            0,
+            1,
+            3,
+            2
+          ],
+          [
+            0,
+            1,
+            3,
+            4
+          ],
+          [
+            0,
+            1,
+            4,
+            2
+          ],
+          [
+            0,
+            1,
+            4,
+            3
+          ],
+          [
+            0,
+            2,
+            1,
+            3
+          ],
+          [
+            0,
+            2,
+            1,
+            4
+          ],
+          [
+            0,
+            2,
+            3,
+            1
+          ],
+          [
+            0,
+            2,
+            3,
+            4
+          ],
+          [
+            0,
+            2,
+            4,
+            1
+          ],
+          [
+            0,
+            2,
+            4,
+            3
+          ]
+        ]
+      }
+    },
+    {
+      "n": 5,
+      "k": 4,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 625,
+        "examples": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            3
+          ],
+          [
+            0,
+            0,
+            0,
+            4
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            0,
+            1,
+            4
+          ],
+          [
+            0,
+            0,
+            2,
+            0
+          ],
+          [
+            0,
+            0,
+            2,
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "n": 6,
+      "k": 0,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 6,
+      "k": 0,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 6,
+      "k": 0,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 6,
+      "k": 0,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 6,
+      "k": 1,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 6,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4
+          ],
+          [
+            5
+          ]
+        ]
+      }
+    },
+    {
+      "n": 6,
+      "k": 1,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 6,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4
+          ],
+          [
+            5
+          ]
+        ]
+      }
+    },
+    {
+      "n": 6,
+      "k": 1,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 6,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4
+          ],
+          [
+            5
+          ]
+        ]
+      }
+    },
+    {
+      "n": 6,
+      "k": 1,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 6,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4
+          ],
+          [
+            5
+          ]
+        ]
+      }
+    },
+    {
+      "n": 6,
+      "k": 2,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 15,
+        "examples": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            0,
+            5
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            1,
+            5
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            2,
+            5
+          ]
+        ]
+      }
+    },
+    {
+      "n": 6,
+      "k": 2,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 21,
+        "examples": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            0,
+            5
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            1,
+            5
+          ],
+          [
+            2,
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "n": 6,
+      "k": 2,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 30,
+        "examples": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            0,
+            5
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            1,
+            5
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "n": 6,
+      "k": 2,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 36,
+        "examples": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            0,
+            5
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            1,
+            5
+          ]
+        ]
+      }
+    },
+    {
+      "n": 6,
+      "k": 3,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 20,
+        "examples": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            1,
+            4
+          ],
+          [
+            0,
+            1,
+            5
+          ],
+          [
+            0,
+            2,
+            3
+          ],
+          [
+            0,
+            2,
+            4
+          ],
+          [
+            0,
+            2,
+            5
+          ],
+          [
+            0,
+            3,
+            4
+          ],
+          [
+            0,
+            3,
+            5
+          ],
+          [
+            0,
+            4,
+            5
+          ],
+          [
+            1,
+            2,
+            3
+          ],
+          [
+            1,
+            2,
+            4
+          ]
+        ]
+      }
+    },
+    {
+      "n": 6,
+      "k": 3,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 56,
+        "examples": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            3
+          ],
+          [
+            0,
+            0,
+            4
+          ],
+          [
+            0,
+            0,
+            5
+          ],
+          [
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            1,
+            4
+          ],
+          [
+            0,
+            1,
+            5
+          ],
+          [
+            0,
+            2,
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "n": 6,
+      "k": 3,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 120,
+        "examples": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            1,
+            4
+          ],
+          [
+            0,
+            1,
+            5
+          ],
+          [
+            0,
+            2,
+            1
+          ],
+          [
+            0,
+            2,
+            3
+          ],
+          [
+            0,
+            2,
+            4
+          ],
+          [
+            0,
+            2,
+            5
+          ],
+          [
+            0,
+            3,
+            1
+          ],
+          [
+            0,
+            3,
+            2
+          ],
+          [
+            0,
+            3,
+            4
+          ],
+          [
+            0,
+            3,
+            5
+          ]
+        ]
+      }
+    },
+    {
+      "n": 6,
+      "k": 3,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 216,
+        "examples": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            3
+          ],
+          [
+            0,
+            0,
+            4
+          ],
+          [
+            0,
+            0,
+            5
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            1,
+            4
+          ],
+          [
+            0,
+            1,
+            5
+          ]
+        ]
+      }
+    },
+    {
+      "n": 6,
+      "k": 4,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 15,
+        "examples": [
+          [
+            0,
+            1,
+            2,
+            3
+          ],
+          [
+            0,
+            1,
+            2,
+            4
+          ],
+          [
+            0,
+            1,
+            2,
+            5
+          ],
+          [
+            0,
+            1,
+            3,
+            4
+          ],
+          [
+            0,
+            1,
+            3,
+            5
+          ],
+          [
+            0,
+            1,
+            4,
+            5
+          ],
+          [
+            0,
+            2,
+            3,
+            4
+          ],
+          [
+            0,
+            2,
+            3,
+            5
+          ],
+          [
+            0,
+            2,
+            4,
+            5
+          ],
+          [
+            0,
+            3,
+            4,
+            5
+          ],
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            1,
+            2,
+            3,
+            5
+          ]
+        ]
+      }
+    },
+    {
+      "n": 6,
+      "k": 4,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 126,
+        "examples": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            3
+          ],
+          [
+            0,
+            0,
+            0,
+            4
+          ],
+          [
+            0,
+            0,
+            0,
+            5
+          ],
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            0,
+            1,
+            4
+          ],
+          [
+            0,
+            0,
+            1,
+            5
+          ],
+          [
+            0,
+            0,
+            2,
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "n": 6,
+      "k": 4,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 360,
+        "examples": [
+          [
+            0,
+            1,
+            2,
+            3
+          ],
+          [
+            0,
+            1,
+            2,
+            4
+          ],
+          [
+            0,
+            1,
+            2,
+            5
+          ],
+          [
+            0,
+            1,
+            3,
+            2
+          ],
+          [
+            0,
+            1,
+            3,
+            4
+          ],
+          [
+            0,
+            1,
+            3,
+            5
+          ],
+          [
+            0,
+            1,
+            4,
+            2
+          ],
+          [
+            0,
+            1,
+            4,
+            3
+          ],
+          [
+            0,
+            1,
+            4,
+            5
+          ],
+          [
+            0,
+            1,
+            5,
+            2
+          ],
+          [
+            0,
+            1,
+            5,
+            3
+          ],
+          [
+            0,
+            1,
+            5,
+            4
+          ]
+        ]
+      }
+    },
+    {
+      "n": 6,
+      "k": 4,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 1296,
+        "examples": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            3
+          ],
+          [
+            0,
+            0,
+            0,
+            4
+          ],
+          [
+            0,
+            0,
+            0,
+            5
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            0,
+            1,
+            4
+          ],
+          [
+            0,
+            0,
+            1,
+            5
+          ]
+        ]
+      }
+    },
+    {
+      "n": 7,
+      "k": 0,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 7,
+      "k": 0,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 7,
+      "k": 0,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 7,
+      "k": 0,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 7,
+      "k": 1,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 7,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4
+          ],
+          [
+            5
+          ],
+          [
+            6
+          ]
+        ]
+      }
+    },
+    {
+      "n": 7,
+      "k": 1,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 7,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4
+          ],
+          [
+            5
+          ],
+          [
+            6
+          ]
+        ]
+      }
+    },
+    {
+      "n": 7,
+      "k": 1,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 7,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4
+          ],
+          [
+            5
+          ],
+          [
+            6
+          ]
+        ]
+      }
+    },
+    {
+      "n": 7,
+      "k": 1,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 7,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4
+          ],
+          [
+            5
+          ],
+          [
+            6
+          ]
+        ]
+      }
+    },
+    {
+      "n": 7,
+      "k": 2,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 21,
+        "examples": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            0,
+            5
+          ],
+          [
+            0,
+            6
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            1,
+            5
+          ],
+          [
+            1,
+            6
+          ],
+          [
+            2,
+            3
+          ]
+        ]
+      }
+    },
+    {
+      "n": 7,
+      "k": 2,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 28,
+        "examples": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            0,
+            5
+          ],
+          [
+            0,
+            6
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            1,
+            5
+          ]
+        ]
+      }
+    },
+    {
+      "n": 7,
+      "k": 2,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 42,
+        "examples": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            0,
+            5
+          ],
+          [
+            0,
+            6
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            1,
+            5
+          ],
+          [
+            1,
+            6
+          ]
+        ]
+      }
+    },
+    {
+      "n": 7,
+      "k": 2,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 49,
+        "examples": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            0,
+            5
+          ],
+          [
+            0,
+            6
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            4
+          ]
+        ]
+      }
+    },
+    {
+      "n": 7,
+      "k": 3,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 35,
+        "examples": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            1,
+            4
+          ],
+          [
+            0,
+            1,
+            5
+          ],
+          [
+            0,
+            1,
+            6
+          ],
+          [
+            0,
+            2,
+            3
+          ],
+          [
+            0,
+            2,
+            4
+          ],
+          [
+            0,
+            2,
+            5
+          ],
+          [
+            0,
+            2,
+            6
+          ],
+          [
+            0,
+            3,
+            4
+          ],
+          [
+            0,
+            3,
+            5
+          ],
+          [
+            0,
+            3,
+            6
+          ]
+        ]
+      }
+    },
+    {
+      "n": 7,
+      "k": 3,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 84,
+        "examples": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            3
+          ],
+          [
+            0,
+            0,
+            4
+          ],
+          [
+            0,
+            0,
+            5
+          ],
+          [
+            0,
+            0,
+            6
+          ],
+          [
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            1,
+            4
+          ],
+          [
+            0,
+            1,
+            5
+          ]
+        ]
+      }
+    },
+    {
+      "n": 7,
+      "k": 3,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 210,
+        "examples": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            1,
+            4
+          ],
+          [
+            0,
+            1,
+            5
+          ],
+          [
+            0,
+            1,
+            6
+          ],
+          [
+            0,
+            2,
+            1
+          ],
+          [
+            0,
+            2,
+            3
+          ],
+          [
+            0,
+            2,
+            4
+          ],
+          [
+            0,
+            2,
+            5
+          ],
+          [
+            0,
+            2,
+            6
+          ],
+          [
+            0,
+            3,
+            1
+          ],
+          [
+            0,
+            3,
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "n": 7,
+      "k": 3,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 343,
+        "examples": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            3
+          ],
+          [
+            0,
+            0,
+            4
+          ],
+          [
+            0,
+            0,
+            5
+          ],
+          [
+            0,
+            0,
+            6
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            1,
+            4
+          ]
+        ]
+      }
+    },
+    {
+      "n": 7,
+      "k": 4,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 35,
+        "examples": [
+          [
+            0,
+            1,
+            2,
+            3
+          ],
+          [
+            0,
+            1,
+            2,
+            4
+          ],
+          [
+            0,
+            1,
+            2,
+            5
+          ],
+          [
+            0,
+            1,
+            2,
+            6
+          ],
+          [
+            0,
+            1,
+            3,
+            4
+          ],
+          [
+            0,
+            1,
+            3,
+            5
+          ],
+          [
+            0,
+            1,
+            3,
+            6
+          ],
+          [
+            0,
+            1,
+            4,
+            5
+          ],
+          [
+            0,
+            1,
+            4,
+            6
+          ],
+          [
+            0,
+            1,
+            5,
+            6
+          ],
+          [
+            0,
+            2,
+            3,
+            4
+          ],
+          [
+            0,
+            2,
+            3,
+            5
+          ]
+        ]
+      }
+    },
+    {
+      "n": 7,
+      "k": 4,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 210,
+        "examples": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            3
+          ],
+          [
+            0,
+            0,
+            0,
+            4
+          ],
+          [
+            0,
+            0,
+            0,
+            5
+          ],
+          [
+            0,
+            0,
+            0,
+            6
+          ],
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            0,
+            1,
+            4
+          ],
+          [
+            0,
+            0,
+            1,
+            5
+          ]
+        ]
+      }
+    },
+    {
+      "n": 7,
+      "k": 4,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 840,
+        "examples": [
+          [
+            0,
+            1,
+            2,
+            3
+          ],
+          [
+            0,
+            1,
+            2,
+            4
+          ],
+          [
+            0,
+            1,
+            2,
+            5
+          ],
+          [
+            0,
+            1,
+            2,
+            6
+          ],
+          [
+            0,
+            1,
+            3,
+            2
+          ],
+          [
+            0,
+            1,
+            3,
+            4
+          ],
+          [
+            0,
+            1,
+            3,
+            5
+          ],
+          [
+            0,
+            1,
+            3,
+            6
+          ],
+          [
+            0,
+            1,
+            4,
+            2
+          ],
+          [
+            0,
+            1,
+            4,
+            3
+          ],
+          [
+            0,
+            1,
+            4,
+            5
+          ],
+          [
+            0,
+            1,
+            4,
+            6
+          ]
+        ]
+      }
+    },
+    {
+      "n": 7,
+      "k": 4,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 2401,
+        "examples": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            3
+          ],
+          [
+            0,
+            0,
+            0,
+            4
+          ],
+          [
+            0,
+            0,
+            0,
+            5
+          ],
+          [
+            0,
+            0,
+            0,
+            6
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            0,
+            1,
+            4
+          ]
+        ]
+      }
+    },
+    {
+      "n": 8,
+      "k": 0,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 8,
+      "k": 0,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 8,
+      "k": 0,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 8,
+      "k": 0,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 1,
+        "examples": [
+          []
+        ]
+      }
+    },
+    {
+      "n": 8,
+      "k": 1,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 8,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4
+          ],
+          [
+            5
+          ],
+          [
+            6
+          ],
+          [
+            7
+          ]
+        ]
+      }
+    },
+    {
+      "n": 8,
+      "k": 1,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 8,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4
+          ],
+          [
+            5
+          ],
+          [
+            6
+          ],
+          [
+            7
+          ]
+        ]
+      }
+    },
+    {
+      "n": 8,
+      "k": 1,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 8,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4
+          ],
+          [
+            5
+          ],
+          [
+            6
+          ],
+          [
+            7
+          ]
+        ]
+      }
+    },
+    {
+      "n": 8,
+      "k": 1,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 8,
+        "examples": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4
+          ],
+          [
+            5
+          ],
+          [
+            6
+          ],
+          [
+            7
+          ]
+        ]
+      }
+    },
+    {
+      "n": 8,
+      "k": 2,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 28,
+        "examples": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            0,
+            5
+          ],
+          [
+            0,
+            6
+          ],
+          [
+            0,
+            7
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            1,
+            5
+          ],
+          [
+            1,
+            6
+          ]
+        ]
+      }
+    },
+    {
+      "n": 8,
+      "k": 2,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 36,
+        "examples": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            0,
+            5
+          ],
+          [
+            0,
+            6
+          ],
+          [
+            0,
+            7
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            4
+          ]
+        ]
+      }
+    },
+    {
+      "n": 8,
+      "k": 2,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 56,
+        "examples": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            0,
+            5
+          ],
+          [
+            0,
+            6
+          ],
+          [
+            0,
+            7
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            1,
+            5
+          ]
+        ]
+      }
+    },
+    {
+      "n": 8,
+      "k": 2,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 64,
+        "examples": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            0,
+            5
+          ],
+          [
+            0,
+            6
+          ],
+          [
+            0,
+            7
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ]
+        ]
+      }
+    },
+    {
+      "n": 8,
+      "k": 3,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 56,
+        "examples": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            1,
+            4
+          ],
+          [
+            0,
+            1,
+            5
+          ],
+          [
+            0,
+            1,
+            6
+          ],
+          [
+            0,
+            1,
+            7
+          ],
+          [
+            0,
+            2,
+            3
+          ],
+          [
+            0,
+            2,
+            4
+          ],
+          [
+            0,
+            2,
+            5
+          ],
+          [
+            0,
+            2,
+            6
+          ],
+          [
+            0,
+            2,
+            7
+          ],
+          [
+            0,
+            3,
+            4
+          ]
+        ]
+      }
+    },
+    {
+      "n": 8,
+      "k": 3,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 120,
+        "examples": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            3
+          ],
+          [
+            0,
+            0,
+            4
+          ],
+          [
+            0,
+            0,
+            5
+          ],
+          [
+            0,
+            0,
+            6
+          ],
+          [
+            0,
+            0,
+            7
+          ],
+          [
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            1,
+            4
+          ]
+        ]
+      }
+    },
+    {
+      "n": 8,
+      "k": 3,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 336,
+        "examples": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            1,
+            4
+          ],
+          [
+            0,
+            1,
+            5
+          ],
+          [
+            0,
+            1,
+            6
+          ],
+          [
+            0,
+            1,
+            7
+          ],
+          [
+            0,
+            2,
+            1
+          ],
+          [
+            0,
+            2,
+            3
+          ],
+          [
+            0,
+            2,
+            4
+          ],
+          [
+            0,
+            2,
+            5
+          ],
+          [
+            0,
+            2,
+            6
+          ],
+          [
+            0,
+            2,
+            7
+          ]
+        ]
+      }
+    },
+    {
+      "n": 8,
+      "k": 3,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 512,
+        "examples": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            3
+          ],
+          [
+            0,
+            0,
+            4
+          ],
+          [
+            0,
+            0,
+            5
+          ],
+          [
+            0,
+            0,
+            6
+          ],
+          [
+            0,
+            0,
+            7
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            3
+          ]
+        ]
+      }
+    },
+    {
+      "n": 8,
+      "k": 4,
+      "ordered": false,
+      "replacement": false,
+      "expected": {
+        "count": 70,
+        "examples": [
+          [
+            0,
+            1,
+            2,
+            3
+          ],
+          [
+            0,
+            1,
+            2,
+            4
+          ],
+          [
+            0,
+            1,
+            2,
+            5
+          ],
+          [
+            0,
+            1,
+            2,
+            6
+          ],
+          [
+            0,
+            1,
+            2,
+            7
+          ],
+          [
+            0,
+            1,
+            3,
+            4
+          ],
+          [
+            0,
+            1,
+            3,
+            5
+          ],
+          [
+            0,
+            1,
+            3,
+            6
+          ],
+          [
+            0,
+            1,
+            3,
+            7
+          ],
+          [
+            0,
+            1,
+            4,
+            5
+          ],
+          [
+            0,
+            1,
+            4,
+            6
+          ],
+          [
+            0,
+            1,
+            4,
+            7
+          ]
+        ]
+      }
+    },
+    {
+      "n": 8,
+      "k": 4,
+      "ordered": false,
+      "replacement": true,
+      "expected": {
+        "count": 330,
+        "examples": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            3
+          ],
+          [
+            0,
+            0,
+            0,
+            4
+          ],
+          [
+            0,
+            0,
+            0,
+            5
+          ],
+          [
+            0,
+            0,
+            0,
+            6
+          ],
+          [
+            0,
+            0,
+            0,
+            7
+          ],
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            0,
+            1,
+            4
+          ]
+        ]
+      }
+    },
+    {
+      "n": 8,
+      "k": 4,
+      "ordered": true,
+      "replacement": false,
+      "expected": {
+        "count": 1680,
+        "examples": [
+          [
+            0,
+            1,
+            2,
+            3
+          ],
+          [
+            0,
+            1,
+            2,
+            4
+          ],
+          [
+            0,
+            1,
+            2,
+            5
+          ],
+          [
+            0,
+            1,
+            2,
+            6
+          ],
+          [
+            0,
+            1,
+            2,
+            7
+          ],
+          [
+            0,
+            1,
+            3,
+            2
+          ],
+          [
+            0,
+            1,
+            3,
+            4
+          ],
+          [
+            0,
+            1,
+            3,
+            5
+          ],
+          [
+            0,
+            1,
+            3,
+            6
+          ],
+          [
+            0,
+            1,
+            3,
+            7
+          ],
+          [
+            0,
+            1,
+            4,
+            2
+          ],
+          [
+            0,
+            1,
+            4,
+            3
+          ]
+        ]
+      }
+    },
+    {
+      "n": 8,
+      "k": 4,
+      "ordered": true,
+      "replacement": true,
+      "expected": {
+        "count": 4096,
+        "examples": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            3
+          ],
+          [
+            0,
+            0,
+            0,
+            4
+          ],
+          [
+            0,
+            0,
+            0,
+            5
+          ],
+          [
+            0,
+            0,
+            0,
+            6
+          ],
+          [
+            0,
+            0,
+            0,
+            7
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            0,
+            1,
+            3
+          ]
+        ]
+      }
+    }
+  ]
+}

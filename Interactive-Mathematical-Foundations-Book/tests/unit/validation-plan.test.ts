@@ -5,6 +5,22 @@ import { changedFiles, chapterCatalog, makePlan } from '../../scripts/validation
 import { productionSignature } from '../../scripts/production-state.mjs';
 
 describe('conservative change-scoped validation', () => {
+  it('Bayes changes reach only Bayes chapters; shared probability presentation reaches actual consumers', () => {
+    const bayes = makePlan({ files: ['src/math/probability/bayes.ts'] });
+    expect(bayes.chapters).toEqual(['IV.6']); expect(bayes.conservativeExpansion).toBe(false);
+    expect(bayes.oracles).toEqual(['probability_finite']);
+    const shared = makePlan({ files: ['src/lessons/probability/StageFrame.tsx'] });
+    expect(shared.chapters.slice().sort()).toEqual(chapterCatalog().filter(c => c.id.startsWith('IV.')).map(c => c.id).sort());
+    expect(shared.conservativeExpansion).toBe(false);
+    expect(makePlan({ files: ['src/math/probability/bayes-deleted.ts'] }).commands.some(c => c.gate === 'complete root browser')).toBe(true);
+  });
+  it('registered probability oracles, browser families and screenshots select all named owners', () => {
+    const ids = ['IV.1', 'IV.2', 'IV.3', 'IV.4', 'IV.5', 'IV.6'];
+    for (const file of ['oracle/probability_finite_oracle.py', 'fixtures/probability_finite.fixtures.json', 'tests/e2e/probability-finite.spec.ts']) {
+      const p = makePlan({ files: [file] }); expect(p.conservativeExpansion).toBe(false); expect(p.chapters.slice().sort()).toEqual(ids);
+    }
+    expect(makePlan({ files: ['tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-bayes-theorem-impossible.png'] }).chapters).toEqual(['IV.6']);
+  });
   it('discovers every current published chapter without a second publication registry', () => {
     expect(chapterCatalog().map(chapter => chapter.id).sort()).toEqual(allChapters.filter(ref => ref.chapter.status === 'available').map(ref => ref.id).sort());
   });

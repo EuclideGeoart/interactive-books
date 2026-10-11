@@ -86,13 +86,14 @@ describe('publication scope guard', () => {
     expect(i3.chapter.role).toBe('reference');
     expect(findChapter('VI.4')!.chapter.role).toBe('flagship');
   });
-  it('M6-C completes exactly Parts I and II, and the total stays 97', () => {
+  it('M8 publishes Probability without publishing parallel Calculus or later Parts', () => {
     const published = allChapters.filter(r => r.chapter.status === 'available');
     expect(published.filter(r => r.part.numeral === 'I')).toHaveLength(9);
     expect(published.filter(r => r.part.numeral === 'II')).toHaveLength(19);
-    expect(published.map(r => r.id)).toEqual(['I.1', 'I.2', 'I.3', 'I.4', 'I.5', 'I.6', 'I.7', 'I.8', 'I.9', 'II.1', 'II.2', 'II.3', 'II.4', 'II.5', 'II.6', 'II.7', 'II.8', 'II.9', 'II.10', 'II.11', 'II.12', 'II.13', 'II.14', 'II.15', 'II.16', 'II.17', 'II.18', 'II.19']);
-    expect(published).toHaveLength(28);
-    expect(allChapters.filter(r => r.chapter.status === 'planned')).toHaveLength(69);
+    expect(published.filter(r => r.part.numeral === 'IV').map(r => r.id)).toEqual(['IV.1', 'IV.2', 'IV.3', 'IV.4', 'IV.5', 'IV.6']);
+    expect(published.every(r => ['I', 'II', 'IV'].includes(r.part.numeral))).toBe(true);
+    expect(published).toHaveLength(34);
+    expect(allChapters.filter(r => r.chapter.status === 'planned')).toHaveLength(63);
     expect(published.length + allChapters.filter(r => r.chapter.status === 'planned').length).toBe(97);
   });
 });

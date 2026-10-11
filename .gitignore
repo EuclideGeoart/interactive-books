@@ -8,7 +8,7 @@
 !/Interactive-Mathematical-Foundations-Book/
 
 # Generated output and machine-local state in every book
-**/node_modules/
+**/node_modules
 **/dist/
 **/.astro/
 **/.cpp-build/
@@ -20,7 +20,7 @@
 **/.cache/
 **/__pycache__/
 **/.pytest_cache/
-**/.venv/
+**/.venv
 **/venv/
 **/coverage/
 **/*.pyc

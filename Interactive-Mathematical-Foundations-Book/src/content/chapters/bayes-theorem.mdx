@@ -1,0 +1,127 @@
+---
+kind: chapter
+curriculumId: IV.6
+title: "Bayes' theorem as probability-mass update"
+hero: "How much should a flag change our *belief*?"
+lede: Change a fictional quality model's prior and flag likelihoods. Watch both groups contribute evidence, then normalize their masses to obtain a posterior.
+description: Bayes as prior-times-likelihood normalization, fictional quality flags, base rates, positive and negative evidence, exact expected counts, impossible evidence, Python, NumPy, and exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import BayesStage from '../../lessons/probability/BayesStage';
+import Exercise from '../../lessons/probability/BlockAExercise';
+import reference from '../../../code/python/probability_bayes.py?raw';
+import practical from '../../../code/python/probability_bayes_numpy.py?raw';
+
+<Stage caption="Change the defect prior and the two flag likelihoods. Switch observed evidence between flag and no flag, then compare retained mass, the population table, and the normalized posterior."><BayesStage client:load /></Stage>
+
+The example is a fictional item-quality flag, not a real diagnostic or medical recommendation. Before changing the prior, predict whether a flag rate of 90% among defective items implies that 90% of flagged items are defective.
+
+## Intuition: evidence comes from both groups
+
+A flag can be produced by a defective item or a nondefective item. If defective items are rare, the large nondefective group can contribute more flags even when its own flag rate is small. Updating a belief requires comparing these two sources of evidence.
+
+Begin with prior mass in each group. Multiply each by how likely that group is to produce the observed evidence. Their retained masses need not sum to one: their total is the probability of the evidence. Divide by that total to compare the groups among items that match the evidence.
+
+## Definition
+
+Let A mean “the item is defective” and E mean “the item is flagged.” Write the **prior** $p=P(A)$, the flag **likelihood** $t=P(E\mid A)$, and the other flag likelihood $f=P(E\mid A^c)$. All three parameters lie in $[0,1]$.
+
+The positive-evidence masses are $pt$ and $(1-p)f$. The evidence probability is their sum, and Bayes' theorem gives
+
+$$
+P(E)=pt+(1-p)f,\qquad
+P(A\mid E)=\frac{pt}{pt+(1-p)f},\qquad P(E)>0.
+$$
+
+The **posterior** is the class probability after observing E. The false-positive rate is $f$ and the false-negative rate is $1-t$, relative to this fictional class model. A likelihood conditions on the class; a posterior conditions on the evidence. They have different denominators.
+
+## Mechanics: prior, likelihood, retained mass, posterior
+
+The stage's canonical parameters specify one joint model. Its mass view, equations, inspector, population table, accessible interpretation, and trace follow that model and the selected evidence. Changing the prior changes group sizes; changing a likelihood changes the retained fraction within its group.
+
+Use the evidence selector to switch to no flag. The likelihoods become $1-t$ and $1-f$, and the retained total becomes $P(E^c)$. Replay the trace to follow the same update with the new evidence. Normalized posterior masses sum to one whenever the selected evidence has positive probability.
+
+## Derivation: Bayes from the joint mass
+
+The multiplication rule computes the same intersection in two ways:
+
+$$
+P(A\cap E)=P(A)P(E\mid A)=P(E)P(A\mid E).
+$$
+
+The two classes A and $A^c$ partition the sample space. Their evidence contributions therefore add to $P(E)$, which supplies the denominator. For negative evidence,
+
+$$
+P(A\mid E^c)=\frac{p(1-t)}{p(1-t)+(1-p)(1-f)},
+\qquad P(E^c)>0.
+$$
+
+The joint model conserves original total mass: $pt+p(1-t)+(1-p)f+(1-p)(1-f)=1$. Restriction retains only the two evidence-compatible cells; normalization rescales them to total one. It does not change the original four cells.
+
+## Worked examples
+
+Use prior $p=1/100$, $t=9/10$, and $f=1/20$. In a notional population of $N=10000$ items, the **expected** counts are:
+
+| Class | Flag E | No flag | Total |
+| --- | ---: | ---: | ---: |
+| Defective A | 90 | 10 | 100 |
+| Nondefective | 495 | 9405 | 9900 |
+| Total | 585 | 9415 | 10000 |
+
+These counts scale model probabilities; they are not a simulated sample or a promise that an actual batch contains those numbers. Other parameter choices can produce fractional expected counts, which should remain fractional rather than be silently rounded to people or items.
+
+$$
+P(E)=\frac{585}{10000}=\frac{117}{2000},\qquad
+P(A\mid E)=\frac{90}{585}=\frac2{13}\approx0.153846.
+$$
+
+<Stage caption="Raise the prior from 1% to 10% while keeping flag likelihoods at 90% and 5%. Compare the posterior before and after, then restore the worked model and switch to no-flag evidence."><BayesStage worked client:load /></Stage>
+
+With no flag, the defective share is $10/(10+9405)=2/1883\approx0.001062$. It is not $1-2/13$; that complement is the nondefective share **among flagged items**. Raising the prior to $1/10$ with the same positive likelihoods changes the posterior to $(9/100)/(9/100+9/200)=2/3$. Base rates matter even when the flag mechanism does not change.
+
+## Executable reference code
+
+Python constructs the exact four-cell joint table and returns evidence mass plus a posterior, using `None` for impossible evidence. Assertions verify counts, both evidence directions, base-rate sensitivity, and boundary cases. NumPy uses the same independently specified parameters to construct a floating-point joint array and compares it against literal exact fractions. Neither program depends on the browser implementation or imports TypeScript outputs.
+
+<CodeFile source={reference} file="code/python/probability_bayes.py" />
+<CodeFile source={practical} file="code/python/probability_bayes_numpy.py" />
+
+## Explore
+
+Set both likelihoods equal and positive. Positive evidence then retains the same proportion of each class, leaving the posterior equal to the prior. If both are strictly less than one, the same is true after negative evidence. Next set the false-positive rate to zero with positive prior and positive true-flag likelihood: every possible flag comes from A, so its posterior is one.
+
+Set both positive likelihoods to zero and choose flag evidence. The evidence is impossible and the posterior must be undefined. Set both to one and choose no flag for the parallel case. Try prior zero or one and identify when the selected evidence is still possible under the surviving class.
+
+<Callout kind="scope" title="No denominator, no update">
+A valid joint model can assign zero probability to the supplied evidence. Both retained masses are then zero. Do not add an arbitrary epsilon, silently return the prior, or report a posterior of zero. Display the impossible-evidence reason so the model or evidence can be reconsidered.
+</Callout>
+
+## Common mistakes and counterexamples
+
+Confusing $P(E\mid A)$ with $P(A\mid E)$ reverses the conditioning direction. Ignoring the nondefective evidence contribution commits the base-rate fallacy. Using the false-negative rate as the negative-evidence posterior also skips the denominator.
+
+A flag is evidence under an assumed model, not certainty about an individual item or proof of a cause. The fictional rates are teaching parameters, not empirically calibrated quality guarantees. An observed count table would need its own sampling and estimation analysis before its rates could be treated as known.
+
+## Numerical considerations
+
+Finite rational parameters give exact joint masses, expected counts, evidence totals, and posteriors. Decimal displays with $\approx$ are approximations of these exact quantities. The NumPy reference uses absolute tolerance $10^{-12}$ and zero relative tolerance for these small specified examples, rather than asserting binary-decimal identity.
+
+Very small but positive evidence remains mathematically valid; division may expose input uncertainty or floating-point underflow. A general numerical implementation may need scaling or log-space normalization, but must disclose that policy and preserve the distinction between impossible evidence and arithmetic loss. Adding epsilon to an impossible denominator changes the model and does not derive Bayes' theorem.
+
+## Engineering and ML connections
+
+Bayesian classification updates class priors with feature likelihoods. Changing deployment base rates can change posterior predictions even if the class-conditional likelihoods stay fixed. This is one reason a detection rate alone is insufficient to interpret flagged cases. Practical models must justify their likelihoods and priors; the algebra faithfully updates assumptions but cannot certify those assumptions.
+
+## Exercises
+
+<Exercise id="probability-bayes-population-counts" client:load />
+<Exercise id="probability-bayes-positive-update" client:load />
+<Exercise id="probability-bayes-negative-update" client:load />
+<Exercise id="probability-bayes-base-rate" client:load />
+<Exercise id="probability-bayes-impossible" client:load />
+
+## Summary and checkpoints
+
+Multiply each prior group by its evidence likelihood, add the retained masses, then normalize. Check that you can explain the 90 versus 495 flagged counts, derive the exact posterior $2/13$, update for negative evidence, predict a base-rate change, and leave impossible evidence undefined.
