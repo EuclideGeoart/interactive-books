@@ -1,0 +1,311 @@
+{
+  "timestamp": "2026-10-11T23:29:07+00:00",
+  "status": "complete_for_independent_review",
+  "branch": "feature/book-ii-part-iv",
+  "base": "9b0149902ab67a0f6b0dcfd9e7de90c88491808a",
+  "runtimeCommit": "831306d00cc9f5776901541fd81cf51ad533b4b1",
+  "acceptanceTestCommit": "dca3cc1a3887448ea475ab79b49c7096c1df1a0f",
+  "publication": {
+    "available": 44,
+    "planned": 53,
+    "total": 97,
+    "partIII": "planned"
+  },
+  "chapters": [
+    {
+      "id": "IV.1",
+      "slug": "random-experiments",
+      "file": "src/content/chapters/random-experiments.mdx",
+      "exercises": 5,
+      "references": [
+        "code/python/probability_experiments.py",
+        "code/python/probability_experiments_numpy.py"
+      ]
+    },
+    {
+      "id": "IV.2",
+      "slug": "events-probability",
+      "file": "src/content/chapters/events-probability.mdx",
+      "exercises": 5,
+      "references": [
+        "code/python/probability_events.py",
+        "code/python/probability_events_numpy.py"
+      ]
+    },
+    {
+      "id": "IV.3",
+      "slug": "counting-probability",
+      "file": "src/content/chapters/counting-probability.mdx",
+      "exercises": 5,
+      "references": [
+        "code/python/probability_counting.py",
+        "code/python/probability_counting_numpy.py"
+      ]
+    },
+    {
+      "id": "IV.4",
+      "slug": "conditional-probability",
+      "file": "src/content/chapters/conditional-probability.mdx",
+      "exercises": 5,
+      "references": [
+        "code/python/probability_conditional.py",
+        "code/python/probability_conditional_numpy.py"
+      ]
+    },
+    {
+      "id": "IV.5",
+      "slug": "independence",
+      "file": "src/content/chapters/independence.mdx",
+      "exercises": 5,
+      "references": [
+        "code/python/probability_independence.py",
+        "code/python/probability_independence_numpy.py"
+      ]
+    },
+    {
+      "id": "IV.6",
+      "slug": "bayes-theorem",
+      "file": "src/content/chapters/bayes-theorem.mdx",
+      "exercises": 5,
+      "references": [
+        "code/python/probability_bayes.py",
+        "code/python/probability_bayes_numpy.py"
+      ]
+    },
+    {
+      "id": "IV.7",
+      "slug": "random-variables",
+      "file": "src/content/chapters/random-variables.mdx",
+      "exercises": 5,
+      "references": [
+        "code/python/probability_variables.py",
+        "code/python/probability_variables_numpy.py"
+      ]
+    },
+    {
+      "id": "IV.8",
+      "slug": "pmf-pdf-cdf",
+      "file": "src/content/chapters/pmf-pdf-cdf.mdx",
+      "exercises": 5,
+      "references": [
+        "code/python/probability_representations.py",
+        "code/python/probability_representations_numpy.py"
+      ]
+    },
+    {
+      "id": "IV.9",
+      "slug": "bernoulli-binomial",
+      "file": "src/content/chapters/bernoulli-binomial.mdx",
+      "exercises": 5,
+      "references": [
+        "code/python/probability_binomial.py",
+        "code/python/probability_binomial_numpy.py"
+      ]
+    },
+    {
+      "id": "IV.10",
+      "slug": "uniform-gaussian",
+      "file": "src/content/chapters/uniform-gaussian.mdx",
+      "exercises": 5,
+      "references": [
+        "code/python/probability_continuous.py",
+        "code/python/probability_continuous_numpy.py"
+      ]
+    },
+    {
+      "id": "IV.11",
+      "slug": "expectation",
+      "file": "src/content/chapters/expectation.mdx",
+      "exercises": 5,
+      "references": [
+        "code/python/probability_expectation.py",
+        "code/python/probability_expectation_numpy.py"
+      ]
+    },
+    {
+      "id": "IV.12",
+      "slug": "variance-standard-deviation",
+      "file": "src/content/chapters/variance-standard-deviation.mdx",
+      "exercises": 5,
+      "references": [
+        "code/python/probability_variance.py",
+        "code/python/probability_variance_numpy.py"
+      ]
+    },
+    {
+      "id": "IV.13",
+      "slug": "joint-distributions",
+      "file": "src/content/chapters/joint-distributions.mdx",
+      "exercises": 5,
+      "references": [
+        "code/python/probability_joint.py",
+        "code/python/probability_joint_numpy.py"
+      ]
+    },
+    {
+      "id": "IV.14",
+      "slug": "covariance-correlation",
+      "file": "src/content/chapters/covariance-correlation.mdx",
+      "exercises": 5,
+      "references": [
+        "code/python/probability_covariance.py",
+        "code/python/probability_covariance_numpy.py"
+      ]
+    },
+    {
+      "id": "IV.15",
+      "slug": "law-of-large-numbers",
+      "file": "src/content/chapters/law-of-large-numbers.mdx",
+      "exercises": 5,
+      "references": [
+        "code/python/probability_lln.py",
+        "code/python/probability_lln_numpy.py"
+      ]
+    },
+    {
+      "id": "IV.16",
+      "slug": "central-limit-theorem",
+      "file": "src/content/chapters/central-limit-theorem.mdx",
+      "exercises": 5,
+      "references": [
+        "code/python/probability_clt.py",
+        "code/python/probability_clt_numpy.py"
+      ]
+    }
+  ],
+  "exerciseCount": 80,
+  "pythonReferenceCount": 32,
+  "fixtureCaseCounts": {
+    "probability_finite.fixtures.json": {
+      "finite": 138,
+      "bayes": 100,
+      "counting": 134
+    },
+    "probability_distributions.fixtures.json": {
+      "binomial": 308,
+      "uniform": 31,
+      "normal": 45
+    },
+    "probability_sampling.fixtures.json": {
+      "lln": 32,
+      "clt": 44
+    },
+    "probability_joint.fixtures.json": {
+      "cases": 112
+    },
+    "probability_moments.fixtures.json": {
+      "cases": 144
+    }
+  },
+  "fixtureCases": 1088,
+  "fullUnits": {
+    "files": 89,
+    "tests": 11702
+  },
+  "fullPythonMethods": 346,
+  "freshOracleFamilies": 21,
+  "selectedGates": 18,
+  "selectedGateFinalStatus": {
+    "complete type/content check": 0,
+    "complete units": 0,
+    "complete oracle + freshness": 0,
+    "root production verification": 0,
+    "subpath production verification": 0,
+    "all read-only chapter contracts + representative both-theme axe": 0,
+    "affected chapter interactions: probability_bayes": 0,
+    "affected chapter interactions: probability_distributions": 0,
+    "affected chapter interactions: probability_sampling": 0,
+    "affected chapter interactions: probability_finite": 0,
+    "affected chapter interactions: probability_counting": 0,
+    "affected chapter interactions: probability_joint": 0,
+    "affected chapter interactions: probability_moments": 0,
+    "affected chapter interactions: probability_variables": 0,
+    "shared cross-chapter controls": 0,
+    "root shared shell, navigation, accessibility and deployment": 0,
+    "subpath prefix-dependent navigation, assets, anchors, routes and hydration": 0,
+    "authoritative root visuals": 0
+  },
+  "reviewedLinuxImages": 143,
+  "imageHashesCurrent": true,
+  "finalMeasuredEvents": 200,
+  "production": {
+    "root": {
+      "base": "/",
+      "signature": "24bf8b81507692d41ad7863b8f97ec164258f599a7f1b96f4498054d1ccf41b8"
+    },
+    "subpath": {
+      "base": "/math-foundations/",
+      "signature": "9c25f4a0dcff1cb808dd5e2b8e1c9fabeb3eaefa885948ad37abce928673729e"
+    }
+  },
+  "earlierInterruptedAndFailedAttemptsPreserved": true,
+  "evidenceFiles": [
+    {
+      "path": "documentation/M8_FOCUSED_VALIDATION_EVIDENCE.json",
+      "bytes": 67268,
+      "sha256": "45df332bdcf0e38ca80e214b6788e8a4ea883833657d75360201bad537525ba6"
+    },
+    {
+      "path": "documentation/M8_INPUT_RESPONSE_MEASUREMENTS.json",
+      "bytes": 25701,
+      "sha256": "650331387e6daf85a865b0eb01e4fbf831e405ed69ef6553d8b1c6fe3b563041"
+    },
+    {
+      "path": "documentation/M8_MILESTONE_PLAN.json",
+      "bytes": 62196,
+      "sha256": "7714b37e8099374cf28e590767280e90e89042a8ee61c3c35a25fdf80537f150"
+    },
+    {
+      "path": "documentation/M8_PART_IV_PROBABILITY_COMPLETION_REPORT.md",
+      "bytes": 35213,
+      "sha256": "d203aef51df94296e3a75fd5d9f27e5117bef0085a1089b907c23689005aea4b"
+    },
+    {
+      "path": "documentation/M8_RESOURCE_MEASUREMENTS.json",
+      "bytes": 1725,
+      "sha256": "c0d9eaff19e60e6bbb1cda762699a8c869c0d578887db8e2040d2038ec6cc4f0"
+    },
+    {
+      "path": "documentation/M8_SCREENSHOT_DESKTOP_REVIEW.json",
+      "bytes": 46467,
+      "sha256": "143271e003c5614c0f89e18b95f05df2e65ab47e4db67b58c96bc55623378d64"
+    },
+    {
+      "path": "documentation/M8_SCREENSHOT_MOBILE_REVIEW.json",
+      "bytes": 27540,
+      "sha256": "5e6b5e2cc386e4f18a2944bfb68e3dbcae453c59ec6788c6e6d9bb35a26c209b"
+    },
+    {
+      "path": "documentation/M8_SCREENSHOT_TABLET_REVIEW.json",
+      "bytes": 48010,
+      "sha256": "7c56af36f75bf8acec96d7b545e1b20d36a964d8b90347e1902d8daa9030eae8"
+    },
+    {
+      "path": "documentation/M8_TABLET_AXE_DIAGNOSTIC.json",
+      "bytes": 2302,
+      "sha256": "0c0eb68345d58a58892443b36c052fabe4c4f451e0443887ed5ba47e4a6cbb1b"
+    },
+    {
+      "path": "documentation/M8_VALIDATION_CONTINUATION.json",
+      "bytes": 14300,
+      "sha256": "d204289670dbcc1280a7e7519eb14f2b5e08ce3023ea126864e59242724061e3"
+    },
+    {
+      "path": "documentation/M8_VALIDATION_CONTINUATION_INITIAL.json",
+      "bytes": 3900,
+      "sha256": "9a35ae53c0eedb3b451d75fb13a541a6761eb19acc15498c85adfc24f7997da2"
+    },
+    {
+      "path": "documentation/M8_VALIDATION_MANIFEST.json",
+      "bytes": 58754,
+      "sha256": "243973ae1faec1c805269a4223e84189e36520687b2004c54215850a583b3b51"
+    }
+  ],
+  "deferred": [
+    "Windows",
+    "real devices",
+    "human screen-reader acceptance",
+    "exhaustive release certification"
+  ],
+  "pushMergeDeploymentPerformed": false
+}

@@ -1,0 +1,453 @@
+{
+  "platform": "Linux Chrome 155",
+  "viewport": {
+    "width": 390,
+    "height": 844,
+    "deviceScaleFactor": 2
+  },
+  "reviewer": "main",
+  "method": "Individually viewed every full image with original detail. Re-viewed all17 affected full images after final dropdown-name recapture; retained unaffected reviews only after confirming byte-identical SHA256. Static visual review, not human screen-reader or real-device certification.",
+  "total": 48,
+  "status": "passed",
+  "findingsResolved": [
+    "Shared plot SVG axis default fill obscured charts; fill none and browser regression.",
+    "Uniform PDF/CDF caption inherited Gaussian wording; conditional captions and unit checks, forced fresh baselines.",
+    "Degenerate CLT empty histogram mass rendered a stray zero; boolean condition and browser assertion.",
+    "Publication screenshots retained old 28/97 within existing pixel tolerance; force-refreshed only eight publication images and added textual count assertions.",
+    "Long native dropdown options clipped on desktop; shortened option names and re-viewed every affected screenshot."
+  ],
+  "images": [
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-bayes-theorem-common.png",
+      "width": 356,
+      "height": 2654,
+      "sha256": "e3205c32d54bad9b58dde4eb4b73e08c14886a02b2f90920da768a9ff1fc8342",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed full image: prior/evidence/posterior bars, expected-population counts, stacked inspector, inputs and immutable replay fit the mobile stage. Long equations use their own scroll regions."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-bayes-theorem-impossible.png",
+      "width": 356,
+      "height": 2504,
+      "sha256": "fbb2e5c5dfb748c8fedc4ec3fe7c28e16585c70492577c05ff0c1eca944b8131",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed full image: prior/evidence/posterior bars, expected-population counts, stacked inspector, inputs and immutable replay fit the mobile stage. Long equations use their own scroll regions."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-bayes-theorem.png",
+      "width": 356,
+      "height": 2654,
+      "sha256": "8f0fe4d352efaeea9c1c14c871de41baead06774bbd00c2214d4cee0f394541e",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed full image: prior/evidence/posterior bars, expected-population counts, stacked inspector, inputs and immutable replay fit the mobile stage. Long equations use their own scroll regions."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-bernoulli-binomial-empty.png",
+      "width": 356,
+      "height": 2334,
+      "sha256": "8a8b995c66d03b2741836dfd98e47a9356c4e8ecd9f29aa8c5602e176700ce01",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed updated full image after axis fix: PMF bars and right-continuous CDF remain unobscured, including p=0 and n=0 jumps. Controls, exact inspector, explanatory text, local formula scrolling and trace fit the mobile stage."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-bernoulli-binomial-zero-p.png",
+      "width": 356,
+      "height": 2334,
+      "sha256": "f4e865963924686bac1955dfbc8a816d03e7e2c15151127faf7d0e0f72bd2d20",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed updated full image after axis fix: PMF bars and right-continuous CDF remain unobscured, including p=0 and n=0 jumps. Controls, exact inspector, explanatory text, local formula scrolling and trace fit the mobile stage."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-bernoulli-binomial.png",
+      "width": 356,
+      "height": 2357,
+      "sha256": "5add4fafa64ee4f90568954d449e1ac3a2a6158a6161ff0a160cc857543ad2dd",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed updated full image after axis fix: PMF bars and right-continuous CDF remain unobscured, including p=0 and n=0 jumps. Controls, exact inspector, explanatory text, local formula scrolling and trace fit the mobile stage."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-central-limit-theorem-degenerate.png",
+      "width": 356,
+      "height": 3078,
+      "sha256": "77ee496d2dd85e0092d0300cafe226d66c1ade3dcd7c4d5d0653dd4aae617e27",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Individually re-viewed final full image after concise-option recapture. Population options fit completely. Degenerate CLT removes histogram and stray zero; dependent blocks show the failed-normal warning and retained tails; n=30 exponential means show finite-run discrepancies. Inspector, disclosure, controls and replay fit mobile."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-central-limit-theorem-dependent.png",
+      "width": 356,
+      "height": 3715,
+      "sha256": "717cb5974f16d28905858515b994df474e44873f4dcb68fd099c7b4f2d50e6a6",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Individually re-viewed final full image after concise-option recapture. Population options fit completely. Degenerate CLT removes histogram and stray zero; dependent blocks show the failed-normal warning and retained tails; n=30 exponential means show finite-run discrepancies. Inspector, disclosure, controls and replay fit mobile."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-central-limit-theorem-large.png",
+      "width": 356,
+      "height": 3624,
+      "sha256": "89fb971f431135e55233b1ccd3f08cddb8aabdf9439470a697a26079b538eb57",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Individually re-viewed final full image after concise-option recapture. Population options fit completely. Degenerate CLT removes histogram and stray zero; dependent blocks show the failed-normal warning and retained tails; n=30 exponential means show finite-run discrepancies. Inspector, disclosure, controls and replay fit mobile."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-central-limit-theorem-short.png",
+      "width": 356,
+      "height": 3579,
+      "sha256": "26970d303706fdef07e513e3e23c0243078741819d869ba9a0d3727acbb7b3e5",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Individually re-viewed final full image after concise-option recapture. Exponential(rate 1) choice fits completely. n=1 skew and canonical n=8 histogram, retained tail masses, observed inspector, sample disclosure and deterministic replay remain clear. Mobile controls and local equation scrolling fit."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-central-limit-theorem.png",
+      "width": 356,
+      "height": 3580,
+      "sha256": "88c11cc70aea2e1438b3278feadcbb1b1880423cbec5f86dbba87e4a3eb091c4",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Individually re-viewed final full image after concise-option recapture. Exponential(rate 1) choice fits completely. n=1 skew and canonical n=8 histogram, retained tail masses, observed inspector, sample disclosure and deterministic replay remain clear. Mobile controls and local equation scrolling fit."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-conditional-probability-empty-b.png",
+      "width": 356,
+      "height": 2944,
+      "sha256": "b6f1f8ecb2a585675478937ee8bb10e794655c2e9d40c365b8915a4ead93f6a3",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed full image: conditional cards show original mass and renormalized mass inside B; excluded outcomes fade. Empty B visibly reports undefined without a fabricated quotient. Two-column cards, inspector and replay fit."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-conditional-probability.png",
+      "width": 356,
+      "height": 2929,
+      "sha256": "38bdb61a24a4e77516909f2fbd2f4305223cf7a4128b0a7a238e42ec096b7403",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed full image: conditional cards show original mass and renormalized mass inside B; excluded outcomes fade. Empty B visibly reports undefined without a fabricated quotient. Two-column cards, inspector and replay fit."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-counting-probability-impossible.png",
+      "width": 356,
+      "height": 1597,
+      "sha256": "2d5fe9fb0d945d657983df949a62aeff411570165059841a1924c5525ad44c4a",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Individually re-viewed final full image after concise-option recapture. Ordered/Unordered and With/Without choices fit completely; exact counts, unequal multiset probabilities or explicit impossibility remain clear. All controls, explanations and replay fit mobile."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-counting-probability-replacement.png",
+      "width": 356,
+      "height": 2327,
+      "sha256": "c03635a308820ce0432faef826d48120fe2b0951efd88a0c32a14c7efa7c1969",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Individually re-viewed final full image after concise-option recapture. Ordered/Unordered and With/Without choices fit completely; exact counts, unequal multiset probabilities or explicit impossibility remain clear. All controls, explanations and replay fit mobile."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-counting-probability.png",
+      "width": 356,
+      "height": 2443,
+      "sha256": "07b9c58222cc6dd8e14d874cb55a8fe3f3611042a856b45fa0dcc97068910cfd",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Individually re-viewed final full image after concise-option recapture. Ordered/Unordered and With/Without choices fit completely; exact counts, unequal multiset probabilities or explicit impossibility remain clear. All controls, explanations and replay fit mobile."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-covariance-correlation-collapsed.png",
+      "width": 356,
+      "height": 3013,
+      "sha256": "6da3031a1fa82ac1dd6e2b4f0e72ae23bc9ab9f4c59ec4ee488570ef15a6bd74",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed full image: weighted scatter circles and marginal mean guides are unobscured; latent U,V table is explicitly distinguished from transformed X,Y. Constant-X undefined correlation and nonlinear zero-correlation dependence are clear. Inspector and affine controls fit mobile."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-covariance-correlation-nonlinear.png",
+      "width": 356,
+      "height": 2998,
+      "sha256": "d6976c7aae689fcf06f244719d727dbd156bc6e1d1ea8763d1f8be62a8fe9a78",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed full image: weighted scatter circles and marginal mean guides are unobscured; latent U,V table is explicitly distinguished from transformed X,Y. Constant-X undefined correlation and nonlinear zero-correlation dependence are clear. Inspector and affine controls fit mobile."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-covariance-correlation.png",
+      "width": 356,
+      "height": 2889,
+      "sha256": "edf946107ad3ebdf72fbd67d3cccfc5738464b12f50ebe96e1a4f62b16f56799",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed full image: weighted scatter circles and marginal mean guides are unobscured; latent U,V table is explicitly distinguished from transformed X,Y. Constant-X undefined correlation and nonlinear zero-correlation dependence are clear. Inspector and affine controls fit mobile."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-events-probability-disjoint.png",
+      "width": 356,
+      "height": 3104,
+      "sha256": "10c985e21a9a6898165f6d37c2c88d08eaca59211b14101f77ae9e7365040882",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed full image: disjoint A/B cards, union shading and all exact set masses agree visually. Event selectors, inspector and replay remain readable on mobile."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-events-probability.png",
+      "width": 356,
+      "height": 3162,
+      "sha256": "00e309a4f9cf047d7d9541dbee0ca2d5a78b6b100927a6fed9cd1841acbdedd0",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed full image: overlapping event cards and the exact union/intersection/complement inspector are clear; long trace stays inside stage."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-expectation-shifted.png",
+      "width": 356,
+      "height": 3157,
+      "sha256": "572888e743277928e9e0b0c6c81b6e1fa414f26075d32f372dce3f73a961f65b",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed full image: weighted balance-point plot and sum table remain visible, with transformed expectation 2.5 after shifting. Eight parameters stack cleanly; long derivations remain locally scrollable."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-expectation.png",
+      "width": 356,
+      "height": 3157,
+      "sha256": "59c2545ce75745fae323c42cc84c8ef63aa78747f6a9a7eb25118dc6e4d79a71",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed full image: original expectation 0.5, weighted contributions and mean marker agree. Dependent-sum linearity remains explicit; parameters and trace fit mobile."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-independence-disjoint.png",
+      "width": 356,
+      "height": 2838,
+      "sha256": "196ef86728bd2bcefe38215e9184fde56a31119fc506590474ba188eff4934ab",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed full image: product comparison and event membership are clear. Disjoint positive-mass events report dependence; empty A correctly shows disjointness and independence together. Controls and replay fit."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-independence-zero-a.png",
+      "width": 356,
+      "height": 2838,
+      "sha256": "d10998a57ac7c98e192ca44b1df53e59e2caa2fdc9858da7565e2f49f2a5e6c5",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed full image: product comparison and event membership are clear. Disjoint positive-mass events report dependence; empty A correctly shows disjointness and independence together. Controls and replay fit."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-independence.png",
+      "width": 356,
+      "height": 2388,
+      "sha256": "63067fb5b08e9103243a2122fc953cbcd2002e2086d8cee41a26b4e2b86bf249",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed full image: fair-coin independence and overlapping events agree with exact product masses. Formula overflow is locally scrollable; all controls and trace fit."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-joint-distributions-empty-row.png",
+      "width": 356,
+      "height": 2179,
+      "sha256": "eb15201cd9d49ea38d3bc45d58e34c8213835b6ae3757b72960fac38278bd81b",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed full image: 3×3 joint table, row/column marginals, selected headers and conditional bars fit the mobile board. Zero-mass row has an explicit undefined warning; independent/dependent presets and exact inspector remain readable."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-joint-distributions-independent.png",
+      "width": 356,
+      "height": 2292,
+      "sha256": "35e84263ee7519d9721bcecad8d1855f403f4af30f22ce63e4b26f8e4cdb7bf1",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed full image: 3×3 joint table, row/column marginals, selected headers and conditional bars fit the mobile board. Zero-mass row has an explicit undefined warning; independent/dependent presets and exact inspector remain readable."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-joint-distributions.png",
+      "width": 356,
+      "height": 2270,
+      "sha256": "e5ef5a8b3b540de951c86de9c9316de4fd0414ed0ef7ae3053ad2c641a2dc0f7",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed full image: 3×3 joint table, row/column marginals, selected headers and conditional bars fit the mobile board. Zero-mass row has an explicit undefined warning; independent/dependent presets and exact inspector remain readable."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-law-of-large-numbers-degenerate.png",
+      "width": 356,
+      "height": 3304,
+      "sha256": "1271315d45e3f0d2780d86232ad12bdc5c37e3c228c76e7076aec2c81b91ef5e",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Individually re-viewed final full image after concise-option recapture. Population choice fits completely. Actual prefix path, observation list and checkpoint table agree, including short nonmonotone and zero-variance paths. Population/sample inspector, seed/count controls and replay fit mobile."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-law-of-large-numbers-short.png",
+      "width": 356,
+      "height": 3202,
+      "sha256": "3b331d2037b72e63a0c31e9629473b14fa265ec48efbd04549b6b102d6cb583b",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Individually re-viewed final full image after concise-option recapture. Population choice fits completely. Actual prefix path, observation list and checkpoint table agree, including short nonmonotone and zero-variance paths. Population/sample inspector, seed/count controls and replay fit mobile."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-law-of-large-numbers.png",
+      "width": 356,
+      "height": 3327,
+      "sha256": "3620d8afe1623d066056e891a512a112b98d5c9e7c8d754647c5253e3b036c3c",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Individually re-viewed final full image after concise-option recapture. Population choice fits completely. Actual prefix path, observation list and checkpoint table agree, including short nonmonotone and zero-variance paths. Population/sample inspector, seed/count controls and replay fit mobile."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-pmf-pdf-cdf-point.png",
+      "width": 356,
+      "height": 2771,
+      "sha256": "e44b33f8ed0d35a9c187b0fef60d62d406e9bc5b6598b707fc3f6b939fdf461e",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Individually re-viewed final full image after concise-option recapture. PMF/PDF choices fit completely; linked curves, interval mass or area, exact point-zero distinction, Uniform-specific captions, inspector and replay remain clear. Long formulas scroll locally."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-pmf-pdf-cdf-uniform.png",
+      "width": 356,
+      "height": 2539,
+      "sha256": "26705bdc729633f35da31d17dc40c2d272e86a9d39576cd7621589d8c1695d29",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Individually re-viewed final full image after concise-option recapture. PMF/PDF choices fit completely; linked curves, interval mass or area, exact point-zero distinction, Uniform-specific captions, inspector and replay remain clear. Long formulas scroll locally."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-pmf-pdf-cdf.png",
+      "width": 356,
+      "height": 2720,
+      "sha256": "ebe5e1932eb0d5223302c3b72f69833620e24759c0f1db476afe8e0e91baaaf7",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Individually re-viewed final full image after concise-option recapture. PMF/PDF choices fit completely; linked curves, interval mass or area, exact point-zero distinction, Uniform-specific captions, inspector and replay remain clear. Long formulas scroll locally."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-random-experiments-weighted.png",
+      "width": 356,
+      "height": 3077,
+      "sha256": "9565dc4d3aa7ffbffad1ae19436909a6b8deece87508be6f7b4594306266ecfa",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed full image: finite sample space, unequal/equal weight explanations, seeded observations and model-versus-frequency inspector are legible. Weight/seed/trial controls fit, and replay remains accessible."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-random-experiments.png",
+      "width": 356,
+      "height": 2977,
+      "sha256": "37a6dc8ec1484bbd4b39ccbe07f0f9a9e79997be89a85e448df277bbada45c4c",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed full image: finite sample space, unequal/equal weight explanations, seeded observations and model-versus-frequency inspector are legible. Weight/seed/trial controls fit, and replay remains accessible."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-random-variables-constant.png",
+      "width": 356,
+      "height": 2205,
+      "sha256": "ea9c59ceb0b672fb784b97d669e91e6199b6156c81e37ee5d8381e29e0b22165",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed full image: face-to-number mappings, grouped masses and unobscured PMF match visually, including the constant map. Two-column mapping controls, exact inspector and replay fit mobile."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-random-variables.png",
+      "width": 356,
+      "height": 2337,
+      "sha256": "79d903acdde7d6ada9fb82b60bb19aa9b0b5daacefb1a72c76997dff73a6f1e9",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed full image: face-to-number mappings, grouped masses and unobscured PMF match visually, including the constant map. Two-column mapping controls, exact inspector and replay fit mobile."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-uniform-gaussian-narrow.png",
+      "width": 356,
+      "height": 3035,
+      "sha256": "1f64e98e8dceaa82c8ea42ff7532892ff3e3c4eafb89e38d7eb3a56bd4ec8f29",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Individually re-viewed final full image after concise-option recapture. Uniform/Gaussian PDF choices fit completely; solid/dashed comparison and selected area remain clear. Uniform captions are correct and narrow Gaussian tick labels do not collide. Inspector, parameters and replay fit mobile."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-uniform-gaussian-uniform.png",
+      "width": 356,
+      "height": 2758,
+      "sha256": "09d024214f0a8fb096d53af554b622cf593df2ef62fcd890afab1e90cfffdbbe",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Individually re-viewed final full image after concise-option recapture. Uniform/Gaussian PDF choices fit completely; solid/dashed comparison and selected area remain clear. Uniform captions are correct and narrow Gaussian tick labels do not collide. Inspector, parameters and replay fit mobile."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-uniform-gaussian.png",
+      "width": 356,
+      "height": 3013,
+      "sha256": "3012e39cc34036ed73bcee11af172798901b56b08fe996298823d3db1a2ffbca",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Individually re-viewed final full image after concise-option recapture. Uniform/Gaussian PDF choices fit completely; solid/dashed comparison and selected area remain clear. Uniform captions are correct and narrow Gaussian tick labels do not collide. Inspector, parameters and replay fit mobile."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-variance-standard-deviation-constant.png",
+      "width": 356,
+      "height": 3524,
+      "sha256": "3518a7e32a9a26fca0241283eba581e4fec3ff30d753d787e2de726560fa20d7",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed full image: squared-distance geometry, weighted contribution table and exact inspector are readable. Constant values show zero spread; scale −2 shows transformed variance 19. Parameters and local equation scrolling fit."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-variance-standard-deviation-reversed.png",
+      "width": 356,
+      "height": 3569,
+      "sha256": "ec96d354a647ca2a26cdbe9ec9148e9458ac9a0652c05cd266ba6be615fc6683",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed full image: squared-distance geometry, weighted contribution table and exact inspector are readable. Constant values show zero spread; scale −2 shows transformed variance 19. Parameters and local equation scrolling fit."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-variance-standard-deviation.png",
+      "width": 356,
+      "height": 3569,
+      "sha256": "d3427f5562a9e22e2a2e7925ed1e5ddd462a6f51d39a3ba8b13f9fdbe541cfae",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed full image: variance geometry and contribution table match exact population variance 4.75 and symbolic standard deviation. Parameter stack, inspector and replay fit mobile."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual.spec.ts/mobile-contents-fold.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "3e668f1e37eef53c71ad8d653c9db6302cd54d1f2e0185f09f04ff8f151db5d0",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed freshly forced publication image: 44/97 count is correct, chapter statuses and typography are readable, and topbar/content layout fit mobile."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual.spec.ts/mobile-home-fold.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "1d045f0c886301889ae00005d1769fe11cb7a01f63a7234e62ff557981fb647f",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed freshly forced publication image: hero, navigation buttons and foundation preview retain the accepted mobile layout with no clipping."
+    },
+    {
+      "file": "tests/e2e/__screenshots__/visual.spec.ts/mobile-map.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "b6421de83d320d5d9177c883129e018184e676cd24230a5f84c9152e29e1929c",
+      "status": "passed",
+      "reviewer": "main",
+      "notes": "Viewed freshly forced publication image: map dialog states 44/97, close control, filter and chapter reading order fit mobile."
+    }
+  ]
+}

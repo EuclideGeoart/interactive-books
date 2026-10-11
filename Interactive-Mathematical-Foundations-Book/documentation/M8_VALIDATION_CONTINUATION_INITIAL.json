@@ -1,0 +1,116 @@
+{
+  "base": "9b0149902ab67a0f6b0dcfd9e7de90c88491808a",
+  "runtimeCommit": "831306d00cc9f5776901541fd81cf51ad533b4b1",
+  "plannerCommit": "2f557e4313085e4327d6d15bb35272aa5640aedd",
+  "originalManifest": "validation-results/milestone-2026-10-11T22-45-38-411Z/manifest.json",
+  "correctedPlan": "validation-results/milestone-2026-10-11T22-48-31-678Z/manifest.json",
+  "reason": "Generic publication assertions were initially classified as unknown infrastructure. The original milestone completed five required gates and one subpath refresh, then was interrupted after the unintended complete-root-browser gate had begun. Registering this known shared contract test restored the 18-gate selection; only the changed planner unit and the remaining 13 selected gates are rerun.",
+  "lock": "/tmp/imf-heavy.lock; this continuation is invoked inside flock",
+  "retainedResults": [
+    {
+      "gate": "complete type/content check",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/astro/astro.js",
+        "check"
+      ],
+      "status": 0,
+      "wallMs": 10353,
+      "record": "M8_VALIDATION_MANIFEST.json"
+    },
+    {
+      "gate": "complete units",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/vitest/vitest.mjs",
+        "run"
+      ],
+      "status": 0,
+      "wallMs": 10027,
+      "record": "M8_VALIDATION_MANIFEST.json"
+    },
+    {
+      "gate": "complete oracle + freshness",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "scripts/run-oracle.mjs"
+      ],
+      "status": 0,
+      "wallMs": 35256,
+      "record": "M8_VALIDATION_MANIFEST.json"
+    },
+    {
+      "gate": "root production verification",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "scripts/check-dist.mjs",
+        "dist",
+        "/"
+      ],
+      "status": 0,
+      "wallMs": 138,
+      "record": "M8_VALIDATION_MANIFEST.json"
+    },
+    {
+      "gate": "subpath production verification",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "scripts/check-dist.mjs",
+        "dist-subpath",
+        "/math-foundations/"
+      ],
+      "status": 0,
+      "wallMs": 135,
+      "record": "M8_VALIDATION_MANIFEST.json"
+    }
+  ],
+  "focusedPlannerUnit": {
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "tests/unit/validation-plan.test.ts"
+    ],
+    "status": 0,
+    "tests": 23,
+    "log": "validation-results/M8_PLANNER_CORRECTION_UNIT.log"
+  },
+  "production": {
+    "root": {
+      "base": "/",
+      "signature": "24bf8b81507692d41ad7863b8f97ec164258f599a7f1b96f4498054d1ccf41b8"
+    },
+    "subpath": {
+      "base": "/math-foundations/",
+      "signature": "9c25f4a0dcff1cb808dd5e2b8e1c9fabeb3eaefa885948ad37abce928673729e"
+    }
+  },
+  "startedAt": "2026-10-11T22:52:28.612Z",
+  "results": [
+    {
+      "gate": "all read-only chapter contracts + representative both-theme axe",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/chapters.spec.ts",
+        "--trace",
+        "off",
+        "--grep",
+        "read-only checks|(?:^|\\s)(?:IV\\.6|IV\\.9|IV\\.16|IV\\.4|IV\\.3|IV\\.14|IV\\.2|IV\\.11|IV\\.5|IV\\.13|IV\\.15|IV\\.8|IV\\.1|IV\\.7|IV\\.10|IV\\.12|II\\.10|I\\.9|I\\.1|II\\.1|I\\.3)(?: |:)|Part I publication",
+        "--output",
+        "validation-results/M8_MILESTONE_CONTINUATION/5-failures"
+      ],
+      "deployment": "root",
+      "status": 1,
+      "signal": null,
+      "wallMs": 416637,
+      "summary": [
+        "4 failed",
+        "917 passed (6.9m)"
+      ],
+      "log": "validation-results/M8_MILESTONE_CONTINUATION/5.log"
+    }
+  ],
+  "status": "failed"
+}

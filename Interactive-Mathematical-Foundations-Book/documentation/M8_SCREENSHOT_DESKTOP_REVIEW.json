@@ -1,0 +1,1008 @@
+{
+  "review": "M8 desktop screenshot review",
+  "status": "complete_all_pass",
+  "completed_at_utc": "2026-10-11 22:44:45 UTC",
+  "scope": {
+    "probability_pngs": 45,
+    "publication_pngs": 4,
+    "required_total": 49,
+    "personally_inspected_total": 49
+  },
+  "totals": {
+    "pass": 49,
+    "pass_with_nonblocking_control_label_observation": 0,
+    "open_minor_caption_issue_images": 0,
+    "open_actionable_issue_types": 0,
+    "pending_images": 0
+  },
+  "method": {
+    "pixel_review": "Every one of the 49 assigned PNGs was individually opened as a full image with view_image. All 27 axis recaptures, the later degenerate CLT/publication recaptures, and finally all 17 concise-option/caption recaptures were individually re-viewed. No contact-sheet or metadata-only acceptance.",
+    "display_resolution": "view_image resizes long images to a maximum displayed height of 2048px. The stray-zero detail was also read in a full-size crop. Final disputed-caption, degenerate/publication and all 17 final concise-option images were viewed as lossless full-image pixel crops under /tmp with hash-specific names.",
+    "metadata": "Dimensions read from original PNG IHDR; SHA-256 computed from entire original bytes. All 49 hashes and dimensions reverified after final review. Unaffected 32 hashes were explicitly compared with previous reviewed hashes.",
+    "recapture_acceptance": "All 49 entries reflect current original PNG bytes. The final 17 changed stage images were individually reviewed after forced regeneration; the other 32 assigned images retain their previously verified actual pixel reviews and unchanged hashes. Both Uniform captions now visibly describe finite support and exact CDF boundaries; all shortened selected options fit fully.",
+    "coverage": "Titles, graphics and chart geometry, mass bars, tables/marginals, axis ticks, inspector exact/approx values, parameter labels/inputs/selects/sliders/presets, explanatory text, equations and bottom trace controls were inspected in each stage capture. Publication headers, hero/demo, chapter/status layout, modal controls and visible counts were inspected.",
+    "limits": "Static desktop screenshot review only. No browser execution, new build, mathematical proof, numerical test, measured contrast audit, human screen-reader testing or physical-device validation was performed.",
+    "writes": "Only documentation/M8_SCREENSHOT_DESKTOP_REVIEW.json was changed in the workspace. Read-only originals were used; temporary pixel crops under /tmp were used for inspection. No source edit, installation or commit."
+  },
+  "overview_findings": [
+    {
+      "id": "axis-fill",
+      "priority": "P2",
+      "status": "corrected_and_individually_verified",
+      "finding": "Old PlotView axis paths produced black triangles. All 27 recaptured desktop chart images now have clean unfilled axes."
+    },
+    {
+      "id": "degenerate-stray-zero",
+      "priority": "P3",
+      "status": "corrected_and_verified",
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-central-limit-theorem-degenerate.png",
+      "finding": "Final degenerate CLT pixels remove the standalone zero beneath the sample disclosure; undefined standardization notice remains clear."
+    },
+    {
+      "id": "contents-stale-count",
+      "priority": "P2",
+      "status": "corrected_and_verified",
+      "filename": "tests/e2e/__screenshots__/visual.spec.ts/desktop-contents-fold.png",
+      "finding": "Final forced publication capture visibly reads 44 of 97. Map also reads 44 of 97 and Probability 16 of 16."
+    },
+    {
+      "id": "uniform-gaussian-caption",
+      "priority": "P3",
+      "status": "corrected_and_verified_in_final_forced_pixels",
+      "filenames": [
+        "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-pmf-pdf-cdf-uniform.png",
+        "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-uniform-gaussian-uniform.png"
+      ],
+      "regions": [
+        {
+          "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-pmf-pdf-cdf-uniform.png",
+          "description": "Caption directly below Uniform PDF, approximately x49–775,y610–630; CDF caption approximately y1110–1150."
+        },
+        {
+          "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-uniform-gaussian-uniform.png",
+          "description": "Caption directly below PDF comparison, approximately x49–775,y605–630; Uniform CDF caption approximately y1110–1150."
+        }
+      ],
+      "finding": "Both final Uniform PNGs now state uniform mass exactly one over [a,b] and CDF0 below a/1 at and above b. Corrected wording was personally re-viewed in both full images on changed current hashes."
+    },
+    {
+      "id": "native-option-label-truncation",
+      "priority": "P3",
+      "status": "corrected_and_verified",
+      "finding": "Final shortened Counting, Distribution and Sampling selected labels are fully readable. All 17 affected desktop captures were individually re-viewed, including unaffected chart/text/trace regions; no remaining actual clipping found."
+    }
+  ],
+  "images": [
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-bayes-theorem-common.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2082
+      },
+      "sha256": "af51579f9c46743832be4e72f3cb13762d74fd4c9e44aafa60d3a1a4bf3c130a",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Prior/evidence/posterior bars and 10,000-count table",
+        "Inspector, parameter labels/slider/presets, Bayes fractions, three-step trace"
+      ],
+      "findings": [
+        "Half/half prior and 18/19 posterior widths agree with labels; counts and equations readable; control formula labels wrap without overlap."
+      ],
+      "status": "pass",
+      "capture_generation": "unaffected_original_verified_hash"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-bayes-theorem-impossible.png",
+      "dimensions": {
+        "width": 836,
+        "height": 1914
+      },
+      "sha256": "388e63bef83beb850079a4729a715b0c84aeab33239467af04121963642435bc",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Prior and zero-evidence bars; impossible-posterior notice and counts",
+        "Undefined inspector warning, likelihood controls, zero-denominator formulas, prior trace"
+      ],
+      "findings": [
+        "Zero retained mass leaves no posterior bars; undefined message is explicit and fits; all table and trace text visible."
+      ],
+      "status": "pass",
+      "capture_generation": "unaffected_original_verified_hash"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-bayes-theorem.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2082
+      },
+      "sha256": "823883a494388ff60e97b0fd201e8f81381c9d7b2611023f7489b1b00bf8a98b",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Rare-class mass bars and 90/10/495/9405 table",
+        "Exact/approx inspector, prior slider, normalization fraction, prior trace"
+      ],
+      "findings": [
+        "Small prior/retained bars remain visible; 2/13 and 11/13 posterior widths consistent; equations and wrapped control labels fit."
+      ],
+      "status": "pass",
+      "capture_generation": "unaffected_original_verified_hash"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-bernoulli-binomial-empty.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2242
+      },
+      "sha256": "fe4393abce6872ec7c948a2927fe8b70c14b68858ec6970981db9c8e61727c83",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Single mass-one PMF and single-jump CDF, axis ticks/captions",
+        "Inspector, zero-trial controls, empty-product formulas and full trace"
+      ],
+      "findings": [
+        "Recaptured axes are clean unfilled lines. Single PMF bar at zero and right-continuous jump correctly visible; zero-trial text/formulas/controls fit."
+      ],
+      "status": "pass",
+      "capture_generation": "axis_fill_corrected"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-bernoulli-binomial-zero-p.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2242
+      },
+      "sha256": "733dabe12d07b751ca2af8f6ad03149e57b3a360c6de3a965f0795ce26285cca",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "p=0 one-bar PMF and CDF flat at one after zero",
+        "Inspector, n/p/k controls, presets, binomial formulas and trace"
+      ],
+      "findings": [
+        "Recaptured axes have no fill; nine filled CDF markers at one and one open left-limit marker are distinguishable; no tick/text collisions."
+      ],
+      "status": "pass",
+      "capture_generation": "axis_fill_corrected"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-bernoulli-binomial.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2242
+      },
+      "sha256": "0624c4b41d22fb661f05c6b726576f48250939730a8af7f9e7be00c847ba461a",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Nine-bin PMF with selected k=3 and dashed mean, staircase CDF",
+        "Exact decimal inspector, parameter/preset controls, normalization formulas and trace"
+      ],
+      "findings": [
+        "Recaptured plots have unobscured background; tiny tail bars remain visible, CDF open/closed dots legible. Equations and control rows fit."
+      ],
+      "status": "pass",
+      "capture_generation": "axis_fill_corrected"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-central-limit-theorem-degenerate.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2248
+      },
+      "sha256": "ebb133b68d12ec98b252af53e228d8612e5d3bc97d7bc4144e9eda84621f73a4",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Degenerate Bernoulli PMF, zero-variance notice and sample disclosure",
+        "Zero/undefined inspector, final Bernoulli select, controls, theorem equations and full trace"
+      ],
+      "findings": [
+        "Final Bernoulli label fully visible. Stray zero still absent; undefined standardization and no histogram remain explicit. No control/text clipping."
+      ],
+      "status": "pass",
+      "capture_generation": "final_forced_concise_options_and_mode_specific_captions"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-central-limit-theorem-dependent.png",
+      "dimensions": {
+        "width": 836,
+        "height": 3001
+      },
+      "sha256": "6057f0b6fb779861e95d50e76d65aab46e674f8930ec6e5ef7fd1ac9b0cb1b4c",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Uniform source PDF and wide dependent histogram/normal comparison",
+        "Tail bars/dependence warning, variance inspector, final Uniform(0,1) select, controls, equations and trace"
+      ],
+      "findings": [
+        "Final Uniform(0,1) label fits in full. Tail mass bars and failed-iid warning remain legible; no axis/tick/control/formula clipping."
+      ],
+      "status": "pass",
+      "capture_generation": "final_forced_concise_options_and_mode_specific_captions"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-central-limit-theorem-large.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2943
+      },
+      "sha256": "280f875cf06f2c39b95c6c07f53d9c83d0ab364fca9bc47d130f6f830adb0c5b",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Exponential source PDF and n=30 histogram/normal comparison",
+        "Cutoff/tail bars, inspector, final Exponential(rate 1) select, controls, equations and trace"
+      ],
+      "findings": [
+        "Final Exponential(rate 1) selected label readable completely with arrow separated. Curves/histogram/tail caption and all controls/trace fit without clipping."
+      ],
+      "status": "pass",
+      "capture_generation": "final_forced_concise_options_and_mode_specific_captions"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-central-limit-theorem-short.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2921
+      },
+      "sha256": "ca2369909735f8b5d5f53846513cb4f664213587050686e2a1b3aa0d8f56c4c7",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Exponential source PDF, skewed n=1 histogram/normal comparison",
+        "119/120 window/upper-tail bars, inspector, final Exponential(rate 1) select, controls/equations and trace"
+      ],
+      "findings": [
+        "Final Exponential(rate 1) label fully readable. Skewed histogram/tail bar remain clear; no tick, formula, text or control clipping."
+      ],
+      "status": "pass",
+      "capture_generation": "final_forced_concise_options_and_mode_specific_captions"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-central-limit-theorem.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2900
+      },
+      "sha256": "c9a3aad7268f3614b5a6a67f7920ab63de5e4fc78e0d66488578f710382aaebf",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Exponential source PDF, n=8 histogram/normal comparison",
+        "Window/tail bars, theory/observation inspector, final Exponential(rate 1) select, controls/equations and trace"
+      ],
+      "findings": [
+        "Final Exponential(rate 1) label fits with separate arrow. Population/histogram geometry and normalization notes remain readable; no actual clipping."
+      ],
+      "status": "pass",
+      "capture_generation": "final_forced_concise_options_and_mode_specific_captions"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-conditional-probability-empty-b.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2303
+      },
+      "sha256": "2db27357c422537d676e4703a7424046271e45f4826e526ff94fea0651661e01",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Six dashed excluded outcome cards and original mass bars",
+        "Undefined conditioning inspector, weight/presets, P(B)=0 formula, original-mass trace"
+      ],
+      "findings": [
+        "All B-excluded cards and undefined conditional labels readable. Original six equal bars retained; warning, formulas, controls and bottom trace fit without clipping."
+      ],
+      "status": "pass",
+      "capture_generation": "unaffected_original_verified_hash"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-conditional-probability.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2340
+      },
+      "sha256": "f80f29f3e74dba8280a13d40f9e626949b7622e63ae8e785fa529010b966a483",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Excluded/retained six-outcome cards and original equal bars",
+        "P(B)=0.5, conditional 2/3 inspector, nested fraction, controls and full trace"
+      ],
+      "findings": [
+        "Retained cards show 1/3 versus excluded zero; exact conditional and denominator are legible. No text/equation clipping observed."
+      ],
+      "status": "pass",
+      "capture_generation": "unaffected_original_verified_hash"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-counting-probability-impossible.png",
+      "dimensions": {
+        "width": 836,
+        "height": 1010
+      },
+      "sha256": "5fea324498b0817af13325eb143b1929fa7a78b88e820b719563b9cd0167e361",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Empty selection panel/count inspector and all controls",
+        "Impossible-case equations, explicit without-replacement semantics and full trace"
+      ],
+      "findings": [
+        "Final Ordered/Without options fit in full with clear arrows. Zero-outcome caption remains explicit; no text/formula/control clipping."
+      ],
+      "status": "pass",
+      "capture_generation": "final_forced_concise_options_and_mode_specific_captions"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-counting-probability-replacement.png",
+      "dimensions": {
+        "width": 836,
+        "height": 1374
+      },
+      "sha256": "6b5d3714eb9d947f21d744dd658a40316cd278403d61c1e745219ecac1da426c",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Ten multiset examples/multiplicities and count inspector",
+        "Unordered/With selects, presets, binomial coefficient and full explanation/trace"
+      ],
+      "findings": [
+        "Final Unordered/With labels fully readable. Unequal 0.0625/0.125 masses and original ordering-count semantics remain clear; no clipping."
+      ],
+      "status": "pass",
+      "capture_generation": "final_forced_concise_options_and_mode_specific_captions"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-counting-probability.png",
+      "dimensions": {
+        "width": 836,
+        "height": 1412
+      },
+      "sha256": "cfa194c902d3480ce96914a391e3f60e8aad87f09f6f6fbcd1a6603f5ef7c096",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Twelve ordered pair examples and exact masses/counts",
+        "Ordered/Without controls, factorial/probability equations and full trace"
+      ],
+      "findings": [
+        "Final Ordered/Without labels fit fully. Twelve examples and fraction equations readable; no control overlap or text clipping."
+      ],
+      "status": "pass",
+      "capture_generation": "final_forced_concise_options_and_mode_specific_captions"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-covariance-correlation-collapsed.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2296
+      },
+      "sha256": "b5e19d0f1e65f20ea2f523d9a63aaa6be1c93f66375fd4ea297e8cf41ab2172f",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Three merged weighted circles on X=0 and dashed expectations",
+        "Underlying 3x3 table/marginals, undefined rho inspector, affine controls and formulas, trace"
+      ],
+      "findings": [
+        "Clean unfilled scatter axes confirmed. Middle circle visibly larger; underlying table and collapsed-X independence/undefined-correlation explanations readable."
+      ],
+      "status": "pass",
+      "capture_generation": "axis_fill_corrected"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-covariance-correlation-nonlinear.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2356
+      },
+      "sha256": "eeddbc330c1a4f20c01f15aaf4d7bf2db7b4f5fbedacd24286178cdc0c17d1d6",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Three equal-area nonlinear scatter points and dashed means",
+        "Three 1/3 cells/marginals, covariance-zero/nonindependence inspector, affine controls, formulas and trace"
+      ],
+      "findings": [
+        "Axis fill corrected. Points at (-1,1),(0,0),(1,1) plainly show nonlinear pattern; table totals, caption and exact equations readable."
+      ],
+      "status": "pass",
+      "capture_generation": "axis_fill_corrected"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-covariance-correlation.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2277
+      },
+      "sha256": "0ce86d0590177f0bf960c00778def1b4c931882eb867ca659431d17d73d4aea9",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Seven weighted scatter circles and dashed mean lines",
+        "Canonical table/marginals, covariance/rho inspector, affine controls, formulas and trace"
+      ],
+      "findings": [
+        "Axis fill corrected. Seven nonzero cells correspond to visible circles and larger center; rho 0.5 text and all table/formula/control labels fit."
+      ],
+      "status": "pass",
+      "capture_generation": "axis_fill_corrected"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-events-probability-disjoint.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2395
+      },
+      "sha256": "33f9f9e830184a24006ad9ff5ee082fb90dea6f5a35c12557ce91538905b36e3",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Disjoint A/B outcome toggles and equal bars",
+        "Union-one/intersection-zero inspector, event selector, inclusion-exclusion equation and trace"
+      ],
+      "findings": [
+        "A first three/B last three membership readable; all union labels included. Mass bars, formulas, controls and trace contained."
+      ],
+      "status": "pass",
+      "capture_generation": "unaffected_original_verified_hash"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-events-probability.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2453
+      },
+      "sha256": "6b0ec3def030ab02413fb506edf2d00efa1e612a1d558ab246faac283b59e2ad",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Overlapping A/B cards and six mass bars",
+        "Union 2/3/intersection 1/3 inspector, selector, exact inclusion-exclusion and trace"
+      ],
+      "findings": [
+        "Membership text and highlighted toggles distinguish overlap; exact/approx inspector values and equations readable without horizontal overflow."
+      ],
+      "status": "pass",
+      "capture_generation": "unaffected_original_verified_hash"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-expectation-shifted.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2350
+      },
+      "sha256": "869d38229e23fbf89409b471efa3fbd8e87c02537cffbf1add913b6ffaeed6e3",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Original PMF/balance line, weighted-sum table",
+        "Shifted mean 2.5 inspector, eight controls/slider, affine/linearity equations and trace bars"
+      ],
+      "findings": [
+        "Axis fill corrected. Original population is explicitly titled and unchanged by shift; transformed expectation row changes to 2.5; table/equations readable with ample margins."
+      ],
+      "status": "pass",
+      "capture_generation": "axis_fill_corrected"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-expectation.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2350
+      },
+      "sha256": "b7ca72f36639d516dc4332a498d283a88bf8e27b1423fd19f7a6b53b8d8fba2c",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Three original PMF bars and mean line, exact weighted-sum table",
+        "Mean/root/variance inspector, eight controls/slider, dependent-sum equations and trace"
+      ],
+      "findings": [
+        "Clean axes confirmed. 0.25/0.5/0.25 bars and mean between 0 and4 visually consistent; weighted terms, square root and all controls fit."
+      ],
+      "status": "pass",
+      "capture_generation": "axis_fill_corrected"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-independence-disjoint.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2274
+      },
+      "sha256": "eec19b189c4c1446760b16f6bcbf14bb54f7b28d73323685b690d0708059b893",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Disjoint-event outcome cards and mass bars",
+        "Zero-intersection versus 0.25 product inspector, dependence warning, inequality formula and full trace"
+      ],
+      "findings": [
+        "Disjoint positive-mass sets correctly described as dependent; all membership text, mass labels, formulas and controls fit."
+      ],
+      "status": "pass",
+      "capture_generation": "unaffected_original_verified_hash"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-independence-zero-a.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2274
+      },
+      "sha256": "27a9ada86d05d9b85c8d47a13168305e483310ddb5ad3393b94f9d319bbd0bbd",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Empty-A six-outcome cards and original mass bars",
+        "A/intersection/product all zero, independent/disjoint explanation, exact equality and trace"
+      ],
+      "findings": [
+        "Empty event consistently excluded in all cards; product equality zero readable, all controls and trace fit."
+      ],
+      "status": "pass",
+      "capture_generation": "unaffected_original_verified_hash"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-independence.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2052
+      },
+      "sha256": "089374b30277f644665011c4c3977a837fa388ed412dbb8efcb7eed3a4466e1e",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "HH/HT/TH/TT cards and quarter-mass bars",
+        "Intersecting independent-events inspector/equality, weight presets and original-mass trace"
+      ],
+      "findings": [
+        "Four cards and repeated quarter bars readable; independent yet overlapping explanation fits. TT occupies its own row with ample whitespace; no collision."
+      ],
+      "status": "pass",
+      "capture_generation": "unaffected_original_verified_hash"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-joint-distributions-empty-row.png",
+      "dimensions": {
+        "width": 836,
+        "height": 1585
+      },
+      "sha256": "140436b107247e2e7e0202bddc2629286e2bc577d9baacc5c43c51225d08eee9",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Nine-cell joint table, zero first row, row/column marginals",
+        "Undefined row-conditional notice and inspector; editing/presets, marginal/conditional formulas, trace"
+      ],
+      "findings": [
+        "Zero row is visibly empty in probability, row sums 0/2/3/1/3 and column totals sum to one. Undefined notice explicit; exact table and long formulas fit."
+      ],
+      "status": "pass",
+      "capture_generation": "unaffected_original_verified_hash"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-joint-distributions-independent.png",
+      "dimensions": {
+        "width": 836,
+        "height": 1706
+      },
+      "sha256": "0a4ef0c2adc4b6f3db3f57972b5094eed36f5ee4594f5dc8b85f26f27ac46b56",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Independent nine-cell table and quarter/half marginals",
+        "Quarter/half/quarter conditional bars, inspector, selected weight/presets, fraction formulas and trace"
+      ],
+      "findings": [
+        "Conditional bar widths match 0.25/0.5/0.25; table and marginals legible with total one. Equations and long cell-description caption fit."
+      ],
+      "status": "pass",
+      "capture_generation": "unaffected_original_verified_hash"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-joint-distributions.png",
+      "dimensions": {
+        "width": 836,
+        "height": 1706
+      },
+      "sha256": "daf758bf41c6d2b6e28149e5fc3f3efc0ef794e71a5cdb91361c95b298fb632e",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Canonical dependent table and row/column masses",
+        "Half/half/zero conditional bars, selected-cell inspector, presets, normalization equations and trace"
+      ],
+      "findings": [
+        "Selected 0.125 cell divided by 0.25 row yields readable 0.5; conditional bars and table consistently displayed; no overflow."
+      ],
+      "status": "pass",
+      "capture_generation": "unaffected_original_verified_hash"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-law-of-large-numbers-degenerate.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2889
+      },
+      "sha256": "77c83edce25546c70d426362001f4a7d4928a6216db2f19137b66fb1332561c6",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Degenerate Bernoulli PMF, zero prefix path and target",
+        "Actual zeros/checkpoints/inspector, final Bernoulli select, seed/m controls, equations and trace"
+      ],
+      "findings": [
+        "Final Bernoulli label fits fully. Zero path, checkpoint values and caption remain readable; axes clean and equations/controls fit without clipping."
+      ],
+      "status": "pass",
+      "capture_generation": "final_forced_concise_options_and_mode_specific_captions"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-law-of-large-numbers-short.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2764
+      },
+      "sha256": "4384e45ea6668d6d5fc26945ad97400df6c3bc93bc94f4a8dbeec814b4f899cc",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Bernoulli PMF, ten-observation fluctuating path and target",
+        "Sequence/checkpoint table, inspector, final Bernoulli select, controls, law equations and trace"
+      ],
+      "findings": [
+        "Final Bernoulli label completely visible; path/ticks/table and target-error explanation unchanged and readable. No label/formula overflow."
+      ],
+      "status": "pass",
+      "capture_generation": "final_forced_concise_options_and_mode_specific_captions"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-law-of-large-numbers.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2911
+      },
+      "sha256": "b1becdb445437d7e19043042b6a629e052ac12674543555e20a6b88044023350",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Bernoulli PMF, 200-prefix path, dashed target",
+        "Sixteen observations/seven checkpoints, inspector, final Bernoulli select and controls, equations/trace"
+      ],
+      "findings": [
+        "Final Bernoulli label fits in full. Dense path distinguishable from target; table and observed versus theoretical numbers remain readable; no actual clipping."
+      ],
+      "status": "pass",
+      "capture_generation": "final_forced_concise_options_and_mode_specific_captions"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-pmf-pdf-cdf-point.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2459
+      },
+      "sha256": "9bf83638aba94d32d6222c6056628a903a219e94dce7f011463060169b53d2ad",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Gaussian one-point PDF/no area and CDF",
+        "Zero-point/endpoint inspector, Gaussian PDF select and bounds controls, equations and full trace"
+      ],
+      "findings": [
+        "Final Gaussian PDF option fully visible. No shaded area for point interval; caption remains correctly Gaussian-specific. Clean axes, noncolliding ticks, readable formulas."
+      ],
+      "status": "pass",
+      "capture_generation": "final_forced_concise_options_and_mode_specific_captions"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-pmf-pdf-cdf-uniform.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2272
+      },
+      "sha256": "69b39eee4c49511ef43e2522d80c6d158371da911ef8489d784c500e471a3c46",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Uniform density rectangle and shaded half-support interval",
+        "Uniform-specific PDF/CDF captions, exact inspector, Uniform PDF control, equations and trace"
+      ],
+      "findings": [
+        "Final captions corrected: mass exactly one over [a,b], CDF0 below a/1 at and above b. Uniform PDF selected label fits fully; clean charts, equations and controls without clipping."
+      ],
+      "status": "pass",
+      "capture_generation": "final_forced_concise_options_and_mode_specific_captions"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-pmf-pdf-cdf.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2309
+      },
+      "sha256": "b573a69df21c33d67a16cd83be4fdc6ccfe4d9741f489e678fa2f7adf2dc1d4c",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Interval-selected three-bin PMF and step CDF",
+        "Interval/left-limit inspector, Binomial PMF select plus parameters, equations and trace"
+      ],
+      "findings": [
+        "Final Binomial PMF selected label fully readable; CDF markers and inclusive interval remain clear. No formula, control or tick clipping."
+      ],
+      "status": "pass",
+      "capture_generation": "final_forced_concise_options_and_mode_specific_captions"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-random-experiments-weighted.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2159
+      },
+      "sha256": "6a1feeda48c5aac2cb258a20b28cb32a72de64979416b4933d34eda3d9bb381d",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Weighted six-outcome cards and seed-42 observed sequence",
+        "Exact/observed inspector, seed/trials/replay controls, inclusion-exclusion fractions, weighted trace bars"
+      ],
+      "findings": [
+        "Six unequal probabilities readable; trace widths grow with weights 1..6. Observed frequency distinguished from model; sequence and equations contained."
+      ],
+      "status": "pass",
+      "capture_generation": "unaffected_original_verified_hash"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-random-experiments.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2089
+      },
+      "sha256": "116e0d60c7133b045db80d281f90a1d616fa3bbec19bf0d795e969fff7f09a1d",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Fair-die six-outcome cards and twelve observed draws",
+        "Model versus observed inspector, weight/seed/trials controls, exact event formulas and equal trace bars"
+      ],
+      "findings": [
+        "Uniform 1/6 cards and equal trace bars clear; sequence contained, equations readable and controls separated."
+      ],
+      "status": "pass",
+      "capture_generation": "unaffected_original_verified_hash"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-random-variables-constant.png",
+      "dimensions": {
+        "width": 836,
+        "height": 1814
+      },
+      "sha256": "560be0ee89684a7db13bb21576024f773985577ad34df4e5478b7d6d2913974c",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Six mapping cards all to value2, induced single PMF bar and mass-one bar",
+        "Mean2/variance0 inspector, mapping/weight controls, preimage formula and trace"
+      ],
+      "findings": [
+        "Clean axes; one mass-one bar correctly separated from six original outcome cards. Full-width horizontal mass bar and controls/text readable, no overflow."
+      ],
+      "status": "pass",
+      "capture_generation": "axis_fill_corrected"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-random-variables.png",
+      "dimensions": {
+        "width": 836,
+        "height": 1947
+      },
+      "sha256": "ec6592bdae0770191bdac257a2fb3d21a81d81c04c0c187746b2db97da453159",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Six cards mapping pairs to 0/1/2, three equal induced PMF bars",
+        "Three 1/3 mass bars, mean/variance inspector, mapping controls, preimage formula and trace"
+      ],
+      "findings": [
+        "Clean axes; numerical values 0/1/2 evenly spaced with equal masses and distinct outcome cards. Fractions and controls fit."
+      ],
+      "status": "pass",
+      "capture_generation": "axis_fill_corrected"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-uniform-gaussian-narrow.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2474
+      },
+      "sha256": "601ba57c5d4bb1f04435be5f745d9e46694b9d0b998cad3e54747340b79f78cb",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Narrow Gaussian peak/shading versus dashed uniform and steep CDF",
+        "Gaussian PDF select, numerical inspector, all parameters, equations and trace"
+      ],
+      "findings": [
+        "Final Gaussian PDF option fits completely. Tall narrow density and selected shading remain clear, thinned close ticks avoid collision; no control/equation clipping."
+      ],
+      "status": "pass",
+      "capture_generation": "final_forced_concise_options_and_mode_specific_captions"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-uniform-gaussian-uniform.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2303
+      },
+      "sha256": "8e35162fb6b124ee99281d3ce765bf79c3c9a22eeea8e32fd4bdf330d68ebb78",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Solid Uniform rectangle/half-area versus dashed Gaussian and linear CDF",
+        "Final Uniform support-based captions, Uniform PDF select, exact inspector, controls/equations and trace"
+      ],
+      "findings": [
+        "Final Uniform-specific captions confirmed: mass one over [a,b], CDF0 below a/1 at and above b. Selected option readable in full; clean comparison geometry and no overflow."
+      ],
+      "status": "pass",
+      "capture_generation": "final_forced_concise_options_and_mode_specific_captions"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-uniform-gaussian.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2474
+      },
+      "sha256": "c210f57d636349950a3a786c44900b618c154c5dc86705d474165294a2607538",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Gaussian curve/central area versus dashed Uniform, smooth CDF",
+        "Gaussian PDF select, numerical inspector, all controls, equations and full trace"
+      ],
+      "findings": [
+        "Final Gaussian PDF selected label fits fully. Curves, shaded area, ticks and Gaussian-specific captions readable; no control/equation/text overflow."
+      ],
+      "status": "pass",
+      "capture_generation": "final_forced_concise_options_and_mode_specific_captions"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-variance-standard-deviation-constant.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2500
+      },
+      "sha256": "b7dbe11cb930e362fd7da14b2d7262b92719e9d4342b9b72993ab0f47d5a7276",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Constant-value single PMF bar and dashed mean",
+        "Three zero-area square markers/weighted table, zero inspector, controls, variance/affine formulas and trace bars"
+      ],
+      "findings": [
+        "Clean axes. Zero squared distances are explicitly labeled despite minimum-size visual markers; repeated value2 rows kept as distinct original outcomes. Table/formulas/control rows fit."
+      ],
+      "status": "pass",
+      "capture_generation": "axis_fill_corrected"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-variance-standard-deviation-reversed.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2522
+      },
+      "sha256": "b8b428443eb4c75231207cf7c4b00203826c71d4a1c4160989cf4626afb3cf8b",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Original PMF/mean line and three proportional squared-distance squares",
+        "Exact weighted-distance table, transformed mean -1/variance19 inspector, scale -2 controls, equations and trace"
+      ],
+      "findings": [
+        "Clean axes; squares visibly reflect large/small/largest distances with weighted contributions separately labeled. Original-population title avoids implying it is transformed plot; equations and controls readable."
+      ],
+      "status": "pass",
+      "capture_generation": "axis_fill_corrected"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual-probability.spec.ts/desktop-iv-variance-standard-deviation.png",
+      "dimensions": {
+        "width": 836,
+        "height": 2522
+      },
+      "sha256": "e9b59117be6659415688b13489abac2281d118ecc69b2dab1369768cefadf2b1",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Original PMF/balance line, squared-distance geometry",
+        "Exact distance/contribution table, sqrt19/2 inspector, eight controls/slider, variance equations and trace"
+      ],
+      "findings": [
+        "Clean axes; 6.25/0.25/12.25 areas and weighted values legible, small square remains visible. Mean line/ticks/table/formulas and bottom trace do not collide."
+      ],
+      "status": "pass",
+      "capture_generation": "axis_fill_corrected"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual.spec.ts/desktop-home-fold.png",
+      "dimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "83871ad6ce4c388957aacb72c8e5967bb11be32db418f12541e23e07dbff2e81",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Full header/navigation and light hero typography/buttons",
+        "Vector demo axes, vector/root/direction inspector and explanatory caption; next section at fold"
+      ],
+      "findings": [
+        "Final publication recapture rechecked individually; light hero and vector demo readable with no annotation/inspector collision. Home fold unchanged byte-for-byte; next section naturally cropped by viewport."
+      ],
+      "status": "pass",
+      "capture_generation": "final_forced_publication_recapture"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual.spec.ts/desktop-home-fold-dark.png",
+      "dimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "31ea8464cdb29904ab4fa598a5bd0c1868de5d5ec346d66d660663401e7aa3f6",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Full dark header/navigation and hero typography/buttons",
+        "Dark vector grid, vector/root/direction inspector and caption; lower section fold"
+      ],
+      "findings": [
+        "Final publication recapture rechecked individually; dark hero, diagram grid, annotations and controls remain visible and fit. Dark home fold unchanged byte-for-byte; fold cropping expected."
+      ],
+      "status": "pass",
+      "capture_generation": "final_forced_publication_recapture"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual.spec.ts/desktop-contents-fold.png",
+      "dimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "a9788c3130328f95cddb0c8e101fadf0c2684811eb7ca7adc212d9a9fdef127c",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Final header, contents title/introduction and demo button",
+        "Part I thumbnail/description and nine chapter rows; Part II at viewport fold"
+      ],
+      "findings": [
+        "Final forced recapture visibly states 44 of 97 chapters written. Typography, chapter/status rows and navigation remain readable; fold clipping is expected."
+      ],
+      "status": "pass",
+      "capture_generation": "final_forced_publication_recapture"
+    },
+    {
+      "filename": "tests/e2e/__screenshots__/visual.spec.ts/desktop-map.png",
+      "dimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha256": "8af8561b20134f45a3dbabf94103f266aec2b5687f45d00716f6c3acd784acbf",
+      "personally_inspected": true,
+      "reviewed_full_image": true,
+      "inspected_sections": [
+        "Modal title/count, focused filter, demo/page links, close control",
+        "Two-column Part I/IV chapter list and status badges"
+      ],
+      "findings": [
+        "Final publication recapture rechecked individually; 44 of 97 and Probability 16 of 16 clearly visible. Wrapped titles/status badges, focused filter and close button fit; lower rows continue in modal scroll area."
+      ],
+      "status": "pass",
+      "capture_generation": "final_forced_publication_recapture"
+    }
+  ]
+}

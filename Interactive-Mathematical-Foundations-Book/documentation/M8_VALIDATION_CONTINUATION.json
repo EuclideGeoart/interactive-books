@@ -1,0 +1,455 @@
+{
+  "base": "9b0149902ab67a0f6b0dcfd9e7de90c88491808a",
+  "runtimeCommit": "831306d00cc9f5776901541fd81cf51ad533b4b1",
+  "plannerCommit": "2f557e4313085e4327d6d15bb35272aa5640aedd",
+  "originalManifest": "validation-results/milestone-2026-10-11T22-45-38-411Z/manifest.json",
+  "correctedPlan": "validation-results/milestone-2026-10-11T23-09-07-233Z/manifest.json",
+  "reason": "Generic publication assertions were initially classified as unknown infrastructure. The original milestone completed five required gates and one subpath refresh, then was interrupted after the unintended complete-root-browser gate had begun. Registering this known shared contract test restored the 18-gate selection; only the changed planner unit and the remaining 13 selected gates are rerun.",
+  "lock": "/tmp/imf-heavy.lock; this continuation is invoked inside flock",
+  "retainedResults": [
+    {
+      "gate": "complete type/content check",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/astro/astro.js",
+        "check"
+      ],
+      "status": 0,
+      "wallMs": 10353,
+      "record": "M8_VALIDATION_MANIFEST.json"
+    },
+    {
+      "gate": "complete units",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/vitest/vitest.mjs",
+        "run"
+      ],
+      "status": 0,
+      "wallMs": 10027,
+      "record": "M8_VALIDATION_MANIFEST.json"
+    },
+    {
+      "gate": "complete oracle + freshness",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "scripts/run-oracle.mjs"
+      ],
+      "status": 0,
+      "wallMs": 35256,
+      "record": "M8_VALIDATION_MANIFEST.json"
+    },
+    {
+      "gate": "root production verification",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "scripts/check-dist.mjs",
+        "dist",
+        "/"
+      ],
+      "status": 0,
+      "wallMs": 138,
+      "record": "M8_VALIDATION_MANIFEST.json"
+    },
+    {
+      "gate": "subpath production verification",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "scripts/check-dist.mjs",
+        "dist-subpath",
+        "/math-foundations/"
+      ],
+      "status": 0,
+      "wallMs": 135,
+      "record": "M8_VALIDATION_MANIFEST.json"
+    }
+  ],
+  "focusedPlannerUnit": {
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "tests/unit/validation-plan.test.ts"
+    ],
+    "status": 0,
+    "tests": 23,
+    "log": "validation-results/M8_PLANNER_CORRECTION_UNIT.log"
+  },
+  "production": {
+    "root": {
+      "base": "/",
+      "signature": "24bf8b81507692d41ad7863b8f97ec164258f599a7f1b96f4498054d1ccf41b8"
+    },
+    "subpath": {
+      "base": "/math-foundations/",
+      "signature": "9c25f4a0dcff1cb808dd5e2b8e1c9fabeb3eaefa885948ad37abce928673729e"
+    }
+  },
+  "startedAt": "2026-10-11T22:52:28.612Z",
+  "results": [
+    {
+      "gate": "all read-only chapter contracts + representative both-theme axe",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/chapters.spec.ts",
+        "--trace",
+        "off",
+        "--grep",
+        "read-only checks|(?:^|\\s)(?:IV\\.6|IV\\.9|IV\\.16|IV\\.4|IV\\.3|IV\\.14|IV\\.2|IV\\.11|IV\\.5|IV\\.13|IV\\.15|IV\\.8|IV\\.1|IV\\.7|IV\\.10|IV\\.12|II\\.10|I\\.9|I\\.1|II\\.1|I\\.3)(?: |:)|Part I publication",
+        "--output",
+        "validation-results/M8_MILESTONE_CONTINUATION/5-failures"
+      ],
+      "deployment": "root",
+      "status": 1,
+      "signal": null,
+      "wallMs": 416637,
+      "summary": [
+        "4 failed",
+        "917 passed (6.9m)"
+      ],
+      "log": "validation-results/M8_MILESTONE_CONTINUATION/5.log"
+    },
+    {
+      "gate": "all read-only chapter contracts + representative both-theme axe",
+      "command": [
+        "node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/chapters.spec.ts",
+        "--grep",
+        "IV\\.(?:13|14).*axe",
+        "--trace",
+        "off",
+        "--output",
+        "validation-results/M8_MILESTONE_CONTRACT_RETRY"
+      ],
+      "deployment": "root",
+      "status": 0,
+      "summary": [
+        "12 passed (40.3s)"
+      ],
+      "playwrightReportedSeconds": 40.3,
+      "log": "validation-results/M8_MILESTONE_CONTRACT_RETRY.log",
+      "coverage": {
+        "originalCases": 921,
+        "originalPassed": 917,
+        "originalFailed": 4,
+        "failedTabletCasesResolved": 4,
+        "additionalDesktopMobileRetryCases": 8,
+        "allOriginalSelectedCasesHaveSuccessfulFinalResults": true
+      }
+    },
+    {
+      "gate": "affected chapter interactions: probability_bayes",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/probability-finite.spec.ts",
+        "--trace",
+        "off",
+        "--grep",
+        "(?:^|\\s)(?:IV\\.6(?::| ))|publication",
+        "--output",
+        "validation-results/M8_MILESTONE_CONTINUATION/6-failures"
+      ],
+      "deployment": "root",
+      "status": 0,
+      "signal": null,
+      "wallMs": 10221,
+      "summary": [
+        "12 passed (9.9s)"
+      ],
+      "log": "validation-results/M8_MILESTONE_CONTINUATION/6.log"
+    },
+    {
+      "gate": "affected chapter interactions: probability_distributions",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/probability-distributions.spec.ts",
+        "--trace",
+        "off",
+        "--grep",
+        "(?:^|\\s)(?:IV\\.9(?::| )|IV\\.8(?::| )|IV\\.10(?::| ))|publication",
+        "--output",
+        "validation-results/M8_MILESTONE_CONTINUATION/7-failures"
+      ],
+      "deployment": "root",
+      "status": 0,
+      "signal": null,
+      "wallMs": 14193,
+      "summary": [
+        "24 passed (13.9s)"
+      ],
+      "log": "validation-results/M8_MILESTONE_CONTINUATION/7.log"
+    },
+    {
+      "gate": "affected chapter interactions: probability_sampling",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/probability-sampling.spec.ts",
+        "--trace",
+        "off",
+        "--grep",
+        "(?:^|\\s)(?:IV\\.16(?::| )|IV\\.15(?::| ))|publication",
+        "--output",
+        "validation-results/M8_MILESTONE_CONTINUATION/8-failures"
+      ],
+      "deployment": "root",
+      "status": 0,
+      "signal": null,
+      "wallMs": 14416,
+      "summary": [
+        "21 passed (14.1s)"
+      ],
+      "log": "validation-results/M8_MILESTONE_CONTINUATION/8.log"
+    },
+    {
+      "gate": "affected chapter interactions: probability_finite",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/probability-finite.spec.ts",
+        "--trace",
+        "off",
+        "--grep",
+        "(?:^|\\s)(?:IV\\.4(?::| )|IV\\.2(?::| )|IV\\.5(?::| )|IV\\.1(?::| ))|publication",
+        "--output",
+        "validation-results/M8_MILESTONE_CONTINUATION/9-failures"
+      ],
+      "deployment": "root",
+      "status": 0,
+      "signal": null,
+      "wallMs": 7448,
+      "summary": [
+        "24 passed (7.1s)"
+      ],
+      "log": "validation-results/M8_MILESTONE_CONTINUATION/9.log"
+    },
+    {
+      "gate": "affected chapter interactions: probability_counting",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/probability-finite.spec.ts",
+        "--trace",
+        "off",
+        "--grep",
+        "(?:^|\\s)(?:IV\\.3(?::| ))|publication",
+        "--output",
+        "validation-results/M8_MILESTONE_CONTINUATION/10-failures"
+      ],
+      "deployment": "root",
+      "status": 0,
+      "signal": null,
+      "wallMs": 3021,
+      "summary": [
+        "6 passed (2.7s)"
+      ],
+      "log": "validation-results/M8_MILESTONE_CONTINUATION/10.log"
+    },
+    {
+      "gate": "affected chapter interactions: probability_joint",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/probability-sampling.spec.ts",
+        "--trace",
+        "off",
+        "--grep",
+        "(?:^|\\s)(?:IV\\.14(?::| )|IV\\.13(?::| ))|publication",
+        "--output",
+        "validation-results/M8_MILESTONE_CONTINUATION/11-failures"
+      ],
+      "deployment": "root",
+      "status": 0,
+      "signal": null,
+      "wallMs": 11847,
+      "summary": [
+        "18 passed (11.5s)"
+      ],
+      "log": "validation-results/M8_MILESTONE_CONTINUATION/11.log"
+    },
+    {
+      "gate": "affected chapter interactions: probability_moments",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/probability-distributions.spec.ts",
+        "--trace",
+        "off",
+        "--grep",
+        "(?:^|\\s)(?:IV\\.11(?::| )|IV\\.12(?::| ))|publication",
+        "--output",
+        "validation-results/M8_MILESTONE_CONTINUATION/12-failures"
+      ],
+      "deployment": "root",
+      "status": 0,
+      "signal": null,
+      "wallMs": 5389,
+      "summary": [
+        "12 passed (5.0s)"
+      ],
+      "log": "validation-results/M8_MILESTONE_CONTINUATION/12.log"
+    },
+    {
+      "gate": "affected chapter interactions: probability_variables",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/probability-distributions.spec.ts",
+        "--trace",
+        "off",
+        "--grep",
+        "(?:^|\\s)(?:IV\\.7(?::| ))|publication",
+        "--output",
+        "validation-results/M8_MILESTONE_CONTINUATION/13-failures"
+      ],
+      "deployment": "root",
+      "status": 0,
+      "signal": null,
+      "wallMs": 2881,
+      "summary": [
+        "6 passed (2.6s)"
+      ],
+      "log": "validation-results/M8_MILESTONE_CONTINUATION/13.log"
+    },
+    {
+      "gate": "shared cross-chapter controls",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/vectors.spec.ts",
+        "tests/e2e/quantities.spec.ts",
+        "--trace",
+        "off",
+        "--grep",
+        "keyboard|Arrow|rejected|reset|announc",
+        "--output",
+        "validation-results/M8_MILESTONE_CONTINUATION/14-failures"
+      ],
+      "deployment": "root",
+      "status": 0,
+      "signal": null,
+      "wallMs": 13318,
+      "summary": [
+        "45 passed (13.0s)"
+      ],
+      "log": "validation-results/M8_MILESTONE_CONTINUATION/14.log"
+    },
+    {
+      "gate": "root shared shell, navigation, accessibility and deployment",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/smoke.spec.ts",
+        "tests/e2e/stage.spec.ts",
+        "tests/e2e/navigation.spec.ts",
+        "tests/e2e/a11y.spec.ts",
+        "tests/e2e/deployment.spec.ts",
+        "--trace",
+        "off",
+        "--output",
+        "validation-results/M8_MILESTONE_CONTINUATION/15-failures"
+      ],
+      "deployment": "root",
+      "status": 0,
+      "signal": null,
+      "wallMs": 124519,
+      "summary": [
+        "5 skipped",
+        "289 passed (2.1m)"
+      ],
+      "log": "validation-results/M8_MILESTONE_CONTINUATION/15.log"
+    },
+    {
+      "gate": "subpath prefix-dependent navigation, assets, anchors, routes and hydration",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/navigation.spec.ts",
+        "tests/e2e/deployment.spec.ts",
+        "--trace",
+        "off",
+        "--config",
+        "playwright.subpath.config.ts",
+        "--output",
+        "validation-results/M8_MILESTONE_CONTINUATION/16-failures"
+      ],
+      "deployment": "subpath",
+      "status": 0,
+      "signal": null,
+      "wallMs": 35765,
+      "summary": [
+        "3 skipped",
+        "75 passed (35.3s)"
+      ],
+      "log": "validation-results/M8_MILESTONE_CONTINUATION/16.log"
+    },
+    {
+      "gate": "authoritative root visuals",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/visual.spec.ts",
+        "tests/e2e/visual-part-i.spec.ts",
+        "tests/e2e/visual-linear-algebra.spec.ts",
+        "tests/e2e/visual-probability.spec.ts",
+        "--trace",
+        "off",
+        "--output",
+        "validation-results/M8_MILESTONE_CONTINUATION/17-failures"
+      ],
+      "deployment": "root",
+      "status": 0,
+      "signal": null,
+      "wallMs": 60225,
+      "summary": [
+        "15 skipped",
+        "159 passed (59.9s)"
+      ],
+      "log": "validation-results/M8_MILESTONE_CONTINUATION/17.log"
+    }
+  ],
+  "status": "passed",
+  "acceptanceTestCommit": "dca3cc1a3887448ea475ab79b49c7096c1df1a0f",
+  "testCorrection": {
+    "commit": "dca3cc1a3887448ea475ab79b49c7096c1df1a0f",
+    "reason": "hydrateAll scrolls to late exercises. Initial full-page axe now starts at scrollY=0, preventing arbitrary partial overlap with the frozen sticky header. Original tags and all feedback scans are unchanged.",
+    "diagnostic": "M8_TABLET_AXE_DIAGNOSTIC.json",
+    "actualInputSizeCssPx": [
+      120,
+      44
+    ],
+    "productionChanged": false
+  },
+  "typeRecheck": {
+    "command": [
+      "node",
+      "node_modules/astro/astro.js",
+      "check"
+    ],
+    "status": 0,
+    "files": 431,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 5,
+    "log": "validation-results/M8_FINAL_TYPE_RECHECK.log"
+  },
+  "completedAt": "2026-10-11T23:15:09.713Z"
+}
