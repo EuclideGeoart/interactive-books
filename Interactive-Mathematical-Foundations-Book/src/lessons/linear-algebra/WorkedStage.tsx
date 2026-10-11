@@ -1,0 +1,23 @@
+import { useEffect, useMemo, useState } from 'preact/hooks';
+import { cursorAt } from '../../platform/trace';
+import { IdScope, useScopedId } from '../../ui/ids';
+import { TraceStepper } from '../../ui/TraceStepper';
+import { FormulaScroll } from '../../ui/FormulaScroll';
+import { Inspector } from '../../ui/Inspector';
+import { workedFrames, type Chapter } from './chapter-lesson';
+
+function Inner({ chapter }: { chapter: Chapter }) {
+  const frames = useMemo(() => workedFrames(chapter), [chapter]);
+  const [cursor, setCursor] = useState(cursorAt(frames.length)), [hydrated, setHydrated] = useState(false);
+  const id = useScopedId();
+  useEffect(() => setHydrated(true), []);
+  return <section class="stage stage-full" data-stage={`la-worked-${chapter}`} data-hydrated={hydrated} aria-labelledby={id}>
+    <header class="stage-head"><h3 id={id}>Inspect the worked calculation</h3></header>
+    <TraceStepper label="Worked calculation" frames={frames} cursor={cursor} onCursor={setCursor} autoplay
+      describeFrame={frame => frame.explanation!} renderFrame={frame => <>
+        <p>{frame.explanation}</p><FormulaScroll tex={frame.state.formula} label="Worked calculation, scrollable" />
+        <Inspector rows={frame.state.rows} label="Values in the worked example" />
+      </>} />
+  </section>;
+}
+export default function WorkedStage({ chapter }: { chapter: Chapter }) { return <IdScope name={`la-worked-${chapter}`}><Inner chapter={chapter} /></IdScope>; }
