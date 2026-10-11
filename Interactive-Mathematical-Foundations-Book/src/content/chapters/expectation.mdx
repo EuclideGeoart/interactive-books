@@ -1,0 +1,124 @@
+---
+kind: chapter
+curriculumId: IV.11
+title: "Expectation"
+hero: "Where does a distribution balance when its values have unequal *weights*?"
+lede: Move values and weights to see their contributions to a probability-weighted center. Then apply linearity to a pair of explicitly dependent variables.
+description: Exact weighted expectations and second moments, affine transformations, dependent linearity, theoretical versus sample means, Python and NumPy, and five graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import MomentsStage from '../../lessons/probability/MomentsStage';
+import Exercise from '../../lessons/probability/BlockBExercise';
+import reference from '../../../code/python/probability_expectation.py?raw';
+import practical from '../../../code/python/probability_expectation_numpy.py?raw';
+
+<Stage caption="Begin with values [−2, 0, 4] and raw weights [1, 2, 1]. Compare the normalized masses, each weighted contribution, and their sum E[X] = 1/2."><MomentsStage chapter="expectation" client:load /></Stage>
+
+Predict the center before inspecting it. Compare the equal-label average with the probability-weighted average: the middle value has twice the mass of either outer value.
+
+## Intuition: a center of probability mass
+
+Expectation is a weighted balance point, not a guarantee about the next result. Imagine each value carrying its probability mass on a number line. A larger mass contributes more strongly to the center. Negative values pull in the negative direction; they do not require negative probabilities.
+
+For values $[-2,0,4]$ and raw weights $[1,2,1]$, the normalized masses are $[1/4,1/2,1/4]$. Their center is $1/2$, even though no outcome takes that value. The ordinary average of the three labels, $2/3$, describes a different equal-weight model.
+
+## Definition
+
+For a finite random variable with values $x_i$ and probabilities $p_i$, its **expectation** is
+
+$$
+\mathbb E[X]=\sum_i p_i x_i.
+$$
+
+For a function $g$, $\mathbb E[g(X)]=\sum_i p_i g(x_i)$. In particular, the **second moment** is $\mathbb E[X^2]=\sum_i p_i x_i^2$; it is generally different from $(\mathbb E[X])^2$.
+
+For a continuous variable with density $f$, $\mathbb E[X]=\int_{-\infty}^{\infty}x f(x)\,dx$ when the expectation exists. A finite absolute first moment ensures this definition is well behaved; not every infinite-support distribution has one. The finite models in this stage always do.
+
+## Mechanics: normalize before summing
+
+The stage begins with affine scale $1$ and shift $0$. Change values or nonnegative raw weights, then read each table row's normalized mass and product $p_i x_i$. The formula, center marker, inspector, and trace use the same derived distribution. The total raw weight must be positive.
+
+Scale and shift define a companion affine variable $aX+b$ while preserving its masses. Read its expectation and variance in the transformed inspector rows; the plot and weighted-sum table show the original $X$. The presets **Zero variance**, **Shift by 2**, and **Scale by −2** expose a constant source variable or an affine comparison. Reset restores the canonical values, weights, scale, and shift.
+
+## Derivation: linearity does not need independence
+
+For constants $a,b$,
+
+$$
+\mathbb E[aX+b]=\sum_i p_i(ax_i+b)
+=a\mathbb E[X]+b\sum_i p_i=a\mathbb E[X]+b.
+$$
+
+For two jointly defined finite variables, sum over their common outcomes. Distributing the sum gives $\mathbb E[X+Y]=\mathbb E[X]+\mathbb E[Y]$. Independence is unnecessary: both values can depend on the same outcome. In general settings these identities require the relevant expectations to exist.
+
+An event indicator $I_A$ is $1$ on $A$ and $0$ elsewhere, so $\mathbb E[I_A]=P(A)$. A binomial count is a sum of Bernoulli indicators; linearity gives mean $np$. Independence is required for its binomial distribution, but not for the expectation of a sum of indicators with given marginal success probabilities.
+
+## Worked examples
+
+The canonical weighted calculation is
+
+$$
+\mathbb E[X]=\frac{-2+2\times0+4}{4}=\frac12,
+\qquad \mathbb E[X^2]=\frac{4+2\times0+16}{4}=5.
+$$
+
+<Stage caption="Add the exact row contributions to recover mean 1/2 and second moment 5. Shift the values by 2 or scale by −2 and predict the new center first."><MomentsStage chapter="expectation" worked client:load /></Stage>
+
+Define $Y=2X+1$ on the same outcome. This is a dependent pair, not a second independent draw. Its values are $[-3,1,9]$, with the same masses. Since $\mathbb E[Y]=2\mathbb E[X]+1=2$,
+
+$$
+\mathbb E[X+Y]=3\mathbb E[X]+1=\frac52.
+$$
+
+By contrast, $XY=2X^2+X$ gives $\mathbb E[XY]=21/2$, whereas $\mathbb E[X]\mathbb E[Y]=1$. Linearity concerns sums and constant multiples, not arbitrary products.
+
+## Executable reference code
+
+The standard-library program normalizes raw weights with exact `Fraction` arithmetic and computes first and second moments by explicit sums. It constructs $Y$ from each value of $X$, then directly checks the dependent sum and product calculations. It also verifies weight-rescaling invariance, affine transformations, constant values, and invalid-input rejection.
+
+The NumPy version uses normalized weight vectors and dot products. It exposes the array mechanics after the mathematical calculation, rather than treating an array routine as a definition of expectation. Neither program simulates samples to manufacture a theoretical answer.
+
+<CodeFile source={reference} file="code/python/probability_expectation.py" />
+<CodeFile source={practical} file="code/python/probability_expectation_numpy.py" />
+
+## Explore
+
+Increase the raw weight at $4$ and predict the center moving toward $4$. Multiply all weights by the same positive factor: normalization cancels that factor and the mean stays unchanged. Give one value zero weight and explain why it no longer contributes to the weighted sum.
+
+Choose **Shift by 2** to obtain transformed mean $5/2$. Choose **Scale by −2** from the canonical model to obtain transformed mean $-1$. Compare those inspector rows with the source mean $1/2$. Choose **Zero variance**, which sets every source value to $2$: the source mean becomes $2$. Use affine scale $-2$ and shift $3$ on the canonical values to predict transformed mean $2$ before reading it.
+
+## Common mistakes and counterexamples
+
+The mean need not be a possible value or the most probable one. Here the most probable value is $0$, while the mean is $1/2$. Rounding the mean to a support point changes the quantity rather than correcting it.
+
+Squaring before averaging differs from squaring afterward: $\mathbb E[X^2]=5$ but $(\mathbb E[X])^2=1/4$. Also, independence is not a prerequisite for linearity. The explicit $Y=2X+1$ example is dependent and still obeys the sum rule. Its product calculation refutes a careless extension of that rule.
+
+## Numerical considerations
+
+Finite rational values and weights allow exact expectations. Construct fractions from integers or decimal strings rather than first rounding them to binary floats. NumPy calculations are approximate in general; exact-looking canonical decimals do not imply every weighted input remains exact.
+
+A **sample mean** averages observed data, whereas this stage computes a **theoretical expectation** from a specified model. Raw weights describe proportional probabilities here, not necessarily sample frequencies. Agreement between a short observed average and the model mean is not guaranteed; the sampling chapters study that distinction later.
+
+<Callout kind="scope" title="Existence matters beyond finite models">
+Linearity applies when the relevant expectations exist. A symmetric infinite-support density does not by symmetry alone prove that its expectation exists; divergent positive and negative contributions cannot be cancelled by declaration.
+</Callout>
+
+## Engineering and ML connections
+
+Expected loss weights per-outcome losses by the model's probabilities. Combining loss terms uses linearity even when they depend on the same example. Replacing theoretical probabilities with observed frequencies yields an empirical average; it estimates a model quantity under additional assumptions rather than becoming an exact expectation automatically.
+
+## Exercises
+
+Use exact rational answers for the finite model. The explanations test the limits of linearity as well as its useful identities.
+
+<Exercise id="probability-expectation-canonical-moments" client:load />
+<Exercise id="probability-expectation-dependent-linearity" client:load />
+<Exercise id="probability-expectation-affine" client:load />
+<Exercise id="probability-expectation-unattained-mean" client:load />
+<Exercise id="probability-expectation-product" client:load />
+
+## Summary and checkpoints
+
+Expectation is a normalized probability-weighted sum. Check that you can obtain $1/2$ and $5$ as first and second moments, predict affine changes to the center, justify dependent linearity for $Y=2X+1$, and distinguish a theoretical mean from an observation or sample estimate.

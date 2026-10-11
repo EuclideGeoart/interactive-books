@@ -21,6 +21,9 @@ export const families = {
   probability_finite: { lesson: 'probability', stage: 'FiniteStage', units: /^probability-(finite|block-a)/, oracles: ['probability_finite'], browser: 'probability-finite' },
   probability_counting: { lesson: 'probability', stage: 'CountingStage', units: /^probability-counting/, oracles: ['probability_finite'], browser: 'probability-finite' },
   probability_bayes: { lesson: 'probability', stage: 'BayesStage', units: /^probability-bayes/, oracles: ['probability_finite'], browser: 'probability-finite' },
+  probability_variables: { lesson: 'probability', stage: 'RandomVariableStage', units: /^probability-(variables|moments|block-b)/, oracles: ['probability_moments'], browser: 'probability-distributions' },
+  probability_distributions: { lesson: 'probability', stage: 'DistributionStage', units: /^probability-(distributions|block-b)/, oracles: ['probability_distributions'], browser: 'probability-distributions' },
+  probability_moments: { lesson: 'probability', stage: 'MomentsStage', units: /^probability-(moments|block-b)/, oracles: ['probability_moments'], browser: 'probability-distributions' },
 };
 /** @param {string} dir @returns {string[]} */
 export const walk = dir => existsSync(dir) ? readdirSync(dir, { withFileTypes: true }).flatMap(entry => {
@@ -92,6 +95,9 @@ function familyOfFile(path) {
     if (/^(finite|Finite)/.test(base)) return 'probability_finite';
     if (/^(counting|Counting)/.test(base)) return 'probability_counting';
     if (/^(bayes|Bayes)/.test(base)) return 'probability_bayes';
+    if (/^(distributions|Distribution)/.test(base)) return 'probability_distributions';
+    if (/^(variables|RandomVariable)/.test(base)) return 'probability_variables';
+    if (/^(moments|Moments)/.test(base)) return 'probability_moments';
     return null;
   }
   return Object.keys(families).find(name => path.startsWith('src/lessons/' + families[name].lesson + '/') ||

@@ -1,0 +1,135 @@
+---
+kind: chapter
+curriculumId: IV.12
+title: "Variance and standard deviation"
+hero: "How much probability-weighted *spread* remains after removing the center?"
+lede: Square each distance from the mean, weight its contribution, and add. Shift and scale the same distribution to separate location from spread.
+description: Exact centered variance and second-moment identity, square-root spread and units, affine laws, sample-estimator distinctions, Python and NumPy, and five graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import MomentsStage from '../../lessons/probability/MomentsStage';
+import Exercise from '../../lessons/probability/BlockBExercise';
+import reference from '../../../code/python/probability_variance.py?raw';
+import practical from '../../../code/python/probability_variance_numpy.py?raw';
+
+<Stage caption="Inspect values [−2, 0, 4] with weights [1, 2, 1]. Compare squared distances from mean 1/2 and their weighted contributions to variance 19/4."><MomentsStage chapter="variance" client:load /></Stage>
+
+Predict which value contributes the largest weighted squared distance. Shift the distribution and decide which table columns should change and which should stay fixed.
+
+## Intuition: location does not specify spread
+
+Two distributions can share a mean and have different spreads. A constant at $2$ and a fair choice between $0$ and $4$ both have mean $2$, but only the latter varies. We need a quantity that measures distance from the center rather than distance from zero.
+
+Signed distances average to zero: negative deviations cancel positive ones. Squaring makes every distance contribution nonnegative and gives larger deviations greater influence. Weighting those squares by probability produces the variance; taking its nonnegative square root returns a spread in the original units.
+
+## Definition
+
+Write $\mu=\mathbb E[X]$. The **variance** and **standard deviation** are
+
+$$
+\operatorname{Var}(X)=\mathbb E[(X-\mu)^2]
+=\sum_i p_i(x_i-\mu)^2,
+\qquad \sigma=\sqrt{\operatorname{Var}(X)}.
+$$
+
+Variance is nonnegative. In a finite model it is zero precisely when every positive-mass value equals the mean; arbitrary zero-mass labels do not change it. If $X$ has units of milliseconds, variance has units of milliseconds squared, while standard deviation has units of milliseconds.
+
+Finite models have finite moments. More generally, finite second moment guarantees a finite first moment and variance; distributions without a finite second moment require a separate discussion of infinite or undefined quantities.
+
+## Mechanics: compare distances on one scale
+
+The canonical values are $[-2,0,4]$ with raw weights $[1,2,1]$, affine scale $1$, and shift $0$. Read the table's mass, signed distance from the mean, and weighted squared contribution. The square drawings compare squared distances on one common length scale; the table shows how probability weights alter their contributions.
+
+Use **Shift by 2** and **Scale by −2** to inspect a companion affine variable in the transformed expectation and variance rows. The plot, squares, and contribution table describe the original $X$, enabling comparison with the transformation. **Zero variance** changes the source values themselves to $2$. Reset restores the canonical model. Negative weights or an all-zero total are invalid, whereas zero spread is a valid state.
+
+## Derivation: the second-moment identity and affine law
+
+Expand the centered square and use linearity:
+
+$$
+\operatorname{Var}(X)=\mathbb E[X^2-2\mu X+\mu^2]
+=\mathbb E[X^2]-2\mu\mathbb E[X]+\mu^2
+=\mathbb E[X^2]-\mu^2.
+$$
+
+For $Z=aX+b$, its mean is $a\mu+b$, so $Z-\mathbb E[Z]=a(X-\mu)$. Squaring gives
+
+$$
+\operatorname{Var}(aX+b)=a^2\operatorname{Var}(X),
+\qquad \sigma_{aX+b}=|a|\sigma_X.
+$$
+
+A shift changes location and leaves spread unchanged. A negative scale reverses the number line but cannot make variance or standard deviation negative. With scale zero, all values collapse to the shift and the spread is zero.
+
+## Worked examples
+
+For the canonical model, $\mu=1/2$ and $\mathbb E[X^2]=5$. The signed deviations are $-5/2,-1/2,7/2$, whose squared values are $25/4,1/4,49/4$. Weighting them gives
+
+$$
+\operatorname{Var}(X)=\frac14\frac{25}4+\frac12\frac14+\frac14\frac{49}4
+=\frac{25}{16}+\frac2{16}+\frac{49}{16}
+=\frac{19}4=5-\left(\frac12\right)^2.
+$$
+
+Thus $\sigma=\sqrt{19}/2\approx2.17944947177$. The value $4$ contributes the largest weighted square, $49/16$, even though its mass is only $1/4$.
+
+<Stage caption="Recover source variance 19/4 from the weighted square contributions. Compare transformed variance after shift +2 or scale −2 in the inspector."><MomentsStage chapter="variance" worked client:load /></Stage>
+
+Shifting by $2$ changes the mean to $5/2$ and preserves variance $19/4$. Scaling by $-2$ gives mean $-1$, variance $19$, and standard deviation $\sqrt{19}$. Collapsing all values to $2$ gives mean $2$, second moment $4$, and variance $0$.
+
+## Executable reference code
+
+The exact program calculates both centered weighted squares and the second-moment identity using `Fraction`, asserting that they agree. It verifies literal canonical values and sweeps affine scales and shifts, including collapse and reflection. The square root is reported approximately because $\sqrt{19}/2$ is irrational.
+
+The NumPy program exposes a normalized probability vector, a center, and the dot product of centered squared distances. Its large-offset check demonstrates why centered squares are preferable to subtracting nearly equal floating-point moments. These are theoretical distribution calculations, not sample-variance estimates.
+
+<CodeFile source={reference} file="code/python/probability_variance.py" />
+<CodeFile source={practical} file="code/python/probability_variance_numpy.py" />
+
+## Explore
+
+Before choosing **Shift by 2**, predict the transformed mean and variance. Before choosing **Scale by −2**, predict transformed mean $-1$ and variance $19$, then check the transformed inspector rows. On paper, reconstruct that variable's doubled deviation magnitudes, quadrupled squared distances, and doubled standard deviation from the original table.
+
+Choose **Zero variance** and explain why a nonzero mean does not imply nonzero spread. Reset and increase an outer value's weight or move it farther from the center. Track how the mean itself moves; computing deviations from the old mean would answer a different question.
+
+## Common mistakes and counterexamples
+
+The second moment measures squares about zero, while variance measures squares about the mean. For a constant $X=2$, $\mathbb E[X^2]=4$ but variance is zero. Adding a constant also does not add its square to the variance: centering removes the same shift from every value.
+
+Standard deviation is the nonnegative square root, not half the variance. For the canonical model it is $\sqrt{19}/2$, not $19/2$. A negative affine scale uses $a^2$ for variance and $|a|$ for standard deviation.
+
+## Numerical considerations
+
+The exact identity $\mathbb E[X^2]-\mu^2$ is convenient algebraically. With large offsets and small spread, floating-point subtraction can lose significant digits or produce a tiny negative result. Centered weighted squares avoid that particular subtraction. Extremely large values can still overflow floating-point squares; finite input alone does not guarantee a representable second moment.
+
+The stage uses a specified theoretical model, so normalize its raw weights by their total. For $m>1$ independent identically distributed observed samples with an unknown mean, the usual unbiased **sample variance estimator** is
+
+$$
+s^2=\frac{1}{m-1}\sum_{j=1}^m(x_j-\bar x)^2.
+$$
+
+This correction concerns estimation from observations, not the number of support labels or the raw model weight total. With one sample, that estimator is undefined. NumPy's default `var` uses `ddof=0`; `ddof=1` selects the usual sample denominator when its assumptions apply. Even then, the square root is not generally an unbiased estimator of population standard deviation.
+
+<Callout kind="misconception" title="Model weights are not automatically a sample">
+The canonical weights [1, 2, 1] define probabilities [1/4, 1/2, 1/4]. Replacing their total 4 by 3 silently changes the requested theoretical variance. A sample estimator is a different quantity and needs an observed-data interpretation.
+</Callout>
+
+## Engineering and ML connections
+
+Standardizing a feature uses its center and a positive spread scale. A zero-variance feature cannot be divided by its standard deviation and needs an explicit handling rule. Measurement-unit changes explain the squared scale law: converting milliseconds to seconds rescales variance by the conversion factor squared. Estimated data statistics and theoretical model moments should be labeled separately.
+
+## Exercises
+
+Use exact rational variance answers. The choices test square-root units and the distinction between a model and an estimator.
+
+<Exercise id="probability-variance-canonical" client:load />
+<Exercise id="probability-variance-scale-collapse" client:load />
+<Exercise id="probability-variance-shift" client:load />
+<Exercise id="probability-variance-standard-deviation-units" client:load />
+<Exercise id="probability-variance-theory-sample" client:load />
+
+## Summary and checkpoints
+
+Variance is the probability-weighted squared distance from the mean; standard deviation is its nonnegative square root. Check that you can recover $19/4$ and $\sqrt{19}/2$, preserve spread under a shift, square the affine scale, explain collapse, and keep theoretical moments distinct from sample estimates.

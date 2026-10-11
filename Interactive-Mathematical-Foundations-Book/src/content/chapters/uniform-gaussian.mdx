@@ -1,0 +1,126 @@
+---
+kind: chapter
+curriculumId: IV.10
+title: "Uniform and Gaussian distributions"
+hero: "What changes when probability is spread evenly or concentrated near a *center*?"
+lede: Compare a normalized rectangle with a Gaussian curve using the same interval. Read probability as area, then standardize location and scale without changing the question.
+description: Uniform and Gaussian density areas, normalization, standardization, positive-tail Simpson error budgets, erfc validation, executable references, and five graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import DistributionStage from '../../lessons/probability/DistributionStage';
+import Exercise from '../../lessons/probability/BlockBExercise';
+import reference from '../../../code/python/probability_continuous.py?raw';
+import practical from '../../../code/python/probability_continuous_numpy.py?raw';
+
+<Stage caption="Compare Uniform(−2, 2) and Normal(0, 1) on interval [−1, 1]. One probability is exactly 1/2; the other is approximately 0.682689492137."><DistributionStage chapter="continuous" client:load /></Stage>
+
+Predict the uniform density from its support width. Switch to normal mode and explain why equal interval widths need not contain equal mass.
+
+## Intuition: shape controls area
+
+A uniform distribution assigns the same density across a finite support. Equal-width subintervals inside that support receive equal probabilities. A Gaussian concentrates density near its mean and decreases smoothly into both tails. Equal-width intervals at different locations generally have different probabilities.
+
+Neither density gives positive probability to a single point. A shaded interval has area; a solitary density height describes concentration per unit of value. This distinction remains true at the highest point of the Gaussian curve.
+
+## Definition
+
+For $a<b$, the continuous uniform density is $f(x)=1/(b-a)$ inside $[a,b]$ and zero outside. Its CDF is zero below $a$, $(x-a)/(b-a)$ within the support, and one above $b$. Endpoint density choices do not affect any interval probability.
+
+A Gaussian, or normal, distribution with finite mean $\mu$ and positive standard deviation $\sigma$ has density
+
+$$
+f(x)=\frac{1}{\sigma\sqrt{2\pi}}
+\exp\!\left(-\frac{(x-\mu)^2}{2\sigma^2}\right).
+$$
+
+Its mathematical support is the whole real line. The standard normal has $\mu=0$ and $\sigma=1$; write its CDF as $\Phi$. The density integrates to one over the whole line. A zero-width uniform support or nonpositive Gaussian $\sigma$ is invalid for these continuous formulas; a point-mass model would be a separate definition.
+
+## Mechanics: separate model and viewport
+
+Choose uniform or normal mode, change its parameters, and move the interval bounds. The highlighted area, CDF difference, inspector, formula, and integration trace all describe the same state. In uniform mode, only the part of the interval inside the support contributes area.
+
+In normal mode, the drawn curve is sampled most densely over $\mu\pm4\sigma$, with extra points at interval and viewport bounds. The viewport also includes the uniform support for comparison. These finite samples make a readable approximation; they do not define the distribution's support or renormalize its CDF. The numerical integration uses a separate positive-tail cutoff at $8$ standard deviations.
+
+## Derivation: normalize and standardize
+
+Uniform normalization requires density times support width to equal one. Thus interval probability is the overlap width divided by $b-a$:
+
+$$
+P(\ell\le X\le u)
+=\frac{\max(0,\min(u,b)-\max(\ell,a))}{b-a},\qquad \ell\le u.
+$$
+
+For the Gaussian, set $Z=(X-\mu)/\sigma$. The substitution $dx=\sigma\,dz$ cancels the density's $1/\sigma$ factor, yielding the standard-normal density. Therefore
+
+$$
+P(\ell\le X\le u)
+=\Phi\!\left(\frac{u-\mu}{\sigma}\right)
+-\Phi\!\left(\frac{\ell-\mu}{\sigma}\right).
+$$
+
+The positive scale preserves endpoint order. Because these models are continuous, including or excluding finite endpoints gives the same probability.
+
+## Worked examples
+
+Uniform$(-2,2)$ has support width $4$ and density $1/4$. Its interval $[-1,1]$ has width $2$, so the area is exactly $1/2$. The interval $[-3,3]$ overlaps the full support and has probability $1$, rather than $6\times1/4$.
+
+<Stage caption="Reproduce the half-area uniform interval, then switch to the standard normal and compare its one-sigma area. Changing the curve shape changes the probability."><DistributionStage chapter="continuous" worked client:load /></Stage>
+
+For $X\sim\mathcal N(0,1)$,
+
+$$
+P(-1\le X\le1)=\Phi(1)-\Phi(-1)\approx0.682689492137.
+$$
+
+For $X\sim\mathcal N(2,9)$, the second parameter here denotes variance, so $\sigma=3$. Interval $[-1,5]$ standardizes to $[-1,1]$ and has the same probability. Always state whether a normal notation or software API uses variance or standard deviation as its scale parameter.
+
+## Executable reference code
+
+The exact uniform reference uses `Fraction` overlap widths. Its independent Gaussian CDF uses standard-library `math.erfc`, with $\Phi(z)=\tfrac12\operatorname{erfc}(-z/\sqrt2)$. It also demonstrates the positive-tail Simpson calculation and compares it with that independent CDF over a deterministic sweep and several intervals.
+
+The NumPy program exposes density arrays, an evenly spaced 2049-point grid, and Simpson weights $1,4,2,4,\ldots,2,4,1$. It uses installed NumPy plus the standard library, without SciPy. Both references include assertions for literal areas, invalid parameters, and the stated CDF and interval error budgets.
+
+<CodeFile source={reference} file="code/python/probability_continuous.py" />
+<CodeFile source={practical} file="code/python/probability_continuous_numpy.py" />
+
+## Explore
+
+In uniform mode, move a fixed-width interval entirely within the support. Predict the unchanged area, then move it across an edge and predict the decrease. Collapse the interval bounds to one point: area becomes zero while the density at that point can remain positive.
+
+In normal mode, compare intervals one standard deviation wide near the mean and far into a tail. Change $\mu$ while shifting the interval by the same amount. Then scale $\sigma$ and the interval's distances from $\mu$ together. Standardized bounds explain why those coordinated changes preserve probability.
+
+## Common mistakes and counterexamples
+
+Uniform means equal density within the support, not over the entire real line. Extending a constant positive height forever would give infinite area. Gaussian does not mean every symmetric interval has the same probability: its location and width relative to $\mu$ and $\sigma$ matter.
+
+For a normal density, substituting variance for $\sigma$ changes both height and width. A curve drawn within four standard deviations also does not capture exactly all mass: about $0.000063342484$ lies beyond the two drawing limits in total.
+
+## Numerical considerations
+
+The Gaussian model integrates the positive tail from $|z|$ to $8$ using composite Simpson's rule with 2048 subdivisions, then uses symmetry to obtain a CDF value. Beyond $8$ standard deviations it truncates the one-sided tail approximately; that omitted mass is less than $6.4\times10^{-16}$, not mathematically zero.
+
+The absolute CDF error budget is $10^{-9}$ against independent `math.erfc` values. An interval subtracts two approximate CDFs, so its absolute budget is $2\times10^{-9}$. This is not a promise of relative accuracy for tiny intervals or extreme tails. The $\pm4\sigma$ drawn curve is not claimed to have exactly normalized area.
+
+<Callout kind="numerical" title="Two different truncations">
+The main drawing grid covers four standard deviations in each direction, with sparse points outside when the viewport or interval requires them. The positive-tail integration stops at eight for numerical evaluation. Neither changes the infinite-support Gaussian definition, and neither justifies an exact zero-tail claim.
+</Callout>
+
+## Engineering and ML connections
+
+Uniform models describe deliberate random choices over bounded ranges. Gaussian models describe a specified noise or uncertainty shape with location and scale. A bell-shaped drawing alone does not establish that observed data are Gaussian. The interval calculation is conditional on the chosen model, and density values must be interpreted with their measurement units.
+
+## Exercises
+
+Use exact fractions for uniform calculations and signed numbers for standardized endpoints. The Gaussian choices use approximate values explicitly.
+
+<Exercise id="probability-continuous-uniform-window" client:load />
+<Exercise id="probability-continuous-clipped-window" client:load />
+<Exercise id="probability-continuous-standardize" client:load />
+<Exercise id="probability-continuous-gaussian-area" client:load />
+<Exercise id="probability-continuous-truncated-drawing" client:load />
+
+## Summary and checkpoints
+
+Uniform probability is normalized overlap width; Gaussian probability is a standardized CDF difference. Check that you can obtain the uniform half-area exactly, standardize $[-1,5]$ under $\mu=2$, $\sigma=3$, and explain both the numerical error budgets and the positive tails beyond a finite drawing.

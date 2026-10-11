@@ -90,10 +90,10 @@ describe('publication scope guard', () => {
     const published = allChapters.filter(r => r.chapter.status === 'available');
     expect(published.filter(r => r.part.numeral === 'I')).toHaveLength(9);
     expect(published.filter(r => r.part.numeral === 'II')).toHaveLength(19);
-    expect(published.filter(r => r.part.numeral === 'IV').map(r => r.id)).toEqual(['IV.1', 'IV.2', 'IV.3', 'IV.4', 'IV.5', 'IV.6']);
+    expect(published.filter(r => r.part.numeral === 'IV').map(r => r.id)).toEqual(Array.from({ length: 12 }, (_, i) => `IV.${i + 1}`));
     expect(published.every(r => ['I', 'II', 'IV'].includes(r.part.numeral))).toBe(true);
-    expect(published).toHaveLength(34);
-    expect(allChapters.filter(r => r.chapter.status === 'planned')).toHaveLength(63);
+    expect(published).toHaveLength(40);
+    expect(allChapters.filter(r => r.chapter.status === 'planned')).toHaveLength(57);
     expect(published.length + allChapters.filter(r => r.chapter.status === 'planned').length).toBe(97);
   });
 });

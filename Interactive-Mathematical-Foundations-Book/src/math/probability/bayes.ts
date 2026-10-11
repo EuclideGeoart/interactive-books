@@ -1,10 +1,5 @@
-import { add, div, fromDecimal, int, mul, ONE, sub } from '../quantity/rational';
-
-export function percent(value: number) {
-  const exact = fromDecimal(value, 2);
-  if (!exact || value < 0 || value > 100) throw new RangeError('A probability percentage must be from 0 to 100, with at most two decimal places.');
-  return div(exact, int(100));
-}
+import { add, div, int, mul, ONE, sub } from '../quantity/rational';
+import { percent } from './percent';
 
 /** Cells always mean A∩E, A∩Eᶜ, Aᶜ∩E, Aᶜ∩Eᶜ for the selected evidence E. */
 export function deriveBayes(prior: number, sensitivity: number, falsePositive: number, evidence: 'positive' | 'negative') {
