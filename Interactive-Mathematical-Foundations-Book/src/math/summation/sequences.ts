@@ -6,7 +6,7 @@
  * A term that does not exist (1/i at i = 0, a list entry past the end, 0 to a negative power) is reported as UNDEFINED with a reason;
  * it is never skipped, replaced by 0, or clamped.
  */
-import { ONE, equals, form, mul, pow, q, sub, type Q } from './rational';
+import { ONE, ZERO, equals, form, mul, pow, q, sub, type Q } from './rational';
 
 export type SeqId = 'identity' | 'square' | 'odd' | 'reciprocal' | 'alternating' | 'constant' | 'pronic' | 'geometric' | 'list';
 export const SEQ_IDS: readonly SeqId[] = Object.freeze(['identity', 'square', 'odd', 'reciprocal', 'alternating', 'constant', 'pronic', 'geometric', 'list']);
@@ -145,7 +145,12 @@ export function closedForm(id: SeqId, params: SeqParams, m: number, n: number): 
     if (equals(r, ONE)) {
       return { formulaTex: `\\sum_{i=m}^{n}1^{i}=n-m+1\\quad(r=1)`, workTex: `${n}-${kTex(m)}+1=${n - m + 1}`, value: q(n - m + 1), applies, special: 'r = 1 is the special case: every term is 1, so the sum is the number of terms' };
     }
-    if (r.num === 0n && m < 0) return null; // not defined: 0^m for m < 0
+    // No claim for fewer than zero terms, and none for an empty sum whose bounds sit where a power of 0 would be negative:
+    // the formula's r^m and r^{n+1} are never evaluated there (0 to a negative power), the empty-sum convention alone gives 0.
+    if (n < m - 1 || (r.num === 0n && m < 0 && n < m)) {
+      return { formulaTex: '\\sum_{i=m}^{n}r^{i}=\\frac{r^{m}-r^{n+1}}{1-r}\\quad(r\\ne1)', workTex: '', value: ZERO, applies: false, special: null };
+    }
+    if (r.num === 0n && m < 0) return null; // a term needs 0 to a negative power: not defined
     const value = (() => {
       const num = sub(pow(r, m), pow(r, n + 1));
       return mul(num, q(r.den, r.den - r.num)); // 1/(1 − r) = den/(den − num)

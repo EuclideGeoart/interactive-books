@@ -5,7 +5,7 @@ import random
 import runpy
 import sys
 import unittest
-from decimal import Decimal as D
+from decimal import Decimal as D, getcontext
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -18,6 +18,23 @@ except ImportError:  # pragma: no cover
 
 ROOT = Path(__file__).resolve().parent.parent
 MINUS = "−"
+
+# Several oracles set the process-wide Decimal context when they are imported (quantity 80 digits, functions and algebra 60), and
+# `unittest discover` imports every test module before running any. The families oracle needs its own 90 digits and exponent range while
+# its tests run, whatever was imported last, so the context is set for this module and restored afterwards.
+_SAVED_CONTEXT = None
+
+
+def setUpModule():
+    global _SAVED_CONTEXT
+    ctx = getcontext()
+    _SAVED_CONTEXT = (ctx.prec, ctx.Emax, ctx.Emin)
+    ctx.prec, ctx.Emax, ctx.Emin = 90, 10**7, -(10**7)
+
+
+def tearDownModule():
+    ctx = getcontext()
+    ctx.prec, ctx.Emax, ctx.Emin = _SAVED_CONTEXT
 
 
 class HighPrecisionPrimitives(unittest.TestCase):

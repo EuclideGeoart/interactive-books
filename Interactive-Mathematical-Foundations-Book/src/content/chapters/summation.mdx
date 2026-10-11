@@ -71,6 +71,8 @@ $$
 
 and if $r=1$ every term is $1$, so the sum is $n-m+1$. The geometric formula comes from a telescoping trick: multiplying the sum by $(1-r)$ makes every term but the first and the last cancel in pairs.
 
+**A convention to notice.** In a geometric sum the term at $i=0$ is $r^{0}$, and we read it as $1$ for every $r$, including $r=0$ (it is the empty product, and it is what Python's `Fraction(0) ** 0` gives). Chapter I.1 leaves $0^{0}$ undefined for ordinary powers of numbers; the two do not conflict, because here the convention belongs to the notation of a geometric sequence and is stated, not smuggled in. A negative power of $0$ stays undefined everywhere: if $r=0$ and a term needs $r^{i}$ with $i<0$, the sum is undefined. An *empty* sum is different again: it has no terms, so it is $0$ even when the bounds are ones where $r^{m}$ would not exist.
+
 **Rules for rewriting a sum.** For the same bounds on both sums and constants $c$:
 
 $$

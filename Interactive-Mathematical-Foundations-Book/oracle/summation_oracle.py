@@ -181,7 +181,7 @@ def sum_cases() -> list[dict]:
         cases.append(sum_case(seq, 4, 3))   # n = m - 1: empty, and the closed form still agrees
         cases.append(sum_case(seq, -5, 20))  # the widest window (26 terms)
     for r in ["1/2", "2", "-1", "1", "0", "3", "-2/3", "1/3", "5/4", "-1/2"]:
-        for m, n in [(0, 4), (1, 5), (-2, 3), (3, 3), (-5, -1), (0, 12), (4, 2), (2, 1), (-3, 6), (0, 0)]:
+        for m, n in [(0, 4), (1, 5), (-2, 3), (3, 3), (-5, -1), (0, 12), (4, 2), (2, 1), (-3, 6), (0, 0), (5, -5), (0, -2), (5, 4), (-1, 2), (-2, -3)]:
             cases.append(sum_case("geometric", m, n, frac(r)))
     lists = [["3", "-1", "1/2", "4"], ["5"], ["1", "2", "3", "4", "5", "6", "7", "8"], ["-2", "0", "7/3"]]
     for lst in lists:

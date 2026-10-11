@@ -158,6 +158,32 @@ class OffByOneLoopsRunInPython(unittest.TestCase):
             self.assertEqual(e["list-shifted"]["difference"], "0/1")
 
 
+class EmptyGeometricSums(unittest.TestCase):
+    """An empty sum is 0 whatever the formula's r^m and r^(n+1) would be; r^0 = 1 for every r (Python's Fraction(0) ** 0 == 1)."""
+
+    def case(self, m, n):
+        return oracle.sum_case("geometric", m, n, Fraction(0))["expected"]
+
+    def test_empty_sums_are_zero_and_make_no_claim_below_m_minus_1(self):
+        for m, n in [(5, -5), (0, -2), (5, 4), (-2, -3)]:
+            e = self.case(m, n)
+            self.assertTrue(e["empty"])
+            self.assertEqual((e["count"], e["total"], e["failure"]), (0, "0/1", None))
+        self.assertIsNone(self.case(5, -5)["closed"])
+        self.assertIsNone(self.case(0, -2)["closed"])
+
+    def test_zero_to_the_zeroth_is_one_in_a_geometric_sequence(self):
+        self.assertEqual(Fraction(0) ** 0, 1)
+        e = self.case(0, 0)
+        self.assertEqual((e["total"], e["closed"]), ("1/1", "1/1"))
+
+    def test_an_actual_term_with_a_negative_power_of_zero_is_undefined(self):
+        e = self.case(-1, 2)
+        self.assertIsNone(e["total"])
+        self.assertEqual(e["failure"]["i"], -1)
+        self.assertIsNone(e["closed"])
+
+
 class NestedSums(unittest.TestCase):
     def test_rectangular_product(self):
         e = oracle.nested_case("rectangular", "product", "rows-first", 3, 4)["expected"]

@@ -23,6 +23,8 @@ squares_ok = summation(lambda i: Fraction(i) ** 2, 1, n) == Fraction(n * (n + 1)
 odd_ok = summation(lambda i: Fraction(2 * i - 1), 1, n) == n**2  # the first n odd numbers add up to n squared
 
 # Geometric: (1 - r) * (r**m + ... + r**n) telescopes to r**m - r**(n + 1), so for r != 1 the sum is (r**m - r**(n+1)) / (1 - r).
+# Convention (stated in I.8; I.1 leaves 0**0 undefined for ordinary powers): the term r**0 of a geometric sum is 1 for every r, even r = 0,
+# which is what Fraction(0) ** 0 gives. A negative power of 0 (r = 0, i < 0) is an error; an empty range(...) never evaluates it.
 r = Fraction(1, 2)
 geometric = summation(lambda i: r**i, 0, 4)  # 1 + 1/2 + 1/4 + 1/8 + 1/16 = 31/16
 geometric_closed = (r**0 - r**5) / (1 - r)
