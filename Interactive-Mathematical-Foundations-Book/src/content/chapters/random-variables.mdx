@@ -45,8 +45,10 @@ The trace first normalizes the source weights, then groups outcomes by equal val
 Every outcome belongs to exactly one value group. Summing across the distinct values therefore counts every source mass exactly once:
 
 $$
-\sum_x P(X=x)=\sum_x\sum_{\omega:X(\omega)=x}p_\omega
-=\sum_{\omega\in\Omega}p_\omega=1.
+\begin{aligned}
+\sum_x P(X=x)&=\sum_x\sum_{\omega:X(\omega)=x}p_\omega\\
+&=\sum_{\omega\in\Omega}p_\omega=1.
+\end{aligned}
 $$
 
 This establishes normalization without assuming equally likely value labels. Nonnegative source masses also make every induced mass nonnegative. A many-to-one mapping combines mass; it never duplicates mass.

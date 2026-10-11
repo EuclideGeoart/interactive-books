@@ -6,6 +6,7 @@ export default function PlotView({ scene }: { scene: PlotScene }) {
     <title id={`${uid}-title`}>{scene.title}</title><desc id={`${uid}-description`}>{scene.description}</desc>
     <path class="prob-axis" d="M30,25V202H385" />
     <text x="26" y="19" text-anchor="start">{scene.maxLabel}</text>
+    {scene.minLabel && <text x="26" y="202" text-anchor="end">{scene.minLabel}</text>}
     {scene.area && <path class="prob-area" d={scene.area} />}
     {scene.bars.map((bar, i) => <rect key={i} class={bar.selected ? 'prob-selected' : 'prob-bar'} x={bar.x} y={bar.y} width={bar.width} height={bar.height} data-bar={bar.label} data-value={bar.value}><title>{bar.label}: approximately {bar.value}</title></rect>)}
     {scene.curve && <path class="prob-density" d={scene.curve} data-curve="primary" />}

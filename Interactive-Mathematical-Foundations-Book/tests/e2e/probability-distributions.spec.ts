@@ -26,9 +26,9 @@ test('IV.7: outcome mapping groups equal values and preserves source mass', asyn
   await stage.locator('[data-preset="constant"]').click(); await expect(stage.locator('[data-quantity="variance"]')).toContainText('0');
 });
 test('IV.8: PMF jumps, exact area and continuous point semantics stay linked', async ({ page }) => {
-  const stage = await open(page, 'pmf-pdf-cdf', 'representations'); await expect(stage.locator('[data-quantity="interval"]')).toContainText('3/4');
+  const stage = await open(page, 'pmf-pdf-cdf', 'representations'); await expect(stage.locator('[data-quantity="interval"]')).toContainText('0.75');
   await expect(stage.locator('[data-chart="cdf"] circle')).toHaveCount(6);
-  await stage.locator('[data-preset="uniform"]').click(); await expect(stage.locator('[data-quantity="interval"]')).toContainText('1/2'); await expect(stage.locator('[data-quantity="point"]')).toContainText('0');
+  await stage.locator('[data-preset="uniform"]').click(); await expect(stage.locator('[data-quantity="interval"]')).toContainText('0.5'); await expect(stage.locator('[data-quantity="point"]')).toContainText('0');
   await stage.locator('[data-probability-slider]').focus(); await stage.locator('[data-probability-slider]').press('ArrowRight'); await expect(stage.locator('[data-param="lower"] input')).toHaveValue('-0.99');
   await stage.locator('[data-preset="point"]').click(); await expect(stage.locator('[data-quantity="interval"]')).toContainText('0');
 });
@@ -44,12 +44,12 @@ test('IV.10: density can exceed one, invalid supports preserve the accepted stat
   await expect(stage.locator('[data-quantity="interval"]')).toContainText('0.682689'); await stage.locator('[data-action="reset"]').click(); await expect(stage.locator('[role="alert"]')).toHaveCount(0);
 });
 test('IV.11: expectation obeys linearity with dependent variables and affine shifts', async ({ page }) => {
-  const stage = await open(page, 'expectation', 'expectation'); await expect(stage.locator('[data-quantity="linearity"]')).toContainText('5/2');
-  await stage.locator('[data-preset="shifted"]').click(); await expect(stage.locator('[data-quantity="scaled-mean"]')).toContainText('5/2'); await expect(stage.locator('[data-quantity="scaled-variance"]')).toContainText('19/4');
+  const stage = await open(page, 'expectation', 'expectation'); await expect(stage.locator('[data-quantity="linearity"]')).toContainText('2.5');
+  await stage.locator('[data-preset="shifted"]').click(); await expect(stage.locator('[data-quantity="scaled-mean"]')).toContainText('2.5'); await expect(stage.locator('[data-quantity="scaled-variance"]')).toContainText('4.75');
 });
 test('IV.12: squared geometry and exact spread distinguish scaling from shifting', async ({ page }) => {
-  const stage = await open(page, 'variance-standard-deviation', 'variance'); await expect(stage.locator('[data-quantity="variance"]')).toContainText('19/4');
-  await expect(stage.locator('.prob-squares')).toContainText('25/4'); await stage.locator('[data-preset="reversed"]').click(); await expect(stage.locator('[data-quantity="scaled-variance"]')).toContainText('19');
+  const stage = await open(page, 'variance-standard-deviation', 'variance'); await expect(stage.locator('[data-quantity="variance"]')).toContainText('4.75');
+  await expect(stage.locator('.prob-squares')).toContainText('6.25'); await stage.locator('[data-preset="reversed"]').click(); await expect(stage.locator('[data-quantity="scaled-variance"]')).toContainText('19');
   await stage.locator('[data-preset="constant"]').click(); await expect(stage.locator('[data-quantity="variance"]')).toContainText('0'); await expect(stage.locator('[data-quantity="sd"]')).toContainText('0');
 });
 for (const theme of ['light', 'dark'] as const) test(`IV.10: ${theme} exceptional density, touch and accessibility`, async ({ page, isMobile }) => {

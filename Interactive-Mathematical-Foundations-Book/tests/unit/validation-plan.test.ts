@@ -23,10 +23,20 @@ describe('conservative change-scoped validation', () => {
   });
   it('the shared distribution model selects all actual distribution consumers and their cases', () => {
     const p = makePlan({ files: ['src/math/probability/distributions.ts'] });
-    expect(p.chapters.slice().sort()).toEqual(['IV.8', 'IV.9', 'IV.10'].sort()); expect(p.conservativeExpansion).toBe(false);
-    expect(p.oracles).toEqual(['probability_distributions']);
+    expect(p.chapters.slice().sort()).toEqual(['IV.8', 'IV.9', 'IV.10', 'IV.15', 'IV.16'].sort()); expect(p.conservativeExpansion).toBe(false);
+    expect(p.oracles).toEqual(['probability_distributions', 'probability_sampling']);
     const visual = new RegExp(p.commands.find(c => c.gate === 'affected root visuals')!.command.at(-1)!);
-    for (const id of ['IV.8', 'IV.9', 'IV.10']) expect(visual.test(`${id}: opening and exceptional probability states`)).toBe(true);
+    for (const id of ['IV.8', 'IV.9', 'IV.10', 'IV.15', 'IV.16']) expect(visual.test(`${id}: opening and exceptional probability states`)).toBe(true);
+  });
+  it('joint and sampling ownership stays selective while unresolved probability dependencies expand', () => {
+    for (const [file, ids, oracles] of [
+      ['src/math/probability/joint.ts', ['IV.13', 'IV.14'], ['probability_joint']],
+      ['src/math/probability/sampling.ts', ['IV.15', 'IV.16'], ['probability_sampling']],
+      ['tests/e2e/probability-sampling.spec.ts', ['IV.13', 'IV.14', 'IV.15', 'IV.16'], ['probability_joint', 'probability_sampling']],
+    ] as const) {
+      const p = makePlan({ files: [file] }); expect(p.conservativeExpansion).toBe(false); expect(p.chapters.slice().sort()).toEqual([...ids].sort()); expect(p.oracles).toEqual([...oracles]);
+    }
+    expect(makePlan({ files: ['src/math/probability/missing-sampling.ts'], chapters: ['IV.16'] }).commands.some(c => c.gate === 'complete root browser')).toBe(true);
   });
   it('discovers every current published chapter without a second publication registry', () => {
     expect(chapterCatalog().map(chapter => chapter.id).sort()).toEqual(allChapters.filter(ref => ref.chapter.status === 'available').map(ref => ref.id).sort());

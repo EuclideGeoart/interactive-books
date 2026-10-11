@@ -36,8 +36,10 @@ test('IV.2: event selection and weight changes preserve one authoritative mass t
   await expect(stage.locator('[data-quantity="a"]')).toContainText('2/3');
   await stage.locator('[data-preset="weighted"]').click();
   await expect(stage.locator('[data-quantity="a"]')).toContainText('4/7');
-  const bar = stage.locator('[data-mass="6"] .prob-track span');
-  expect(parseFloat((await bar.getAttribute('style'))!.split(':')[1]!)).toBeCloseTo(100 * 6 / 21, 10);
+  const bar = stage.locator('.prob-board [data-mass="6"] .prob-track span');
+  await expect(stage.locator('.prob-board [data-mass="6"]')).toHaveAttribute('data-fraction', '2/7');
+  // Chrome serializes updated CSS percentages to six significant digits; exact mass is checked above.
+  expect(parseFloat((await bar.getAttribute('style'))!.split(':')[1]!)).toBeCloseTo(100 * 6 / 21, 4);
   await stage.locator('[data-outcome="6"] button').first().click();
   await stage.locator('[data-param="weight"] input').fill('0'); await stage.locator('[data-param="weight"] input').press('Tab');
   await expect(stage.locator('[data-outcome="6"]')).toContainText('Original P = 0');
@@ -78,7 +80,7 @@ test('IV.6: Bayes prior, population counts and posterior bars agree', async ({ p
   await stage.locator('[data-probability-slider]').focus(); await stage.locator('[data-probability-slider]').press('ArrowRight');
   await expect(stage.locator('[data-param="prior"] input')).toHaveValue('1.01');
   await stage.locator('[data-preset="common"]').click(); await expect(stage.locator('[data-quantity="posterior"]')).toContainText('18/19');
-  await stage.getByLabel('Observed evidence', { exact: true }).selectOption('negative'); await expect(stage.locator('[data-quantity="posterior"]')).toContainText('2/21');
+  await stage.getByRole('combobox', { name: /^Observed evidence/ }).selectOption('negative'); await expect(stage.locator('[data-quantity="posterior"]')).toContainText('2/21');
   await stage.locator('[data-preset="impossible"]').click(); await expect(stage.locator('[data-quantity="posterior"]')).toHaveAttribute('data-status', 'undefined');
 });
 

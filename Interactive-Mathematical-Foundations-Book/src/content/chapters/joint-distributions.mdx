@@ -1,0 +1,146 @@
+---
+kind: chapter
+curriculumId: IV.13
+title: "Joint, marginal, and conditional distributions"
+hero: "What changes when two variables share one *outcome*?"
+lede: Move probability mass between cells, sum away one coordinate, then restrict to a row or column. The same table answers joint, marginal, and conditional questions.
+description: Exact joint tables, normalized marginals and conditional distributions, independence by factorization, empty conditioning events, executable Python and NumPy, and five graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import JointStage from '../../lessons/probability/JointStage';
+import Exercise from '../../lessons/probability/BlockCExercise';
+import reference from '../../../code/python/probability_joint.py?raw';
+import practical from '../../../code/python/probability_joint_numpy.py?raw';
+
+<Stage caption="Inspect the nine raw weights [1,1,0; 1,2,1; 0,1,1]. Select a row or column and compare its marginal mass with the conditional distribution inside it."><JointStage chapter="joint" client:load /></Stage>
+
+Predict whether the upper-left cell has the product of its row and column masses. Then select the top row: which denominator should replace the complete table total?
+
+## Intuition: the table keeps the pairing
+
+A marginal distribution describes one variable on its own. It does not say which values occur together. Two households can have the same distribution of daily electricity use and different relationships between morning and evening use. A joint table preserves those pairings.
+
+Each cell represents one pair $(U,V)$. A row collects all pairs with a particular $U$; a column collects all pairs with a particular $V$. Summing a row removes the $V$ coordinate. Conditioning on that row instead keeps its internal proportions and rescales the retained mass to one.
+
+## Definition
+
+For finite variables, the joint PMF is
+
+$$
+p_{ij}=\mathbb P(U=u_i,V=v_j),\qquad
+p_{ij}\geq0,\qquad\sum_i\sum_jp_{ij}=1.
+$$
+
+The **marginals** sum across the unobserved coordinate:
+
+$$
+p_U(u_i)=\sum_jp_{ij},\qquad p_V(v_j)=\sum_ip_{ij}.
+$$
+
+If $p_U(u_i)>0$, the **conditional PMF** of $V$ given $U=u_i$ is
+
+$$
+p_{V\mid U}(v_j\mid u_i)=\frac{p_{ij}}{p_U(u_i)}.
+$$
+
+The analogous column formula divides by $p_V(v_j)>0$. A zero marginal makes this finite conditioning formula undefined; it does not produce an all-zero or uniform distribution.
+
+## Mechanics: one normalization, then a restriction
+
+The stage uses rows and columns at latent values $-1,0,1$. Its canonical raw weights are $[1,1,0;1,2,1;0,1,1]$, with total $8$. Raw weights express relative masses; the model explicitly divides every cell by the complete positive total.
+
+Select a cell to edit its nonnegative integer weight. Row and column selectors choose the conditioning event. Read joint cell masses, both marginal distributions, and the selected conditional distribution together. Zero cells are valid; making the entire table zero is invalid. Reset restores the nine canonical weights and the canonical selections.
+
+The independent example uses outer-product weights $[1,2,1;2,4,2;1,2,1]$. Its total is $16$. Its marginal distributions match the canonical ones even though its joint masses differ.
+
+## Derivation: why the conditional row sums to one
+
+For a positive-mass row, its conditional masses satisfy
+
+$$
+\sum_jp_{V\mid U}(v_j\mid u_i)
+=\frac{\sum_jp_{ij}}{p_U(u_i)}=1.
+$$
+
+Multiplying the conditional formula back by its denominator gives the product rule
+
+$$
+p_{ij}=p_U(u_i)\,p_{V\mid U}(v_j\mid u_i).
+$$
+
+Independence requires every joint cell to factor:
+
+$$
+p_{ij}=p_U(u_i)p_V(v_j)\quad\text{for all }i,j.
+$$
+
+For positive conditioning rows, that equality means the conditional distribution equals the unconditional $V$ marginal. The cellwise test also handles zero rows: every cell there is zero, so both sides of the factorization are zero without dividing by zero.
+
+## Worked examples
+
+Both canonical marginals are $[1/4,1/2,1/4]$. The corner joint mass is $1/8$, while the product of its marginals is $(1/4)(1/4)=1/16$. These variables are dependent.
+
+Condition on $U=-1$. Retained row weights $[1,1,0]$ have total $2$, so
+
+$$
+p_{V\mid U}(\cdot\mid-1)=\left[\frac12,\frac12,0\right].
+$$
+
+Conditioning on the middle row instead gives $[1/4,1/2,1/4]$, which happens to match the $V$ marginal. One matching row does not prove independence; the corner test already disproves it.
+
+<Stage caption="Recover corner mass 1/8 and top-row conditional masses [1/2,1/2,0]. Compare the independent product table, whose marginals stay [1/4,1/2,1/4]."><JointStage chapter="joint" worked client:load /></Stage>
+
+In the independent example the corner mass becomes $1/16$ and the center mass remains $1/4$. Every positive row now has conditional distribution $[1/4,1/2,1/4]$. Changing dependence need not change either marginal.
+
+## Executable reference code
+
+The exact reference normalizes nine integer weights with `Fraction`, sums both marginals, builds conditional rows and columns, and tests every factorization exactly. Assertions cover canonical masses, the independent table, deterministic variables, proportional raw weights, and undefined conditioning.
+
+The NumPy reference makes summation axes explicit: `axis=1` removes columns and returns row marginals; `axis=0` returns column marginals. It uses a documented floating tolerance for its independence cross-check, which is approximate evidence rather than an exact proof.
+
+<CodeFile source={reference} file="code/python/probability_joint.py" />
+<CodeFile source={practical} file="code/python/probability_joint_numpy.py" />
+
+## Explore
+
+Predict which marginal entries change when one corner weight increases. After normalization, even unchanged raw cells can receive different probabilities because the complete denominator changes. Verify the total mass and inspect both affected marginal families.
+
+Use the empty-row or empty-column preset, leaving positive weight elsewhere. Explain why the overall distribution remains valid while that conditional distribution becomes undefined. Restore the row and compare its conditional probabilities with the unconditional column marginal. Multiply all weights by the same positive integer: which probabilities should remain exactly fixed?
+
+## Common mistakes and counterexamples
+
+Summing and conditioning answer different questions. The canonical top-row marginal is $1/4$; its conditional distribution has total $1$. Keeping the global denominator in a conditional row would leave total $1/4$ and fail normalization.
+
+Marginals do not determine the joint table. The canonical and independent tables have identical marginals but different corner masses. Also, checking only one row, one covariance, or one cell cannot establish independence across all cells. A mismatch in any cell does suffice to disprove it.
+
+## Numerical considerations
+
+In this bounded table, integer weights and normalized fractions support exact sums and comparisons. An all-zero total is rejected; individual zero rows and columns are preserved and reported explicitly. Display rounding never decides whether a conditional denominator is zero or whether the table factors.
+
+With floating data, very small positive marginals can amplify relative errors during conditional division. Distinguish an exact zero from a small positive quantity, and document any numerical comparison tolerance. Do not round a valid row to zero before computing its conditional probabilities.
+
+<Callout kind="misconception" title="An empty condition carries no finite conditional PMF">
+A zero row has no retained mass to normalize. Replacing it with equal probabilities would add an assumption absent from the original model; replacing it with zeros would fail to define a probability distribution.
+</Callout>
+
+## Engineering and ML connections
+
+A classification confusion matrix records joint behavior between a label and a prediction. Row and column normalization answer different conditional questions, while global normalization answers joint frequency questions. Always state which coordinate is conditioned on and which denominator is used.
+
+Feature marginals alone cannot reveal all dependence between features. A generative model that replaces a joint distribution by the product of marginals makes an independence assumption; it needs justification beyond matching each feature histogram separately.
+
+## Exercises
+
+Use exact fractions and state which normalization each answer uses.
+
+<Exercise id="probability-joint-marginals" client:load />
+<Exercise id="probability-joint-conditional" client:load />
+<Exercise id="probability-joint-independent-cell" client:load />
+<Exercise id="probability-joint-zero-row" client:load />
+<Exercise id="probability-joint-identical-marginals" client:load />
+
+## Summary and checkpoints
+
+A joint distribution preserves pairing. Marginalization adds away a coordinate; conditioning restricts and renormalizes positive retained mass. Check that you can recover both canonical marginals, normalize the top row, explain an empty condition, and test independence by every joint cell's factorization.

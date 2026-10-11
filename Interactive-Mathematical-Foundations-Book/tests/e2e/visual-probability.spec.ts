@@ -12,6 +12,10 @@ const cases: readonly [string, string, string, readonly string[]][] = [
   ['IV.10', 'uniform-gaussian', 'continuous', ['uniform', 'narrow']],
   ['IV.11', 'expectation', 'expectation', ['shifted']],
   ['IV.12', 'variance-standard-deviation', 'variance', ['constant', 'reversed']],
+  ['IV.13', 'joint-distributions', 'joint', ['independent', 'empty-row']],
+  ['IV.14', 'covariance-correlation', 'covariance', ['nonlinear', 'collapsed']],
+  ['IV.15', 'law-of-large-numbers', 'lln', ['short', 'degenerate']],
+  ['IV.16', 'central-limit-theorem', 'clt', ['short', 'large', 'dependent', 'degenerate']],
 ];
 for (const [id, slug, kind, presets] of cases) test(`${id}: opening and exceptional probability states`, async ({ page }) => {
   await page.goto(`chapters/${slug}/`); const stage = page.locator(`[data-stage="probability-${kind}"]`);

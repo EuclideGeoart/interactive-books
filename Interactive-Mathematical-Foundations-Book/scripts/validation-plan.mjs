@@ -24,6 +24,8 @@ export const families = {
   probability_variables: { lesson: 'probability', stage: 'RandomVariableStage', units: /^probability-(variables|moments|block-b)/, oracles: ['probability_moments'], browser: 'probability-distributions' },
   probability_distributions: { lesson: 'probability', stage: 'DistributionStage', units: /^probability-(distributions|block-b)/, oracles: ['probability_distributions'], browser: 'probability-distributions' },
   probability_moments: { lesson: 'probability', stage: 'MomentsStage', units: /^probability-(moments|block-b)/, oracles: ['probability_moments'], browser: 'probability-distributions' },
+  probability_joint: { lesson: 'probability', stage: 'JointStage', units: /^probability-(joint|block-c)/, oracles: ['probability_joint'], browser: 'probability-sampling' },
+  probability_sampling: { lesson: 'probability', stage: 'SamplingStage', units: /^probability-(sampling|block-c)/, oracles: ['probability_sampling'], browser: 'probability-sampling' },
 };
 /** @param {string} dir @returns {string[]} */
 export const walk = dir => existsSync(dir) ? readdirSync(dir, { withFileTypes: true }).flatMap(entry => {
@@ -98,6 +100,8 @@ function familyOfFile(path) {
     if (/^(distributions|Distribution)/.test(base)) return 'probability_distributions';
     if (/^(variables|RandomVariable)/.test(base)) return 'probability_variables';
     if (/^(moments|Moments)/.test(base)) return 'probability_moments';
+    if (/^(joint|Joint)/.test(base)) return 'probability_joint';
+    if (/^(sampling|Sampling)/.test(base)) return 'probability_sampling';
     return null;
   }
   return Object.keys(families).find(name => path.startsWith('src/lessons/' + families[name].lesson + '/') ||
@@ -145,7 +149,7 @@ export function makePlan({ mode = 'focused', files = [], chapters = [], only, pr
       }
     }
     if (!existsSync(file)) { broad = true; reasons.push(`${file}: deleted/unresolved file; expanded conservatively`); }
-    if (/^(src\/(ui|platform|shell|curriculum|pages)\/|src\/styles\/(?!chapters\/)|public\/)/.test(file) || ['../.gitignore', 'astro.config.mjs', 'vitest.config.ts', 'scripts/validation-plan.mjs', 'tests/unit/validation-plan.test.ts', 'tests/unit/curriculum.test.ts', 'tests/unit/completion-exercises.test.ts', 'tests/e2e/visual-linear-algebra.spec.ts', 'tests/e2e/visual-probability.spec.ts'].includes(file)) {
+    if (/^(src\/(ui|platform|shell|curriculum|pages)\/|src\/styles\/(?!chapters\/)|public\/)/.test(file) || ['../.gitignore', 'astro.config.mjs', 'vitest.config.ts', 'scripts/validation-plan.mjs', 'scripts/measure-probability-input.mjs', 'tests/unit/validation-plan.test.ts', 'tests/unit/curriculum.test.ts', 'tests/unit/completion-exercises.test.ts', 'tests/e2e/visual-linear-algebra.spec.ts', 'tests/e2e/visual-probability.spec.ts'].includes(file)) {
       shared = true;
       reasons.push(`${file}: known shared infrastructure; all math/contracts, representative interactions/axe, all root visuals`);
       continue;
