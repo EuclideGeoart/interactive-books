@@ -27,6 +27,32 @@ describe('conservative change-scoped validation', () => {
     expect(plan.chapters.slice().sort()).toEqual(['II.8', 'II.9', 'II.10', 'II.11', 'II.12', 'II.13'].sort());
     expect(plan.oracles).toEqual(['matrices']);
   });
+  it('discovers all completion stages with their mathematical families and visual kinds', () => {
+    const expected:Record<string,readonly [string,string]>={'II.14':['elimination','elimination'],'II.15':['elimination','rank'],'II.16':['elimination','inverse'],'II.17':['eigenvalues','eigenvalues'],'II.18':['least_squares','least-squares'],'II.19':['svd','svd']};
+    for(const[id,[family,kind]]of Object.entries(expected))expect(chapterCatalog().find(c=>c.id===id)).toMatchObject({family,kind});
+  });
+  for(const[file,ids,oracles,testFiles,kinds]of [
+    ['elimination.ts',['II.14','II.15','II.16','II.18','II.19'],['elimination','least_squares','svd'],['elimination','least-squares','svd'],['elimination','rank','inverse','least-squares','svd']],
+    ['eigenvalues.ts',['II.17'],['eigenvalues'],['eigenvalues'],['eigenvalues']],
+    ['least-squares.ts',['II.18'],['least_squares'],['least-squares'],['least-squares']],
+    ['svd.ts',['II.19'],['svd'],['svd'],['svd']],
+  ] as const)it(`${file}: selects actual consumers, units, oracles, browser cases and every exceptional screenshot`,()=>{
+    const p=makePlan({files:[`src/math/linear-algebra/${file}`]});expect(p.conservativeExpansion).toBe(false);expect(p.chapters.slice().sort()).toEqual([...ids].sort());expect(p.oracles).toEqual([...oracles]);
+    for(const name of testFiles){expect(p.units).toContain(`tests/unit/${name}.parity.test.ts`);const c=p.commands.find(c=>c.command.includes(`tests/e2e/${name}.spec.ts`))!;expect(c).toBeDefined();const grep=new RegExp(c.command.at(-1)!);for(const id of ids.filter(id=>chapterCatalog().find(c=>c.id===id)!.family===(name==='least-squares'?'least_squares':name==='elimination'?'elimination':name)))expect(grep.test(`${id}: actual interaction`)).toBe(true);}
+    const visual=new RegExp(p.commands.find(c=>c.gate==='affected root visuals')!.command.at(-1)!);for(const kind of kinds)expect(visual.test(`completion ${kind}: opening and exceptional states`)).toBe(true);
+    expect(visual.test('addition: opening and exceptional state')).toBe(false);
+  });
+  it('shared completion presentation expands to all six actual consumers without a full-suite fallback',()=>{
+    for(const file of ['src/lessons/linear-algebra/CompletionStage.tsx','src/lessons/linear-algebra/completion-view.ts','src/lessons/linear-algebra/completion-exercises.ts']){
+      const p=makePlan({files:[file]});expect(p.conservativeExpansion).toBe(false);expect(p.chapters.slice().sort()).toEqual(['II.14','II.15','II.16','II.17','II.18','II.19']);expect(p.oracles).toEqual(['eigenvalues','elimination','least_squares','svd']);
+    }
+  });
+  it('completion screenshots stay selective, and unresolved new-family files still fail conservatively',()=>{
+    for(const[kind,id]of [['elimination','II.14'],['rank','II.15'],['inverse','II.16'],['eigenvalues','II.17'],['least-squares','II.18'],['svd','II.19']]){
+      expect(makePlan({files:[`tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-completion-${kind}-exception.png`]}).chapters).toEqual([id]);
+    }
+    for(const file of ['src/math/linear-algebra/svd-deleted.ts','src/math/new-spectral-family.ts'])expect(makePlan({files:[file],chapters:['II.19']}).commands.some(c=>c.gate==='complete root browser')).toBe(true);
+  });
   it('limits a known affine screenshot change and expands unresolved/deleted inputs', () => {
     expect(makePlan({ files: ['tests/e2e/__screenshots__/visual-linear-algebra.spec.ts/mobile-ii-matrix-composition-affine.png'] }).chapters).toEqual(['II.10']);
     expect(makePlan({ files: ['src/math/quantity/deleted-helper.ts'] }).conservativeExpansion).toBe(true);

@@ -207,10 +207,13 @@ for (const c of chapters) test.describe(`II.${chapters.indexOf(c) + 1}: ${c.kind
   });
 });
 
-test('publication counts and reading order cross I.9 → II.1, II.7 → II.8, and stop before II.14', async ({ page }) => {
-  await page.goto('contents/'); await expect(page.locator('main .lede')).toContainText('22 of 97');
+test('publication counts and reading order cross I.9 → II.1, II.7 → II.8, II.13 → II.14 and stop before III.1', async ({ page }) => {
+  await page.goto('contents/'); await expect(page.locator('main .lede')).toContainText('28 of 97');
   for (const c of chapters) await expect(page.locator(`main a[href$="chapters/${c.slug}/"]`)).toHaveCount(1);
   await page.goto('chapters/notation-map/'); await page.locator('nav.chapter-pager .pager-next').click(); await expect(page).toHaveURL(/chapters\/vector-addition\/$/);
   await page.goto('chapters/vector-basis/'); const next = page.locator('nav.chapter-pager .pager-next'); await expect(next).toContainText('II.8'); await next.click(); await expect(page).toHaveURL(/chapters\/matrix-transformations\/$/);
-  await page.goto('chapters/linear-systems/'); const planned = page.locator('nav.chapter-pager .pager-next'); await expect(planned).toContainText('II.14'); await expect(planned).not.toHaveAttribute('href');
+  await page.goto('chapters/linear-systems/'); const elimination = page.locator('nav.chapter-pager .pager-next'); await expect(elimination).toContainText('II.14'); await elimination.click(); await expect(page).toHaveURL(/chapters\/gaussian-elimination\/$/);
+  const completion=['gaussian-elimination','rank-invertibility','inverse-matrices','eigenvalues-eigenvectors','orthogonal-least-squares','singular-value-decomposition'];
+  for(let i=0;i<completion.length-1;i++){await page.goto(`chapters/${completion[i]}/`);await page.locator('nav.chapter-pager .pager-next').click();await expect(page).toHaveURL(new RegExp(`chapters/${completion[i+1]}/$`));}
+  await page.goto('chapters/singular-value-decomposition/'); const planned = page.locator('nav.chapter-pager .pager-next'); await expect(planned).toContainText('III.1'); await expect(planned).not.toHaveAttribute('href');
 });

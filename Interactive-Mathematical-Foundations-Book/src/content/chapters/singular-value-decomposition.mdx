@@ -1,0 +1,144 @@
+---
+kind: chapter
+curriculumId: II.19
+title: Singular Value Decomposition
+hero: Every linear map has perpendicular input and output stories.
+lede: Turn the input, scale perpendicular axes, then turn the output. Inspect four synchronized views as a circle becomes an ellipse, a segment or a point, and compare the composed transformation with the original matrix.
+description: "Interactive 2×2 SVD with exact rank, checked numerical factors, semantic replay, rank-one approximation, pseudoinverse, independent Python and NumPy, and five graded exercises."
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import SVDStage from '../../lessons/linear-algebra/SVDStage';
+import Exercise from '../../lessons/linear-algebra/CompletionExercise';
+import reference from '../../../code/python/svd.py?raw';
+import practical from '../../../code/python/svd_numpy.py?raw';
+
+<Stage caption="Read the four panes from left to right, then down. The solid final curve is UΣVᵀ acting on the circle; the thin dashed overlay is A acting directly. The blue dashed segment is the rank-one image, and its connector to the selected output is the discarded component."><SVDStage client:load /></Stage>
+
+Drag the input vector, change a matrix entry, then replay the factor actions. Choose **Rank one** to collapse the ellipse to a segment, **Zero** to collapse everything to the origin, and **Reflection** to see why an orthogonal factor can reverse orientation. All four panes use the same coordinate scale, so a change of length is visible rather than hidden by independent zooms.
+
+## Intuition: choose axes that separate the action
+
+A shear seems to mix coordinates. But some perpendicular input directions have perpendicular output images. Measure the strength along those directions, and the map becomes three simple actions: read coordinates in the right input frame, scale those coordinates, then assemble them in the left output frame.
+
+The unit circle contains every unit input direction. Its image is an ellipse for a full-rank map, a segment for rank one, or a point for rank zero. The ellipse's longest and shortest radii are the singular values. They measure lengths, so they cannot be negative. Reversals belong to the orthogonal frames.
+
+## Definition
+
+For a real square 2×2 matrix, an SVD is
+
+$$
+A=U\Sigma V^T,\qquad U^TU=V^TV=I,\qquad
+\Sigma=\begin{bmatrix}\sigma_1&0\\0&\sigma_2\end{bmatrix},\qquad
+\sigma_1\geq\sigma_2\geq0.
+$$
+
+The columns $v_j$ of $V$ are right singular directions, and the columns $u_j$ of $U$ are left singular directions. They satisfy $Av_j=\sigma_ju_j$. The relation defines a direction in the output only when $\sigma_j>0$; a zero singular value maps its right direction to zero. Completing $U$ orthogonally in an unused output direction is a choice.
+
+The exact rank is the number of mathematically nonzero singular values. The explorer decides that rank from the entered rational matrix first, then constructs approximate spectral companions. A numerical cutoff does not redefine the entered map.
+
+## Mechanics: follow one vector through all three factors
+
+The first pane shows $x$ and the unit circle. The second shows $V^Tx$: coordinates in the orthogonal right frame. Length is preserved. The third applies $\Sigma$, stretching each coordinate along a perpendicular axis. The fourth applies $U$ and reconstructs the output.
+
+$$
+x\longmapsto V^Tx\longmapsto\Sigma V^Tx\longmapsto U\Sigma V^Tx=Ax.
+$$
+
+The input pane draws $v_1,v_2$; the output pane draws $\sigma_1u_1,\sigma_2u_2$. The trace contains actual factors, vector states and sampled circle states. Numeric fields and keyboard arrows update the same canonical state as dragging. Read the inspector's approximate factors and their reconstruction and orthogonality errors together.
+
+## Derivation: why perpendicular directions exist
+
+For any input $v$, $\|Av\|^2=v^TA^TAv$. The Gram matrix $G=A^TA$ is symmetric and positive semidefinite, since this squared length is nonnegative. Its orthonormal eigenvectors $v_1,v_2$ have nonnegative eigenvalues $\sigma_1^2,\sigma_2^2$.
+
+If both singular values are positive, define $u_j=Av_j/\sigma_j$. Then
+
+$$
+u_i^Tu_j=\frac{v_i^TA^TAv_j}{\sigma_i\sigma_j}
+=\frac{\sigma_j^2v_i^Tv_j}{\sigma_i\sigma_j}.
+$$
+
+This is one when $i=j$ and zero otherwise, so the output directions are orthonormal. As $AV=U\Sigma$ and $V^{-1}=V^T$, multiplying on the right gives $A=U\Sigma V^T$. For a zero singular value, do not use that division: complete the surviving orthogonal direction instead. The zero map permits any orthogonal input and output frames.
+
+For $G=\begin{bmatrix}g_{11}&g_{12}\\g_{12}&g_{22}\end{bmatrix}$, its eigenvalues are
+
+$$
+\frac{g_{11}+g_{22}\pm\sqrt{(g_{11}-g_{22})^2+4g_{12}^2}}2.
+$$
+
+The pedagogical implementation uses a symmetric 2×2 Jacobi angle to obtain a right frame. It measures $\sigma_1=\|Av_1\|$, and for exact full rank obtains $\sigma_2=|\det A|/\sigma_1$. Computing the determinant exactly before conversion avoids subtracting nearly equal Gram eigenvalues to obtain a weak axis. A repeated spectrum uses equal values and a convenient coordinate frame.
+
+## Worked examples: signs, collapse and ambiguity
+
+For $A=\operatorname{diag}(3,-1)$, take $V=I$, $\Sigma=\operatorname{diag}(3,1)$ and $U=\operatorname{diag}(1,-1)$. An input $(2,1)$ becomes $(2,1)$, then $(6,1)$, then $(6,-1)$. The singular values are $3,1$, while the eigenvalues are $3,-1$. These answer different questions: lengths along perpendicular input/output frames versus gains on preserved lines.
+
+For the opening shear $A=\begin{bmatrix}3&1\\0&1\end{bmatrix}$, the Gram matrix is $\begin{bmatrix}9&3\\3&2\end{bmatrix}$. Its eigenvalues are $(11\pm\sqrt{85})/2$. Taking their nonnegative square roots gives approximately $3.17959$ and $0.943519$. Replay the actual factor actions and compare the last vector with the direct output $(4,1)$.
+
+<Stage caption="Replay the Gram construction, each vector/factor state, reconstruction checks, then the low-rank and pseudoinverse consequences."><SVDStage worked client:load /></Stage>
+
+For $A=\begin{bmatrix}1&2\\2&4\end{bmatrix}$, the singular values are $5,0$. The right direction $(1,2)/\sqrt5$ survives; $(-2,1)/\sqrt5$ disappears. Inputs that differ by a multiple of $(-2,1)$ have identical outputs.
+
+For $2I$, both singular values equal two. Every unit input is stretched by the same amount, so no direction is preferred. Any orthogonal $Q$ gives $2I=Q(2I)Q^T$. The displayed axes are one choice; they can change abruptly near a repeated spectrum without the original transformation changing abruptly.
+
+## Derivation: keep the strongest term
+
+The decomposition is a sum of perpendicular outer products:
+
+$$
+A=\sigma_1u_1v_1^T+\sigma_2u_2v_2^T,
+\qquad A_1=\sigma_1u_1v_1^T.
+$$
+
+The Frobenius norm is $\|B\|_F=\sqrt{\sum_{ij}B_{ij}^2}$. A unit-vector outer product has Frobenius norm one, so here $\|A-A_1\|_F=\sigma_2$. This is a best approximation of rank **at most** one in that norm; for the zero map it still has rank zero.
+
+To see why no rank-one competitor $B$ can do better, choose a unit vector in $\ker B$. Then $\|(A-B)v\|=\|Av\|\geq\sigma_2$, and the Frobenius norm bounds the length of the action on any unit vector. The truncated SVD attains that bound. For a general matrix, dropping all but the first $k$ terms gives Frobenius error $\sqrt{\sum_{j>k}\sigma_j^2}$. Equal singular values can make the best approximation nonunique.
+
+## Pseudoinverse: fit what is reachable, recover the smallest input
+
+Invert each nonzero strength and leave zero strengths at zero:
+
+$$
+A^+=V\Sigma^+U^T,\qquad
+\sigma_j^+=\begin{cases}1/\sigma_j&\sigma_j>0\\0&\sigma_j=0.\end{cases}
+$$
+
+For $b$, $A^+b$ minimizes $\|Ax-b\|$, and among all those minimizers it has the smallest input norm. $AA^+b$ is the projection onto the column space. $A^+Ax$ is the projection of an input onto the row space, so it recovers $x$ only when $x$ has no lost null-space component.
+
+For $A=\operatorname{diag}(2,0)$ and $b=(4,3)$, $A^+b=(2,0)$. Every input $(2,t)$ has the same residual $(0,-3)$; choosing $t=0$ minimizes input length. No inverse reconstructs the erased coordinate. The explorer reports $A^+(Ax)$ and withholds numerical recovery when conditioning exceeds its documented accuracy budget.
+
+## Rectangular dimensions and executable code
+
+For an $m\times n$ matrix with $k=\min(m,n)$, a thin decomposition has $U$ of shape $m\times k$, $\Sigma$ of shape $k\times k$ and $V^T$ of shape $k\times n$. The products have shape $m\times n$. In a full decomposition, $U$ and $V$ are square orthogonal matrices and $\Sigma$ is rectangular. Thin factors have orthonormal columns/rows rather than necessarily being square invertible maps.
+
+The small Python reference exposes the 2×2 mechanics. NumPy supplies a practical rectangular decomposition, low-rank reconstruction and least-squares pseudoinverse. Its explicit `rcond` is a numerical modeling policy; it may report a numerical rank different from the exact rank of entered rationals.
+
+<CodeFile source={reference} file="code/python/svd.py" />
+<CodeFile source={practical} file="code/python/svd_numpy.py" />
+
+## Explore and numerical considerations
+
+Change a matrix entry until the determinant vanishes. Compare a lost axis with an extremely weak but nonzero one. Use the ill-conditioned preset and inspect its exact rank, positive weak singular value and condition number $\kappa_2(A)=\sigma_1/\sigma_2$. Perturb the input: undoing a weak axis can amplify a tiny output error enormously.
+
+All entered matrix/vector values in the explorer lie in $[-4,4]$ with two decimal places. Exact rational rank and repeated-value classifications have no epsilon. All spectral factors and geometry use binary64 companions marked $\approx$.
+
+The checks require relative Frobenius reconstruction error $\|A-U\Sigma V^T\|_F/\max(1,\|A\|_F)$ and both Frobenius orthogonality errors to be at most $256\varepsilon$, about $5.68\times10^{-14}$, with $\varepsilon$ the binary64 machine epsilon. This budget allows roundoff in short products, trigonometric normalization and reconstruction. Independent NumPy SVD checks and 100-digit Decimal spectra validate it across deterministic fixtures, including much more ill-conditioned inputs than the controls allow. A check failure is disclosed and suppresses the geometry's claim of a faithful decomposition.
+
+The conditioning cue appears when $\kappa_2\cdot256\varepsilon>10^{-8}$. Numerical pseudoinverse recovery is withheld if that conservative error budget reaches $10^{-4}$. These accuracy policies never truncate the small singular value or change exact rank. Reconstruction can be accurate even when inverse recovery is unreliable. Rounded factor entries cannot serve as exact identities or certify the relative precision of a tiny singular value.
+
+## Common mistakes and applications
+
+Singular directions need not be eigenvectors of $A$. Orthogonal includes reflections as well as rotations. A pseudoinverse cannot recover lost information. Small singular values can indicate uncertainty or a useful low-rank model, but discarding them is an explicit approximation. A repeated spectrum supplies a subspace without uniquely named axes.
+
+Compression stores a few outer products instead of every matrix entry; storage savings depend on rank and dimensions. PCA applies SVD to a **centered** observations-by-features matrix: right singular vectors identify feature directions, and squared singular values divided by the appropriate sample normalization describe variance. Scaling features changes that analysis. Low-rank embeddings retain strong shared patterns; their quality depends on the data, centering, objective and rank choice, rather than on a universal interpretation of “importance.”
+
+## Exercises
+
+<Exercise id="svd-values" client:load />
+<Exercise id="svd-error" client:load />
+<Exercise id="svd-recover" client:load />
+<Exercise id="svd-repeat" client:load />
+<Exercise id="svd-rank" client:load />
+
+## Summary and checkpoints
+
+Follow a vector through $V^T$, $\Sigma$ and $U$; predict an ellipse, segment or point; check approximate factors against exact rank; derive the rank-one Frobenius error; and explain what the pseudoinverse can recover. Part II is complete: elimination, rank, preserved directions, projection and SVD now describe complementary views of the same linear map.

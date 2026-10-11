@@ -91,7 +91,7 @@ export const parts: readonly Part[] = [
       available(16, "Inverse matrices", "inverse-matrices"),
       available(17, "Eigenvalues and eigenvectors", "eigenvalues-eigenvectors"),
       available(18, "Orthogonal bases and least-squares geometry", "orthogonal-least-squares"),
-      planned(19, "Singular Value Decomposition"),
+      available(19, "Singular Value Decomposition", "singular-value-decomposition"),
     ],
   },
   {
