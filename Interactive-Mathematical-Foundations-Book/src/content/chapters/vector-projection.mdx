@@ -1,0 +1,116 @@
+---
+kind: chapter
+curriculumId: II.5
+title: "Projection and distance to a direction"
+hero: "Which part of a move follows a *direction*?"
+lede: Split one vector into a parallel move and a perpendicular residual. The projection reconstructs the parallel part; the residual measures distance to the line.
+description: Vector and signed scalar projections, orthogonal decomposition, distance to a line, residual orthogonality, zero-direction exceptions, Python and NumPy, and exercises with worked solutions.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import Xref from '../../shell/Xref.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import LinearStage from '../../lessons/linear-algebra/LinearStage';
+import WorkedStage from '../../lessons/linear-algebra/WorkedStage';
+import Exercise from '../../lessons/linear-algebra/Exercise';
+import reference from '../../../code/python/linear_projection.py?raw';
+import practical from '../../../code/python/linear_projection_numpy.py?raw';
+
+<Stage caption="Move the direction u or the vector v. The projection lies along u; the residual runs from the projection tip to v's tip. Their sum reconstructs v, and the residual dot u is exactly zero."><LinearStage chapter="projection" client:load /></Stage>
+
+Try **Negative component** and observe that the projection can lie on the ray opposite $\mathbf u$. Try **Perpendicular**: the projection becomes zero and the residual is the entire vector. Finally try **Zero direction** and identify why the formula cannot choose a line.
+
+## Intuition: a shadow on a line
+
+Imagine dropping a perpendicular from $\mathbf v$'s tip onto the line through the origin in direction $\mathbf u$. The point where it lands is the tip of the projection vector. The move from that point to $\mathbf v$'s tip is the residual. This splits one move into “along the line” and “away from the line.”
+
+The direction vector determines a whole line, not only the ray in which its arrow points. Consequently a projection may have a negative coefficient. Replacing $\mathbf u$ by another nonzero multiple leaves the line and the vector projection unchanged. An oriented scalar component can change sign when the direction reverses.
+
+## Definition
+
+For a **nonzero** direction $\mathbf u$,
+
+$$
+\alpha=\frac{\mathbf v\cdot\mathbf u}{\mathbf u\cdot\mathbf u},\qquad
+\operatorname{proj}_{\mathbf u}\mathbf v=\alpha\mathbf u,\qquad
+\mathbf r=\mathbf v-\operatorname{proj}_{\mathbf u}\mathbf v.
+$$
+
+The signed **scalar projection** is
+
+$$
+s=\frac{\mathbf v\cdot\mathbf u}{\norm{\mathbf u}},\qquad
+\operatorname{proj}_{\mathbf u}\mathbf v=s\widehat{\mathbf u}.
+$$
+
+These quantities have different meanings. $\alpha$ is the weight on the chosen vector $\mathbf u$. The scalar $s$ is signed distance along its unit direction. The vector projection has two components. The distance from $\mathbf v$'s tip to the entire line is the nonnegative number $\norm{\mathbf r}$.
+
+## Mechanics: two checks on one decomposition
+
+The inspector exposes the numerator, denominator, coefficient, projected vector, residual, and distance. A first check is reconstruction: projected vector plus residual equals $\mathbf v$. A second check is perpendicularity: $\mathbf r\cdot\mathbf u=0$. Reconstruction alone is insufficient, because infinitely many arbitrary pairs add to $\mathbf v$; perpendicularity identifies the orthogonal decomposition.
+
+The original $\mathbf v$ may be zero. If $\mathbf u$ is nonzero, its projection and residual are then both zero, and the distance is zero. The forbidden case is zero **direction**, not zero data. The stage shows all direction-dependent quantities as undefined in that case.
+
+## Derivation: force the residual to be orthogonal
+
+Any vector parallel to $\mathbf u$ can be written $\alpha\mathbf u$. Choose $\alpha$ by requiring the remainder to be orthogonal:
+
+$$
+0=(\mathbf v-\alpha\mathbf u)\cdot\mathbf u
+=\mathbf v\cdot\mathbf u-\alpha(\mathbf u\cdot\mathbf u).
+$$
+
+Because $\mathbf u\ne0$, its squared norm is positive, so division gives the stated coefficient. Substitution proves residual orthogonality exactly. The coefficient is unique, hence so are the parallel vector and residual.
+
+Why does this yield the closest point on the line? For any other line point $t\mathbf u$,
+
+$$
+\norm{\mathbf v-t\mathbf u}^2
+=\norm{\mathbf r+(\alpha-t)\mathbf u}^2
+=\norm{\mathbf r}^2+(\alpha-t)^2\norm{\mathbf u}^2.
+$$
+
+The cross term vanishes by orthogonality. The second term is nonnegative and becomes zero exactly at $t=\alpha$. Thus the projection minimizes distance to the line, and its residual length is that minimum. This is a geometric derivation, without needing a calculus optimizer.
+
+## Worked examples
+
+For $\mathbf u=(2,1)$ and $\mathbf v=(1,3)$, the numerator and denominator are both $5$, so $\alpha=1$. Projection $(2,1)$ plus residual $(-1,2)$ equals $(1,3)$. The check is $(-1,2)\cdot(2,1)=-2+2=0$. The distance is $\sqrt5$, while the signed scalar projection is $5/\sqrt5=\sqrt5$; these happen to agree in this example but are different quantities.
+
+<Stage caption="Inspect the coefficient, then the reconstruction and orthogonality check."><WorkedStage chapter="projection" client:load /></Stage>
+
+For $\mathbf u=(1,0)$ and $\mathbf v=(-3,2)$, projection is $(-3,0)$, signed scalar projection is $-3$, and distance is $2$. This example makes their distinctions visible: a negative along-line component does not imply negative distance.
+
+## Executable reference code
+
+The pedagogical version computes the coefficient and vectors exactly from decimal inputs and asserts residual orthogonality. The NumPy example uses a rescaled unit direction, which avoids forming a very large $\mathbf u\cdot\mathbf u$. Numerical reconstruction and orthogonality require tolerances appropriate to the data scale.
+
+<CodeFile source={reference} file="code/python/linear_projection.py" />
+<CodeFile source={practical} file="code/python/linear_projection_numpy.py" />
+
+## Explore
+
+Hold $\mathbf v=(1,3)$ fixed and compare $\mathbf u=(2,1)$ with $(4,2)$ and $(-2,-1)$. Predict which of $\alpha$, $s$, and the projected vector changes. Now make $\mathbf v$ parallel to $\mathbf u$ and explain why the residual vanishes. Make them perpendicular and explain why the coefficient vanishes instead. A projection onto a vertical direction works without a slope calculation or division by the horizontal component.
+
+## Common mistakes
+
+Dividing by $\norm{\mathbf u}$ and then multiplying by $\mathbf u$ mixes scalar and vector projection formulas. The vector formula requires squared length in its denominator unless $\mathbf u$ is already unit length. Another mistake measures distance to a ray or finite segment while using a formula for an entire line; those constrained problems require checking endpoints or allowed parameters.
+
+## Numerical considerations
+
+The bounded stage uses exact fractions for the coefficient and residual, so its orthogonality check is an exact zero rather than a rounded display coincidence. Direct floating-point division by a squared norm can fail when that square overflows or underflows. Normalizing after rescaling protects the direction calculation. It does not guarantee that every later dot product or residual is representable: enormous data can overflow the signed component, and subtracting nearly equal components can lose relative accuracy in a tiny residual. A small residual may be meaningful only to the precision of the input measurements. The displayed distance is an exact radical where supported, followed by a clearly marked approximation.
+
+## Engineering and ML connections
+
+Projection separates velocity along a track from sideways motion. It also measures the part of data explained by one direction and the part left over. This prepares the geometric view of least squares in later linear algebra: choose an approximation in a span and study the orthogonal residual. The current chapter projects onto one line; it does not yet solve a general fitting system.
+
+## Exercises
+
+<Exercise id="proj-vector" client:load />
+<Exercise id="proj-residual" client:load />
+<Exercise id="proj-construct" client:load />
+<Exercise id="proj-sign" client:load />
+<Exercise id="proj-scale" client:load />
+
+## Summary and checkpoints
+
+A nonzero direction determines a unique orthogonal split of every vector. Verify reconstruction and residual orthogonality, distinguish $\alpha$ from $s$ and the vector projection, and explain the nearest-line proof. <Xref to="chapters/vector-span/">II.6 Span</Xref> asks what two weighted directions can reach.

@@ -1,0 +1,116 @@
+---
+kind: chapter
+curriculumId: II.4
+title: "Dot product, angle, and orthogonality"
+hero: "How much do two directions *agree*?"
+lede: Turn two vectors and inspect the sign of their dot product. Component multiplication and an angle describe the same alignment, while the parallel part previews projection.
+description: Dot products from components and geometry, radians, acute and obtuse angles, orthogonality, signed components, zero exceptions, safe cosine clipping, Python and NumPy, and graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import Xref from '../../shell/Xref.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import LinearStage from '../../lessons/linear-algebra/LinearStage';
+import WorkedStage from '../../lessons/linear-algebra/WorkedStage';
+import Exercise from '../../lessons/linear-algebra/Exercise';
+import reference from '../../../code/python/linear_dot.py?raw';
+import practical from '../../../code/python/linear_dot_numpy.py?raw';
+
+<Stage caption="Drag either vector or turn v by π/2. The arc shows the smaller angle, the component products show the arithmetic, and the parallel part shows alignment along u."><LinearStage chapter="dot" client:load /></Stage>
+
+Start with the worked pair and predict the sign after a quarter-turn of $\mathbf v$. Keep turning until it points against $\mathbf u$. Choose **Perpendicular**, then **Zero vector**, and compare the two states: both have dot product zero, but only one has a defined right angle.
+
+## Intuition: alignment with size
+
+Two equally directed vectors reinforce the same move. Perpendicular vectors share no component along each other's direction. Opposite vectors disagree. The dot product encodes this with a positive value, zero, or a negative value. It also depends on length: doubling either vector doubles the product, even if the angle stays unchanged.
+
+The parallel arrow in the stage shows the part of $\mathbf v$ along the line of $\mathbf u$. Its signed scalar component is positive on $\mathbf u$'s ray and negative on the opposite ray. Multiplying that scalar component by $\norm{\mathbf u}$ gives the dot product. The complete decomposition is the subject of <Xref to="chapters/vector-projection/">II.5 Projection</Xref>.
+
+## Definition
+
+For $\mathbf u,\mathbf v\in\mathbb R^2$,
+
+$$
+\mathbf u\cdot\mathbf v=u_xv_x+u_yv_y.
+$$
+
+The output is a **scalar**, not a vector. If both vectors are nonzero and $\theta\in[0,\pi]$ is their smaller, unsigned angle,
+
+$$
+\mathbf u\cdot\mathbf v=\norm{\mathbf u}\norm{\mathbf v}\cos\theta.
+$$
+
+Angles are in radians. The two vectors are **orthogonal** when their dot product is zero. For nonzero vectors this means perpendicular directions and $\theta=\pi/2$. The zero vector is algebraically orthogonal to every vector, but it has no direction and forms no defined angle.
+
+## Mechanics: products before the sum
+
+The inspector separates $u_xv_x$ and $u_yv_y$. Either product may be negative; their sum determines alignment. In the perpendicular preset $\mathbf u=(3,0)$ and $\mathbf v=(0,3)$, both products vanish. For $(2,1)$ and $(-1,2)$, they instead cancel as $-2+2=0$. Perpendicularity does not require axis alignment or a zero component.
+
+For nonzero vectors, a positive product means an angle below $\pi/2$; a negative product means an angle above $\pi/2$. At identical directions $\theta=0$, and at opposite directions $\theta=\pi$. The arc always represents this smaller angle, rather than a directed full rotation. Turning clockwise and counter-clockwise to the same endpoint can therefore give the same angle.
+
+## Derivation: components meet geometry
+
+Form the triangle with sides $\mathbf u$, $\mathbf v$, and the vector between their tips. Expand the squared length of that last side:
+
+$$
+\norm{\mathbf u-\mathbf v}^2
+=\norm{\mathbf u}^2+\norm{\mathbf v}^2
+-2(u_xv_x+u_yv_y).
+$$
+
+The cosine rule for the same triangle gives
+
+$$
+\norm{\mathbf u-\mathbf v}^2
+=\norm{\mathbf u}^2+\norm{\mathbf v}^2
+-2\norm{\mathbf u}\norm{\mathbf v}\cos\theta.
+$$
+
+Equating the final terms proves the geometric identity. Symmetry follows directly from multiplication of real numbers: $\mathbf u\cdot\mathbf v=\mathbf v\cdot\mathbf u$. Distributivity gives $\mathbf u\cdot(a\mathbf v+b\mathbf w)=a(\mathbf u\cdot\mathbf v)+b(\mathbf u\cdot\mathbf w)$. Finally, $\mathbf v\cdot\mathbf v=\norm{\mathbf v}^2$.
+
+The geometric identity also implies $|\mathbf u\cdot\mathbf v|\le\norm{\mathbf u}\norm{\mathbf v}$, since $|\cos\theta|\le1$. This bound explains the legal range of a computed cosine.
+
+## Worked examples
+
+For $\mathbf u=(3,0)$ and $\mathbf v=(2,2)$, the product is $6$. Their lengths are $3$ and $2\sqrt2$, so $\cos\theta=1/\sqrt2$ and $\theta=\pi/4$. Inspect the arithmetic before the angular interpretation.
+
+<Stage caption="Step from component products to the cosine relation."><WorkedStage chapter="dot" client:load /></Stage>
+
+For $(2,-1)$ and $(3,4)$, the dot product is $6-4=2>0$: the angle is acute even though one matching-component product is negative. For $(1,0)$ and $(-1,0)$, the product is $-1$ and the angle is $\pi$. These cases separate the sign of one component from the sign of overall alignment.
+
+## Executable reference code
+
+The pedagogical dot product interprets decimal components exactly. Its angle routine first normalizes rescaled finite vectors and then checks the cosine range. NumPy's $@$ on two one-dimensional arrays computes their dot product; the remaining lines expose the angle calculation and the zero checks.
+
+<CodeFile source={reference} file="code/python/linear_dot.py" />
+<CodeFile source={practical} file="code/python/linear_dot_numpy.py" />
+
+## Explore
+
+With $\mathbf u=(2,1)$, construct a perpendicular vector by solving $2v_x+v_y=0$. Compare $(-1,2)$ and $(-2,4)$: the angle agrees, although their lengths differ. Now scale a nonperpendicular vector by $2$: predict the changed dot product and unchanged cosine. Scale by $-1$: the dot product changes sign and the angle becomes $\pi-\theta$.
+
+## Common mistakes
+
+Multiplying component sums, $(u_x+u_y)(v_x+v_y)$, introduces cross terms and is not a dot product. Treating zero product as proof of a right angle overlooks zero vectors. A large positive product also does not necessarily mean a smaller angle than a smaller product: different vector lengths can dominate the comparison. Normalized alignment removes that size dependence.
+
+## Numerical considerations
+
+Computing $\arccos((\mathbf u\cdot\mathbf v)/(\norm{\mathbf u}\norm{\mathbf v}))$ requires two nonzero vectors and finite, valid arithmetic. Normalizing after rescaling avoids intermediate squared-norm overflow. A rounded cosine can land a few ulps outside $[-1,1]$. The code allows at most eight binary64 epsilon units beyond an endpoint, reflecting the rounding of the normalized products and their sum. Values such as $1.4$, infinity, or NaN are rejected; unrestricted clipping would hide an invalid computation.
+
+Near parallel directions, $\arccos$ is sensitive because cosine changes very slowly with angle. The stage retains an exact decimal cross product $c=u_xv_y-u_yv_x$ and evaluates the equivalent smaller angle $\operatorname{atan2}(|c|,\mathbf u\cdot\mathbf v)$. This preserves a small angle that might be lost by rounding cosine to $1$. Exact decimal orthogonality in the stage uses no tolerance; measured floating-point vectors require a comparison scaled to their magnitudes and measurement uncertainty.
+
+## Engineering and ML connections
+
+Work done by a force along a displacement is a dot product: perpendicular force contributes no work along that move. A weighted feature score also multiplies matching coordinates and sums them. Cosine similarity compares normalized alignment, so it is undefined for a zero input unless an application declares a separate convention. Two-dimensional geometry supplies the mental model; the matching-component sum extends to longer vectors.
+
+## Exercises
+
+<Exercise id="dot-value" client:load />
+<Exercise id="dot-cancel" client:load />
+<Exercise id="dot-construct" client:load />
+<Exercise id="dot-sign" client:load />
+<Exercise id="dot-clamp" client:load />
+
+## Summary and checkpoints
+
+A dot product is both a matching-component sum and length-weighted alignment. Check that you can predict its sign, construct perpendicular vectors, distinguish algebraic orthogonality from a right angle at zero, and explain the narrow clipping policy. The next chapter turns the parallel component into a complete projection-and-residual decomposition.
