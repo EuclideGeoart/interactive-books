@@ -42,6 +42,40 @@ for (const chapter of chapters) describe(chapter + ': one matrix derivation feed
 });
 
 describe('canonical geometry and exact exceptional states', () => {
+  it('distinguishes linear composition from both translated affine stages in every presentation', () => {
+    const linear = deriveMatrixLesson('composition', MATRIX_CANONICAL.composition);
+    const affineState = matrixPresets('composition').find(preset => preset.id === 'affine')!.state;
+    const affine = deriveMatrixLesson('composition', affineState);
+    expect(linear.result).toEqual({ x: 3, y: 4 });
+    expect(linear.rows.find(row => row.id === 'output')!.symbolTex).toBe('B(A\\mathbf x)');
+    expect(linear.formulas[0]).toContain('B(A\\mathbf x)=(BA)\\mathbf x');
+    expect(affine.result).toEqual({ x: 4, y: 6 });
+    expect(affine.rows.find(row => row.id === 'intermediate')!.description.spoken).toBe('(4, 0)');
+    const output = affine.rows.find(row => row.id === 'output')!;
+    expect(output.symbolTex).toBe('B(A\\mathbf x+\\mathbf b)+\\mathbf c');
+    expect(output.description.spoken).toBe('(4, 6)');
+    expect(affine.formulas[0]).toContain('(BA)\\mathbf x+(B\\mathbf b+\\mathbf c)');
+    expect(affine.formulas[0]).toContain('\\begin{bmatrix}4\\\\6\\end{bmatrix}');
+    expect(affine.formulas.join(' ')).not.toContain('B(A\\mathbf x)=(BA)\\mathbf x');
+    expect(affine.rows.find(row => row.id === 'combined-translation')!.description.spoken).toBe('(1, 2)');
+    expect(affine.scene!.arrows.find(arrow => arrow.name === 'intermediate')).toMatchObject({ label: 'Ax+b', to: { x: 4, y: 0 } });
+    expect(affine.scene!.arrows.find(arrow => arrow.name === 'output')).toMatchObject({ label: 'B(Ax+b)+c', to: { x: 4, y: 6 } });
+    expect(affine.scene!.polygons.find(polygon => polygon.name === 'after-A-square')!.corners).toEqual([
+      { x: 1, y: -1 }, { x: 2, y: -1 }, { x: 3, y: 0 }, { x: 2, y: 0 },
+    ]);
+    expect(affine.scene!.polygons.find(polygon => polygon.name === 'after-BA-square')!.corners).toEqual([
+      { x: 1, y: 2 }, { x: 2, y: 3 }, { x: 3, y: 5 }, { x: 2, y: 4 },
+    ]);
+    expect(affine.verdict).toContain('final B(Ax + b) + c is (4, 6)');
+  });
+
+  it('does not reparse a derived translation as a two-place input decimal', () => {
+    const state = matrixPresets('composition').find(preset => preset.id === 'affine')!.state;
+    const affine = deriveMatrixLesson('composition', { ...state, b11: 0.25, t1: 0.25, t2: 0, c1: 0, c2: 0 });
+    expect(affine.scene!.polygons.find(polygon => polygon.name === 'after-BA-square')!.corners[0]).toEqual({ x: 0.0625, y: 0.25 });
+    expect(affine.rows.find(row => row.id === 'combined-translation')!.description.spoken).toBe('(0.0625, 0.25)');
+  });
+
   it('matches independently worked output points', () => {
     expect(deriveMatrixLesson('transform', MATRIX_CANONICAL.transform).result).toEqual({ x: 3, y: 1 });
     expect(deriveMatrixLesson('matvec', MATRIX_CANONICAL.matvec).result).toEqual({ x: 6, y: 10 });

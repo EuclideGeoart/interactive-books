@@ -31,3 +31,13 @@ for (const [kind, slug, preset] of matrixCases) test(`matrix ${kind}: opening an
   await stage.evaluate(el => el.scrollIntoView({ block: 'start', behavior: 'instant' }));
   await expect(stage).toHaveScreenshot(`ii-matrix-${kind}-exception.png`);
 });
+
+test('matrix composition: affine translated squares and output', async ({ page }) => {
+  await page.goto('chapters/matrix-composition/'); const stage = page.locator('[data-stage="matrix-composition"]');
+  await expect(stage).toHaveAttribute('data-hydrated', 'true'); await page.evaluate(() => document.fonts.ready);
+  await stage.locator('[data-preset="affine"]').click();
+  await page.addStyleTag({ content: 'html{scroll-padding:0 !important} .topbar{position:static !important;backdrop-filter:none !important} .skip-link{visibility:hidden !important} *{caret-color:transparent !important}' });
+  await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur?.());
+  await page.mouse.move(0, 0); await stage.evaluate(el => el.scrollIntoView({ block: 'start', behavior: 'instant' }));
+  await expect(stage).toHaveScreenshot('ii-matrix-composition-affine.png');
+});

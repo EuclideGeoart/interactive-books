@@ -38,6 +38,54 @@ async function pointOnPlane(stage: Locator, x: number, y: number) {
   return { x: box.x + box.width / 2 + x * scale, y: box.y + box.height / 2 - y * scale };
 }
 
+test('II.10: affine composition agrees in the inspector, formulas, arrows, polygons and accessible description', async ({ page }) => {
+  const stage = await open(page, 'composition', 'matrix-composition');
+  await expect(stage.locator('[data-quantity="output"]')).toContainText('(3, 4)');
+  await stage.locator('[data-preset="affine"]').click();
+  await expect(stage).toHaveAttribute('data-result-x', '4');
+  await expect(stage).toHaveAttribute('data-result-y', '6');
+  await expect(stage.locator('[data-quantity="intermediate"]')).toContainText('(4, 0)');
+  await expect(stage.locator('[data-quantity="output"]')).toContainText('(4, 6)');
+  await expect(stage.locator('[data-quantity="output"] annotation')).toHaveText('B(A\\mathbf x+\\mathbf b)+\\mathbf c');
+  const formulas = await stage.locator('.formula-panel annotation').allTextContents();
+  expect(formulas[0]).toContain('(BA)\\mathbf x+(B\\mathbf b+\\mathbf c)');
+  expect(formulas[0]).toContain('\\begin{bmatrix}4\\\\6\\end{bmatrix}');
+  expect(formulas.join(' ')).not.toContain('B(A\\mathbf x)=(BA)\\mathbf x');
+  await expect(stage.locator('[data-part="label-output"]')).toHaveText('B(Ax+b)+c');
+  await expect(stage.locator('[data-part="label-intermediate"]')).toHaveText('Ax+b');
+  await expect(stage.locator('[data-verdict]')).toContainText('final B(Ax + b) + c is (4, 6)');
+  const descriptionId = await stage.locator('svg.plane').getAttribute('aria-describedby');
+  await expect(stage.locator(`[id="${descriptionId}"]`)).toContainText('final B(Ax + b) + c is (4, 6)');
+  for (const [name, points] of [
+    ['after-A-square', [[1, -1], [2, -1], [3, 0], [2, 0]]],
+    ['after-BA-square', [[1, 2], [2, 3], [3, 5], [2, 4]]],
+  ] as const) {
+    const actual = await stage.locator(`[data-part="${name}"]`).evaluate(element => {
+      const polygon = element as SVGPolygonElement;
+      return Array.from(polygon.points).map(point => { const at = new DOMPoint(point.x, point.y).matrixTransform(polygon.getScreenCTM()!); return { x: at.x, y: at.y }; });
+    });
+    for (const [i, [x, y]] of points.entries()) {
+      const expected = await pointOnPlane(stage, x, y);
+      expect(Math.abs(actual[i]!.x - expected.x)).toBeLessThan(1.5);
+      expect(Math.abs(actual[i]!.y - expected.y)).toBeLessThan(1.5);
+    }
+  }
+  for (const [name, x, y] of [['intermediate', 4, 0], ['output', 4, 6]] as const) {
+    const actual = await stage.locator(`[data-part="${name}"] path`).evaluate(element => {
+      const path = element as SVGPathElement, point = path.getPointAtLength(0);
+      const at = new DOMPoint(point.x, point.y).matrixTransform(path.getScreenCTM()!);
+      return { x: at.x, y: at.y };
+    });
+    const expected = await pointOnPlane(stage, x, y);
+    expect(Math.abs(actual.x - expected.x)).toBeLessThan(1.5);
+    expect(Math.abs(actual.y - expected.y)).toBeLessThan(1.5);
+  }
+  expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice']).analyze()).violations).toEqual([]);
+  await stage.locator('[data-preset="canonical"]').click();
+  await expect(stage.locator('[data-part="label-output"]')).toHaveText('B(Ax)');
+  await expect(stage.locator('[data-quantity="output"]')).toContainText('(3, 4)');
+});
+
 for (const c of chapters) test.describe('II.' + c.n + ': ' + c.kind, () => {
   test('route, chapter contract, canonical exact result, formulas and responsive scope', async ({ page }) => {
     const stage = await open(page, c.kind, c.slug);

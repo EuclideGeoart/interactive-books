@@ -189,18 +189,19 @@ export interface MatrixDerived {
 }
 
 const newScene = (): MatrixScene => ({ lines: [], arrows: [], polygons: [], points: [], labels: [], handles: [], window: { xMin: -6, xMax: 6, yMin: -6, yMax: 6 } });
-const apply2 = (a: Matrix, p: readonly [number, number], translation: readonly [number, number] = [0, 0]): Point => {
-  const result = affine2(a, exactVector(p), exactVector(translation));
+const apply2 = (a: Matrix, p: readonly [number, number], translation: ExactVector = exactVector([0, 0])): Point => {
+  const result = affine2(a, exactVector(p), translation);
   if (!result.ok) throw new Error(result.reason);
   return asPoint(result.value);
 };
 function transformedGrid(scene: MatrixScene, a: Matrix, translation: readonly [number, number] = [0, 0]) {
+  const shift = exactVector(translation);
   for (let i = -4; i <= 4; i++) {
-    scene.lines.push({ name: `grid-column-${i}`, from: apply2(a, [i, -4], translation), to: apply2(a, [i, 4], translation), role: 'x', dashed: i !== 0, width: i === 0 ? 2.5 : 1 });
-    scene.lines.push({ name: `grid-row-${i}`, from: apply2(a, [-4, i], translation), to: apply2(a, [4, i], translation), role: 'y', dashed: i !== 0, width: i === 0 ? 2.5 : 1 });
+    scene.lines.push({ name: `grid-column-${i}`, from: apply2(a, [i, -4], shift), to: apply2(a, [i, 4], shift), role: 'x', dashed: i !== 0, width: i === 0 ? 2.5 : 1 });
+    scene.lines.push({ name: `grid-row-${i}`, from: apply2(a, [-4, i], shift), to: apply2(a, [4, i], shift), role: 'y', dashed: i !== 0, width: i === 0 ? 2.5 : 1 });
   }
 }
-const unitSquare = (a: Matrix, translation: readonly [number, number] = [0, 0]): Point[] => [[0, 0], [1, 0], [1, 1], [0, 1]].map(p => apply2(a, p as [number, number], translation));
+const unitSquare = (a: Matrix, translation: ExactVector = exactVector([0, 0])): Point[] => [[0, 0], [1, 0], [1, 1], [0, 1]].map(p => apply2(a, p as [number, number], translation));
 const fitScene = (scene: MatrixScene): MatrixScene => {
   const points = [...scene.lines.flatMap(line => [line.from, line.to]), ...scene.arrows.flatMap(arrow => [arrow.from, arrow.to]), ...scene.polygons.flatMap(poly => poly.corners), ...scene.points.map(p => p.at)];
   const radius = Math.max(5.5, ...points.flatMap(p => [Math.abs(p.x) + 2, Math.abs(p.y) + 2]));
@@ -236,7 +237,7 @@ export function deriveMatrixLesson(chapter: MatrixChapter, state: MatrixState): 
     if (!linear.ok || !affine.ok) throw new Error('2D transform shapes are fixed');
     const c1 = column(a, 0), c2 = column(a, 1), det = determinant2(a), shifted = state.t1 !== 0 || state.t2 !== 0;
     scene = newScene(); transformedGrid(scene, a, [state.t1, state.t2]);
-    scene.polygons.push({ name: 'transformed-square', corners: unitSquare(a, [state.t1, state.t2]), role: 'derived' });
+    scene.polygons.push({ name: 'transformed-square', corners: unitSquare(a, translation), role: 'derived' });
     scene.arrows.push({ name: 'column-1', from: origin, to: asPoint(c1), role: 'x', label: 'Ae₁' }, { name: 'column-2', from: origin, to: asPoint(c2), role: 'y', label: 'Ae₂' }, { name: 'input', from: origin, to: asPoint(x), role: 'ink', label: 'x' }, { name: 'output', from: origin, to: asPoint(shifted ? affine.value : linear.value), role: 'primary', label: shifted ? 'Ax+b' : 'Ax' });
     scene.points.push({ name: 'origin-image', at: asPoint(translation), role: shifted ? 'caution' : 'ink', radius: 5 });
     scene.labels.push({ name: 'origin-image-label', at: asPoint(translation), role: shifted ? 'caution' : 'ink', label: shifted ? 'b' : '0', dx: 14, dy: -14 });
@@ -270,30 +271,37 @@ export function deriveMatrixLesson(chapter: MatrixChapter, state: MatrixState): 
 
   if (chapter === 'composition') {
     const b = matrixB(state), ax = multiplyVector(a, x), ba = multiplyMatrices(b, a), ab = multiplyMatrices(a, b);
+    const affine = state.mode === 'affine', firstTranslation = exactVector(affine ? [state.t1, state.t2] : [0, 0]);
+    const intermediateSymbol = affine ? 'A\\mathbf x+\\mathbf b' : 'A\\mathbf x';
+    const outputSymbol = affine ? 'B(A\\mathbf x+\\mathbf b)+\\mathbf c' : 'B(A\\mathbf x)';
+    const intermediateLabel = affine ? 'Ax+b' : 'Ax', outputLabel = affine ? 'B(Ax+b)+c' : 'B(Ax)';
     rows.push(row('B', 'B', 'matrix B (applied second)', matrixDesc(b), 'y'), row('x', '\\mathbf x', 'input vector', vecDesc(x), 'ink'));
     if (ax.ok && ba.ok) {
       const sequential = multiplyVector(b, ax.value), combined = multiplyVector(ba.value, x);
       if (!sequential.ok || !combined.ok) throw new Error('Compatible composition produced an incompatible vector');
       let output = sequential.value, intermediate = ax.value, combinedTranslation: ExactVector | null = null;
-      if (state.mode === 'affine') {
-        const first = affine2(a, x, exactVector([state.t1, state.t2]));
+      if (affine) {
+        const first = affine2(a, x, firstTranslation);
         if (!first.ok) throw new Error(first.reason);
         const second = affine2(b, first.value, exactVector([state.c1, state.c2]));
         const bb = multiplyVector(b, exactVector([state.t1, state.t2]));
         if (!second.ok || !bb.ok) throw new Error('Affine composition shape failure');
         intermediate = first.value; output = second.value; combinedTranslation = bb.value.map((value, i) => add(value, exactVector([state.c1, state.c2])[i]!));
       }
-      rows.push(row('intermediate', state.mode === 'affine' ? 'A\\mathbf x+\\mathbf b' : 'A\\mathbf x', 'intermediate state after A', vecDesc(intermediate), 'x'), row('BA', 'BA', 'combined linear transformation', matrixDesc(ba.value), 'primary'), row('output', 'B(A\\mathbf x)', 'final state after B', vecDesc(output), 'primary'));
+      rows.push(row('intermediate', intermediateSymbol, affine ? 'intermediate affine state after A and b' : 'intermediate state after A', vecDesc(intermediate), 'x'), row('BA', 'BA', 'combined linear transformation', matrixDesc(ba.value), 'primary'), row('output', outputSymbol, affine ? 'final affine state after B and c' : 'final state after B', vecDesc(output), 'primary'));
       if (ab.ok) rows.push(row('AB', 'AB', 'opposite order for comparison', matrixDesc(ab.value), 'derived'));
-      formulas = [`B(A\\mathbf x)=(BA)\\mathbf x=${vtex(output)}`, ab.ok ? `BA=${mtex(ba.value)}${mtext(ba.value) === mtext(ab.value) ? '=' : '\\ne '}AB=${mtex(ab.value)}` : `AB\\text{ is undefined by shape}`];
-      if (combinedTranslation) formulas.push(`B(A\\mathbf x+\\mathbf b)+\\mathbf c=(BA)\\mathbf x+(B\\mathbf b+\\mathbf c),\\quad B\\mathbf b+\\mathbf c=${vtex(combinedTranslation)}`);
-      verdict = state.mode === 'affine' ? 'The linear parts compose as BA; translations compose separately as Bb + c.' : `A acts first and B second, so the combined matrix is BA${ab.ok && mtext(ba.value) !== mtext(ab.value) ? ', not AB' : ''}.`;
+      formulas = [affine ? aligned([`${outputSymbol}&`, '&=(BA)\\mathbf x+(B\\mathbf b+\\mathbf c)', `&=${vtex(output)}`]) : `${outputSymbol}=(BA)\\mathbf x=${vtex(output)}`, ab.ok ? `BA=${mtex(ba.value)}${mtext(ba.value) === mtext(ab.value) ? '=' : '\\ne '}AB=${mtex(ab.value)}` : `AB\\text{ is undefined by shape}`];
+      if (combinedTranslation) {
+        rows.push(row('combined-translation', 'B\\mathbf b+\\mathbf c', 'combined translation', vecDesc(combinedTranslation), 'caution'));
+        formulas.push(`B\\mathbf b+\\mathbf c=${vtex(combinedTranslation)}`);
+      }
+      verdict = affine ? `The affine intermediate Ax + b is ${vtext(intermediate)}; the final B(Ax + b) + c is ${vtext(output)}. The linear parts compose as BA; translations compose separately as Bb + c = ${vtext(combinedTranslation!)}.` : `A acts first and B second, so the combined matrix is BA${ab.ok && mtext(ba.value) !== mtext(ab.value) ? ', not AB' : ''}.`;
       if (a.rows === 2 && b.rows === 2 && b.cols === 2) {
-        scene = newScene(); const aSquare = unitSquare(a), baSquare = unitSquare(ba.value);
+        scene = newScene(); const aSquare = unitSquare(a, firstTranslation), baSquare = unitSquare(ba.value, combinedTranslation ?? exactVector([0, 0]));
         scene.polygons.push({ name: 'after-A-square', corners: aSquare, role: 'x' }, { name: 'after-BA-square', corners: baSquare, role: 'primary' });
-        scene.arrows.push({ name: 'input', from: origin, to: asPoint(x), role: 'ink', label: 'x' }, { name: 'intermediate', from: origin, to: asPoint(intermediate), role: 'x', label: state.mode === 'affine' ? 'Ax+b' : 'Ax' }, { name: 'output', from: origin, to: asPoint(output), role: 'primary', label: 'B(Ax)' });
+        scene.arrows.push({ name: 'input', from: origin, to: asPoint(x), role: 'ink', label: 'x' }, { name: 'intermediate', from: origin, to: asPoint(intermediate), role: 'x', label: intermediateLabel }, { name: 'output', from: origin, to: asPoint(output), role: 'primary', label: outputLabel });
         scene.handles.push({ id: 'input', xField: 'x1', yField: 'x2', at: asPoint(x), role: 'ink', label: 'input x' }); result = asPoint(output);
-      } else board = { items: [boardItem('x', x, 'ink'), boardItem('A', a, 'x'), boardItem('Ax', intermediate, 'x'), boardItem('B', b, 'y'), boardItem('B(Ax)', output, 'primary')], relation: `${shape(a)} then ${shape(b)} gives ${shape(ba.value)}`, invalid: false };
+      } else board = { items: [boardItem('x', x, 'ink'), boardItem('A', a, 'x'), boardItem(intermediateLabel, intermediate, 'x'), boardItem('B', b, 'y'), boardItem(outputLabel, output, 'primary')], relation: `${shape(a)} then ${shape(b)} gives ${shape(ba.value)}`, invalid: false };
     } else {
       const reason = !ax.ok ? ax.reason : !ba.ok ? ba.reason : 'Composition is undefined.';
       status = 'incompatible'; rows.push(row('BA', 'BA', 'combined transformation', undefinedDesc(reason), 'caution'));
