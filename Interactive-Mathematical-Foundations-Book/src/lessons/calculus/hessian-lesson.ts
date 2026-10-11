@@ -43,8 +43,8 @@ export function deriveHessian(s: HessianState): CalcDerived {
   map.handles.push({ id: 'p', label: `point (${gtext(s.x)}, ${gtext(s.y)}), f = ${rtext(z)}`, at: { x: s.x, y: s.y }, role: 'primary', xField: 'x', yField: 'y', step: 0.25 });
   map.description = `Contours of f = ${poly2Text(f)}. At (${gtext(s.x)}, ${gtext(s.y)}) the dashed lines are the principal curvature directions (eigenvectors of the Hessian, eigenvalues ≈ ${e.values.map(v => v.toFixed(4)).join(' and ')}). Classification: ${c.kind}.`;
   const model = scene('model', 'Quadratic model Q(δ) = f + ∇f·δ + ½δᵀHδ near the point', '', local);
-  model.curves.push({ name: 'f-contours', lines: cachedContours(`${S.id}-local-${s.x}-${s.y}`, (a, b) => eval2Number(f, a, b), local, levels, 48), role: 'ink', width: 1.2 });
-  model.curves.push({ name: 'q-contours', lines: cachedContours(`${S.id}-q-${s.x}-${s.y}`, q, local, levels, 48), role: 'derived', dashed: true, width: 2 });
+  model.curves.push({ name: 'f-contours', lines: cachedContours(`${S.id}-local-${s.x}-${s.y}`, (a, b) => eval2Number(f, a, b), local, levels, 32), role: 'ink', width: 1.2 });
+  model.curves.push({ name: 'q-contours', lines: cachedContours(`${S.id}-q-${s.x}-${s.y}`, q, local, levels, 32), role: 'derived', dashed: true, width: 2 });
   model.markers.push({ name: 'point', at: { x: s.x, y: s.y }, role: 'primary', filled: true });
   model.description = `Near the point, solid contours of f and dashed contours of its quadratic model share the same levels. ${c.kind === 'inconclusive' ? 'Here the Hessian is singular: the quadratic model is degenerate and does not capture the higher-order behaviour that decides the shape.' : 'Close to the point they agree; farther away higher-order terms separate them.'}`;
   const sym = h.fxy.num === h.fyx.num && h.fxy.den === h.fyx.den;

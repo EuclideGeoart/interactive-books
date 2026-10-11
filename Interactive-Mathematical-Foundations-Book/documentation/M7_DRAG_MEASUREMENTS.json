@@ -1,0 +1,135 @@
+{
+  "browser": "155.0.8059.39",
+  "platform": "linux",
+  "cpu": "12th Gen Intel(R) Core(TM) i5-12600",
+  "viewport": "1440×900, reduced motion, 1× CPU",
+  "policy": "Established M6 methodology: 80 real pointer moves on the first drag handle of each Part III opening stage (horizontal oscillation; elliptical for two-axis handles), five warm-up samples excluded; time from pointermove to the next animation-frame + MessageChannel callback. Moves that stay within one 0.25 lattice cell change no state, which is why medians can be ~0.2 ms. Synthetic desktop scheduling measurement, not hardware input latency or a physical touch-device result. III.10 has no drag handle (numeric inputs and trace stepping). Measured after the Hessian local-model grid was reduced from 48 to 32 cells (first run: 5/76 samples over 16.7 ms, p95 17.6 ms).",
+  "results": [
+    {
+      "chapter": "limits",
+      "stage": "limits",
+      "samples": 76,
+      "p50": 5.6,
+      "p95": 8.3,
+      "max": 8.5,
+      "over16_7": 0
+    },
+    {
+      "chapter": "continuity",
+      "stage": "continuity",
+      "samples": 76,
+      "p50": 0.2,
+      "p95": 8.7,
+      "max": 9.5,
+      "over16_7": 0
+    },
+    {
+      "chapter": "derivative-secant-tangent",
+      "stage": "secant",
+      "samples": 76,
+      "p50": 0.2,
+      "p95": 13.3,
+      "max": 13.9,
+      "over16_7": 0
+    },
+    {
+      "chapter": "derivative-rate-linear-model",
+      "stage": "linear-model",
+      "samples": 76,
+      "p50": 0.2,
+      "p95": 14.9,
+      "max": 16.3,
+      "over16_7": 0
+    },
+    {
+      "chapter": "derivative-rules",
+      "stage": "rules",
+      "samples": 76,
+      "p50": 9.5,
+      "p95": 12.2,
+      "max": 17.7,
+      "over16_7": 1
+    },
+    {
+      "chapter": "chain-rule",
+      "stage": "chain",
+      "samples": 76,
+      "p50": 0.2,
+      "p95": 13.1,
+      "max": 13.8,
+      "over16_7": 0
+    },
+    {
+      "chapter": "partial-derivatives",
+      "stage": "partials",
+      "samples": 76,
+      "p50": 0.3,
+      "p95": 11,
+      "max": 11.5,
+      "over16_7": 0
+    },
+    {
+      "chapter": "gradient-directional-derivatives",
+      "stage": "gradient",
+      "samples": 76,
+      "p50": 0.7,
+      "p95": 11.7,
+      "max": 12.2,
+      "over16_7": 0
+    },
+    {
+      "chapter": "jacobian",
+      "stage": "jacobian",
+      "samples": 76,
+      "p50": 0.3,
+      "p95": 14.9,
+      "max": 16.6,
+      "over16_7": 0
+    },
+    {
+      "chapter": "hessian-curvature",
+      "stage": "hessian",
+      "samples": 76,
+      "p50": 1.4,
+      "p95": 13,
+      "max": 15.3,
+      "over16_7": 0
+    },
+    {
+      "chapter": "integrals-accumulation",
+      "stage": "riemann",
+      "samples": 76,
+      "p50": 0.3,
+      "p95": 12.7,
+      "max": 19.8,
+      "over16_7": 1
+    },
+    {
+      "chapter": "fundamental-theorem",
+      "stage": "accumulation",
+      "samples": 76,
+      "p50": 0.4,
+      "p95": 10.4,
+      "max": 11.6,
+      "over16_7": 0
+    },
+    {
+      "chapter": "numerical-differentiation",
+      "stage": "finite-difference",
+      "samples": 76,
+      "p50": 0.2,
+      "p95": 11,
+      "max": 11.8,
+      "over16_7": 0
+    },
+    {
+      "chapter": "numerical-integration",
+      "stage": "quadrature",
+      "samples": 76,
+      "p50": 0.2,
+      "p95": 10,
+      "max": 11.7,
+      "over16_7": 0
+    }
+  ]
+}
