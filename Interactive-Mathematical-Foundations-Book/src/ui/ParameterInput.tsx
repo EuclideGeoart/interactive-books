@@ -6,7 +6,7 @@
  * inside the declared domain. Invalid text is REJECTED with a message and `aria-invalid` — never clamped
  * silently, never half-applied. Escape abandons the draft.
  */
-import { useEffect, useState } from 'preact/hooks';
+import { useLayoutEffect, useState } from 'preact/hooks';
 import { MINUS, formatGiven } from '../platform/numeric/format';
 import { describeDomain, parseParam, stepValue, type Grid, type ParamSpec } from '../platform/params';
 import { Formula } from './Formula';
@@ -26,8 +26,8 @@ export function ParameterInput({ spec, value, grid, onCommit }: ParameterInputPr
   const [draft, setDraft] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // The model is the authority: when it changes underneath a draft (a drag, a reset), the draft is stale.
-  useEffect(() => { setDraft(null); setError(null); }, [value]);
+  // Clear stale drafts before paint, so a delayed reset cannot erase the user's next edit.
+  useLayoutEffect(() => { setDraft(null); setError(null); }, [value]);
 
   const commit = (raw: string) => {
     const parsed = parseParam(spec, raw);

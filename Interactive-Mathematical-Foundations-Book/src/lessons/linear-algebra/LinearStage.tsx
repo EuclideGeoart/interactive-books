@@ -49,12 +49,22 @@ function Inner({ chapter }: { chapter: Chapter }) {
             {scene.arc && <Arc centre={{ x: 0, y: 0 }} radiusPx={38} from={scene.arc.from} to={scene.arc.to} role="derived" name="angle" />}
             {scene.rightAngle && <RightAngle {...scene.rightAngle} />}
             <Dot at={{ x: 0, y: 0 }} />
-            {scene.arrows.filter(a => a.from.x !== a.to.x || a.from.y !== a.to.y).map((a, i) => (
-              <PlaneLabel key={a.name} name={`label-${a.name}`}
-                at={a.name === 'u' || a.name === 'v' ? a.to : { x: (a.from.x + a.to.x) / 2, y: (a.from.y + a.to.y) / 2 }}
-                dx={a.name === 'u' || a.name === 'v' ? (a.to.x < 0 ? -24 : 24) : 0}
-                dy={a.name === 'u' || a.name === 'v' ? (a.to.y < 0 ? 26 : -26) : i % 2 ? 18 : -18} role={a.role} math>{a.label}</PlaneLabel>
-            ))}
+            {scene.arrows.filter(a => a.from.x !== a.to.x || a.from.y !== a.to.y).map((a, i) => {
+              if (a.name === 'weighted-u' && a.to.x === s.ux && a.to.y === s.uy) return null;
+              let at = { x: (a.from.x + a.to.x) / 2, y: (a.from.y + a.to.y) / 2 }, dx = 0, dy = i % 2 ? 18 : -18;
+              if (a.name === 'u' || a.name === 'v') {
+                at = a.to; dx = a.to.x < 0 || (a.name === 'u' && d.rank === 1) ? -24 : 24; dy = a.to.y < 0 ? 26 : -26;
+              } else if (a.name === 'sum' || a.name === 'basis-au') {
+                at = a.to; dy = a.to.y < 0 ? 18 : -18;
+              } else if (['difference', 'projection', 'residual', 'weighted-v', 'basis-bv'].includes(a.name)) {
+                // Separate these labels from input tips and shared arrowheads.
+                const length = Math.hypot(a.to.x - a.from.x, a.to.y - a.from.y);
+                const offset = a.name === 'residual' || ((a.name === 'difference' || a.name === 'projection') && a.from.x * a.to.y < a.from.y * a.to.x) ? -38 : 38;
+                dx = -offset * (a.to.y - a.from.y) / length; dy = -offset * (a.to.x - a.from.x) / length;
+              } else if (a.name === 'target') dy = 24;
+              return <PlaneLabel key={a.name} name={`label-${a.name}`}
+                at={at} dx={dx} dy={dy} role={a.role} math>{a.label}</PlaneLabel>;
+            })}
             {scene.handles.map(h => <g key={h.prefix} class={h.prefix !== last && scene.handles.some(other => other.prefix === last && other.at.x === h.at.x && other.at.y === h.at.y) ? 'la-behind' : undefined}>
               <DragPoint role={h.role} value={h.at} xSpec={spec[`${h.prefix}x`]} ySpec={spec[`${h.prefix}y`]} grid={grid}
                 label={`${h.prefix === 'p' ? 'target p' : `vector ${h.prefix}`} (${s[`${h.prefix}x`]}, ${s[`${h.prefix}y`]})`} hintId={hint}

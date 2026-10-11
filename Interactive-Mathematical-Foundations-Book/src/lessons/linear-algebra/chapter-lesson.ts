@@ -186,6 +186,7 @@ export function deriveLesson(kind: Chapter, s: State): Derived {
     }
   }
   const corners = [...scene.arrows.flatMap(a => [a.from, a.to]), ...scene.polygons.flatMap(p => p.corners), ...scene.lines.flatMap(l => [l.from, l.to])];
+  // shortcut: near-singular fits crowd handles; add zoom if separate pointer targeting becomes required.
   const radius = Math.max(5.5, ...corners.flatMap(p => [Math.abs(p.x) + 1.5, Math.abs(p.y) + 1.5]));
   scene.window = { xMin: -radius, xMax: radius, yMin: -radius, yMax: radius };
   return { rows, formulas, scene, verdict, result, rank };

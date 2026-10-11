@@ -7,8 +7,11 @@ const cases = [
 for (const [kind, slug, preset] of cases) test(`${kind}: opening and exceptional state`, async ({ page }) => {
   await page.goto(`chapters/${slug}/`); const stage = page.locator(`[data-stage="la-${kind}"]`);
   await expect(stage).toHaveAttribute('data-hydrated', 'true'); await page.evaluate(() => document.fonts.ready);
-  await page.addStyleTag({ content: '.topbar{position:static !important;backdrop-filter:none !important} .skip-link{visibility:hidden !important} *{caret-color:transparent !important}' });
-  await page.mouse.move(0, 0); await expect(stage).toHaveScreenshot(`ii-${kind}.png`);
+  // The capture's non-sticky header needs no reserved scroll padding.
+  await page.addStyleTag({ content: 'html{scroll-padding:0 !important} .topbar{position:static !important;backdrop-filter:none !important} .skip-link{visibility:hidden !important} *{caret-color:transparent !important}' });
+  await page.mouse.move(0, 0); await stage.evaluate(el => el.scrollIntoView({ block: 'start', behavior: 'instant' }));
+  await expect(stage).toHaveScreenshot(`ii-${kind}.png`);
   await stage.locator(`[data-preset="${preset}"]`).click(); await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur?.());
+  await stage.evaluate(el => el.scrollIntoView({ block: 'start', behavior: 'instant' }));
   await expect(stage).toHaveScreenshot(`ii-${kind}-exception.png`);
 });
