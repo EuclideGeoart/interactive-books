@@ -149,7 +149,7 @@ export function makePlan({ mode = 'focused', files = [], chapters = [], only, pr
       }
     }
     if (!existsSync(file)) { broad = true; reasons.push(`${file}: deleted/unresolved file; expanded conservatively`); }
-    if (/^(src\/(ui|platform|shell|curriculum|pages)\/|src\/styles\/(?!chapters\/)|public\/)/.test(file) || ['../.gitignore', 'astro.config.mjs', 'vitest.config.ts', 'scripts/validation-plan.mjs', 'scripts/measure-probability-input.mjs', 'tests/unit/validation-plan.test.ts', 'tests/unit/curriculum.test.ts', 'tests/unit/completion-exercises.test.ts', 'tests/e2e/visual-linear-algebra.spec.ts', 'tests/e2e/visual-probability.spec.ts'].includes(file)) {
+    if (/^(src\/(ui|platform|shell|curriculum|pages)\/|src\/styles\/(?!chapters\/)|public\/)/.test(file) || ['../.gitignore', 'astro.config.mjs', 'vitest.config.ts', 'scripts/validation-plan.mjs', 'scripts/measure-probability-input.mjs', 'tests/unit/validation-plan.test.ts', 'tests/unit/curriculum.test.ts', 'tests/unit/completion-exercises.test.ts', 'tests/e2e/chapters.spec.ts', 'tests/e2e/visual-linear-algebra.spec.ts', 'tests/e2e/visual-probability.spec.ts'].includes(file)) {
       shared = true;
       reasons.push(`${file}: known shared infrastructure; all math/contracts, representative interactions/axe, all root visuals`);
       continue;

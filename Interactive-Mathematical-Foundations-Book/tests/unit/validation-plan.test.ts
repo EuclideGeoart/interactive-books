@@ -110,14 +110,16 @@ describe('conservative change-scoped validation', () => {
       expect(plan.completeMath).toBe(true);
       expect(plan.commands.some(command => command.gate === 'complete root browser')).toBe(true);
     }
-    const shared = makePlan({ files: ['src/ui/ParameterInput.tsx'], chapters: ['II.10'] });
-    expect(shared.sharedExpansion).toBe(true);
-    expect(shared.completeMath).toBe(true);
-    expect(shared.chapters).toHaveLength(chapterCatalog().length);
-    expect(shared.interactionChapters).toEqual(['II.10']);
-    expect(shared.commands.some(command => command.gate === 'all read-only chapter contracts + representative both-theme axe')).toBe(true);
-    expect(shared.commands.some(command => command.gate === 'shared cross-chapter controls')).toBe(true);
-    expect(shared.commands.some(command => command.gate === 'complete root browser')).toBe(false);
+    for (const file of ['src/ui/ParameterInput.tsx', 'tests/e2e/chapters.spec.ts']) {
+      const shared = makePlan({ files: [file], chapters: ['II.10'] });
+      expect(shared.sharedExpansion).toBe(true);
+      expect(shared.completeMath).toBe(true);
+      expect(shared.chapters).toHaveLength(chapterCatalog().length);
+      expect(shared.interactionChapters).toEqual(['II.10']);
+      expect(shared.commands.some(command => command.gate === 'all read-only chapter contracts + representative both-theme axe')).toBe(true);
+      expect(shared.commands.some(command => command.gate === 'shared cross-chapter controls')).toBe(true);
+      expect(shared.commands.some(command => command.gate === 'complete root browser')).toBe(false);
+    }
   });
   it('detects real untracked files as well as tracked edits', () => {
     const directory = mkdtempSync('tests/t0-untracked-');
