@@ -41,7 +41,10 @@ export function deriveJacobian(s: JacobianState): CalcDerived {
     write: (a, b) => ({ dx: Number((a - s.x).toFixed(2)) + 0, dy: Number((b - s.y).toFixed(2)) + 0 }) });
   input.description = `Input point p = (${gtext(s.x)}, ${gtext(s.y)}), displacement δ = (${gtext(s.dx)}, ${gtext(s.dy)}) and a square of half-side ${SIDE} around p.`;
   // Output window: a local view centred on F(p), rounded so small drags do not move it.
-  const c = toPoint(L.Fp), cx = Math.round(c.x * 2) / 2, cy = Math.round(c.y * 2) / 2, R = 2;
+  const c = toPoint(L.Fp), cx = Math.round(c.x * 2) / 2, cy = Math.round(c.y * 2) / 2;
+  // The local window grows (in steps of 0.5) until it contains the actual and predicted endpoints, so a large miss is visible.
+  const reach = Math.max(...[toPoint(L.Fq), toPoint(L.predicted)].map(p => Math.max(Math.abs(p.x - cx), Math.abs(p.y - cy))));
+  const R = Math.max(2, Math.ceil((reach + 0.5) * 2) / 2);
   const out = scene('output', m === 2 ? 'Output near F(p): actual image versus the Jacobian prediction' : 'Output near F(p), projected on (F₁, F₂)', '', { xMin: cx - R, xMax: cx + R, yMin: cy - R, yMax: cy + R });
   const edge: Point[] = [];
   for (const [a0, b0, a1, b1] of [[-1, -1, 1, -1], [1, -1, 1, 1], [1, 1, -1, 1], [-1, 1, -1, -1]] as const)
@@ -81,7 +84,7 @@ export function deriveJacobian(s: JacobianState): CalcDerived {
   const verdict = singular ? 'det J = 0 here: the map squashes a neighbourhood of p onto (nearly) a curve, so the local linear map is not invertible. Small squares become very thin shapes.'
     : status === 'rectangular' ? 'A map ℝ² → ℝ³ has a 3 × 2 Jacobian: it multiplies 2-vectors and returns 3-vectors. There is no determinant and no inverse; the picture shows two of the three outputs.'
       : status === 'exact' ? 'For a linear map the Jacobian IS the map: the prediction is exact for every displacement.'
-        : status === 'nonlocal' ? `A large displacement: the prediction misses by ‖e‖ ≈ ${Math.sqrt(toNumber(L.errorSquared)).toFixed(4)}. The Jacobian describes the map only near p.`
+        : status === 'nonlocal' ? `A large displacement: the prediction misses, with squared error ‖e‖² = ${rtext(L.errorSquared)}. The Jacobian describes the map only near p.`
           : `Near p the map acts like the matrix J: the predicted change Jδ = ${vtext(L.predicted.map((v, k) => subR(v, L.Fp[k]!)))} is close to the actual change; the error is second order.`;
   const frames = traceFrom<CalcFrame>([
     { state: { semantic: { Fp: L.Fp }, title: 'Evaluate F at p', detail: `F(p) = ${vtext(L.Fp)}.`, formula: `F(${gtex(s.x)},${gtex(s.y)})=${vtex(L.Fp)}` } satisfies CalcFrame },

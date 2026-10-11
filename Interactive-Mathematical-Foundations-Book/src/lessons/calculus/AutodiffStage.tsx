@@ -17,7 +17,7 @@ import './calculus.css';
 
 function GraphView({ d, frame, descId, label = 'Computational graph, scrollable' }: { d: AutodiffDerived; frame: DagFrame; descId: string; label?: string }) {
   // Derivative read-out in plain notation (combining accents render unreliably in monospace fonts).
-  const wrt = (id: string) => (frame.phase === 'tangent' ? `∂${id}/∂${d.metrics.seed}` : `∂${d.metrics.output}/∂${id}`);
+  const wrt = (id: string) => (d.metrics.mode === 'forward' ? `∂${id}/∂${d.metrics.seed}` : `∂${d.metrics.output}/∂${id}`);
   return <div class="dag-wrap" role="region" aria-label={label} tabIndex={0}>
     <svg class="dag" viewBox={`0 0 ${d.width} ${d.height}`} style={{ minWidth: `${d.width}px`, maxWidth: `${Math.round(d.width * 1.25)}px` }} role="img" aria-labelledby={descId} data-dag data-phase={frame.phase} data-focus={frame.focus ?? ''}>
       {d.edges.map(e => {
@@ -38,7 +38,7 @@ function GraphView({ d, frame, descId, label = 'Computational graph, scrollable'
           <rect x={n.x - NODE_W / 2} y={n.y - NODE_H / 2} width={NODE_W} height={NODE_H} rx={8} />
           <text class="node-op" x={n.x} y={n.y - 12} text-anchor="middle">{n.title}</text>
           <text class="node-value" x={n.x} y={n.y + 8} text-anchor="middle">{v !== undefined ? `value ${v}` : 'not yet computed'}</text>
-          {dv !== undefined && <text class="node-adjoint" x={n.x} y={n.y + 25} text-anchor="middle">{`${wrt(n.id)} = ${dv}`}</text>}
+          {dv !== undefined && <text class="node-adjoint" x={n.x} y={n.y + 25} text-anchor="middle">{`${wrt(n.id)} ${dv.startsWith('≈') ? dv : `= ${dv}`}`}</text>}
         </g>;
       })}
     </svg>

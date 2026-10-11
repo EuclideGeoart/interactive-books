@@ -31,13 +31,15 @@ test.describe('III.10: computational graphs and automatic differentiation', () =
     await expect(s.locator('[data-edge="x->u#0"]')).toHaveAttribute('data-contribution', '2'); await expect(s.locator('[data-node="x"]')).toHaveAttribute('data-deriv', '7');
     await expect(s.locator('[data-node="y"]')).toHaveAttribute('data-deriv', '2');
     await trace.getByRole('button', { name: /Previous/ }).click(); await expect(s.locator('[data-node="x"]')).toHaveAttribute('data-deriv', '5');
-    await expect(s.locator('[data-edge="u->z#0"]')).toHaveAttribute('data-local', '∂z/∂u = 2');
+    await expect(s.locator('[data-edge="u->z#0"]')).toHaveAttribute('data-local', '∂z/∂u=2');
   });
   test('forward mode: one tangent pass per seeded input; cost table and many-output graph', async ({ page }) => {
     const s = await open(page, slug, kind);
     await s.getByRole('radio', { name: 'forward (tangents)' }).check(); await s.getByRole('radio', { name: 'y', exact: true }).check();
     expect(await metrics(s)).toMatchObject({ mode: 'forward', seed: 'y', tan_z: 2 });
     await expect(s.locator('[data-node="z"]')).toHaveAttribute('data-deriv', '2');
+    // Forward mode reads ∂(node)/∂(seed) on every frame, including the final summary frame.
+    await expect(s.locator('[data-node="z"] .node-adjoint')).toHaveText('∂z/∂y = 2'); await expect(s.locator('[data-node="x"] .node-adjoint')).toHaveText('∂x/∂y = 0');
     await s.locator('[data-preset="many-outputs"]').click(); expect(await metrics(s)).toMatchObject({ tan_s: 3, tan_c: 6.75 });
     await expect(s.locator('.calc-table tbody tr')).toContainText('1'); await expect(s.locator('[data-node="w"]')).toHaveCount(1);
     await s.locator('[data-preset="scalar-loss"]').click(); expect(await metrics(s)).toMatchObject({ adj_a: 4, adj_b: 2, adj_c: 2 });
@@ -47,6 +49,7 @@ test.describe('III.10: computational graphs and automatic differentiation', () =
     await s.locator('[data-preset="square"]').click(); expect((await metrics(s)).adj_x).toBe(6);
     await expect(s.locator('[data-edge="x->q#0"]')).toHaveAttribute('data-contribution', '3'); await expect(s.locator('[data-edge="x->q#1"]')).toHaveAttribute('data-contribution', '3');
     await s.locator('[data-preset="division-by-zero"]').click(); await expect(s).toHaveAttribute('data-status', 'undefined');
+    await expect(s.locator('[data-node="r"]')).toHaveAttribute('data-value', 'undef.');
     await expect(s.locator('[data-quantity="fd"]')).toHaveAttribute('data-status', 'undefined'); await expect(s.locator('[data-verdict]')).toContainText('Division by zero');
   });
   test('worked replay of the reference graph', async ({ page }) => {

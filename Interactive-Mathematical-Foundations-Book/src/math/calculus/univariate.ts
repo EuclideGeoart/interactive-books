@@ -225,7 +225,7 @@ export const expFn = analytic({
 });
 /** √x: defined for x ≥ 0, right-continuous at 0 with an infinite right slope (vertical tangent). */
 export const sqrtFn = analytic({
-  id: 'sqrt', text: '√x', tex: '\\sqrt{x}', value: x => x >= 0 ? Math.sqrt(x) : null, reason: () => 'The real square root of a negative number is undefined.',
+  id: 'sqrt', text: '√x', tex: '\\sqrt{x}', special: [ZERO], value: x => x >= 0 ? Math.sqrt(x) : null, reason: () => 'The real square root of a negative number is undefined.',
   limit: (a, side) => sign(a) < 0 || (isZero(a) && side === 'left') ? { kind: 'none', reason: 'No real values to this side.', cause: 'domain' } : isZero(a) ? zeroExact : finite(Math.sqrt(toNumber(a))),
   slope: x => sign(x) > 0 ? smoothSlope(0.5 / Math.sqrt(toNumber(x))) : isZero(x)
     ? { kind: 'undefined', reason: 'At 0 only the right side exists and its difference quotient 1/√h grows without bound: a vertical tangent.', left: { kind: 'none', reason: 'Not defined to the left.' }, right: { kind: 'infinite', sign: 1 } }

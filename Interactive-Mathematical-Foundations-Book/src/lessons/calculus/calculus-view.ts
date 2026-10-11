@@ -103,6 +103,22 @@ export const spec = (id: string, value: number, name: string, symbolTex: string,
   id, name, symbolTex, symbolText: id, domain: { min, max }, default: value, step, maxDecimals, onInvalid: 'reject',
 });
 
+/**
+ * The graph of f for drawing: isolated point values (holes filled elsewhere, moved values) are excluded from the polyline, so the curve is never
+ * joined vertically through them; `graphMarkers` draws those values as dots instead.
+ */
+export function curveOf(f: Univariate): (x: number) => number | null {
+  const special = f.special.map(toNumber);
+  return x => (special.includes(x) ? null : f.number(x));
+}
+/** "= L" for a finite or infinite one-sided limit, or "does not exist" without an equals sign. */
+export const eqOneSided = (v: OneSided) => (v.kind === 'none' ? '\\ \\text{does not exist}' : `=${oneSidedTex(v)}`);
+const SUPERSCRIPT: Record<string, string> = { '-': '⁻', '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹', '.': '·' };
+/** Scientific notation with a superscript exponent (1.23×10⁻⁵); an exactly zero value is said in words. */
+export const sciText = (v: number, digits = 3) => { if (v === 0) return '0 (exactly)'; const [m, e] = v.toExponential(digits - 1).split('e'); return `${m!.replace('-', '−')}×10${[...String(Number(e))].map(c => SUPERSCRIPT[c] ?? c).join('')}`; };
+export const sciTex = (v: number, digits = 3) => { if (v === 0) return '0'; const [m, e] = v.toExponential(digits - 1).split('e'); return `${m}\\times10^{${Number(e)}}`; };
+/** A binary64 approximation shown in scientific notation (for errors spanning many orders of magnitude). */
+export const sciDesc = (v: number): ValueDescription => ({ status: 'approximate', lines: [{ relation: '≈', text: sciText(v), tex: sciTex(v) }], spoken: `approximately ${sciText(v)}` });
 /** Memoised curve sampling: keyed by the function's identity and the window, so dragging an INPUT never re-samples the graph. */
 const curveCache = new Map<string, Polyline[]>();
 export function cachedCurve(key: string, f: (x: number) => number | null, window: WorldWindow, breaks: readonly number[] = [], samples = 480): Polyline[] {

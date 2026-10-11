@@ -48,11 +48,12 @@ export function deriveGradient(s: GradientState): CalcDerived {
     const n = Math.sqrt(toNumber(dd));
     map.arrows.push({ name: 'unit-direction', from: P, to: { x: s.x + toNumber(D[0]) / n, y: s.y + toNumber(D[1]) / n }, role: 'x' });
   }
-  map.handles.push({ id: 'p', label: `point (${gtext(s.x)}, ${gtext(s.y)}), f = ${rtext(z)}`, at: P, role: 'primary', xField: 'x', yField: 'y', step: 0.25 });
   const tip = { x: s.x + s.dx, y: s.y + s.dy };
   map.handles.push({ id: 'd', label: `direction tip, d = (${gtext(s.dx)}, ${gtext(s.dy)})`, at: tip, role: 'x', xField: 'dx', step: 0.25,
     spec: { ...gradientSpecs.dx, id: 'd-tip-x', domain: { min: s.x - 2, max: s.x + 2 } }, ySpec: { ...gradientSpecs.dy, id: 'd-tip-y', domain: { min: s.y - 2, max: s.y + 2 } },
     write: (a, b) => ({ dx: Number((a - s.x).toFixed(2)) + 0, dy: Number((b - s.y).toFixed(2)) + 0 }) });
+  // The point is drawn after (on top of) the direction tip, so a zero direction never hides it.
+  map.handles.push({ id: 'p', label: `point (${gtext(s.x)}, ${gtext(s.y)}), f = ${rtext(z)}`, at: P, role: 'primary', xField: 'x', yField: 'y', step: 0.25 });
   map.description = `Contours of f = ${poly2Text(f)}. At (${gtext(s.x)}, ${gtext(s.y)}) the gradient is (${rtext(g[0])}, ${rtext(g[1])})`
     + (stationary ? ', the zero vector: a stationary point with no steepest direction. ' : `, drawn at scale ${k}; the dashed line is tangent to the level curve and perpendicular to it. `)
     + (zeroD ? 'The direction vector is zero, so no unit direction exists.' : `The blue arrow is the unit direction of d = (${gtext(s.dx)}, ${gtext(s.dy)}).`);
@@ -67,10 +68,11 @@ export function deriveGradient(s: GradientState): CalcDerived {
     : `The directional derivative ∇f·u = |∇f| cos(θ − θ∇) peaks at θ∇ ≈ ${tg.toFixed(3)} with value |∇f| ≈ ${gNum.toFixed(6)} and is 0 along the level curve.`;
   const g0 = rtex(g[0]), g1 = rtex(g[1]);
   const formulas = [
-    `\\nabla f(${gtex(s.x)},${gtex(s.y)})=\\begin{bmatrix}${g0}\\\\${g1}\\end{bmatrix},\\qquad \\|\\nabla f\\|${gNorm ? `=${rtex(gNorm)}` : `=\\sqrt{${rtex(gg)}}\\approx ${gNum.toFixed(6)}`}`,
+    `\\nabla f(${gtex(s.x)},${gtex(s.y)})=\\begin{bmatrix}${g0}\\\\${g1}\\end{bmatrix}`,
+    `\\|\\nabla f\\|${gNorm ? `=${rtex(gNorm)}` : `=\\sqrt{${rtex(gg)}}\\approx ${gNum.toFixed(6)}`}`,
     zeroD ? `\\mathbf d=\\mathbf 0\\ \\Rightarrow\\ \\mathbf u=\\mathbf d/\\|\\mathbf d\\|\\ \\text{is undefined}`
       : `D_{\\mathbf u}f=\\nabla f\\cdot\\frac{\\mathbf d}{\\|\\mathbf d\\|}=\\frac{${rtex(gd)}}{${dNorm ? rtex(dNorm) : `\\sqrt{${rtex(dd)}}`}}${duExact ? `=${rtex(duExact)}` : `\\approx ${du!.value.toFixed(6)}`}`,
-    `\\nabla f\\cdot\\mathbf t=(${g0})(${rtex(tangent[0])})+(${g1})(${rtex(tangent[1])})=${rtex(perp)}\\quad(\\mathbf t\\ \\text{along the level curve})`,
+    `\\nabla f\\cdot\\mathbf t=(${g0})(${rtex(tangent[0])})+(${g1})(${rtex(tangent[1])})=${rtex(perp)}`,
   ];
   const rows = [
     row('point', '(x,y)', 'Point', exactDesc(`(${gtext(s.x)}, ${gtext(s.y)})`), 'primary'),
@@ -88,9 +90,9 @@ export function deriveGradient(s: GradientState): CalcDerived {
         : `Moving in direction u changes f at rate ${duExact ? rtext(duExact) : `≈ ${du!.value.toFixed(6)}`}, between −|∇f| and |∇f|. The maximum ${gNorm ? rtext(gNorm) : `≈ ${gNum.toFixed(6)}`} occurs along ∇f itself.`;
   const frames = traceFrom<CalcFrame>([
     { state: { semantic: { gradient: g }, title: 'Compute the gradient', detail: `The partial derivatives at the point form ∇f = (${rtext(g[0])}, ${rtext(g[1])}).`, formula: formulas[0]! } satisfies CalcFrame },
-    { state: { semantic: { d: D, unit: zeroD ? null : true }, title: 'Normalise the direction', detail: zeroD ? 'd = 0 cannot be normalised.' : `u = d/‖d‖ with ‖d‖² = ${rtext(dd)}.`, formula: zeroD ? formulas[1]! : `\\|\\mathbf d\\|^2=${rtex(dd)}` } satisfies CalcFrame },
-    { state: { semantic: { du: du?.value ?? null }, title: 'Project the gradient on u', detail: verdict, formula: formulas[1]! } satisfies CalcFrame },
-    { state: { semantic: { perpendicular: perp }, title: 'Perpendicular to the level curve', detail: 'Along the level curve f does not change, so the gradient has zero component there.', formula: formulas[2]! } satisfies CalcFrame },
+    { state: { semantic: { d: D, unit: zeroD ? null : true }, title: 'Normalise the direction', detail: zeroD ? 'd = 0 cannot be normalised.' : `u = d/‖d‖ with ‖d‖² = ${rtext(dd)}.`, formula: zeroD ? formulas[2]! : `\\|\\mathbf d\\|^2=${rtex(dd)}` } satisfies CalcFrame },
+    { state: { semantic: { du: du?.value ?? null }, title: 'Project the gradient on u', detail: verdict, formula: formulas[2]! } satisfies CalcFrame },
+    { state: { semantic: { perpendicular: perp }, title: 'Perpendicular to the level curve', detail: 'Along the level curve f does not change, so the gradient has zero component there.', formula: formulas[3]! } satisfies CalcFrame },
   ]);
   return {
     rows, formulas, verdict, status, caution: stationary || zeroD, scenes: [map, profile], frames,

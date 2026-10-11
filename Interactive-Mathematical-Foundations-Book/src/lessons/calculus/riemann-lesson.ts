@@ -32,7 +32,7 @@ export function deriveRiemann(s: RiemannState): CalcDerived {
   const sum = riemann(g, A, B, s.n, s.rule), I = reference(g, A, B), parts = g.kind === 'exact' ? signedParts(g, A, B) : null;
   const err = sum.kind === 'value' ? (sum.exact && I.exact ? { value: toNumber(sub(sum.exact, I.exact)), exact: sub(sum.exact, I.exact) } : { value: sum.value - I.value }) : null;
   const plot = scene('graph', `${RULE_TEXT[s.rule]} under f(x) = ${integrandText(g)}`, '', W);
-  for (const [k, p] of sum.panels.entries()) plot.polygons.push({ name: `panel-${k}`, corners: [{ x: p.x0, y: 0 }, { x: p.x1, y: 0 }, { x: p.x1, y: p.heights[1] }, { x: p.x0, y: p.heights[0] }], role: p.signed * Math.sign(p.x1 - p.x0) >= 0 ? 'y' : 'caution' });
+  for (const [k, p] of sum.panels.entries()) plot.polygons.push({ name: `panel-${k}`, corners: [{ x: p.x0, y: 0 }, { x: p.x1, y: 0 }, { x: p.x1, y: p.heights[1] }, { x: p.x0, y: p.heights[0] }], role: p.signed >= 0 ? 'y' : 'caution' }); // colour = sign of the CONTRIBUTION (a negative Δx flips it)
   plot.curves.push({ name: 'graph', lines: cachedCurve(g.id, x => g.f.number(x), W, g.f.breaks), role: 'ink', width: 2.5 });
   plot.handles.push({ id: 'a', label: `lower limit a = ${gtext(s.a)}`, at: { x: s.a, y: 0 }, role: 'x', xField: 'a', step: 0.25 }, { id: 'b', label: `upper limit b = ${gtext(s.b)}`, at: { x: s.b, y: 0 }, role: 'primary', xField: 'b', step: 0.25 });
   plot.labels.push({ name: 'label-a', at: { x: s.a, y: 0 }, text: 'a', role: 'x', dy: 28 }, { name: 'label-b', at: { x: s.b, y: 0 }, text: 'b', role: 'primary', dy: 28 });
@@ -47,16 +47,17 @@ export function deriveRiemann(s: RiemannState): CalcDerived {
   const formulas = [
     `\\Delta x=\\frac{b-a}{n}=\\frac{${gtex(s.b)}-${s.a < 0 ? `(${gtex(s.a)})` : gtex(s.a)}}{${s.n}}=${valueTex({ value: toNumber(sum.dx), exact: sum.dx })}`,
     s.rule === 'trapezoid' ? `T_n=\\sum_{i=0}^{n-1}\\frac{f(x_i)+f(x_{i+1})}{2}\\,\\Delta x${sum.kind === 'value' ? `${sum.exact ? '=' : '\\approx'}${valueTex(sum)}` : ''}`
-      : `S_n=\\sum_{i=0}^{n-1}f(\\xi_i)\\,\\Delta x${sum.kind === 'value' ? `${sum.exact ? '=' : '\\approx'}${valueTex(sum)}` : ''},\\quad \\xi_i=\\text{${s.rule === 'midpoint' ? 'midpoint' : s.rule + ' endpoint'}}`,
-    `\\int_{${gtex(s.a)}}^{${gtex(s.b)}} f(x)\\,dx${I.exact ? '=' : '\\approx'}${valueTex(I)}${err ? `,\\qquad S_n-\\int=${valueTex(err)}` : ''}`,
-    ...(parts ? [`\\int|f|=${valueTex({ value: toNumber(parts.area), exact: parts.area })}\\ \\text{(positive }${valueTex({ value: toNumber(parts.positive), exact: parts.positive })}\\text{, negative }${valueTex({ value: toNumber(parts.negative), exact: parts.negative })}\\text{)}`] : []),
+      : `S_n=\\sum_{i=0}^{n-1}f(\\xi_i)\\,\\Delta x${sum.kind === 'value' ? `${sum.exact ? '=' : '\\approx'}${valueTex(sum)}` : ''}`,
+    `\\int_{${gtex(s.a)}}^{${gtex(s.b)}} f(x)\\,dx${I.exact ? '=' : '\\approx'}${valueTex(I)}`,
+    ...(err ? [`${s.rule === 'trapezoid' ? 'T_n' : 'S_n'}-\\int${err.exact ? '=' : '\\approx'}${valueTex(err)}`] : []),
+    ...(parts ? [`\\int|f|=${valueTex({ value: toNumber(parts.area), exact: parts.area })}`, `\\int f^+=${valueTex({ value: toNumber(parts.positive), exact: parts.positive })},\\quad \\int f^-=${valueTex({ value: toNumber(parts.negative), exact: parts.negative })}`] : []),
   ];
   const rows = [
     row('a', 'a', 'Lower limit', givenDesc(s.a), 'x'), row('b', 'b', 'Upper limit', givenDesc(s.b), 'primary'), row('n', 'n', 'Panels', givenDesc(s.n), 'ink'),
     row('dx', '\\Delta x', 'Panel width (signed)', ratDesc(sum.dx), 'ink', true),
-    row('sum', 'S_n', `Sum with ${RULE_TEXT[s.rule]}`, sum.kind === 'value' ? valueDesc(sum) : undefinedDesc(sum.reason), 'y'),
+    row('sum', s.rule === 'trapezoid' ? 'T_n' : 'S_n', `Sum with ${RULE_TEXT[s.rule]}`, sum.kind === 'value' ? valueDesc(sum) : undefinedDesc(sum.reason), 'y'),
     row('integral', '\\int_a^b f', 'Integral (signed accumulation)', valueDesc(I), 'derived'),
-    row('error', 'S_n-\\int', 'Error of the sum', err ? valueDesc(err) : undefinedDesc('No sum.'), 'caution'),
+    row('error', `${s.rule === 'trapezoid' ? 'T_n' : 'S_n'}-\\int`, 'Error of the sum', err ? valueDesc(err) : undefinedDesc('No sum.'), 'caution'),
     row('area', '\\int|f|', 'Geometric area between graph and axis', parts ? ratDesc(parts.area) : g.kind === 'exact' ? undefinedDesc('A sign change at an irrational root: not split exactly here.') : undefinedDesc('Only computed for exact integrands.'), 'ink', true),
     row('positive', '\\int f^+', 'Area above the axis', parts ? ratDesc(parts.positive) : undefinedDesc('Not split.'), 'y', true),
     row('negative', '\\int f^-', 'Signed area below the axis', parts ? ratDesc(parts.negative) : undefinedDesc('Not split.'), 'caution', true),

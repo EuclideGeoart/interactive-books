@@ -6,7 +6,7 @@ import { sqrtFn, type Univariate } from '../../math/calculus/univariate';
 import { traceFrom } from '../../platform/trace';
 import type { WorldWindow } from '../../platform/geometry/viewport';
 import {
-  cachedCurve, exactDesc, gtex, gtext, givenDesc, graphMarkers, oneSidedDesc, oneSidedTex, oneSidedText, pointDesc, row, scene, spec, valueTex, valueText,
+  cachedCurve, curveOf, eqOneSided, exactDesc, gtex, gtext, givenDesc, graphMarkers, oneSidedDesc, oneSidedText, pointDesc, row, scene, spec, valueTex, valueText,
   type CalcChoice, type CalcDerived, type CalcFrame,
 } from './calculus-view';
 
@@ -46,7 +46,7 @@ export function deriveContinuity(s: ContinuityState): CalcDerived {
   const breaks = f.special.filter(b => toNumber(b) >= CONTINUITY_WINDOW.xMin && toNumber(b) <= CONTINUITY_WINDOW.xMax)
     .map(b => ({ x: toNumber(b), kind: analyse(f, b).kind })).filter(b => b.kind !== 'continuous' && !(s.kind === 'sqrt' && b.x === 0));
   const plot = scene('graph', `Continuity of f(x) = ${f.text} at a = ${a}`, '', CONTINUITY_WINDOW);
-  plot.curves.push({ name: 'graph', lines: cachedCurve(f.id, f.number, CONTINUITY_WINDOW, f.breaks), role: 'ink', width: 2.5 });
+  plot.curves.push({ name: 'graph', lines: cachedCurve(f.id, curveOf(f), CONTINUITY_WINDOW, f.breaks), role: 'ink', width: 2.5 });
   plot.markers.push(...graphMarkers(f, CONTINUITY_WINDOW, 'ink'));
   plot.segments.push({ name: 'line-a', from: { x: s.a, y: CONTINUITY_WINDOW.yMin }, to: { x: s.a, y: CONTINUITY_WINDOW.yMax }, role: equal ? 'derived' : 'caution', dashed: true, width: 1.5 });
   if (s.kind === 'join' && s.mode === 'custom') plot.handles.push({ id: 'v', label: `assigned value f(1) = ${gtext(s.v)}`, at: { x: 1, y: s.v }, role: 'primary', xField: 'a', yField: 'v', step: 0.25,
@@ -56,9 +56,10 @@ export function deriveContinuity(s: ContinuityState): CalcDerived {
     + (breaks.length ? `Discontinuities in view at x = ${breaks.map(b => gtext(b.x)).join(', ')}.` : 'No discontinuity in view.');
   const aTex = gtex(s.a);
   const formulas = [
-    `\\text{(i) } f(${aTex})${exists ? `=${valueTex(d.value as { value: number })}` : '\\ \\text{undefined}'}\\qquad\\text{(ii) } \\lim_{x\\to ${aTex}^-}=${oneSidedTex(d.left)},\\ \\lim_{x\\to ${aTex}^+}=${oneSidedTex(d.right)}`,
+    `\\text{(i) } f(${aTex})${exists ? `=${valueTex(d.value as { value: number })}` : '\\ \\text{undefined}'}`,
+    `\\text{(ii) } \\lim_{x\\to ${aTex}^-}f${eqOneSided(d.left)},\\quad \\lim_{x\\to ${aTex}^+}f${eqOneSided(d.right)}`,
     `\\text{(iii) }\\lim_{x\\to ${aTex}}f(x)${hasLimit && exists ? (equal ? '=' : '\\ne ') + `f(${aTex})` : '\\ \\text{cannot be compared}'}`,
-    ...(s.kind === 'join' ? [`x^2+c\\big|_{x=1}=1+${s.c < 0 ? `(${gtex(s.c)})` : gtex(s.c)}=${gtex(1 + s.c)},\\qquad m\\,x\\big|_{x=1}=${gtex(s.m)}`] : []),
+    ...(s.kind === 'join' ? [`x^2+c\\big|_{x=1}=1+${s.c < 0 ? `(${gtex(s.c)})` : gtex(s.c)}=${gtex(1 + s.c)}`, `m\\,x\\big|_{x=1}=${gtex(s.m)}`] : []),
   ];
   const rows = [
     row('a', 'a', 'Point', givenDesc(s.a), 'x'),
@@ -81,8 +82,8 @@ export function deriveContinuity(s: ContinuityState): CalcDerived {
   } as Record<string, string>)[status] ?? '';
   const frames = traceFrom<CalcFrame>([
     { state: { semantic: { condition: 1, value: d.value }, title: '(i) Is f(a) defined?', detail: exists ? `Yes: f(${a}) = ${valueText(d.value as { value: number })}.` : `No: ${(d.value as { reason: string }).reason}`, formula: formulas[0]! } satisfies CalcFrame },
-    { state: { semantic: { condition: 2, left: d.left, right: d.right, limit: d.limit }, title: '(ii) Does the limit exist?', detail: hasLimit ? `Yes: both sides approach ${valueText(d.limit!)}.` : `No: left ${oneSidedText(d.left)}, right ${oneSidedText(d.right)}.`, formula: formulas[0]! } satisfies CalcFrame },
-    { state: { semantic: { condition: 3, continuous: equal, status }, title: '(iii) Do they agree?', detail: verdict, formula: formulas[1]! } satisfies CalcFrame },
+    { state: { semantic: { condition: 2, left: d.left, right: d.right, limit: d.limit }, title: '(ii) Does the limit exist?', detail: hasLimit ? `Yes: both sides approach ${valueText(d.limit!)}.` : `No: left ${oneSidedText(d.left)}, right ${oneSidedText(d.right)}.`, formula: formulas[1]! } satisfies CalcFrame },
+    { state: { semantic: { condition: 3, continuous: equal, status }, title: '(iii) Do they agree?', detail: verdict, formula: formulas[2]! } satisfies CalcFrame },
   ]);
   return {
     rows, formulas, verdict, status, caution: !['continuous', 'right-continuous', 'left-continuous'].includes(status), scenes: [plot], frames,

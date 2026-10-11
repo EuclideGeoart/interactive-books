@@ -62,13 +62,13 @@ export function deriveRules(s: RulesState): CalcDerived {
   const formulas: string[] = [];
   if (s.mode === 'sum') formulas.push(`(u+v)'(${x})=u'(${x})+v'(${x})=${valueTex(R.du)}+${valueTex(R.dv)}=${valueTex(R.rule!)}`);
   if (s.mode === 'product') formulas.push(
-    `\\Delta(uv)=v\\,\\Delta u+u\\,\\Delta v+\\Delta u\\,\\Delta v\\ \\Rightarrow\\ \\frac{\\Delta(uv)}{\\Delta x}=v\\frac{\\Delta u}{\\Delta x}+u\\frac{\\Delta v}{\\Delta x}+\\Delta u\\frac{\\Delta v}{\\Delta x}`,
+    `\\Delta(uv)=v\\,\\Delta u+u\\,\\Delta v+\\Delta u\\,\\Delta v`,
     `(uv)'(${x})=u'v+uv'=${valueTex(R.du)}\\cdot${valueTex(R.v)}+${valueTex(R.u)}\\cdot${valueTex(R.dv)}=${valueTex(R.rule!)}`,
     `${valueTex(R.increment!.total)}=${valueTex(R.increment!.vDu)}+${valueTex(R.increment!.uDv)}+${valueTex(R.increment!.corner)}\\quad(\\Delta x=${gtex(s.dx)})`);
   if (s.mode === 'quotient') formulas.push(R.rule
     ? `\\left(\\frac{u}{v}\\right)'(${x})=\\frac{u'v-uv'}{v^2}=\\frac{${valueTex(R.terms[0]!)}-${R.terms[1]!.value < 0 ? `(${valueTex(R.terms[1]!)})` : valueTex(R.terms[1]!)}}{${valueTex(R.terms[2]!)}}=${valueTex(R.rule)}`
     : `v(${x})=0\\ \\Rightarrow\\ \\frac{u}{v}\\ \\text{and}\\ \\left(\\frac{u}{v}\\right)'\\ \\text{are undefined at } x=${x}`,
-    `u=q\\,v\\ \\Rightarrow\\ u'=q'v+qv'\\ \\Rightarrow\\ q'=\\frac{u'-q\\,v'}{v}${R.independent ? `=${valueTex(R.independent)}` : ''}`);
+    `u=q\\,v\\ \\Rightarrow\\ u'=q'v+qv'`, `q'=\\frac{u'-q\\,v'}{v}${R.independent ? `=${valueTex(R.independent)}` : ''}`);
   if (s.mode !== 'quotient') { const W = s.mode === 'sum' ? addPoly(U, V) : mulPoly(U, V); formulas.push(`\\frac{d}{dx}\\left(${polyTex(W)}\\right)=${polyTex(derivative(W))}\\ \\Big|_{x=${x}}=${valueTex(R.independent!)}\\quad\\text{(expand first)}`); }
   const rows = [
     row('x', 'x', 'Point', givenDesc(s.x), 'primary'),
@@ -81,7 +81,7 @@ export function deriveRules(s: RulesState): CalcDerived {
   ];
   const verdict = !R.rule ? `v(${gtext(s.x)}) = 0, so u/v is undefined at this x and the quotient rule does not apply. The graph has a vertical asymptote or a hole here; move x away from it.`
     : s.mode === 'product' ? `Product rule: each factor's rate is weighted by the OTHER factor's value. Exact result ${valueText(R.rule)}, equal to differentiating the expanded product. The corner ΔuΔv is second-order: it vanishes from the rate as Δx → 0.`
-      : s.mode === 'quotient' ? `Quotient rule: (u′v − uv′)/v² = ${valueText(R.rule)}, confirmed independently by differentiating u = q·v. It is valid only where v(x) ≠ 0.`
+      : s.mode === 'quotient' ? `Quotient rule: (u′v − uv′)/v² = ${valueText(R.rule)}, confirmed independently by differentiating u = q·v. It is valid only where v(x) is nonzero.`
         : `Linearity: the derivative of a sum is the sum of derivatives, ${valueText(R.rule)}.`;
   const frames = traceFrom<CalcFrame>([
     { state: { semantic: { u: R.u, v: R.v }, title: 'Evaluate the factors', detail: `u(${gtext(s.x)}) = ${valueText(R.u)}, v(${gtext(s.x)}) = ${valueText(R.v)}.`, formula: `u(${x})=${valueTex(R.u)},\\quad v(${x})=${valueTex(R.v)}` } satisfies CalcFrame },

@@ -14,7 +14,8 @@
 .verdict-cue { font-weight: 700; }
 .calc-table { max-width: 100%; overflow-x: auto; margin-block: .75rem; }
 .calc-table table { width: 100%; border-collapse: collapse; font: 500 .85rem/1.35 var(--font-mono); font-variant-numeric: tabular-nums; }
-.calc-table caption { font: .85rem/1.4 var(--font-ui); text-align: left; margin-bottom: .4rem; color: var(--ink-2); }
+.calc-table-caption { font: .85rem/1.4 var(--font-ui); margin: .75rem 0 .4rem; color: var(--ink-2); }
+.calc-table { margin-top: 0; }
 .calc-table th, .calc-table td { padding: .35rem .5rem; border-bottom: 1px solid var(--rule); text-align: right; white-space: nowrap; }
 .calc-table thead th { font-family: var(--font-ui); color: var(--ink-2); }
 .calc-table tbody th { text-align: left; font-weight: 600; }

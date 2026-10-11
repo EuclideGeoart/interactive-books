@@ -50,8 +50,8 @@ test.describe('III.8: gradient and directional derivatives', () => {
     const s = await open(page, slug, kind), map = s.locator('[data-scene="map"]');
     const m = await metrics(s), line = map.locator('[data-part="gradient"] line'), from = await worldToSvg(map, { x: 1, y: 0.5 });
     expect(Math.abs(Number(await line.getAttribute('x1')) - from.x)).toBeLessThan(0.01);
-    await dragHandle(page, map, 1, { x: 1, y: 2.5 }); expect(await state(s)).toMatchObject({ dx: 0, dy: 2 }); expect((await metrics(s)).du).toBe(2);
-    await dragHandle(page, map, 0, { x: 0, y: 0 }); await expect(s).toHaveAttribute('data-status', 'stationary'); expect(m.scale).toBe(0.25);
+    await dragHandle(page, map, 0, { x: 1, y: 2.5 }); expect(await state(s)).toMatchObject({ dx: 0, dy: 2 }); expect((await metrics(s)).du).toBe(2);
+    await dragHandle(page, map, 1, { x: 0, y: 0 }); await expect(s).toHaveAttribute('data-status', 'stationary'); expect(m.scale).toBe(0.25);
     await expect(map.locator('[data-part="gradient"]')).toHaveCount(0);
   });
   test('zero direction and level direction', async ({ page }) => {

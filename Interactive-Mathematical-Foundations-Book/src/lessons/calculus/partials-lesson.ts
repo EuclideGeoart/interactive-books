@@ -44,8 +44,8 @@ export function derivePartial(s: PartialState): CalcDerived {
   const sliceX = one('slice-x', 'x', sx, s.x, fx, 'x'), sliceY = one('slice-y', 'y', sy, s.y, fy, 'y');
   const formulas = [
     `f(x,y)=${poly2Text(f, true)},\\qquad f(${gtex(s.x)},${gtex(s.y)})=${rtex(z)}`,
-    `f(t,${gtex(s.y)})=${polyTex(sx, 't')}\\ \\Rightarrow\\ \\frac{\\partial f}{\\partial x}(${gtex(s.x)},${gtex(s.y)})=${polyTex(derivative(sx), 't')}\\Big|_{t=${gtex(s.x)}}=${rtex(fx)}`,
-    `f(${gtex(s.x)},t)=${polyTex(sy, 't')}\\ \\Rightarrow\\ \\frac{\\partial f}{\\partial y}(${gtex(s.x)},${gtex(s.y)})=${polyTex(derivative(sy), 't')}\\Big|_{t=${gtex(s.y)}}=${rtex(fy)}`,
+    `f_x(${gtex(s.x)},${gtex(s.y)})=${polyTex(derivative(sx), 't')}\\Big|_{t=${gtex(s.x)}}=${rtex(fx)}`,
+    `f_y(${gtex(s.x)},${gtex(s.y)})=${polyTex(derivative(sy), 't')}\\Big|_{t=${gtex(s.y)}}=${rtex(fy)}`,
     `\\frac{\\partial f}{\\partial x}=${poly2Text(dx2(f), true)},\\qquad \\frac{\\partial f}{\\partial y}=${poly2Text(dy2(f), true)}`,
   ];
   const rows = [

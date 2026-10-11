@@ -21,12 +21,13 @@ import type { CalcChoice, CalcDerived, CalcFrame, CalcScene, CalcTable } from '.
 import './calculus.css';
 
 export function TableView({ table, label }: { table: CalcTable; label: string }) {
-  return <div class="calc-table" role="region" aria-label={label} tabIndex={0}>
-    <table><caption>{table.caption}</caption>
+  // The caption is ordinary text OUTSIDE the scroll region, so it wraps at the viewport width; the table keeps an accessible caption.
+  return <><p class="calc-table-caption" aria-hidden="true">{table.caption}</p><div class="calc-table" role="region" aria-label={label} tabIndex={0}>
+    <table><caption class="sr-only">{table.caption}</caption>
       <thead><tr>{table.head.map(h => <th scope="col" key={h}>{h}</th>)}</tr></thead>
       <tbody>{table.rows.map((cells, i) => <tr key={i}>{cells.map((c, j) => j === 0 ? <th scope="row" key={j}>{c}</th> : <td key={j}>{c}</td>)}</tr>)}</tbody>
     </table>
-  </div>;
+  </div></>;
 }
 
 export function Replay({ frames, label = 'Live mathematical trace' }: { frames: readonly TraceFrame<CalcFrame>[]; label?: string }) {

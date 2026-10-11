@@ -42,16 +42,16 @@ export function deriveHessian(s: HessianState): CalcDerived {
   map.arrows.push({ name: 'direction', from: { x: s.x, y: s.y }, to: { x: s.x + 0.7 * u[0], y: s.y + 0.7 * u[1] }, role: 'primary' });
   map.handles.push({ id: 'p', label: `point (${gtext(s.x)}, ${gtext(s.y)}), f = ${rtext(z)}`, at: { x: s.x, y: s.y }, role: 'primary', xField: 'x', yField: 'y', step: 0.25 });
   map.description = `Contours of f = ${poly2Text(f)}. At (${gtext(s.x)}, ${gtext(s.y)}) the dashed lines are the principal curvature directions (eigenvectors of the Hessian, eigenvalues ≈ ${e.values.map(v => v.toFixed(4)).join(' and ')}). Classification: ${c.kind}.`;
-  const model = scene('model', 'Quadratic model Q(δ) = f + ∇f·δ + ½δᵀHδ near the point', '', local);
+  const model = scene('model', 'Quadratic model Q(δ) near the point', '', local);
   model.curves.push({ name: 'f-contours', lines: cachedContours(`${S.id}-local-${s.x}-${s.y}`, (a, b) => eval2Number(f, a, b), local, levels, 32), role: 'ink', width: 1.2 });
   model.curves.push({ name: 'q-contours', lines: cachedContours(`${S.id}-q-${s.x}-${s.y}`, q, local, levels, 32), role: 'derived', dashed: true, width: 2 });
   model.markers.push({ name: 'point', at: { x: s.x, y: s.y }, role: 'primary', filled: true });
   model.description = `Near the point, solid contours of f and dashed contours of its quadratic model share the same levels. ${c.kind === 'inconclusive' ? 'Here the Hessian is singular: the quadratic model is degenerate and does not capture the higher-order behaviour that decides the shape.' : 'Close to the point they agree; farther away higher-order terms separate them.'}`;
   const sym = h.fxy.num === h.fyx.num && h.fxy.den === h.fyx.den;
   const formulas = [
-    `\\nabla f=\\begin{bmatrix}${rtex(g[0])}\\\\${rtex(g[1])}\\end{bmatrix},\\qquad H=\\begin{bmatrix}f_{xx}&f_{xy}\\\\f_{yx}&f_{yy}\\end{bmatrix}=\\begin{bmatrix}${rtex(h.fxx)}&${rtex(h.fxy)}\\\\${rtex(h.fyx)}&${rtex(h.fyy)}\\end{bmatrix}`,
-    `\\det H=f_{xx}f_{yy}-f_{xy}^2=${rtex(c.det)},\\qquad \\operatorname{tr}H=${rtex(c.trace)}`,
-    `\\mathbf u^{\\mathsf T}H\\mathbf u=f_{xx}\\cos^2\\theta+2f_{xy}\\cos\\theta\\sin\\theta+f_{yy}\\sin^2\\theta\\approx ${curvature.toFixed(6)}\\quad(\\theta=${gtex(s.angle)}^\\circ)`,
+    `\\nabla f=\\begin{bmatrix}${rtex(g[0])}\\\\${rtex(g[1])}\\end{bmatrix},\\quad H=\\begin{bmatrix}${rtex(h.fxx)}&${rtex(h.fxy)}\\\\${rtex(h.fyx)}&${rtex(h.fyy)}\\end{bmatrix}`,
+    `\\det H=${rtex(c.det)},\\quad \\operatorname{tr}H=${rtex(c.trace)}`,
+    `\\mathbf u^{\\mathsf T}H\\mathbf u\\approx ${curvature.toFixed(6)}\\quad(\\theta=${gtex(s.angle)}^\\circ)`,
     `Q(\\delta)=f(p)+\\nabla f\\cdot\\delta+\\tfrac12\\,\\delta^{\\mathsf T}H\\,\\delta`,
   ];
   const kindText: Record<string, string> = { 'not-critical': 'not a critical point', minimum: 'local minimum', maximum: 'local maximum', saddle: 'saddle point', inconclusive: 'test inconclusive' };
@@ -65,13 +65,13 @@ export function deriveHessian(s: HessianState): CalcDerived {
     row('curv', '\\mathbf u^{\\mathsf T}H\\mathbf u', 'Curvature in the chosen direction', numericDesc(curvature), 'primary', true),
     row('class', '\\text{test}', 'Second-derivative test', exactDesc(kindText[c.kind]!), c.kind === 'inconclusive' || c.kind === 'not-critical' ? 'caution' : 'ink'),
   ];
-  const verdict = c.kind === 'not-critical' ? `∇f ≠ 0 here, so this is not a critical point: f increases at rate ‖∇f‖ in the gradient direction. The second-derivative test applies only where ∇f = 0. (The Hessian still describes local curvature.)`
+  const verdict = c.kind === 'not-critical' ? `The gradient is not zero here, so this is not a critical point: f increases at rate ‖∇f‖ in the gradient direction. The second-derivative test applies only where ∇f = 0. (The Hessian still describes local curvature.)`
     : c.kind === 'minimum' ? 'det H > 0 and f_xx > 0: both principal curvatures are positive, so the critical point is a strict local minimum.'
       : c.kind === 'maximum' ? 'det H > 0 and f_xx < 0: both principal curvatures are negative — a strict local maximum.'
         : c.kind === 'saddle' ? 'det H < 0: the principal curvatures have opposite signs. f rises along one direction and falls along the other — a saddle.'
           : `det H = 0: the test is INCONCLUSIVE. The quadratic model cannot decide; ${s.fn === 'quartic' ? 'here higher-order terms make it a minimum' : s.fn === 'monkey' ? 'here higher-order terms make it a (monkey) saddle' : s.fn === 'cubic-y' ? 'here the y³ term makes it neither a minimum nor a maximum' : 'higher-order terms decide'}.`;
   const frames = traceFrom<CalcFrame>([
-    { state: { semantic: { gradient: g, critical: isZeroVec(g) }, title: 'Is the point critical?', detail: isZeroVec(g) ? '∇f = 0: the test may be applied.' : '∇f ≠ 0: the point is not critical.', formula: formulas[0]! } satisfies CalcFrame },
+    { state: { semantic: { gradient: g, critical: isZeroVec(g) }, title: 'Is the point critical?', detail: isZeroVec(g) ? '∇f = 0: the test may be applied.' : 'The gradient is not zero: the point is not critical.', formula: formulas[0]! } satisfies CalcFrame },
     { state: { semantic: { hessian: h, symmetric: sym }, title: 'Compute the Hessian', detail: `Second partials in both mixed orders: f_xy = ${rtext(h.fxy)}, f_yx = ${rtext(h.fyx)}.`, formula: formulas[0]! } satisfies CalcFrame },
     { state: { semantic: { det: c.det, trace: c.trace, kind: c.kind }, title: 'Apply the second-derivative test', detail: verdict, formula: formulas[1]! } satisfies CalcFrame },
   ]);

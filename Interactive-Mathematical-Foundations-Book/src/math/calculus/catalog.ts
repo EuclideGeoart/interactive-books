@@ -31,7 +31,7 @@ export const halfSquare = polynomialFn('half-square', poly(0, 0, r(1, 2)));
 
 export interface LimitEntry { readonly f: Univariate; readonly a: number; readonly note: string; readonly derivation?: string }
 export const LIMIT_FUNCTIONS: Readonly<Record<string, LimitEntry>> = {
-  hole: { f: hole, a: 1, note: 'removable hole', derivation: '\\frac{x^2-1}{x-1}=\\frac{(x-1)(x+1)}{x-1}=x+1\\quad(x\\ne1)' },
+  hole: { f: hole, a: 1, note: 'removable hole', derivation: '\\frac{x^2-1}{x-1}=x+1\\quad(x\\ne1)' },
   moved: { f: moved, a: 1, note: 'value moved away from the limit' },
   jump: { f: jump, a: 0, note: 'jump' },
   'recip-square': { f: recipSquare, a: 0, note: 'both sides unbounded' },

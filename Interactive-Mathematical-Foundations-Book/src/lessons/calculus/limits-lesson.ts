@@ -6,7 +6,7 @@ import type { PointValue } from '../../math/calculus/univariate';
 import { traceFrom } from '../../platform/trace';
 import type { WorldWindow } from '../../platform/geometry/viewport';
 import {
-  cachedCurve, gtex, gtext, givenDesc, graphMarkers, oneSidedDesc, oneSidedTex, oneSidedText, pointDesc, row, rtext, scene, spec, undefinedDesc,
+  cachedCurve, curveOf, eqOneSided, gtex, gtext, givenDesc, graphMarkers, oneSidedDesc, oneSidedText, pointDesc, row, rtext, scene, spec, undefinedDesc,
   valueDesc, valueTex, valueText, type CalcDerived, type CalcFrame,
 } from './calculus-view';
 
@@ -29,6 +29,7 @@ export const limitSpecs = {
 export const LIMIT_WINDOW: WorldWindow = { xMin: -3, xMax: 3, yMin: -3, yMax: 3 };
 const entryOf = (s: LimitState) => LIMIT_FUNCTIONS[s.fn] ?? LIMIT_FUNCTIONS.hole!;
 const show = (v: PointValue) => (v.kind === 'value' ? valueText(v) : 'undefined');
+const relTex = (v: PointValue) => (v.kind === 'value' ? `${v.exact ? '=' : '\\approx'}${valueTex(v)}` : '\\ \\text{undefined}');
 const eqShow = (v: PointValue) => (v.kind === 'value' ? `${v.exact ? '= ' : ''}${valueText(v)}` : 'is undefined');
 
 export const limitVerdict = (kind: LimitKind, a: string, d: ReturnType<typeof analyse>): string => ({
@@ -46,7 +47,7 @@ export function deriveLimit(s: LimitState): CalcDerived {
   const d = analyse(f, A), fx = f.at(X), rows8 = approach(f, A, int(1), 8);
   const at = (v: PointValue, fallback: number) => (v.kind === 'value' ? v.value : fallback);
   const plot = scene('graph', `Approach a = ${gtext(s.a)} on f(x) = ${f.text}`, '', LIMIT_WINDOW);
-  plot.curves.push({ name: 'graph', lines: cachedCurve(f.id, f.number, LIMIT_WINDOW, f.breaks, f.exact ? 480 : 1600), role: 'ink', width: 2.5 });
+  plot.curves.push({ name: 'graph', lines: cachedCurve(f.id, curveOf(f), LIMIT_WINDOW, f.breaks, f.exact ? 480 : 1600), role: 'ink', width: 2.5 });
   plot.segments.push({ name: 'line-a', from: { x: s.a, y: LIMIT_WINDOW.yMin }, to: { x: s.a, y: LIMIT_WINDOW.yMax }, role: 'ink', dashed: true, width: 1.5 });
   if (d.limit) plot.segments.push({ name: 'line-limit', from: { x: LIMIT_WINDOW.xMin, y: d.limit.value }, to: { x: LIMIT_WINDOW.xMax, y: d.limit.value }, role: 'derived', dashed: true, width: 2 });
   for (const r of rows8.slice(0, 5)) {
@@ -64,7 +65,8 @@ export function deriveLimit(s: LimitState): CalcDerived {
     rows: rows8.map(r => [`${r.k}`, rtext(r.delta), show(r.left), show(r.right)]) };
   const aTex = gtex(s.a);
   const formulas = [
-    `\\lim_{x\\to ${aTex}^-}f(x)=${oneSidedTex(d.left)},\\qquad \\lim_{x\\to ${aTex}^+}f(x)=${oneSidedTex(d.right)}`,
+    `\\lim_{x\\to ${aTex}^-}f(x)${eqOneSided(d.left)}`,
+    `\\lim_{x\\to ${aTex}^+}f(x)${eqOneSided(d.right)}`,
     d.limit ? `\\lim_{x\\to ${aTex}}f(x)=${valueTex(d.limit)}` : `\\lim_{x\\to ${aTex}}f(x)\\ \\text{does not exist}`,
     d.value.kind === 'value' ? `f(${aTex})${d.value.exact ? '=' : '\\approx'}${valueTex(d.value)}` : `f(${aTex})\\ \\text{is undefined}`,
     ...(e.derivation ? [e.derivation] : []),
@@ -81,8 +83,8 @@ export function deriveLimit(s: LimitState): CalcDerived {
   const frames = traceFrom<CalcFrame>([
     ...rows8.slice(0, 6).map(r => ({ state: { semantic: { k: r.k, delta: r.delta, left: r.left, right: r.right }, title: `Approach step ${r.k + 1}: δ = ${rtext(r.delta)}`,
       detail: `Evaluate at a − δ and a + δ, both different from a: f(a − δ) ${eqShow(r.left)}, f(a + δ) ${eqShow(r.right)}.`,
-      formula: `f(${gtex(s.a)}-${rtext(r.delta).replace('/', '/')})=${r.left.kind === 'value' ? valueTex(r.left) : '\\text{undefined}'},\\quad f(${gtex(s.a)}+${rtext(r.delta)})=${r.right.kind === 'value' ? valueTex(r.right) : '\\text{undefined}'}` } satisfies CalcFrame })),
-    { state: { semantic: { left: d.left, right: d.right, limit: d.limit, value: d.value, kind: d.kind }, title: 'Decide the limit analytically', detail: `${verdict} The table supports this reading; the decision comes from the function's exact description.`, formula: formulas[1]! } satisfies CalcFrame },
+      formula: `f(${gtex(s.a)}-${rtext(r.delta)})${relTex(r.left)},\\quad f(${gtex(s.a)}+${rtext(r.delta)})${relTex(r.right)}` } satisfies CalcFrame })),
+    { state: { semantic: { left: d.left, right: d.right, limit: d.limit, value: d.value, kind: d.kind }, title: 'Decide the limit analytically', detail: `${verdict} The table supports this reading; the decision comes from the function's exact description.`, formula: formulas[2]! } satisfies CalcFrame },
   ]);
   return {
     rows, formulas, verdict, status: d.kind, caution: d.kind !== 'continuous', scenes: [plot], frames, table,

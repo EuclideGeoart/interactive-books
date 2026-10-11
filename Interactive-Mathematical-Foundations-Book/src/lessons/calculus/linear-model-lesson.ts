@@ -6,7 +6,7 @@ import { expFn, sinFn, type Univariate } from '../../math/calculus/univariate';
 import { traceFrom } from '../../platform/trace';
 import type { WorldWindow } from '../../platform/geometry/viewport';
 import {
-  cachedCurve, gtex, gtext, givenDesc, lineThrough, numericDesc, oneSidedText, pg, pointDesc, row, rtext, scene, spec, undefinedDesc, valueDesc, valueTex, valueText,
+  cachedCurve, curveOf, gtex, gtext, givenDesc, lineThrough, numericDesc, oneSidedText, pg, pointDesc, row, rtext, scene, spec, undefinedDesc, valueDesc, valueTex, valueText,
   type CalcDerived, type CalcFrame,
 } from './calculus-view';
 
@@ -15,7 +15,7 @@ export const LINEAR_CANONICAL: LinearState = { fn: 'cubic', x0: 1, dx: 1 };
 export const LINEAR_FUNCTIONS: Readonly<Record<string, Univariate>> = { cubic, sin: sinFn, exp: expFn, abs: absolute };
 export const linearPresets = [
   { id: 'cubic', label: 'Position x³/6 − x', state: LINEAR_CANONICAL },
-  { id: 'far', label: 'Far away: Δx = 2.5', state: { fn: 'cubic', x0: 1, dx: 2.5 } },
+  { id: 'far', label: 'Far away: Δx = −2.5', state: { fn: 'cubic', x0: 1.5, dx: -2.5 } },
   { id: 'inflection', label: 'At x₀ = 0 (f″ = 0)', state: { fn: 'cubic', x0: 0, dx: 1 } },
   { id: 'sine', label: 'sin x (binary64)', state: { fn: 'sin', x0: 0.5, dx: 1 } },
   { id: 'exp', label: 'eˣ (binary64)', state: { fn: 'exp', x0: 0, dx: 1 } },
@@ -51,7 +51,7 @@ export function deriveLinear(s: LinearState): CalcDerived {
   const status = !model ? 'no-derivative' : Math.abs(s.dx) >= 2 ? 'far' : 'local';
   const P = { x: s.x0, y: fx.kind === 'value' ? fx.value : 0 }, qx = s.x0 + s.dx, Q = { x: qx, y: fq.kind === 'value' ? fq.value : 0 };
   const plot = scene('graph', `Tangent model of f(x) = ${f.text} at x₀ = ${gtext(s.x0)}`, '', LINEAR_WINDOW);
-  plot.curves.push({ name: 'graph', lines: cachedCurve(f.id, f.number, LINEAR_WINDOW, f.breaks), role: 'ink', width: 2.5 });
+  plot.curves.push({ name: 'graph', lines: cachedCurve(f.id, curveOf(f), LINEAR_WINDOW, f.breaks), role: 'ink', width: 2.5 });
   if (model) {
     plot.segments.push({ name: 'tangent', ...lineThrough(P, model.slope.value, LINEAR_WINDOW), role: 'derived', width: 2.5 });
     plot.markers.push({ name: 'model-point', at: { x: qx, y: model.linear.value }, role: 'derived', filled: false });
@@ -79,10 +79,13 @@ export function deriveLinear(s: LinearState): CalcDerived {
     rows: steps.map(h => { const lm = localModel(f, X0, h)!; return [rtext(h), valueText(lm.error), valueText(lm.relative!), valueText(lm.curvatureRatio!)]; }) } : undefined;
   const x0t = gtex(s.x0);
   const formulas = model ? [
-    `L(\\Delta x)=f(${x0t})+f'(${x0t})\\,\\Delta x=${valueTex(model.fx)}+${pg(model.slope.value)}\\cdot${pg(s.dx)}${model.linear.exact ? '=' : '\\approx'}${valueTex(model.linear)}`,
-    `f(${x0t}+${pg(s.dx)})${model.actual.exact ? '=' : '\\approx'}${valueTex(model.actual)},\\qquad e=f-L${model.error.exact ? '=' : '\\approx'}${valueTex(model.error)}`,
-    `\\frac{f(x_0+\\Delta x)-f(x_0)}{\\Delta x}${avg.kind === 'value' ? `${avg.exactSlope ? '=' : '\\approx'}${valueTex({ value: avg.slope, exact: avg.exactSlope })}` : '\\ \\text{undefined}'}\\ \\text{(average rate)},\\quad f'(${x0t})${model.slope.exact ? '=' : '\\approx'}${valueTex(model.slope)}\\ \\text{(instantaneous)}`,
-  ] : [`f'(${x0t})\\ \\text{does not exist: left slope } ${d.left.kind === 'finite' ? valueTex(d.left) : '\\text{none}'},\\ \\text{right slope } ${d.right.kind === 'finite' ? valueTex(d.right) : '\\text{none}'}`];
+    `L(\\Delta x)=f(${x0t})+f'(${x0t})\\,\\Delta x`,
+    `L(${gtex(s.dx)})=${valueTex(model.fx)}+${pg(model.slope.value)}\\cdot${pg(s.dx)}${model.linear.exact ? '=' : '\\approx'}${valueTex(model.linear)}`,
+    `f(${x0t}+${pg(s.dx)})${model.actual.exact ? '=' : '\\approx'}${valueTex(model.actual)}`,
+    `e=f-L${model.error.exact ? '=' : '\\approx'}${valueTex(model.error)}`,
+    `\\bar m=\\frac{f(x_0+\\Delta x)-f(x_0)}{\\Delta x}${avg.kind === 'value' ? `${avg.exactSlope ? '=' : '\\approx'}${valueTex({ value: avg.slope, exact: avg.exactSlope })}` : '\\ \\text{undefined}'}`,
+    `f'(${x0t})${model.slope.exact ? '=' : '\\approx'}${valueTex(model.slope)}\\ \\text{(instantaneous)}`,
+  ] : [`f'(${x0t})\\ \\text{does not exist}`, `\\text{left slope } {${d.left.kind === 'finite' ? valueTex(d.left) : '\\text{none}'}},\\quad \\text{right slope } {${d.right.kind === 'finite' ? valueTex(d.right) : '\\text{none}'}}`];
   const rows = [
     row('x0', 'x_0', 'Expansion point', givenDesc(s.x0), 'primary'), row('dx', '\\Delta x', 'Displacement', givenDesc(s.dx), 'x'),
     row('fx0', 'f(x_0)', 'Value', pointDesc(fx), 'primary'),
@@ -97,7 +100,7 @@ export function deriveLinear(s: LinearState): CalcDerived {
   const verdict = !model ? `At this corner no single tangent exists (left slope ${oneSidedText(d.left)}, right slope ${oneSidedText(d.right)}), so there is no linear model that is accurate on both sides.`
     : status === 'far' ? `Δx = ${gtext(s.dx)} is far from x₀: the model's error ${valueText(model.error)} is large. A tangent line is a LOCAL description; nothing guarantees accuracy far away.`
       : f2.kind === 'value' && f2.exact && f2.exact.num === 0n ? `Near x₀ the model is close: error ${valueText(model.error)} at Δx = ${gtext(s.dx)}. Here f″(x₀) = 0 (an inflection), so the error shrinks even faster than Δx², like Δx³.`
-        : `Near x₀ the model is close: error ${valueText(model.error)} at Δx = ${gtext(s.dx)}. Halving Δx roughly quarters the error when f″(x₀) ≠ 0 — it shrinks faster than Δx.`;
+        : `Near x₀ the model is close: error ${valueText(model.error)} at Δx = ${gtext(s.dx)}. Halving Δx roughly quarters the error when f″(x₀) is nonzero — it shrinks faster than Δx.`;
   const frames = traceFrom<CalcFrame>(model ? steps.slice(0, 6).map((h, k) => {
     const lm = localModel(f, X0, h)!;
     return { state: { semantic: { k, dx: h, linear: lm.linear, actual: lm.actual, error: lm.error }, title: `Δx = ${rtext(h)}`,

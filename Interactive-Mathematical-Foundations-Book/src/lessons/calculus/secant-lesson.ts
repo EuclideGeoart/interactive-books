@@ -7,7 +7,7 @@ import type { OneSided, Slope, Univariate } from '../../math/calculus/univariate
 import { traceFrom } from '../../platform/trace';
 import type { WorldWindow } from '../../platform/geometry/viewport';
 import {
-  cachedCurve, gtex, gtext, givenDesc, graphMarkers, lineThrough, oneSidedDesc, oneSidedText, pg, pointDesc, rayFrom, row, rtex, rtext, scene, spec,
+  cachedCurve, curveOf, gtex, gtext, givenDesc, graphMarkers, lineThrough, oneSidedDesc, oneSidedText, pg, pointDesc, rayFrom, row, rtex, rtext, scene, spec,
   undefinedDesc, valueDesc, valueTex, valueText, type CalcDerived, type CalcFrame,
 } from './calculus-view';
 
@@ -48,7 +48,7 @@ export function deriveSecant(s: SecantState): CalcDerived {
   });
   const status = sec.kind === 'undefined' && s.h === 0 ? 'zero-h' : fx.kind === 'undefined' ? 'undefined-point' : d.kind === 'value' ? 'differentiable' : broken ? 'discontinuous' : slopeStatus(d);
   const plot = scene('graph', `Secant and tangent of f(x) = ${f.text}`, '', WINDOW);
-  plot.curves.push({ name: 'graph', lines: cachedCurve(f.id, f.number, WINDOW, f.breaks), role: 'ink', width: 2.5 });
+  plot.curves.push({ name: 'graph', lines: cachedCurve(f.id, curveOf(f), WINDOW, f.breaks), role: 'ink', width: 2.5 });
   plot.markers.push(...graphMarkers(f, WINDOW, 'ink'));
   const py = fx.kind === 'value' ? fx.value : 0, P = { x: s.x, y: py };
   const qx = toNumber(add(X, H)), qy = fxh.kind === 'value' ? fxh.value : 0, Q = { x: qx, y: qy };
@@ -56,8 +56,8 @@ export function deriveSecant(s: SecantState): CalcDerived {
     const line = lineThrough(P, sec.slope, WINDOW);
     plot.segments.push({ name: 'secant', ...line, role: 'primary', width: 3 });
     plot.segments.push({ name: 'run', from: P, to: { x: qx, y: py }, role: 'x', width: 2.5 }, { name: 'rise', from: { x: qx, y: py }, to: Q, role: 'y', width: 2.5 });
-    plot.labels.push({ name: 'label-run', at: { x: (s.x + qx) / 2, y: py }, text: 'h', role: 'x', dy: sec.rise >= 0 ? 16 : -16 },
-      { name: 'label-rise', at: { x: qx, y: (py + qy) / 2 }, text: 'Δy', role: 'y', dx: s.h >= 0 ? 18 : -18, dy: 0 });
+    plot.labels.push({ name: 'label-run', at: { x: (s.x + qx) / 2, y: py }, text: 'h', role: 'x', dy: sec.rise >= 0 ? 20 : -20 },
+      { name: 'label-rise', at: { x: qx, y: (py + qy) / 2 }, text: 'Δy', role: 'y', dx: s.h >= 0 ? 30 : -30, dy: 0 });
   }
   if (fx.kind === 'value') {
     if (d.kind === 'value') plot.segments.push({ name: 'tangent', ...lineThrough(P, d.value!, WINDOW), role: 'derived', dashed: true, width: 2.5 });
@@ -87,11 +87,13 @@ export function deriveSecant(s: SecantState): CalcDerived {
   const table = { caption: 'Secant slopes m(h) = [f(x+h) − f(x)]/h for shrinking nonzero steps, from both sides of x', head: ['k', 'h', 'm(h)', 'm(−h)'], rows: tableRows };
 
   const formulas: string[] = [];
-  if (sec.kind === 'value') formulas.push(`m(h)=\\frac{f(x+h)-f(x)}{h}=\\frac{f(${gtex(toNumber(add(X, H)))})-f(${gtex(s.x)})}{${pg(s.h)}}=\\frac{${valueTex(sec.fxh)}-${sec.fx.value < 0 ? `(${valueTex(sec.fx)})` : valueTex(sec.fx)}}{${pg(s.h)}}${sec.exactSlope ? '=' : '\\approx'}${valueTex({ value: sec.slope, exact: sec.exactSlope })}`);
-  else formulas.push(s.h === 0 ? `m(0)=\\frac{f(x+0)-f(x)}{0}\\quad\\text{is undefined: division by zero}` : `m(h)\\ \\text{is undefined: } f\\text{ has no value at an endpoint of the secant}`);
-  if (f.poly) { const m = quotientPolynomial(f.poly, X); formulas.push(`m(h)=${polyTex(m, 'h')}\\quad(h\\ne0),\\qquad \\lim_{h\\to0}m(h)=${rtex(m.coefficients[0] ?? ZERO)}`); }
+  if (sec.kind === 'value') formulas.push(`m(h)=\\frac{f(x+h)-f(x)}{h}=\\frac{f(${gtex(toNumber(add(X, H)))})-f(${gtex(s.x)})}{${pg(s.h)}}`,
+    `m(${gtex(s.h)})=\\frac{${valueTex(sec.fxh)}-${sec.fx.value < 0 ? `(${valueTex(sec.fx)})` : valueTex(sec.fx)}}{${pg(s.h)}}${sec.exactSlope ? '=' : '\\approx'}${valueTex({ value: sec.slope, exact: sec.exactSlope })}`);
+  else formulas.push(s.h === 0 ? `m(0)=\\frac{f(x+0)-f(x)}{0}` : `m(h)\\ \\text{is undefined}`, s.h === 0 ? `\\text{undefined: division by zero}` : `f\\text{ has no value at an end of the secant}`);
+  if (f.poly) { const m = quotientPolynomial(f.poly, X); formulas.push(`m(h)=${polyTex(m, 'h')}\\quad(h\\ne0)`, `\\lim_{h\\to0}m(h)=${rtex(m.coefficients[0] ?? ZERO)}`); }
   formulas.push(d.kind === 'value' ? `f'(${gtex(s.x)})=\\lim_{h\\to0}\\frac{f(${gtex(s.x)}+h)-f(${gtex(s.x)})}{h}${d.exact ? '=' : '\\approx'}${valueTex({ value: d.value!, exact: d.exact })}`
-    : `\\lim_{h\\to0^-}m(h)=${sideTex(d.left)},\\qquad \\lim_{h\\to0^+}m(h)=${sideTex(d.right)}\\quad\\Rightarrow\\quad f'(${gtex(s.x)})\\ \\text{does not exist}`);
+    : `\\lim_{h\\to0^-}m(h)=${sideTex(d.left)},\\quad \\lim_{h\\to0^+}m(h)=${sideTex(d.right)}`);
+  if (d.kind !== 'value') formulas.push(`\\Rightarrow\\ f'(${gtex(s.x)})\\ \\text{does not exist}`);
 
   const gap = sec.kind === 'value' && d.kind === 'value' ? (sec.exactSlope && d.exact ? { value: Math.abs(sec.slope - d.value!), exact: absR(subR(sec.exactSlope, d.exact)) } : { value: Math.abs(sec.slope - d.value!) }) : null;
   const rows = [
@@ -118,7 +120,7 @@ export function deriveSecant(s: SecantState): CalcDerived {
     }),
     { state: { semantic: { derivative: d.kind === 'value' ? (d.exact ?? d.value) : null, left: d.left, right: d.right }, title: 'The limit, derived separately',
       detail: d.kind === 'value' ? `The analytic derivative is f′(${gtext(s.x)}) ${d.exact ? '=' : '≈'} ${valueText({ value: d.value!, exact: d.exact }).replace(/^≈ /, '')}. The table shows the secant slopes approaching it; the table alone is evidence, not proof.` : `No derivative: ${d.reason}`,
-      formula: formulas.at(-1)! } satisfies CalcFrame },
+      formula: d.kind === 'value' ? formulas.at(-1)! : formulas.at(-2)! } satisfies CalcFrame },
   ]);
   return {
     rows, formulas, verdict, status, caution: !['differentiable'].includes(status), scenes: [plot], frames, table,

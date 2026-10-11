@@ -49,10 +49,14 @@ export interface DagFrame extends CalcFrame {
   contributions: Readonly<Record<string, string>>;
   active: readonly string[];
 }
-export const NODE_W = 120, NODE_H = 66;
+export const NODE_W = 112, NODE_H = 66;
 /** Horizontal room between node columns: enough for an edge label such as “∂L/∂q = 2” plus its contribution line. */
-const COLUMN_GAP = 88;
-const txt = (v: Num) => (v.kind === 'undefined' ? 'undefined' : v.exact ? rtext(v.exact) : `≈${v.value.toFixed(4)}`);
+const COLUMN_GAP = 96;
+/** Compact read-out for the narrow graph boxes: 'undef.' is spelled out in full in the inspector, verdict and description. */
+const txt = (v: Num) => (v.kind === 'undefined' ? 'undef.' : v.exact ? rtext(v.exact) : `≈${v.value.toFixed(4)}`);
+/** Relation and value: '=' for exact or undefined statements, '≈' for binary64 values. */
+const relTex = (v: Num) => (v.kind === 'value' && !v.exact ? `\\approx ${v.value.toFixed(6)}` : `=${tex(v)}`);
+const relTxt = (v: Num) => (v.kind === 'value' && !v.exact ? txt(v) : `=${txt(v)}`);
 const tex = (v: Num) => (v.kind === 'undefined' ? '\\text{undefined}' : v.exact ? rtex(v.exact) : `${v.value.toFixed(6)}`);
 const describe = (g: Graph, id: string) => { const n = g.nodes.find(x => x.id === id)!; return n.op === 'input' ? `${id} (input)` : n.args.length === 2 ? `${id} = ${n.args[0]} ${SYMBOL[n.op]} ${n.args[1]}` : n.op === 'square' ? `${id} = ${n.args[0]}²` : `${id} = ${SYMBOL[n.op]}(${n.args[0]})`; };
 
@@ -97,20 +101,20 @@ export function deriveAutodiff(s: AutodiffState): AutodiffDerived {
   const e = evaluate(g, inputs), out = g.outputs[Math.min(s.output, g.outputs.length - 1)]!, seed = g.inputs[Math.min(s.seed, g.inputs.length - 1)]!;
   const rev = reverseMode(g, e, out), fwd = forwardMode(g, e, seed);
   const L = layout(g);
-  const edges: DagEdge[] = L.edges.map(x => ({ ...x, local: `∂${x.to}/∂${x.from} = ${txt(e.edges.find(y => y.from === x.from && y.to === x.to && y.index === x.index)!.local)}` }));
+  const edges: DagEdge[] = L.edges.map(x => ({ ...x, local: `∂${x.to}/∂${x.from}${relTxt(e.edges.find(y => y.from === x.from && y.to === x.to && y.index === x.index)!.local)}` }));
   const valueText = Object.fromEntries(e.order.map(id => [id, txt(e.values[id]!)]));
   // ---- trace frames: forward values, then the chosen derivative pass, then a summary.
   const frames: Omit<TraceFrame<DagFrame>, 'index'>[] = [];
   const known: Record<string, string> = {};
   for (const id of g.inputs) known[id] = valueText[id]!;
   frames.push({ state: { phase: 'forward', focus: null, values: { ...known }, derivs: {}, contributions: {}, active: [], semantic: { inputs }, title: 'Inputs',
-    detail: `Set ${g.inputs.map(id => `${id} = ${valueText[id]}`).join(', ')}.`, formula: g.inputs.map(id => `${id}=${tex(e.values[id]!)}`).join(',\\quad ') } });
+    detail: `Set ${g.inputs.map(id => `${id} = ${valueText[id]}`).join(', ')}.`, formula: g.inputs.map(id => `${id}${relTex(e.values[id]!)}`).join(',\\quad ') } });
   for (const id of e.order.filter(x => !g.inputs.includes(x))) {
     known[id] = valueText[id]!;
     const into = edges.filter(x => x.to === id);
     frames.push({ state: { phase: 'forward', focus: id, values: { ...known }, derivs: {}, contributions: {}, active: into.map(x => x.key), semantic: { node: id, value: e.values[id] },
       title: `Forward: ${describe(g, id)}`, detail: `Evaluate ${describe(g, id)} from values already computed: ${valueText[id]}. Each incoming edge stores its local derivative.`,
-      formula: `${id}=${tex(e.values[id]!)},\\qquad ${into.map(x => `\\frac{\\partial ${id}}{\\partial ${x.from}}=${tex(e.edges.find(y => y.from === x.from && y.to === id && y.index === x.index)!.local)}`).join(',\\ ')}` } });
+      formula: `${id}${relTex(e.values[id]!)},\\qquad ${into.map(x => `\\frac{\\partial ${id}}{\\partial ${x.from}}${relTex(e.edges.find(y => y.from === x.from && y.to === id && y.index === x.index)!.local)}`).join(',\\ ')}` } });
   }
   const contributions: Record<string, string> = {}, derivs: Record<string, string> = {};
   if (s.mode === 'reverse') {
@@ -125,7 +129,7 @@ export function deriveAutodiff(s: AutodiffState): AutodiffDerived {
       frames.push({ state: { phase: 'adjoint', focus: step.node, values: { ...known }, derivs: { ...derivs }, contributions: { ...contributions }, active: step.contributions.map(c => `${c.from}->${c.to}#${c.index}`),
         semantic: { node: step.node, adjoint: step.adjoint, contributions: step.contributions }, title: `Backward through ${step.node}`,
         detail: `${step.node}̄ = ${txt(step.adjoint)}. Send ${step.contributions.map(c => `${txt(c.upstream)} × ${txt(c.local)} = ${txt(c.amount)} to ${c.from}`).join('; ')}. Contributions to the same node ADD.`,
-        formula: step.contributions.map(c => `\\bar ${c.from}\\mathrel{+}=\\bar ${step.node}\\cdot\\frac{\\partial ${step.node}}{\\partial ${c.from}}=${tex(c.upstream)}\\cdot${tex(c.local)}=${tex(c.amount)}`).join(',\\quad ') } });
+        formula: step.contributions.map(c => `\\bar ${c.from}\\mathrel{+}=\\bar ${step.node}\\cdot\\frac{\\partial ${step.node}}{\\partial ${c.from}}${relTex(c.upstream)}\\cdot${tex(c.local)}${relTex(c.amount)}`).join(',\\quad ') } });
     }
   } else {
     for (const id of g.inputs) derivs[id] = id === seed ? '1' : '0';
@@ -137,7 +141,7 @@ export function deriveAutodiff(s: AutodiffState): AutodiffDerived {
       frames.push({ state: { phase: 'tangent', focus: step.node, values: { ...known }, derivs: { ...derivs }, contributions: { ...contributions }, active: step.terms.map(t => `${t.from}->${step.node}#${t.index}`),
         semantic: { node: step.node, tangent: step.tangent, terms: step.terms }, title: `Tangent of ${step.node}`,
         detail: `${step.node}̇ = ${step.terms.map(t => `(∂${step.node}/∂${t.from})·${t.from}̇`).join(' + ')} = ${txt(step.tangent)}.`,
-        formula: `\\dot ${step.node}=${step.terms.map(t => tex(t.term)).join('+')}=${tex(step.tangent)}` } });
+        formula: `\\dot ${step.node}=${step.terms.map(t => tex(t.term)).join('+')}${relTex(step.tangent)}` } });
     }
   }
   // ---- inspector and checks
@@ -158,7 +162,7 @@ export function deriveAutodiff(s: AutodiffState): AutodiffDerived {
     rows.push(row(`analytic-${o}`, '\\text{check}', `Analytic formula for ∂${o}/∂${seed}`, a === null || a === undefined ? undefinedDesc('No value: the function is undefined here.') : numericDesc(a), 'ink', true));
   });
   const fd = centralDifference(g, inputs, out, s.mode === 'reverse' ? g.inputs[0]! : seed);
-  rows.push(row('fd', '\\delta_h', `Central difference, h = 10⁻⁶ (numerical evidence)`, fd === null ? undefinedDesc('A shifted evaluation is undefined.') : numericDesc(fd), 'ink', true));
+  rows.push(row('fd', '\\delta_h', `Central difference, h = 10⁻⁶ (numerical evidence)`, fd === null ? undefinedDesc('f is undefined at this point; a difference quotient across it measures no derivative.') : numericDesc(fd), 'ink', true));
   const table: CalcTable = { caption: 'Cost of a full gradient/Jacobian: forward mode needs one pass per INPUT, reverse mode one pass per OUTPUT',
     head: ['graph', 'inputs n', 'outputs m', 'forward passes', 'reverse passes'], rows: [[g.label, `${g.inputs.length}`, `${g.outputs.length}`, `${g.inputs.length}`, `${g.outputs.length}`]] };
   const undefinedOut = e.values[out]!.kind === 'undefined';
@@ -168,7 +172,7 @@ export function deriveAutodiff(s: AutodiffState): AutodiffDerived {
     : s.mode === 'reverse' ? `One backward pass gives every ∂${out}/∂input: ${g.inputs.map(id => `∂${out}/∂${id} = ${total(id)}`).join(', ')}.${g.id === 'shared-input' ? ' x reaches z along two paths (through u and directly); their contributions add to 2x + y.' : ''}`
       : `One forward pass seeded at ${seed} gives ∂output/∂${seed} for every output: ${g.outputs.map(o => `${txt(fwd.tangents[o]!)}`).join(', ')}.`;
   frames.push({ state: { phase: 'summary', focus: null, values: { ...known }, derivs: { ...derivs }, contributions: { ...contributions }, active: [], semantic: { adjoints: rev.adjoints, tangents: fwd.tangents },
-    title: 'Result', detail: verdict, formula: s.mode === 'reverse' ? g.inputs.map(id => `\\frac{\\partial ${out}}{\\partial ${id}}=${tex(rev.adjoints[id]!)}`).join(',\\quad ') : g.outputs.map(o => `\\frac{\\partial ${o}}{\\partial ${seed}}=${tex(fwd.tangents[o]!)}`).join(',\\quad ') } });
+    title: 'Result', detail: verdict, formula: s.mode === 'reverse' ? g.inputs.map(id => `\\frac{\\partial ${out}}{\\partial ${id}}${relTex(rev.adjoints[id]!)}`).join(',\\quad ') : g.outputs.map(o => `\\frac{\\partial ${o}}{\\partial ${seed}}${relTex(fwd.tangents[o]!)}`).join(',\\quad ') } });
   const formulas = [
     g.tex,
     s.mode === 'reverse' ? `\\bar v=\\sum_{\\text{edges } v\\to w}\\bar w\\,\\frac{\\partial w}{\\partial v},\\qquad \\bar{${out}}=1` : `\\dot w=\\sum_{\\text{edges } v\\to w}\\frac{\\partial w}{\\partial v}\\,\\dot v,\\qquad \\dot{${seed}}=1`,

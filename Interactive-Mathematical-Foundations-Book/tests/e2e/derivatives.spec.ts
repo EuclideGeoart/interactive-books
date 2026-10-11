@@ -92,7 +92,7 @@ test.describe('III.4: rate and local linear model', () => {
   });
   test('far away and corner cases are reported honestly', async ({ page }) => {
     const s = await open(page, slug, kind);
-    await s.locator('[data-preset="far"]').click(); await expect(s).toHaveAttribute('data-status', 'far'); expect((await metrics(s)).errorExact).toBe('275/48');
+    await s.locator('[data-preset="far"]').click(); await expect(s).toHaveAttribute('data-status', 'far'); expect((await metrics(s)).errorExact).toBe('25/12');
     await s.locator('[data-preset="corner"]').click(); await expect(s).toHaveAttribute('data-status', 'no-derivative'); await expect(s.locator('line[data-part="tangent"]')).toHaveCount(0);
     await s.locator('[data-preset="sine"]').click(); await expect(s.locator('[data-quantity="error"] .line').first()).toContainText('≈');
   });

@@ -18,7 +18,7 @@ export const INNER: Readonly<Record<string, Stage>> = {
 export const OUTER: Readonly<Record<string, Stage>> = {
   cube: polyStage('cube', poly(0, 0, 0, r(1, 4))),
   sin: { id: 'sin', text: v => `sin ${v}`, tex: v => `\\sin ${v}`, value: Math.sin, slope: Math.cos },
-  exp: { id: 'exp', text: v => `e^${v}`, tex: v => `e^{${v}}`, value: Math.exp, slope: Math.exp },
+  exp: { id: 'exp', text: v => (v === 'u' ? 'eᵘ' : `exp(${v})`), tex: v => `e^{${v}}`, value: Math.exp, slope: Math.exp },
 };
 type Num = { value: number; exact?: Rational };
 const ex = (e: Rational): Num => ({ value: toNumber(e), exact: e });

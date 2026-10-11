@@ -51,8 +51,9 @@ export function deriveChain(s: ChainState): CalcDerived {
   const formulas = [
     `x=${x}\\ \\xrightarrow{\\;g\\;}\\ u=${valueTex(c.u)}\\ \\xrightarrow{\\;f\\;}\\ y=${valueTex(c.y)}`,
     `\\frac{dy}{dx}=\\underbrace{f'(u)}_{${valueTex(c.outerSlope)}}\\cdot\\underbrace{g'(x)}_{${valueTex(c.innerSlope)}}${rel}${valueTex(c.product)}`,
-    `\\Delta u${c.du.exact ? '=' : '\\approx'}${valueTex(c.du)}\\ (\\text{linear: }${valueTex(c.duLinear)}),\\qquad \\Delta y${c.dy.exact ? '=' : '\\approx'}${valueTex(c.dy)}\\ (\\text{linear: }${valueTex(c.dyLinear)})`,
-    ...(c.composed ? [`h(x)=${polyTex(c.composed)},\\quad h'(${x})=${valueTex(c.direct!)}`] : []),
+    `\\Delta u${c.du.exact ? '=' : '\\approx'}${valueTex(c.du)}\\ (\\text{linear: }${valueTex(c.duLinear)})`,
+    `\\Delta y${c.dy.exact ? '=' : '\\approx'}${valueTex(c.dy)}\\ (\\text{linear: }${valueTex(c.dyLinear)})`,
+    ...(c.composed ? [`h(x)=${polyTex(c.composed)}`, `h'(${x})=${valueTex(c.direct!)}`] : []),
   ];
   const rows = [
     row('x', 'x', 'Input', givenDesc(s.x), 'primary'), row('u', 'u', 'Intermediate value g(x)', valueDesc(c.u), 'x'), row('y', 'y', 'Output f(u)', valueDesc(c.y), 'y'),
@@ -66,9 +67,9 @@ export function deriveChain(s: ChainState): CalcDerived {
     : Math.abs(s.dx) >= 1.5 ? `With a large Δx the linearized change ${valueText(c.dyLinear)} misses the actual change ${valueText(c.dy)}: the chain rule is a statement about LOCAL rates.`
       : `Sensitivities multiply: dy/dx = f′(u)·g′(x), here ${bare(c.outerSlope)} × ${bare(c.innerSlope)} = ${bare(c.product)}${c.product.exact ? ' exactly' : ' (binary64 approximations)'}. The outer slope is evaluated at u = g(x), not at x.`;
   const frames = traceFrom<CalcFrame>([
-    { state: { semantic: { x: X, u: c.u }, title: 'Forward: inner stage', detail: `u = g(${gtext(s.x)}) = ${valueText(c.u)}.`, formula: `u=g(${x})=${valueTex(c.u)}` } satisfies CalcFrame },
-    { state: { semantic: { u: c.u, y: c.y }, title: 'Forward: outer stage', detail: `y = f(u) = ${valueText(c.y)}.`, formula: `y=f(${valueTex(c.u)})=${valueTex(c.y)}` } satisfies CalcFrame },
-    { state: { semantic: { local: [c.innerSlope, c.outerSlope] }, title: 'Local factors', detail: `Each stage reports its own derivative at its own input: g′(x) = ${valueText(c.innerSlope)}, f′(u) = ${valueText(c.outerSlope)}.`, formula: `g'(${x})=${valueTex(c.innerSlope)},\\quad f'(${valueTex(c.u)})=${valueTex(c.outerSlope)}` } satisfies CalcFrame },
+    { state: { semantic: { x: X, u: c.u }, title: 'Forward: inner stage', detail: `u = g(${gtext(s.x)}) ${c.u.exact ? '= ' : ''}${valueText(c.u)}.`, formula: `u=g(${x})${c.u.exact ? '=' : '\\approx'}${valueTex(c.u)}` } satisfies CalcFrame },
+    { state: { semantic: { u: c.u, y: c.y }, title: 'Forward: outer stage', detail: `y = f(u) ${c.y.exact ? '= ' : ''}${valueText(c.y)}.`, formula: `y=f(u)${c.y.exact ? '=' : '\\approx'}${valueTex(c.y)}` } satisfies CalcFrame },
+    { state: { semantic: { local: [c.innerSlope, c.outerSlope] }, title: 'Local factors', detail: `Each stage reports its own derivative at its own input: g′(x) ${c.innerSlope.exact ? '= ' : ''}${valueText(c.innerSlope)}, f′(u) ${c.outerSlope.exact ? '= ' : ''}${valueText(c.outerSlope)}.`, formula: `g'(${x})${c.innerSlope.exact ? '=' : '\\approx'}${valueTex(c.innerSlope)},\\quad f'(u)${c.outerSlope.exact ? '=' : '\\approx'}${valueTex(c.outerSlope)}` } satisfies CalcFrame },
     { state: { semantic: { product: c.product, direct: c.direct, agree: c.agree }, title: 'Multiply backward', detail: `Starting from dy/dy = 1, multiply by f′(u), then by g′(x): ${valueText(c.product)}. This backward product is exactly what automatic differentiation (III.10) does on a larger graph.`, formula: formulas[1]! } satisfies CalcFrame },
   ]);
   return {
