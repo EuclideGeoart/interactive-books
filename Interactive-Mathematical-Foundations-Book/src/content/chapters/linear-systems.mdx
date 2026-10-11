@@ -1,0 +1,154 @@
+---
+kind: chapter
+curriculumId: II.13
+title: "Linear systems as intersecting constraints"
+hero: "Each row is a constraint; a solution satisfies all rows at once."
+lede: Move two exact lines through unique, parallel, coincident, vertical, and zero-row cases. The same geometry is the matrix equation Ax = b.
+description: Two-variable linear systems as intersecting constraints, unique, none, and infinitely many solutions, vertical and coincident lines, zero rows, Ax equals b, exact classification, Python, NumPy, and exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import MatrixStage from '../../lessons/linear-algebra/MatrixStage';
+import MatrixWorkedStage from '../../lessons/linear-algebra/MatrixWorkedStage';
+import Exercise from '../../lessons/linear-algebra/MatrixExercise';
+import reference from '../../../code/python/linear_systems.py?raw';
+import practical from '../../../code/python/linear_systems_numpy.py?raw';
+
+<Stage caption="Edit either coefficient row or right-hand side. The lines and exact classifier agree for unique, parallel, coincident, vertical, and contradictory or redundant zero-row systems."><MatrixStage chapter="systems" client:load /></Stage>
+
+Begin with the unique intersection. Choose **Vertical + horizontal** to see that vertical lines need no slope special case. Compare **Parallel, none** with **Coincident, many**. Finish with the two zero-row presets and explain why $0=0$ and $0=1$ behave differently.
+
+## Intuition: simultaneous constraints
+
+One linear equation in two unknowns describes every point on a line. A system asks for points that lie on all its lines simultaneously. The possibilities are geometric:
+
+- two independent lines meet once;
+- distinct parallel lines never meet;
+- coincident lines share infinitely many points.
+
+Writing the equations as rows of one matrix makes those same constraints available to exact algebra and later algorithms.
+
+## Definition
+
+The system
+
+$$
+\begin{aligned}
+a_{11}x+a_{12}y&=b_1,\\
+a_{21}x+a_{22}y&=b_2
+\end{aligned}
+$$
+
+is the matrix equation
+
+$$
+A\mathbf x=\mathbf b,
+\qquad
+A=\begin{bmatrix}a_{11}&a_{12}\\a_{21}&a_{22}\end{bmatrix},
+\quad
+\mathbf x=\begin{bmatrix}x\\y\end{bmatrix}.
+$$
+
+Each row is one constraint. A solution is one vector whose row dot-products equal the corresponding entries of $\mathbf b$.
+
+## Mechanics: classify before reporting a point
+
+For two variables, the coefficient determinant
+
+$$
+\Delta=a_{11}a_{22}-a_{12}a_{21}
+$$
+
+separates the unique case. If $\Delta\ne0$, the two directions differ and there is one exact intersection. If $\Delta=0$, compare the complete equations, including their right-hand sides: consistent proportional equations describe the same line; inconsistent proportions describe parallel lines.
+
+This classification prevents a solver from dividing by zero and then presenting an invented point.
+
+## Derivation: the unique intersection
+
+Multiply the first equation by $a_{22}$ and the second by $a_{12}$, then subtract:
+
+$$
+\Delta x=b_1a_{22}-a_{12}b_2.
+$$
+
+Similarly,
+
+$$
+\Delta y=a_{11}b_2-b_1a_{21}.
+$$
+
+When $\Delta\ne0$,
+
+$$
+x=\frac{b_1a_{22}-a_{12}b_2}{\Delta},
+\qquad
+y=\frac{a_{11}b_2-b_1a_{21}}{\Delta}.
+$$
+
+Substituting the result into both original rows verifies the solution. This exact two-equation derivation prepares the need for a systematic elimination algorithm in II.14 without implementing that chapter here.
+
+## Vertical lines and zero rows
+
+The equation $x=2$ is the ordinary row $1x+0y=2$. It needs no slope and no special mathematical representation. Likewise, $0x+0y=0$ is true for every point and adds no restriction. But $0x+0y=1$ is false for every point and makes the entire system inconsistent.
+
+<Callout title="Never divide by a chosen coefficient blindly">A valid constraint may have a zero x- or y-coefficient. Matrix form and exact cross-products handle vertical lines and zero rows without switching to slope form.</Callout>
+
+## None versus infinitely many
+
+When left-hand sides are proportional, inspect the right-hand sides. The equations
+
+$$
+x+y=1,\qquad 2x+2y=3
+$$
+
+conflict, so there is no solution. Replacing $3$ by $2$ makes the second equation redundant, so every point on the shared line is a solution. Both have $\Delta=0$; the right-hand sides distinguish them.
+
+## Worked examples
+
+For
+
+$$
+x+y=3,\qquad x-y=1,
+$$
+
+the determinant is $-2$, and the exact formulas give $(x,y)=(2,1)$. Both rows verify: $2+1=3$ and $2-1=1$.
+
+<Stage caption="Write the constraints as Ax = b, classify them exactly, and verify the unique point in both rows."><MatrixWorkedStage chapter="systems" client:load /></Stage>
+
+For $x=2$ and $y=-3$, the exact intersection is $(2,-3)$. For coincident equations, the stage reports infinitely many solutions rather than choosing an arbitrary representative.
+
+## Executable reference code
+
+The Python reference uses exact fractions and cross-products to classify all three outcomes, including zero rows. The NumPy file demonstrates a well-conditioned unique solve and checks residuals, while explicitly classifying singular examples before calling a numerical solver.
+
+<CodeFile source={reference} file="code/python/linear_systems.py" />
+<CodeFile source={practical} file="code/python/linear_systems_numpy.py" />
+
+## Explore
+
+Make one line vertical, then slide it by changing only its right-hand side. Turn the second line until it is parallel to the first. Scale an entire equation, including its right-hand side, and confirm the geometric line does not change. Then scale only the left side and explain why the line moves.
+
+## Common mistakes
+
+Zero determinant does not by itself mean “no solution”; it means the unique formula cannot apply. Parallel and coincident equations require the right-hand sides. Dividing by an x-coefficient loses vertical constraints when that coefficient is zero. A point that satisfies one row is not a system solution until every row is checked.
+
+## Numerical considerations
+
+Exact decimal inputs let the stage distinguish parallel from nearly parallel without an epsilon. In measured floating-point systems, nearly parallel constraints can make the intersection extremely sensitive. Reliable solvers use factorizations, residual checks, and scale-aware diagnostics. A tiny residual alone does not guarantee an accurate solution when the problem is ill-conditioned.
+
+## Engineering and ML connections
+
+Constraint systems appear in calibration, circuit models, geometry, fitting, and equilibrium calculations. Normal equations and least squares later address systems that cannot satisfy every data constraint exactly. Linear layers also evaluate many row constraints at once, but solving for an unknown input is a different task from applying a known matrix.
+
+## Exercises
+
+<Exercise id="systems-unique" client:load />
+<Exercise id="systems-vertical" client:load />
+<Exercise id="systems-none" client:load />
+<Exercise id="systems-many" client:load />
+<Exercise id="systems-zero-row" client:load />
+
+## Summary and checkpoints
+
+A row is a linear constraint and $A\mathbf x=\mathbf b$ asks for a vector satisfying every row. Check that you can distinguish one, none, and infinitely many exact solutions; include vertical lines and zero rows; and verify a candidate in the original equations. II.14 will turn this reasoning into general Gaussian elimination; it is not part of this milestone.

@@ -86,12 +86,12 @@ describe('publication scope guard', () => {
     expect(i3.chapter.role).toBe('reference');
     expect(findChapter('VI.4')!.chapter.role).toBe('flagship');
   });
-  it('M6-A publishes exactly Part I and II.1–II.7, and the total stays 97', () => {
+  it('M6-B publishes exactly Part I and II.1–II.13, and the total stays 97', () => {
     const published = allChapters.filter(r => r.chapter.status === 'available');
     expect(published.filter(r => r.part.numeral === 'I')).toHaveLength(9);
-    expect(published.filter(r => r.part.numeral === 'II')).toHaveLength(7);
-    expect(published.map(r => r.id)).toEqual(['I.1', 'I.2', 'I.3', 'I.4', 'I.5', 'I.6', 'I.7', 'I.8', 'I.9', 'II.1', 'II.2', 'II.3', 'II.4', 'II.5', 'II.6', 'II.7']);
-    expect(allChapters.filter(r => r.chapter.status === 'planned')).toHaveLength(81);
+    expect(published.filter(r => r.part.numeral === 'II')).toHaveLength(13);
+    expect(published.map(r => r.id)).toEqual(['I.1', 'I.2', 'I.3', 'I.4', 'I.5', 'I.6', 'I.7', 'I.8', 'I.9', 'II.1', 'II.2', 'II.3', 'II.4', 'II.5', 'II.6', 'II.7', 'II.8', 'II.9', 'II.10', 'II.11', 'II.12', 'II.13']);
+    expect(allChapters.filter(r => r.chapter.status === 'planned')).toHaveLength(75);
     expect(published.length + allChapters.filter(r => r.chapter.status === 'planned').length).toBe(97);
   });
 });

@@ -1,0 +1,140 @@
+---
+kind: chapter
+curriculumId: II.11
+title: "Transpose and orthogonality"
+hero: "Transpose the frame; test whether geometry survives."
+lede: Exchange rows and columns, compute QᵀQ exactly, and compare rotations, reflections, shears, and scalings through the lengths and angles they preserve—or fail to preserve.
+description: Matrix transpose, orthonormal columns, Q transpose Q, preservation of dot products, lengths and angles, rotations, reflections, the orthogonal inverse shortcut, Python, NumPy, and exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import MatrixStage from '../../lessons/linear-algebra/MatrixStage';
+import MatrixWorkedStage from '../../lessons/linear-algebra/MatrixWorkedStage';
+import Exercise from '../../lessons/linear-algebra/MatrixExercise';
+import reference from '../../../code/python/matrix_transpose_orthogonality.py?raw';
+import practical from '../../../code/python/matrix_transpose_orthogonality_numpy.py?raw';
+
+<Stage caption="Drag the two columns of Q. The stage computes QᵀQ, compares input and output lengths and angles, and distinguishes rotations and reflections from shears and unequal scaling."><MatrixStage chapter="orthogonality" client:load /></Stage>
+
+Start with **Rotation** and compare the two columns. Choose **Reflection** and notice that lengths and angles still survive even though orientation changes. Then choose **Shear fails** and move a column until the off-diagonal dot products vanish again.
+
+## Intuition: rows become columns
+
+The transpose turns a matrix around its main diagonal. This simple exchange lets matrix multiplication collect column dot-products:
+
+$$
+(Q^{\mathsf T}Q)_{ij}=\mathbf q_i\cdot\mathbf q_j.
+$$
+
+The diagonal entries are squared column lengths. The off-diagonal entries are pairwise dot products. One product therefore asks whether the columns form an orthonormal frame.
+
+## Definition
+
+For an $m\times n$ matrix $A$, its transpose $A^{\mathsf T}$ is the $n\times m$ matrix defined by
+
+$$
+(A^{\mathsf T})_{ij}=A_{ji}.
+$$
+
+A square matrix $Q$ is **orthogonal** when
+
+$$
+Q^{\mathsf T}Q=I.
+$$
+
+Equivalently, its columns are unit vectors and mutually orthogonal. In two dimensions, these columns form a rigid coordinate frame.
+
+## Mechanics: a certificate in one product
+
+For $Q=[\mathbf q_1\ \mathbf q_2]$,
+
+$$
+Q^{\mathsf T}Q=
+\begin{bmatrix}
+\mathbf q_1\cdot\mathbf q_1&\mathbf q_1\cdot\mathbf q_2\\
+\mathbf q_2\cdot\mathbf q_1&\mathbf q_2\cdot\mathbf q_2
+\end{bmatrix}.
+$$
+
+The identity result says both columns have length one and their dot product is zero. A shear fails through a nonzero off-diagonal entry. Unequal scaling fails through a diagonal entry other than one.
+
+## Derivation: dot products, lengths, and angles survive
+
+If $Q^{\mathsf T}Q=I$, then for any $\mathbf x,\mathbf y$,
+
+$$
+(Q\mathbf x)\cdot(Q\mathbf y)
+=(Q\mathbf x)^{\mathsf T}(Q\mathbf y)
+=\mathbf x^{\mathsf T}Q^{\mathsf T}Q\mathbf y
+=\mathbf x^{\mathsf T}\mathbf y.
+$$
+
+Setting $\mathbf y=\mathbf x$ proves $\|Q\mathbf x\|^2=\|\mathbf x\|^2$. Since dot products and lengths determine the cosine formula, angles between nonzero vectors are preserved too.
+
+<Callout title="Preservation does not decide orientation">Both rotations and reflections are orthogonal. Their determinant signs separate orientation-preserving and orientation-reversing cases in II.12.</Callout>
+
+## The transpose as an inverse—only here
+
+The equation $Q^{\mathsf T}Q=I$ says that $Q^{\mathsf T}$ undoes $Q$. For a square orthogonal matrix,
+
+$$
+Q^{-1}=Q^{\mathsf T}.
+$$
+
+This is a special structural shortcut, not a rule for arbitrary matrices. A shear’s transpose does not undo the shear, and a scaling transpose is usually the same scaling rather than its reciprocal. General inverses remain for II.16.
+
+## Rotations and reflections
+
+A planar rotation by angle $\theta$ has columns $(\cos\theta,\sin\theta)$ and $(-\sin\theta,\cos\theta)$. A reflection also has orthonormal columns but reverses handedness. The interactive presets use exact quarter-turn and axis-reflection entries so the certificate is exact rather than tolerance-based.
+
+## Worked examples
+
+For
+
+$$
+Q=\begin{bmatrix}0&-1\\1&0\end{bmatrix},
+\qquad
+Q^{\mathsf T}=\begin{bmatrix}0&1\\-1&0\end{bmatrix},
+$$
+
+direct multiplication gives $Q^{\mathsf T}Q=I$. The vector $(3,4)$ becomes $(-4,3)$; both have length $5$.
+
+<Stage caption="Exchange rows and columns, multiply QᵀQ, then read the geometric preservation certificate."><MatrixWorkedStage chapter="orthogonality" client:load /></Stage>
+
+For the shear $\begin{bmatrix}1&1\\0&1\end{bmatrix}$, the columns have dot product $1$, so $Q^{\mathsf T}Q\ne I$. Some individual vectors may keep their length, but the map has no global preservation guarantee.
+
+## Executable reference code
+
+The Python reference transposes and multiplies exact rational matrices, then asserts the identity certificate. The NumPy version compares dot products, lengths, and a reflection’s orientation while using an explicit tolerance for floating-point checks.
+
+<CodeFile source={reference} file="code/python/matrix_transpose_orthogonality.py" />
+<CodeFile source={practical} file="code/python/matrix_transpose_orthogonality_numpy.py" />
+
+## Explore
+
+Swap the two identity columns and identify the resulting reflection. Negate both columns and recognize a half-turn. Give one column length two and inspect the diagonal failure. Make unit-length columns that are not perpendicular, then perpendicular columns with unequal lengths. Explain each entry of $Q^{\mathsf T}Q$.
+
+## Common mistakes
+
+Transposition does not negate entries, and it does not reverse the order inside one vector. Perpendicular columns alone are not orthonormal unless each has unit length. Orthogonal matrices need not be symmetric, and reflections are not excluded. Most importantly, $A^{-1}=A^{\mathsf T}$ is false without the orthogonality certificate.
+
+## Numerical considerations
+
+Exact entered decimals give an exact $Q^{\mathsf T}Q$ in this lesson. Floating-point code typically tests whether it is close to $I$ with a scale-aware tolerance. That numerical test is evidence about stored approximations, not a redefinition of orthogonality. Angle calculations should also guard zero vectors and clamp only tiny endpoint roundoff before applying arccos.
+
+## Engineering and ML connections
+
+Orthogonal transforms preserve signal energy and avoid stretching some directions more than others. They appear in rigid motion, numerical factorization, initialization, and feature rotations. Their transpose is cheap to apply and stable as an inverse, but learned matrices are not automatically orthogonal unless a model or algorithm enforces that structure.
+
+## Exercises
+
+<Exercise id="orth-transpose" client:load />
+<Exercise id="orth-test" client:load />
+<Exercise id="orth-length" client:load />
+<Exercise id="orth-reflection" client:load />
+<Exercise id="orth-inverse" client:load />
+
+## Summary and checkpoints
+
+The transpose exchanges rows and columns; $Q^{\mathsf T}Q$ contains all column dot-products. Check that you can recognize an orthonormal frame, prove preservation of dot products, lengths, and angles, include reflections, and restrict the transpose-inverse shortcut to square orthogonal matrices.

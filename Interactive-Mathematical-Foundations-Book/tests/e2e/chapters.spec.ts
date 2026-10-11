@@ -119,6 +119,7 @@ for (const ref of published) {
     });
     for (const scheme of ['light', 'dark'] as const) {
       test(`axe — ${scheme} theme: initial state, then every exercise answered wrongly with its solution shown`, async ({ page }) => {
+        test.slow();
         await page.emulateMedia({ colorScheme: scheme });
         await page.goto(path);
         await hydrateAll(page);

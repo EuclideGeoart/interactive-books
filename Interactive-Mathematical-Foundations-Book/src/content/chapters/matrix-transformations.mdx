@@ -1,0 +1,144 @@
+---
+kind: chapter
+curriculumId: II.8
+title: "Matrices as linear transformations"
+hero: "A matrix is a rule for moving every vector—and the whole coordinate grid."
+lede: Drag the two image columns. The same exact rule moves an arbitrary vector, reshapes a unit square, preserves or reverses orientation, and sometimes collapses the plane.
+description: Matrices as linear transformations through basis images, transformed grids, rotations, reflections, shears, scalings, singular maps, affine translations, Python, NumPy, and graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import MatrixStage from '../../lessons/linear-algebra/MatrixStage';
+import MatrixWorkedStage from '../../lessons/linear-algebra/MatrixWorkedStage';
+import Exercise from '../../lessons/linear-algebra/MatrixExercise';
+import reference from '../../../code/python/matrix_transform.py?raw';
+import practical from '../../../code/python/matrix_transform_numpy.py?raw';
+
+<Stage caption="Drag either image column or the input vector. Every line of the coordinate paper follows the same map. Compare a quarter-turn, reflection, unequal scaling, singular collapse, and affine shift."><MatrixStage chapter="transform" client:load /></Stage>
+
+Begin with the **Shear** preset. Move $\mathbf x$ while leaving the columns fixed: the output follows the deformed grid. Then move $A\mathbf e_1$ itself. Predict which family of grid lines changes before you drag. Finally choose **Affine shift** and inspect where the origin goes.
+
+## Intuition: specify two directions, determine the whole plane
+
+Every vector in the plane is a weighted combination of the standard basis vectors,
+
+$$
+\mathbf x=x_1\mathbf e_1+x_2\mathbf e_2.
+$$
+
+A linear transformation respects those same weights. Once we choose the two images $A\mathbf e_1$ and $A\mathbf e_2$, every other output is forced. The stage draws those images as draggable columns and transforms the complete grid with them.
+
+## Definition
+
+A transformation $T:\mathbb R^2\to\mathbb R^2$ is **linear** when
+
+$$
+T(\mathbf u+\mathbf v)=T(\mathbf u)+T(\mathbf v),
+\qquad
+T(c\mathbf u)=cT(\mathbf u).
+$$
+
+Writing the two image vectors as columns gives a matrix
+
+$$
+A=
+\begin{bmatrix}
+a_{11}&a_{12}\\
+a_{21}&a_{22}
+\end{bmatrix}
+=
+\begin{bmatrix}
+A\mathbf e_1&A\mathbf e_2
+\end{bmatrix}.
+$$
+
+The transformation is then $T(\mathbf x)=A\mathbf x$. A linear map always fixes the origin because $A\mathbf0=\mathbf0$.
+
+## Mechanics: read the transformed grid
+
+Vertical grid lines consist of points with one fixed $x_1$ weight while $x_2$ varies. Their images remain parallel to the second matrix column. Horizontal grid lines remain parallel to the first column. A shear slants one family; unequal scaling changes spacing; a rotation turns both families; a reflection changes handedness.
+
+When the columns become dependent, two grid directions collapse onto one direction. Distinct inputs can then share the same output. The stage keeps this exact singular case visible instead of nudging the columns apart.
+
+## Derivation: the columns control every vector
+
+Apply linearity to the basis expansion:
+
+$$
+\begin{aligned}
+A\mathbf x
+&=A(x_1\mathbf e_1+x_2\mathbf e_2)\\
+&=x_1A\mathbf e_1+x_2A\mathbf e_2\\
+&=
+\begin{bmatrix}
+a_{11}x_1+a_{12}x_2\\
+a_{21}x_1+a_{22}x_2
+\end{bmatrix}.
+\end{aligned}
+$$
+
+This is why dragging a column moves the grid and the arbitrary output through one state. The picture is not a separate geometric approximation of the formula.
+
+## Linear versus affine
+
+An **affine** transformation has the form
+
+$$
+\mathbf x\longmapsto A\mathbf x+\mathbf b.
+$$
+
+It keeps the parallel-line deformation supplied by $A$, then translates every output by the same $\mathbf b$. If $\mathbf b\ne\mathbf0$, the origin moves and the full map is not linear. The stage marks that moved origin explicitly; it does not hide translation inside an extra matrix coordinate.
+
+<Callout title="A useful one-question test">Where does the origin go? A claimed linear map that sends $\mathbf0$ anywhere but $\mathbf0$ is not linear.</Callout>
+
+## Worked examples
+
+For
+
+$$
+A=\begin{bmatrix}1&1\\0&1\end{bmatrix},
+\qquad
+\mathbf x=\begin{bmatrix}2\\1\end{bmatrix},
+$$
+
+the columns are $(1,0)$ and $(1,1)$. Therefore $A\mathbf x=2(1,0)+(1,1)=(3,1)$. The unit square becomes a slanted parallelogram, but its two directions remain independent.
+
+<Stage caption="Step from the two basis images to the weighted output. The trace is immutable and uses the same exact model as the live stage."><MatrixWorkedStage chapter="transform" client:load /></Stage>
+
+The quarter-turn preset sends $\mathbf e_1$ upward and $\mathbf e_2$ left. The reflection preset reverses one basis direction. The singular preset uses proportional columns, so the transformed square has zero area and the full grid collapses to one direction.
+
+## Executable reference code
+
+The pedagogical Python file represents a small matrix by rows and computes exact rational outputs. The NumPy version uses the matrix multiplication operator and checks both the transformed basis and arbitrary vectors.
+
+<CodeFile source={reference} file="code/python/matrix_transform.py" />
+<CodeFile source={practical} file="code/python/matrix_transform_numpy.py" />
+
+## Explore
+
+Make the first column twice as long without changing the second. Turn both columns by a quarter-turn. Reverse exactly one column. Make the columns equal, then opposite. For each state, predict the grid, output, origin, and orientation before reading the inspector. Add a translation only after you can explain the linear deformation.
+
+## Common mistakes
+
+A matrix is not merely a table of coefficients: here its columns are geometric images. Rows do not show where the basis vectors land. A translation is not linear just because it appears next to a matrix. A singular map is still a valid linear map; it simply loses directions. Finally, a transformed grid need not keep right angles or unit spacing.
+
+## Numerical considerations
+
+Entered decimals become exact rational values, so exact collapse means exact dependence rather than a hidden epsilon decision. Display coordinates are floating-point visual proxies derived from that state. In measured data, nearly dependent columns can behave sensitively even when they are exactly independent; that conditioning question is distinct from exact singularity.
+
+## Engineering and ML connections
+
+Graphics pipelines use matrices for rotation, reflection, scale, and shear, then add translations for placement. A linear layer in a neural network similarly maps input directions to output directions; its bias makes the layer affine. Thinking in columns reveals what each input feature contributes before later chapters study larger systems and rank.
+
+## Exercises
+
+<Exercise id="transform-columns" client:load />
+<Exercise id="transform-origin" client:load />
+<Exercise id="transform-reflection" client:load />
+<Exercise id="transform-singular" client:load />
+<Exercise id="transform-affine" client:load />
+
+## Summary and checkpoints
+
+A linear map is determined by the images of a basis, uses the same weights for every vector, and fixes the origin. Check that you can read rotations, reflections, shears, scalings, and collapses from two columns, and distinguish $A\mathbf x$ from $A\mathbf x+\mathbf b$. Next we make the matrix–vector arithmetic explicit.

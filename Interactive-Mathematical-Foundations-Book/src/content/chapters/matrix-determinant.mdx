@@ -1,0 +1,133 @@
+---
+kind: chapter
+curriculumId: II.12
+title: "Determinant: orientation and area/volume scaling"
+hero: "One signed number records area scaling, collapse, and orientation."
+lede: Drag the image columns and watch the unit square become a parallelogram. Its ordinary area is |det A|; the sign remembers whether the ordered frame was reversed.
+description: The 2D determinant as signed area and orientation, zero determinant and dependence, reflections and singular transformations, higher-dimensional volume interpretation, Python, NumPy, and exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import MatrixStage from '../../lessons/linear-algebra/MatrixStage';
+import MatrixWorkedStage from '../../lessons/linear-algebra/MatrixWorkedStage';
+import Exercise from '../../lessons/linear-algebra/MatrixExercise';
+import reference from '../../../code/python/matrix_determinant.py?raw';
+import practical from '../../../code/python/matrix_determinant_numpy.py?raw';
+
+<Stage caption="Drag either matrix column. The transformed unit square, exact determinant, unsigned area, orientation, and independence status all update from one state."><MatrixStage chapter="determinant" client:load /></Stage>
+
+Choose **Area-one shear** and move the slanted column horizontally; explain why base and height stay fixed. Choose **Negative reflection** and locate the orientation reversal. Finish with **Zero collapse**, then drag one column off the shared line.
+
+## Intuition: measure the image of one standard tile
+
+The unit square has sides $\mathbf e_1,\mathbf e_2$ and area one. A matrix sends those sides to its two columns, so the square becomes the parallelogram spanned by those columns. Its area tells how every planar area scales under the transformation.
+
+Ordinary area cannot be negative, but geometry also has an ordered orientation. The determinant combines both ideas in one signed number.
+
+## Definition
+
+For
+
+$$
+A=\begin{bmatrix}a&b\\c&d\end{bmatrix},
+$$
+
+the determinant is
+
+$$
+\det A=ad-bc.
+$$
+
+Its magnitude $|\det A|$ is the area scale. A positive sign preserves the orientation of the ordered standard basis; a negative sign reverses it. A zero determinant means the image has zero planar area.
+
+## Mechanics: read magnitude, sign, and zero separately
+
+Three questions prevent common confusion:
+
+1. Is $\det A$ zero? Then the columns are dependent and the plane collapses to fewer dimensions.
+2. If nonzero, what is $|\det A|$? This is the area multiplier.
+3. What is its sign? This records whether orientation is preserved or reversed.
+
+A determinant of $-3$ scales ordinary area by $3$ and reverses orientation. A determinant of $0.2$ preserves orientation while shrinking area.
+
+## Derivation: signed parallelogram area
+
+For columns $\mathbf a_1=(a,c)$ and $\mathbf a_2=(b,d)$, the signed area is
+
+$$
+a d-b c.
+$$
+
+One way to see the subtraction is to place the parallelogram inside a surrounding rectangle and remove the corner triangles. Algebraically, the expression is linear in either column while the other is fixed, changes sign when columns swap, and equals one on the standard basis. Those properties exactly match signed area.
+
+<Callout title="Swap test">Swapping two columns leaves the ordinary parallelogram unchanged but reverses its ordering. The determinant must therefore change sign.</Callout>
+
+## Zero determinant and basis independence
+
+If the columns are collinear, the parallelogram has no height and hence no area. Conversely, nonzero area requires two distinct directions. Therefore, in two dimensions,
+
+$$
+\det A\ne0
+\quad\Longleftrightarrow\quad
+\text{the columns are linearly independent}.
+$$
+
+This completes the geometric interpretation previewed in II.7. It does not yet introduce general rank or inverse algorithms.
+
+## Reflections and singular maps
+
+A reflection has negative determinant because it reverses the ordered frame. A projection of the plane onto a line has determinant zero because it destroys one independent direction. A shear can have determinant one even while changing lengths and angles: area preservation does not imply orthogonality.
+
+## Worked examples
+
+For
+
+$$
+A=\begin{bmatrix}2&1\\0&1\end{bmatrix},
+$$
+
+the determinant is $2$. The transformed unit square is a parallelogram of area $2$ with preserved orientation. Swapping its columns gives determinant $-2$ and the same ordinary area.
+
+<Stage caption="Transform the unit square, compute signed area, then separate magnitude from orientation."><MatrixWorkedStage chapter="determinant" client:load /></Stage>
+
+For $\begin{bmatrix}1&2\\2&4\end{bmatrix}$, the determinant is zero. The second column is twice the first, so the square collapses onto a line—exactly the dependence witnessed in II.7.
+
+## Higher-dimensional meaning
+
+In higher dimensions, the determinant’s magnitude scales oriented volume rather than planar area. A zero determinant still signals collapse into a lower-dimensional set, and a negative sign still records an orientation reversal. This chapter keeps the derivation and interactive geometry in two dimensions; later linear algebra can reuse the interpretation without pretending a 3D or higher-dimensional object fits this plane.
+
+## Executable reference code
+
+The Python reference computes the exact 2D determinant and verifies the parallelogram area by the shoelace formula. The NumPy version compares signed determinant values for scaling, reflection, shear, and singular examples.
+
+<CodeFile source={reference} file="code/python/matrix_determinant.py" />
+<CodeFile source={practical} file="code/python/matrix_determinant_numpy.py" />
+
+## Explore
+
+Hold the first column fixed and slide the second parallel to it; identify the zero crossing. Reverse one column and watch only the sign change. Double one column and confirm that the determinant doubles. Add a multiple of the first column to the second and observe that the determinant stays fixed.
+
+## Common mistakes
+
+The determinant is not the sum or product of all entries. Its sign is not ordinary area, and a negative determinant does not mean “negative size.” Determinant one does not imply a rigid motion. Zero determinant does not mean the matrix is the zero matrix; it means its columns fail to provide all independent directions.
+
+## Numerical considerations
+
+The lesson classifies zero exactly for entered decimal rationals. Floating-point determinants near zero can be poor standalone singularity tests because scale and conditioning matter. Numerical libraries use factorizations and problem-aware tolerances. The exact sign here describes the entered matrix, while measured coefficients may carry uncertainty beyond arithmetic roundoff.
+
+## Engineering and ML connections
+
+Determinants track volume change in coordinate transforms, density corrections, and invertible models. The absolute value controls scale; the sign carries orientation. Direct determinant computation is rarely the best numerical way to solve a system, and a small determinant alone does not summarize all conditioning behavior.
+
+## Exercises
+
+<Exercise id="det-value" client:load />
+<Exercise id="det-area" client:load />
+<Exercise id="det-sign" client:load />
+<Exercise id="det-singular" client:load />
+<Exercise id="det-shear" client:load />
+
+## Summary and checkpoints
+
+In two dimensions, $\det A$ is signed area scale. Check that you can separate zero, magnitude, and sign; connect zero to dependent columns; distinguish reflection from collapse; and explain the higher-dimensional volume interpretation without relying on a misleading 2D picture.

@@ -4,3 +4,40 @@
 .stage[data-stage^='la-'] .drag-point.role-x { --role: var(--c-x); }
 .stage[data-stage^='la-'] .drag-point.role-y { --role: var(--c-y); }
 .stage[data-stage^='la-'] .la-behind { pointer-events: none; }
+
+.stage[data-stage^='matrix-'] .inspector-row dd { min-width: 0; max-width: 100%; }
+.stage[data-stage^='matrix-'] .inspector-row .line { white-space: normal; overflow-wrap: anywhere; }
+.stage[data-stage^='matrix-'] .drag-point.role-x { --role: var(--c-x); }
+.stage[data-stage^='matrix-'] .drag-point.role-y { --role: var(--c-y); }
+.stage[data-stage^='matrix-'] .drag-point.role-ink { --role: var(--ink); }
+.stage[data-stage^='matrix-'] .la-behind { pointer-events: none; }
+.stage[data-stage^='matrix-'] [data-part^='grid-'] { opacity: .28; }
+.stage[data-stage^='matrix-'] [data-part='transformed-square'],
+.stage[data-stage^='matrix-'] [data-part$='-square'] { opacity: .26; }
+
+.matrix-board {
+  min-height: 24rem;
+  display: grid;
+  place-content: center;
+  gap: 1.2rem;
+  padding: clamp(1rem, 4vw, 2.5rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: repeating-linear-gradient(0deg, transparent 0 31px, color-mix(in srgb, var(--line) 35%, transparent) 32px), var(--paper);
+  text-align: center;
+}
+.matrix-board-flow { display: flex; flex-wrap: wrap; align-items: stretch; justify-content: center; gap: .75rem; }
+.matrix-card { min-width: 8.5rem; display: grid; gap: .3rem; padding: 1rem; border: 2px solid currentColor; border-radius: calc(var(--radius) * .72); background: var(--surface); }
+.matrix-card strong { font-family: var(--font-display); font-size: 1.3rem; }
+.matrix-card span { font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; }
+.matrix-card code { overflow-wrap: anywhere; font-size: .8rem; }
+.matrix-card.role-x { color: var(--c-x); }
+.matrix-card.role-y { color: var(--c-y); }
+.matrix-card.role-primary { color: var(--c-primary); }
+.matrix-card.role-caution, .matrix-board.is-invalid p { color: var(--c-caution); }
+.matrix-board > p { margin: 0; font-weight: 700; }
+
+@media (max-width: 40rem) {
+  .matrix-board { min-height: 18rem; padding: 1rem; }
+  .matrix-card { min-width: min(100%, 7rem); flex: 1 1 7rem; }
+}

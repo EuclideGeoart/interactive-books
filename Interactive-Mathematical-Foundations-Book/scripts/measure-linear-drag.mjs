@@ -1,4 +1,4 @@
-// M6-A: real pointermove → next paint, on each new chapter; run under the shared host lock.
+// M6-B: real pointermove → next paint on each chapter with a draggable geometric state; run under the shared host lock.
 import { chromium } from '@playwright/test';
 import { spawn } from 'node:child_process';
 import { existsSync, writeFileSync } from 'node:fs';
@@ -9,7 +9,7 @@ const port = 4473;
 const server = spawn(process.execPath, ['scripts/serve-dist.mjs', 'dist', '/', String(port)], { stdio: 'ignore' });
 let browser;
 const results = [];
-const slugs = ['vector-addition', 'vector-scaling', 'vector-norms', 'vector-dot-product', 'vector-projection', 'vector-span', 'vector-basis'];
+const slugs = ['matrix-transformations', 'matrix-vector', 'matrix-composition', 'matrix-transpose-orthogonality', 'matrix-determinant'];
 try {
   browser = await chromium.launch({ executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || (existsSync('/opt/google/chrome/chrome') ? '/opt/google/chrome/chrome' : undefined) });
   for (const slug of slugs) {
@@ -31,7 +31,7 @@ try {
       }, true);
     });
     const plane = await stage.locator('svg.plane').boundingBox();
-    const ring = await stage.getByRole('button', { name: /^vector v / }).locator('.ring').boundingBox();
+    const ring = await stage.locator('[data-handle]').last().locator('.ring').boundingBox();
     assert(plane && ring, `${slug}: missing geometry`);
     const radius = Number(await stage.getAttribute('data-radius'));
     const scale = Math.min(plane.width, plane.height) / (2 * radius);
@@ -50,6 +50,6 @@ try {
     await page.close();
   }
 } finally { server.kill(); await browser?.close(); }
-const report = { browser: browser.version(), platform: process.platform, cpu: cpus()[0].model.trim(), policy: '1× CPU, half-unit drag grid, 80 real pointer moves; next-paint scheduling included. Synthetic desktop experiment, not a physical touch-device benchmark.', results };
-writeFileSync('documentation/M6A_DRAG_MEASUREMENTS.json', JSON.stringify(report, null, 2) + '\n');
+const report = { browser: browser.version(), platform: process.platform, cpu: cpus()[0].model.trim(), policy: '1× CPU, half-unit drag grid, 80 real pointer moves; next-paint scheduling included. Five M6-B chapters expose drag handles; II.13 uses exact coefficient fields. Synthetic desktop experiment, not a physical touch-device benchmark.', results };
+writeFileSync('documentation/M6B_DRAG_MEASUREMENTS.json', JSON.stringify(report, null, 2) + '\n');
 console.log(JSON.stringify(report, null, 2));

@@ -1,0 +1,133 @@
+---
+kind: chapter
+curriculumId: II.9
+title: "Matrix × vector"
+hero: "Rows compute outputs; columns assemble the same output."
+lede: One product has two complementary readings. Follow row dot-products, then rebuild the identical vector as a weighted sum of columns—including rectangular and incompatible shapes.
+description: Matrix-vector products by rows and columns, shape rules, rectangular maps, incompatible dimensions, exact arithmetic, Python, NumPy, and graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import MatrixStage from '../../lessons/linear-algebra/MatrixStage';
+import MatrixWorkedStage from '../../lessons/linear-algebra/MatrixWorkedStage';
+import Exercise from '../../lessons/linear-algebra/MatrixExercise';
+import reference from '../../../code/python/matrix_vector.py?raw';
+import practical from '../../../code/python/matrix_vector_numpy.py?raw';
+
+<Stage caption="For 2×2, drag either column or the input. The head-to-tail arrows show the column combination while formulas show row dot-products. Switch to wide, tall, and rejected shapes."><MatrixStage chapter="matvec" client:load /></Stage>
+
+Predict the canonical output using the first row only, then verify the first inspector component. Next reconstruct the same output from weighted columns. Choose **2×3 · 3×1** and **3×2 · 2×1** to separate input count from output count. End with the rejected product.
+
+## Intuition: one machine, two useful readings
+
+A matrix with $n$ columns accepts $n$ input components. Each of its $m$ rows produces one output component, so an $m\times n$ matrix maps $\mathbb R^n$ to $\mathbb R^m$.
+
+Rows answer, “How is this output coordinate measured from all inputs?” Columns answer, “What output direction does this input coordinate control?” Both readings use exactly the same products.
+
+## Definition
+
+For $A\in\mathbb R^{m\times n}$ and $\mathbf x\in\mathbb R^n$, the product $A\mathbf x\in\mathbb R^m$ is defined by
+
+$$
+(A\mathbf x)_i=\sum_{j=1}^{n}a_{ij}x_j.
+$$
+
+Equivalently, if $\mathbf a_j$ is column $j$ of $A$,
+
+$$
+A\mathbf x=x_1\mathbf a_1+\cdots+x_n\mathbf a_n.
+$$
+
+The product is defined only when the matrix column count equals the vector length.
+
+## Mechanics: check shape before arithmetic
+
+Write dimensions next to the factors:
+
+$$
+\underbrace{(m\times n)}_{A}
+\underbrace{(n\times1)}_{\mathbf x}
+\longrightarrow
+\underbrace{(m\times1)}_{A\mathbf x}.
+$$
+
+The equal inner dimensions certify compatibility. The outer dimensions describe the result. Thus a $2\times3$ matrix accepts three inputs and emits two outputs; a $3\times2$ matrix accepts two inputs and emits three outputs. The board in the stage keeps these shapes visible when a 2D plot would be misleading.
+
+## Derivation: rows and columns are the same distributive law
+
+For a $2\times2$ example,
+
+$$
+\begin{aligned}
+A\mathbf x
+&=
+\begin{bmatrix}
+a_{11}&a_{12}\\
+a_{21}&a_{22}
+\end{bmatrix}
+\begin{bmatrix}x_1\\x_2\end{bmatrix}\\
+&=
+\begin{bmatrix}
+a_{11}x_1+a_{12}x_2\\
+a_{21}x_1+a_{22}x_2
+\end{bmatrix}\\
+&=x_1\begin{bmatrix}a_{11}\\a_{21}\end{bmatrix}
++x_2\begin{bmatrix}a_{12}\\a_{22}\end{bmatrix}.
+\end{aligned}
+$$
+
+The row view groups by output coordinate. The column view groups by input weight. Regrouping changes the explanation, not the result.
+
+<Callout title="Shape is part of meaning">Do not repair an incompatible product by truncating, padding, or transposing silently. A shape mismatch means the requested map has not been specified.</Callout>
+
+## Worked examples
+
+With
+
+$$
+A=\begin{bmatrix}2&-1\\1&3\end{bmatrix},
+\qquad
+\mathbf x=\begin{bmatrix}4\\2\end{bmatrix},
+$$
+
+the rows give $(6,10)$. The columns give $4(2,1)+2(-1,3)=(6,10)$. Both expose useful structure: the first emphasizes output formulas; the second emphasizes feature contributions.
+
+<Stage caption="Follow compatibility, row dot-products, and the regrouped column combination."><MatrixWorkedStage chapter="matvec" client:load /></Stage>
+
+For a $2\times3$ matrix, three weighted columns still add to one vector, but that vector has two components. For a $3\times2$ matrix, two weighted columns live in three-dimensional output coordinates. The stage displays exact values and shapes without pretending those outputs belong on the 2D coordinate plane.
+
+## Executable reference code
+
+The Python implementation validates nonempty rectangular rows and exact dimensions before multiplying. The NumPy example compares the at-operator result with an explicit row and column reconstruction.
+
+<CodeFile source={reference} file="code/python/matrix_vector.py" />
+<CodeFile source={practical} file="code/python/matrix_vector_numpy.py" />
+
+## Explore
+
+In the square view, set one input weight to zero and identify the surviving column. Negate a weight and watch its contribution reverse. In the wide view, alter only the third input and find the third column’s contribution. In the tall view, count three row results. Explain the rejected case using dimensions before reading its message.
+
+## Common mistakes
+
+Do not multiply corresponding entries and stop; each output combines a full row with the input. Do not confuse the number of columns with the number of outputs. A Python list plus another list concatenates rather than performing vector addition. Finally, transposing an input to make shapes “work” changes the mathematical object unless that transpose was part of the problem.
+
+## Numerical considerations
+
+The lesson performs entered decimal arithmetic exactly, which makes equality between the row and column readings literal. Production arrays usually use floating point, where different accumulation orders can differ slightly. Shape validation should happen before numerical work, and comparisons should use an error policy matched to scale rather than a universal hidden tolerance.
+
+## Engineering and ML connections
+
+Rows of a linear layer define output features; columns describe how one input feature affects every output. A rectangular matrix naturally changes dimension, as in projecting many features to a smaller embedding or expanding a hidden representation. Batch operations add another axis later, but each individual sample still follows this product.
+
+## Exercises
+
+<Exercise id="matvec-rows" client:load />
+<Exercise id="matvec-columns" client:load />
+<Exercise id="matvec-shape" client:load />
+<Exercise id="matvec-invalid" client:load />
+<Exercise id="matvec-code" client:load />
+
+## Summary and checkpoints
+
+An $m\times n$ matrix accepts $n$ inputs, emits $m$ outputs, and can be read by rows or columns. Check shape first; then choose the reading that exposes the structure you need. Next we connect several such maps without losing their order.

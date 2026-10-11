@@ -1,0 +1,142 @@
+---
+kind: chapter
+curriculumId: II.10
+title: "Matrix × matrix as composition"
+hero: "Apply A, then B: the combined matrix is BA."
+lede: Keep the intermediate vector visible, compare BA with AB, follow rectangular dimensions, and compose affine maps without confusing their translations.
+description: Matrix multiplication as composition, order and noncommutativity, intermediate states, rectangular products, affine composition, Python, NumPy, and graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import MatrixStage from '../../lessons/linear-algebra/MatrixStage';
+import MatrixWorkedStage from '../../lessons/linear-algebra/MatrixWorkedStage';
+import Exercise from '../../lessons/linear-algebra/MatrixExercise';
+import reference from '../../../code/python/matrix_composition.py?raw';
+import practical from '../../../code/python/matrix_composition_numpy.py?raw';
+
+<Stage caption="The first polygon and arrow show A’s intermediate state; the second shows B after A. Compare BA with AB, then inspect rectangular and affine compositions."><MatrixStage chapter="composition" client:load /></Stage>
+
+Move $\mathbf x$ and track $\mathbf x\to A\mathbf x\to B(A\mathbf x)$. Before choosing **Swap order**, predict whether the final point stays fixed. Use **2→3→2** to read the dimensions without relying on a plane picture. Then choose **Affine bridge** and isolate the combined translation.
+
+## Intuition: replace a pipeline without erasing its order
+
+Two transformations form a pipeline. $A$ consumes the original input; $B$ consumes the output of $A$. A matrix product packages that pipeline as one linear map, but the visible intermediate state explains what the package means.
+
+Function notation already fixes the order:
+
+$$
+\mathbf x\longmapsto A\mathbf x\longmapsto B(A\mathbf x).
+$$
+
+The later operation appears on the left, so the combined matrix is $BA$.
+
+## Definition
+
+If $A$ is $m\times n$ and $B$ is $p\times m$, their product $BA$ is the $p\times n$ matrix whose entries are
+
+$$
+(BA)_{ij}=\sum_{k=1}^{m}b_{ik}a_{kj}.
+$$
+
+Its $j$th column is $B$ applied to the $j$th column of $A$. Therefore $BA$ records where the complete composition sends every input basis vector.
+
+## Mechanics: follow dimensions and the middle space
+
+The dimension chain is
+
+$$
+\mathbb R^n\xrightarrow{A}\mathbb R^m\xrightarrow{B}\mathbb R^p,
+\qquad
+(p\times m)(m\times n)=p\times n.
+$$
+
+The shared $m$ is the intermediate space. A $3\times2$ map followed by a $2\times3$ map produces a $2\times2$ combined map. Reversing the factors describes a different route and yields a $3\times3$ matrix.
+
+## Derivation: associativity connects the pipeline
+
+Expand one output component:
+
+$$
+\begin{aligned}
+\bigl(B(A\mathbf x)\bigr)_i
+&=\sum_k b_{ik}(A\mathbf x)_k\\
+&=\sum_k b_{ik}\sum_j a_{kj}x_j\\
+&=\sum_j\left(\sum_k b_{ik}a_{kj}\right)x_j\\
+&=((BA)\mathbf x)_i.
+\end{aligned}
+$$
+
+This proves $B(A\mathbf x)=(BA)\mathbf x$. Regrouping is valid, so matrix multiplication is associative. Swapping factors is a different operation, so multiplication is generally not commutative.
+
+<Callout title="Order mnemonic">Say the actions aloud from right to left: BA means “A first, then B.”</Callout>
+
+## Noncommutativity in geometry
+
+Consider a horizontal shear and a quarter-turn. Shearing a shape and then turning it does not usually place its slanted edge where turning first and shearing does. The stage draws both $BA$ and $AB$ exactly; unequal results are structural, not a rendering artifact.
+
+Some particular matrices do commute, including every matrix with the identity. One agreeing example does not establish a general commutative law.
+
+## Affine composition
+
+Suppose the first map is $\mathbf x\mapsto A\mathbf x+\mathbf b$ and the second is $\mathbf y\mapsto B\mathbf y+\mathbf c$. Substitution gives
+
+$$
+B(A\mathbf x+\mathbf b)+\mathbf c
+=(BA)\mathbf x+(B\mathbf b+\mathbf c).
+$$
+
+The linear parts multiply in the same order. The first translation is itself transformed by $B$ before the second translation is added. Simply adding $\mathbf b+\mathbf c$ is generally wrong.
+
+## Worked examples
+
+For
+
+$$
+\begin{aligned}
+A&=\begin{bmatrix}1&1\\0&1\end{bmatrix},
+&B&=\begin{bmatrix}1&0\\1&1\end{bmatrix},\\
+\mathbf x&=\begin{bmatrix}2\\1\end{bmatrix}.
+\end{aligned}
+$$
+
+we obtain $A\mathbf x=(3,1)$, then $B(A\mathbf x)=(3,4)$. Direct multiplication gives $BA=\begin{bmatrix}1&1\\1&2\end{bmatrix}$, and $(BA)\mathbf x=(3,4)$.
+
+<Stage caption="Keep Ax visible, then replace the two exact steps by BA without changing the result."><MatrixWorkedStage chapter="composition" client:load /></Stage>
+
+The opposite product is $AB=\begin{bmatrix}2&1\\1&1\end{bmatrix}$, which is different. Both are valid products; they encode different pipelines.
+
+## Executable reference code
+
+The Python reference validates rectangular shapes and computes both a composition and its application. The NumPy file checks sequential and combined evaluations, demonstrates noncommutativity, and keeps affine translation separate.
+
+<CodeFile source={reference} file="code/python/matrix_composition.py" />
+<CodeFile source={practical} file="code/python/matrix_composition_numpy.py" />
+
+## Explore
+
+Set $A$ to the identity and explain why both orders agree. Set $B=A$ and compare $A^2$ with two visible applications. In the rectangular preset, name the input, middle, and output dimensions. In the affine preset, set $\mathbf c=\mathbf0$ and change only $\mathbf b$; explain why the final shift follows $B\mathbf b$.
+
+## Common mistakes
+
+Do not read $BA$ left to right as a timeline. Do not multiply entries position by position. Do not assume $AB=BA$, and do not infer that both orders are even defined for rectangular matrices. For affine maps, do not fold translations into the linear product or add them without transforming the earlier shift.
+
+## Numerical considerations
+
+Exact rational examples make sequential and combined outputs identical. Floating-point software may produce slightly different last bits because the two evaluation orders group sums differently. In deep pipelines, shapes and operation order should be asserted explicitly, while performance libraries choose stable kernels appropriate to the hardware.
+
+## Engineering and ML connections
+
+Layers, coordinate changes, camera transforms, and data-processing stages compose in this same order. Several linear layers with no intervening nonlinearity collapse mathematically to one matrix; nonlinear activations prevent that collapse and give deep networks more expressive structure. Bias vectors follow the affine composition law above.
+
+## Exercises
+
+<Exercise id="compose-product" client:load />
+<Exercise id="compose-order" client:load />
+<Exercise id="compose-vector" client:load />
+<Exercise id="compose-rectangular" client:load />
+<Exercise id="compose-affine" client:load />
+
+## Summary and checkpoints
+
+Matrix multiplication represents composition: $A$ first and $B$ second become $BA$. Check that you can follow the intermediate space, compute a product by row–column pairings, explain noncommutativity, and compose affine translations as $B\mathbf b+\mathbf c$. Next we study transformations that preserve Euclidean geometry.
