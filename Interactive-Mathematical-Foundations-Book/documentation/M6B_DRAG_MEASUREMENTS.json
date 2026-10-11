@@ -1,0 +1,48 @@
+{
+  "browser": "154.0.8037.92",
+  "platform": "linux",
+  "cpu": "12th Gen Intel(R) Core(TM) i5-12600",
+  "policy": "1× CPU, half-unit drag grid, 80 real pointer moves; next-paint scheduling included. Five M6-B chapters expose drag handles; II.13 uses exact coefficient fields. Synthetic desktop experiment, not a physical touch-device benchmark.",
+  "results": [
+    {
+      "slug": "matrix-transformations",
+      "samples": 76,
+      "p50": 3.6000000089406967,
+      "p95": 4.299999997019768,
+      "max": 4.5,
+      "over16_7": 0
+    },
+    {
+      "slug": "matrix-vector",
+      "samples": 76,
+      "p50": 5.0999999940395355,
+      "p95": 6.200000002980232,
+      "max": 7.299999997019768,
+      "over16_7": 0
+    },
+    {
+      "slug": "matrix-composition",
+      "samples": 76,
+      "p50": 3.8999999910593033,
+      "p95": 6.799999997019768,
+      "max": 7.299999997019768,
+      "over16_7": 0
+    },
+    {
+      "slug": "matrix-transpose-orthogonality",
+      "samples": 76,
+      "p50": 5.700000002980232,
+      "p95": 7.700000002980232,
+      "max": 8.399999991059303,
+      "over16_7": 0
+    },
+    {
+      "slug": "matrix-determinant",
+      "samples": 76,
+      "p50": 3,
+      "p95": 4.299999997019768,
+      "max": 5.300000011920929,
+      "over16_7": 0
+    }
+  ]
+}
