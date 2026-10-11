@@ -129,6 +129,8 @@ for (const ref of published) {
         await page.emulateMedia({ colorScheme: scheme });
         await navigate(page, path);
         await hydrateAll(page);
+        // Hydration scrolls through islands; start initial axe clear of sticky-header occlusion.
+        await page.evaluate(() => window.scrollTo(0, 0));
         await axe(page, `${ref.id} (${scheme})`);
         await timed('feedback', async () => {
           for (const ex of await page.locator('[data-exercise]').all()) {
