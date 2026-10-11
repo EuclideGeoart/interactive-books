@@ -12,6 +12,10 @@ const cases: [string, string, string[]][] = [
   ['jacobian', 'jacobian', ['singular', 'large', 'lift']],
   ['autodiff', 'automatic-differentiation', ['scalar-loss', 'many-outputs', 'division-by-zero']],
   ['hessian', 'hessian-curvature', ['saddle', 'monkey', 'cubic-y', 'not-critical']],
+  ['riemann', 'integrals-accumulation', ['cancel', 'reversed', 'trapezoid']],
+  ['accumulation', 'fundamental-theorem', ['peak', 'jump', 'backward']],
+  ['finite-difference', 'numerical-differentiation', ['tiny', 'exp', 'cubic']],
+  ['quadrature', 'numerical-integration', ['left', 'signed', 'sqrt']],
 ];
 for (const [kind, slug, states] of cases) test(`calculus ${kind}: opening and exceptional states`, async ({ page }) => {
   await page.goto(`chapters/${slug}/`); const stage = page.locator(`[data-stage="calculus-${kind}"]`);

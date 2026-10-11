@@ -1,0 +1,112 @@
+---
+kind: chapter
+curriculumId: III.14
+title: "Numerical differentiation"
+hero: "Why is a *smaller* step not always a better derivative?"
+lede: Compute forward, backward and centered difference quotients in binary64 for steps from 10⁻¹ to 10⁻¹⁶. The error first falls with h, then rises again — two error sources trade places.
+description: "Numerical differentiation in binary64: forward, backward and centered differences, truncation versus rounding error, documented error budgets, independent reference derivatives, the best step size, Python and NumPy, five exercises."
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import FiniteDifferenceStage from '../../lessons/calculus/FiniteDifferenceStage';
+import Exercise from '../../lessons/calculus/CalculusExercise';
+import reference from '../../../code/python/calculus_finite_difference.py?raw';
+import practical from '../../../code/python/calculus_finite_difference_numpy.py?raw';
+
+<Stage caption="Drag the point along the centered-error curve or type k (h = 10⁻ᵏ). Solid and dashed coloured curves are observed errors; purple dashed curves are the documented error budgets."><FiniteDifferenceStage client:load /></Stage>
+
+For $\sin x$ at $x=1$, the forward difference with $h=10^{-4}$ is off by about $4\times10^{-5}$ and the centered difference by about $9\times10^{-10}$. Drag toward smaller $h$: both errors fall at first, reach a minimum, then **rise**. At $h=10^{-14}$ the forward estimate is wrong in the third digit. Exact algebra says smaller $h$ is better; floating-point arithmetic disagrees.
+
+## Intuition: two errors pulling in opposite directions
+
+A difference quotient replaces a limit by a finite step, which costs **truncation error**: the secant is not the tangent. Shrinking $h$ reduces it. But $f(x+h)$ and $f(x)$ are each rounded to about 16 significant digits; when $h$ is tiny they agree in most of those digits, their difference keeps only a few correct ones, and dividing by $h$ magnifies the loss. That **rounding error** grows as $h$ shrinks. The total is smallest somewhere in between.
+
+## Definition
+
+With step $h>0$:
+
+$$
+D_+=\frac{f(x+h)-f(x)}{h},
+$$
+
+$$
+D_-=\frac{f(x)-f(x-h)}{h},
+$$
+
+$$
+D_0=\frac{f(x+h)-f(x-h)}{2h}.
+$$
+
+These are the **forward**, **backward** and **centered** differences. Each approximates $f'(x)$; their errors are measured here against an independent reference: the analytic derivative ($\cos x$ for $\sin x$, $e^x$ for $e^x$, and the exact rational $x^2/2-1$ for the cubic).
+
+## Mechanics: what the explorer computes
+
+All quotients are computed in IEEE binary64, exactly as naive code would, dividing by the nominal $h$. For each scheme and each $k=1,\dots,16$ the plot shows $\log_{10}$ of the observed error. The dashed budget curves add the leading truncation term and a rounding term built from machine epsilon $\varepsilon=2^{-52}$ and the sizes of the sampled values. The budgets are explanations and upper-envelope estimates for these smooth functions, not guarantees for arbitrary $f$.
+
+## Derivation: the two terms and the best step
+
+Taylor's theorem gives $f(x+h)=f(x)+hf'(x)+\tfrac{h^2}2f''(\xi)$, so
+
+$$
+D_+-f'(x)=\tfrac h2f''(\xi),
+$$
+
+a truncation error of order $h$.
+
+For the centered difference the $h^2$ terms cancel and the error is $\tfrac{h^2}6f'''(\eta)$ — order $h^2$. Each computed value carries a relative rounding error of about $\varepsilon$, so the computed numerator is off by roughly $\varepsilon(|f(x+h)|+|f(x)|)$, divided by $h$. Minimising
+
+$$
+E(h)\approx\tfrac h2|f''|+\frac{2\varepsilon|f|}{h}
+$$
+
+gives $h^*\approx2\sqrt{\varepsilon|f|/|f''|}$, about $10^{-8}$ for well-scaled $f$; for the centered difference $h^*\approx\sqrt[3]{3\varepsilon|f|/|f'''|}$, about $10^{-5}$.
+
+## Worked example
+
+$f=\sin$, $x=1$, $f'(1)=\cos1\approx0.5403023$:
+
+* $h=10^{-1}$: forward error $\approx4.3\times10^{-2}$, centered $\approx9\times10^{-4}$ — truncation dominates;
+* $h=10^{-4}$: forward $\approx4\times10^{-5}$, centered $\approx9\times10^{-10}$;
+* $h=10^{-8}$: forward $\approx3\times10^{-9}$, the best region for forward differences;
+* $h=10^{-14}$: forward $\approx4\times10^{-3}$ — rounding has taken over.
+
+<Stage caption="Replay the errors at h = 10⁻¹, 10⁻⁴, 10⁻⁸, 10⁻¹², 10⁻¹⁶."><FiniteDifferenceStage worked client:load /></Stage>
+
+## When numbers mislead
+
+At $h=10^{-16}$, $x+h$ may round to $x$ itself, making $D_+=0$ — a confident, completely wrong answer. Even the step is inexact: $(x+h)-x$ is usually not exactly $h$ in binary64, a representation error the budget includes. For a function with a corner or a jump, no step size gives a meaningful derivative, because none exists (III.3).
+
+## Executable reference code
+
+The reference compares the three schemes with an exact derivative of a polynomial evaluated in floating point and in `Fraction`, isolating rounding error. The NumPy version sweeps $h=10^{-1},\dots,10^{-16}$, finds the empirical best step and compares it with $\sqrt\varepsilon$.
+
+<CodeFile source={reference} file="code/python/calculus_finite_difference.py" />
+<CodeFile source={practical} file="code/python/calculus_finite_difference_numpy.py" />
+
+## Explore
+
+Compare **eˣ at 2** with **sin x**: the larger $|f|$, the larger the rounding term and the earlier the error curve turns up. On the polynomial, the centered difference's truncation error is tiny; its curve is shaped almost entirely by rounding. Notice where forward and backward errors differ in sign but not in size.
+
+## Common mistakes
+
+Choosing $h$ as small as possible. Using a fixed absolute $h$ for inputs of very different magnitude (a relative step such as $h=\sqrt\varepsilon\max(1,|x|)$ is usual). Trusting a finite-difference check of a gradient without a tolerance that reflects these errors.
+
+## Numerical considerations
+
+Complex-step differentiation, Richardson extrapolation and automatic differentiation (III.10) avoid or reduce the cancellation problem. When finite differences are used as a test of AD code, a centered difference with $h\approx10^{-5}$–$10^{-6}$ and a relative tolerance around $10^{-7}$ is a common, defensible choice for smooth functions.
+
+## Engineering and ML connections
+
+Gradient checking in machine-learning code compares backpropagation with centered differences. Simulation codes estimate Jacobians by finite differences when no derivative code exists, and must choose step sizes per variable. The same truncation-versus-rounding trade-off appears whenever a continuous limit is replaced by a finite, floating-point computation.
+
+## Exercises
+
+<Exercise id="iii14-forward" client:load />
+<Exercise id="iii14-centered" client:load />
+<Exercise id="iii14-order" client:load />
+<Exercise id="iii14-tiny" client:load />
+<Exercise id="iii14-best" client:load />
+
+## Summary and checkpoints
+
+Forward and backward differences have truncation error of order $h$, centered differences of order $h^2$; rounding error grows like $\varepsilon/h$. Their sum is minimised near $h\approx\sqrt\varepsilon$ (forward) or $\sqrt[3]\varepsilon$ (centered), and tinier steps make results worse. Next, III.15 studies the matching question for integrals.

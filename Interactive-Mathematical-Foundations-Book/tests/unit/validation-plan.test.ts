@@ -132,7 +132,9 @@ describe('Part III calculus registration', () => {
     const calculus = chapterCatalog().filter(c => c.id.startsWith('III.'));
     const expected: Record<string, readonly [string, string]> = { 'III.1': ['limits', 'limits'], 'III.2': ['limits', 'continuity'], 'III.3': ['derivatives', 'secant'],
       'III.4': ['derivatives', 'linear-model'], 'III.5': ['derivatives', 'rules'], 'III.6': ['derivatives', 'chain'],
-      'III.7': ['multivariable', 'partials'], 'III.8': ['multivariable', 'gradient'], 'III.9': ['multivariable', 'jacobian'], 'III.10': ['autodiff', 'autodiff'], 'III.11': ['multivariable', 'hessian'] };
+      'III.7': ['multivariable', 'partials'], 'III.8': ['multivariable', 'gradient'], 'III.9': ['multivariable', 'jacobian'], 'III.10': ['autodiff', 'autodiff'], 'III.11': ['multivariable', 'hessian'],
+      'III.12': ['integration', 'riemann'], 'III.13': ['integration', 'accumulation'], 'III.14': ['derivatives', 'finite-difference'], 'III.15': ['integration', 'quadrature'] };
+    expect(calculus).toHaveLength(15);
     for (const [id, [family, kind]] of Object.entries(expected)) expect(calculus.find(c => c.id === id), id).toMatchObject({ family, kind });
   });
   it('a calculus model edit selects its literal consumers, units, oracles and visuals — and no Probability chapter', () => {
@@ -159,6 +161,14 @@ describe('Part III calculus registration', () => {
     expect(a.units.some(u => u.includes('multivariable'))).toBe(false);
     const grep = new RegExp(a.commands.find(c => c.command.includes('tests/e2e/autodiff.spec.ts'))!.command.at(-1)!);
     expect(grep.test('autodiff.spec.ts › III.10: computational graphs')).toBe(true); expect(grep.test('autodiff.spec.ts › III.1: x')).toBe(false);
+  });
+  it('the integration engine selects III.12, III.13 and III.15; the finite-difference model reaches III.14 with its derivative consumers', () => {
+    const i = makePlan({ files: ['src/math/calculus/integration.ts'], catalog: withProbability() });
+    expect(i.conservativeExpansion).toBe(false); expect(i.chapters.slice().sort()).toEqual(['III.12', 'III.13', 'III.15']); expect(i.oracles).toEqual(['integration']);
+    const d = makePlan({ files: ['src/math/calculus/difference.ts'], catalog: withProbability() });
+    expect(d.chapters).toEqual(expect.arrayContaining(['III.3', 'III.14'])); expect(d.chapters.some(id => id.startsWith('IV.'))).toBe(false); expect(d.oracles).toEqual(['derivatives']);
+    const v = new RegExp(i.commands.find(c => c.gate === 'affected root visuals')!.command.at(-1)!);
+    expect(v.test('calculus riemann: opening and exceptional states')).toBe(true); expect(v.test('calculus quadrature: opening and exceptional states')).toBe(true); expect(v.test('calculus secant: opening and exceptional states')).toBe(false);
   });
   it('the shared univariate engine reaches every chapter that imports it, through the import closure', () => {
     const p = makePlan({ files: ['src/math/calculus/univariate.ts'], catalog: withProbability() });

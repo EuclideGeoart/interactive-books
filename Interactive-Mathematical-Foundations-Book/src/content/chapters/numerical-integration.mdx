@@ -1,0 +1,102 @@
+---
+kind: chapter
+curriculumId: III.15
+title: "Numerical integration"
+hero: "How quickly does a numerical integral *converge* — and when does it slow down?"
+lede: Refine rectangle, midpoint and trapezoid rules by doubling the number of panels. Measure how fast each error shrinks, and see smoothness — not the rule alone — decide the rate.
+description: "Numerical integration: left, right, midpoint and trapezoid rules under refinement, exact errors for polynomial and piecewise integrands, observed convergence orders, signed integrals, non-smooth cases, Python and NumPy, five exercises."
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import QuadratureStage from '../../lessons/calculus/QuadratureStage';
+import Exercise from '../../lessons/calculus/CalculusExercise';
+import reference from '../../../code/python/calculus_quadrature.py?raw';
+import practical from '../../../code/python/calculus_quadrature_numpy.py?raw';
+
+<Stage caption="Choose a rule and refinement level k (n = 2ᵏ panels). The left plane draws the panels; the right plane plots log₁₀ of the error for all four rules as n doubles — the slope is the convergence order."><QuadratureStage client:load /></Stage>
+
+For $\int_0^1x^2\,dx=1/3$, four trapezoids give $11/32$, an error of exactly $1/96$. Each doubling of $n$ divides the trapezoid error by exactly $4$ and the left-rule error by about $2$. Now choose **√x: slower**: the trapezoid error shrinks by only about $2^{1.5}$ per doubling, because $\sqrt x$ has an infinite slope at $0$.
+
+## Intuition: how much does each refinement buy?
+
+Every rule replaces $f$ on each panel by something simpler — a constant for rectangle rules, a straight line for the trapezoid rule. Halving the panel width $h$ makes the replacement better. How much better depends on how closely the simple shape follows the curve, which depends on the rule **and** on how smooth $f$ is. Plotting $\log(\text{error})$ against the refinement level turns a rate $h^p$ into a straight line with slope $p$.
+
+## Definition
+
+With $n$ panels of width $h=(b-a)/n$ and points $x_i=a+ih$:
+
+$$
+L_n=h\sum_{i=0}^{n-1}f(x_i),
+$$
+
+$$
+M_n=h\sum_{i=0}^{n-1}f\Big(\frac{x_i+x_{i+1}}2\Big),
+$$
+
+$$
+\begin{aligned}T_n=h\Big(&\tfrac12f(x_0)+f(x_1)+\cdots\\&+f(x_{n-1})+\tfrac12f(x_n)\Big),\end{aligned}
+$$
+
+and $R_n$ uses right endpoints. A rule has **order** $p$ for a class of functions if its error behaves like $Ch^p$. The **observed order** from two refinements is $p\approx\log_2(E_{n}/E_{2n})$.
+
+## Mechanics: what the explorer computes
+
+For $x^2$, $x^3-x$ and $|x-1/3|$ every approximation and every error is an exact rational, computed for $n=1,2,4,\dots,1024$. For $\sin x$ and $\sqrt x$ the values are binary64, with references $1-\cos3$ and $2/3$ from their antiderivatives. Panels are drawn while they are wider than a pixel. The convergence plot and table come from the same computed errors.
+
+## Derivation: why the trapezoid rule has order 2
+
+On one panel $[x_i,x_i+h]$, the trapezoid replaces $f$ by its linear interpolant. The interpolation error is $\tfrac12f''(\xi)(t-x_i)(t-x_i-h)$, and integrating over the panel gives $-\tfrac{h^3}{12}f''(\xi_i)$. Summing $n=(b-a)/h$ panels,
+
+$$
+T_n-\int_a^b f=-\frac{(b-a)\,h^2}{12}f''(\xi)
+$$
+
+for some $\xi$, provided $f''$ is continuous. So halving $h$ quarters the error. A rectangle rule replaces $f$ by a constant and loses a factor $h$: order $1$. The midpoint rule is order $2$ with half the trapezoid's constant and the opposite sign.
+
+## Worked example
+
+$\int_0^1x^2\,dx=1/3$. With $n$ trapezoids the error is exactly $1/(6n^2)$: $n=1$ gives $1/2$ (error $1/6$), $n=2$ gives $3/8$ (error $1/24$), $n=4$ gives $11/32$ (error $1/96$). The midpoint error is exactly $-1/(12n^2)$, and the left-rule error is $-1/(2n)+1/(6n^2)$, which approaches order $1$.
+
+<Stage caption="Replay the trapezoid errors for n = 1, 4, 16, 64, 256, 1024."><QuadratureStage worked client:load /></Stage>
+
+## When the rate changes
+
+* **Singular slope.** $\sqrt x$ has $f'\to\infty$ at $0$; the $h^2$ bound does not apply and the trapezoid error behaves like $h^{1.5}$.
+* **A corner off the grid.** $|x-1/3|$ has a corner that never falls on a grid point $k/2^m$; the first refinements behave irregularly before settling.
+* **Signed integrands.** For $x^3-x$ on $[-1,2]$, positive and negative parts partly cancel in the exact value $9/4$; the rules must resolve both.
+* **No universal promise.** Highly oscillatory or discontinuous integrands can make any fixed rule converge slowly or appear to converge to the wrong value for small $n$.
+
+## Executable reference code
+
+The reference computes exact errors of all four rules with `Fraction` and recovers the observed orders $1$ and $2$ for $x^2$. The NumPy version measures observed orders for $\sin x$ and $\sqrt x$ and shows the drop from $2$ to about $1.5$.
+
+<CodeFile source={reference} file="code/python/calculus_quadrature.py" />
+<CodeFile source={practical} file="code/python/calculus_quadrature_numpy.py" />
+
+## Explore
+
+Compare the trapezoid and midpoint curves: parallel lines, the midpoint one lower by a factor $2$. On the signed integrand, switch to the left rule and watch the order drop to $1$. On **sin x**, push $k$ to $10$: the error approaches $10^{-6}$, still far above rounding level.
+
+## Common mistakes
+
+Assuming more panels always gives the promised rate regardless of smoothness. Reading the error from a single $n$ instead of its behaviour under refinement. Confusing the number of panels with the number of function evaluations (the trapezoid rule uses $n+1$ points).
+
+## Numerical considerations
+
+For smooth integrands, higher-order rules (Simpson's rule, Gaussian quadrature) reach small errors with far fewer evaluations; adaptive methods refine only where the integrand needs it. At very large $n$ rounding in the sum eventually matters. Reliable software reports an error estimate, usually from comparing two refinements, exactly as the observed-order column does.
+
+## Engineering and ML connections
+
+Numerical integration computes expectations, normalising constants, areas under curves and solutions of differential equations (one step of many ODE methods is a quadrature rule). Monte Carlo integration (Part IV) trades the deterministic rates here for a rate of $n^{-1/2}$ that does not depend on dimension.
+
+## Exercises
+
+<Exercise id="iii15-trap" client:load />
+<Exercise id="iii15-mid" client:load />
+<Exercise id="iii15-order" client:load />
+<Exercise id="iii15-sqrt" client:load />
+<Exercise id="iii15-universal" client:load />
+
+## Summary and checkpoints
+
+Rectangle rules converge with order 1, trapezoid and midpoint rules with order 2 — for smooth integrands. Singularities and corners lower the observed order; signed integrands require resolving cancellation. Measure convergence by refinement rather than trusting a single approximation. This completes Part III: the next Part turns to probability, where integrals of densities measure chance.

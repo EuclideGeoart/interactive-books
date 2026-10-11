@@ -67,3 +67,18 @@ describe('III.6 chain rule against interpolated / 60-digit composite derivatives
     else expect(Math.abs(r.product.value - c.derivative)).toBeLessThanOrEqual(8 * Number.EPSILON * Math.max(1, Math.abs(c.derivative)));
   });
 });
+
+import { finiteDifference } from '../../src/math/calculus/difference';
+import { FD_FUNCTIONS } from '../../src/lessons/calculus/finite-difference-lesson';
+describe('III.14 binary64 finite differences against the oracle', () => {
+  for (const c of fixture.finite_difference) it(`${c.fn} at x=${c.x}: same quotients up to libm slack, errors within the independent budget`, () => {
+    const F = FD_FUNCTIONS[c.fn]!, x = Number(c.x);
+    expect(Math.abs(F.ref(x) - c.reference)).toBeLessThanOrEqual(2 * Number.EPSILON * Math.max(1, Math.abs(c.reference)));
+    for (const r of c.rows) {
+      const fwd = finiteDifference(F.f, x, 10 ** -r.k, 'forward', F.ref(x), F.m2(x), F.m3(x)), ctr = finiteDifference(F.f, x, 10 ** -r.k, 'centered', F.ref(x), F.m2(x), F.m3(x));
+      expect(Math.abs(fwd.estimate - r.forward), `k=${r.k}`).toBeLessThanOrEqual(r.libmSlack); expect(Math.abs(ctr.estimate - r.centered)).toBeLessThanOrEqual(r.libmSlack);
+      expect(Math.abs(fwd.estimate - c.reference)).toBeLessThanOrEqual(r.budgetForward + r.libmSlack);
+      expect(Math.abs(ctr.estimate - c.reference)).toBeLessThanOrEqual(r.budgetCentered + r.libmSlack);
+    }
+  });
+});

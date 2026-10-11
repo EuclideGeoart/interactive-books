@@ -1,0 +1,102 @@
+---
+kind: chapter
+curriculumId: III.13
+title: "Fundamental derivative/integral connection"
+hero: "How fast does accumulated area *grow*?"
+lede: Let the upper limit of an integral move. The accumulated quantity becomes a function, and its rate of change at x is the height of the integrand at x — wherever that height is continuous.
+description: "The accumulation function F(x) = ∫ f and the fundamental theorem: linked graphs of f and F, exact strips and slopes, sign changes, moving lower limits, a jump that makes a corner, Python and NumPy, five exercises."
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import AccumulationStage from '../../lessons/calculus/AccumulationStage';
+import Exercise from '../../lessons/calculus/CalculusExercise';
+import reference from '../../../code/python/calculus_accumulation.py?raw';
+import practical from '../../../code/python/calculus_accumulation_numpy.py?raw';
+
+<Stage caption="Drag the upper limit x along the graph of f or the lower limit a on the axis. The orange strip is the area added between x and x + Δx; the right plane plots the accumulated F with its tangent."><AccumulationStage client:load /></Stage>
+
+Start at $x=1$ with $a=-2$: the accumulated signed area is $F(1)=9/16$. The orange strip adds $\Delta F=-95/256$ — negative, because $f$ is below the axis there — almost exactly $f(1)\,\Delta x=-3/8$. On the right, the slope of $F$ at $x=1$ is $-3/4$, the height of $f$. Now choose **Jump in f**: $F$ has a corner, and no single slope exists at the jump.
+
+## Intuition: the accumulator's speedometer
+
+Imagine a tank that fills at rate $f(t)$ (negative means draining). The amount in the tank since time $a$ is $F(x)=\int_a^x f(t)\,dt$. How fast is the amount changing at time $x$? Exactly at the current rate, $f(x)$. Integration accumulates a rate; differentiation recovers it.
+
+## Definition
+
+For $f$ integrable on an interval containing $a$, the **accumulation function** is
+
+$$
+F(x)=\int_a^x f(t)\,dt .
+$$
+
+**Fundamental theorem (first form).** If $f$ is continuous at $x$, then $F$ is differentiable at $x$ and $F'(x)=f(x)$.
+
+**Second form.** If $G$ is any antiderivative of a continuous $f$ ($G'=f$), then $\int_a^b f=G(b)-G(a)$.
+
+## Mechanics: what the explorer computes
+
+The integrands are piecewise polynomials, so $F$ is computed exactly as a piecewise polynomial that is continuous by construction. The strip's area $\Delta F=F(x+\Delta x)-F(x)$ is exact, as is the rectangle estimate $f(x)\,\Delta x$. The slope row is not $f(x)$ copied over: it is the derivative of $F$'s own exact pieces, including one-sided slopes at piece boundaries. Agreement with $f(x)$ is what the theorem predicts — and the jump preset shows where that agreement fails.
+
+## Derivation: why F′ = f
+
+For $\Delta x>0$,
+
+$$
+\frac{F(x+\Delta x)-F(x)}{\Delta x}=\frac1{\Delta x}\int_x^{x+\Delta x}f(t)\,dt ,
+$$
+
+the **average** of $f$ over the strip. If $f$ is continuous at $x$, every value of $f$ on a short enough strip is within any chosen tolerance of $f(x)$, so the average is too. Letting $\Delta x\to0$ (from either side) gives $F'(x)=f(x)$. If $f$ jumps at $x$, the averages from the left and right approach the two different one-sided values of $f$, and $F$ has a corner.
+
+## Worked example
+
+Take $f(t)=t^3/4-t$ and $a=-2$. Then
+
+$$
+F(x)=\frac{x^4}{16}-\frac{x^2}{2}+1 ,
+$$
+
+so $F(-2)=0$, $F(1)=9/16$ and $F(2)=0$. At $x=2$, $f$ changes from negative to positive, and $F$ has a local minimum; at $x=0$ it changes from positive to negative and $F$ has a local maximum $F(0)=1$. With $\Delta x=1/2$ at $x=1$, $\Delta F=F(1.5)-F(1)=-95/256$ while $f(1)\,\Delta x=-3/8=-96/256$.
+
+<Stage caption="Replay: start at a, accumulate to x, add one strip, let it shrink."><AccumulationStage worked client:load /></Stage>
+
+## Sign changes, moving limits and jumps
+
+* Where $f>0$, $F$ increases; where $f<0$, it decreases; where $f$ changes sign, $F$ has a local extremum.
+* Moving $a$ shifts $F$ by a constant ($\int_{a'}^{a}f$). The slope $F'(x)=f(x)$ does not depend on $a$.
+* With $x<a$, $F(x)=-\int_x^a f$: the accumulation runs backward.
+* For a jump in $f$, $F$ is still continuous but has a corner; the first form of the theorem needs continuity at $x$.
+
+## Executable reference code
+
+The reference builds $F$ exactly with `Fraction` antiderivatives and checks $F(x+h)-F(x)$ against $f(x)\,h$ for shrinking $h$. The NumPy version accumulates a sampled $f$ with the cumulative trapezoid rule and differentiates the result numerically, recovering $f$ up to discretisation error.
+
+<CodeFile source={reference} file="code/python/calculus_accumulation.py" />
+<CodeFile source={practical} file="code/python/calculus_accumulation_numpy.py" />
+
+## Explore
+
+Find the maximum and minimum of $F$ by dragging $x$ to the zeros of $f$. Move $a$ and watch the whole curve $F$ shift vertically while its tangent at $x$ keeps the same slope. On the jump preset, set $\Delta x$ negative to see the left slope.
+
+## Common mistakes
+
+Confusing $F(x)$ (an accumulated amount) with $f(x)$ (a rate). Thinking the lower limit affects $F'$. Applying $F'=f$ at a discontinuity of $f$. Forgetting that areas below the axis make $F$ decrease.
+
+## Numerical considerations
+
+Cumulative numerical integration followed by numerical differentiation recovers $f$ only approximately: discretisation error from the first step and the step-size trade-off of III.14 in the second. Working with exact antiderivatives, when they exist, avoids both.
+
+## Engineering and ML connections
+
+Cumulative quantities are everywhere: position from velocity, charge from current, a cumulative distribution function from a density, whose derivative recovers the density (IV.8). Prefix sums in computing are the discrete accumulation function, and their differences recover the original sequence.
+
+## Exercises
+
+<Exercise id="iii13-value" client:load />
+<Exercise id="iii13-strip" client:load />
+<Exercise id="iii13-lower" client:load />
+<Exercise id="iii13-max" client:load />
+<Exercise id="iii13-jump" client:load />
+
+## Summary and checkpoints
+
+The accumulation function $F(x)=\int_a^x f$ grows at the rate $f(x)$: $F'(x)=f(x)$ wherever $f$ is continuous. Changing $a$ shifts $F$ by a constant; a jump in $f$ makes a corner in $F$. Next, III.14 turns to computing derivatives numerically, where finite precision shapes the answer.

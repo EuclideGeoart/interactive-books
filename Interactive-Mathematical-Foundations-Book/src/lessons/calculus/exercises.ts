@@ -19,6 +19,70 @@ export function choose(id: string, title: string, prompt: string, options: reado
 }
 
 export const CALCULUS_EXERCISES: Record<string, readonly Exercise[]> = {
+  riemann: [
+    calculate('iii12-left', 'A left Riemann sum', 'f(x) = x² on [0, 2] with n = 2 panels. Give the left-endpoint sum.', ['L₂'], ['1'],
+      'Δx = 1; left endpoints 0 and 1 give heights 0 and 1, so L₂ = (0 + 1)·1 = 1. The exact integral is 8/3.', 'Use the LEFT end of each panel and multiply by Δx.'),
+    calculate('iii12-signed', 'Signed accumulation', 'Compute ∫ from −1 to 2 of x dx and the geometric area between y = x and the axis on [−1, 2].', ['integral', 'area'], ['3/2', '5/2'],
+      'Signed: 2 − 1/2 = 3/2. Area: the triangle below has area 1/2 and the one above 2, so 5/2.', 'The part below the axis subtracts from the integral but adds to the area.'),
+    calculate('iii12-reverse', 'Reverse the limits', '∫ from 0 to 3 of f dx = 5. What is ∫ from 3 to 0 of f dx?', ['value'], ['-5'],
+      'Swapping the limits makes every Δx negative: ∫ from 3 to 0 = −5.', 'Orientation matters: ∫ₐᵇ = −∫ᵦᵃ.'),
+    choose('iii12-zero', 'Zero integral, nonzero area', '∫ from 0 to 2π of sin x dx = 0. Does the graph enclose no area?', [
+      ['area', 'No: it encloses area 4; the positive and negative halves cancel.', 'Each hump has area 2. The integral measures signed accumulation, not total area.'],
+      ['none', 'Yes: zero integral means zero area.', 'Equal areas above and below cancel in the integral.'],
+      ['error', 'The integral must be computed wrongly.', '−cos x from 0 to 2π is exactly 0.']]),
+    choose('iii12-refine', 'More panels', 'For a continuous f on [a, b], what happens to Riemann sums as n → ∞?', [
+      ['converge', 'They approach the integral, whichever sample point rule is used.', 'For continuous f, left, right, midpoint and trapezoid sums all converge to the same limit.'],
+      ['exact', 'They become exactly equal to the integral for some finite n.', 'Usually only in the limit; exactness for finite n is special (e.g. midpoint on a linear f).'],
+      ['diverge', 'They grow without bound because more panels add more area.', 'The panels also get narrower: each contribution shrinks with Δx.']]),
+  ],
+  accumulation: [
+    calculate('iii13-value', 'Evaluate an accumulation function', 'F(x) = ∫ from 0 to x of (2t + 1) dt. Give F(2) and F′(2).', ['F(2)', "F'(2)"], ['6', '5'],
+      'F(x) = x² + x, so F(2) = 6; F′(x) = 2x + 1 = f(x), so F′(2) = 5.', 'F′ is the integrand evaluated at the upper limit.'),
+    calculate('iii13-strip', 'One thin strip', 'With f(x) = 3 near x, estimate F(x + 0.01) − F(x).', ['ΔF'], ['0.03'],
+      'The strip has width 0.01 and height about f(x) = 3, so ΔF ≈ 0.03.', 'ΔF ≈ f(x)·Δx.'),
+    calculate('iii13-lower', 'Change the lower limit', 'G(x) = ∫ from 1 to x of 2t dt. Give G(1), G(3) and G′(3).', ['G(1)', 'G(3)', "G'(3)"], ['0', '8', '6'],
+      'G(x) = x² − 1: G(1) = 0, G(3) = 8, and G′(3) = 2·3 = 6. Moving the lower limit shifts G by a constant, not its slope.', 'An accumulation starts at 0 at its lower limit.'),
+    choose('iii13-max', 'Where F peaks', 'f changes from positive to negative at x = 2. What does F(x) = ∫ₐˣ f do there?', [
+      ['max', 'F has a local maximum: it stops increasing and starts decreasing.', 'F′ = f changes sign from + to − at 2, so F peaks there.'],
+      ['zero', 'F equals 0 at x = 2.', 'F is the accumulated area up to 2, generally not 0.'],
+      ['min', 'F has a minimum.', 'A minimum needs f to change from negative to positive.']]),
+    choose('iii13-jump', 'A jump in f', 'f jumps from 1 to −1 at x = 1. Is F differentiable at 1?', [
+      ['corner', 'No: F has a corner, with left slope 1 and right slope −1.', 'F′(x) = f(x) needs f to be continuous at x; F itself stays continuous.'],
+      ['yes', 'Yes, F′(1) = f(1) = −1.', 'The left slope of F is 1, so the two-sided derivative does not exist.'],
+      ['jump', 'F jumps too.', 'Integrating a bounded jump gives a continuous F with a corner, not a jump.']]),
+  ],
+  'finite-difference': [
+    calculate('iii14-forward', 'A forward difference', 'f(x) = x², x = 1, h = 0.1. Compute (f(x+h) − f(x))/h.', ['D₊'], ['2.1'],
+      '(1.21 − 1)/0.1 = 2.1. The truncation error 0.1 = h·f″/2 is exactly h for x².', 'Divide the change in f by h.'),
+    calculate('iii14-centered', 'A centered difference', 'f(x) = x², x = 1, h = 0.1. Compute (f(x+h) − f(x−h))/(2h).', ['D₀'], ['2'],
+      '(1.21 − 0.81)/0.2 = 2: exact, because the centered difference cancels the h-term (and x² has no cubic term).', 'Use both neighbours and divide by 2h.'),
+    calculate('iii14-order', 'Error orders', 'Halving h divides the forward truncation error by about how much, and the centered one by about how much?', ['forward', 'centered'], ['2', '4'],
+      'Forward truncation is O(h); centered is O(h²): factors 2 and 4.', 'Look at the leading power of h in each error term.'),
+    choose('iii14-tiny', 'Is smaller h always better?', 'In binary64, why can h = 10⁻¹⁴ give a worse derivative than h = 10⁻⁸?', [
+      ['rounding', 'f(x+h) − f(x) loses most digits to cancellation, and dividing by tiny h magnifies the rounding error.', 'Rounding error grows like ε|f|/h while truncation shrinks like h: their sum has a minimum.'],
+      ['truncation', 'Truncation error grows as h shrinks.', 'Truncation shrinks with h; rounding is what grows.'],
+      ['never', 'It cannot: smaller h is always more accurate.', 'That holds only in exact arithmetic, not in binary64.']]),
+    choose('iii14-best', 'Choosing h', 'For the forward difference of a well-scaled f, where is the best h roughly?', [
+      ['sqrt', 'Near √ε ≈ 10⁻⁸, where truncation and rounding balance.', 'Minimising h|f″|/2 + 2ε|f|/h gives h* = 2√(ε|f|/|f″|).'],
+      ['eps', 'Near ε ≈ 10⁻¹⁶.', 'Then rounding error is of order 1.'],
+      ['one', 'h = 1 is safest.', 'Truncation error would be of order |f″|/2.']]),
+  ],
+  quadrature: [
+    calculate('iii15-trap', 'One trapezoid', 'Approximate ∫ from 0 to 1 of x² dx with one trapezoid. Give the value and the error.', ['T₁', 'error'], ['1/2', '1/6'],
+      'T₁ = (0 + 1)/2 = 1/2; the exact value is 1/3, so the error is 1/6 (an overestimate: x² is convex).', 'Average the end heights and multiply by the width.'),
+    calculate('iii15-mid', 'One midpoint panel', 'Approximate ∫ from 0 to 1 of x² dx with one midpoint panel. Give the value.', ['M₁'], ['1/4'],
+      'The midpoint height is (1/2)² = 1/4, times width 1. Error −1/12: half the trapezoid error, opposite sign.', 'Evaluate at the centre of the panel.'),
+    calculate('iii15-order', 'Read an observed order', 'The error drops from 0.04 to 0.01 when n doubles. What is the observed order p in error ∝ hᵖ?', ['p'], ['2'],
+      '0.04/0.01 = 4 = 2², so p = 2, typical of the trapezoid and midpoint rules for smooth integrands.', 'p = log₂(E_old/E_new).'),
+    choose('iii15-sqrt', 'A slower case', 'The trapezoid rule on ∫₀¹ √x dx converges with order about 1.5, not 2. Why?', [
+      ['singular', '√x has an unbounded derivative at 0, so the h² error bound does not apply.', 'The bound needs a bounded f″ on the interval; near 0 √x violates it.'],
+      ['bug', 'The implementation is wrong.', 'The observed order matches the theory for this integrand.'],
+      ['rounding', 'Rounding error dominates.', 'The errors here are far above rounding level.']]),
+    choose('iii15-universal', 'A universal guarantee?', 'Does doubling n always quarter the trapezoid error?', [
+      ['no', 'No: the h² rate needs smoothness; kinks, singularities and oscillations change it.', 'Error estimates come with hypotheses. Check them, or test convergence numerically.'],
+      ['yes', 'Yes, for every integrable function.', 'Counterexamples: √x, functions with corners at non-grid points, highly oscillatory integrands.'],
+      ['exact', 'It makes the error exactly zero after enough doublings.', 'Usually the error only tends to zero.']]),
+  ],
   partials: [
     calculate('iii7-partials', 'Two partial derivatives', 'f(x, y) = x²y + 3y. Give ∂f/∂x and ∂f/∂y at (1, 2).', ['∂f/∂x', '∂f/∂y'], ['4', '4'],
       '∂f/∂x = 2xy = 4 (y held at 2); ∂f/∂y = x² + 3 = 4 (x held at 1).', 'Treat the other variable as a constant while differentiating.'),

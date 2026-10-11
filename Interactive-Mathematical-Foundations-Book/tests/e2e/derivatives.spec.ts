@@ -172,3 +172,31 @@ test.describe('III.6: chain rule', () => {
     test('exceptional and invalid states remain accessible', async ({ page }) => { const s = await open(page, slug, kind); await s.locator('[data-preset="sin-exp"]').click(); await axe(page); await entry(s, 'dx', '9'); await scanStage(page); });
   });
 });
+
+test.describe('III.14: numerical differentiation', () => {
+  const slug = 'numerical-differentiation', kind = 'finite-difference';
+  test('errors against the independent reference; k edits, rejection and reset', async ({ page }) => {
+    const s = await open(page, slug, kind), initial = await state(s);
+    const m = await metrics(s); expect(m.status).toBe('truncation'); expect(m.errCentered).toBeLessThan(m.errForward);
+    await s.locator('[data-param="k"] input').press('ArrowUp'); expect((await state(s)).k).toBe(5);
+    await entry(s, 'k', '14'); await expect(s).toHaveAttribute('data-status', 'rounding');
+    expect((await metrics(s)).errForward).toBeGreaterThan(m.errForward / 100);
+    for (const v of ['0', '17', '3.5']) { const i = await entry(s, 'k', v); await expect(i).toHaveAttribute('aria-invalid', 'true'); expect((await state(s)).k).toBe(14); }
+    await s.locator('[data-param="k"] input').press('Escape'); await s.locator('[data-action="reset"]').click(); expect(await state(s)).toEqual(initial);
+  });
+  test('the handle on the error curve changes h by factors of ten; markers sit at the observed errors', async ({ page }) => {
+    const s = await open(page, slug, kind), plot = s.locator('[data-scene="errors"]');
+    await dragHandle(page, plot, 0, { x: -8, y: 0 }); expect((await state(s)).k).toBe(8);
+    const m = await metrics(s), dot = plot.locator('circle[data-part="now-forward"]'), at = await worldToSvg(plot, { x: -8, y: Math.log10(m.errForward) });
+    expect(Math.abs(Number(await dot.getAttribute('cy')) - at.y)).toBeLessThan(0.01);
+    await plot.locator('[data-handle]').press('ArrowLeft'); expect((await state(s)).k).toBe(9);
+  });
+  test('worked replay and exercises', async ({ page }) => {
+    await open(page, slug, kind); await replayWorked(page, kind);
+    await exercises(page, { 'iii14-forward': ['2.1'], 'iii14-centered': ['2'], 'iii14-order': ['2', '4'] }, 'iii14-');
+  });
+  for (const theme of ['light', 'dark'] as const) test.describe(theme, () => {
+    test.use({ colorScheme: theme });
+    test('exceptional and invalid states remain accessible', async ({ page }) => { const s = await open(page, slug, kind); await s.locator('[data-preset="tiny"]').click(); await axe(page); await entry(s, 'x', '9'); await scanStage(page); });
+  });
+});

@@ -1,0 +1,103 @@
+---
+kind: chapter
+curriculumId: III.12
+title: "Integrals as accumulation"
+hero: "How do thin pieces add up to a *total*?"
+lede: Slice an interval into panels, multiply each height by its width, and add. Refine the slices and the sum settles on the integral — signed accumulation, which is not the same as area.
+description: "Integrals as accumulation: an interactive Riemann and trapezoid sum explorer with exact sums, signed versus geometric area, reversed limits, convergence under refinement, Python and NumPy, five exercises."
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import RiemannStage from '../../lessons/calculus/RiemannStage';
+import Exercise from '../../lessons/calculus/CalculusExercise';
+import reference from '../../../code/python/calculus_riemann.py?raw';
+import practical from '../../../code/python/calculus_riemann_numpy.py?raw';
+
+<Stage caption="Drag the limits a and b on the axis, change the number of panels n, and choose how each panel's height is sampled. Green panels add; gold panels subtract."><RiemannStage client:load /></Stage>
+
+The opening function $x^3/4-x$ is positive on part of $[-2,3]$ and negative on another part. With ten left-endpoint panels the sum is $0.703125$, while the integral is $25/16=1.5625$. The geometric area between the graph and the axis is larger still, $57/16$: the integral **subtracts** what lies below the axis. Increase $n$ and watch the table: the sums approach $25/16$.
+
+## Intuition: rate times time, piece by piece
+
+If a speed $f(t)$ were constant, distance would be speed × time. When it changes, chop time into short intervals on which it is nearly constant, use one sampled speed per interval, and add the products. A negative speed (moving backward) subtracts distance. The total is a **signed accumulation**; refining the chopping makes it exact in the limit.
+
+## Definition
+
+Partition $[a,b]$ into $n$ panels of width $\Delta x=(b-a)/n$ with points $x_i=a+i\,\Delta x$. A **Riemann sum** chooses a sample $\xi_i$ in each panel:
+
+$$
+S_n=\sum_{i=0}^{n-1}f(\xi_i)\,\Delta x .
+$$
+
+The left, right and midpoint sums use $\xi_i=x_i$, $x_{i+1}$ or the centre; the **trapezoid sum** averages the two end heights. For continuous $f$, all of them converge to the same limit, the **definite integral**
+
+$$
+\int_a^b f(x)\,dx=\lim_{n\to\infty}S_n .
+$$
+
+By the same formula, reversing the limits reverses the sign of $\Delta x$: $\int_b^a f=-\int_a^b f$, and $\int_a^a f=0$.
+
+## Mechanics: what the explorer computes
+
+For the polynomial integrands every sum is computed exactly with rational arithmetic, and the integral comes from an exact antiderivative; their difference is the exact error. The positive part, the negative part and the geometric area $\int|f|$ are obtained by splitting at the exact rational roots. For $\sin x$ the values are binary64 and marked $\approx$. Each drawn panel is the panel used in the sum, with the same height and width.
+
+## Derivation: signed area and geometric area
+
+Split $[a,b]$ at the points where $f$ changes sign. On a subinterval where $f\ge0$, the integral is the area under the graph; where $f\le0$, it is minus the area above the graph. Hence
+
+$$
+\int_a^b f=\text{(area above)}-\text{(area below)},
+$$
+
+$$
+\int_a^b|f|=\text{(area above)}+\text{(area below)}.
+$$
+
+For $x^3/4-x$ on $[-2,3]$ the roots are $-2$, $0$ and $2$: the area above is $1+25/16=41/16$, the area below is $1$, so the integral is $25/16$ and the geometric area $57/16$.
+
+## Worked example
+
+$f(x)=x^3/4-x$ on $[-2,3]$ with $n=10$ left panels: $\Delta x=1/2$, samples $-2,-1.5,\dots,2.5$. The exact sum is $45/64$. The right sum is $165/64$, the midpoint sum $195/128$ and the trapezoid sum $105/64$. With $n=64$ the midpoint and trapezoid sums are within $0.002$ of $25/16$, while the left and right sums are still off by about $0.15$: the sample point matters for the rate.
+
+<Stage caption="Replay: each panel's signed contribution, then the total compared with the integral."><RiemannStage worked client:load /></Stage>
+
+## Exceptional cases
+
+* **Exact cancellation.** For $x-1$ on $[0,2]$ the integral is exactly $0$ although the area is $1$.
+* **Reversed limits.** With $b<a$, every $\Delta x$ is negative and the sum changes sign.
+* **Non-integrable behaviour.** A function with a pole inside the interval, such as $1/x$ on $[-1,1]$, has no Riemann integral at all; sample points can land arbitrarily close to the pole and the sums do not settle. The explorer's integrands are bounded on the whole window.
+
+## Executable reference code
+
+The reference computes exact left, right, midpoint and trapezoid sums with `Fraction` and compares them with the antiderivative. The NumPy version vectorises the sums for increasing $n$ and shows the errors shrinking at the expected rates.
+
+<CodeFile source={reference} file="code/python/calculus_riemann.py" />
+<CodeFile source={practical} file="code/python/calculus_riemann_numpy.py" />
+
+## Explore
+
+On **Positive: 4 − x²**, the integral and the area agree. Switch rules on the same $n$: left and right sums bracket the integral when $f$ is monotone on each panel. Drag $a$ past $b$ and read the sign change. On **sin x**, compare midpoint and trapezoid errors.
+
+## Common mistakes
+
+Treating the integral as area when the graph dips below the axis. Forgetting that $\Delta x$ is negative when $b<a$. Using $n$ panels but $n+1$ heights in a left or right sum (the trapezoid uses $n+1$ points, weighted).
+
+## Numerical considerations
+
+Floating-point sums of many small terms accumulate rounding error; summing in exact arithmetic avoids it, and in binary64 the order of summation (or compensated summation) matters for very large $n$. Riemann sums converge slowly — the left and right rules have error proportional to $\Delta x$ — which is why III.15 studies better rules.
+
+## Engineering and ML connections
+
+Integrals compute totals from rates: energy from power, distance from velocity, probability from a density (Part IV), expected values as weighted sums. Discretised integrals appear in every simulation and in numerical estimates of areas under ROC curves.
+
+## Exercises
+
+<Exercise id="iii12-left" client:load />
+<Exercise id="iii12-signed" client:load />
+<Exercise id="iii12-reverse" client:load />
+<Exercise id="iii12-zero" client:load />
+<Exercise id="iii12-refine" client:load />
+
+## Summary and checkpoints
+
+A Riemann sum multiplies sampled heights by panel widths and adds; its limit is the definite integral, a signed accumulation. Area above the axis adds, area below subtracts; reversing the limits reverses the sign. Next, III.13 lets the upper limit move and discovers that the rate of accumulation is the integrand itself.

@@ -82,3 +82,15 @@ describe('III.6 chain lesson', () => {
   });
   it('sweep', () => { for (const inner of ['square', 'linear', 'sin']) for (const outer of ['cube', 'sin', 'exp']) for (const x of [-2.5, 0, 2.5]) allTex(deriveChain({ inner, outer, x, dx: 0.5 })).forEach(strict); });
 });
+
+import { deriveFD, fdPresets, FD_CANONICAL } from '../../src/lessons/calculus/finite-difference-lesson';
+describe('III.14 finite differences lesson', () => {
+  for (const p of fdPresets) it(`${p.id}: formulas, regime`, () => { const d = deriveFD(p.state); allTex(d).forEach(strict); expect(['truncation', 'rounding']).toContain(d.status); });
+  it('errors fall then rise: tiny h is worse than the best step, and centered beats forward at its best', () => {
+    const errs = (k: number) => deriveFD({ ...FD_CANONICAL, k }).metrics;
+    expect(errs(14).errForward as number).toBeGreaterThan(100 * (errs(8).errForward as number));
+    expect(errs(5).errCentered as number).toBeLessThan(errs(8).errForward as number);
+    expect(deriveFD({ ...FD_CANONICAL, k: 2 }).status).toBe('truncation'); expect(deriveFD({ ...FD_CANONICAL, k: 12 }).status).toBe('rounding');
+    const h = deriveFD(FD_CANONICAL).scenes[0]!.handles[0]!; expect(h.write!(-7, 0)).toEqual({ k: 7 });
+  });
+});

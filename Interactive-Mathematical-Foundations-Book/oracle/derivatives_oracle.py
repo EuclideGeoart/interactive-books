@@ -233,6 +233,36 @@ def chain_cases():
     return [chain_case(i, o, x) for i in ['square', 'linear', 'sin'] for o in ['cube', 'sin', 'exp'] for x in ['-2', '-0.75', '0', '0.5', '2']]
 
 
+# ----------------------------------------------------------------------------------------- III.14 finite differences
+import math
+
+EPS = 2.0 ** -52
+
+
+def fd_case(fn, x):
+    """Reference derivative from 60-digit Decimal series (not from libm), plus Python binary64 quotients and an independently computed budget."""
+    xd = D(x)
+    f, ref, m2, m3 = {
+        'sin': (math.sin, dcos(xd), D(1), D(1)),
+        'exp': (math.exp, dexp(xd), dexp(xd + D('0.1')), dexp(xd + D('0.1'))),
+        'cubic': (lambda t: t ** 3 / 6 - t, xd * xd / 2 - 1, abs(xd) + D('0.1'), D(1)),
+    }[fn]
+    xf, rows = float(x), []
+    for k in range(1, 17):
+        h = 10.0 ** -k
+        fp, f0, fm = f(xf + h), f(xf), f(xf - h)
+        fwd, ctr = (fp - f0) / h, (fp - fm) / (2 * h)
+        rep = abs(((xf + h) - xf) - h) / h * float(abs(ref))
+        b_fwd = 4 * (float(m2) * h / 2 + EPS * (abs(fp) + abs(f0)) / h + rep) + 4 * EPS * abs(fwd)
+        b_ctr = 4 * (float(m3) * h * h / 6 + EPS * (abs(fp) + abs(fm)) / (2 * h) + rep) + 4 * EPS * abs(ctr)
+        rows.append({'k': k, 'forward': fwd, 'centered': ctr, 'budgetForward': b_fwd, 'budgetCentered': b_ctr, 'libmSlack': 8 * EPS * (abs(fp) + abs(f0) + abs(fm)) / h})
+    return {'fn': fn, 'x': x, 'reference': float(ref), 'rows': rows}
+
+
+def fd_cases():
+    return [fd_case(fn, x) for fn in ('sin', 'exp', 'cubic') for x in ('1', '2', '-0.75', '1.5')]
+
+
 def build():
     return {
         'method': 'Fraction secants; derivative by exact Lagrange interpolation of m(h) at h = 0; Decimal(60) Taylor series for sin/cos/exp; '
@@ -243,6 +273,7 @@ def build():
         'linear': linear_cases(),
         'rules': rule_cases(),
         'chain': chain_cases(),
+        'finite_difference': fd_cases(),
     }
 
 
@@ -251,7 +282,7 @@ def main():
     if '--check' in sys.argv:
         if not FIXTURE.exists() or FIXTURE.read_text() != text:
             raise SystemExit('derivatives fixture stale: run python oracle/derivatives_oracle.py')
-        b = build(); print(f"derivatives: {sum(len(v) for v in b.values() if isinstance(v, list))} cases fresh (secant, linear, rules, chain)")
+        b = build(); print(f"derivatives: {sum(len(v) for v in b.values() if isinstance(v, list))} cases fresh (secant, linear, rules, chain, finite differences)")
     else:
         FIXTURE.write_text(text)
 

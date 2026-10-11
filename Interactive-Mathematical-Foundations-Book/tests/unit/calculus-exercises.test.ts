@@ -7,10 +7,13 @@ const answers: Record<string, readonly string[]> = {
   'iii7-partials': ['4', '4'], 'iii7-slice': ['4'], 'iii7-secant': ['2'], 'iii8-gradient': ['1', '2'], 'iii8-directional': ['2.2'], 'iii8-steepest': ['5'],
   'iii9-entries': ['2', '-4', '4', '2'], 'iii9-predict': ['-14/5', '22/5'], 'iii9-shape': ['2', '3'], 'iii10-forward': ['5', '10'], 'iii10-reverse': ['7', '2'], 'iii10-square': ['3', '3', '6'],
   'iii11-hessian': ['6', '0', '2'], 'iii11-det': ['-12'], 'iii11-curvature': ['2', '-2'],
+  'iii12-left': ['1'], 'iii12-signed': ['1.5', '2.5'], 'iii12-reverse': ['-5'], 'iii13-value': ['6', '5'], 'iii13-strip': ['3/100'], 'iii13-lower': ['0', '8', '6'],
+  'iii14-forward': ['21/10'], 'iii14-centered': ['2'], 'iii14-order': ['2', '4'], 'iii15-trap': ['0.5', '1/6'], 'iii15-mid': ['0.25'], 'iii15-order': ['2'],
   'iii6-chain': ['12'], 'iii6-where': ['3', '6'], 'iii6-change': ['-3/50'],
 };
 it('every Part III chapter has five exercises with globally unique identifiers', () => {
   const all = Object.values(CALCULUS_EXERCISES).flat();
+  expect(Object.keys(CALCULUS_EXERCISES)).toHaveLength(15); expect(all).toHaveLength(75);
   expect(new Set(all.map(e => e.id)).size).toBe(all.length);
   for (const list of Object.values(CALCULUS_EXERCISES)) expect(list).toHaveLength(5);
   for (const e of all) expect(e.id).toMatch(/^iii\d+-[a-z-]+$/);

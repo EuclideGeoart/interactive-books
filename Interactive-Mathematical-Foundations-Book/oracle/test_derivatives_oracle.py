@@ -6,7 +6,7 @@ import unittest
 
 import numpy as np
 
-from derivatives_oracle import build, chain_case, dcos, dexp, dsin, linear_case, rule_case, secant_case
+from derivatives_oracle import build, chain_case, fd_case, dcos, dexp, dsin, linear_case, rule_case, secant_case
 
 CODE = Path(__file__).resolve().parents[1] / 'code/python'
 
@@ -48,9 +48,23 @@ class DerivativeOracleTests(unittest.TestCase):
         self.assertEqual(chain_case('square', 'cube', '2'), {'inner': 'square', 'outer': 'cube', 'x': '2', 'u': '1', 'derivative': '3/2'})
         self.assertAlmostEqual(chain_case('sin', 'exp', '1')['derivative'], math.exp(math.sin(1)) * math.cos(1), places=14)
 
+    def test_finite_difference_regimes(self):
+        c = fd_case('sin', '1')
+        self.assertAlmostEqual(c['reference'], math.cos(1), places=15)
+        errs = [abs(r['forward'] - c['reference']) for r in c['rows']]
+        best = min(range(16), key=lambda i: errs[i])
+        self.assertTrue(5 <= best + 1 <= 10)                         # best forward step near sqrt(eps)
+        self.assertLess(abs(c['rows'][0]['forward'] - c['reference']), 0.05)
+        self.assertGreater(errs[13], 100 * errs[best])
+        for r in c['rows']:
+            self.assertLessEqual(abs(r['forward'] - c['reference']), r['budgetForward'])
+            self.assertLessEqual(abs(r['centered'] - c['reference']), r['budgetCentered'])
+        self.assertEqual(fd_case('cubic', '1.5')['reference'], 0.125)
+
     def test_references(self):
         for name in ['calculus_secant.py', 'calculus_secant_numpy.py', 'calculus_linear_model.py', 'calculus_linear_model_numpy.py',
-                     'calculus_rules.py', 'calculus_rules_numpy.py', 'calculus_chain.py', 'calculus_chain_numpy.py']:
+                     'calculus_rules.py', 'calculus_rules_numpy.py', 'calculus_chain.py', 'calculus_chain_numpy.py',
+                     'calculus_finite_difference.py', 'calculus_finite_difference_numpy.py']:
             runpy.run_path(str(CODE / name))
 
 
