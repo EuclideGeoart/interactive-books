@@ -43,6 +43,7 @@ test('IV.16: sample size, repetitions, actual blocks and bounded histogram remai
 });
 test('IV.16: zero variance and dependent observations remove or qualify the normal comparison', async ({ page }) => {
   const stage = await open(page, 'central-limit-theorem', 'clt'); await stage.locator('[data-preset="degenerate"]').click(); await expect(stage.locator('[data-undefined-standardization]')).toBeVisible(); await expect(stage.locator('[data-chart="clt-histogram"]')).toHaveCount(0);
+  expect(await stage.locator('.prob-board').evaluate(board => [...board.childNodes].filter(node => node.nodeType === Node.TEXT_NODE).map(node => node.textContent?.trim()).filter(Boolean))).toEqual([]);
   await stage.locator('[data-preset="dependent"]').click(); await expect(stage.locator('[data-assumption]')).toContainText('violates'); await expect(stage.locator('[data-quantity="actual-mean-variance"]')).toContainText('1/12'); await expect(stage.locator('[data-quantity="iid-mean-variance"]')).toContainText('1/96');
 });
 for (const [slug, kind, preset, id] of [['joint-distributions', 'joint', 'empty-row', 'IV.13'], ['central-limit-theorem', 'clt', 'dependent', 'IV.16']] as const) for (const theme of ['light', 'dark'] as const) test(`${id}: ${theme} exceptional state touch, descriptions and full-page axe`, async ({ page, isMobile }) => {

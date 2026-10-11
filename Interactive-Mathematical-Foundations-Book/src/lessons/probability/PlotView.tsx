@@ -4,7 +4,7 @@ export default function PlotView({ scene }: { scene: PlotScene }) {
   const uid = useScopedId();
   return <figure class="prob-figure"><figcaption>{scene.title}</figcaption><svg class="prob-chart" viewBox="0 0 400 245" role="img" aria-labelledby={`${uid}-title`} aria-describedby={`${uid}-description`} data-chart={scene.kind}>
     <title id={`${uid}-title`}>{scene.title}</title><desc id={`${uid}-description`}>{scene.description}</desc>
-    <path class="prob-axis" d="M30,25V202H385" />
+    <path class="prob-axis" fill="none" d="M30,25V202H385" />
     <text x="26" y="19" text-anchor="start">{scene.maxLabel}</text>
     {scene.minLabel && <text x="26" y="202" text-anchor="end">{scene.minLabel}</text>}
     {scene.area && <path class="prob-area" d={scene.area} />}

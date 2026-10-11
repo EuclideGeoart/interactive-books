@@ -25,6 +25,8 @@ test('Part I publication: the contents page links exactly the published chapters
   expect(links.map(l => l.id)).toEqual(published.map(r => r.id));
   for (const [i, l] of links.entries()) expect(l.href.endsWith(`chapters/${published[i]!.chapter.slug}/`)).toBe(true);
   await expect(page.locator('main [data-chapter-id]')).toHaveCount(97);
+  await expect(page.locator('main .lede')).toContainText(`${published.length} of ${allChapters.length}`);
+  await expect(page.locator('.map-sub')).toContainText(`${published.length} of ${allChapters.length}`);
 });
 
 for (const ref of published) {

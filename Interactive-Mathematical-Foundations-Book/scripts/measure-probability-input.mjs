@@ -56,7 +56,8 @@ try {
     const response = await page.goto(`http://127.0.0.1:${port}/chapters/${slug}/`);
     assert(response?.ok(), `${slug}: production route failed`);
     const stage = page.locator('[data-stage]').first();
-    await stage.locator(':scope[data-hydrated="true"]').waitFor();
+    const name = await stage.getAttribute('data-stage');
+    await page.locator(`[data-stage="${name}"][data-hydrated="true"]`).waitFor();
     await page.evaluate(() => document.fonts.ready);
     return { page, stage, errors };
   }

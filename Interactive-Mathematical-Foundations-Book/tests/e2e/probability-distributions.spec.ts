@@ -27,6 +27,7 @@ test('IV.7: outcome mapping groups equal values and preserves source mass', asyn
 });
 test('IV.8: PMF jumps, exact area and continuous point semantics stay linked', async ({ page }) => {
   const stage = await open(page, 'pmf-pdf-cdf', 'representations'); await expect(stage.locator('[data-quantity="interval"]')).toContainText('0.75');
+  await expect(stage.locator('[data-chart="pmf"] .prob-axis')).toHaveCSS('fill', 'none');
   await expect(stage.locator('[data-chart="cdf"] circle')).toHaveCount(6);
   await stage.locator('[data-preset="uniform"]').click(); await expect(stage.locator('[data-quantity="interval"]')).toContainText('0.5'); await expect(stage.locator('[data-quantity="point"]')).toContainText('0');
   await stage.locator('[data-probability-slider]').focus(); await stage.locator('[data-probability-slider]').press('ArrowRight'); await expect(stage.locator('[data-param="lower"] input')).toHaveValue('-0.99');
@@ -34,7 +35,7 @@ test('IV.8: PMF jumps, exact area and continuous point semantics stay linked', a
 });
 test('IV.9: p boundaries, empty trials and impossible counts conserve exact mass', async ({ page }) => {
   const stage = await open(page, 'bernoulli-binomial', 'binomial');
-  for (const preset of ['zero-p', 'one-p', 'impossible']) { await stage.locator(`[data-preset="${preset}"]`).click(); await expect(stage.locator('[data-quantity="selected"]')).toContainText('0'); await expect(stage.locator('[data-quantity="total"]')).toContainText('1'); }
+  for (const preset of ['zero-p', 'one-p', 'impossible']) { await stage.locator(`[data-preset="${preset}"]`).click(); await expect(stage.locator('[data-quantity="selected"]')).toContainText('0'); await expect(stage.locator('[data-quantity="total"]')).toContainText('1'); await expect(stage.locator('.katex-error')).toHaveCount(0); }
   await stage.locator('[data-preset="empty"]').click(); await expect(stage.locator('[data-quantity="selected"]')).toContainText('1'); await expect(stage.locator('[data-chart="pmf"] [data-bar]')).toHaveCount(1);
 });
 test('IV.10: density can exceed one, invalid supports preserve the accepted state', async ({ page }) => {
@@ -55,5 +56,6 @@ test('IV.12: squared geometry and exact spread distinguish scaling from shifting
 for (const theme of ['light', 'dark'] as const) test(`IV.10: ${theme} exceptional density, touch and accessibility`, async ({ page, isMobile }) => {
   await page.emulateMedia({ colorScheme: theme }); const stage = await open(page, 'uniform-gaussian', 'continuous');
   if (isMobile) await stage.locator('[data-preset="narrow"]').tap(); else await stage.locator('[data-preset="narrow"]').click();
+  const start = stage.locator('[data-param="a"] input'); await start.fill('2'); await start.press('Tab'); await expect(stage.locator('[role="alert"]')).toBeVisible();
   const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze(); expect(result.violations.map(v => `${v.id}: ${v.help}`)).toEqual([]);
 });

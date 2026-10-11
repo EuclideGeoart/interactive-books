@@ -10,7 +10,7 @@
 .prob-controls select { padding: .5rem; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: .4rem; font: inherit; }
 .prob-presets { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
 .prob-verdict { border-left: 3px solid var(--c-derived); padding: .75rem 1rem; margin: 1rem 0; background: var(--surface); }
-.prob-error { color: var(--c-caution); font-weight: 600; }
+.prob-error { color: var(--c-caution-text); font-weight: 600; }
 .prob-mass { margin: .7rem 0; }
 .prob-mass-label { display: flex; justify-content: space-between; gap: .5rem; flex-wrap: wrap; font-size: .86rem; }
 .prob-mass-label strong { overflow-wrap: anywhere; }

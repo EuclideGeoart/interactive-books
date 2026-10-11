@@ -14,9 +14,14 @@ export function plotScene(options: { title: string; description: string; kind: s
   const yMin = options.yMin ?? 0;
   const y = (value: number) => 202 - (value - yMin) / (options.yMax - yMin) * 170;
   const path = (points: readonly PlotPoint[] = []) => points.map((p, i) => `${i ? 'L' : 'M'}${x(p.x)},${y(p.y)}`).join(' ');
+  const ticks: { x: number; label: string }[] = [];
+  for (const value of [...new Set(options.ticks ?? [options.xMin, (options.xMin + options.xMax) / 2, options.xMax])].sort((a, b) => a - b)) {
+    const tick = { x: x(value), label: approx(value) }, previous = ticks.at(-1);
+    if (!previous || tick.x - previous.x >= (tick.label.length + previous.label.length) * 5 + 10) ticks.push(tick);
+  }
   return { title: options.title, description: options.description, kind: options.kind,
     bars: (options.bars ?? []).map(bar => ({ x: x(bar.x - (bar.width ?? .8) / 2), y: y(bar.value), width: (bar.width ?? .8) / (options.xMax - options.xMin) * 350, height: 202 - y(bar.value), value: bar.value, selected: bar.selected ?? false, label: String(bar.x) })),
     curve: path(options.curve), secondary: path(options.secondary), area: options.area?.length ? path(options.area) + ' Z' : '',
     meanX: options.mean === undefined ? null : x(options.mean), dots: (options.dots ?? []).map(p => ({ x: x(p.x), y: y(p.y), radius: p.radius ?? 4, closed: p.closed ?? true })),
-    ticks: (options.ticks ?? [options.xMin, (options.xMin + options.xMax) / 2, options.xMax]).map(value => ({ x: x(value), label: approx(value) })), maxLabel: approx(options.yMax), ...(yMin !== 0 ? { minLabel: approx(yMin) } : {}), xLabel: options.xLabel };
+    ticks, maxLabel: approx(options.yMax), ...(yMin !== 0 ? { minLabel: approx(yMin) } : {}), xLabel: options.xLabel };
 }

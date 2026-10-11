@@ -37,11 +37,20 @@ it('Gaussian interval quadrature has symmetry, standardization and the declared 
   for (let i = -800; i <= 800; i++) { const value = normalCDF(i / 100); expect(value).toBeGreaterThanOrEqual(previous); expect(value).toBeLessThanOrEqual(1); previous = value; }
   expect(NORMAL_CDF_ERROR).toBe(1e-9);
 });
+it('drawing labels remain separated when a narrow density shares a wide comparison viewport', () => {
+  const d = deriveDistributionLesson('continuous', { ...DISTRIBUTION_CANONICAL.continuous, sigma: .1, lower: -.1, upper: .1 });
+  expect(d.normal.probability).toBeCloseTo(.6826894921370859, 9);
+  for (let i = 1; i < d.densityScene.ticks.length; i++) expect(d.densityScene.ticks[i]!.x - d.densityScene.ticks[i - 1]!.x).toBeGreaterThanOrEqual(40);
+});
 for (const chapter of ['representations', 'binomial', 'continuous'] as const) it(`${chapter}: curves, masses, inspector and trace retain distribution semantics`, () => {
-  const canonical = DISTRIBUTION_CANONICAL[chapter], states = chapter === 'binomial' ? [canonical, { ...canonical, p: 0 }, { ...canonical, n: 0, k: 0 }] : [canonical, { ...canonical, mode: 'uniform' as const, lower: -1, upper: 1 }, { ...canonical, mode: 'normal' as const, sigma: .1 }];
+  const canonical = DISTRIBUTION_CANONICAL[chapter], states = chapter === 'binomial' ? [canonical, { ...canonical, p: 0 }, { ...canonical, p: 100 }, { ...canonical, n: 0, k: 0 }, { ...canonical, k: -1 }, { ...canonical, k: 31 }] : [canonical, { ...canonical, mode: 'uniform' as const, lower: -1, upper: 1 }, { ...canonical, mode: 'normal' as const, sigma: .1 }];
   for (const state of states) {
     const d = deriveDistributionLesson(chapter, state); expect(d.cdfScene.curve).not.toBe(''); expect(Object.isFrozen(d.view.trace[0]!.state)).toBe(true);
     for (const f of [...d.view.formulas, ...d.view.trace.map(t => t.state.formula)]) expect(() => katex.renderToString(f, { strict: 'error', throwOnError: true })).not.toThrow();
     if (state.mode === 'discrete') expect(d.densityScene.bars.map(b => b.value)).toEqual(d.binomial.pmf.map(p => Number(p.num) / Number(p.den)));
+    if (state.mode === 'uniform') {
+      expect(d.densityScene.xLabel).toContain('uniform mass is exactly one over [a, b]');
+      expect(d.cdfScene.xLabel).toContain('0 below a, 1 at and above b');
+    }
   }
 });
