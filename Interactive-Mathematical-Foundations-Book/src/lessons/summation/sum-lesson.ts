@@ -195,7 +195,7 @@ export function sumRows(derived: SumLessonDerived): InspectorRowData[] {
   const closed = d.closed === null
     ? missingDescription(derived.state.seq === 'list' ? 'a list you typed has no formula' : derived.state.seq === 'geometric' ? '0 to a negative power is undefined, so there is no formula for these bounds' : 'no simple closed form exists for this sequence')
     : !d.closed.applies
-      ? missingDescription('the formula is only claimed when n is at least m − 1; below that the empty-sum convention decides')
+      ? missingDescription('no formula is claimed for these bounds: with no terms, the empty-sum convention alone gives 0')
       : qDescription(d.closed.value);
   return [
     { id: 'count', role: 'x', symbolTex: 'n-m+1', name: 'number of terms (0 when n < m)', description: qDescription(q(d.count)) },
