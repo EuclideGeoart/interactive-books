@@ -1,0 +1,115 @@
+---
+kind: chapter
+curriculumId: II.2
+title: "Scalar multiplication and vector scaling"
+hero: "What does a negative *scale* do?"
+lede: Change one scalar and watch both components respond. Length follows its absolute value; direction follows its sign, until zero removes direction entirely.
+description: Scalar multiplication, positive and negative gains, zero vectors, magnitude scaling, distributive laws, executable Python and NumPy, numerical considerations, and graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import Xref from '../../shell/Xref.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import LinearStage from '../../lessons/linear-algebra/LinearStage';
+import WorkedStage from '../../lessons/linear-algebra/WorkedStage';
+import Exercise from '../../lessons/linear-algebra/Exercise';
+import reference from '../../../code/python/linear_scaling.py?raw';
+import practical from '../../../code/python/linear_scaling_numpy.py?raw';
+
+<Stage caption="Change k with its field or step buttons; move v with pointer, keys, or numeric entry. The second arrow is kv, derived from the same components shown in the inspector."><LinearStage chapter="scaling" client:load /></Stage>
+
+Try $k=1$, $k=0$, and $k=-1$ before reading. Predict whether the result is longer, shorter, or reversed when $k=-0.5$. The original arrow stays available for comparison. The plane fits both arrows at one common scale, so compare their lengths within the current picture rather than across two differently fitted pictures.
+
+## Intuition: repeat or reverse a move
+
+The vector $(3,2)$ says “three right, two up.” Twice that move is $(6,4)$. Half that move is $(1.5,1)$. Scaling changes how much of the instruction you execute. A negative scalar first reverses the instruction and then changes its amount: $-2(3,2)=(-6,-4)$.
+
+The scalar is one number. It acts on **both** components together. If you stretch only the horizontal component, the direction generally changes; that is a different operation. Uniform scalar multiplication keeps a nonzero vector on the same line through the origin.
+
+## Definition
+
+For $k\in\mathbb R$ and $\mathbf v\in\mathbb R^2$,
+
+$$
+k\mathbf v=\begin{bmatrix}kv_x\\kv_y\end{bmatrix}.
+$$
+
+If $k>0$ and $\mathbf v\ne\mathbf0$, $k\mathbf v$ points the same way. If $k<0$, it points the opposite way. If $k=0$ or $\mathbf v=\mathbf0$, the result is the zero vector. Its direction is undefined, regardless of the other input.
+
+<Callout kind="misconception" title="Zero does not choose a direction">
+At $k=0$, the arrow's length tends to zero but no direction survives in the zero vector itself. Approaching zero through positive scalars and negative scalars gives opposite directions. Assigning either direction to the result would add information the vector does not contain.
+</Callout>
+
+## Mechanics: sign and amount are separate
+
+The scalar control accepts decimals between $-2$ and $2$ with at most two decimal places. This range is an exploration window, not a restriction on the mathematical definition. Values outside it are rejected with a message. Arrow keys on the original vector move its components; arrow keys in the scalar field step $k$. Both input paths update the same lesson state.
+
+Watch the inspector's two lengths. A negative $k$ can make the result longer, but it cannot make the length negative. At zero, the length remains a defined number while the direction row explicitly becomes undefined. Making $\mathbf v=\mathbf0$ produces that same exception even if $k$ is positive.
+
+## Derivation: the norm uses an absolute value
+
+Apply the Euclidean length formula from <Xref to="chapters/vectors/">I.3 Vectors</Xref>:
+
+$$
+\norm{k\mathbf v}
+=\sqrt{(kv_x)^2+(kv_y)^2}
+=\sqrt{k^2(v_x^2+v_y^2)}
+=|k|\norm{\mathbf v}.
+$$
+
+The last step uses $\sqrt{k^2}=|k|$, which holds for every real $k$. Writing $k$ instead would fail whenever $k$ is negative. Squared length scales by $k^2$; length scales by $|k|$.
+
+The component definition also gives three useful laws:
+
+$$
+k(\mathbf u+\mathbf v)=k\mathbf u+k\mathbf v,\qquad
+(a+b)\mathbf v=a\mathbf v+b\mathbf v,\qquad
+a(b\mathbf v)=(ab)\mathbf v.
+$$
+
+For example, the first horizontal component is $k(u_x+v_x)=ku_x+kv_x$. The vertical component follows the same real-number distributive law. Scaling a combined move therefore agrees with scaling the two moves first and then adding them.
+
+## Worked examples
+
+Take $\mathbf v=(3,2)$ and $k=-1.5$. The output is $(-4.5,-3)$. The original length is $\sqrt{13}$ and the new length is $1.5\sqrt{13}$. Both component signs reverse, while the length factor is positive.
+
+<Stage caption="Inspect the multiplication and the length law separately, then replay the calculation."><WorkedStage chapter="scaling" client:load /></Stage>
+
+A different problem asks which scalar maps $(2,-3)$ to $(-1,1.5)$. The horizontal ratio is $-1/2$ and the vertical ratio is $1.5/(-3)=-1/2$. Because both ratios agree, the target is a scalar multiple. A target such as $(-1,2)$ gives inconsistent ratios and cannot be reached by scaling this vector alone.
+
+## Executable reference code
+
+The Fraction implementation makes decimal scaling exact. Its demonstration checks both components and the norm law. NumPy expresses the practical array operation directly. In each case, a zero output must be checked before any later direction computation.
+
+<CodeFile source={reference} file="code/python/linear_scaling.py" />
+<CodeFile source={practical} file="code/python/linear_scaling_numpy.py" />
+
+## Explore
+
+Set $\mathbf v=(3,4)$ and predict the length for $k=0.25,-0.25,1.5,-1.5$. Compare each pair with the same absolute value. Then make one component of $\mathbf v$ zero: the direction rule still works on an axis. Finally set both components to zero and explain why changing $k$ cannot restore a direction.
+
+Try to reach $(2,3)$ by scaling $(3,2)$. The ratios do not agree. This failed construction is a preview of span: one vector supplies one line of possible moves, while a second independent vector supplies another direction.
+
+## Common mistakes
+
+Multiplying only one component is an axis stretch. Adding $k$ to both components is a translation in component space. Neither implements $k\mathbf v$. Also distinguish “opposite” from “perpendicular”: multiplying by $-1$ changes the direction by a half-turn, not a quarter-turn. A negative length is never the explanation of a reversed arrow.
+
+## Numerical considerations
+
+The stage uses exact decimal rationals for multiplication and an exact radical when expressing the norm. Rendered screen coordinates and rounded norm readouts are numerical views of those values. In ordinary floating point, a very large product can overflow and a very small product can underflow to zero. Once an output has underflowed to zero, an algorithm must not claim its stored components still specify a unit direction. The conceptual norm law remains true over real numbers even when its direct numerical implementation loses information. Exact entered decimals also differ from exact representations of a binary64 measurement; choose the input interpretation deliberately.
+
+## Engineering and ML connections
+
+A gain multiplies a signal; a time interval scales a velocity into a displacement. Units must be tracked: seconds times metres per second produce metres. In parameter updates, a learning rate scales a direction before addition. Negative scaling reverses an update, so signs in an optimization formula determine whether the move follows or opposes a gradient. Later chapters will derive those directions rather than assume them.
+
+## Exercises
+
+<Exercise id="scale-value" client:load />
+<Exercise id="scale-length" client:load />
+<Exercise id="scale-missing" client:load />
+<Exercise id="scale-zero" client:load />
+<Exercise id="scale-code" client:load />
+
+## Summary and checkpoints
+
+One scalar multiplies every component. Its absolute value controls length, and its sign controls the direction of a nonzero result. Verify that you can derive the norm law, diagnose inconsistent component ratios, and handle the zero exception. <Xref to="chapters/vector-norms/">II.3 Norms and normalization</Xref> uses a positive scalar chosen from the vector's own length to create a unit direction.

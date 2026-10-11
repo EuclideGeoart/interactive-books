@@ -1,0 +1,117 @@
+---
+kind: chapter
+curriculumId: II.3
+title: "Norms, magnitude, and normalization"
+hero: "How do you keep direction and remove *length*?"
+lede: A norm turns a vector into a nonnegative size. Divide a nonzero vector by its Euclidean norm to retain only its direction, and compare how three norms define different unit balls.
+description: Euclidean norms, normalization, the zero-vector exception, L1 and infinity unit balls, stable rescaling, executable Python and NumPy, and exercises with feedback.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import Xref from '../../shell/Xref.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import LinearStage from '../../lessons/linear-algebra/LinearStage';
+import WorkedStage from '../../lessons/linear-algebra/WorkedStage';
+import Exercise from '../../lessons/linear-algebra/Exercise';
+import reference from '../../../code/python/linear_norms.py?raw';
+import practical from '../../../code/python/linear_norms_numpy.py?raw';
+
+<Stage caption="Move v. Its normalized arrow ends on the Euclidean unit circle. The diamond is the L₁ unit ball and the square is the L∞ unit ball; these fixed shapes let you compare the definitions."><LinearStage chapter="norms" client:load /></Stage>
+
+Try $(3,4)$, then $(1,1)$, then zero. Predict which quantities remain defined at zero. The three length measures all become zero, while the unit-vector rows disappear into an explicit exception. Moving the tip away from zero restores a unit direction.
+
+## Intuition: size depends on what you measure
+
+Euclidean length measures a straight move. Taxicab length counts the total travel along the two coordinate axes. The largest-component norm measures the worst coordinate displacement. These answer different questions about the same vector. None depends on which quadrant contains it, because signs describe direction rather than size.
+
+Normalization removes Euclidean length without changing a nonzero vector's direction. A short vector and a long vector along the same ray give the same normalized arrow. A vector on the opposite ray gives the negative unit vector. The unit circle acts as a catalogue of possible directions.
+
+## Definition
+
+For $\mathbf v=(v_x,v_y)$,
+
+$$
+\norm{\mathbf v}_2=\sqrt{v_x^2+v_y^2},\qquad
+\norm{\mathbf v}_1=|v_x|+|v_y|,\qquad
+\norm{\mathbf v}_\infty=\max(|v_x|,|v_y|).
+$$
+
+An unqualified norm in this block means the Euclidean norm. A **unit vector** has Euclidean norm $1$. The normalized vector is defined only for $\mathbf v\ne\mathbf0$:
+
+$$
+\widehat{\mathbf v}=\frac{\mathbf v}{\norm{\mathbf v}_2}.
+$$
+
+A norm is nonnegative, vanishes only at zero, scales by the absolute value of a scalar, and satisfies the triangle inequality $\norm{\mathbf u+\mathbf v}\le\norm{\mathbf u}+\norm{\mathbf v}$. For Euclidean distance, the straight route is no longer than the route through an intermediate point. Equality occurs for moves along the same ray, including a zero move.
+
+## Mechanics: the three unit balls
+
+The **unit ball** of a norm consists of vectors whose norm is at most $1$. The stage draws its boundary. For $L_1$, $|x|+|y|=1$ gives the diamond. For $L_\infty$, $\max(|x|,|y|)=1$ gives the square. For $L_2$, $x^2+y^2=1$ gives the circle. These shapes follow directly from the norm definitions, rather than from the current vector's length.
+
+At $(1,1)$ the norms are $2$, $\sqrt2$, and $1$, respectively. The point lies on the square boundary, outside the Euclidean circle, and outside the diamond. If you divide by $L_1$ instead, the resulting vector lands on the diamond; it generally is not a Euclidean unit vector.
+
+## Derivation: why the normalized length is one
+
+The length is positive when the vector is nonzero. Apply the scaling law from <Xref to="chapters/vector-scaling/">II.2 Scalar multiplication</Xref>:
+
+$$
+\norm{\widehat{\mathbf v}}_2
+=\left|\frac1{\norm{\mathbf v}_2}\right|\norm{\mathbf v}_2=1.
+$$
+
+The scaling factor is positive, so the direction is preserved. At zero the factor would be $1/0$, and this derivation cannot begin. A zero result is not a substitute: its norm is $0$, not $1$.
+
+The component inequalities also compare the three norms:
+
+$$
+\norm{\mathbf v}_\infty\le\norm{\mathbf v}_2\le\norm{\mathbf v}_1.
+$$
+
+The first follows because the sum of squares contains the square of the larger component. For the second, $(|x|+|y|)^2=x^2+y^2+2|xy|\ge x^2+y^2$; taking nonnegative square roots preserves the inequality. Both become equalities on an axis. The ordering does not make one norm universally better; each defines a different size measure.
+
+## Worked examples
+
+For $(3,4)$ the Euclidean length is $5$. Normalization gives $(3/5,4/5)$, whose squared length is $9/25+16/25=1$. The other norms are $7$ and $4$.
+
+<Stage caption="Inspect the length first, then the normalization and the comparison of norms."><WorkedStage chapter="norms" client:load /></Stage>
+
+For $(1,1)$ the normalized vector is $(1/\sqrt2,1/\sqrt2)$. Those expressions are exact. Decimal components such as $0.707107$ are approximations; squaring rounded display values is not an exact proof of unit length. The inspector separates exact component expressions from their numerical approximations.
+
+## Executable reference code
+
+The code distinguishes computing a norm from computing a unit direction. The latter rescales first. The NumPy version checks both shape and finiteness, rejects zero, and uses the same bounded rescaling idea.
+
+<CodeFile source={reference} file="code/python/linear_norms.py" />
+<CodeFile source={practical} file="code/python/linear_norms_numpy.py" />
+
+## Explore
+
+Compare $(3,4)$ with $(1.5,2)$: predict the unchanged normalized vector. Reverse both signs and predict the new unit vector. On the horizontal axis, compare all three norms. Move along the diagonal and explain why the three readouts differ even though there is only one arrow. Try zero last, and identify which definition fails.
+
+## Common mistakes
+
+Dividing by the squared norm is generally wrong: $(3,4)/25$ has length $1/5$. Dividing each component by its own magnitude gives a sign pattern, not a unit direction. Adding a tiny constant to the denominator can avoid a software exception but changes the formula and produces lengths below $1$; such regularization needs its own explicit purpose and definition.
+
+## Numerical considerations
+
+Squaring first can overflow or underflow even when a meaningful unit direction exists. For finite $\mathbf v\ne0$, set $m=\max(|v_x|,|v_y|)$ and $\mathbf z=\mathbf v/m$. At least one scaled component has magnitude $1$, and neither exceeds $1$. Then normalize $\mathbf z$ by its bounded length. This works for enormous inputs and for a pair of smallest subnormal components. The real norm itself may exceed the largest finite binary64 value; direction can still be representable.
+
+<Callout kind="numerical" title="Stability cannot restore a lost input">
+Rescaling protects a representable nonzero input. If earlier arithmetic already rounded both components to zero, normalization must report zero's exception. It cannot recover the original direction. A measured vector very near zero may also have a poorly determined direction even when the computation is stable.
+</Callout>
+
+## Engineering and ML connections
+
+Unit directions separate where a motion goes from how far it travels. Different norms measure different costs: total coordinate movement, Euclidean displacement, or a worst coordinate limit. Feature normalization can reduce the influence of overall scale in a similarity calculation, but discarding magnitude also discards information. Choose it because the task needs direction, rather than because every vector should have unit length.
+
+## Exercises
+
+<Exercise id="norm-length" client:load />
+<Exercise id="norm-unit" client:load />
+<Exercise id="norm-construct" client:load />
+<Exercise id="norm-zero" client:load />
+<Exercise id="norm-stable" client:load />
+
+## Summary and checkpoints
+
+A norm defines size, and Euclidean normalization retains the direction of a nonzero vector with unit length. Check that you can explain the three unit-ball shapes, derive the unit-length property, reject zero, and rescale before dangerous arithmetic. <Xref to="chapters/vector-dot-product/">II.4 Dot product</Xref> compares two directions with a dot product.

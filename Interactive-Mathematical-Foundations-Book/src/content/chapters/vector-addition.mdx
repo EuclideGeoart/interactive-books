@@ -1,0 +1,113 @@
+---
+kind: chapter
+curriculumId: II.1
+title: "Vector addition and subtraction"
+hero: "Where do two *moves* take you?"
+lede: Place one move after another. The destination reveals component addition, the parallelogram reveals why order does not matter, and the arrow between two tips explains subtraction.
+description: Head-to-tail vector addition, subtraction as an opposite move, translation invariance, commutativity, inspectable examples, Python and NumPy, and exercises with feedback.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import Xref from '../../shell/Xref.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import LinearStage from '../../lessons/linear-algebra/LinearStage';
+import WorkedStage from '../../lessons/linear-algebra/WorkedStage';
+import Exercise from '../../lessons/linear-algebra/Exercise';
+import reference from '../../../code/python/linear_addition.py?raw';
+import practical from '../../../code/python/linear_addition_numpy.py?raw';
+
+<Stage caption="Drag either tip, use its arrow keys, or enter components. The two head-to-tail routes meet at the same destination. The arrow from u's tip to v's tip is v − u."><LinearStage chapter="addition" client:load /></Stage>
+
+Before reading, predict the destination after swapping the two moves. Then press **Swap the two moves**. Next choose **Opposite moves**: the final arrow disappears because the total displacement is zero. The moves still exist; their effects cancel. Try making only one component cancel and observe the axis on which the sum lies.
+
+## Intuition: travel by moves
+
+A vector is a displacement, as <Xref to="chapters/vectors/">I.3 Vectors</Xref> established. Travel two units right and one up, then one right and two up. Your final displacement is three right and three up. Moving the second arrow's tail to the first arrow's tip changes its placement, not its components. This **head-to-tail** picture turns two instructions into one.
+
+Points and moves play different roles. If you begin at point $P$, the intermediate point is $P+\mathbf u$ and the destination is $P+\mathbf u+\mathbf v$. The sum $\mathbf u+\mathbf v$ names the combined displacement, independent of $P$. Translating an entire journey changes its points but leaves the combined move unchanged.
+
+## Definition
+
+For two vectors in $\mathbb R^2$, addition combines matching components:
+
+$$
+\mathbf u+\mathbf v=
+\begin{bmatrix}u_x+v_x\\u_y+v_y\end{bmatrix}.
+$$
+
+The **opposite vector** is $-\mathbf v=(-v_x,-v_y)$. Subtraction means addition of the opposite:
+
+$$
+\mathbf u-\mathbf v=\mathbf u+(-\mathbf v).
+$$
+
+Vector equality means equality of both components. Addition returns another vector of the same dimension. It does not concatenate components, add lengths, or choose a starting point.
+
+## Mechanics: two paths and one diagonal
+
+The blue arrow is $\mathbf u$; the green arrow is $\mathbf v$. The same labels on the translated arrows identify the unchanged moves. Starting with blue then green and starting with green then blue create the two adjacent sides of a parallelogram. Its diagonal from the origin is $\mathbf u+\mathbf v$.
+
+The purple arrow has a different job. It starts at the tip of $\mathbf u$ and ends at the tip of $\mathbf v$, so its displacement is **destination minus departure**, $\mathbf v-\mathbf u$. This arrow generally does not start at the origin. The inspector displays its components, while the picture shows where it is placed.
+
+<Callout kind="misconception" title="Subtraction has an order">
+Addition commutes, but subtraction generally does not. Swapping the endpoints gives $\mathbf u-\mathbf v=-(\mathbf v-\mathbf u)$, the same length in the opposite direction. The two differences agree only when both are zero.
+</Callout>
+
+## Derivation: why the paths agree
+
+Each horizontal move contributes to the horizontal total, and each vertical move contributes to the vertical total. This gives the component formula directly. Commutativity follows from real-number addition:
+
+$$
+u_x+v_x=v_x+u_x,\qquad u_y+v_y=v_y+u_y.
+$$
+
+Thus $\mathbf u+\mathbf v=\mathbf v+\mathbf u$. The intermediate points need not agree; equality concerns the final displacement. Repeating this reasoning for three moves gives associativity, $(\mathbf u+\mathbf v)+\mathbf w=\mathbf u+(\mathbf v+\mathbf w)$. The zero vector is the identity, and $\mathbf v+(-\mathbf v)=\mathbf0$.
+
+For points $P,Q,R$, the head-to-tail rule also gives
+
+$$
+(Q-P)+(R-Q)=R-P.
+$$
+
+The intermediate point cancels. If every point is translated by a fixed move $\mathbf t$, then $(Q+\mathbf t)-(P+\mathbf t)=Q-P$. This is the algebraic reason that arrow placement does not define the vector.
+
+## Worked examples
+
+For $\mathbf u=(2,1)$ and $\mathbf v=(1,2)$, the sum is $(3,3)$ and the difference from the first tip to the second is $(-1,1)$. Inspect the component calculations, then step backward to revisit the inputs.
+
+<Stage caption="These are immutable calculation steps. Previous selects an earlier step; Play advances through the explanation."><WorkedStage chapter="addition" client:load /></Stage>
+
+A second journey starts at $P=(-2,1)$, moves by $(3,2)$, and ends at $Q=(4,-1)$ after an unknown move. The intermediate point is $(1,3)$, so the missing move is $(4,-1)-(1,3)=(3,-4)$. Checking $P+(3,2)+(3,-4)=Q$ tests the answer against the journey.
+
+## Executable reference code
+
+The pedagogical version keeps chosen decimal components exact with Python fractions. It spells out the two additions and checks the vector shape. The practical version uses NumPy arrays; its $+$ means elementwise addition.
+
+<CodeFile source={reference} file="code/python/linear_addition.py" />
+<CodeFile source={practical} file="code/python/linear_addition_numpy.py" />
+
+## Explore
+
+Return to the opening stage. Make $\mathbf u=(3,1)$ and $\mathbf v=(-3,2)$: predict a vertical sum before checking. Make the vectors equal: the arrow between their tips becomes zero, but their sum doubles the move. Finally choose opposite vectors and explain why the parallelogram collapses while the subtraction arrow remains nonzero.
+
+## Common mistakes and numerical considerations
+
+The length of a sum is generally **not** the sum of the lengths. For $(1,0)+(0,1)$, the result has length $\sqrt2$, while the separate lengths add to $2$. Opposite unit vectors give an even stronger counterexample: their sum has length $0$. The directions determine how the moves reinforce or cancel.
+
+The stage accepts up to two decimal places and computes component arithmetic as exact rational arithmetic. For instance, its decimal $0.1+0.2$ equals $0.3$ exactly under that input contract. Ordinary binary64 arithmetic can instead store a nearby approximation. Subtracting nearly equal measured components can expose input error; exact arithmetic on the entered decimals cannot recover precision absent from the measurement. NumPy's direct sum may also overflow for sufficiently large finite inputs. The bounded stage avoids overflow; it does not promise that arbitrary floating-point data does.
+
+## Engineering and ML connections
+
+Combining velocities, forces, or displacement updates uses this same component rule when the units and coordinate frame agree. Adding an update $\Delta\boldsymbol\theta$ to model parameters applies one move in parameter space. Adding a bias to a transformed vector will later form an affine map. That operation adds a displacement; it does not preserve the origin in the way a linear transformation does.
+
+## Exercises
+
+<Exercise id="add-sum" client:load />
+<Exercise id="add-difference" client:load />
+<Exercise id="add-missing" client:load />
+<Exercise id="add-order" client:load />
+<Exercise id="add-code" client:load />
+
+## Summary and checkpoints
+
+Two moves combine head-to-tail and component by component. The parallelogram explains commutativity; the arrow between tips explains subtraction. Check that you can name both endpoints of a difference arrow, explain translation invariance, and construct a missing move without confusing a point with a vector. In <Xref to="chapters/vector-scaling/">II.2 Scalar multiplication</Xref>, a scalar changes the size and sign of one move before it is added to another.
