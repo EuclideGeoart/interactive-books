@@ -1,0 +1,1239 @@
+{
+  "method": "Fraction characteristic identities + Decimal(100) roots",
+  "tolerance": "256 epsilon units times max(1, Frobenius norm of A); never used for exact classification",
+  "cases": [
+    {
+      "a": [
+        [
+          2,
+          0
+        ],
+        [
+          0,
+          -1
+        ]
+      ],
+      "expected": {
+        "trace": "1",
+        "determinant": "-2",
+        "discriminant": "9",
+        "kind": "distinct",
+        "values": [
+          2.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          1,
+          1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "expected": {
+        "trace": "2",
+        "determinant": "1",
+        "discriminant": "0",
+        "kind": "defective",
+        "values": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          2,
+          0
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "expected": {
+        "trace": "4",
+        "determinant": "4",
+        "discriminant": "0",
+        "kind": "scalar",
+        "values": [
+          2.0,
+          2.0
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          2,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "expected": {
+        "trace": "2",
+        "determinant": "0",
+        "discriminant": "4",
+        "kind": "distinct",
+        "values": [
+          2.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          0,
+          -1
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "expected": {
+        "trace": "0",
+        "determinant": "1",
+        "discriminant": "-4",
+        "kind": "no-real",
+        "values": []
+      }
+    },
+    {
+      "a": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "expected": {
+        "trace": "0",
+        "determinant": "-2",
+        "discriminant": "8",
+        "kind": "distinct",
+        "values": [
+          1.4142135623730951,
+          -1.4142135623730951
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "expected": {
+        "trace": "0",
+        "determinant": "0",
+        "discriminant": "0",
+        "kind": "scalar",
+        "values": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          -2
+        ]
+      ],
+      "expected": {
+        "trace": "-1",
+        "determinant": "-2",
+        "discriminant": "9",
+        "kind": "distinct",
+        "values": [
+          1.0,
+          -2.0
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          4,
+          3.99
+        ],
+        [
+          3.99,
+          3.98
+        ]
+      ],
+      "expected": {
+        "trace": "399/50",
+        "determinant": "-1/10000",
+        "discriminant": "79601/1250",
+        "kind": "distinct",
+        "values": [
+          7.980012531308643,
+          -1.2531308642393948e-05
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          3.5,
+          3.25
+        ],
+        [
+          0.25,
+          1.0
+        ]
+      ],
+      "expected": {
+        "trace": "9/2",
+        "determinant": "43/16",
+        "discriminant": "19/2",
+        "kind": "distinct",
+        "values": [
+          3.7911035007422442,
+          0.7088964992577559
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          -2.75,
+          1.75
+        ],
+        [
+          -3.75,
+          2.5
+        ]
+      ],
+      "expected": {
+        "trace": "-1/4",
+        "determinant": "-5/16",
+        "discriminant": "21/16",
+        "kind": "distinct",
+        "values": [
+          0.44782196186948,
+          -0.69782196186948
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          3.0,
+          -1.0
+        ],
+        [
+          3.75,
+          -1.0
+        ]
+      ],
+      "expected": {
+        "trace": "2",
+        "determinant": "3/4",
+        "discriminant": "1",
+        "kind": "distinct",
+        "values": [
+          1.5,
+          0.5
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          -2.0,
+          3.25
+        ],
+        [
+          2.25,
+          1.5
+        ]
+      ],
+      "expected": {
+        "trace": "-1/2",
+        "determinant": "-165/16",
+        "discriminant": "83/2",
+        "kind": "distinct",
+        "values": [
+          2.9710246816812815,
+          -3.4710246816812815
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          2.5,
+          -0.75
+        ],
+        [
+          -2.0,
+          1.75
+        ]
+      ],
+      "expected": {
+        "trace": "17/4",
+        "determinant": "23/8",
+        "discriminant": "105/16",
+        "kind": "distinct",
+        "values": [
+          3.40586884574495,
+          0.8441311542550503
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          -2.0,
+          -2.75
+        ],
+        [
+          -4.0,
+          -0.25
+        ]
+      ],
+      "expected": {
+        "trace": "-9/4",
+        "determinant": "-21/2",
+        "discriminant": "753/16",
+        "kind": "distinct",
+        "values": [
+          2.305105683503061,
+          -4.5551056835030606
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          -4.0,
+          0.5
+        ],
+        [
+          -1.0,
+          0.0
+        ]
+      ],
+      "expected": {
+        "trace": "-4",
+        "determinant": "1/2",
+        "discriminant": "14",
+        "kind": "distinct",
+        "values": [
+          -0.1291713066130293,
+          -3.870828693386971
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          -1.25,
+          -2.75
+        ],
+        [
+          -1.5,
+          -2.75
+        ]
+      ],
+      "expected": {
+        "trace": "-4",
+        "determinant": "-11/16",
+        "discriminant": "75/4",
+        "kind": "distinct",
+        "values": [
+          0.16506350946109663,
+          -4.165063509461096
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          -1.5,
+          3.25
+        ],
+        [
+          1.75,
+          -0.75
+        ]
+      ],
+      "expected": {
+        "trace": "-9/4",
+        "determinant": "-73/16",
+        "discriminant": "373/16",
+        "kind": "distinct",
+        "values": [
+          1.2891509894784958,
+          -3.539150989478496
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          1.5,
+          -3.75
+        ],
+        [
+          -1.5,
+          -1.0
+        ]
+      ],
+      "expected": {
+        "trace": "1/2",
+        "determinant": "-57/8",
+        "discriminant": "115/4",
+        "kind": "distinct",
+        "values": [
+          2.930951323690902,
+          -2.430951323690902
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          -0.25,
+          3.25
+        ],
+        [
+          2.0,
+          -1.0
+        ]
+      ],
+      "expected": {
+        "trace": "-5/4",
+        "determinant": "-25/4",
+        "discriminant": "425/16",
+        "kind": "distinct",
+        "values": [
+          1.9519410160110378,
+          -3.201941016011038
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          0.75,
+          0.25
+        ],
+        [
+          1.0,
+          2.5
+        ]
+      ],
+      "expected": {
+        "trace": "13/4",
+        "determinant": "13/8",
+        "discriminant": "65/16",
+        "kind": "distinct",
+        "values": [
+          2.6327822185373186,
+          0.6172177814626812
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          -2.5,
+          -2.0
+        ],
+        [
+          -3.0,
+          3.0
+        ]
+      ],
+      "expected": {
+        "trace": "1/2",
+        "determinant": "-27/2",
+        "discriminant": "217/4",
+        "kind": "distinct",
+        "values": [
+          3.9327299656640586,
+          -3.4327299656640586
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          1.5,
+          -3.0
+        ],
+        [
+          -1.25,
+          4.0
+        ]
+      ],
+      "expected": {
+        "trace": "11/2",
+        "determinant": "9/4",
+        "discriminant": "85/4",
+        "kind": "distinct",
+        "values": [
+          5.054886114323222,
+          0.4451138856767782
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          -1.0,
+          3.25
+        ],
+        [
+          2.5,
+          2.5
+        ]
+      ],
+      "expected": {
+        "trace": "3/2",
+        "determinant": "-85/8",
+        "discriminant": "179/4",
+        "kind": "distinct",
+        "values": [
+          4.094772040064913,
+          -2.594772040064913
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          0.0,
+          -1.0
+        ],
+        [
+          3.0,
+          -3.5
+        ]
+      ],
+      "expected": {
+        "trace": "-7/2",
+        "determinant": "3",
+        "discriminant": "1/4",
+        "kind": "distinct",
+        "values": [
+          -1.5,
+          -2.0
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          3.5,
+          1.75
+        ],
+        [
+          -2.25,
+          3.5
+        ]
+      ],
+      "expected": {
+        "trace": "7",
+        "determinant": "259/16",
+        "discriminant": "-63/4",
+        "kind": "no-real",
+        "values": []
+      }
+    },
+    {
+      "a": [
+        [
+          0.75,
+          0.5
+        ],
+        [
+          0.5,
+          -1.75
+        ]
+      ],
+      "expected": {
+        "trace": "-1",
+        "determinant": "-25/16",
+        "discriminant": "29/4",
+        "kind": "distinct",
+        "values": [
+          0.846291201783626,
+          -1.846291201783626
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          3.5,
+          1.75
+        ],
+        [
+          1.5,
+          -1.5
+        ]
+      ],
+      "expected": {
+        "trace": "2",
+        "determinant": "-63/8",
+        "discriminant": "71/2",
+        "kind": "distinct",
+        "values": [
+          3.979093821953246,
+          -1.9790938219532463
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          -0.25,
+          -2.25
+        ],
+        [
+          -4.0,
+          -0.5
+        ]
+      ],
+      "expected": {
+        "trace": "-3/4",
+        "determinant": "-71/8",
+        "discriminant": "577/16",
+        "kind": "distinct",
+        "values": [
+          2.6276030373660784,
+          -3.3776030373660784
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          3.75,
+          0.25
+        ],
+        [
+          3.25,
+          3.75
+        ]
+      ],
+      "expected": {
+        "trace": "15/2",
+        "determinant": "53/4",
+        "discriminant": "13/4",
+        "kind": "distinct",
+        "values": [
+          4.651387818865997,
+          2.8486121811340026
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          0.5,
+          0.5
+        ],
+        [
+          -2.0,
+          -1.75
+        ]
+      ],
+      "expected": {
+        "trace": "-5/4",
+        "determinant": "1/8",
+        "discriminant": "17/16",
+        "kind": "distinct",
+        "values": [
+          -0.10961179679779243,
+          -1.1403882032022075
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          3.0,
+          3.25
+        ],
+        [
+          1.0,
+          1.5
+        ]
+      ],
+      "expected": {
+        "trace": "9/2",
+        "determinant": "5/4",
+        "discriminant": "61/4",
+        "kind": "distinct",
+        "values": [
+          4.2025624189766635,
+          0.2974375810233364
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          2.5,
+          -0.75
+        ],
+        [
+          -3.0,
+          -4.0
+        ]
+      ],
+      "expected": {
+        "trace": "-3/2",
+        "determinant": "-49/4",
+        "discriminant": "205/4",
+        "kind": "distinct",
+        "values": [
+          2.8294552658190883,
+          -4.329455265819088
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          -3.25,
+          1.25
+        ],
+        [
+          1.25,
+          3.75
+        ]
+      ],
+      "expected": {
+        "trace": "1/2",
+        "determinant": "-55/4",
+        "discriminant": "221/4",
+        "kind": "distinct",
+        "values": [
+          3.9665171868296265,
+          -3.4665171868296265
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          -0.75,
+          0.0
+        ],
+        [
+          2.25,
+          0.75
+        ]
+      ],
+      "expected": {
+        "trace": "0",
+        "determinant": "-9/16",
+        "discriminant": "9/4",
+        "kind": "distinct",
+        "values": [
+          0.75,
+          -0.75
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          -0.5,
+          1.25
+        ],
+        [
+          1.0,
+          3.75
+        ]
+      ],
+      "expected": {
+        "trace": "13/4",
+        "determinant": "-25/8",
+        "discriminant": "369/16",
+        "kind": "distinct",
+        "values": [
+          4.026171589037318,
+          -0.7761715890373183
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          4.0,
+          2.25
+        ],
+        [
+          2.0,
+          -3.5
+        ]
+      ],
+      "expected": {
+        "trace": "1/2",
+        "determinant": "-37/2",
+        "discriminant": "297/4",
+        "kind": "distinct",
+        "values": [
+          4.5584219849035215,
+          -4.0584219849035215
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          -2.75,
+          -2.5
+        ],
+        [
+          -2.25,
+          -0.75
+        ]
+      ],
+      "expected": {
+        "trace": "-7/2",
+        "determinant": "-57/16",
+        "discriminant": "53/2",
+        "kind": "distinct",
+        "values": [
+          0.8239075352467501,
+          -4.32390753524675
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          0.0,
+          -0.5
+        ],
+        [
+          -3.75,
+          2.0
+        ]
+      ],
+      "expected": {
+        "trace": "2",
+        "determinant": "-15/8",
+        "discriminant": "23/2",
+        "kind": "distinct",
+        "values": [
+          2.6955824957813173,
+          -0.695582495781317
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          -2.5,
+          0.25
+        ],
+        [
+          -2.5,
+          -3.25
+        ]
+      ],
+      "expected": {
+        "trace": "-23/4",
+        "determinant": "35/4",
+        "discriminant": "-31/16",
+        "kind": "no-real",
+        "values": []
+      }
+    },
+    {
+      "a": [
+        [
+          -4.0,
+          -0.25
+        ],
+        [
+          0.25,
+          -4.0
+        ]
+      ],
+      "expected": {
+        "trace": "-8",
+        "determinant": "257/16",
+        "discriminant": "-1/4",
+        "kind": "no-real",
+        "values": []
+      }
+    },
+    {
+      "a": [
+        [
+          4.0,
+          -0.5
+        ],
+        [
+          -3.0,
+          -3.5
+        ]
+      ],
+      "expected": {
+        "trace": "1/2",
+        "determinant": "-31/2",
+        "discriminant": "249/4",
+        "kind": "distinct",
+        "values": [
+          4.194933459514875,
+          -3.694933459514875
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          3.0,
+          -0.75
+        ],
+        [
+          1.0,
+          3.75
+        ]
+      ],
+      "expected": {
+        "trace": "27/4",
+        "determinant": "12",
+        "discriminant": "-39/16",
+        "kind": "no-real",
+        "values": []
+      }
+    },
+    {
+      "a": [
+        [
+          3.0,
+          2.25
+        ],
+        [
+          -3.5,
+          -3.5
+        ]
+      ],
+      "expected": {
+        "trace": "-1/2",
+        "determinant": "-21/8",
+        "discriminant": "43/4",
+        "kind": "distinct",
+        "values": [
+          1.3893596310755,
+          -1.8893596310755
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          4.0,
+          -0.5
+        ],
+        [
+          3.25,
+          -1.25
+        ]
+      ],
+      "expected": {
+        "trace": "11/4",
+        "determinant": "-27/8",
+        "discriminant": "337/16",
+        "kind": "distinct",
+        "values": [
+          3.6696949688357274,
+          -0.9196949688357274
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          3.0,
+          1.75
+        ],
+        [
+          -1.25,
+          3.5
+        ]
+      ],
+      "expected": {
+        "trace": "13/2",
+        "determinant": "203/16",
+        "discriminant": "-17/2",
+        "kind": "no-real",
+        "values": []
+      }
+    },
+    {
+      "a": [
+        [
+          -2.75,
+          -1.75
+        ],
+        [
+          1.0,
+          2.75
+        ]
+      ],
+      "expected": {
+        "trace": "0",
+        "determinant": "-93/16",
+        "discriminant": "93/4",
+        "kind": "distinct",
+        "values": [
+          2.4109126902482387,
+          -2.4109126902482387
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          0.75,
+          -3.75
+        ],
+        [
+          -2.25,
+          3.75
+        ]
+      ],
+      "expected": {
+        "trace": "9/2",
+        "determinant": "-45/8",
+        "discriminant": "171/4",
+        "kind": "distinct",
+        "values": [
+          5.519174207655505,
+          -1.0191742076555053
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          -2.25,
+          -2.75
+        ],
+        [
+          -2.75,
+          2.5
+        ]
+      ],
+      "expected": {
+        "trace": "1/4",
+        "determinant": "-211/16",
+        "discriminant": "845/16",
+        "kind": "distinct",
+        "values": [
+          3.7586104634371584,
+          -3.5086104634371584
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          -1.0,
+          -2.5
+        ],
+        [
+          -1.75,
+          0.5
+        ]
+      ],
+      "expected": {
+        "trace": "-1/2",
+        "determinant": "-39/8",
+        "discriminant": "79/4",
+        "kind": "distinct",
+        "values": [
+          1.9720486043288972,
+          -2.472048604328897
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          -3.0,
+          1.0
+        ],
+        [
+          -2.75,
+          -1.75
+        ]
+      ],
+      "expected": {
+        "trace": "-19/4",
+        "determinant": "8",
+        "discriminant": "-151/16",
+        "kind": "no-real",
+        "values": []
+      }
+    },
+    {
+      "a": [
+        [
+          -3.0,
+          -1.0
+        ],
+        [
+          -2.0,
+          3.0
+        ]
+      ],
+      "expected": {
+        "trace": "0",
+        "determinant": "-11",
+        "discriminant": "44",
+        "kind": "distinct",
+        "values": [
+          3.3166247903554,
+          -3.3166247903554
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          2.5,
+          3.75
+        ],
+        [
+          3.5,
+          3.75
+        ]
+      ],
+      "expected": {
+        "trace": "25/4",
+        "determinant": "-15/4",
+        "discriminant": "865/16",
+        "kind": "distinct",
+        "values": [
+          6.801360292463186,
+          -0.5513602924631856
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          2.25,
+          3.25
+        ],
+        [
+          -0.5,
+          -1.75
+        ]
+      ],
+      "expected": {
+        "trace": "1/2",
+        "determinant": "-37/16",
+        "discriminant": "19/2",
+        "kind": "distinct",
+        "values": [
+          1.791103500742244,
+          -1.291103500742244
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          -1.75,
+          -3.25
+        ],
+        [
+          -1.25,
+          2.5
+        ]
+      ],
+      "expected": {
+        "trace": "3/4",
+        "determinant": "-135/16",
+        "discriminant": "549/16",
+        "kind": "distinct",
+        "values": [
+          3.3038436284649952,
+          -2.5538436284649952
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          -3.25,
+          1.25
+        ],
+        [
+          -1.25,
+          3.25
+        ]
+      ],
+      "expected": {
+        "trace": "0",
+        "determinant": "-9",
+        "discriminant": "36",
+        "kind": "distinct",
+        "values": [
+          3.0,
+          -3.0
+        ]
+      }
+    },
+    {
+      "a": [
+        [
+          3.75,
+          -2.0
+        ],
+        [
+          3.25,
+          -3.0
+        ]
+      ],
+      "expected": {
+        "trace": "3/4",
+        "determinant": "-19/4",
+        "discriminant": "313/16",
+        "kind": "distinct",
+        "values": [
+          2.5864757516192665,
+          -1.8364757516192665
+        ]
+      }
+    }
+  ]
+}

@@ -16,12 +16,12 @@ import { rtext, type CompletionDerived, type CompletionFrame } from './completio
 import type { TraceFrame } from '../../platform/trace';
 import './completion.css';
 
-function Replay({ frames }: { frames: readonly TraceFrame<CompletionFrame>[] }) {
+function Replay({ frames, label = 'Live mathematical trace' }: { frames: readonly TraceFrame<CompletionFrame>[]; label?: string }) {
   const [cursor, setCursor] = useState(cursorAt(frames.length));
-  return <TraceStepper label="Mathematical trace" frames={frames} cursor={cursor} onCursor={setCursor} autoplay
+  return <TraceStepper label={label} frames={frames} cursor={cursor} onCursor={setCursor} autoplay
     describeFrame={frame => frame.state.detail} renderFrame={frame => <>
       <h3>{frame.state.title}</h3><p>{frame.state.detail}</p>
-      {frame.state.matrix && <div class="row-matrix" role="region" aria-label="Exact matrix in this frame" tabIndex={0}>
+      {frame.state.matrix && <div class="row-matrix" role="region" aria-label={`${label}: exact matrix in this frame`} tabIndex={0}>
         <table><caption>Rows of the current mathematical state; ◆ marks a pivot</caption><tbody>
           {frame.state.matrix.values.map((values, i) => <tr key={i}><th scope="row">R{i + 1}</th>{values.map((value, j) =>
             <td key={j} class={j === frame.state.coefficientCols ? 'augmentation' : ''} data-pivot={frame.state.pivots?.[i] === j ? 'true' : undefined}>
@@ -90,6 +90,6 @@ function Worked({ kind, frames }: { kind: string; frames: readonly TraceFrame<Co
   const id = useScopedId(), [hydrated, setHydrated] = useState(false);
   useEffect(() => setHydrated(true), []);
   return <section class="stage stage-full completion-stage" data-stage={`completion-worked-${kind}`} data-hydrated={hydrated} aria-labelledby={id}>
-    <header class="stage-head"><h3 id={id}>Replay the worked derivation</h3></header><Replay frames={frames} />
+    <header class="stage-head"><h3 id={id}>Replay the worked derivation</h3></header><Replay frames={frames} label="Worked derivation trace" />
   </section>;
 }

@@ -1,0 +1,123 @@
+---
+kind: chapter
+curriculumId: II.18
+title: "Orthogonal bases and least-squares geometry"
+hero: "What is the closest answer when no exact answer exists?"
+lede: Move three observations and watch a fitted line, residual segments and squared error update. Then build an orthogonal basis and inspect projection onto the column space, including dependent and zero-vector failures.
+description: "Orthogonal bases and least-squares geometry: live geometry, exact classification, numerical companions, semantic traces, independent Python and NumPy, and five graded exercises."
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import LeastSquaresStage from '../../lessons/linear-algebra/LeastSquaresStage';
+import Exercise from '../../lessons/linear-algebra/CompletionExercise';
+import reference from '../../../code/python/least_squares.py?raw';
+import practical from '../../../code/python/least_squares_numpy.py?raw';
+
+<Stage caption="Manipulate the input and inspect the geometry, exact classification and replayable mathematical derivation."><LeastSquaresStage client:load /></Stage>
+
+Move the middle data point away from the line. The fitted line balances the three vertical errors instead of passing through every observation. Choose **Same x: nonunique minimizers** to separate a unique projected data vector from nonunique coefficients. Then switch to **Orthogonalize two directions** and replay the projection-subtraction trace.
+
+## Intuition: split a vector into reachable and unreachable parts
+
+Projecting onto one direction separates a parallel component from a perpendicular residual. A subspace works the same way: find a vector inside the subspace whose leftover is perpendicular to **every** direction in that subspace.
+
+For a system $Ax=b$, the reachable vectors form the column space of $A$. If $b$ lies outside it, no coefficient vector can solve every equation. Least squares chooses the closest reachable vector. The residual records precisely what the transformation cannot match.
+
+## Definition
+
+Vectors are orthogonal when their dot product is zero. An orthogonal basis consists of independent, pairwise perpendicular nonzero vectors. An **orthonormal** basis additionally gives each vector norm one. If $q_1,\ldots,q_r$ are orthonormal, the projection onto their span is
+
+$$
+p=\sum_{j=1}^r(q_j^Tb)q_j,\qquad r=b-p.
+$$
+
+Least squares minimizes $\|Ax-b\|^2$. The minimizer is unique when $A$ has full column rank. With deficient rank, all minimizers are $x_0+z$ for $z\in\ker A$, but their projected output $Ax_0$ is unique.
+
+## Mechanics: observations and column-space geometry
+
+The data explorer uses $A=[\mathbf 1\ \mathbf t]$, where each row is $(1,t_i)$, and $b$ contains the observed heights. The coefficient vector is (intercept, slope). Dragging any point changes that canonical system. Its vertical residual segment is an entry of $b-Ax$; the inspector lists the full exact residual vector and its squared norm.
+
+The point plot is in observation coordinates $(t,y)$. The three-entry data vector and its projection live in $\R^3$ and are shown as exact components, not projected deceptively into that same plane. The direction explorer instead demonstrates two-dimensional Gram–Schmidt and subspace projection directly. Keyboard and numeric inputs provide the same controls.
+
+## Derivation: Gram–Schmidt exposes projection mechanics
+
+Begin with $u_1=a_1$. Remove the components of each later column along earlier nonzero orthogonal directions:
+
+$$
+u_k=a_k-\sum_{j<k}\frac{a_k^Tu_j}{u_j^Tu_j}u_j.
+$$
+
+A zero residual means the column was dependent; an original zero vector also cannot be normalized. The lesson records those failures and continues with surviving independent directions. Dividing by $\|u_j\|$ then gives an orthonormal basis $q_j$. In the exact model we project using the unnormalized orthogonal directions, avoiding unnecessary irrational arithmetic:
+
+$$
+p=\sum_j\frac{b^Tu_j}{u_j^Tu_j}u_j.
+$$
+
+The exact dot products certify orthogonality; normalized unit-vector drawings are approximate companions. No zero direction is ever divided by its norm.
+
+## Derivation: normal equations and optimality
+
+Suppose $p=Ax_0$ and $r=b-p$ is perpendicular to the column space. For any coefficient change $h$, $Ah$ belongs to that space. Pythagoras gives
+
+$$
+\|A(x_0+h)-b\|^2=\|Ah-r\|^2=\|Ah\|^2+\|r\|^2.
+$$
+
+Therefore no change can improve the error. Equality occurs precisely when $Ah=0$, explaining nonunique minimizers through the null space.
+
+The orthogonality condition is $A^T(b-Ax_0)=0$, equivalently
+
+$$
+A^T(Ax_0-b)=0,\qquad A^TAx_0=A^Tb.
+$$
+
+These are the normal equations. They are a mathematical characterization of a minimum, not a promise that every original equation has been solved.
+
+## Worked examples
+
+For observations $(-1,0),(0,2),(1,2)$, the two columns $(1,1,1)$ and $(-1,0,1)$ are orthogonal. Projection coefficients are $c=4/3$ and $m=1$. The fitted heights are $(1/3,4/3,7/3)$ and the residual is $(-1/3,2/3,-1/3)$. Its dot product with each column is zero, and its squared norm is $2/3$.
+
+<Stage caption="Replay orthogonalization, exact data projection and the normal-equation condition."><LeastSquaresStage worked client:load /></Stage>
+
+For columns $(1,1)$ and $(1,0)$, Gram–Schmidt gives $u_1=(1,1)$ and $u_2=(1/2,-1/2)$. Their dot product is zero; normalizing gives $(1,1)/\sqrt2$ and $(1,-1)/\sqrt2$. For $(1,1)$ and $(2,2)$, the second residual is zero, so only one basis direction survives. The failure is dependence, not a second unit vector pointing somewhere arbitrary.
+
+If every observation has $t_i=1$, the line coefficients only appear through $c+m$. The closest fitted height is the mean $4/3$, so every pair satisfying $c+m=4/3$ minimizes the error. The inspector chooses one particular pair and displays the null direction $(-1,1)$.
+
+## Executable reference code
+
+The Fraction reference projects onto exact orthogonal directions. NumPy uses `lstsq`, explicitly computes residuals and cross-checks a QR projection. An empty NumPy residuals array is not proof of zero error; it can occur in rank-deficient or non-overdetermined systems.
+
+<CodeFile source={reference} file="code/python/least_squares.py" />
+<CodeFile source={practical} file="code/python/least_squares_numpy.py" />
+
+## Explore
+
+Move a point to make all observations exactly collinear and compare zero error with the noisy case. Make all horizontal coordinates equal. Restore independent columns with a small separation and inspect sensitivity. In the direction mode, compare independent, dependent and zero-vector cases; predict which projection remains when one basis direction disappears.
+
+## Common mistakes
+
+A residual can be nonzero while being orthogonal to every column. Least squares minimizes the sum of **squared** residuals, not their signed sum. The segments in the fit are vertical prediction errors, not shortest distances to the drawn line. Nonunique coefficients do not imply multiple closest projected data vectors. Orthonormality requires both perpendicularity and unit length.
+
+## Numerical considerations
+
+This small educational domain uses exact rational Gram–Schmidt and exact projection, so zero and rank classifications do not depend on an epsilon. Normalized companion vectors and rendered segments use binary64. In numerical software, classical Gram–Schmidt can lose orthogonality; modified Gram–Schmidt or Householder QR are preferable depending on the problem.
+
+The live sensitivity cue appears when the second column’s relative orthogonal remainder is below $0.05$; it describes nearly parallel columns and never changes exact rank.
+
+Forming $A^TA$ squares the 2-norm condition number for full-column-rank $A$. That can amplify roundoff even though the normal equations are mathematically correct. QR and SVD methods usually provide a safer practical route. Numerical rank tolerances must reflect scale and uncertainty and can legitimately differ from the exact rank of entered rationals.
+
+## Engineering and ML connections
+
+Linear regression projects targets onto features. Redundant feature columns produce unidentifiable parameter directions but still define a closest predicted target vector. Orthogonal features simplify coefficient calculations. SVD extends this picture by organizing the input and output directions by strength and explaining a minimum-norm pseudoinverse solution.
+
+## Exercises
+
+<Exercise id="ls-fit" client:load />
+<Exercise id="ls-error" client:load />
+<Exercise id="ls-gram" client:load />
+<Exercise id="ls-condition" client:load />
+<Exercise id="ls-algorithm" client:load />
+
+## Summary and checkpoints
+
+Build an orthogonal basis without normalizing zero residuals, decompose $b$ into projection plus perpendicular residual, derive the normal equations, and distinguish unique outputs from unique coefficients. Explain why practical QR/SVD can be safer than forming a Gram matrix.

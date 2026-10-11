@@ -1,0 +1,116 @@
+---
+kind: chapter
+curriculumId: II.17
+title: "Eigenvalues and eigenvectors"
+hero: "Which input directions survive a transformation on their original line?"
+lede: Drag a nonzero vector and compare it with its image. Discover stretching, reversal and collapse, then contrast a scalar map, a defective shear and a rotation with no real eigenvector.
+description: "Eigenvalues and eigenvectors: live geometry, exact classification, numerical companions, semantic traces, independent Python and NumPy, and five graded exercises."
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import EigenStage from '../../lessons/linear-algebra/EigenStage';
+import Exercise from '../../lessons/linear-algebra/CompletionExercise';
+import reference from '../../../code/python/eigenvalues.py?raw';
+import practical from '../../../code/python/eigenvalues_numpy.py?raw';
+
+<Stage caption="Manipulate the input and inspect the geometry, exact classification and replayable mathematical derivation."><EigenStage client:load /></Stage>
+
+Try aligning the input with each dashed eigen-line. In **Stretch and reversal**, compare the positive and negative gains. Then choose **Quarter-turn: no real direction**. Every nonzero input turns away from its original line; the absence of a real eigenvector is a mathematical result, not an unfinished drawing.
+
+## Intuition: special directions simplify repeated action
+
+Most vectors change both length and direction under a matrix. Some remain on the same line through the origin. Along such a direction, the full matrix acts like one scalar: stretch, reverse or collapse. Repeating the map multiplies that scalar repeatedly, which can explain growth and decay without multiplying the full matrix at every step.
+
+Staying on the **same line** allows reversal; it does not require pointing the same way. A negative gain is therefore as meaningful as a positive one.
+
+## Definition
+
+For square $A$, an eigenvector is a **nonzero** vector $v$ such that
+
+$$
+Av=\lambda v.
+$$
+
+The scalar $\lambda$ is its eigenvalue. Positive $\lambda$ preserves its orientation, negative $\lambda$ reverses it, and $\lambda=0$ collapses the direction into the origin. The zero vector satisfies the equation for every scalar but is excluded: it identifies no direction.
+
+All vectors associated with one eigenvalue, together with zero, form its eigenspace $\ker(A-\lambda I)$. A basis of that space counts independent eigen-directions; scaling an eigenvector does not create a new independent direction.
+
+## Mechanics: test a vector, then inspect the spectrum
+
+The entered vector and its image are calculated exactly from the same rational matrix. Exact collinearity certifies whether it is an eigenvector; when it is, the inspector derives the exact scalar gain. The dashed spectral lines use checked numerical unit-vector companions. They are approximate drawings of the eigenspaces, not proofs from pixels.
+
+Edit all four matrix entries or the input components, drag the vector, or use arrow keys. The live trace derives the characteristic equation and replays four exact applications of the current map. The worked trace below retains the canonical example. Numeric controls accept two decimal places in $[-4,4]$ and reject invalid input.
+
+## Derivation: why the characteristic equation appears
+
+Rearrange the definition as $(A-\lambda I)v=0$. A nonzero null vector exists exactly when $A-\lambda I$ is singular. Thus
+
+$$
+\det(A-\lambda I)=0.
+$$
+
+For $A=\begin{bmatrix}a&b\\c&d\end{bmatrix}$ this expands to
+
+$$
+(a-\lambda)(d-\lambda)-bc
+=\lambda^2-(a+d)\lambda+(ad-bc)=0.
+$$
+
+Write $t=\operatorname{tr}A$, $\delta=\det A$ and $D=t^2-4\delta$. When $D\ge0$ the roots are $(t\pm\sqrt D)/2$. Exact rational arithmetic decides the sign of $D$; the existing radical representation preserves simple exact roots. A numerical approximation is labeled $\approx$, and its eigenpair residual is checked separately.
+
+## Worked examples
+
+For $A=\operatorname{diag}(2,-1)$, the characteristic polynomial is $\lambda^2-\lambda-2=(\lambda-2)(\lambda+1)$. The x-axis stretches by $2$, while the y-axis reverses by $-1$. Starting with $(1,1)$, repeated applications give $(2,-1)$, $(4,1)$, $(8,-1)$ and $(16,1)$. The x-component grows; the y-component alternates.
+
+<Stage caption="Derive the characteristic equation and replay the exact repeated-vector states."><EigenStage worked client:load /></Stage>
+
+For $A=\begin{bmatrix}0&2\\1&0\end{bmatrix}$, the roots are $\pm\sqrt2$. The positive eigen-direction satisfies $y=x/\sqrt2$. The lesson retains the exact radical eigenvalues and shows approximate normalized directions with residuals; it does not invent rational eigenvectors for irrational directions.
+
+## Repeated roots: scalar versus defective
+
+The matrix $2I$ has eigenvalue $2$ repeated twice, and **every** nonzero input is an eigenvector. Any two independent directions can serve as an eigenbasis; the displayed axes are one convenient choice.
+
+By contrast, $A=\begin{bmatrix}1&1\\0&1\end{bmatrix}$ also has a repeated root, but $(A-I)v=(v_2,0)=0$ forces $v_2=0$. Only one independent direction exists. This is a defective matrix. Its shear behavior cannot be explained by two independent real eigenvectors; repeated root count is not eigenspace dimension.
+
+## No real eigenvector
+
+For the quarter-turn $Q=\begin{bmatrix}0&-1\\1&0\end{bmatrix}$, the characteristic equation is $\lambda^2+1=0$. No real scalar satisfies it. Geometrically, every nonzero vector rotates through a right angle and leaves its original line. Over complex numbers the eigenvalues are $\pm i$. This explains the boundary of the real picture; complex eigenvectors and complex geometry are outside this chapter.
+
+The zero-eigenvalue preset instead has a real nonzero null direction. Collapse is allowed as an eigenvalue behavior; it is the zero **input vector** that is excluded.
+
+## Executable reference code
+
+The pedagogical reference derives exact characteristic coefficients and high-precision real roots. NumPy computes eigenpairs and checks each residual, including a rotation whose spectrum is complex.
+
+<CodeFile source={reference} file="code/python/eigenvalues.py" />
+<CodeFile source={practical} file="code/python/eigenvalues_numpy.py" />
+
+## Explore
+
+Move the input onto and away from an eigen-line. Reverse it and verify the gain stays the same. Compare the two repeated-root presets. Set the input to zero and read why its gain is undefined. Follow repeated actions for a negative gain, a zero gain and a quarter-turn.
+
+## Common mistakes
+
+Eigenvectors need not be unit vectors, and eigenvalues need not be positive. A repeated eigenvalue does not guarantee two independent eigenvectors. A matrix with real entries may have no real eigenvector. The determinant condition finds candidate eigenvalues; finding independent null vectors still determines the eigenspaces.
+
+## Numerical considerations
+
+The exact discriminant class is independent of display precision. Numerical companions use binary64 and a residual bound of $256\epsilon\max(1,\|A\|_F)$ for unit directions, where $\epsilon$ is machine epsilon. This conservative rounding envelope is validated independently against Decimal roots and NumPy eigenpairs; it never classifies an exact zero.
+
+The cancellation-prone quadratic root is recovered using $\lambda_1\lambda_2=\det A$. Near defective matrices can have highly sensitive eigendirections even with small residuals. If distinct numerical roots cannot be separated or the residual check fails, the lesson reports a numerical limitation instead of fabricating a direction.
+
+## Engineering and ML connections
+
+Eigen-directions describe repeated linear dynamics and stability, and symmetric eigenproblems underlie covariance analysis and PCA. General matrices can have complex or defective spectra, so a real eigenbasis is not universal. SVD will provide an orthogonal input/output decomposition for every real matrix, using distinct left and right directions.
+
+## Exercises
+
+<Exercise id="eigen-gain" client:load />
+<Exercise id="eigen-polynomial" client:load />
+<Exercise id="eigen-defective" client:load />
+<Exercise id="eigen-rotation" client:load />
+<Exercise id="eigen-zero" client:load />
+
+## Summary and checkpoints
+
+Test $Av=\lambda v$ with $v\ne0$, derive the characteristic polynomial, distinguish eigenvalue multiplicity from eigenspace dimension, and explain reversal, collapse, repeated action and absence of real eigenvectors.

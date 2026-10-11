@@ -52,3 +52,5 @@ export const spec = (id: string, value: number, name: string, symbolTex: string,
   id, name, symbolTex, symbolText: id, domain: { min, max }, default: value, step: 0.5, maxDecimals: 2, onInvalid: 'reject',
 });
 export const matrixSpecs = (s: { a11: number; a12: number; a21: number; a22: number; x1: number; x2: number }) => Object.fromEntries(Object.entries(s).map(([id, value]) => [id, spec(id, value, id.startsWith('a') ? `A row ${id[1]}, column ${id[2]}` : `input ${id[1]}`, id.startsWith('a') ? `A_{${id.slice(1)}}` : `x_${id[1]}`)]));
+
+export interface PlanarState { a11: number; a12: number; a21: number; a22: number; x1: number; x2: number }

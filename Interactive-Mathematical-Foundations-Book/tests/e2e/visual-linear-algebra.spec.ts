@@ -46,6 +46,8 @@ const completionCases = [
   ['elimination', 'gaussian-elimination', ['inconsistent', 'skipped']],
   ['rank', 'rank-invertibility', ['zero', 'dependent', 'near']],
   ['inverse', 'inverse-matrices', ['dependent', 'three']],
+  ['eigenvalues', 'eigenvalues-eigenvectors', ['rotation', 'defective', 'scalar', 'zero-eigenvalue', 'radical']],
+  ['least-squares', 'orthogonal-least-squares', ['rank-deficient', 'gram', 'dependent', 'zero-vector', 'near']],
 ];
 for (const [kind, slug, states] of completionCases as [string, string, string[]][]) test(`completion ${kind}: opening and exceptional states`, async ({ page }) => {
   await page.goto(`chapters/${slug}/`); const stage = page.locator(`[data-stage="completion-${kind}"]`);
