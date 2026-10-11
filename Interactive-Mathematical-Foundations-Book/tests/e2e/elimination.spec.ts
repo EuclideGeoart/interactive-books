@@ -74,8 +74,9 @@ for (const c of chapters) test.describe(`II.${c.n}: ${c.kind}`, () => {
     const actual = await arrow.evaluate(el => { const p = el as SVGPathElement, q = p.getPointAtLength(0); return { x: q.x, y: q.y }; });
     const s = await state(stage), result = c.kind === 'rank' ? [-.5, 1.5] : [s.a11*s.x1+s.a12*s.x2, s.a21*s.x1+s.a22*s.x2];
     const vb = await plot.locator('svg').getAttribute('viewBox'), parts = vb!.split(' ').map(Number), finalRadius = Number(await plot.getAttribute('data-radius')); 
-    expect(actual.x).toBeCloseTo(parts[2]!/2 + result[0]!*Math.min(parts[2]!,parts[3]!)/(2*finalRadius), 5);
-    expect(actual.y).toBeCloseTo(parts[3]!/2 - result[1]!*Math.min(parts[2]!,parts[3]!)/(2*finalRadius), 5);
+    // SVG geometry queries return float32 coordinates even when the path uses binary64 values.
+    expect(actual.x).toBeCloseTo(Math.fround(parts[2]!/2 + result[0]!*Math.min(parts[2]!,parts[3]!)/(2*finalRadius)), 5);
+    expect(actual.y).toBeCloseTo(Math.fround(parts[3]!/2 - result[1]!*Math.min(parts[2]!,parts[3]!)/(2*finalRadius)), 5);
   });
   if (c.kind !== 'elimination') test('touch commits exact geometry with a 44px target', async ({ page, context, isMobile }) => {
     test.skip(!isMobile, 'touch emulation runs on mobile'); const stage = await open(page, c), plot = stage.locator('[data-scene="0"]');
@@ -91,7 +92,11 @@ for (const c of chapters) test.describe(`II.${c.n}: ${c.kind}`, () => {
   for (const theme of ['light', 'dark'] as const) test.describe(theme, () => {
     test.use({ colorScheme: theme });
     test('exceptional and invalid-entry states remain accessible', async ({ page }) => {
-      const stage = await open(page, c); const scan = async () => expect((await new AxeBuilder({ page }).withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa','wcag22aa','best-practice']).analyze()).violations).toEqual([]);
+      const stage = await open(page, c); const scan = async () => {
+        // Input focus scrolls unrelated presets underneath the frozen sticky header.
+        await page.evaluate(() => window.scrollTo(0, 0));
+        expect((await new AxeBuilder({ page }).withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa','wcag22aa','best-practice']).analyze()).violations).toEqual([]);
+      };
       await stage.locator(`[data-preset="${c.special}"]`).click(); await scan(); await entry(stage,'a11','9'); await scan();
     });
   });

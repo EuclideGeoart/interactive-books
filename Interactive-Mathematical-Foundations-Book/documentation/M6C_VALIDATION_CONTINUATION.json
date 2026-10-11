@@ -1,0 +1,199 @@
+{
+  "originalManifest": "validation-results/milestone-2026-10-11T19-44-18-824Z/manifest.json",
+  "originalManifestSha256": "2156d038f39c8817efd1bc3037b21954f221d7549e8983f27a63744eec9998b3",
+  "sourceRevision": "dc536c819a7dfb557a49cc5789f11503f1c5acd1",
+  "policy": "The milestone command ran once. Retry only its failed elimination gate after test-only float32/scroll corrections, then execute the unrun selected gates serially under /tmp/imf-heavy.lock. Reuse source-matched root and subpath builds. Preserve the original failed manifest verbatim.",
+  "correctedTest": "tests/e2e/elimination.spec.ts",
+  "correctedTestSha256": "d9215ce7f5f0540a3af9142586a4efe5b3508f606b4cfb2e235de1ede10a7aee",
+  "status": "passed",
+  "results": [
+    {
+      "selectedIndex": 7,
+      "gate": "affected chapter interactions: elimination",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/elimination.spec.ts",
+        "--trace",
+        "off",
+        "--grep",
+        "(?:^|\\s)(?:II\\.14(?::| )|II\\.16(?::| )|II\\.15(?::| ))|publication",
+        "--output",
+        "validation-results/m6c-continuation/7-failures"
+      ],
+      "deployment": "root",
+      "status": 0,
+      "wallMs": 45949,
+      "browserSummary": {
+        "skipped": 4,
+        "passed": 62
+      }
+    },
+    {
+      "selectedIndex": 8,
+      "gate": "affected chapter interactions: least_squares",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/least-squares.spec.ts",
+        "--trace",
+        "off",
+        "--grep",
+        "(?:^|\\s)(?:II\\.18(?::| ))|publication",
+        "--output",
+        "validation-results/m6c-continuation/8-failures"
+      ],
+      "deployment": "root",
+      "status": 0,
+      "wallMs": 21112,
+      "browserSummary": {
+        "skipped": 2,
+        "passed": 22
+      }
+    },
+    {
+      "selectedIndex": 9,
+      "gate": "affected chapter interactions: svd",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/svd.spec.ts",
+        "--trace",
+        "off",
+        "--grep",
+        "(?:^|\\s)(?:II\\.19(?::| ))|publication",
+        "--output",
+        "validation-results/m6c-continuation/9-failures"
+      ],
+      "deployment": "root",
+      "status": 0,
+      "wallMs": 36984,
+      "browserSummary": {
+        "skipped": 2,
+        "passed": 22
+      }
+    },
+    {
+      "selectedIndex": 10,
+      "gate": "affected chapter interactions: linear_algebra",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/linear-algebra.spec.ts",
+        "--trace",
+        "off",
+        "--grep",
+        "(?:^|\\s)(?:II\\.1(?::| )|II\\.7(?::| )|II\\.4(?::| )|II\\.3(?::| )|II\\.5(?::| )|II\\.2(?::| )|II\\.6(?::| ))|publication",
+        "--output",
+        "validation-results/m6c-continuation/10-failures"
+      ],
+      "deployment": "root",
+      "status": 0,
+      "wallMs": 175045,
+      "browserSummary": {
+        "skipped": 14,
+        "passed": 220
+      }
+    },
+    {
+      "selectedIndex": 11,
+      "gate": "shared cross-chapter controls",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/vectors.spec.ts",
+        "tests/e2e/quantities.spec.ts",
+        "--trace",
+        "off",
+        "--grep",
+        "keyboard|Arrow|rejected|reset|announc",
+        "--output",
+        "validation-results/m6c-continuation/11-failures"
+      ],
+      "deployment": "root",
+      "status": 0,
+      "wallMs": 12972,
+      "browserSummary": {
+        "passed": 45
+      }
+    },
+    {
+      "selectedIndex": 12,
+      "gate": "root shared shell, navigation, accessibility and deployment",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/smoke.spec.ts",
+        "tests/e2e/stage.spec.ts",
+        "tests/e2e/navigation.spec.ts",
+        "tests/e2e/a11y.spec.ts",
+        "tests/e2e/deployment.spec.ts",
+        "--trace",
+        "off",
+        "--output",
+        "validation-results/m6c-continuation/12-failures"
+      ],
+      "deployment": "root",
+      "status": 0,
+      "wallMs": 116853,
+      "browserSummary": {
+        "skipped": 5,
+        "passed": 283
+      }
+    },
+    {
+      "selectedIndex": 13,
+      "gate": "subpath prefix-dependent navigation, assets, anchors, routes and hydration",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/navigation.spec.ts",
+        "tests/e2e/deployment.spec.ts",
+        "--trace",
+        "off",
+        "--config",
+        "playwright.subpath.config.ts",
+        "--output",
+        "validation-results/m6c-continuation/13-failures"
+      ],
+      "deployment": "subpath",
+      "status": 0,
+      "wallMs": 28102,
+      "browserSummary": {
+        "skipped": 3,
+        "passed": 69
+      }
+    },
+    {
+      "selectedIndex": 14,
+      "gate": "authoritative root visuals",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/visual.spec.ts",
+        "tests/e2e/visual-part-i.spec.ts",
+        "tests/e2e/visual-linear-algebra.spec.ts",
+        "--trace",
+        "off",
+        "--output",
+        "validation-results/m6c-continuation/14-failures"
+      ],
+      "deployment": "root",
+      "status": 0,
+      "wallMs": 39295,
+      "browserSummary": {
+        "skipped": 15,
+        "passed": 111
+      }
+    }
+  ],
+  "coverageNote": "Combined with successful original results, all 15 selected gates have successful final results. The original failed attempt remains in the unchanged original manifest."
+}
