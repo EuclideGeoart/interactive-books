@@ -1,0 +1,107 @@
+---
+kind: chapter
+curriculumId: III.4
+title: "Derivative as rate of change and local linear model"
+hero: "How far can a tangent line *predict*?"
+lede: Read the derivative as a velocity, then use the tangent line to predict a nearby value. Move the prediction farther away and watch its error grow — faster than the distance itself near the point, without bound far away.
+description: "Derivative as rate and local linear model: tangent prediction, exact model error, average versus instantaneous rate, why linearization is local, Python and NumPy, five graded exercises."
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import LinearModelStage from '../../lessons/calculus/LinearModelStage';
+import Exercise from '../../lessons/calculus/CalculusExercise';
+import reference from '../../../code/python/calculus_linear_model.py?raw';
+import practical from '../../../code/python/calculus_linear_model_numpy.py?raw';
+
+<Stage caption="Drag the expansion point x₀ or the displaced point x₀ + Δx. The caution segment is the model error; the right plane draws the error for every Δx."><LinearModelStage client:load /></Stage>
+
+The tangent line at $x_0=1$ predicts $f(2)$ with error $2/3$. Drag the displaced point toward $x_0$: the error shrinks, and the error **per unit of displacement** shrinks too. Then choose **Far away**: at $\Delta x=2.5$ the error is $275/48\approx5.7$. A tangent line knows only what happens at one point.
+
+## Intuition: rate and prediction
+
+If $s(t)$ is a position, the secant slope $\frac{s(t+\Delta t)-s(t)}{\Delta t}$ is the **average velocity** over the interval, and the derivative $s'(t)$ is the **instantaneous velocity**. Knowing where you are and how fast you are going, you can predict where you will be shortly:
+
+$$
+s(t+\Delta t)\approx s(t)+s'(t)\,\Delta t .
+$$
+
+The same reading applies to any quantity: a cost per extra unit, a temperature change per second, a loss change per parameter step.
+
+## Definition
+
+The **local linear model** (linearization, tangent-line approximation) of a differentiable $f$ at $x_0$ is
+
+$$
+L(\Delta x)=f(x_0)+f'(x_0)\,\Delta x .
+$$
+
+Its **error** is $e(\Delta x)=f(x_0+\Delta x)-L(\Delta x)$. Differentiability at $x_0$ means exactly that the error is small compared with the displacement:
+
+$$
+\lim_{\Delta x\to0}\frac{e(\Delta x)}{\Delta x}=0 .
+$$
+
+## Mechanics: what the explorer computes
+
+For the cubic $f(x)=x^3/6-x$ every quantity is exact: $f(x_0)$, the derivative, the model value, the true value and the error. For $\sin x$ and $e^x$ the values are binary64 and marked $\approx$. The error plane draws $e(\Delta x)$ from the same model, together with the dashed parabola $\tfrac12f''(x_0)\Delta x^2$ that describes it near $0$. The table halves $\Delta x$ and lists $e$, $e/\Delta x$ and $e/\Delta x^2$.
+
+## Derivation: why the error is second order
+
+For a polynomial, expanding around $x_0$ gives exactly
+
+$$
+\begin{aligned}f(x_0+\Delta x)={}&f(x_0)+f'(x_0)\Delta x\\ &+\tfrac12f''(x_0)\Delta x^2+\cdots\end{aligned}
+$$
+
+so the error starts with $\tfrac12f''(x_0)\Delta x^2$. Dividing by $\Delta x$ leaves $\tfrac12f''(x_0)\Delta x+\cdots$, which tends to $0$. Halving $\Delta x$ therefore roughly quarters the error when $f''(x_0)\ne0$. When $f''(x_0)=0$ (an inflection) the error is even smaller, of order $\Delta x^3$. Far from $x_0$ the higher terms dominate and nothing keeps the error small.
+
+## Worked example
+
+Take $f(x)=x^3/6-x$, $x_0=1$, $\Delta x=1$. Then $f(1)=-5/6$ and $f'(1)=-1/2$, so the model predicts
+
+$$
+L(1)=-\tfrac56-\tfrac12=-\tfrac43 .
+$$
+
+The true value is $f(2)=8/6-2=-2/3$, so $e(1)=-2/3+4/3=2/3$. With $\Delta x=1/2$, $e=7/48$; with $\Delta x=1/4$, $e=13/384$. The ratio $e/\Delta x^2$ approaches $\tfrac12f''(1)=\tfrac12$.
+
+<Stage caption="Replay the shrinking displacements and their exact model errors."><LinearModelStage worked client:load /></Stage>
+
+## When there is no linear model
+
+At a corner, such as $|x|$ at $0$, no single slope works on both sides. Any line through the origin misses one side by an amount proportional to $|\Delta x|$, so $e/\Delta x$ cannot tend to $0$. The explorer reports the one-sided slopes and refuses to draw a model.
+
+## Executable reference code
+
+The reference computes exact model errors of $x^2$ with `Fraction` and shows that $e(\Delta x)=\Delta x^2$ exactly. The NumPy version linearizes $\sin$ and checks that $e/\Delta x^2\to-\tfrac12\sin x_0$.
+
+<CodeFile source={reference} file="code/python/calculus_linear_model.py" />
+<CodeFile source={practical} file="code/python/calculus_linear_model_numpy.py" />
+
+## Explore
+
+Put $x_0$ at an inflection ($x_0=0$ for the cubic) and compare the error curve with the flat dashed parabola. On $e^x$ at $0$, the model $1+\Delta x$ always underestimates. Make $\Delta x$ negative: the model also predicts the past.
+
+## Common mistakes
+
+Evaluating the derivative at $x_0+\Delta x$ instead of $x_0$ mixes two different models. An average rate over a long interval is not the instantaneous rate. "Small $\Delta x$" is not a fixed number: it is small relative to how quickly the slope changes ($f''$).
+
+## Numerical considerations
+
+The model is often used in binary64 to predict tiny changes, and the error of the prediction can be much smaller than the rounding error of computing $f(x_0+\Delta x)-f(x_0)$ directly. That is why linearized error propagation (VIII.3) is a practical tool, and why finite differences (III.14) need care.
+
+## Engineering and ML connections
+
+Gradient descent (VI.4) trusts the local linear model to choose a downhill step; a too-large learning rate leaves the region where the model is accurate, exactly like **Far away**. Sensitivity analysis, uncertainty propagation and Newton's method all start from $f(x_0)+f'(x_0)\Delta x$.
+
+## Exercises
+
+<Exercise id="iii4-model" client:load />
+<Exercise id="iii4-error" client:load />
+<Exercise id="iii4-rate" client:load />
+<Exercise id="iii4-local" client:load />
+<Exercise id="iii4-corner" client:load />
+
+## Summary and checkpoints
+
+The derivative is an instantaneous rate and the slope of the best local linear model. Its error shrinks faster than the displacement near $x_0$ and can grow without bound farther away. Next, III.5 derives rules that compute derivatives of sums, products and quotients without returning to limits each time.

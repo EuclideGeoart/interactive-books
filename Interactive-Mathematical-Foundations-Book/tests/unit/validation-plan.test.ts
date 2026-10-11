@@ -1,7 +1,7 @@
-import { mkdtempSync, rmdirSync, unlinkSync, writeFileSync } from 'node:fs';
+import { existsSync, lstatSync, mkdtempSync, rmdirSync, unlinkSync, writeFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { allChapters } from '../../src/curriculum/queries';
-import { changedFiles, chapterCatalog, makePlan } from '../../scripts/validation-plan.mjs';
+import { changedFiles, chapterCatalog, environmentLink, makePlan } from '../../scripts/validation-plan.mjs';
 import { productionSignature } from '../../scripts/production-state.mjs';
 
 describe('conservative change-scoped validation', () => {
@@ -94,7 +94,7 @@ describe('conservative change-scoped validation', () => {
   });
   it('keeps documentation-only work cheap and refuses misspelled selectors', () => {
     expect(makePlan({ files: ['documentation/report.md'] }).commands).toEqual([]);
-    expect(() => makePlan({ chapters: ['III.1'] })).toThrow();
+    expect(() => makePlan({ chapters: ['IV.1'] })).toThrow();
     expect(() => makePlan({ project: 'phone' })).toThrow();
     expect(() => makePlan({ only: 'unitt' })).toThrow();
   });
@@ -118,5 +118,65 @@ describe('conservative change-scoped validation', () => {
   it('fingerprints source and hosting prefix rather than test output', () => {
     expect(productionSignature('/')).toMatch(/^[a-f0-9]{64}$/);
     expect(productionSignature('/')).not.toBe(productionSignature('/math-foundations/'));
+  });
+});
+
+describe('Part III calculus registration', () => {
+  /** Synthetic Part IV chapters (the Probability branch is reconciled later): a calculus edit must never select them. */
+  const probability = [
+    { id: 'IV.1', slug: 'sample-spaces', path: 'src/content/chapters/sample-spaces.mdx', family: undefined, kind: undefined },
+    { id: 'IV.6', slug: 'bayes-theorem', path: 'src/content/chapters/bayes-theorem.mdx', family: undefined, kind: undefined },
+  ];
+  const withProbability = () => [...chapterCatalog(), ...probability];
+  it('discovers every published calculus chapter with its family and visual kind from the wrapper stage', () => {
+    const calculus = chapterCatalog().filter(c => c.id.startsWith('III.'));
+    const expected: Record<string, readonly [string, string]> = { 'III.1': ['limits', 'limits'], 'III.2': ['limits', 'continuity'], 'III.3': ['derivatives', 'secant'],
+      'III.4': ['derivatives', 'linear-model'], 'III.5': ['derivatives', 'rules'], 'III.6': ['derivatives', 'chain'] };
+    for (const [id, [family, kind]] of Object.entries(expected)) expect(calculus.find(c => c.id === id), id).toMatchObject({ family, kind });
+  });
+  it('a calculus model edit selects its literal consumers, units, oracles and visuals — and no Probability chapter', () => {
+    const p = makePlan({ files: ['src/math/calculus/limits.ts'], catalog: withProbability() });
+    expect(p.conservativeExpansion).toBe(false);
+    expect(p.chapters.slice().sort()).toEqual(['III.1', 'III.2']);
+    expect(p.chapters.some(id => id.startsWith('IV.'))).toBe(false);
+    expect(p.oracles).toEqual(['limits']);
+    expect(p.units).toEqual(expect.arrayContaining(['tests/unit/limits.test.ts', 'tests/unit/limits.parity.test.ts', 'tests/unit/limits-lesson.test.ts']));
+    const visual = new RegExp(p.commands.find(c => c.gate === 'affected root visuals')!.command.at(-1)!);
+    expect(visual.test('calculus limits: opening and exceptional states')).toBe(true);
+    expect(visual.test('calculus continuity: opening and exceptional states')).toBe(true);
+    expect(visual.test('calculus secant: opening and exceptional states')).toBe(false);
+    const browser = p.commands.find(c => c.command.includes('tests/e2e/limits.spec.ts'))!;
+    const grep = new RegExp(browser.command.at(-1)!);
+    expect(grep.test('limits.spec.ts › III.1: limits')).toBe(true); expect(grep.test('limits.spec.ts › III.10: autodiff')).toBe(false);
+  });
+  it('the shared univariate engine reaches every chapter that imports it, through the import closure', () => {
+    const p = makePlan({ files: ['src/math/calculus/univariate.ts'], catalog: withProbability() });
+    expect(p.conservativeExpansion).toBe(false);
+    expect(p.chapters).toEqual(expect.arrayContaining(['III.1', 'III.2', 'III.3', 'III.4']));
+    expect(p.chapters.some(id => id.startsWith('IV.') || id.startsWith('II.'))).toBe(false);
+    expect(p.oracles).toEqual(expect.arrayContaining(['derivatives', 'limits']));
+  });
+  it('one wrapper stage or one lesson selects only its own chapter', () => {
+    for (const [file, id] of [['src/lessons/calculus/ChainStage.tsx', 'III.6'], ['src/lessons/calculus/rules-lesson.ts', 'III.5'], ['src/lessons/calculus/continuity-lesson.ts', 'III.2']] as const) {
+      const p = makePlan({ files: [file], catalog: withProbability() });
+      expect(p.chapters, file).toEqual([id]); expect(p.conservativeExpansion).toBe(false);
+    }
+  });
+  it('shared calculus presentation and test support select all calculus chapters without a full-suite fallback', () => {
+    for (const file of ['src/lessons/calculus/CalculusStage.tsx', 'src/lessons/calculus/calculus-view.ts', 'src/lessons/calculus/exercises.ts', 'src/lessons/calculus/calculus.css', 'tests/unit/calculus-exercises.test.ts', 'tests/e2e/calculus-helpers.ts']) {
+      const p = makePlan({ files: [file], catalog: withProbability() });
+      expect(p.conservativeExpansion, file).toBe(false);
+      expect(p.chapters.slice().sort(), file).toEqual(chapterCatalog().filter(c => c.id.startsWith('III.')).map(c => c.id).sort());
+    }
+  });
+  it('calculus screenshots select exactly their chapter', () => {
+    expect(makePlan({ files: ['tests/e2e/__screenshots__/visual-calculus.spec.ts/mobile-iii-calculus-secant-corner.png'] }).chapters).toEqual(['III.3']);
+    expect(makePlan({ files: ['tests/e2e/__screenshots__/visual-calculus.spec.ts/desktop-iii-calculus-limits.png'] }).chapters).toEqual(['III.1']);
+  });
+  it('linked-worktree dependency symlinks are environment, not source; everything else still counts', () => {
+    expect(environmentLink('node_modules')).toBe(existsSync('node_modules') && lstatSync('node_modules').isSymbolicLink());
+    expect(environmentLink('src')).toBe(false);
+    expect(environmentLink('src/node_modules')).toBe(false);
+    expect(changedFiles()).not.toContain('node_modules');
   });
 });

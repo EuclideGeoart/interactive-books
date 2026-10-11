@@ -1,0 +1,45 @@
+/* Part III stages. Additive to the shared stage/chapter styles; colour is a role and never the only cue. */
+.calculus-stage .inspector-row dd { min-width: 0; max-width: 100%; }
+.calculus-stage .inspector-row .line { white-space: normal; overflow-wrap: anywhere; }
+.calculus-stage .drag-point.role-x { --role: var(--c-x); }
+.calculus-stage .drag-point.role-y { --role: var(--c-y); }
+.calculus-stage .drag-point.role-derived { --role: var(--c-derived); }
+.calc-scenes { min-width: 0; }
+.calc-scenes.multiple { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; align-content: start; }
+.calc-scenes h3 { font-size: 1rem; margin: 0 0 .5rem; }
+.calculus-stage .poly { opacity: .55; }
+.calculus-stage [data-part^='strip-'] { opacity: .7; }
+.calculus-stage .trace-body { min-width: 0; }
+.calculus-stage .trace-body p { overflow-wrap: anywhere; }
+.verdict-cue { font-weight: 700; }
+.calc-table { max-width: 100%; overflow-x: auto; margin-block: .75rem; }
+.calc-table table { width: 100%; border-collapse: collapse; font: 500 .85rem/1.35 var(--font-mono); font-variant-numeric: tabular-nums; }
+.calc-table caption { font: .85rem/1.4 var(--font-ui); text-align: left; margin-bottom: .4rem; color: var(--ink-2); }
+.calc-table th, .calc-table td { padding: .35rem .5rem; border-bottom: 1px solid var(--rule); text-align: right; white-space: nowrap; }
+.calc-table thead th { font-family: var(--font-ui); color: var(--ink-2); }
+.calc-table tbody th { text-align: left; font-weight: 600; }
+/* Calculus formulas are long derivations: one per row, each in its own scroll region. */
+.calculus-stage.stage-full .formula-panel { grid-template-columns: minmax(0, 1fr); }
+/* Wide stages with two or more planes stack the inspector under the planes. */
+.calculus-stage:has(.calc-scenes.multiple) .stage-grid { grid-template-columns: minmax(0, 1fr); }
+@container (min-width: 700px) {
+  .calculus-stage:has(.calc-scenes.multiple) .inspector { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 1.5rem; }
+}
+/* Computational graph (III.10). */
+.dag-wrap { border: 1px solid var(--rule); border-radius: 2px; background: var(--plane-bg); overflow-x: auto; }
+.dag { display: block; width: 100%; min-width: 520px; height: auto; font-family: var(--font-math); }
+.dag .edge { stroke: var(--ink-3); stroke-width: 2; fill: none; }
+.dag .edge-head { fill: var(--ink-3); }
+.dag .edge.is-active { stroke: var(--c-primary); stroke-width: 3.5; }
+.dag .edge-head.is-active { fill: var(--c-primary); }
+.dag .edge-label { font: 600 13px var(--font-mono); fill: var(--c-derived-text); paint-order: stroke; stroke: var(--plane-bg); stroke-width: 5px; stroke-linejoin: round; }
+.dag .node rect { fill: var(--sheet); stroke: var(--ink-2); stroke-width: 1.6; }
+.dag .node.kind-input rect { stroke: var(--c-x); stroke-width: 2.4; }
+.dag .node.kind-output rect { stroke: var(--c-primary); stroke-width: 2.4; }
+.dag .node.is-active rect { stroke: var(--c-primary); stroke-width: 3.5; fill: color-mix(in srgb, var(--c-primary) 10%, var(--sheet)); }
+.dag .node.is-done rect { fill: color-mix(in srgb, var(--c-y) 9%, var(--sheet)); }
+.dag .node-op { font: 600 15px var(--font-math); fill: var(--ink); }
+.dag .node-value { font: 500 12.5px var(--font-mono); fill: var(--ink-2); }
+.dag .node-adjoint { font: 600 12.5px var(--font-mono); fill: var(--c-derived-text); }
+.dag-legend { font: .85rem/1.45 var(--font-ui); color: var(--ink-2); margin-top: .5rem; }
+@media (max-width: 40rem) { .calc-scenes.multiple { grid-template-columns: 1fr; } }

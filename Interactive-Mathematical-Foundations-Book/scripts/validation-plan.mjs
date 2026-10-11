@@ -1,4 +1,4 @@
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { existsSync, lstatSync, readdirSync, readFileSync } from 'node:fs';
 import { join, posix, relative, resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
 
@@ -18,7 +18,22 @@ export const families = {
   eigenvalues: { lesson: 'linear-algebra', stage: 'EigenStage', units: /^eigen/, oracles: ['eigenvalues'], browser: 'eigenvalues' },
   least_squares: { lesson: 'linear-algebra', stage: 'LeastSquaresStage', units: /^least-squares/, oracles: ['least_squares'], browser: 'least-squares' },
   svd: { lesson: 'linear-algebra', stage: 'SVDStage', units: /^svd/, oracles: ['svd'], browser: 'svd' },
+  // Part III: several families share src/lessons/calculus/; each chapter's thin wrapper stage names its family and visual kind.
+  limits: { lesson: 'calculus', stages: { LimitStage: 'limits', ContinuityStage: 'continuity' }, units: /^limits/, oracles: ['limits'], browser: 'limits' },
+  derivatives: { lesson: 'calculus', stages: { SecantStage: 'secant', LinearModelStage: 'linear-model', RulesStage: 'rules', ChainStage: 'chain', FiniteDifferenceStage: 'finite-difference' }, units: /^derivatives/, oracles: ['derivatives'], browser: 'derivatives' },
+  multivariable: { lesson: 'calculus', stages: { PartialStage: 'partials', GradientStage: 'gradient', JacobianStage: 'jacobian', HessianStage: 'hessian' }, units: /^multivariable/, oracles: ['multivariable'], browser: 'multivariable' },
+  autodiff: { lesson: 'calculus', stages: { AutodiffStage: 'autodiff' }, units: /^autodiff/, oracles: ['autodiff'], browser: 'autodiff' },
+  integration: { lesson: 'calculus', stages: { RiemannStage: 'riemann', AccumulationStage: 'accumulation', QuadratureStage: 'quadrature' }, units: /^integration/, oracles: ['integration'], browser: 'integration' },
 };
+const calculusFamilies = Object.keys(families).filter(name => families[name].lesson === 'calculus');
+/** Part III wrapper stage named by an MDX source, with its family and visual kind. */
+const calculusStage = source => {
+  for (const family of calculusFamilies) for (const [stage, kind] of Object.entries(families[family].stages))
+    if (new RegExp(`lessons/calculus/${stage}['"]`).test(source)) return { family, kind };
+  return undefined;
+};
+/** Families whose deep interactions/visuals are selected by exact chapter id rather than by whole spec file. */
+const idScoped = ['matrices', 'linear_algebra', 'elimination', 'eigenvalues', 'least_squares', 'svd', ...calculusFamilies];
 /** @param {string} dir @returns {string[]} */
 export const walk = dir => existsSync(dir) ? readdirSync(dir, { withFileTypes: true }).flatMap(entry => {
   const path = join(dir, entry.name).replaceAll('\\', '/');
@@ -33,20 +48,28 @@ export function chapterCatalog() {
     const source = text(path), id = /^curriculumId: ([IVX]+\.\d+)\r?$/m.exec(source)?.[1];
     if (!id) return [];
     const lesson = /lessons\/([^/]+)\//.exec(source)?.[1];
-    const family = lesson === 'linear-algebra' ? Object.keys(families).find(name => families[name].stage && source.includes('/' + families[name].stage)) ?? 'linear_algebra'
+    const calculus = lesson === 'calculus' ? calculusStage(source) : undefined;
+    const family = calculus ? calculus.family : lesson === 'linear-algebra' ? Object.keys(families).find(name => families[name].stage && source.includes('/' + families[name].stage)) ?? 'linear_algebra'
       : Object.keys(families).find(name => families[name].lesson === lesson);
     const slug = posix.basename(path, '.mdx');
-    const kind = /<(?:MatrixStage|LinearStage|EliminationStage) chapter="([^"]+)"/.exec(source)?.[1] ?? (family === 'eigenvalues' ? 'eigenvalues' : family === 'least_squares' ? 'least-squares' : family === 'svd' ? 'svd' : undefined);
+    const kind = calculus ? calculus.kind : /<(?:MatrixStage|LinearStage|EliminationStage) chapter="([^"]+)"/.exec(source)?.[1] ?? (family === 'eigenvalues' ? 'eigenvalues' : family === 'least_squares' ? 'least-squares' : family === 'svd' ? 'svd' : undefined);
     return [{ id, slug, path, family, kind }];
   });
 }
 
+/**
+ * A linked worktree shares the canonical checkout's installed dependencies through two untracked SYMLINKS at the book root. `.gitignore`'s
+ * `node_modules/` and `.venv/` patterns match directories only, so Git lists the links as untracked. They are environment, not source:
+ * skip exactly these two paths (only when they are symbolic links), and nothing else.
+ */
+export const environmentLink = path => ['node_modules', '.venv'].includes(path) && existsSync(path) && lstatSync(path).isSymbolicLink();
 export function changedFiles(base = 'HEAD') {
   const gitRoot = execFileSync('git', ['rev-parse', '--show-toplevel'], { encoding: 'utf8' }).trim();
   const options = { cwd: gitRoot, encoding: 'utf8' };
   const tracked = execFileSync('git', ['diff', '--no-renames', '--name-only', '-z', base, '--', '.'], options);
   const untracked = execFileSync('git', ['ls-files', '--full-name', '--others', '--exclude-standard', '-z', '--', '.'], options);
-  return [...new Set((tracked + untracked).split('\0').filter(Boolean).map(path => relative(process.cwd(), resolve(gitRoot, path)).replaceAll('\\', '/')))].sort();
+  return [...new Set((tracked + untracked).split('\0').filter(Boolean).map(path => relative(process.cwd(), resolve(gitRoot, path)).replaceAll('\\', '/')))]
+    .filter(path => !environmentLink(path)).sort();
 }
 
 // Follow literal local imports, including ?raw samples. Unrecognised inputs expand to all coverage below.
@@ -74,6 +97,12 @@ function dependencies() {
 
 function familyOfFile(path) {
   const base = posix.basename(path);
+  if (/^src\/(lessons|math)\/calculus\//.test(path)) {
+    // Shared calculus presentation/models return null: their literal importers decide the affected chapters.
+    const stage = calculusFamilies.find(name => Object.keys(families[name].stages).some(s => base.startsWith(s + '.')));
+    if (stage) return stage;
+    return calculusFamilies.find(name => base.startsWith(name + '-') || base.startsWith(name + '.')) ?? null;
+  }
   if (path.startsWith('tests/unit/')) return Object.keys(families).find(name => families[name].units.test(base));
   if (path.startsWith('tests/e2e/')) return Object.keys(families).find(name => base === families[name].browser + '.spec.ts');
   if (/^(oracle|fixtures)\//.test(path)) return Object.keys(families).find(name => families[name].oracles.some(oracle => base.startsWith(oracle + '.') || base === oracle + '_oracle.py' || base === 'test_' + oracle + '_oracle.py'));
@@ -120,7 +149,8 @@ export function makePlan({ mode = 'focused', files = [], chapters = [], only, pr
       }
       const image = posix.basename(file).replace(/^(desktop|tablet|mobile)-/, '');
       const targets = catalog.filter(chapter => image.startsWith(`part-i-${chapter.slug}.`) ||
-        (chapter.kind && image.startsWith(`ii-${chapter.family === 'matrices' ? 'matrix-' : ['elimination', 'eigenvalues', 'least_squares', 'svd'].includes(chapter.family) ? 'completion-' : ''}${chapter.kind}`)) ||
+        (chapter.kind && calculusFamilies.includes(chapter.family) && (image.startsWith(`iii-calculus-${chapter.kind}.`) || image.startsWith(`iii-calculus-${chapter.kind}-`))) ||
+        (chapter.kind && !calculusFamilies.includes(chapter.family) && image.startsWith(`ii-${chapter.family === 'matrices' ? 'matrix-' : ['elimination', 'eigenvalues', 'least_squares', 'svd'].includes(chapter.family) ? 'completion-' : ''}${chapter.kind}`)) ||
         (chapter.slug === 'vectors' && image.startsWith('chapter-')));
       if (targets.length) {
         for (const chapter of targets) { selected.add(chapter.id); if (chapter.family) groups.add(chapter.family); }
@@ -128,8 +158,14 @@ export function makePlan({ mode = 'focused', files = [], chapters = [], only, pr
         continue;
       }
     }
+    if ((/^tests\/unit\/calculus-[\w-]+\.test\.ts$/.test(file) || file === 'tests/e2e/calculus-helpers.ts') && existsSync(file)) {
+      if (file.startsWith('tests/unit/')) units.add(file);
+      for (const chapter of catalog.filter(item => calculusFamilies.includes(item.family))) { selected.add(chapter.id); groups.add(chapter.family); }
+      reasons.push(`${file}: shared Part III test support; all calculus chapters`);
+      continue;
+    }
     if (!existsSync(file)) { broad = true; reasons.push(`${file}: deleted/unresolved file; expanded conservatively`); }
-    if (/^(src\/(ui|platform|shell|curriculum|pages)\/|src\/styles\/(?!chapters\/)|public\/)/.test(file) || ['scripts/validation-plan.mjs', 'tests/unit/validation-plan.test.ts', 'tests/unit/curriculum.test.ts', 'tests/unit/completion-exercises.test.ts', 'tests/e2e/visual-linear-algebra.spec.ts'].includes(file)) {
+    if (/^(src\/(ui|platform|shell|curriculum|pages)\/|src\/styles\/(?!chapters\/)|public\/)/.test(file) || ['scripts/validation-plan.mjs', 'tests/unit/validation-plan.test.ts', 'tests/unit/curriculum.test.ts', 'tests/unit/completion-exercises.test.ts', 'tests/e2e/visual-linear-algebra.spec.ts', 'tests/e2e/visual-calculus.spec.ts'].includes(file)) {
       shared = true;
       reasons.push(`${file}: known shared infrastructure; all math/contracts, representative interactions/axe, all root visuals`);
       continue;
@@ -184,7 +220,7 @@ export function makePlan({ mode = 'focused', files = [], chapters = [], only, pr
       for (const group of new Set(interactions.map(chapter => chapter.family))) {
         if (!group) continue;
         const entries = interactions.filter(chapter => chapter.family === group);
-        const grep = ['matrices', 'linear_algebra', 'elimination', 'eigenvalues', 'least_squares', 'svd'].includes(group) ? '(?:^|\\s)(?:' + entries.map(chapter => escape(chapter.id) + '(?::| )').join('|') + ')|publication' : undefined;
+        const grep = idScoped.includes(group) ? '(?:^|\\s)(?:' + entries.map(chapter => escape(chapter.id) + '(?::| )').join('|') + ')|publication' : undefined;
         playwright('affected chapter interactions: ' + group, [families[group].browser + '.spec.ts'], grep);
       }
       if (mode === 'milestone' || shared) playwright('shared cross-chapter controls', ['vectors.spec.ts', 'quantities.spec.ts'], 'keyboard|Arrow|rejected|reset|announc');
@@ -194,12 +230,13 @@ export function makePlan({ mode = 'focused', files = [], chapters = [], only, pr
     else if (mode === 'milestone') playwright('subpath prefix-dependent navigation, assets, anchors, routes and hydration', ['navigation.spec.ts', 'deployment.spec.ts'], undefined, true);
   }
   if (phases.includes('visual') && (affected.length || broad)) {
-    if (broad || shared) playwright('authoritative root visuals', ['visual.spec.ts', 'visual-part-i.spec.ts', 'visual-linear-algebra.spec.ts']);
+    if (broad || shared) playwright('authoritative root visuals', ['visual.spec.ts', 'visual-part-i.spec.ts', 'visual-linear-algebra.spec.ts', 'visual-calculus.spec.ts']);
     else {
-      const patterns = affected.map(chapter => chapter.family === 'matrices' ? `matrix ${escape(chapter.kind)}:`
+      const patterns = affected.map(chapter => calculusFamilies.includes(chapter.family) ? `calculus ${escape(chapter.kind)}:`
+        : chapter.family === 'matrices' ? `matrix ${escape(chapter.kind)}:`
         : ['elimination', 'eigenvalues', 'least_squares', 'svd'].includes(chapter.family) ? `completion ${escape(chapter.kind)}:`
         : chapter.family === 'linear_algebra' ? `${escape(chapter.kind)}: opening` : chapter.slug === 'vectors' ? 'vectors chapter' : escape(chapter.slug) + ' — opening');
-      playwright('affected root visuals', ['visual.spec.ts', 'visual-part-i.spec.ts', 'visual-linear-algebra.spec.ts'], patterns.join('|'));
+      playwright('affected root visuals', ['visual.spec.ts', 'visual-part-i.spec.ts', 'visual-linear-algebra.spec.ts', 'visual-calculus.spec.ts'], patterns.join('|'));
     }
   }
   return { mode, partial: Boolean(only || project), files, reasons, conservativeExpansion: broad || shared, sharedExpansion: shared,

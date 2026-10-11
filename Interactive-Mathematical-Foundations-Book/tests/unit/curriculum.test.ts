@@ -78,6 +78,8 @@ describe('curriculum structure', () => {
   });
 });
 
+/** Part III chapters published so far on this branch; the milestone target is all fifteen (43 available, 54 planned). */
+const PART_III_PUBLISHED = ['III.1', 'III.2', 'III.3', 'III.4', 'III.5', 'III.6'];
 describe('publication scope guard', () => {
   it('I.3 Vectors stays the reference chapter under the slug "vectors"; VI.4 stays the flagship', () => {
     const i3 = findChapter('I.3')!;
@@ -86,13 +88,16 @@ describe('publication scope guard', () => {
     expect(i3.chapter.role).toBe('reference');
     expect(findChapter('VI.4')!.chapter.role).toBe('flagship');
   });
-  it('M6-C completes exactly Parts I and II, and the total stays 97', () => {
+  it('M7 completes exactly Parts I, II and III on this branch, Part IV stays planned, and the total stays 97', () => {
     const published = allChapters.filter(r => r.chapter.status === 'available');
+    const partIII = PART_III_PUBLISHED;
     expect(published.filter(r => r.part.numeral === 'I')).toHaveLength(9);
     expect(published.filter(r => r.part.numeral === 'II')).toHaveLength(19);
-    expect(published.map(r => r.id)).toEqual(['I.1', 'I.2', 'I.3', 'I.4', 'I.5', 'I.6', 'I.7', 'I.8', 'I.9', 'II.1', 'II.2', 'II.3', 'II.4', 'II.5', 'II.6', 'II.7', 'II.8', 'II.9', 'II.10', 'II.11', 'II.12', 'II.13', 'II.14', 'II.15', 'II.16', 'II.17', 'II.18', 'II.19']);
-    expect(published).toHaveLength(28);
-    expect(allChapters.filter(r => r.chapter.status === 'planned')).toHaveLength(69);
+    expect(published.filter(r => r.part.numeral === 'III').map(r => r.id)).toEqual(partIII);
+    expect(published.filter(r => !['I', 'II', 'III'].includes(r.part.numeral))).toEqual([]);
+    expect(published.map(r => r.id)).toEqual(['I.1', 'I.2', 'I.3', 'I.4', 'I.5', 'I.6', 'I.7', 'I.8', 'I.9', 'II.1', 'II.2', 'II.3', 'II.4', 'II.5', 'II.6', 'II.7', 'II.8', 'II.9', 'II.10', 'II.11', 'II.12', 'II.13', 'II.14', 'II.15', 'II.16', 'II.17', 'II.18', 'II.19', ...partIII]);
+    expect(published).toHaveLength(28 + partIII.length);
+    expect(allChapters.filter(r => r.chapter.status === 'planned')).toHaveLength(69 - partIII.length);
     expect(published.length + allChapters.filter(r => r.chapter.status === 'planned').length).toBe(97);
   });
 });

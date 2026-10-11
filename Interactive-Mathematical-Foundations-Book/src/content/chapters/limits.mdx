@@ -1,0 +1,97 @@
+---
+kind: chapter
+curriculumId: III.1
+title: "Limits through approach"
+hero: "What value does a function *approach*, even where it has none?"
+lede: Slide a sample point toward a, watch the values on both sides, and separate three different questions — the value at a, the left limit and the right limit.
+description: "Limits through approach: a two-sided approach explorer, removable holes, jumps, unbounded and oscillating behaviour, exact evaluations, Python and NumPy, and five graded exercises."
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import LimitStage from '../../lessons/calculus/LimitStage';
+import Exercise from '../../lessons/calculus/CalculusExercise';
+import reference from '../../../code/python/calculus_limits.py?raw';
+import practical from '../../../code/python/calculus_limits_numpy.py?raw';
+
+<Stage caption="Drag the orange sample point toward the dashed line x = a, or type x. Blue dots approach from the left, green dots from the right; the table evaluates only at x ≠ a."><LimitStage client:load /></Stage>
+
+Start with the hole. The values of $(x^2-1)/(x-1)$ crowd toward $2$ from both sides, yet the inspector reports $f(1)$ as **undefined**: the formula divides $0$ by $0$ there. Then choose **Value ≠ limit**: now $f(1)=3$ exists, but the nearby values still approach $2$. A limit is a statement about nearby values, never about the value at the point.
+
+## Intuition: watching from both sides
+
+To ask for $\lim_{x\to a}f(x)$ is to ask: *as $x$ gets close to $a$ — but stays different from it — do the values $f(x)$ settle near one number?* Approaching from the left ($x<a$) and from the right ($x>a$) are two separate experiments. When both settle near the same number $L$, the limit is $L$. When they settle on different numbers, grow without bound, or never settle, the limit does not exist, and the way it fails is itself informative.
+
+## Definition
+
+We write $\lim_{x\to a^-}f(x)=L$ when $f(x)$ can be made as close to $L$ as we like by taking $x<a$ close enough to $a$; similarly for $x\to a^+$. The two-sided limit exists exactly when both one-sided limits exist, are finite and are equal:
+
+$$
+\begin{aligned}\lim_{x\to a}f(x)=L\iff{}&\lim_{x\to a^-}f(x)=L\\ \text{and }&\lim_{x\to a^+}f(x)=L.\end{aligned}
+$$
+
+Precisely: for every tolerance $\varepsilon>0$ there is a distance $\delta>0$ such that $0<|x-a|<\delta$ implies $|f(x)-L|<\varepsilon$. The condition $0<|x-a|$ excludes $x=a$: the value $f(a)$ — if it exists — plays no part.
+
+## Mechanics: what the explorer evaluates
+
+The table lists $f(a-\delta)$ and $f(a+\delta)$ for $\delta=1,\tfrac12,\tfrac14,\dots$ These are genuine evaluations at points different from $a$; for the rational examples they are exact. The inspector's limit rows are **not** read from the table. They come from the function's exact description: a common factor $(x-a)$ in a rational function is divided out, the sign of an unbounded side comes from the multiplicity of the root in the denominator, and the oscillation of $\sin(1/x)$ is stated analytically. The value $f(a)$ is evaluated separately and is never replaced by the limit.
+
+## Derivation: why the hole has limit 2
+
+For $x\ne1$,
+
+$$
+\begin{aligned}\frac{x^2-1}{x-1}&=\frac{(x-1)(x+1)}{x-1}\\ &=x+1 .\end{aligned}
+$$
+
+Cancelling $x-1$ is legitimate only because $x\ne1$, which is exactly the situation a limit considers. The simplified expression $x+1$ is continuous, so it approaches $1+1=2$. At $x=1$ the original expression is $0/0$, which has no value: the function has a removable hole.
+
+For $x\sin(1/x)$ there is no cancellation, but a squeeze works: $|x\sin(1/x)|\le|x|$ for $x\ne0$, and $|x|\to0$. So the limit is $0$ even though $\sin(1/x)$ alone has no limit.
+
+## Worked example
+
+Take $f(x)=(x^2-1)/(x-1)$ and $a=1$. With $\delta=1$: $f(0)=1$ and $f(2)=3$. With $\delta=\tfrac12$: $f(0.5)=1.5$ and $f(1.5)=2.5$. With $\delta=\tfrac14$: $1.75$ and $2.25$. Each pair sits exactly $\delta$ away from $2$, because $f(x)-2=x-1$. The left and right limits are both $2$, so $\lim_{x\to1}f(x)=2$, while $f(1)$ is undefined.
+
+<Stage caption="Replay the approach: each step evaluates both sides at distance δ, then the limit is decided analytically."><LimitStage worked client:load /></Stage>
+
+## Failure cases
+
+* **Jump.** For the step function, the left limit at $0$ is $-1$ and the right limit is $1$. They differ, so no two-sided limit exists.
+* **Unbounded.** $1/x^2$ grows without bound from both sides of $0$; $1/x$ goes to $-\infty$ from the left and $+\infty$ from the right. Writing $\lim=+\infty$ records how the limit fails; $\infty$ is not a real number.
+* **Oscillation.** $\sin(1/x)$ reaches both $-1$ and $1$ on every interval around $0$. Along $x=1/(k\pi)$ the values are $0$; along $x=2/((4k+1)\pi)$ they are $1$.
+
+<Callout kind="numerical">The plotted curve of $\sin(1/x)$ is drawn from finitely many samples. Near $0$ it oscillates faster than any pixel grid, so the picture aliases; it is not evidence for or against a limit.</Callout>
+
+## Executable reference code
+
+The pedagogical file evaluates exact one-sided tables with `Fraction`, cancels the common factor and shows the jump. The NumPy file samples two sequences of $\sin(1/x)$ that approach $0$ and disagree, and checks the squeeze bound for $x\sin(1/x)$.
+
+<CodeFile source={reference} file="code/python/calculus_limits.py" />
+<CodeFile source={practical} file="code/python/calculus_limits_numpy.py" />
+
+## Explore
+
+Move $a$ away from the special point on each function: away from its trouble spot every example is continuous and its limit equals its value. On **1/x**, compare the blue and green columns. On **x·sin(1/x)**, watch the distance row shrink as the sample approaches $0$.
+
+## Common mistakes
+
+Substituting $x=a$ answers a different question — the value, not the limit — and can produce $0/0$. Agreement of a few table entries is not a proof. A limit that is "infinite" does not exist as a real number. A two-sided limit needs both sides; one convincing side is not enough.
+
+## Numerical considerations
+
+Floating-point evaluation of $(x^2-1)/(x-1)$ very close to $1$ suffers cancellation: both numerator and denominator lose relative accuracy. The exact rational table avoids this; a binary64 table would eventually show noise. Choosing a sequence of points also chooses what you can see: aliasing and cancellation can make a numerical table misleading in either direction.
+
+## Engineering and ML connections
+
+Limits underlie every derivative (III.3) and integral (III.12). In computation they appear as questions of stability: does a quantity settle as a step size shrinks, a learning rate decreases or a sample size grows? Expressions such as $0/0$ appear in normalisations (dividing by a vanishing norm), and robust code handles them explicitly rather than hoping for a limiting value.
+
+## Exercises
+
+<Exercise id="iii1-hole" client:load />
+<Exercise id="iii1-sides" client:load />
+<Exercise id="iii1-value" client:load />
+<Exercise id="iii1-infinite" client:load />
+<Exercise id="iii1-oscillate" client:load />
+
+## Summary and checkpoints
+
+A limit describes the values near $a$, from each side, not the value at $a$. It exists when both one-sided limits exist, are finite and agree. Removable holes, jumps, unbounded and oscillating behaviour are distinct ways to fail. Next, III.2 asks when the value at a point does equal its limit: continuity.

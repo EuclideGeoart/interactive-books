@@ -1,0 +1,96 @@
+---
+kind: chapter
+curriculumId: III.2
+title: "Continuity and local behavior"
+hero: "When does the value at a point *agree* with its neighbours?"
+lede: Adjust two pieces until they meet, move a single value away, delete it, or meet a pole and an endpoint — and test the three conditions of continuity at each step.
+description: "Continuity: a parameter explorer for joined, jumping and removable pieces, infinite discontinuities, endpoint continuity, the three conditions, Python and NumPy, and five graded exercises."
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import ContinuityStage from '../../lessons/calculus/ContinuityStage';
+import Exercise from '../../lessons/calculus/CalculusExercise';
+import reference from '../../../code/python/calculus_continuity.py?raw';
+import practical from '../../../code/python/calculus_continuity_numpy.py?raw';
+
+<Stage caption="Change c and m until the pieces meet at x = 1, choose which value f(1) receives, or move the point a. The three conditions update with every change."><ContinuityStage client:load /></Stage>
+
+The opening function jumps at $x=1$: the left piece arrives at $1+c=1$ and the right piece leaves from $m=2$. Raise $c$ to $1$ and the pieces meet. Then choose **v** and drag the open value at $x=1$: the limit stays $2$ while $f(1)$ moves, so the function is no longer continuous although its graph has only a single misplaced point.
+
+## Intuition: no break where you look
+
+A continuous function can be drawn through the point $x=a$ without lifting the pen. That picture needs three separate things: there must be a point to draw, the curve must arrive at one height from both sides, and that height must be the point itself. Each can fail on its own, and the explorer lets you break each one.
+
+## Definition
+
+A function $f$ is **continuous at $a$** when
+
+1. $f(a)$ is defined;
+2. $\lim_{x\to a}f(x)$ exists (both one-sided limits exist, are finite and agree);
+3. $\lim_{x\to a}f(x)=f(a)$.
+
+If $a$ is an endpoint of the domain, only the side inside the domain is used: $f$ is continuous from the right at $a$ when $\lim_{x\to a^+}f(x)=f(a)$. A function is continuous **on an interval** when it is continuous at every point of it.
+
+## Mechanics: what the explorer checks
+
+The opening function is $x^2+c$ for $x<1$ and $m\,x$ for $x>1$, with $f(1)$ taken from the left piece, the right piece, a custom value $v$, or left undefined. The inspector shows the three conditions as yes/no rows derived from the exact one-sided limits and the exact value; the verdict names the kind of discontinuity. The global row lists every discontinuity inside the view, so you can compare a statement at one point with a statement about the whole function.
+
+## Derivation: when the pieces join
+
+At $x=1$ the left piece approaches $1^2+c=1+c$ and the right piece approaches $m\cdot1=m$. Condition 2 holds exactly when
+
+$$
+1+c=m.
+$$
+
+Condition 3 then requires $f(1)$ to equal this common value. With the right-piece value $f(1)=m$, continuity holds exactly when $c=m-1$. With a custom value $v$, it also needs $v=m$.
+
+## Worked example
+
+Take $c=1$, $m=2$ and set $f(1)=0$. The left limit is $1+1=2$ and the right limit is $2$, so the two-sided limit is $2$. But $f(1)=0\ne2$: condition 3 fails. This is a **removable** discontinuity: redefining $f(1)=2$ repairs it without changing any other value.
+
+<Stage caption="Replay the three conditions for the removable case."><ContinuityStage worked client:load /></Stage>
+
+## Kinds of discontinuity
+
+* **Removable:** the limit exists but $f(a)$ is missing or different. Redefine one value to repair it.
+* **Jump:** both one-sided limits exist but differ. No single value can repair it.
+* **Infinite:** at least one side is unbounded, as for $1/(x-1)$ at $1$.
+* **Oscillating:** no one-sided limit exists, as for $\sin(1/x)$ at $0$ (III.1).
+
+At an **endpoint**, such as $\sqrt x$ at $0$, the missing left side is not a failure: $\sqrt x$ is continuous from the right there.
+
+## Executable reference code
+
+The reference checks the three conditions with exact `Fraction` limits of polynomial pieces. The NumPy version scans many values of $c$ at once and measures the jump size $|1+c-m|$, which is zero only on the continuous configuration.
+
+<CodeFile source={reference} file="code/python/calculus_continuity.py" />
+<CodeFile source={practical} file="code/python/calculus_continuity_numpy.py" />
+
+## Explore
+
+Choose **Elsewhere: a = −1** while the pieces still jump: the function is continuous at $-1$ yet discontinuous at $1$. Set $m=1$ and find the $c$ that joins the pieces. On **f(1) undefined**, notice that only condition 1 fails. On the endpoint preset, move $a$ to a negative number and read why the function is not defined there.
+
+## Common mistakes
+
+A graph that "looks connected" at screen resolution can hide a missing or moved point. Continuity is a property at a point; one break does not make a function discontinuous everywhere, and one continuous point does not make it continuous everywhere. A function is not discontinuous at points outside its domain — it is simply not defined there; $1/x$ is continuous on its whole domain.
+
+## Numerical considerations
+
+A floating-point test such as `abs(f(a+h) - f(a)) < tol` cannot certify continuity: a jump smaller than the tolerance passes, and steep continuous functions fail. The explorer uses exact one-sided limits of rational pieces; for sampled data, continuity is a modelling assumption, not something measurements prove.
+
+## Engineering and ML connections
+
+Many algorithms assume continuity: bisection (finding a root between a sign change), interpolation, and gradient methods all rely on values that do not jump. Piecewise models — ReLU networks, decision thresholds, clipping — are continuous or discontinuous by design, and that choice affects whether small input changes can produce large output changes.
+
+## Exercises
+
+<Exercise id="iii2-join" client:load />
+<Exercise id="iii2-repair" client:load />
+<Exercise id="iii2-conditions" client:load />
+<Exercise id="iii2-endpoint" client:load />
+<Exercise id="iii2-local" client:load />
+
+## Summary and checkpoints
+
+Continuity at $a$ needs a value, a limit and their equality. Removable, jump, infinite and oscillating discontinuities fail in different ways. At an endpoint only one side counts. Next, III.3 asks a finer question about the same neighbourhood: how steeply does the function change there?

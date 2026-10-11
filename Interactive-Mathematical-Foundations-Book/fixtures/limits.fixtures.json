@@ -1,0 +1,2252 @@
+{
+ "method": "exact L'Hopital on polynomial pieces; sign at a -/+ 1e-30; explicit Decimal(60) sequences for sin(1/x); squeeze for x sin(1/x)",
+ "tolerance": "all decisions and values are exact and must match exactly",
+ "cases": [
+  {
+   "fn": "hole",
+   "a": "-1",
+   "value": "0",
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "hole",
+   "a": "0",
+   "value": "1",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "hole",
+   "a": "0.5",
+   "value": "3/2",
+   "left": {
+    "kind": "finite",
+    "exact": "3/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "3/2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "hole",
+   "a": "1",
+   "value": null,
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "removable"
+  },
+  {
+   "fn": "hole",
+   "a": "2.25",
+   "value": "13/4",
+   "left": {
+    "kind": "finite",
+    "exact": "13/4"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "13/4"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "moved",
+   "a": "-1",
+   "value": "0",
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "moved",
+   "a": "0",
+   "value": "1",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "moved",
+   "a": "0.5",
+   "value": "3/2",
+   "left": {
+    "kind": "finite",
+    "exact": "3/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "3/2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "moved",
+   "a": "1",
+   "value": "3",
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "removable"
+  },
+  {
+   "fn": "moved",
+   "a": "2.25",
+   "value": "13/4",
+   "left": {
+    "kind": "finite",
+    "exact": "13/4"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "13/4"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "jump",
+   "a": "-1",
+   "value": "-1",
+   "left": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "jump",
+   "a": "0",
+   "value": "1",
+   "left": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "jump",
+   "a": "0.5",
+   "value": "1",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "jump",
+   "a": "1",
+   "value": "1",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "jump",
+   "a": "2.25",
+   "value": "1",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "recip-square",
+   "a": "-1",
+   "value": "1",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "recip-square",
+   "a": "0",
+   "value": null,
+   "left": {
+    "kind": "infinite",
+    "sign": 1
+   },
+   "right": {
+    "kind": "infinite",
+    "sign": 1
+   },
+   "kind": "infinite"
+  },
+  {
+   "fn": "recip-square",
+   "a": "0.5",
+   "value": "4",
+   "left": {
+    "kind": "finite",
+    "exact": "4"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "4"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "recip-square",
+   "a": "1",
+   "value": "1",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "recip-square",
+   "a": "2.25",
+   "value": "16/81",
+   "left": {
+    "kind": "finite",
+    "exact": "16/81"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "16/81"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "recip",
+   "a": "-1",
+   "value": "-1",
+   "left": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "recip",
+   "a": "0",
+   "value": null,
+   "left": {
+    "kind": "infinite",
+    "sign": -1
+   },
+   "right": {
+    "kind": "infinite",
+    "sign": 1
+   },
+   "kind": "infinite"
+  },
+  {
+   "fn": "recip",
+   "a": "0.5",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "recip",
+   "a": "1",
+   "value": "1",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "recip",
+   "a": "2.25",
+   "value": "4/9",
+   "left": {
+    "kind": "finite",
+    "exact": "4/9"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "4/9"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "smooth",
+   "a": "-1",
+   "value": "1/2",
+   "left": {
+    "kind": "finite",
+    "exact": "1/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1/2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "smooth",
+   "a": "0",
+   "value": "0",
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "smooth",
+   "a": "0.5",
+   "value": "1/8",
+   "left": {
+    "kind": "finite",
+    "exact": "1/8"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1/8"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "smooth",
+   "a": "1",
+   "value": "1/2",
+   "left": {
+    "kind": "finite",
+    "exact": "1/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1/2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "smooth",
+   "a": "2.25",
+   "value": "81/32",
+   "left": {
+    "kind": "finite",
+    "exact": "81/32"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "81/32"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "shifted-pole",
+   "a": "-1",
+   "value": "-1/2",
+   "left": {
+    "kind": "finite",
+    "exact": "-1/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-1/2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "shifted-pole",
+   "a": "0",
+   "value": "-1",
+   "left": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "shifted-pole",
+   "a": "0.5",
+   "value": "-2",
+   "left": {
+    "kind": "finite",
+    "exact": "-2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "shifted-pole",
+   "a": "1",
+   "value": null,
+   "left": {
+    "kind": "infinite",
+    "sign": -1
+   },
+   "right": {
+    "kind": "infinite",
+    "sign": 1
+   },
+   "kind": "infinite"
+  },
+  {
+   "fn": "shifted-pole",
+   "a": "2.25",
+   "value": "4/5",
+   "left": {
+    "kind": "finite",
+    "exact": "4/5"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "4/5"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "oscillation",
+   "a": "0",
+   "value": null,
+   "left": {
+    "kind": "none",
+    "cause": "oscillation"
+   },
+   "right": {
+    "kind": "none",
+    "cause": "oscillation"
+   },
+   "kind": "oscillation"
+  },
+  {
+   "fn": "squeeze",
+   "a": "0",
+   "value": null,
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "removable"
+  },
+  {
+   "fn": "join",
+   "c": "-1",
+   "m": "0",
+   "mode": "left",
+   "v": "2",
+   "a": "1",
+   "value": "0",
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "-1",
+   "m": "0",
+   "mode": "left",
+   "v": "2",
+   "a": "-1",
+   "value": "0",
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "-1",
+   "m": "0",
+   "mode": "right",
+   "v": "2",
+   "a": "1",
+   "value": "0",
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "-1",
+   "m": "0",
+   "mode": "right",
+   "v": "2",
+   "a": "-1",
+   "value": "0",
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "-1",
+   "m": "0",
+   "mode": "custom",
+   "v": "2",
+   "a": "1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "removable"
+  },
+  {
+   "fn": "join",
+   "c": "-1",
+   "m": "0",
+   "mode": "custom",
+   "v": "2",
+   "a": "-1",
+   "value": "0",
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "-1",
+   "m": "0",
+   "mode": "none",
+   "v": "2",
+   "a": "1",
+   "value": null,
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "removable"
+  },
+  {
+   "fn": "join",
+   "c": "-1",
+   "m": "0",
+   "mode": "none",
+   "v": "2",
+   "a": "-1",
+   "value": "0",
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "-1",
+   "m": "2",
+   "mode": "left",
+   "v": "2",
+   "a": "1",
+   "value": "0",
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "-1",
+   "m": "2",
+   "mode": "left",
+   "v": "2",
+   "a": "-1",
+   "value": "0",
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "-1",
+   "m": "2",
+   "mode": "right",
+   "v": "2",
+   "a": "1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "-1",
+   "m": "2",
+   "mode": "right",
+   "v": "2",
+   "a": "-1",
+   "value": "0",
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "-1",
+   "m": "2",
+   "mode": "custom",
+   "v": "2",
+   "a": "1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "-1",
+   "m": "2",
+   "mode": "custom",
+   "v": "2",
+   "a": "-1",
+   "value": "0",
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "-1",
+   "m": "2",
+   "mode": "none",
+   "v": "2",
+   "a": "1",
+   "value": null,
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "-1",
+   "m": "2",
+   "mode": "none",
+   "v": "2",
+   "a": "-1",
+   "value": "0",
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "-1",
+   "m": "2.5",
+   "mode": "left",
+   "v": "2",
+   "a": "1",
+   "value": "0",
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "-1",
+   "m": "2.5",
+   "mode": "left",
+   "v": "2",
+   "a": "-1",
+   "value": "0",
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "-1",
+   "m": "2.5",
+   "mode": "right",
+   "v": "2",
+   "a": "1",
+   "value": "5/2",
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "-1",
+   "m": "2.5",
+   "mode": "right",
+   "v": "2",
+   "a": "-1",
+   "value": "0",
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "-1",
+   "m": "2.5",
+   "mode": "custom",
+   "v": "2",
+   "a": "1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "-1",
+   "m": "2.5",
+   "mode": "custom",
+   "v": "2",
+   "a": "-1",
+   "value": "0",
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "-1",
+   "m": "2.5",
+   "mode": "none",
+   "v": "2",
+   "a": "1",
+   "value": null,
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "-1",
+   "m": "2.5",
+   "mode": "none",
+   "v": "2",
+   "a": "-1",
+   "value": "0",
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "0",
+   "m": "0",
+   "mode": "left",
+   "v": "2",
+   "a": "1",
+   "value": "1",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "0",
+   "m": "0",
+   "mode": "left",
+   "v": "2",
+   "a": "-1",
+   "value": "1",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "0",
+   "m": "0",
+   "mode": "right",
+   "v": "2",
+   "a": "1",
+   "value": "0",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "0",
+   "m": "0",
+   "mode": "right",
+   "v": "2",
+   "a": "-1",
+   "value": "1",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "0",
+   "m": "0",
+   "mode": "custom",
+   "v": "2",
+   "a": "1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "0",
+   "m": "0",
+   "mode": "custom",
+   "v": "2",
+   "a": "-1",
+   "value": "1",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "0",
+   "m": "0",
+   "mode": "none",
+   "v": "2",
+   "a": "1",
+   "value": null,
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "0",
+   "m": "0",
+   "mode": "none",
+   "v": "2",
+   "a": "-1",
+   "value": "1",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "0",
+   "m": "2",
+   "mode": "left",
+   "v": "2",
+   "a": "1",
+   "value": "1",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "0",
+   "m": "2",
+   "mode": "left",
+   "v": "2",
+   "a": "-1",
+   "value": "1",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "0",
+   "m": "2",
+   "mode": "right",
+   "v": "2",
+   "a": "1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "0",
+   "m": "2",
+   "mode": "right",
+   "v": "2",
+   "a": "-1",
+   "value": "1",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "0",
+   "m": "2",
+   "mode": "custom",
+   "v": "2",
+   "a": "1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "0",
+   "m": "2",
+   "mode": "custom",
+   "v": "2",
+   "a": "-1",
+   "value": "1",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "0",
+   "m": "2",
+   "mode": "none",
+   "v": "2",
+   "a": "1",
+   "value": null,
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "0",
+   "m": "2",
+   "mode": "none",
+   "v": "2",
+   "a": "-1",
+   "value": "1",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "0",
+   "m": "2.5",
+   "mode": "left",
+   "v": "2",
+   "a": "1",
+   "value": "1",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "0",
+   "m": "2.5",
+   "mode": "left",
+   "v": "2",
+   "a": "-1",
+   "value": "1",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "0",
+   "m": "2.5",
+   "mode": "right",
+   "v": "2",
+   "a": "1",
+   "value": "5/2",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "0",
+   "m": "2.5",
+   "mode": "right",
+   "v": "2",
+   "a": "-1",
+   "value": "1",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "0",
+   "m": "2.5",
+   "mode": "custom",
+   "v": "2",
+   "a": "1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "0",
+   "m": "2.5",
+   "mode": "custom",
+   "v": "2",
+   "a": "-1",
+   "value": "1",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "0",
+   "m": "2.5",
+   "mode": "none",
+   "v": "2",
+   "a": "1",
+   "value": null,
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "0",
+   "m": "2.5",
+   "mode": "none",
+   "v": "2",
+   "a": "-1",
+   "value": "1",
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1",
+   "m": "0",
+   "mode": "left",
+   "v": "2",
+   "a": "1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "1",
+   "m": "0",
+   "mode": "left",
+   "v": "2",
+   "a": "-1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1",
+   "m": "0",
+   "mode": "right",
+   "v": "2",
+   "a": "1",
+   "value": "0",
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "1",
+   "m": "0",
+   "mode": "right",
+   "v": "2",
+   "a": "-1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1",
+   "m": "0",
+   "mode": "custom",
+   "v": "2",
+   "a": "1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "1",
+   "m": "0",
+   "mode": "custom",
+   "v": "2",
+   "a": "-1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1",
+   "m": "0",
+   "mode": "none",
+   "v": "2",
+   "a": "1",
+   "value": null,
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "1",
+   "m": "0",
+   "mode": "none",
+   "v": "2",
+   "a": "-1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1",
+   "m": "2",
+   "mode": "left",
+   "v": "2",
+   "a": "1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1",
+   "m": "2",
+   "mode": "left",
+   "v": "2",
+   "a": "-1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1",
+   "m": "2",
+   "mode": "right",
+   "v": "2",
+   "a": "1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1",
+   "m": "2",
+   "mode": "right",
+   "v": "2",
+   "a": "-1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1",
+   "m": "2",
+   "mode": "custom",
+   "v": "2",
+   "a": "1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1",
+   "m": "2",
+   "mode": "custom",
+   "v": "2",
+   "a": "-1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1",
+   "m": "2",
+   "mode": "none",
+   "v": "2",
+   "a": "1",
+   "value": null,
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "removable"
+  },
+  {
+   "fn": "join",
+   "c": "1",
+   "m": "2",
+   "mode": "none",
+   "v": "2",
+   "a": "-1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1",
+   "m": "2.5",
+   "mode": "left",
+   "v": "2",
+   "a": "1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "1",
+   "m": "2.5",
+   "mode": "left",
+   "v": "2",
+   "a": "-1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1",
+   "m": "2.5",
+   "mode": "right",
+   "v": "2",
+   "a": "1",
+   "value": "5/2",
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "1",
+   "m": "2.5",
+   "mode": "right",
+   "v": "2",
+   "a": "-1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1",
+   "m": "2.5",
+   "mode": "custom",
+   "v": "2",
+   "a": "1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "1",
+   "m": "2.5",
+   "mode": "custom",
+   "v": "2",
+   "a": "-1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1",
+   "m": "2.5",
+   "mode": "none",
+   "v": "2",
+   "a": "1",
+   "value": null,
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "1",
+   "m": "2.5",
+   "mode": "none",
+   "v": "2",
+   "a": "-1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1.5",
+   "m": "0",
+   "mode": "left",
+   "v": "2",
+   "a": "1",
+   "value": "5/2",
+   "left": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "1.5",
+   "m": "0",
+   "mode": "left",
+   "v": "2",
+   "a": "-1",
+   "value": "5/2",
+   "left": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1.5",
+   "m": "0",
+   "mode": "right",
+   "v": "2",
+   "a": "1",
+   "value": "0",
+   "left": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "1.5",
+   "m": "0",
+   "mode": "right",
+   "v": "2",
+   "a": "-1",
+   "value": "5/2",
+   "left": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1.5",
+   "m": "0",
+   "mode": "custom",
+   "v": "2",
+   "a": "1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "1.5",
+   "m": "0",
+   "mode": "custom",
+   "v": "2",
+   "a": "-1",
+   "value": "5/2",
+   "left": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1.5",
+   "m": "0",
+   "mode": "none",
+   "v": "2",
+   "a": "1",
+   "value": null,
+   "left": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "1.5",
+   "m": "0",
+   "mode": "none",
+   "v": "2",
+   "a": "-1",
+   "value": "5/2",
+   "left": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1.5",
+   "m": "2",
+   "mode": "left",
+   "v": "2",
+   "a": "1",
+   "value": "5/2",
+   "left": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "1.5",
+   "m": "2",
+   "mode": "left",
+   "v": "2",
+   "a": "-1",
+   "value": "5/2",
+   "left": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1.5",
+   "m": "2",
+   "mode": "right",
+   "v": "2",
+   "a": "1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "1.5",
+   "m": "2",
+   "mode": "right",
+   "v": "2",
+   "a": "-1",
+   "value": "5/2",
+   "left": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1.5",
+   "m": "2",
+   "mode": "custom",
+   "v": "2",
+   "a": "1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "1.5",
+   "m": "2",
+   "mode": "custom",
+   "v": "2",
+   "a": "-1",
+   "value": "5/2",
+   "left": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1.5",
+   "m": "2",
+   "mode": "none",
+   "v": "2",
+   "a": "1",
+   "value": null,
+   "left": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "2"
+   },
+   "kind": "jump"
+  },
+  {
+   "fn": "join",
+   "c": "1.5",
+   "m": "2",
+   "mode": "none",
+   "v": "2",
+   "a": "-1",
+   "value": "5/2",
+   "left": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1.5",
+   "m": "2.5",
+   "mode": "left",
+   "v": "2",
+   "a": "1",
+   "value": "5/2",
+   "left": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1.5",
+   "m": "2.5",
+   "mode": "left",
+   "v": "2",
+   "a": "-1",
+   "value": "5/2",
+   "left": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1.5",
+   "m": "2.5",
+   "mode": "right",
+   "v": "2",
+   "a": "1",
+   "value": "5/2",
+   "left": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1.5",
+   "m": "2.5",
+   "mode": "right",
+   "v": "2",
+   "a": "-1",
+   "value": "5/2",
+   "left": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1.5",
+   "m": "2.5",
+   "mode": "custom",
+   "v": "2",
+   "a": "1",
+   "value": "2",
+   "left": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "removable"
+  },
+  {
+   "fn": "join",
+   "c": "1.5",
+   "m": "2.5",
+   "mode": "custom",
+   "v": "2",
+   "a": "-1",
+   "value": "5/2",
+   "left": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "continuous"
+  },
+  {
+   "fn": "join",
+   "c": "1.5",
+   "m": "2.5",
+   "mode": "none",
+   "v": "2",
+   "a": "1",
+   "value": null,
+   "left": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "removable"
+  },
+  {
+   "fn": "join",
+   "c": "1.5",
+   "m": "2.5",
+   "mode": "none",
+   "v": "2",
+   "a": "-1",
+   "value": "5/2",
+   "left": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "5/2"
+   },
+   "kind": "continuous"
+  }
+ ]
+}

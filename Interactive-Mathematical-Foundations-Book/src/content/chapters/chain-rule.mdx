@@ -1,0 +1,113 @@
+---
+kind: chapter
+curriculumId: III.6
+title: "Chain rule"
+hero: "How does a change *travel* through nested functions?"
+lede: Nudge the input of a two-stage pipeline and follow the change through the intermediate value to the output. Each stage multiplies it by its own local slope.
+description: "Chain rule through linked plots: intermediate values, local sensitivity factors, exact composition checks, the backward product that becomes backpropagation, Python and NumPy, five graded exercises."
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import ChainStage from '../../lessons/calculus/ChainStage';
+import Exercise from '../../lessons/calculus/CalculusExercise';
+import reference from '../../../code/python/calculus_chain.py?raw';
+import practical from '../../../code/python/calculus_chain_numpy.py?raw';
+
+<Stage caption="Drag the input x on the inner graph or choose other inner and outer functions. Blue: the change Δu; green: the resulting change Δy; orange: the composite tangent with slope f′(u)·g′(x)."><ChainStage client:load /></Stage>
+
+At $x=2$ the inner function $u=x^2/2-1$ gives $u=1$, and its tangent slope is $2$: a small change in $x$ is doubled. The outer function $y=u^3/4$ has slope $3/4$ at $u=1$. The composite slope is $\tfrac34\cdot2=\tfrac32$, and the inspector confirms it exactly by differentiating the composed polynomial. Now choose **Inner slope 0**: whatever the outer function does, a flat inner stage stops the change.
+
+## Intuition: sensitivities multiply
+
+In a pipeline $x\to u=g(x)\to y=f(u)$, a small change $\Delta x$ becomes $\Delta u\approx g'(x)\Delta x$, and that becomes $\Delta y\approx f'(u)\Delta u$. Combining,
+
+$$
+\Delta y\approx f'(u)\,g'(x)\,\Delta x .
+$$
+
+Each stage contributes its local amplification factor, and factors multiply — just as two gearboxes in a row multiply their ratios.
+
+## Definition
+
+If $g$ is differentiable at $x$ and $f$ is differentiable at $u=g(x)$, then $h=f\circ g$ is differentiable at $x$ and
+
+$$
+h'(x)=f'(g(x))\,g'(x),
+$$
+
+$$
+\frac{dy}{dx}=\frac{dy}{du}\,\frac{du}{dx}.
+$$
+
+The outer derivative is evaluated at the **intermediate value** $u=g(x)$, not at $x$.
+
+## Mechanics: what the explorer computes
+
+The three planes share one state. The inner plane shows $g$, its tangent at $x$ and the actual change $\Delta u$; the outer plane shows $f$, its tangent at $u$ and the actual change $\Delta y$; the composite plane shows $f(g(x))$ and its tangent with the chain-rule slope. When both stages are polynomials, the inspector also composes them exactly and differentiates the result — an independent route that must agree exactly. For $\sin$ and $e^u$, values are binary64 and marked $\approx$.
+
+## Derivation
+
+Write the outer function's local model at $u$ as
+
+$$
+f(u+k)=f(u)+f'(u)\,k+\varepsilon(k)\,k,
+$$
+
+where $\varepsilon(k)\to0$ as $k\to0$ (this is differentiability of $f$). Put $k=\Delta u=g(x+\Delta x)-g(x)$ and divide by $\Delta x$:
+
+$$
+\begin{aligned}\frac{\Delta y}{\Delta x}&=\big(f'(u)+\varepsilon(\Delta u)\big)\\ &\quad\cdot\frac{\Delta u}{\Delta x}.\end{aligned}
+$$
+
+As $\Delta x\to0$, $\Delta u\to0$ (because $g$ is continuous), so $\varepsilon(\Delta u)\to0$ and $\Delta u/\Delta x\to g'(x)$. Hence $h'(x)=f'(u)g'(x)$. This form avoids dividing by $\Delta u$, which could be zero.
+
+## Worked example
+
+Take $g(x)=x^2/2-1$, $f(u)=u^3/4$, $x=2$:
+
+* forward: $u=g(2)=1$, $y=f(1)=1/4$;
+* local factors: $g'(2)=2$, $f'(1)=3/4$;
+* backward product: $dy/dx=\tfrac34\cdot2=\tfrac32$.
+
+Composed directly, $h(x)=\tfrac14(x^2/2-1)^3$ and $h'(x)=\tfrac34(x^2/2-1)^2\cdot x$, which is $\tfrac32$ at $x=2$. For $\Delta x=1/2$ the linearized change is $3/4$, while the actual change is $f(g(2.5))-f(1)=2.149\ldots$: the chain rule is exact for rates, approximate for finite steps.
+
+<Stage caption="Replay the forward pass, the local factors and the backward product."><ChainStage worked client:load /></Stage>
+
+## Toward computational graphs
+
+The replay ends by multiplying **backward**: start with $dy/dy=1$, multiply by $f'(u)$, then by $g'(x)$. In a longer chain $x\to u_1\to u_2\to\cdots\to y$, the same backward product needs one multiplication per stage. When an input feeds several paths, the contributions of the paths add. Chapter III.10 turns this into an algorithm on a graph of elementary operations — reverse-mode automatic differentiation — the computation behind backpropagation. No neural network is needed to understand it.
+
+## Executable reference code
+
+The reference composes polynomials exactly with `Fraction` and checks $f'(g(x))g'(x)$ against the derivative of the composition. The NumPy version evaluates $e^{\sin x}$ on a grid and compares the chain-rule derivative with a centered difference whose error is bounded.
+
+<CodeFile source={reference} file="code/python/calculus_chain.py" />
+<CodeFile source={practical} file="code/python/calculus_chain_numpy.py" />
+
+## Explore
+
+Swap the inner and outer roles: $\sin(2x-1)$ versus $2\sin x-1$ are different functions with different derivatives. Find an $x$ where the outer slope is zero but the inner slope is not. Increase $\Delta x$ and watch the actual $\Delta y$ leave the linear prediction.
+
+## Common mistakes
+
+Evaluating $f'$ at $x$ instead of $g(x)$. Forgetting the inner factor: $(\sin x^2)'=\cos(x^2)\cdot2x$, not $\cos(x^2)$. Treating $dy/du\cdot du/dx$ as cancelling fractions without the differentiability conditions that make it valid.
+
+## Numerical considerations
+
+Long chains multiply many factors. Factors with magnitude below $1$ shrink the product toward zero, factors above $1$ inflate it — the vanishing and exploding gradients of deep networks. In binary64 the product can underflow or overflow even when each factor is ordinary, which is why implementations often work with logarithms or normalised quantities (VII.7).
+
+## Engineering and ML connections
+
+Every layer of a neural network is a stage $u_{k+1}=g_k(u_k)$; the gradient of the loss with respect to an early parameter is a chain-rule product through all later layers. The same rule propagates measurement uncertainty through a sequence of formulas and units through a pipeline of conversions.
+
+## Exercises
+
+<Exercise id="iii6-chain" client:load />
+<Exercise id="iii6-where" client:load />
+<Exercise id="iii6-change" client:load />
+<Exercise id="iii6-order" client:load />
+<Exercise id="iii6-graph" client:load />
+
+## Summary and checkpoints
+
+For nested functions, local rates multiply: $h'(x)=f'(g(x))\,g'(x)$, with the outer derivative evaluated at the intermediate value. The backward product of local factors is the seed of automatic differentiation. Next, III.7 lets a function depend on two inputs at once.

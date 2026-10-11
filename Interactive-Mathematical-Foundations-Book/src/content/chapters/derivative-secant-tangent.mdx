@@ -1,0 +1,120 @@
+---
+kind: chapter
+curriculumId: III.3
+title: "Derivative as secant → tangent"
+hero: "What does a slope at a *single* point mean?"
+lede: Two points make a secant. Slide the second point toward the first and watch the secant slopes settle — or refuse to settle at a corner, a jump or a vertical tangent.
+description: "Derivative as the limit of secant slopes: a live secant/tangent explorer, exact difference quotients, corners and vertical tangents, Python and NumPy, and five graded exercises."
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import SecantStage from '../../lessons/calculus/SecantStage';
+import Exercise from '../../lessons/calculus/CalculusExercise';
+import reference from '../../../code/python/calculus_secant.py?raw';
+import practical from '../../../code/python/calculus_secant_numpy.py?raw';
+
+<Stage caption="Drag P along the graph, drag Q toward P, or type x and h. The table shrinks h from both sides; the dashed line is the separately derived tangent."><SecantStage client:load /></Stage>
+
+Start with the smooth cubic and drag $Q$ toward $P$. The orange secant pivots and its slope settles near the dashed tangent. Then choose **Corner |x|**: the secant slope is $1$ from the right and $-1$ from the left, however small $h$ becomes. Finally type $h=0$: the stage refuses to draw a secant, because two equal points determine no line.
+
+## Intuition: zooming in on a curve
+
+A secant is the straight line through two points of a graph, $P=(x,f(x))$ and $Q=(x+h,f(x+h))$. Its slope is an ordinary average rate of change: rise over run. When $h$ is small, $Q$ is close to $P$ and the secant hugs the graph near $P$. For a smooth function the secant slopes approach one number. That number is the slope of the graph **at** $P$.
+
+The important word is *approach*. The secant formula is never evaluated with $h=0$; the tangent slope is what the secant slopes tend to as $h$ shrinks through nonzero values.
+
+## Definition
+
+The **difference quotient** of $f$ at $x$ with step $h\ne0$ is
+
+$$
+m(h)=\frac{f(x+h)-f(x)}{h}.
+$$
+
+The function $f$ is **differentiable** at $x$ when $f(x)$ exists and the two-sided limit
+
+$$
+f'(x)=\lim_{h\to0}\frac{f(x+h)-f(x)}{h}
+$$
+
+exists as a finite real number. The **tangent line** at $P$ is then $y=f(x)+f'(x)(t-x)$. The one-sided limits $h\to0^-$ and $h\to0^+$ are the left and right slopes; the derivative exists exactly when both exist, are finite and agree.
+
+## Mechanics: what the explorer computes
+
+Each secant slope is an actual quotient of two function values with a nonzero step. For the cubic $f(x)=x^3/6-x$ and decimal inputs, the values are exact rationals, so the inspector shows $=$. For $\sin x$ they are binary64 approximations, marked $\approx$. The tangent slope row is **not** read from the table: it comes from the function's analytic description (for a polynomial, the exact derivative; for a corner, the two exact one-sided slopes). The table is evidence that agrees with it, not a proof.
+
+Moving $P$ changes $x$ and keeps $h$; moving $Q$ changes $h$. Arrow keys move the focused point by $0.25$, and the numeric fields accept two decimal places.
+
+## Derivation: why the secant slope approaches the derivative
+
+For a polynomial the quotient simplifies before any limit is taken. With $f(x)=x^2$,
+
+$$
+\begin{aligned}\frac{(x+h)^2-x^2}{h}&=\frac{2xh+h^2}{h}\\ &=2x+h\qquad(h\ne0).\end{aligned}
+$$
+
+The cancellation of $h$ is legitimate only because $h\ne0$. The simplified expression $2x+h$ is continuous in $h$, so its limit as $h\to0$ is $2x$. In general, for a polynomial $p$, Taylor expansion gives
+
+$$
+m(h)=p'(x)+\tfrac12p''(x)\,h+\cdots,
+$$
+
+a polynomial in $h$ (the omitted terms carry $h^2$, $h^3$, …) whose constant term is $p'(x)$. The explorer prints this exact polynomial for the cubic: its constant term is the tangent slope and the remaining terms measure how far a finite secant is from the tangent.
+
+## Worked example
+
+Take $f(x)=x^3/6-x$ at $x=1$. Then $f(1)=-5/6$, and for every $h\ne0$ the exact difference quotient is
+
+$$
+m(h)=-\tfrac12+\tfrac12h+\tfrac16h^2
+$$
+
+With $h=1$ the secant slope is $1/6$; with $h=1/2$ it is $-5/24$; with $h=1/4$ it is $-35/96$. These approach $f'(1)=1^2/2-1=-1/2$. The replay below steps through the halving sequence and ends with the separately derived limit.
+
+<Stage caption="Replay the h → 0 sequence: each step is a genuine secant with a nonzero step."><SecantStage worked client:load /></Stage>
+
+## When no derivative exists
+
+* **Corner.** For $|x|$ at $0$, $m(h)=|h|/h$ equals $1$ for $h>0$ and $-1$ for $h<0$. Both one-sided slopes exist, but they differ, so $f'(0)$ does not exist.
+* **Vertical tangent.** For $\sqrt[3]{x}$ at $0$, $m(h)=h^{-2/3}\to+\infty$. The graph is smooth to the eye, but the slope is not a real number.
+* **Endpoint.** $\sqrt x$ is defined only for $x\ge0$. At $0$ only $h>0$ is possible, and the right quotient $1/\sqrt h$ is unbounded.
+* **Jump.** A function that is not continuous at $x$ cannot be differentiable there: from the broken side, $f(x+h)-f(x)$ does not shrink while $h$ does.
+
+Every one of these is reported by the stage as an undefined derivative with its reason; none is replaced by a nearby number.
+
+## Executable reference code
+
+The pedagogical reference uses exact `Fraction` arithmetic for the difference quotient of a polynomial and shows the one-sided slopes of $|x|$. The practical version tabulates secant slopes with NumPy and compares them with the analytic derivative.
+
+<CodeFile source={reference} file="code/python/calculus_secant.py" />
+<CodeFile source={practical} file="code/python/calculus_secant_numpy.py" />
+
+## Explore
+
+Make $h$ negative and compare with positive $h$ of the same size. Move $P$ to a point where the cubic's tangent is horizontal ($x=\sqrt2$ is not on the input grid; try $x=1.5$ and $x=1.25$ and watch the sign of the tangent slope). On **Jump**, compare the left and right columns of the table. On **sin x**, notice that every value is marked $\approx$.
+
+## Common mistakes
+
+Substituting $h=0$ into the quotient produces $0/0$, which has no value. Cancelling $h$ is valid only while $h\ne0$. A derivative needs agreement from **both** sides; averaging two different one-sided slopes does not create one. A graph without a visible break can still fail to be differentiable (a vertical tangent), and a numerical table that looks like it settles is not a proof that a limit exists.
+
+<Callout kind="misconception">A small secant slope table is evidence. The derivative is decided by the limit — for a polynomial, by the exact algebra above.</Callout>
+
+## Numerical considerations
+
+In exact rational arithmetic, smaller $h$ always brings the secant closer to the tangent of a polynomial. In binary64 it does not: $f(x+h)-f(x)$ subtracts two nearly equal numbers, and the rounding error is divided by a tiny $h$. Chapter III.14 measures this trade-off between truncation and rounding error. Here the halving table stops at $h/64$, far above that regime.
+
+## Engineering and ML connections
+
+Every gradient used to train a model is a collection of derivatives. Automatic differentiation computes them from the operations of a program (III.10) rather than from secants. Finite-difference quotients remain the standard independent check of a gradient implementation, provided the step size and its error are understood.
+
+## Exercises
+
+<Exercise id="iii3-secant" client:load />
+<Exercise id="iii3-limit" client:load />
+<Exercise id="iii3-zero" client:load />
+<Exercise id="iii3-corner" client:load />
+<Exercise id="iii3-vertical" client:load />
+
+## Summary and checkpoints
+
+A secant slope is a quotient with $h\ne0$. The derivative is the limit of these slopes as $h\to0$ from both sides, when that limit exists and is finite. Corners, vertical tangents, endpoints and jumps are places where it does not. Next, III.4 reads the derivative as a rate of change and uses the tangent line as a local linear model.

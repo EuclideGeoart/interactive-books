@@ -1,0 +1,118 @@
+---
+kind: chapter
+curriculumId: III.5
+title: "Derivative rules"
+hero: "Why does a product's rate need *both* factors?"
+lede: Grow a rectangle whose sides are two changing quantities and see the product rule appear as two strips and a vanishing corner. Then divide, and meet the points where a quotient — and its rule — stop existing.
+description: "Derivative rules derived, not memorised: linearity, the product rule as area growth, the quotient rule and its domain, exact independent checks, Python and NumPy, and five graded exercises."
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import RulesStage from '../../lessons/calculus/RulesStage';
+import Exercise from '../../lessons/calculus/CalculusExercise';
+import reference from '../../../code/python/calculus_rules.py?raw';
+import practical from '../../../code/python/calculus_rules_numpy.py?raw';
+
+<Stage caption="Adjust u(x) = a·x + b and v(x) = x² + c, move x, and switch between sum, product and quotient. Every rule result is checked exactly by an independent route."><RulesStage client:load /></Stage>
+
+The product plane shows $u\cdot v$ as the area of a rectangle with sides $u(x)$ and $v(x)$. When $x$ grows by $\Delta x$, the area gains a blue strip $v\,\Delta u$, a green strip $u\,\Delta v$ and a small corner $\Delta u\,\Delta v$. The inspector confirms that these three pieces add up **exactly** to the change of the product. Now choose **Quotient with v(x) = 0**: there is no value, no tangent and no rule result at that $x$.
+
+## Intuition: a rate is a sensitivity
+
+$u'(x)$ says how fast $u$ changes per unit of $x$. In a sum $u+v$, the two changes simply add. In a product, a change in $u$ matters more when the other factor $v$ is large: a 1-unit wider rectangle gains area equal to its height. Each factor's rate is weighted by the *other* factor's value.
+
+## Definition
+
+For differentiable $u$, $v$ and constants $\alpha$, $\beta$:
+
+$$
+(\alpha u+\beta v)'=\alpha u'+\beta v',
+$$
+
+$$
+(uv)'=u'v+uv',
+$$
+
+and, wherever $v(x)\ne0$,
+
+$$
+\left(\frac uv\right)'=\frac{u'v-uv'}{v^2}.
+$$
+
+## Mechanics: what the explorer computes
+
+The factors have rational coefficients, so every value is exact. The **rule** row applies the formula above. The **check** row reaches the same derivative independently: for sums and products by expanding the polynomial first and differentiating term by term; for a quotient $q=u/v$ by differentiating the identity $u=q\,v$ with the product rule. The agreement row is an exact rational comparison. Where $v(x)=0$, the quotient is undefined and every row says so.
+
+## Derivation: the product rule from area
+
+Let $\Delta u=u(x+\Delta x)-u(x)$ and $\Delta v=v(x+\Delta x)-v(x)$. Then exactly
+
+$$
+\Delta(uv)=v\,\Delta u+u\,\Delta v+\Delta u\,\Delta v .
+$$
+
+Divide by $\Delta x$:
+
+$$
+\begin{aligned}\frac{\Delta(uv)}{\Delta x}={}&v\frac{\Delta u}{\Delta x}+u\frac{\Delta v}{\Delta x}\\ &+\Delta u\,\frac{\Delta v}{\Delta x}.\end{aligned}
+$$
+
+As $\Delta x\to0$, the two quotients tend to $u'$ and $v'$, while $\Delta u\to0$ because a differentiable $u$ is continuous. The corner term disappears, leaving $u'v+uv'$.
+
+**Quotient.** If $q=u/v$ and $v\ne0$, then $u=qv$, so $u'=q'v+qv'$ and
+
+$$
+q'=\frac{u'-qv'}{v}=\frac{u'v-uv'}{v^2}.
+$$
+
+This derivation divides by $v$; it is meaningless where $v=0$.
+
+## Worked example
+
+Take $u=x+1$, $v=x^2+1$ at $x=1$. Then $u=2$, $v=2$, $u'=1$, $v'=2$.
+
+* Product: $(uv)'=1\cdot2+2\cdot2=6$. Expanding first, $uv=x^3+x^2+x+1$ has derivative $3x^2+2x+1=6$.
+* Quotient: $(u/v)'=(1\cdot2-2\cdot2)/2^2=-1/2$.
+
+With $\Delta x=1/2$: $u$ grows to $2.5$ and $v$ to $3.25$. The area changes by $8.125-4=4.125$, which is $v\Delta u=1$ plus $u\Delta v=2.5$ plus $\Delta u\Delta v=0.625$.
+
+<Stage caption="Replay: evaluate the factors, differentiate each, then combine with the rule and check."><RulesStage worked client:load /></Stage>
+
+## Domains and failures
+
+A quotient rule result exists only where the quotient itself exists. For $v=x^2-1$ the quotient $u/v$ is undefined at $x=\pm1$. At $x=-1$ with $u=x+1$, cancelling $x+1$ removes a hole, but the derivative at $-1$ still does not exist in the original function, because the original function has no value there. The explorer draws dashed caution lines where $v$ vanishes.
+
+## Executable reference code
+
+The reference checks the product and quotient rules against expansion with `Fraction` and raises an error where the denominator is zero. The NumPy version differentiates polynomial products with `numpy.polynomial` and masks points where a quotient is undefined.
+
+<CodeFile source={reference} file="code/python/calculus_rules.py" />
+<CodeFile source={practical} file="code/python/calculus_rules_numpy.py" />
+
+## Explore
+
+Make $u$ negative with **Negative factor**: the area picture still balances, with signed strips. Set $a=0$ so $u$ is constant: the product rule reduces to $(\text{constant}\cdot v)'=\text{constant}\cdot v'$. In quotient mode, move $c$ below zero and slide $x$ toward a root of $v$.
+
+## Common mistakes
+
+$(uv)'\ne u'v'$: try $u=v=x$. In the quotient rule, the order $u'v-uv'$ matters. A rule result is not valid at points where the function is undefined, even if the formula's numerator looks harmless.
+
+## Numerical considerations
+
+These rules are exact identities; numerical issues appear only in evaluation. A quotient near a zero of $v$ divides by a tiny number, amplifying any error in $u$ or $v$; the derivative $u'v-uv'$ over $v^2$ amplifies even more. Exact arithmetic sidesteps this here; floating-point code should check how close $v$ is to zero.
+
+## Engineering and ML connections
+
+Automatic differentiation (III.10) applies exactly these local rules — sum, product, quotient — at every node of a computation. Normalisations such as softmax or layer normalisation contain quotients, and their derivatives inherit the same domain restrictions near a vanishing denominator.
+
+## Exercises
+
+<Exercise id="iii5-product" client:load />
+<Exercise id="iii5-quotient" client:load />
+<Exercise id="iii5-increment" client:load />
+<Exercise id="iii5-wrong" client:load />
+<Exercise id="iii5-domain" client:load />
+
+## Summary and checkpoints
+
+Derivatives are linear; a product's rate weights each factor's rate by the other factor's value; a quotient's rule follows from the product rule and holds only where the denominator is nonzero. Next, III.6 handles functions of functions: the chain rule.

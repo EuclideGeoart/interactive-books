@@ -1,0 +1,4825 @@
+{
+ "method": "Fraction secants; derivative by exact Lagrange interpolation of m(h) at h = 0; Decimal(60) Taylor series for sin/cos/exp; one-sided classification from exact secants on each side",
+ "tolerance": "exact strings must match exactly; binary64 secants within 8 * 2^-52 * (|f(x+h)| + |f(x)|)/|h| (rounding of two values, one subtraction, one division); binary64 derivatives within 4 ulps of the 60-digit reference",
+ "secant": [
+  {
+   "fn": "cubic",
+   "x": "-2",
+   "h": "1",
+   "secant": {
+    "kind": "value",
+    "exact": "1/6"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "1"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "-2",
+   "h": "1/2",
+   "secant": {
+    "kind": "value",
+    "exact": "13/24"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "1"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "-2",
+   "h": "-1/4",
+   "secant": {
+    "kind": "value",
+    "exact": "121/96"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "1"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "-2",
+   "h": "1/100",
+   "secant": {
+    "kind": "value",
+    "exact": "59401/60000"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "1"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "-2",
+   "h": "-2",
+   "secant": {
+    "kind": "value",
+    "exact": "11/3"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "1"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "-2",
+   "h": "0",
+   "secant": {
+    "kind": "undefined",
+    "reason": "division by zero"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "1"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "-3/2",
+   "h": "1",
+   "secant": {
+    "kind": "value",
+    "exact": "-11/24"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "1/8"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1/8"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "1/8"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "-3/2",
+   "h": "1/2",
+   "secant": {
+    "kind": "value",
+    "exact": "-5/24"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "1/8"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1/8"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "1/8"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "-3/2",
+   "h": "-1/4",
+   "secant": {
+    "kind": "value",
+    "exact": "31/96"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "1/8"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1/8"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "1/8"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "-3/2",
+   "h": "1/100",
+   "secant": {
+    "kind": "value",
+    "exact": "7051/60000"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "1/8"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1/8"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "1/8"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "-3/2",
+   "h": "-2",
+   "secant": {
+    "kind": "value",
+    "exact": "55/24"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "1/8"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1/8"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "1/8"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "-3/2",
+   "h": "0",
+   "secant": {
+    "kind": "undefined",
+    "reason": "division by zero"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "1/8"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1/8"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "1/8"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "-3/4",
+   "h": "1",
+   "secant": {
+    "kind": "value",
+    "exact": "-89/96"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-23/32"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-23/32"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-23/32"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "-3/4",
+   "h": "1/2",
+   "secant": {
+    "kind": "value",
+    "exact": "-83/96"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-23/32"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-23/32"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-23/32"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "-3/4",
+   "h": "-1/4",
+   "secant": {
+    "kind": "value",
+    "exact": "-59/96"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-23/32"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-23/32"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-23/32"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "-3/4",
+   "h": "1/100",
+   "secant": {
+    "kind": "value",
+    "exact": "-43349/60000"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-23/32"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-23/32"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-23/32"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "-3/4",
+   "h": "-2",
+   "secant": {
+    "kind": "value",
+    "exact": "67/96"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-23/32"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-23/32"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-23/32"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "-3/4",
+   "h": "0",
+   "secant": {
+    "kind": "undefined",
+    "reason": "division by zero"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-23/32"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-23/32"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-23/32"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "0",
+   "h": "1",
+   "secant": {
+    "kind": "value",
+    "exact": "-5/6"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-1"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "0",
+   "h": "1/2",
+   "secant": {
+    "kind": "value",
+    "exact": "-23/24"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-1"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "0",
+   "h": "-1/4",
+   "secant": {
+    "kind": "value",
+    "exact": "-95/96"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-1"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "0",
+   "h": "1/100",
+   "secant": {
+    "kind": "value",
+    "exact": "-59999/60000"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-1"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "0",
+   "h": "-2",
+   "secant": {
+    "kind": "value",
+    "exact": "-1/3"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-1"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "0",
+   "h": "0",
+   "secant": {
+    "kind": "undefined",
+    "reason": "division by zero"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-1"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "1/2",
+   "h": "1",
+   "secant": {
+    "kind": "value",
+    "exact": "-11/24"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-7/8"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-7/8"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-7/8"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "1/2",
+   "h": "1/2",
+   "secant": {
+    "kind": "value",
+    "exact": "-17/24"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-7/8"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-7/8"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-7/8"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "1/2",
+   "h": "-1/4",
+   "secant": {
+    "kind": "value",
+    "exact": "-89/96"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-7/8"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-7/8"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-7/8"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "1/2",
+   "h": "1/100",
+   "secant": {
+    "kind": "value",
+    "exact": "-52349/60000"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-7/8"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-7/8"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-7/8"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "1/2",
+   "h": "-2",
+   "secant": {
+    "kind": "value",
+    "exact": "-17/24"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-7/8"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-7/8"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-7/8"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "1/2",
+   "h": "0",
+   "secant": {
+    "kind": "undefined",
+    "reason": "division by zero"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-7/8"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-7/8"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-7/8"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "1",
+   "h": "1",
+   "secant": {
+    "kind": "value",
+    "exact": "1/6"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-1/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-1/2"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-1/2"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "1",
+   "h": "1/2",
+   "secant": {
+    "kind": "value",
+    "exact": "-5/24"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-1/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-1/2"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-1/2"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "1",
+   "h": "-1/4",
+   "secant": {
+    "kind": "value",
+    "exact": "-59/96"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-1/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-1/2"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-1/2"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "1",
+   "h": "1/100",
+   "secant": {
+    "kind": "value",
+    "exact": "-29699/60000"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-1/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-1/2"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-1/2"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "1",
+   "h": "-2",
+   "secant": {
+    "kind": "value",
+    "exact": "-5/6"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-1/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-1/2"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-1/2"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "1",
+   "h": "0",
+   "secant": {
+    "kind": "undefined",
+    "reason": "division by zero"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-1/2"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-1/2"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-1/2"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "5/4",
+   "h": "1",
+   "secant": {
+    "kind": "value",
+    "exact": "55/96"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-7/32"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-7/32"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-7/32"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "5/4",
+   "h": "1/2",
+   "secant": {
+    "kind": "value",
+    "exact": "13/96"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-7/32"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-7/32"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-7/32"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "5/4",
+   "h": "-1/4",
+   "secant": {
+    "kind": "value",
+    "exact": "-35/96"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-7/32"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-7/32"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-7/32"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "5/4",
+   "h": "1/100",
+   "secant": {
+    "kind": "value",
+    "exact": "-12749/60000"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-7/32"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-7/32"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-7/32"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "5/4",
+   "h": "-2",
+   "secant": {
+    "kind": "value",
+    "exact": "-77/96"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-7/32"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-7/32"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-7/32"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "5/4",
+   "h": "0",
+   "secant": {
+    "kind": "undefined",
+    "reason": "division by zero"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-7/32"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-7/32"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-7/32"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "5/2",
+   "h": "1",
+   "secant": {
+    "kind": "value",
+    "exact": "85/24"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "17/8"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "17/8"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "17/8"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "5/2",
+   "h": "1/2",
+   "secant": {
+    "kind": "value",
+    "exact": "67/24"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "17/8"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "17/8"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "17/8"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "5/2",
+   "h": "-1/4",
+   "secant": {
+    "kind": "value",
+    "exact": "175/96"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "17/8"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "17/8"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "17/8"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "5/2",
+   "h": "1/100",
+   "secant": {
+    "kind": "value",
+    "exact": "128251/60000"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "17/8"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "17/8"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "17/8"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "5/2",
+   "h": "-2",
+   "secant": {
+    "kind": "value",
+    "exact": "7/24"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "17/8"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "17/8"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "17/8"
+   }
+  },
+  {
+   "fn": "cubic",
+   "x": "5/2",
+   "h": "0",
+   "secant": {
+    "kind": "undefined",
+    "reason": "division by zero"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "17/8"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "17/8"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "17/8"
+   }
+  },
+  {
+   "fn": "abs",
+   "x": "-1",
+   "h": "1",
+   "secant": {
+    "kind": "value",
+    "exact": "-1"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-1"
+   }
+  },
+  {
+   "fn": "jump",
+   "x": "-1",
+   "h": "1",
+   "secant": {
+    "kind": "value",
+    "exact": "2"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "0"
+   }
+  },
+  {
+   "fn": "abs",
+   "x": "-1",
+   "h": "-1",
+   "secant": {
+    "kind": "value",
+    "exact": "-1"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-1"
+   }
+  },
+  {
+   "fn": "jump",
+   "x": "-1",
+   "h": "-1",
+   "secant": {
+    "kind": "value",
+    "exact": "0"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "0"
+   }
+  },
+  {
+   "fn": "abs",
+   "x": "-1",
+   "h": "1/4",
+   "secant": {
+    "kind": "value",
+    "exact": "-1"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-1"
+   }
+  },
+  {
+   "fn": "jump",
+   "x": "-1",
+   "h": "1/4",
+   "secant": {
+    "kind": "value",
+    "exact": "0"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "0"
+   }
+  },
+  {
+   "fn": "abs",
+   "x": "-1",
+   "h": "-1/4",
+   "secant": {
+    "kind": "value",
+    "exact": "-1"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "-1"
+   }
+  },
+  {
+   "fn": "jump",
+   "x": "-1",
+   "h": "-1/4",
+   "secant": {
+    "kind": "value",
+    "exact": "0"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "0"
+   }
+  },
+  {
+   "fn": "abs",
+   "x": "0",
+   "h": "1",
+   "secant": {
+    "kind": "value",
+    "exact": "1"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "derivative": {
+    "kind": "undefined"
+   }
+  },
+  {
+   "fn": "jump",
+   "x": "0",
+   "h": "1",
+   "secant": {
+    "kind": "value",
+    "exact": "0"
+   },
+   "left": {
+    "kind": "none"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "derivative": {
+    "kind": "undefined"
+   }
+  },
+  {
+   "fn": "abs",
+   "x": "0",
+   "h": "-1",
+   "secant": {
+    "kind": "value",
+    "exact": "-1"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "derivative": {
+    "kind": "undefined"
+   }
+  },
+  {
+   "fn": "jump",
+   "x": "0",
+   "h": "-1",
+   "secant": {
+    "kind": "value",
+    "exact": "2"
+   },
+   "left": {
+    "kind": "none"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "derivative": {
+    "kind": "undefined"
+   }
+  },
+  {
+   "fn": "abs",
+   "x": "0",
+   "h": "1/4",
+   "secant": {
+    "kind": "value",
+    "exact": "1"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "derivative": {
+    "kind": "undefined"
+   }
+  },
+  {
+   "fn": "jump",
+   "x": "0",
+   "h": "1/4",
+   "secant": {
+    "kind": "value",
+    "exact": "0"
+   },
+   "left": {
+    "kind": "none"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "derivative": {
+    "kind": "undefined"
+   }
+  },
+  {
+   "fn": "abs",
+   "x": "0",
+   "h": "-1/4",
+   "secant": {
+    "kind": "value",
+    "exact": "-1"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "-1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "derivative": {
+    "kind": "undefined"
+   }
+  },
+  {
+   "fn": "jump",
+   "x": "0",
+   "h": "-1/4",
+   "secant": {
+    "kind": "value",
+    "exact": "8"
+   },
+   "left": {
+    "kind": "none"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "derivative": {
+    "kind": "undefined"
+   }
+  },
+  {
+   "fn": "abs",
+   "x": "1/2",
+   "h": "1",
+   "secant": {
+    "kind": "value",
+    "exact": "1"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "1"
+   }
+  },
+  {
+   "fn": "jump",
+   "x": "1/2",
+   "h": "1",
+   "secant": {
+    "kind": "value",
+    "exact": "0"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "0"
+   }
+  },
+  {
+   "fn": "abs",
+   "x": "1/2",
+   "h": "-1",
+   "secant": {
+    "kind": "value",
+    "exact": "0"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "1"
+   }
+  },
+  {
+   "fn": "jump",
+   "x": "1/2",
+   "h": "-1",
+   "secant": {
+    "kind": "value",
+    "exact": "2"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "0"
+   }
+  },
+  {
+   "fn": "abs",
+   "x": "1/2",
+   "h": "1/4",
+   "secant": {
+    "kind": "value",
+    "exact": "1"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "1"
+   }
+  },
+  {
+   "fn": "jump",
+   "x": "1/2",
+   "h": "1/4",
+   "secant": {
+    "kind": "value",
+    "exact": "0"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "0"
+   }
+  },
+  {
+   "fn": "abs",
+   "x": "1/2",
+   "h": "-1/4",
+   "secant": {
+    "kind": "value",
+    "exact": "1"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "1"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "1"
+   }
+  },
+  {
+   "fn": "jump",
+   "x": "1/2",
+   "h": "-1/4",
+   "secant": {
+    "kind": "value",
+    "exact": "0"
+   },
+   "left": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "right": {
+    "kind": "finite",
+    "exact": "0"
+   },
+   "derivative": {
+    "kind": "finite",
+    "exact": "0"
+   }
+  },
+  {
+   "fn": "cbrt",
+   "x": "-1",
+   "h": "1",
+   "secant": {
+    "kind": "value",
+    "value": 1.0,
+    "scale": 1.0
+   },
+   "left": {
+    "kind": "finite",
+    "value": 0.3333333333333333
+   },
+   "right": {
+    "kind": "finite",
+    "value": 0.3333333333333333
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 0.3333333333333333
+   }
+  },
+  {
+   "fn": "sin",
+   "x": "-1",
+   "h": "1",
+   "secant": {
+    "kind": "value",
+    "value": 0.8414709848078965,
+    "scale": 0.8414709848078965
+   },
+   "left": {
+    "kind": "finite",
+    "value": 0.5403023058681398
+   },
+   "right": {
+    "kind": "finite",
+    "value": 0.5403023058681398
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 0.5403023058681398
+   }
+  },
+  {
+   "fn": "cbrt",
+   "x": "-1",
+   "h": "-1/2",
+   "secant": {
+    "kind": "value",
+    "value": 0.28942848510666375,
+    "scale": 4.289428485106663
+   },
+   "left": {
+    "kind": "finite",
+    "value": 0.3333333333333333
+   },
+   "right": {
+    "kind": "finite",
+    "value": 0.3333333333333333
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 0.3333333333333333
+   }
+  },
+  {
+   "fn": "sin",
+   "x": "-1",
+   "h": "-1/2",
+   "secant": {
+    "kind": "value",
+    "value": 0.3120480035923158,
+    "scale": 3.6779319428239017
+   },
+   "left": {
+    "kind": "finite",
+    "value": 0.5403023058681398
+   },
+   "right": {
+    "kind": "finite",
+    "value": 0.5403023058681398
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 0.5403023058681398
+   }
+  },
+  {
+   "fn": "cbrt",
+   "x": "-1",
+   "h": "1/100",
+   "secant": {
+    "kind": "value",
+    "value": 0.3344506587403636,
+    "scale": 199.66554934125963
+   },
+   "left": {
+    "kind": "finite",
+    "value": 0.3333333333333333
+   },
+   "right": {
+    "kind": "finite",
+    "value": 0.3333333333333333
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 0.3333333333333333
+   }
+  },
+  {
+   "fn": "sin",
+   "x": "-1",
+   "h": "1/100",
+   "secant": {
+    "kind": "value",
+    "value": 0.544500620737599,
+    "scale": 167.7496963408417
+   },
+   "left": {
+    "kind": "finite",
+    "value": 0.5403023058681398
+   },
+   "right": {
+    "kind": "finite",
+    "value": 0.5403023058681398
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 0.5403023058681398
+   }
+  },
+  {
+   "fn": "cbrt",
+   "x": "0",
+   "h": "1",
+   "secant": {
+    "kind": "value",
+    "value": 1.0,
+    "scale": 1.0
+   },
+   "left": {
+    "kind": "infinite",
+    "sign": 1
+   },
+   "right": {
+    "kind": "infinite",
+    "sign": 1
+   },
+   "derivative": {
+    "kind": "undefined"
+   }
+  },
+  {
+   "fn": "sin",
+   "x": "0",
+   "h": "1",
+   "secant": {
+    "kind": "value",
+    "value": 0.8414709848078965,
+    "scale": 0.8414709848078965
+   },
+   "left": {
+    "kind": "finite",
+    "value": 1.0
+   },
+   "right": {
+    "kind": "finite",
+    "value": 1.0
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 1.0
+   }
+  },
+  {
+   "fn": "cbrt",
+   "x": "0",
+   "h": "-1/2",
+   "secant": {
+    "kind": "value",
+    "value": 1.5874010519681996,
+    "scale": 1.5874010519681996
+   },
+   "left": {
+    "kind": "infinite",
+    "sign": 1
+   },
+   "right": {
+    "kind": "infinite",
+    "sign": 1
+   },
+   "derivative": {
+    "kind": "undefined"
+   }
+  },
+  {
+   "fn": "sin",
+   "x": "0",
+   "h": "-1/2",
+   "secant": {
+    "kind": "value",
+    "value": 0.958851077208406,
+    "scale": 0.958851077208406
+   },
+   "left": {
+    "kind": "finite",
+    "value": 1.0
+   },
+   "right": {
+    "kind": "finite",
+    "value": 1.0
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 1.0
+   }
+  },
+  {
+   "fn": "cbrt",
+   "x": "0",
+   "h": "1/100",
+   "secant": {
+    "kind": "value",
+    "value": 21.544346900318835,
+    "scale": 21.544346900318835
+   },
+   "left": {
+    "kind": "infinite",
+    "sign": 1
+   },
+   "right": {
+    "kind": "infinite",
+    "sign": 1
+   },
+   "derivative": {
+    "kind": "undefined"
+   }
+  },
+  {
+   "fn": "sin",
+   "x": "0",
+   "h": "1/100",
+   "secant": {
+    "kind": "value",
+    "value": 0.9999833334166665,
+    "scale": 0.9999833334166665
+   },
+   "left": {
+    "kind": "finite",
+    "value": 1.0
+   },
+   "right": {
+    "kind": "finite",
+    "value": 1.0
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 1.0
+   }
+  },
+  {
+   "fn": "cbrt",
+   "x": "1/4",
+   "h": "1",
+   "secant": {
+    "kind": "value",
+    "value": 0.44725682006850526,
+    "scale": 1.7071778699633784
+   },
+   "left": {
+    "kind": "finite",
+    "value": 0.8399473665965821
+   },
+   "right": {
+    "kind": "finite",
+    "value": 0.8399473665965821
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 0.8399473665965821
+   }
+  },
+  {
+   "fn": "sin",
+   "x": "1/4",
+   "h": "1",
+   "secant": {
+    "kind": "value",
+    "value": 0.7015806601010632,
+    "scale": 1.1963885786101092
+   },
+   "left": {
+    "kind": "finite",
+    "value": 0.9689124217106447
+   },
+   "right": {
+    "kind": "finite",
+    "value": 0.9689124217106447
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 0.9689124217106447
+   }
+  },
+  {
+   "fn": "cbrt",
+   "x": "1/4",
+   "h": "-1/2",
+   "secant": {
+    "kind": "value",
+    "value": 2.5198420997897464,
+    "scale": 2.5198420997897464
+   },
+   "left": {
+    "kind": "finite",
+    "value": 0.8399473665965821
+   },
+   "right": {
+    "kind": "finite",
+    "value": 0.8399473665965821
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 0.8399473665965821
+   }
+  },
+  {
+   "fn": "sin",
+   "x": "1/4",
+   "h": "-1/2",
+   "secant": {
+    "kind": "value",
+    "value": 0.9896158370180917,
+    "scale": 0.9896158370180917
+   },
+   "left": {
+    "kind": "finite",
+    "value": 0.9689124217106447
+   },
+   "right": {
+    "kind": "finite",
+    "value": 0.9689124217106447
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 0.9689124217106447
+   }
+  },
+  {
+   "fn": "cbrt",
+   "x": "1/4",
+   "h": "1/100",
+   "secant": {
+    "kind": "value",
+    "value": 0.8289904938554166,
+    "scale": 126.82109548334273
+   },
+   "left": {
+    "kind": "finite",
+    "value": 0.8399473665965821
+   },
+   "right": {
+    "kind": "finite",
+    "value": 0.8399473665965821
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 0.8399473665965821
+   }
+  },
+  {
+   "fn": "sin",
+   "x": "1/4",
+   "h": "1/100",
+   "secant": {
+    "kind": "value",
+    "value": 0.9676592637632168,
+    "scale": 50.448451114667805
+   },
+   "left": {
+    "kind": "finite",
+    "value": 0.9689124217106447
+   },
+   "right": {
+    "kind": "finite",
+    "value": 0.9689124217106447
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 0.9689124217106447
+   }
+  },
+  {
+   "fn": "cbrt",
+   "x": "3/2",
+   "h": "1",
+   "secant": {
+    "kind": "value",
+    "value": 0.21249456574412143,
+    "scale": 2.501923050850785
+   },
+   "left": {
+    "kind": "finite",
+    "value": 0.2543809427896293
+   },
+   "right": {
+    "kind": "finite",
+    "value": 0.2543809427896293
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 0.2543809427896293
+   }
+  },
+  {
+   "fn": "sin",
+   "x": "3/2",
+   "h": "1",
+   "secant": {
+    "kind": "value",
+    "value": -0.39902284250009795,
+    "scale": 1.595967130708011
+   },
+   "left": {
+    "kind": "finite",
+    "value": 0.0707372016677029
+   },
+   "right": {
+    "kind": "finite",
+    "value": 0.0707372016677029
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 0.0707372016677029
+   }
+  },
+  {
+   "fn": "cbrt",
+   "x": "3/2",
+   "h": "-1/2",
+   "secant": {
+    "kind": "value",
+    "value": 0.28942848510666375,
+    "scale": 4.289428485106663
+   },
+   "left": {
+    "kind": "finite",
+    "value": 0.2543809427896293
+   },
+   "right": {
+    "kind": "finite",
+    "value": 0.2543809427896293
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 0.2543809427896293
+   }
+  },
+  {
+   "fn": "sin",
+   "x": "3/2",
+   "h": "-1/2",
+   "secant": {
+    "kind": "value",
+    "value": 0.3120480035923158,
+    "scale": 3.6779319428239017
+   },
+   "left": {
+    "kind": "finite",
+    "value": 0.0707372016677029
+   },
+   "right": {
+    "kind": "finite",
+    "value": 0.0707372016677029
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 0.0707372016677029
+   }
+  },
+  {
+   "fn": "cbrt",
+   "x": "3/2",
+   "h": "1/100",
+   "secant": {
+    "kind": "value",
+    "value": 0.2538177362160195,
+    "scale": 229.1966662468824
+   },
+   "left": {
+    "kind": "finite",
+    "value": 0.2543809427896293
+   },
+   "right": {
+    "kind": "finite",
+    "value": 0.2543809427896293
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 0.2543809427896293
+   }
+  },
+  {
+   "fn": "sin",
+   "x": "3/2",
+   "h": "1/100",
+   "secant": {
+    "kind": "value",
+    "value": 0.06574858934936884,
+    "scale": 199.56474591016027
+   },
+   "left": {
+    "kind": "finite",
+    "value": 0.0707372016677029
+   },
+   "right": {
+    "kind": "finite",
+    "value": 0.0707372016677029
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 0.0707372016677029
+   }
+  },
+  {
+   "fn": "sqrt",
+   "x": "0",
+   "h": "1",
+   "secant": {
+    "kind": "value",
+    "value": 1.0,
+    "scale": 1.0
+   },
+   "left": {
+    "kind": "none"
+   },
+   "right": {
+    "kind": "infinite",
+    "sign": 1
+   },
+   "derivative": {
+    "kind": "undefined"
+   }
+  },
+  {
+   "fn": "sqrt",
+   "x": "0",
+   "h": "1/2",
+   "secant": {
+    "kind": "value",
+    "value": 1.4142135623730951,
+    "scale": 1.4142135623730951
+   },
+   "left": {
+    "kind": "none"
+   },
+   "right": {
+    "kind": "infinite",
+    "sign": 1
+   },
+   "derivative": {
+    "kind": "undefined"
+   }
+  },
+  {
+   "fn": "sqrt",
+   "x": "0",
+   "h": "-1/4",
+   "secant": {
+    "kind": "undefined",
+    "reason": "outside the domain"
+   },
+   "left": {
+    "kind": "none"
+   },
+   "right": {
+    "kind": "infinite",
+    "sign": 1
+   },
+   "derivative": {
+    "kind": "undefined"
+   }
+  },
+  {
+   "fn": "sqrt",
+   "x": "1/4",
+   "h": "1",
+   "secant": {
+    "kind": "value",
+    "value": 0.6180339887498949,
+    "scale": 1.618033988749895
+   },
+   "left": {
+    "kind": "finite",
+    "value": 1.0
+   },
+   "right": {
+    "kind": "finite",
+    "value": 1.0
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 1.0
+   }
+  },
+  {
+   "fn": "sqrt",
+   "x": "1/4",
+   "h": "1/2",
+   "secant": {
+    "kind": "value",
+    "value": 0.7320508075688773,
+    "scale": 2.732050807568877
+   },
+   "left": {
+    "kind": "finite",
+    "value": 1.0
+   },
+   "right": {
+    "kind": "finite",
+    "value": 1.0
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 1.0
+   }
+  },
+  {
+   "fn": "sqrt",
+   "x": "1/4",
+   "h": "-1/4",
+   "secant": {
+    "kind": "value",
+    "value": 2.0,
+    "scale": 2.0
+   },
+   "left": {
+    "kind": "finite",
+    "value": 1.0
+   },
+   "right": {
+    "kind": "finite",
+    "value": 1.0
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 1.0
+   }
+  },
+  {
+   "fn": "sqrt",
+   "x": "1",
+   "h": "1",
+   "secant": {
+    "kind": "value",
+    "value": 0.41421356237309503,
+    "scale": 2.414213562373095
+   },
+   "left": {
+    "kind": "finite",
+    "value": 0.5
+   },
+   "right": {
+    "kind": "finite",
+    "value": 0.5
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 0.5
+   }
+  },
+  {
+   "fn": "sqrt",
+   "x": "1",
+   "h": "1/2",
+   "secant": {
+    "kind": "value",
+    "value": 0.4494897427831781,
+    "scale": 4.449489742783178
+   },
+   "left": {
+    "kind": "finite",
+    "value": 0.5
+   },
+   "right": {
+    "kind": "finite",
+    "value": 0.5
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 0.5
+   }
+  },
+  {
+   "fn": "sqrt",
+   "x": "1",
+   "h": "-1/4",
+   "secant": {
+    "kind": "value",
+    "value": 0.5358983848622454,
+    "scale": 7.464101615137754
+   },
+   "left": {
+    "kind": "finite",
+    "value": 0.5
+   },
+   "right": {
+    "kind": "finite",
+    "value": 0.5
+   },
+   "derivative": {
+    "kind": "finite",
+    "value": 0.5
+   }
+  }
+ ],
+ "linear": [
+  {
+   "fn": "cubic",
+   "x0": "-2",
+   "dx": "1",
+   "slope": "1",
+   "linear": "5/3",
+   "error": "-5/6"
+  },
+  {
+   "fn": "cubic",
+   "x0": "-2",
+   "dx": "-1/2",
+   "slope": "1",
+   "linear": "1/6",
+   "error": "-13/48"
+  },
+  {
+   "fn": "cubic",
+   "x0": "-2",
+   "dx": "1/4",
+   "slope": "1",
+   "linear": "11/12",
+   "error": "-23/384"
+  },
+  {
+   "fn": "cubic",
+   "x0": "-2",
+   "dx": "5/2",
+   "slope": "1",
+   "linear": "19/6",
+   "error": "-175/48"
+  },
+  {
+   "fn": "cubic",
+   "x0": "-2",
+   "dx": "0",
+   "slope": "1",
+   "linear": "2/3",
+   "error": "0"
+  },
+  {
+   "fn": "cubic",
+   "x0": "-1/2",
+   "dx": "1",
+   "slope": "-7/8",
+   "linear": "-19/48",
+   "error": "-1/12"
+  },
+  {
+   "fn": "cubic",
+   "x0": "-1/2",
+   "dx": "-1/2",
+   "slope": "-7/8",
+   "linear": "11/12",
+   "error": "-1/12"
+  },
+  {
+   "fn": "cubic",
+   "x0": "-1/2",
+   "dx": "1/4",
+   "slope": "-7/8",
+   "linear": "25/96",
+   "error": "-5/384"
+  },
+  {
+   "fn": "cubic",
+   "x0": "-1/2",
+   "dx": "5/2",
+   "slope": "-7/8",
+   "linear": "-41/24",
+   "error": "25/24"
+  },
+  {
+   "fn": "cubic",
+   "x0": "-1/2",
+   "dx": "0",
+   "slope": "-7/8",
+   "linear": "23/48",
+   "error": "0"
+  },
+  {
+   "fn": "cubic",
+   "x0": "0",
+   "dx": "1",
+   "slope": "-1",
+   "linear": "-1",
+   "error": "1/6"
+  },
+  {
+   "fn": "cubic",
+   "x0": "0",
+   "dx": "-1/2",
+   "slope": "-1",
+   "linear": "1/2",
+   "error": "-1/48"
+  },
+  {
+   "fn": "cubic",
+   "x0": "0",
+   "dx": "1/4",
+   "slope": "-1",
+   "linear": "-1/4",
+   "error": "1/384"
+  },
+  {
+   "fn": "cubic",
+   "x0": "0",
+   "dx": "5/2",
+   "slope": "-1",
+   "linear": "-5/2",
+   "error": "125/48"
+  },
+  {
+   "fn": "cubic",
+   "x0": "0",
+   "dx": "0",
+   "slope": "-1",
+   "linear": "0",
+   "error": "0"
+  },
+  {
+   "fn": "cubic",
+   "x0": "1",
+   "dx": "1",
+   "slope": "-1/2",
+   "linear": "-4/3",
+   "error": "2/3"
+  },
+  {
+   "fn": "cubic",
+   "x0": "1",
+   "dx": "-1/2",
+   "slope": "-1/2",
+   "linear": "-7/12",
+   "error": "5/48"
+  },
+  {
+   "fn": "cubic",
+   "x0": "1",
+   "dx": "1/4",
+   "slope": "-1/2",
+   "linear": "-23/24",
+   "error": "13/384"
+  },
+  {
+   "fn": "cubic",
+   "x0": "1",
+   "dx": "5/2",
+   "slope": "-1/2",
+   "linear": "-25/12",
+   "error": "275/48"
+  },
+  {
+   "fn": "cubic",
+   "x0": "1",
+   "dx": "0",
+   "slope": "-1/2",
+   "linear": "-5/6",
+   "error": "0"
+  },
+  {
+   "fn": "cubic",
+   "x0": "7/4",
+   "dx": "1",
+   "slope": "17/32",
+   "linear": "-125/384",
+   "error": "25/24"
+  },
+  {
+   "fn": "cubic",
+   "x0": "7/4",
+   "dx": "-1/2",
+   "slope": "17/32",
+   "linear": "-431/384",
+   "error": "19/96"
+  },
+  {
+   "fn": "cubic",
+   "x0": "7/4",
+   "dx": "1/4",
+   "slope": "17/32",
+   "linear": "-139/192",
+   "error": "11/192"
+  },
+  {
+   "fn": "cubic",
+   "x0": "7/4",
+   "dx": "5/2",
+   "slope": "17/32",
+   "linear": "181/384",
+   "error": "775/96"
+  },
+  {
+   "fn": "cubic",
+   "x0": "7/4",
+   "dx": "0",
+   "slope": "17/32",
+   "linear": "-329/384",
+   "error": "0"
+  },
+  {
+   "fn": "sin",
+   "x0": "0",
+   "dx": "1",
+   "slope": 1.0,
+   "linear": 1.0,
+   "error": -0.1585290151921035,
+   "scale": 1.8414709848078965
+  },
+  {
+   "fn": "sin",
+   "x0": "0",
+   "dx": "-1/4",
+   "slope": 1.0,
+   "linear": -0.25,
+   "error": 0.0025960407454770702,
+   "scale": 0.4974039592545229
+  },
+  {
+   "fn": "sin",
+   "x0": "0",
+   "dx": "1/100",
+   "slope": 1.0,
+   "linear": 0.01,
+   "error": -1.6666583333531747e-07,
+   "scale": 0.019999833334166665
+  },
+  {
+   "fn": "sin",
+   "x0": "1/2",
+   "dx": "1",
+   "slope": 0.8775825618903728,
+   "linear": 1.3570081004945758,
+   "error": -0.35951311389052126,
+   "scale": 2.3545030870986303
+  },
+  {
+   "fn": "sin",
+   "x0": "1/2",
+   "dx": "-1/4",
+   "slope": 0.8775825618903728,
+   "linear": 0.2600298981316098,
+   "error": -0.012625938877086892,
+   "scale": 0.9462251383313192
+  },
+  {
+   "fn": "sin",
+   "x0": "1/2",
+   "dx": "1/100",
+   "slope": 0.8775825618903728,
+   "linear": 0.4882013642231067,
+   "error": -2.4117340199232933e-05,
+   "scale": 0.9763786111060142
+  },
+  {
+   "fn": "sin",
+   "x0": "-5/4",
+   "dx": "1",
+   "slope": 0.3153223623952687,
+   "linear": -0.6336622569603175,
+   "error": 0.3862582977057946,
+   "scale": 1.5117109410053777
+  },
+  {
+   "fn": "sin",
+   "x0": "-5/4",
+   "dx": "-1/4",
+   "slope": 0.3153223623952687,
+   "linear": -1.0278152099544033,
+   "error": 0.030320223350348948,
+   "scale": 2.0253101965584577
+  },
+  {
+   "fn": "sin",
+   "x0": "-5/4",
+   "dx": "1/100",
+   "slope": 0.3153223623952687,
+   "linear": -0.9458313957316336,
+   "error": 4.739628209454141e-05,
+   "scale": 1.8979218424290778
+  },
+  {
+   "fn": "exp",
+   "x0": "0",
+   "dx": "1",
+   "slope": 1.0,
+   "linear": 2.0,
+   "error": 0.7182818284590452,
+   "scale": 4.7182818284590455
+  },
+  {
+   "fn": "exp",
+   "x0": "0",
+   "dx": "-1/4",
+   "slope": 1.0,
+   "linear": 0.75,
+   "error": 0.028800783071404868,
+   "scale": 2.028800783071405
+  },
+  {
+   "fn": "exp",
+   "x0": "0",
+   "dx": "1/100",
+   "slope": 1.0,
+   "linear": 1.01,
+   "error": 5.016708416805754e-05,
+   "scale": 2.020050167084168
+  },
+  {
+   "fn": "exp",
+   "x0": "1/2",
+   "dx": "1",
+   "slope": 1.6487212707001282,
+   "linear": 3.2974425414002564,
+   "error": 1.1842465289378086,
+   "scale": 7.779131611738321
+  },
+  {
+   "fn": "exp",
+   "x0": "1/2",
+   "dx": "-1/4",
+   "slope": 1.6487212707001282,
+   "linear": 1.2365409530250961,
+   "error": 0.047484463662645374,
+   "scale": 3.344927005062902
+  },
+  {
+   "fn": "exp",
+   "x0": "1/2",
+   "dx": "1/100",
+   "slope": 1.6487212707001282,
+   "linear": 1.6652084834071295,
+   "error": 8.27115387568801e-05,
+   "scale": 3.3304996783530156
+  },
+  {
+   "fn": "exp",
+   "x0": "-5/4",
+   "dx": "1",
+   "slope": 0.2865047968601901,
+   "linear": 0.5730095937203802,
+   "error": 0.20579118935102467,
+   "scale": 1.351810376791785
+  },
+  {
+   "fn": "exp",
+   "x0": "-5/4",
+   "dx": "-1/4",
+   "slope": 0.2865047968601901,
+   "linear": 0.21487859764514258,
+   "error": 0.008251562503287254,
+   "scale": 0.5812611562236675
+  },
+  {
+   "fn": "exp",
+   "x0": "-5/4",
+   "dx": "1/100",
+   "slope": 0.2865047968601901,
+   "linear": 0.289369844828792,
+   "error": 1.4373110258637386e-05,
+   "scale": 0.5787540627678427
+  }
+ ],
+ "rules": [
+  {
+   "mode": "sum",
+   "a": "1",
+   "b": "1",
+   "c": "1",
+   "x": "-2",
+   "derivative": "-3"
+  },
+  {
+   "mode": "sum",
+   "a": "1",
+   "b": "1",
+   "c": "1",
+   "x": "-1",
+   "derivative": "-1"
+  },
+  {
+   "mode": "sum",
+   "a": "1",
+   "b": "1",
+   "c": "1",
+   "x": "0",
+   "derivative": "1"
+  },
+  {
+   "mode": "sum",
+   "a": "1",
+   "b": "1",
+   "c": "1",
+   "x": "1",
+   "derivative": "3"
+  },
+  {
+   "mode": "sum",
+   "a": "1",
+   "b": "1",
+   "c": "1",
+   "x": "3/2",
+   "derivative": "4"
+  },
+  {
+   "mode": "sum",
+   "a": "1",
+   "b": "1",
+   "c": "-1",
+   "x": "-2",
+   "derivative": "-3"
+  },
+  {
+   "mode": "sum",
+   "a": "1",
+   "b": "1",
+   "c": "-1",
+   "x": "-1",
+   "derivative": "-1"
+  },
+  {
+   "mode": "sum",
+   "a": "1",
+   "b": "1",
+   "c": "-1",
+   "x": "0",
+   "derivative": "1"
+  },
+  {
+   "mode": "sum",
+   "a": "1",
+   "b": "1",
+   "c": "-1",
+   "x": "1",
+   "derivative": "3"
+  },
+  {
+   "mode": "sum",
+   "a": "1",
+   "b": "1",
+   "c": "-1",
+   "x": "3/2",
+   "derivative": "4"
+  },
+  {
+   "mode": "sum",
+   "a": "1",
+   "b": "1",
+   "c": "0",
+   "x": "-2",
+   "derivative": "-3"
+  },
+  {
+   "mode": "sum",
+   "a": "1",
+   "b": "1",
+   "c": "0",
+   "x": "-1",
+   "derivative": "-1"
+  },
+  {
+   "mode": "sum",
+   "a": "1",
+   "b": "1",
+   "c": "0",
+   "x": "0",
+   "derivative": "1"
+  },
+  {
+   "mode": "sum",
+   "a": "1",
+   "b": "1",
+   "c": "0",
+   "x": "1",
+   "derivative": "3"
+  },
+  {
+   "mode": "sum",
+   "a": "1",
+   "b": "1",
+   "c": "0",
+   "x": "3/2",
+   "derivative": "4"
+  },
+  {
+   "mode": "sum",
+   "a": "1",
+   "b": "1",
+   "c": "-9/4",
+   "x": "-2",
+   "derivative": "-3"
+  },
+  {
+   "mode": "sum",
+   "a": "1",
+   "b": "1",
+   "c": "-9/4",
+   "x": "-1",
+   "derivative": "-1"
+  },
+  {
+   "mode": "sum",
+   "a": "1",
+   "b": "1",
+   "c": "-9/4",
+   "x": "0",
+   "derivative": "1"
+  },
+  {
+   "mode": "sum",
+   "a": "1",
+   "b": "1",
+   "c": "-9/4",
+   "x": "1",
+   "derivative": "3"
+  },
+  {
+   "mode": "sum",
+   "a": "1",
+   "b": "1",
+   "c": "-9/4",
+   "x": "3/2",
+   "derivative": "4"
+  },
+  {
+   "mode": "sum",
+   "a": "-1",
+   "b": "1/2",
+   "c": "1",
+   "x": "-2",
+   "derivative": "-5"
+  },
+  {
+   "mode": "sum",
+   "a": "-1",
+   "b": "1/2",
+   "c": "1",
+   "x": "-1",
+   "derivative": "-3"
+  },
+  {
+   "mode": "sum",
+   "a": "-1",
+   "b": "1/2",
+   "c": "1",
+   "x": "0",
+   "derivative": "-1"
+  },
+  {
+   "mode": "sum",
+   "a": "-1",
+   "b": "1/2",
+   "c": "1",
+   "x": "1",
+   "derivative": "1"
+  },
+  {
+   "mode": "sum",
+   "a": "-1",
+   "b": "1/2",
+   "c": "1",
+   "x": "3/2",
+   "derivative": "2"
+  },
+  {
+   "mode": "sum",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-1",
+   "x": "-2",
+   "derivative": "-5"
+  },
+  {
+   "mode": "sum",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-1",
+   "x": "-1",
+   "derivative": "-3"
+  },
+  {
+   "mode": "sum",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-1",
+   "x": "0",
+   "derivative": "-1"
+  },
+  {
+   "mode": "sum",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-1",
+   "x": "1",
+   "derivative": "1"
+  },
+  {
+   "mode": "sum",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-1",
+   "x": "3/2",
+   "derivative": "2"
+  },
+  {
+   "mode": "sum",
+   "a": "-1",
+   "b": "1/2",
+   "c": "0",
+   "x": "-2",
+   "derivative": "-5"
+  },
+  {
+   "mode": "sum",
+   "a": "-1",
+   "b": "1/2",
+   "c": "0",
+   "x": "-1",
+   "derivative": "-3"
+  },
+  {
+   "mode": "sum",
+   "a": "-1",
+   "b": "1/2",
+   "c": "0",
+   "x": "0",
+   "derivative": "-1"
+  },
+  {
+   "mode": "sum",
+   "a": "-1",
+   "b": "1/2",
+   "c": "0",
+   "x": "1",
+   "derivative": "1"
+  },
+  {
+   "mode": "sum",
+   "a": "-1",
+   "b": "1/2",
+   "c": "0",
+   "x": "3/2",
+   "derivative": "2"
+  },
+  {
+   "mode": "sum",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-9/4",
+   "x": "-2",
+   "derivative": "-5"
+  },
+  {
+   "mode": "sum",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-9/4",
+   "x": "-1",
+   "derivative": "-3"
+  },
+  {
+   "mode": "sum",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-9/4",
+   "x": "0",
+   "derivative": "-1"
+  },
+  {
+   "mode": "sum",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-9/4",
+   "x": "1",
+   "derivative": "1"
+  },
+  {
+   "mode": "sum",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-9/4",
+   "x": "3/2",
+   "derivative": "2"
+  },
+  {
+   "mode": "sum",
+   "a": "5/2",
+   "b": "-3",
+   "c": "1",
+   "x": "-2",
+   "derivative": "-3/2"
+  },
+  {
+   "mode": "sum",
+   "a": "5/2",
+   "b": "-3",
+   "c": "1",
+   "x": "-1",
+   "derivative": "1/2"
+  },
+  {
+   "mode": "sum",
+   "a": "5/2",
+   "b": "-3",
+   "c": "1",
+   "x": "0",
+   "derivative": "5/2"
+  },
+  {
+   "mode": "sum",
+   "a": "5/2",
+   "b": "-3",
+   "c": "1",
+   "x": "1",
+   "derivative": "9/2"
+  },
+  {
+   "mode": "sum",
+   "a": "5/2",
+   "b": "-3",
+   "c": "1",
+   "x": "3/2",
+   "derivative": "11/2"
+  },
+  {
+   "mode": "sum",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-1",
+   "x": "-2",
+   "derivative": "-3/2"
+  },
+  {
+   "mode": "sum",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-1",
+   "x": "-1",
+   "derivative": "1/2"
+  },
+  {
+   "mode": "sum",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-1",
+   "x": "0",
+   "derivative": "5/2"
+  },
+  {
+   "mode": "sum",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-1",
+   "x": "1",
+   "derivative": "9/2"
+  },
+  {
+   "mode": "sum",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-1",
+   "x": "3/2",
+   "derivative": "11/2"
+  },
+  {
+   "mode": "sum",
+   "a": "5/2",
+   "b": "-3",
+   "c": "0",
+   "x": "-2",
+   "derivative": "-3/2"
+  },
+  {
+   "mode": "sum",
+   "a": "5/2",
+   "b": "-3",
+   "c": "0",
+   "x": "-1",
+   "derivative": "1/2"
+  },
+  {
+   "mode": "sum",
+   "a": "5/2",
+   "b": "-3",
+   "c": "0",
+   "x": "0",
+   "derivative": "5/2"
+  },
+  {
+   "mode": "sum",
+   "a": "5/2",
+   "b": "-3",
+   "c": "0",
+   "x": "1",
+   "derivative": "9/2"
+  },
+  {
+   "mode": "sum",
+   "a": "5/2",
+   "b": "-3",
+   "c": "0",
+   "x": "3/2",
+   "derivative": "11/2"
+  },
+  {
+   "mode": "sum",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-9/4",
+   "x": "-2",
+   "derivative": "-3/2"
+  },
+  {
+   "mode": "sum",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-9/4",
+   "x": "-1",
+   "derivative": "1/2"
+  },
+  {
+   "mode": "sum",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-9/4",
+   "x": "0",
+   "derivative": "5/2"
+  },
+  {
+   "mode": "sum",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-9/4",
+   "x": "1",
+   "derivative": "9/2"
+  },
+  {
+   "mode": "sum",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-9/4",
+   "x": "3/2",
+   "derivative": "11/2"
+  },
+  {
+   "mode": "sum",
+   "a": "0",
+   "b": "2",
+   "c": "1",
+   "x": "-2",
+   "derivative": "-4"
+  },
+  {
+   "mode": "sum",
+   "a": "0",
+   "b": "2",
+   "c": "1",
+   "x": "-1",
+   "derivative": "-2"
+  },
+  {
+   "mode": "sum",
+   "a": "0",
+   "b": "2",
+   "c": "1",
+   "x": "0",
+   "derivative": "0"
+  },
+  {
+   "mode": "sum",
+   "a": "0",
+   "b": "2",
+   "c": "1",
+   "x": "1",
+   "derivative": "2"
+  },
+  {
+   "mode": "sum",
+   "a": "0",
+   "b": "2",
+   "c": "1",
+   "x": "3/2",
+   "derivative": "3"
+  },
+  {
+   "mode": "sum",
+   "a": "0",
+   "b": "2",
+   "c": "-1",
+   "x": "-2",
+   "derivative": "-4"
+  },
+  {
+   "mode": "sum",
+   "a": "0",
+   "b": "2",
+   "c": "-1",
+   "x": "-1",
+   "derivative": "-2"
+  },
+  {
+   "mode": "sum",
+   "a": "0",
+   "b": "2",
+   "c": "-1",
+   "x": "0",
+   "derivative": "0"
+  },
+  {
+   "mode": "sum",
+   "a": "0",
+   "b": "2",
+   "c": "-1",
+   "x": "1",
+   "derivative": "2"
+  },
+  {
+   "mode": "sum",
+   "a": "0",
+   "b": "2",
+   "c": "-1",
+   "x": "3/2",
+   "derivative": "3"
+  },
+  {
+   "mode": "sum",
+   "a": "0",
+   "b": "2",
+   "c": "0",
+   "x": "-2",
+   "derivative": "-4"
+  },
+  {
+   "mode": "sum",
+   "a": "0",
+   "b": "2",
+   "c": "0",
+   "x": "-1",
+   "derivative": "-2"
+  },
+  {
+   "mode": "sum",
+   "a": "0",
+   "b": "2",
+   "c": "0",
+   "x": "0",
+   "derivative": "0"
+  },
+  {
+   "mode": "sum",
+   "a": "0",
+   "b": "2",
+   "c": "0",
+   "x": "1",
+   "derivative": "2"
+  },
+  {
+   "mode": "sum",
+   "a": "0",
+   "b": "2",
+   "c": "0",
+   "x": "3/2",
+   "derivative": "3"
+  },
+  {
+   "mode": "sum",
+   "a": "0",
+   "b": "2",
+   "c": "-9/4",
+   "x": "-2",
+   "derivative": "-4"
+  },
+  {
+   "mode": "sum",
+   "a": "0",
+   "b": "2",
+   "c": "-9/4",
+   "x": "-1",
+   "derivative": "-2"
+  },
+  {
+   "mode": "sum",
+   "a": "0",
+   "b": "2",
+   "c": "-9/4",
+   "x": "0",
+   "derivative": "0"
+  },
+  {
+   "mode": "sum",
+   "a": "0",
+   "b": "2",
+   "c": "-9/4",
+   "x": "1",
+   "derivative": "2"
+  },
+  {
+   "mode": "sum",
+   "a": "0",
+   "b": "2",
+   "c": "-9/4",
+   "x": "3/2",
+   "derivative": "3"
+  },
+  {
+   "mode": "product",
+   "a": "1",
+   "b": "1",
+   "c": "1",
+   "x": "-2",
+   "derivative": "9"
+  },
+  {
+   "mode": "product",
+   "a": "1",
+   "b": "1",
+   "c": "1",
+   "x": "-1",
+   "derivative": "2"
+  },
+  {
+   "mode": "product",
+   "a": "1",
+   "b": "1",
+   "c": "1",
+   "x": "0",
+   "derivative": "1"
+  },
+  {
+   "mode": "product",
+   "a": "1",
+   "b": "1",
+   "c": "1",
+   "x": "1",
+   "derivative": "6"
+  },
+  {
+   "mode": "product",
+   "a": "1",
+   "b": "1",
+   "c": "1",
+   "x": "3/2",
+   "derivative": "43/4"
+  },
+  {
+   "mode": "product",
+   "a": "1",
+   "b": "1",
+   "c": "-1",
+   "x": "-2",
+   "derivative": "7"
+  },
+  {
+   "mode": "product",
+   "a": "1",
+   "b": "1",
+   "c": "-1",
+   "x": "-1",
+   "derivative": "0"
+  },
+  {
+   "mode": "product",
+   "a": "1",
+   "b": "1",
+   "c": "-1",
+   "x": "0",
+   "derivative": "-1"
+  },
+  {
+   "mode": "product",
+   "a": "1",
+   "b": "1",
+   "c": "-1",
+   "x": "1",
+   "derivative": "4"
+  },
+  {
+   "mode": "product",
+   "a": "1",
+   "b": "1",
+   "c": "-1",
+   "x": "3/2",
+   "derivative": "35/4"
+  },
+  {
+   "mode": "product",
+   "a": "1",
+   "b": "1",
+   "c": "0",
+   "x": "-2",
+   "derivative": "8"
+  },
+  {
+   "mode": "product",
+   "a": "1",
+   "b": "1",
+   "c": "0",
+   "x": "-1",
+   "derivative": "1"
+  },
+  {
+   "mode": "product",
+   "a": "1",
+   "b": "1",
+   "c": "0",
+   "x": "0",
+   "derivative": "0"
+  },
+  {
+   "mode": "product",
+   "a": "1",
+   "b": "1",
+   "c": "0",
+   "x": "1",
+   "derivative": "5"
+  },
+  {
+   "mode": "product",
+   "a": "1",
+   "b": "1",
+   "c": "0",
+   "x": "3/2",
+   "derivative": "39/4"
+  },
+  {
+   "mode": "product",
+   "a": "1",
+   "b": "1",
+   "c": "-9/4",
+   "x": "-2",
+   "derivative": "23/4"
+  },
+  {
+   "mode": "product",
+   "a": "1",
+   "b": "1",
+   "c": "-9/4",
+   "x": "-1",
+   "derivative": "-5/4"
+  },
+  {
+   "mode": "product",
+   "a": "1",
+   "b": "1",
+   "c": "-9/4",
+   "x": "0",
+   "derivative": "-9/4"
+  },
+  {
+   "mode": "product",
+   "a": "1",
+   "b": "1",
+   "c": "-9/4",
+   "x": "1",
+   "derivative": "11/4"
+  },
+  {
+   "mode": "product",
+   "a": "1",
+   "b": "1",
+   "c": "-9/4",
+   "x": "3/2",
+   "derivative": "15/2"
+  },
+  {
+   "mode": "product",
+   "a": "-1",
+   "b": "1/2",
+   "c": "1",
+   "x": "-2",
+   "derivative": "-15"
+  },
+  {
+   "mode": "product",
+   "a": "-1",
+   "b": "1/2",
+   "c": "1",
+   "x": "-1",
+   "derivative": "-5"
+  },
+  {
+   "mode": "product",
+   "a": "-1",
+   "b": "1/2",
+   "c": "1",
+   "x": "0",
+   "derivative": "-1"
+  },
+  {
+   "mode": "product",
+   "a": "-1",
+   "b": "1/2",
+   "c": "1",
+   "x": "1",
+   "derivative": "-3"
+  },
+  {
+   "mode": "product",
+   "a": "-1",
+   "b": "1/2",
+   "c": "1",
+   "x": "3/2",
+   "derivative": "-25/4"
+  },
+  {
+   "mode": "product",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-1",
+   "x": "-2",
+   "derivative": "-13"
+  },
+  {
+   "mode": "product",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-1",
+   "x": "-1",
+   "derivative": "-3"
+  },
+  {
+   "mode": "product",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-1",
+   "x": "0",
+   "derivative": "1"
+  },
+  {
+   "mode": "product",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-1",
+   "x": "1",
+   "derivative": "-1"
+  },
+  {
+   "mode": "product",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-1",
+   "x": "3/2",
+   "derivative": "-17/4"
+  },
+  {
+   "mode": "product",
+   "a": "-1",
+   "b": "1/2",
+   "c": "0",
+   "x": "-2",
+   "derivative": "-14"
+  },
+  {
+   "mode": "product",
+   "a": "-1",
+   "b": "1/2",
+   "c": "0",
+   "x": "-1",
+   "derivative": "-4"
+  },
+  {
+   "mode": "product",
+   "a": "-1",
+   "b": "1/2",
+   "c": "0",
+   "x": "0",
+   "derivative": "0"
+  },
+  {
+   "mode": "product",
+   "a": "-1",
+   "b": "1/2",
+   "c": "0",
+   "x": "1",
+   "derivative": "-2"
+  },
+  {
+   "mode": "product",
+   "a": "-1",
+   "b": "1/2",
+   "c": "0",
+   "x": "3/2",
+   "derivative": "-21/4"
+  },
+  {
+   "mode": "product",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-9/4",
+   "x": "-2",
+   "derivative": "-47/4"
+  },
+  {
+   "mode": "product",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-9/4",
+   "x": "-1",
+   "derivative": "-7/4"
+  },
+  {
+   "mode": "product",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-9/4",
+   "x": "0",
+   "derivative": "9/4"
+  },
+  {
+   "mode": "product",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-9/4",
+   "x": "1",
+   "derivative": "1/4"
+  },
+  {
+   "mode": "product",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-9/4",
+   "x": "3/2",
+   "derivative": "-3"
+  },
+  {
+   "mode": "product",
+   "a": "5/2",
+   "b": "-3",
+   "c": "1",
+   "x": "-2",
+   "derivative": "89/2"
+  },
+  {
+   "mode": "product",
+   "a": "5/2",
+   "b": "-3",
+   "c": "1",
+   "x": "-1",
+   "derivative": "16"
+  },
+  {
+   "mode": "product",
+   "a": "5/2",
+   "b": "-3",
+   "c": "1",
+   "x": "0",
+   "derivative": "5/2"
+  },
+  {
+   "mode": "product",
+   "a": "5/2",
+   "b": "-3",
+   "c": "1",
+   "x": "1",
+   "derivative": "4"
+  },
+  {
+   "mode": "product",
+   "a": "5/2",
+   "b": "-3",
+   "c": "1",
+   "x": "3/2",
+   "derivative": "83/8"
+  },
+  {
+   "mode": "product",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-1",
+   "x": "-2",
+   "derivative": "79/2"
+  },
+  {
+   "mode": "product",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-1",
+   "x": "-1",
+   "derivative": "11"
+  },
+  {
+   "mode": "product",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-1",
+   "x": "0",
+   "derivative": "-5/2"
+  },
+  {
+   "mode": "product",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-1",
+   "x": "1",
+   "derivative": "-1"
+  },
+  {
+   "mode": "product",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-1",
+   "x": "3/2",
+   "derivative": "43/8"
+  },
+  {
+   "mode": "product",
+   "a": "5/2",
+   "b": "-3",
+   "c": "0",
+   "x": "-2",
+   "derivative": "42"
+  },
+  {
+   "mode": "product",
+   "a": "5/2",
+   "b": "-3",
+   "c": "0",
+   "x": "-1",
+   "derivative": "27/2"
+  },
+  {
+   "mode": "product",
+   "a": "5/2",
+   "b": "-3",
+   "c": "0",
+   "x": "0",
+   "derivative": "0"
+  },
+  {
+   "mode": "product",
+   "a": "5/2",
+   "b": "-3",
+   "c": "0",
+   "x": "1",
+   "derivative": "3/2"
+  },
+  {
+   "mode": "product",
+   "a": "5/2",
+   "b": "-3",
+   "c": "0",
+   "x": "3/2",
+   "derivative": "63/8"
+  },
+  {
+   "mode": "product",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-9/4",
+   "x": "-2",
+   "derivative": "291/8"
+  },
+  {
+   "mode": "product",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-9/4",
+   "x": "-1",
+   "derivative": "63/8"
+  },
+  {
+   "mode": "product",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-9/4",
+   "x": "0",
+   "derivative": "-45/8"
+  },
+  {
+   "mode": "product",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-9/4",
+   "x": "1",
+   "derivative": "-33/8"
+  },
+  {
+   "mode": "product",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-9/4",
+   "x": "3/2",
+   "derivative": "9/4"
+  },
+  {
+   "mode": "product",
+   "a": "0",
+   "b": "2",
+   "c": "1",
+   "x": "-2",
+   "derivative": "-8"
+  },
+  {
+   "mode": "product",
+   "a": "0",
+   "b": "2",
+   "c": "1",
+   "x": "-1",
+   "derivative": "-4"
+  },
+  {
+   "mode": "product",
+   "a": "0",
+   "b": "2",
+   "c": "1",
+   "x": "0",
+   "derivative": "0"
+  },
+  {
+   "mode": "product",
+   "a": "0",
+   "b": "2",
+   "c": "1",
+   "x": "1",
+   "derivative": "4"
+  },
+  {
+   "mode": "product",
+   "a": "0",
+   "b": "2",
+   "c": "1",
+   "x": "3/2",
+   "derivative": "6"
+  },
+  {
+   "mode": "product",
+   "a": "0",
+   "b": "2",
+   "c": "-1",
+   "x": "-2",
+   "derivative": "-8"
+  },
+  {
+   "mode": "product",
+   "a": "0",
+   "b": "2",
+   "c": "-1",
+   "x": "-1",
+   "derivative": "-4"
+  },
+  {
+   "mode": "product",
+   "a": "0",
+   "b": "2",
+   "c": "-1",
+   "x": "0",
+   "derivative": "0"
+  },
+  {
+   "mode": "product",
+   "a": "0",
+   "b": "2",
+   "c": "-1",
+   "x": "1",
+   "derivative": "4"
+  },
+  {
+   "mode": "product",
+   "a": "0",
+   "b": "2",
+   "c": "-1",
+   "x": "3/2",
+   "derivative": "6"
+  },
+  {
+   "mode": "product",
+   "a": "0",
+   "b": "2",
+   "c": "0",
+   "x": "-2",
+   "derivative": "-8"
+  },
+  {
+   "mode": "product",
+   "a": "0",
+   "b": "2",
+   "c": "0",
+   "x": "-1",
+   "derivative": "-4"
+  },
+  {
+   "mode": "product",
+   "a": "0",
+   "b": "2",
+   "c": "0",
+   "x": "0",
+   "derivative": "0"
+  },
+  {
+   "mode": "product",
+   "a": "0",
+   "b": "2",
+   "c": "0",
+   "x": "1",
+   "derivative": "4"
+  },
+  {
+   "mode": "product",
+   "a": "0",
+   "b": "2",
+   "c": "0",
+   "x": "3/2",
+   "derivative": "6"
+  },
+  {
+   "mode": "product",
+   "a": "0",
+   "b": "2",
+   "c": "-9/4",
+   "x": "-2",
+   "derivative": "-8"
+  },
+  {
+   "mode": "product",
+   "a": "0",
+   "b": "2",
+   "c": "-9/4",
+   "x": "-1",
+   "derivative": "-4"
+  },
+  {
+   "mode": "product",
+   "a": "0",
+   "b": "2",
+   "c": "-9/4",
+   "x": "0",
+   "derivative": "0"
+  },
+  {
+   "mode": "product",
+   "a": "0",
+   "b": "2",
+   "c": "-9/4",
+   "x": "1",
+   "derivative": "4"
+  },
+  {
+   "mode": "product",
+   "a": "0",
+   "b": "2",
+   "c": "-9/4",
+   "x": "3/2",
+   "derivative": "6"
+  },
+  {
+   "mode": "quotient",
+   "a": "1",
+   "b": "1",
+   "c": "1",
+   "x": "-2",
+   "derivative": "1/25"
+  },
+  {
+   "mode": "quotient",
+   "a": "1",
+   "b": "1",
+   "c": "1",
+   "x": "-1",
+   "derivative": "1/2"
+  },
+  {
+   "mode": "quotient",
+   "a": "1",
+   "b": "1",
+   "c": "1",
+   "x": "0",
+   "derivative": "1"
+  },
+  {
+   "mode": "quotient",
+   "a": "1",
+   "b": "1",
+   "c": "1",
+   "x": "1",
+   "derivative": "-1/2"
+  },
+  {
+   "mode": "quotient",
+   "a": "1",
+   "b": "1",
+   "c": "1",
+   "x": "3/2",
+   "derivative": "-68/169"
+  },
+  {
+   "mode": "quotient",
+   "a": "1",
+   "b": "1",
+   "c": "-1",
+   "x": "-2",
+   "derivative": "-1/9"
+  },
+  {
+   "mode": "quotient",
+   "a": "1",
+   "b": "1",
+   "c": "-1",
+   "x": "-1",
+   "derivative": null
+  },
+  {
+   "mode": "quotient",
+   "a": "1",
+   "b": "1",
+   "c": "-1",
+   "x": "0",
+   "derivative": "-1"
+  },
+  {
+   "mode": "quotient",
+   "a": "1",
+   "b": "1",
+   "c": "-1",
+   "x": "1",
+   "derivative": null
+  },
+  {
+   "mode": "quotient",
+   "a": "1",
+   "b": "1",
+   "c": "-1",
+   "x": "3/2",
+   "derivative": "-4"
+  },
+  {
+   "mode": "quotient",
+   "a": "1",
+   "b": "1",
+   "c": "0",
+   "x": "-2",
+   "derivative": "0"
+  },
+  {
+   "mode": "quotient",
+   "a": "1",
+   "b": "1",
+   "c": "0",
+   "x": "-1",
+   "derivative": "1"
+  },
+  {
+   "mode": "quotient",
+   "a": "1",
+   "b": "1",
+   "c": "0",
+   "x": "0",
+   "derivative": null
+  },
+  {
+   "mode": "quotient",
+   "a": "1",
+   "b": "1",
+   "c": "0",
+   "x": "1",
+   "derivative": "-3"
+  },
+  {
+   "mode": "quotient",
+   "a": "1",
+   "b": "1",
+   "c": "0",
+   "x": "3/2",
+   "derivative": "-28/27"
+  },
+  {
+   "mode": "quotient",
+   "a": "1",
+   "b": "1",
+   "c": "-9/4",
+   "x": "-2",
+   "derivative": "-36/49"
+  },
+  {
+   "mode": "quotient",
+   "a": "1",
+   "b": "1",
+   "c": "-9/4",
+   "x": "-1",
+   "derivative": "-4/5"
+  },
+  {
+   "mode": "quotient",
+   "a": "1",
+   "b": "1",
+   "c": "-9/4",
+   "x": "0",
+   "derivative": "-4/9"
+  },
+  {
+   "mode": "quotient",
+   "a": "1",
+   "b": "1",
+   "c": "-9/4",
+   "x": "1",
+   "derivative": "-84/25"
+  },
+  {
+   "mode": "quotient",
+   "a": "1",
+   "b": "1",
+   "c": "-9/4",
+   "x": "3/2",
+   "derivative": null
+  },
+  {
+   "mode": "quotient",
+   "a": "-1",
+   "b": "1/2",
+   "c": "1",
+   "x": "-2",
+   "derivative": "1/5"
+  },
+  {
+   "mode": "quotient",
+   "a": "-1",
+   "b": "1/2",
+   "c": "1",
+   "x": "-1",
+   "derivative": "1/4"
+  },
+  {
+   "mode": "quotient",
+   "a": "-1",
+   "b": "1/2",
+   "c": "1",
+   "x": "0",
+   "derivative": "-1"
+  },
+  {
+   "mode": "quotient",
+   "a": "-1",
+   "b": "1/2",
+   "c": "1",
+   "x": "1",
+   "derivative": "-1/4"
+  },
+  {
+   "mode": "quotient",
+   "a": "-1",
+   "b": "1/2",
+   "c": "1",
+   "x": "3/2",
+   "derivative": "-4/169"
+  },
+  {
+   "mode": "quotient",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-1",
+   "x": "-2",
+   "derivative": "7/9"
+  },
+  {
+   "mode": "quotient",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-1",
+   "x": "-1",
+   "derivative": null
+  },
+  {
+   "mode": "quotient",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-1",
+   "x": "0",
+   "derivative": "1"
+  },
+  {
+   "mode": "quotient",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-1",
+   "x": "1",
+   "derivative": null
+  },
+  {
+   "mode": "quotient",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-1",
+   "x": "3/2",
+   "derivative": "28/25"
+  },
+  {
+   "mode": "quotient",
+   "a": "-1",
+   "b": "1/2",
+   "c": "0",
+   "x": "-2",
+   "derivative": "3/8"
+  },
+  {
+   "mode": "quotient",
+   "a": "-1",
+   "b": "1/2",
+   "c": "0",
+   "x": "-1",
+   "derivative": "2"
+  },
+  {
+   "mode": "quotient",
+   "a": "-1",
+   "b": "1/2",
+   "c": "0",
+   "x": "0",
+   "derivative": null
+  },
+  {
+   "mode": "quotient",
+   "a": "-1",
+   "b": "1/2",
+   "c": "0",
+   "x": "1",
+   "derivative": "0"
+  },
+  {
+   "mode": "quotient",
+   "a": "-1",
+   "b": "1/2",
+   "c": "0",
+   "x": "3/2",
+   "derivative": "4/27"
+  },
+  {
+   "mode": "quotient",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-9/4",
+   "x": "-2",
+   "derivative": "132/49"
+  },
+  {
+   "mode": "quotient",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-9/4",
+   "x": "-1",
+   "derivative": "68/25"
+  },
+  {
+   "mode": "quotient",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-9/4",
+   "x": "0",
+   "derivative": "4/9"
+  },
+  {
+   "mode": "quotient",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-9/4",
+   "x": "1",
+   "derivative": "36/25"
+  },
+  {
+   "mode": "quotient",
+   "a": "-1",
+   "b": "1/2",
+   "c": "-9/4",
+   "x": "3/2",
+   "derivative": null
+  },
+  {
+   "mode": "quotient",
+   "a": "5/2",
+   "b": "-3",
+   "c": "1",
+   "x": "-2",
+   "derivative": "-39/50"
+  },
+  {
+   "mode": "quotient",
+   "a": "5/2",
+   "b": "-3",
+   "c": "1",
+   "x": "-1",
+   "derivative": "-3/2"
+  },
+  {
+   "mode": "quotient",
+   "a": "5/2",
+   "b": "-3",
+   "c": "1",
+   "x": "0",
+   "derivative": "5/2"
+  },
+  {
+   "mode": "quotient",
+   "a": "5/2",
+   "b": "-3",
+   "c": "1",
+   "x": "1",
+   "derivative": "3/2"
+  },
+  {
+   "mode": "quotient",
+   "a": "5/2",
+   "b": "-3",
+   "c": "1",
+   "x": "3/2",
+   "derivative": "94/169"
+  },
+  {
+   "mode": "quotient",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-1",
+   "x": "-2",
+   "derivative": "-49/18"
+  },
+  {
+   "mode": "quotient",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-1",
+   "x": "-1",
+   "derivative": null
+  },
+  {
+   "mode": "quotient",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-1",
+   "x": "0",
+   "derivative": "-5/2"
+  },
+  {
+   "mode": "quotient",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-1",
+   "x": "1",
+   "derivative": null
+  },
+  {
+   "mode": "quotient",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-1",
+   "x": "3/2",
+   "derivative": "14/25"
+  },
+  {
+   "mode": "quotient",
+   "a": "5/2",
+   "b": "-3",
+   "c": "0",
+   "x": "-2",
+   "derivative": "-11/8"
+  },
+  {
+   "mode": "quotient",
+   "a": "5/2",
+   "b": "-3",
+   "c": "0",
+   "x": "-1",
+   "derivative": "-17/2"
+  },
+  {
+   "mode": "quotient",
+   "a": "5/2",
+   "b": "-3",
+   "c": "0",
+   "x": "0",
+   "derivative": null
+  },
+  {
+   "mode": "quotient",
+   "a": "5/2",
+   "b": "-3",
+   "c": "0",
+   "x": "1",
+   "derivative": "7/2"
+  },
+  {
+   "mode": "quotient",
+   "a": "5/2",
+   "b": "-3",
+   "c": "0",
+   "x": "3/2",
+   "derivative": "2/3"
+  },
+  {
+   "mode": "quotient",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-9/4",
+   "x": "-2",
+   "derivative": "-442/49"
+  },
+  {
+   "mode": "quotient",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-9/4",
+   "x": "-1",
+   "derivative": "-226/25"
+  },
+  {
+   "mode": "quotient",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-9/4",
+   "x": "0",
+   "derivative": "-10/9"
+  },
+  {
+   "mode": "quotient",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-9/4",
+   "x": "1",
+   "derivative": "-34/25"
+  },
+  {
+   "mode": "quotient",
+   "a": "5/2",
+   "b": "-3",
+   "c": "-9/4",
+   "x": "3/2",
+   "derivative": null
+  },
+  {
+   "mode": "quotient",
+   "a": "0",
+   "b": "2",
+   "c": "1",
+   "x": "-2",
+   "derivative": "8/25"
+  },
+  {
+   "mode": "quotient",
+   "a": "0",
+   "b": "2",
+   "c": "1",
+   "x": "-1",
+   "derivative": "1"
+  },
+  {
+   "mode": "quotient",
+   "a": "0",
+   "b": "2",
+   "c": "1",
+   "x": "0",
+   "derivative": "0"
+  },
+  {
+   "mode": "quotient",
+   "a": "0",
+   "b": "2",
+   "c": "1",
+   "x": "1",
+   "derivative": "-1"
+  },
+  {
+   "mode": "quotient",
+   "a": "0",
+   "b": "2",
+   "c": "1",
+   "x": "3/2",
+   "derivative": "-96/169"
+  },
+  {
+   "mode": "quotient",
+   "a": "0",
+   "b": "2",
+   "c": "-1",
+   "x": "-2",
+   "derivative": "8/9"
+  },
+  {
+   "mode": "quotient",
+   "a": "0",
+   "b": "2",
+   "c": "-1",
+   "x": "-1",
+   "derivative": null
+  },
+  {
+   "mode": "quotient",
+   "a": "0",
+   "b": "2",
+   "c": "-1",
+   "x": "0",
+   "derivative": "0"
+  },
+  {
+   "mode": "quotient",
+   "a": "0",
+   "b": "2",
+   "c": "-1",
+   "x": "1",
+   "derivative": null
+  },
+  {
+   "mode": "quotient",
+   "a": "0",
+   "b": "2",
+   "c": "-1",
+   "x": "3/2",
+   "derivative": "-96/25"
+  },
+  {
+   "mode": "quotient",
+   "a": "0",
+   "b": "2",
+   "c": "0",
+   "x": "-2",
+   "derivative": "1/2"
+  },
+  {
+   "mode": "quotient",
+   "a": "0",
+   "b": "2",
+   "c": "0",
+   "x": "-1",
+   "derivative": "4"
+  },
+  {
+   "mode": "quotient",
+   "a": "0",
+   "b": "2",
+   "c": "0",
+   "x": "0",
+   "derivative": null
+  },
+  {
+   "mode": "quotient",
+   "a": "0",
+   "b": "2",
+   "c": "0",
+   "x": "1",
+   "derivative": "-4"
+  },
+  {
+   "mode": "quotient",
+   "a": "0",
+   "b": "2",
+   "c": "0",
+   "x": "3/2",
+   "derivative": "-32/27"
+  },
+  {
+   "mode": "quotient",
+   "a": "0",
+   "b": "2",
+   "c": "-9/4",
+   "x": "-2",
+   "derivative": "128/49"
+  },
+  {
+   "mode": "quotient",
+   "a": "0",
+   "b": "2",
+   "c": "-9/4",
+   "x": "-1",
+   "derivative": "64/25"
+  },
+  {
+   "mode": "quotient",
+   "a": "0",
+   "b": "2",
+   "c": "-9/4",
+   "x": "0",
+   "derivative": "0"
+  },
+  {
+   "mode": "quotient",
+   "a": "0",
+   "b": "2",
+   "c": "-9/4",
+   "x": "1",
+   "derivative": "-64/25"
+  },
+  {
+   "mode": "quotient",
+   "a": "0",
+   "b": "2",
+   "c": "-9/4",
+   "x": "3/2",
+   "derivative": null
+  }
+ ],
+ "chain": [
+  {
+   "inner": "square",
+   "outer": "cube",
+   "x": "-2",
+   "u": "1",
+   "derivative": "-3/2"
+  },
+  {
+   "inner": "square",
+   "outer": "cube",
+   "x": "-3/4",
+   "u": "-23/32",
+   "derivative": "-4761/16384"
+  },
+  {
+   "inner": "square",
+   "outer": "cube",
+   "x": "0",
+   "u": "-1",
+   "derivative": "0"
+  },
+  {
+   "inner": "square",
+   "outer": "cube",
+   "x": "1/2",
+   "u": "-7/8",
+   "derivative": "147/512"
+  },
+  {
+   "inner": "square",
+   "outer": "cube",
+   "x": "2",
+   "u": "1",
+   "derivative": "3/2"
+  },
+  {
+   "inner": "square",
+   "outer": "sin",
+   "x": "-2",
+   "u": 1.0,
+   "derivative": -1.0806046117362795
+  },
+  {
+   "inner": "square",
+   "outer": "sin",
+   "x": "-3/4",
+   "u": -0.71875,
+   "derivative": -0.5644720293135499
+  },
+  {
+   "inner": "square",
+   "outer": "sin",
+   "x": "0",
+   "u": -1.0,
+   "derivative": 0.0
+  },
+  {
+   "inner": "square",
+   "outer": "sin",
+   "x": "1/2",
+   "u": -0.875,
+   "derivative": 0.32049842908166254
+  },
+  {
+   "inner": "square",
+   "outer": "sin",
+   "x": "2",
+   "u": 1.0,
+   "derivative": 1.0806046117362795
+  },
+  {
+   "inner": "square",
+   "outer": "exp",
+   "x": "-2",
+   "u": 1.0,
+   "derivative": -5.43656365691809
+  },
+  {
+   "inner": "square",
+   "outer": "exp",
+   "x": "-3/4",
+   "u": -0.71875,
+   "derivative": -0.3655208075352143
+  },
+  {
+   "inner": "square",
+   "outer": "exp",
+   "x": "0",
+   "u": -1.0,
+   "derivative": 0.0
+  },
+  {
+   "inner": "square",
+   "outer": "exp",
+   "x": "1/2",
+   "u": -0.875,
+   "derivative": 0.2084310098392542
+  },
+  {
+   "inner": "square",
+   "outer": "exp",
+   "x": "2",
+   "u": 1.0,
+   "derivative": 5.43656365691809
+  },
+  {
+   "inner": "linear",
+   "outer": "cube",
+   "x": "-2",
+   "u": "-5",
+   "derivative": "75/2"
+  },
+  {
+   "inner": "linear",
+   "outer": "cube",
+   "x": "-3/4",
+   "u": "-5/2",
+   "derivative": "75/8"
+  },
+  {
+   "inner": "linear",
+   "outer": "cube",
+   "x": "0",
+   "u": "-1",
+   "derivative": "3/2"
+  },
+  {
+   "inner": "linear",
+   "outer": "cube",
+   "x": "1/2",
+   "u": "0",
+   "derivative": "0"
+  },
+  {
+   "inner": "linear",
+   "outer": "cube",
+   "x": "2",
+   "u": "3",
+   "derivative": "27/2"
+  },
+  {
+   "inner": "linear",
+   "outer": "sin",
+   "x": "-2",
+   "u": -5.0,
+   "derivative": 0.5673243709264525
+  },
+  {
+   "inner": "linear",
+   "outer": "sin",
+   "x": "-3/4",
+   "u": -2.5,
+   "derivative": -1.6022872310938674
+  },
+  {
+   "inner": "linear",
+   "outer": "sin",
+   "x": "0",
+   "u": -1.0,
+   "derivative": 1.0806046117362795
+  },
+  {
+   "inner": "linear",
+   "outer": "sin",
+   "x": "1/2",
+   "u": 0.0,
+   "derivative": 2.0
+  },
+  {
+   "inner": "linear",
+   "outer": "sin",
+   "x": "2",
+   "u": 3.0,
+   "derivative": -1.9799849932008908
+  },
+  {
+   "inner": "linear",
+   "outer": "exp",
+   "x": "-2",
+   "u": -5.0,
+   "derivative": 0.013475893998170934
+  },
+  {
+   "inner": "linear",
+   "outer": "exp",
+   "x": "-3/4",
+   "u": -2.5,
+   "derivative": 0.1641699972477976
+  },
+  {
+   "inner": "linear",
+   "outer": "exp",
+   "x": "0",
+   "u": -1.0,
+   "derivative": 0.7357588823428847
+  },
+  {
+   "inner": "linear",
+   "outer": "exp",
+   "x": "1/2",
+   "u": 0.0,
+   "derivative": 2.0
+  },
+  {
+   "inner": "linear",
+   "outer": "exp",
+   "x": "2",
+   "u": 3.0,
+   "derivative": 40.171073846375336
+  },
+  {
+   "inner": "sin",
+   "outer": "cube",
+   "x": "-2",
+   "u": -0.9092974268256817,
+   "derivative": -0.25805946059953283
+  },
+  {
+   "inner": "sin",
+   "outer": "cube",
+   "x": "-3/4",
+   "u": -0.6816387600233341,
+   "derivative": 0.254974217174355
+  },
+  {
+   "inner": "sin",
+   "outer": "cube",
+   "x": "0",
+   "u": 0.0,
+   "derivative": 2.5e-51
+  },
+  {
+   "inner": "sin",
+   "outer": "cube",
+   "x": "1/2",
+   "u": 0.479425538604203,
+   "derivative": 0.1512835050417506
+  },
+  {
+   "inner": "sin",
+   "outer": "cube",
+   "x": "2",
+   "u": 0.9092974268256817,
+   "derivative": -0.25805946059953283
+  },
+  {
+   "inner": "sin",
+   "outer": "sin",
+   "x": "-2",
+   "u": -0.9092974268256817,
+   "derivative": -0.2556391190927912
+  },
+  {
+   "inner": "sin",
+   "outer": "sin",
+   "x": "-3/4",
+   "u": -0.6816387600233341,
+   "derivative": 0.5681865773167866
+  },
+  {
+   "inner": "sin",
+   "outer": "sin",
+   "x": "0",
+   "u": 0.0,
+   "derivative": 1.0
+  },
+  {
+   "inner": "sin",
+   "outer": "sin",
+   "x": "1/2",
+   "u": 0.479425538604203,
+   "derivative": 0.7786439483717796
+  },
+  {
+   "inner": "sin",
+   "outer": "sin",
+   "x": "2",
+   "u": 0.9092974268256817,
+   "derivative": -0.2556391190927912
+  },
+  {
+   "inner": "sin",
+   "outer": "exp",
+   "x": "-2",
+   "u": -0.9092974268256817,
+   "derivative": -0.167626911274952
+  },
+  {
+   "inner": "sin",
+   "outer": "exp",
+   "x": "-3/4",
+   "u": -0.6816387600233341,
+   "derivative": 0.37007904614836573
+  },
+  {
+   "inner": "sin",
+   "outer": "exp",
+   "x": "0",
+   "u": 0.0,
+   "derivative": 1.0
+  },
+  {
+   "inner": "sin",
+   "outer": "exp",
+   "x": "1/2",
+   "u": 0.479425538604203,
+   "derivative": 1.4174242246593913
+  },
+  {
+   "inner": "sin",
+   "outer": "exp",
+   "x": "2",
+   "u": 0.9092974268256817,
+   "derivative": -1.0331168679958345
+  }
+ ]
+}
