@@ -7,4 +7,4 @@
 .statistics-stage .stat-miss { stroke: var(--c-caution); stroke-dasharray: 5 3; }
 .statistics-stage .stat-hit { stroke: var(--c-derived); }
 .statistics-stage .stat-intervals { width: 100%; height: auto; }
-.statistics-stage .stat-intervals text { fill: var(--ink); font: 14px var(--font-body); }
+.statistics-stage .stat-intervals text { fill: var(--ink); font: 17px var(--font-body); }

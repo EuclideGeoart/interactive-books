@@ -1,0 +1,76 @@
+---
+kind: chapter
+curriculumId: V.6
+title: "Covariance matrices and multivariate spread"
+hero: "Which direction has the greatest observed *spread*?"
+lede: Edit actual weighted pairs and inspect their exact covariance matrix, principal variances and descriptive ellipse, including singular and repeated-eigenvalue cases.
+description: Edit actual weighted pairs and inspect their exact covariance matrix, principal variances and descriptive ellipse, including singular and repeated-eigenvalue cases.
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import ScatterStage from '../../lessons/statistics/ScatterStage';
+import Exercise from '../../lessons/statistics/UncertaintyExercise';
+import reference from '../../../code/python/statistics_covariance.py?raw';
+import practical from '../../../code/python/statistics_covariance_numpy.py?raw';
+
+<Stage caption="Edit actual weighted pairs and inspect their exact covariance matrix, principal variances and descriptive ellipse, including singular and repeated-eigenvalue cases."><ScatterStage chapter="covariance" client:load /></Stage>
+
+## Intuition
+
+A point cloud can spread differently in different directions. Separate x and y variances describe the margins; covariance records whether centered coordinate changes tend to share a sign. An ellipse summarizes second moments without replacing the observed points.
+
+## Definition
+
+Weights $w_i\geq0$ have positive total W and normalized weights $p_i=w_i/W$. For column-vector observations $z_i=(x_i,y_i)^{\mathsf T}$, define $\mu=\sum_i p_i z_i$ and $\Sigma=\sum_i p_i(z_i-\mu)(z_i-\mu)^{\mathsf T}$. This is descriptive population covariance of the weighted empirical distribution, not an automatically unbiased sample-covariance formula.
+
+## Mechanics
+
+Select and move observed pairs through pointer, keyboard or numeric inputs. Edit a nonnegative integer weight; zero excludes that point from the statistical sum. The inspector exposes both marginal variances, their shared off-diagonal covariance, determinant and eigenvalues. The ellipse radii are square roots of eigenvalues, with a center at the weighted mean.
+
+## Derivation
+
+For any vector u, $u^{\mathsf T}\Sigma u=\sum_i p_i[u^{\mathsf T}(z_i-\mu)]^2\geq0$. Thus Σ is symmetric positive semidefinite. In two dimensions this entails nonnegative marginal variances and determinant. Its orthonormal eigenvectors identify uncorrelated principal coordinates; eigenvalues measure spread along them.
+
+## Worked examples
+
+The canonical equally weighted pairs have mean (0,1). Their covariance is $\begin{bmatrix}4&14/5\\14/5&2\end{bmatrix}$ with determinant $4/25$. For diagonal covariance $\operatorname{diag}(4,1)$, the coordinate axes are principal directions and ellipse radii are 2 and 1. For equal diagonal entries and zero covariance, the shape is a circle with no unique orientation.
+
+<Stage caption="Inspect the actual mathematical steps and replay their immutable states."><ScatterStage chapter="covariance" worked client:load /></Stage>
+
+## Executable reference code
+
+Run the exact mechanics and the NumPy companion. Both use literal assertions on the worked examples; simulations are never conditioned on a favorable coverage or fit outcome.
+
+<CodeFile source={reference} file="code/python/statistics_covariance.py" />
+<CodeFile source={practical} file="code/python/statistics_covariance_numpy.py" />
+
+## Explore
+
+Try a singular line, zero spread and equal eigenvalues. Change only the selected point’s weight and explain why the weighted center can move. Create negative covariance by moving pairs in opposite coordinate directions. Keep the actual observations in view while interpreting the ellipse.
+
+## Common mistakes and counterexamples
+
+A covariance ellipse is not automatically a 95% confidence region or a prediction region. A one-standard-deviation contour has no universal coverage fraction for an arbitrary point cloud. Singular covariance is valid when spread collapses to a line. Equal eigenvalues do not imply an invalid matrix; they mean orientation is not uniquely determined.
+
+## Numerical considerations
+
+All weighted means, covariance entries, determinant and rank classifications use exact fractions. The accepted 2×2 spectral model computes binary64 companions and checks eigenvector residuals. Exact determinant decides singularity; a drawing tolerance never changes mathematical rank. Coordinates lie in [−8,8] with at most two decimals; up to 12 observed pairs have weights 0–9 with positive total. The all-zero-weight state is rejected with an explanation.
+
+## Engineering and ML connections
+
+PCA rotates centered data toward directions of large variance. The first principal direction is useful as a preview, but interpretation still depends on feature units and scaling. Covariance of meters and milliseconds changes if units change; a large principal variance does not by itself identify a meaningful or causal feature.
+
+## Exercises
+
+Calculate from observed data and state the assumptions before interpreting a result. Corrective feedback identifies the corresponding misconception.
+
+<Exercise id="statistics-covariance-1" client:load />
+<Exercise id="statistics-covariance-2" client:load />
+<Exercise id="statistics-covariance-3" client:load />
+<Exercise id="statistics-covariance-4" client:load />
+<Exercise id="statistics-covariance-5" client:load />
+
+## Summary and checkpoints
+
+Construct centered outer products, verify symmetry and PSD, connect eigenvalues with marginal and principal spread, and explain the point, line and circular exceptions. Keep descriptive geometry separate from inferential coverage.
+

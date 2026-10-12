@@ -1,0 +1,76 @@
+---
+kind: chapter
+curriculumId: V.5
+title: "Confidence intervals through repeated sampling"
+hero: "What does 95% describe: this interval or the *procedure*?"
+lede: Generate actual iid normal samples, keep the true mean fixed, and see which computed intervals cover it. Compare nominal confidence with realized finite-run coverage.
+description: Generate actual iid normal samples, keep the true mean fixed, and see which computed intervals cover it. Compare nominal confidence with realized finite-run coverage.
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import IntervalStage from '../../lessons/statistics/IntervalStage';
+import Exercise from '../../lessons/statistics/UncertaintyExercise';
+import reference from '../../../code/python/statistics_intervals.py?raw';
+import practical from '../../../code/python/statistics_intervals_numpy.py?raw';
+
+<Stage caption="Generate actual iid normal samples, keep the true mean fixed, and see which computed intervals cover it. Compare nominal confidence with realized finite-run coverage."><IntervalStage client:load /></Stage>
+
+## Intuition
+
+Before sampling, an interval is random because its center depends on unseen data. The population mean stays fixed. After observing a sample, the computed interval has fixed endpoints: it either contains that mean or misses it. Repeating the procedure makes this distinction visible.
+
+## Definition
+
+Assume $X_i\overset{\mathrm{iid}}{\sim}N(\mu,\sigma^2)$ with known $\sigma>0$. For confidence $1-\alpha$, define $I(X)=[\bar X-z_{1-\alpha/2}\sigma/\sqrt n,\bar X+z_{1-\alpha/2}\sigma/\sqrt n]$. The normal quantile satisfies $\Phi(z_{1-\alpha/2})=1-\alpha/2$. Confidence is the procedure’s coverage $P_\mu(\mu\in I(X))=1-\alpha$.
+
+## Mechanics
+
+The true mean is fixed at 2. Change known σ, sample size, repetition count, confidence level or seed. Each interval comes from its own independently generated sample, whose observed values and endpoints are available in the table. Covered intervals use solid lines and circles; misses use dashed lines and crosses. Replay preserves the run; Reset restores the canonical experiment.
+
+## Derivation
+
+Normality gives $Z=(\bar X-\mu)/(\sigma/\sqrt n)\sim N(0,1)$ for every positive n. The event $-z\leq Z\leq z$ is equivalent to $\mu\in I(X)$ and has probability $1-\alpha$. This is an exact finite-sample normal-model statement; no large-sample approximation or estimated σ is hidden in the derivation.
+
+## Worked examples
+
+At 95% confidence, $z\approx1.959963984540054$. Known $\sigma=1.5$ and $n=8$ give half-width approximately 1.03943, so an observed mean of 2 gives endpoints approximately 0.960572 and 3.03943. If the mean instead equals 4, the interval approximately [2.96057,5.03943] misses the fixed true mean 2. The simulation calculates its actual means without replacing them by either example.
+
+<Stage caption="Inspect the actual mathematical steps and replay their immutable states."><IntervalStage worked client:load /></Stage>
+
+## Executable reference code
+
+Run the exact mechanics and the NumPy companion. Both use literal assertions on the worked examples; simulations are never conditioned on a favorable coverage or fit outcome.
+
+<CodeFile source={reference} file="code/python/statistics_intervals.py" />
+<CodeFile source={practical} file="code/python/statistics_intervals_numpy.py" />
+
+## Explore
+
+Hold confidence and σ fixed and quadruple n: width halves. Double σ: width doubles. Hold n fixed and change repetitions: the nominal confidence and each interval width stay the same, while the realized coverage proportion can change. Try n=1 and explain why the exact normal assumptions still validate the formula.
+
+## Common mistakes and counterexamples
+
+A 95% frequentist interval does not assign 95% posterior probability to the fixed parameter after seeing the data. A posterior statement requires a prior and a Bayesian model. Nor does nominal confidence promise that exactly 95 of the next 100 intervals will cover. Estimated σ needs a different normal-theory procedure using Student’s t; dependent or nonnormal data can invalidate this model’s coverage.
+
+## Numerical considerations
+
+The 90%, 95% and 99% normal critical values are explicit binary64 constants, independently checked against Python NormalDist. Endpoints and Box–Muller normal samples are binary64 approximations; fixture tolerance is 2e−12 times max(1, absolute expected value). Analytic coverage uses the accepted normal CDF with absolute interval-probability error at most 2e−9. The seeded generator consumes two uniforms per observation and discards the sine partner; 1−u is positive so logarithms stay finite. The experiment stores at most 80 samples of 64 observations. Coverage classifications compare the computed endpoints directly; no sample is adjusted to achieve nominal coverage.
+
+## Engineering and ML connections
+
+Repeated measurement and model evaluation often report intervals. Their validity depends on the data-generating assumptions and procedure, including selection, dependence and uncertainty in σ. More data narrow a valid interval but do not cure a biased collection process. MAP later introduces posterior inference with a prior; it has a different interpretation.
+
+## Exercises
+
+Calculate from observed data and state the assumptions before interpreting a result. Corrective feedback identifies the corresponding misconception.
+
+<Exercise id="statistics-intervals-1" client:load />
+<Exercise id="statistics-intervals-2" client:load />
+<Exercise id="statistics-intervals-3" client:load />
+<Exercise id="statistics-intervals-4" client:load />
+<Exercise id="statistics-intervals-5" client:load />
+
+## Summary and checkpoints
+
+Explain what varies across repetitions, derive the coverage event, distinguish nominal from realized coverage and state the model assumptions. Relate width to σ and n, and reject the posterior-probability interpretation of a fixed frequentist interval.
+

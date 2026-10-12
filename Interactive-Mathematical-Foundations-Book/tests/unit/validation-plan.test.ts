@@ -23,8 +23,8 @@ describe('conservative change-scoped validation', () => {
   });
   it('the shared distribution model selects all actual distribution consumers and their cases', () => {
     const p = makePlan({ files: ['src/math/probability/distributions.ts'] });
-    expect(p.chapters.slice().sort()).toEqual(['IV.8', 'IV.9', 'IV.10', 'IV.15', 'IV.16'].sort()); expect(p.conservativeExpansion).toBe(false);
-    expect(p.oracles).toEqual(['probability_distributions', 'probability_sampling']);
+    expect(p.chapters.slice().sort()).toEqual(['IV.8', 'IV.9', 'IV.10', 'IV.15', 'IV.16', 'V.5'].sort()); expect(p.conservativeExpansion).toBe(false);
+    expect(p.oracles).toEqual(['probability_distributions', 'probability_sampling', 'statistics_uncertainty']);
     const visual = new RegExp(p.commands.find(c => c.gate === 'affected root visuals')!.command.at(-1)!);
     for (const id of ['IV.8', 'IV.9', 'IV.10', 'IV.15', 'IV.16']) expect(visual.test(`${id}: opening and exceptional probability states`)).toBe(true);
   });
@@ -66,7 +66,7 @@ describe('conservative change-scoped validation', () => {
   });
   for(const[file,ids,oracles,testFiles,kinds]of [
     ['elimination.ts',['II.14','II.15','II.16','II.18','II.19'],['elimination','least_squares','svd'],['elimination','least-squares','svd'],['elimination','rank','inverse','least-squares','svd']],
-    ['eigenvalues.ts',['II.17'],['eigenvalues'],['eigenvalues'],['eigenvalues']],
+    ['eigenvalues.ts',['II.17','V.6','V.7'],['eigenvalues','statistics_uncertainty'],['eigenvalues','statistics-uncertainty'],['eigenvalues']],
     ['least-squares.ts',['II.18'],['least_squares'],['least-squares'],['least-squares']],
     ['svd.ts',['II.19'],['svd'],['svd'],['svd']],
   ] as const)it(`${file}: selects actual consumers, units, oracles, browser cases and every exceptional screenshot`,()=>{
@@ -271,4 +271,9 @@ describe('M7/M8 integration validation ownership', () => {
 describe('Statistics validation ownership',()=>{
  it('data models reach exactly their chapter consumers, with owned mathematical and browser checks',()=>{const p=makePlan({files:['src/math/statistics/data.ts']});expect(p.conservativeExpansion).toBe(false);expect(p.chapters.slice().sort()).toEqual(['V.1','V.2','V.3','V.4']);expect(p.oracles).toEqual(['statistics_data']);expect(p.units).toContain('tests/unit/statistics-data.parity.test.ts');const c=p.commands.find(x=>x.command.includes('tests/e2e/statistics-data.spec.ts'))!;expect(c).toBeDefined();expect(new RegExp(c.command.at(-1)!).test('V.4: actual estimates')).toBe(true);expect(p.chapters.some(id=>id.startsWith('IV.')||id.startsWith('VI.'))).toBe(false);});
  it('Statistics stages, oracle ownership, screenshot names and missing files remain selective or conservative',()=>{for(const file of ['oracle/statistics_data_oracle.py','fixtures/statistics_data.fixtures.json','tests/e2e/statistics-data.spec.ts'])expect(makePlan({files:[file]}).chapters.slice().sort()).toEqual(['V.1','V.2','V.3','V.4']);expect(makePlan({files:['tests/e2e/__screenshots__/visual-statistics.spec.ts/mobile-v-data-spread-single.png']}).chapters).toEqual(['V.2']);expect(makePlan({files:['src/math/statistics/deleted.ts']}).conservativeExpansion).toBe(true);});
+});
+
+describe('Statistics uncertainty ownership',()=>{
+ it('interval and scatter models select actual consumers without Optimization or Probability',()=>{for(const[file,ids]of [['intervals.ts',['V.5']],['scatter.ts',['V.6','V.7']]] as const){const p=makePlan({files:[`src/math/statistics/${file}`]});expect(p.conservativeExpansion).toBe(false);expect(p.chapters.slice().sort()).toEqual([...ids]);expect(p.oracles).toEqual(['statistics_uncertainty']);expect(p.units).toContain('tests/unit/statistics-uncertainty.parity.test.ts');expect(p.commands.some(c=>c.command.includes('tests/e2e/statistics-uncertainty.spec.ts'))).toBe(true);}});
+ it('shared oracle, units, browser spec and named screenshots retain every owner',()=>{for(const file of ['oracle/statistics_uncertainty_oracle.py','fixtures/statistics_uncertainty.fixtures.json','tests/unit/statistics-uncertainty.test.ts','tests/e2e/statistics-uncertainty.spec.ts'])expect(makePlan({files:[file]}).chapters.slice().sort()).toEqual(['V.5','V.6','V.7']);expect(makePlan({files:['tests/e2e/__screenshots__/visual-statistics.spec.ts/mobile-v-covariance-matrices-repeated.png']}).chapters).toEqual(['V.6']);expect(chapterCatalog().find(c=>c.id==='V.5')).toMatchObject({family:'statistics_intervals',kind:'intervals'});});
 });
