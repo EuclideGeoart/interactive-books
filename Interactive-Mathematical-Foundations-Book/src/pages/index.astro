@@ -3,7 +3,7 @@ import BaseLayout from '../shell/BaseLayout.astro';
 import PartEmblem from '../shell/PartEmblem.astro';
 import VectorStage from '../lessons/foundation/VectorStage';
 import { parts } from '../curriculum/curriculum';
-import { availableCount, chapterCount, findChapter, firstAvailable, partAnchor, partStats } from '../curriculum/queries';
+import { chapterCount, findChapter, firstAvailable, partAnchor, partStats } from '../curriculum/queries';
 import { href } from '../shell/href';
 import { renderTex } from '../platform/tex';
 
@@ -15,7 +15,6 @@ const method = [
   ['Implement it', 'Run it in Python and NumPy, checked against the browser model.'],
 ] as const;
 
-const completeParts = parts.filter(part => partStats(part).available === part.chapters.length);
 
 const equations = [
   { tex: String.raw`\theta_{k+1}=\theta_k-\eta\,\nabla_\theta L(\theta_k)`, gloss: 'One step of learning: move the parameters a little against the gradient.', where: 'Part VI · Optimization' },
@@ -34,12 +33,12 @@ const equations = [
         <p class="actions">
           <a class="button primary" href={href('/contents/')}>Explore the map</a>
           {firstAvailable?.chapter.slug && <a class="button" href={href(`/chapters/${firstAvailable.chapter.slug}/`)}>Start with {firstAvailable.id}</a>}
-          <a class="button" href={href('/foundation/')}>Open the foundation demo</a>
+          <a class="button" href={href('/foundation/')}>Try the vector explorer</a>
         </p>
       </div>
       <figure class="hero-demo">
         <VectorStage client:load variant="hero" />
-        <figcaption>A live platform demo. The tip of the arrow is draggable, and every number beside it is computed from that one point. Chapter I.3, <a href={href(`/chapters/${findChapter('I.3')?.chapter.slug}/`)}><em>Vectors</em></a>, builds on this.</figcaption>
+        <figcaption>Drag the arrow tip and watch its coordinates, length and formulas update together. Chapter I.3, <a href={href(`/chapters/${findChapter('I.3')?.chapter.slug}/`)}><em>Vectors</em></a>, builds on this.</figcaption>
       </figure>
     </section>
 
@@ -89,9 +88,9 @@ const equations = [
     </section>
 
     <section aria-labelledby="status-title">
-      <div class="section-head"><h2 id="status-title">Where things stand</h2><p>{availableCount} of {chapterCount} chapters are written{completeParts.length ? <>; {completeParts.map(part => `Part ${part.numeral} (${part.title})`).join(' and ')} {completeParts.length === 1 ? 'is' : 'are'} complete</> : ''}. The platform exists, the curriculum is fixed, and I.3 Vectors is the reference chapter every other chapter is measured against.</p></div>
+      <div class="section-head"><h2 id="status-title">Your learning path</h2><p>All {chapterCount} chapters are available. Begin at Part I or choose a topic to explore, then follow the worked steps and exercises.</p></div>
       <div class="status-grid">
-        <div class="status-col"><h3>In place</h3><ul><li>Book shell, navigation and the map</li><li>Mathematical typography, inline and display</li><li>Coordinate plane, draggable point, inspector, parameter controls</li><li>Python oracle checked against the browser model</li>{completeParts.map(part => <li>Part {part.numeral}, {part.title}: all {part.chapters.length} chapters</li>)}</ul></div>
+        <div class="status-col"><h3>Inside each chapter</h3><ul><li>Explore an interactive mathematical model</li><li>Understand formulas through derivations and worked steps</li><li>Try executable Python and NumPy examples</li><li>Practice with graded questions and solutions</li></ul></div>
         <div class="status-col next"><h3>Practice</h3><ul><li>Work through the chapter exercises</li><li>Replay the worked examples and explain each step</li></ul></div>
         <div class="status-col later"><h3>Connect the Parts</h3><ul><li>Linear Algebra and Calculus → Optimization</li><li>Probability and Information Theory → token loss</li><li>Exact definitions → Numerical Computing</li></ul></div>
       </div>

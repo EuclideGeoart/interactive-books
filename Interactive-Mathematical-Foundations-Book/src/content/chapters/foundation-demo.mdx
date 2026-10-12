@@ -2,7 +2,7 @@
 kind: demo
 title: Foundation demo
 hero: One mathematical state, many *views*.
-lede: This page exercises the platform every chapter will stand on. It is a demonstration of the infrastructure, not a chapter of the curriculum.
+lede: Move a vector and watch its length, direction, coordinates and formulas change together. Try dragging, keyboard controls and numerical input.
 description: A foundation demo of Interactive Mathematical Foundations. One mathematical state drives a draggable vector, an inspector, live formulas and a step-by-step computation.
 ---
 import Stage from '../../shell/Stage.astro';
@@ -17,13 +17,13 @@ import practical from '../../../code/python/vector_magnitude_numpy.py?raw';
   <VectorStage client:load />
 </Stage>
 
-<Callout kind="scope" title="This is a foundation demo, not Chapter I.3">
-The reference chapter on vectors, I.3, is published at <Xref to="/chapters/vectors/">Vectors: components, magnitude, and direction</Xref>. It carries the real explanation, derivation, exercises and tests. Here the vector is only a vehicle for checking the platform, and the stage above is the very same one the chapter opens with.
+<Callout kind="scope" title="Explore here, learn more in Chapter I.3">
+The reference chapter on vectors, I.3, is published at <Xref to="/chapters/vectors/">Vectors: components, magnitude, and direction</Xref>. It develops the explanation, derivations and exercises in full. This page is a hands-on preview using the same interactive vector.
 </Callout>
 
-## What this page checks
+## Experiments to try
 
-Each row names a capability of the platform and where to see it on this page.
+Try these small experiments and notice how the visual, numerical and symbolic representations agree.
 
 | Capability | Where to look |
 | --- | --- |
@@ -33,12 +33,12 @@ Each row names a capability of the platform and where to see it on this page.
 | Undefined is a state | Set both fields to $0$: the direction becomes undefined and the arrow disappears. |
 | A visible snap policy | Switch **Snap to** between 1, ½, 0.1 and Free. |
 | Deterministic trace | Step through **Show the work**; going back selects an earlier frame. |
-| Equation overflow | The long equation below scrolls inside its own box on a narrow screen. |
-| Code that is known to run | The Python files at the end are executed by the oracle tests. |
+| Long equations | On a narrow screen, scroll the longer formula below without widening the page. |
+| Python examples | Compare the step-by-step calculation with the NumPy version below. |
 
 ## Conventions in force
 
-These apply across the whole book (master plan §3) and are what the stage above follows.
+These conventions help you read vectors and formulas throughout the book.
 
 - The plane has $+x$ to the right and $+y$ **up**. Screen coordinates, where $y$ points down, are converted in exactly one place.
 - Vectors are columns, $\mathbf v=\begin{bmatrix}x\\y\end{bmatrix}$. Matrices act from the left, $\mathbf v'=A\mathbf v$, and if $A$ acts first then $B(A\mathbf v)=(BA)\mathbf v$.
@@ -72,14 +72,14 @@ The inspector never lets a rounded value pose as an exact one.
 
 The trailing "…" appears only when the exact value is known to be irrational. For $(2.5,1.5)$ the model makes no claim about an exact form, so it shows only what it computed.
 
-## Code that is known to run
+## Run the calculation in Python
 
-The mechanism comes first, written out so every step is visible; the library call comes after. Both files below are shown exactly as stored in the repository, and the oracle test suite runs them and checks their output against the values in the plan.
+The first example works through the calculation step by step. The second uses NumPy. Compare their results and try changing the input values.
 
 <CodeFile source={mechanics} file="code/python/vector_magnitude.py" note="mechanics first" />
 
 <CodeFile source={practical} file="code/python/vector_magnitude_numpy.py" note="then the library form" />
 
 <Callout kind="numerical">
-`np.linalg.norm` squares before it adds, so for a tiny vector such as $(10^{-200},10^{-200})$ it returns `0.0`, although the vector is not zero. `np.hypot` and `math.hypot` rescale first and are correct. The independent Python oracle found this while checking the browser model, which uses `Math.hypot`.
+`np.linalg.norm` squares before it adds, so for a tiny vector such as $(10^{-200},10^{-200})$ it returns `0.0`, although the vector is not zero. `np.hypot` and `math.hypot` rescale first and are correct. The browser uses `Math.hypot`.
 </Callout>

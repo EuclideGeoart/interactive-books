@@ -89,16 +89,16 @@ test.describe('the book-map dialog', () => {
     await expect(dialog).toBeHidden();
     await expect(opener).toBeFocused();
   });
-  test('lists planned chapters as text (only published chapters are links) and offers the demo as a clearly labelled non-chapter', async ({ page }) => {
+  test('links published chapters and offers the demo as a distinct example', async ({ page }) => {
     await page.goto('./');
     await page.getByRole('button', { name: 'Contents' }).click();
     const dialog = page.getByRole('dialog');
-    // only the published chapter (I.3) is a link; every planned chapter is plain text
+    // all published chapters are links; any planned chapters remain plain text
     await expect(dialog.locator('.chapter-item a')).toHaveCount(published.length);
     await expect(dialog.locator('.chapter-item[data-status="planned"] a')).toHaveCount(0);
     await expect(dialog.locator('.chapter-item a[href$="chapters/vectors/"]')).toHaveCount(1);
     const demo = dialog.getByRole('link', { name: /Foundation demo/ });
-    await expect(demo).toContainText('platform check, not a chapter');
+    await expect(demo).toContainText('Try the live vector example');
     await demo.click();
     await expect(page).toHaveURL(/foundation\/$/);
     await expect(page.locator('.label-chip.is-demo')).toContainText('Foundation demo');
@@ -142,7 +142,7 @@ test.describe('chapter shell', () => {
   test('the foundation demo is labelled as a demo, not a chapter, and offers the first published chapter as its next page', async ({ page }) => {
     await page.goto('foundation/');
     await expect(page.locator('.label-chip.is-demo')).toContainText('Foundation demo');
-    await expect(page.getByText('This is a foundation demo, not Chapter I.3')).toBeVisible();
+    await expect(page.getByText('Explore here, learn more in Chapter I.3')).toBeVisible();
     const pager = page.getByRole('navigation', { name: 'Neighbouring chapters' });
     await expect(pager.locator('a')).toHaveCount(2);
     // the first chapter in READING order that is published (not necessarily I.3)
@@ -155,7 +155,7 @@ test.describe('chapter shell', () => {
     test.skip((page.viewportSize()?.width ?? 0) < 1180, 'the margin outline appears from 1180px');
     await page.goto('foundation/');
     const links = page.getByRole('navigation', { name: 'In this chapter' }).getByRole('link');
-    await expect(links).toHaveText(['What this page checks', 'Conventions in force', 'Mathematical typography', 'Exact and approximate', 'Code that is known to run']);
+    await expect(links).toHaveText(['Experiments to try', 'Conventions in force', 'Mathematical typography', 'Exact and approximate', 'Run the calculation in Python']);
     await links.nth(3).click();
     await expect(page.locator('#exact-and-approximate')).toBeInViewport();
     await expect(links.nth(3)).toHaveAttribute('aria-current', 'location');
