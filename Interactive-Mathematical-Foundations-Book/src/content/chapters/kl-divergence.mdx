@@ -1,0 +1,82 @@
+---
+kind: chapter
+curriculumId: VII.5
+title: "KL divergence"
+hero: "Why does comparison depend on *direction*?"
+lede: Inspect signed KL terms, reverse the source and prediction, and connect the divergence to excess cross entropy over source entropy.
+description: Inspect signed KL terms, reverse the source and prediction, and connect the divergence to excess cross entropy over source entropy.
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import Xref from '../../shell/Xref.astro';
+import ComparisonStage from '../../lessons/information-theory/ComparisonStage';
+import Exercise from '../../lessons/information-theory/BlockBExercise';
+import reference from '../../../code/python/information_kl.py?raw';
+import practical from '../../../code/python/information_kl_numpy.py?raw';
+
+<Stage caption="Inspect signed KL terms, reverse the source and prediction, and connect the divergence to excess cross entropy over source entropy."><ComparisonStage chapter="kl" client:load /></Stage>
+
+## Intuition
+
+A prediction can place mass on an outcome absent from the source without being penalized there in the forward direction. Reversing the comparison changes which outcomes are weighted and which zero probabilities are fatal. Two tables with the same labels can therefore produce very different losses.
+
+## Definition
+
+For normalized P and Q on a common finite support, $D_{\mathrm{KL}}(P\|Q)=\sum_i p_i\log(p_i/q_i)$. A p=0 term contributes zero without evaluating a ratio; p>0 and q=0 gives +∞. Natural logs give nats; base-2 logs give bits. KL is generally asymmetric and is not a distance metric.
+
+## Mechanics
+
+P is fixed and Q is normalized from the editable weights. Both forward and reverse totals stay visible. Show Q || P deliberately changes the selected source, prediction, signed terms and entropy baseline. The selected identity residual checks finite floating-point evaluations without attempting infinity minus infinity.
+
+## Derivation
+
+Expand the log ratio: $\sum_i p_i\log(p_i/q_i)=\sum_i p_i\log p_i-\sum_i p_i\log q_i=H(P,Q)-H(P)$. For non-negativity, assume Q is positive wherever P is positive. The inequality $\log t\le t-1$ gives $-D=\sum_{p_i>0}p_i\log(q_i/p_i)\le\sum_{p_i>0}(q_i-p_i)\le0$. Equality requires every positive-source ratio qᵢ/pᵢ=1 and no Q mass outside the source support, hence P=Q. If support is mismatched, D=+∞ and the inequality still holds. This derivation is independent of numerical examples.
+
+## Worked examples
+
+For P=(1/2,1/4,1/4), Q=(1/4,1/2,1/4), signed bit terms are (1/2,−1/4,0), totaling 1/4 bit; cross entropy 7/4 minus entropy 3/2 agrees. For P=(1,0), Q=(1/2,1/2), forward KL is 1 bit and reverse is infinite. With Bernoulli P=(.1,.9), Q=(.2,.8), R=(.3,.7), $D(P\|R)\approx.116322$ exceeds $D(P\|Q)+D(Q\|R)\approx.062423$ nats, violating the triangle inequality.
+
+<Stage caption="Replay the named distributions, actual contribution terms and summed loss."><ComparisonStage chapter="kl" worked client:load /></Stage>
+
+## Executable reference code
+
+The pedagogical version keeps exact source masses and branches on support. The NumPy version uses masks before logarithms and ratios. Both files run hand-worked assertions and execute in the oracle tests.
+
+<CodeFile source={reference} file="code/python/information_kl.py" />
+<CodeFile source={practical} file="code/python/information_kl_numpy.py" />
+
+## Explore
+
+Compare the canonical forward and reverse values, then choose Unequal forward / reverse and change individual Q weights. Use Zero predicted true-class mass and inspect which direction becomes infinite. Finally choose Q equals P and verify zero divergence without zeroing the entropy.
+
+## Common mistakes and counterexamples
+
+Individual KL terms can be negative; the complete normalized sum is nonnegative. KL is not an entropy and is not a metric: it lacks symmetry and the triangle inequality. Zero/zero must be skipped before division. Comparing reversed arguments requires reversing the entropy baseline as well.
+
+## Numerical considerations
+
+Exact rational masses and support decisions are preserved. Positive rational ratios are formed exactly before their approximate logarithm is taken. The independent oracle uses Decimal100 log differences and separately totals CE−H; it does not translate the ratio algorithm. Finite results and identity residuals use a 2e−12 scaled absolute/relative budget. Tiny signed rounding residuals are not a mathematical violation of non-negativity; no sampled plot is a proof.
+
+## Engineering and ML connections
+
+Expected prediction log loss is minimized by predicting P itself: cross entropy equals H(P) plus nonnegative KL. This connects probabilistic training loss with information mismatch. Direction remains essential in inference and model approximation; a symmetric-looking picture cannot make it a distance.
+
+Continue from <Xref to="chapters/cross-entropy-nll/">the preceding information-theory mechanism</Xref>.
+
+## Exercises
+
+Compute actual terms and distinguish direction, support and observation from expectation.
+
+<Exercise id="information-kl-1" client:load />
+
+<Exercise id="information-kl-2" client:load />
+
+<Exercise id="information-kl-3" client:load />
+
+<Exercise id="information-kl-4" client:load />
+
+<Exercise id="information-kl-5" client:load />
+
+## Summary and checkpoints
+
+A prediction can place mass on an outcome absent from the source without being penalized there in the forward direction. Reversing the comparison changes which outcomes are weighted and which zero probabilities are fatal. Two tables with the same labels can therefore produce very different losses. Always name the source and prediction before interpreting a loss.

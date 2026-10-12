@@ -3,6 +3,7 @@ import { join, posix, relative, resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
 
 export const families = {
+  information_comparison: { lesson: 'information-theory', stage: 'ComparisonStage', units: /^information-comparison/, oracles: ['information_comparison'], browser: 'information-comparison' },
   information_probability: { lesson: 'information-theory', stage: 'ProbabilityStage', units: /^information-probability/, oracles: ['information_probability'], browser: 'information-probability' },
   statistics_likelihood: { lesson: 'statistics', stage: 'LikelihoodStage', units: /^statistics-likelihood/, oracles: ['statistics_likelihood'], browser: 'statistics-likelihood' },
   statistics_intervals: { lesson: 'statistics', stage: 'IntervalStage', units: /^statistics-(uncertainty|intervals)/, oracles: ['statistics_uncertainty'], browser: 'statistics-uncertainty' },
@@ -122,6 +123,7 @@ function familyOfFile(path) {
   const base = posix.basename(path);
   if (/^src\/(lessons|math)\/information-theory\//.test(path)) {
     if (/^(probabilit|Probability)/.test(base)) return 'information_probability';
+    if (/^(comparison|Comparison)/.test(base)) return 'information_comparison';
     return null;
   }
   if (/^src\/(lessons|math)\/optimization\//.test(path)) {

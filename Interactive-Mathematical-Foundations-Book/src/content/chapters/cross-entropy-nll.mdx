@@ -1,0 +1,82 @@
+---
+kind: chapter
+curriculumId: VII.4
+title: "Cross entropy and negative log-likelihood"
+hero: "What does a prediction cost under the *target* distribution?"
+lede: Keep the target explicit, edit predicted weights, and compare distribution-averaged cross entropy with the loss of one observed class.
+description: Keep the target explicit, edit predicted weights, and compare distribution-averaged cross entropy with the loss of one observed class.
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import Xref from '../../shell/Xref.astro';
+import ComparisonStage from '../../lessons/information-theory/ComparisonStage';
+import Exercise from '../../lessons/information-theory/BlockBExercise';
+import reference from '../../../code/python/information_cross.py?raw';
+import practical from '../../../code/python/information_cross_numpy.py?raw';
+
+<Stage caption="Keep the target explicit, edit predicted weights, and compare distribution-averaged cross entropy with the loss of one observed class."><ComparisonStage chapter="cross" client:load /></Stage>
+
+## Intuition
+
+Predicting an outcome poorly is costly when that outcome is common under the target. Cross entropy combines the target frequencies with the surprise assigned by a prediction. One observed label instead incurs just its own negative log probability.
+
+## Definition
+
+For normalized discrete distributions P and Q on the same ordered support, $H(P,Q)=-\sum_i p_i\log q_i$. P is the target; Q is the prediction. A realized label y has negative log-likelihood $L_y=-\log q_y$. For a one-hot target $p_i=\mathbf1\{i=y\}$, cross entropy equals that realized NLL.
+
+## Mechanics
+
+P starts fixed at (1/2,1/4,1/4). Only Q’s integer weights are editable and are normalized explicitly. The Target type selector deliberately replaces P by a one-hot observed class. The inspector keeps average cross entropy and the selected class’s NLL separate; the table and bars expose each actual contribution.
+
+## Derivation
+
+Take the expectation under P of the prediction’s negative log score: $\mathbb E_P[-\log q_X]=\sum_i p_i(-\log q_i)$. In the one-hot case, every term except i=y has zero target weight, leaving $-\log q_y$. An iid labeled dataset uses a sum of realized NLLs, or a mean whose denominator counts its contributing observations. Empirical class frequencies recover cross entropy if the same Q is used for all observations.
+
+## Worked examples
+
+For P=(1/2,1/4,1/4) and Q=(1/4,1/2,1/4), the bit contributions are (1,1/4,1/2), giving $H(P,Q)=7/4$ bits. If class 1 is the actual observed target, its NLL is 2 bits, which differs from that distribution average. For a target class with q=0, the NLL and one-hot cross entropy are infinite.
+
+<Stage caption="Replay the named distributions, actual contribution terms and summed loss."><ComparisonStage chapter="cross" worked client:load /></Stage>
+
+## Executable reference code
+
+The pedagogical version keeps exact source masses and branches on support. The NumPy version uses masks before logarithms and ratios. Both files run hand-worked assertions and execute in the oracle tests.
+
+<CodeFile source={reference} file="code/python/information_cross.py" />
+<CodeFile source={practical} file="code/python/information_cross_numpy.py" />
+
+## Explore
+
+Select bits and compare the three contribution terms. Switch to one observed true class and move its predicted weight to zero. Change the target class explicitly and identify the one table row carrying the whole loss. Restore the distribution average and compare it with the realized NLL.
+
+## Common mistakes and counterexamples
+
+H(P,Q) generally differs from H(Q,P). The target supplies weights, not logarithm arguments. A zero target mass contributes zero even when prediction is zero; never evaluate 0×log 0. A positive target mass at zero prediction contributes +∞. Epsilon smoothing is a changed model, not a free mathematical repair.
+
+## Numerical considerations
+
+Both distributions are validated as exact rational masses with total exactly one. Predictions originate from visible nonnegative weights, whose all-zero vector is rejected. Logarithms are approximate; infinity arises from support mismatch rather than overflow. The finite sum is checked against Decimal100 at the declared 2e−12 scaled absolute/relative budget. The later logit pipeline computes NLL from stable log probabilities so probability underflow need not turn a finite NLL into infinity.
+
+## Engineering and ML connections
+
+Classification trains predicted class probabilities against labels. Language models use a vocabulary prediction at each position and the observed next token as the label. Distribution-averaged cross entropy describes expected log loss; the training batch is a finite average over its actual observed targets. That scalar feeds gradient-based optimization.
+
+Continue from <Xref to="chapters/entropy/">the preceding information-theory mechanism</Xref>.
+
+## Exercises
+
+Compute actual terms and distinguish direction, support and observation from expectation.
+
+<Exercise id="information-cross-1" client:load />
+
+<Exercise id="information-cross-2" client:load />
+
+<Exercise id="information-cross-3" client:load />
+
+<Exercise id="information-cross-4" client:load />
+
+<Exercise id="information-cross-5" client:load />
+
+## Summary and checkpoints
+
+Predicting an outcome poorly is costly when that outcome is common under the target. Cross entropy combines the target frequencies with the surprise assigned by a prediction. One observed label instead incurs just its own negative log probability. Always name the source and prediction before interpreting a loss.

@@ -15,15 +15,17 @@ export function decimalProbability(value: number): Rational {
   if (!p) throw new RangeError('Probability must be finite with at most two decimal places.');
   probability(p); return p;
 }
-export function logProbability(p: Rational): number {
-  probability(p);
-  if (p.num === 0n) return -Infinity;
+export function logRational(p: Rational): number {
+  if (p.den <= 0n || p.num <= 0n) throw new RangeError('A rational logarithm needs a positive argument.');
   if (p.num === p.den) return 0;
   // Positive exact rationals may underflow before log: use leading digits and their decimal exponent.
   const x = toNumber(p);
-  if (x > 0) return Math.log(x);
+  if (x > 0 && Number.isFinite(x)) return Math.log(x);
   const logInteger = (n: bigint) => { const s = n.toString(); return Math.log(Number(s.slice(0, 16))) + (s.length - Math.min(16, s.length)) * Math.LN10; };
   return logInteger(p.num) - logInteger(p.den);
+}
+export function logProbability(p: Rational): number {
+  probability(p); return p.num === 0n ? -Infinity : logRational(p);
 }
 export function selfInformation(p: Rational, unit: Unit = 'nats'): number {
   return -logProbability(p) / unitScale(unit) + 0;
