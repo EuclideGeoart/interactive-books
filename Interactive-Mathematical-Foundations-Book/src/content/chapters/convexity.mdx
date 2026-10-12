@@ -1,0 +1,158 @@
+---
+kind: chapter
+curriculumId: VI.3
+title: "Convexity"
+hero: "What can a *chord* promise about every minimum?"
+lede: Compare an objective with straight-line interpolation between two values. Convexity is a whole-domain inequality that changes optimization guarantees, not a visual synonym for a smooth bowl.
+description: Convex domains and chord inequalities, quadratic gap derivation, supporting planes and global guarantees, strictness and existence counterexamples, Python and NumPy, and five graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import OptimizationStage from '../../lessons/optimization/OptimizationStage';
+import Exercise from '../../lessons/optimization/OptimizationExercise';
+import reference from '../../../code/python/optimization_convexity.py?raw';
+import practical from '../../../code/python/optimization_convexity_numpy.py?raw';
+
+<Stage caption="Move the two endpoints on the y=0 loss slice and change the interpolation fraction. Compare the curve height with the chord height; a negative chord-minus-curve gap is a counterexample."><OptimizationStage chapter="convexity" client:load /></Stage>
+
+The canonical endpoints are $(-2,0)$ and $(2,0)$ with $t=1/2$. Their default quadratic losses are both $2$, while the midpoint loss is $0$. Predict the gap before inspecting it. Then choose the double well and compare its two zero-loss endpoints with the positive-loss midpoint.
+
+## Intuition: mixing parameters and mixing scores
+
+Take two parameter choices and form a weighted average of their coordinates. Separately form the same weighted average of their scores. These are different operations. For a convex objective, evaluating the averaged parameters costs no more than that average score.
+
+On a one-dimensional slice, the average score lies on the straight chord connecting the endpoint heights. A convex graph stays at or below every such chord. One chord that lies below the graph disproves convexity. Many favorable chords can illustrate the property, but the definition quantifies over every valid segment and every interpolation fraction.
+
+## Definition: convex domain, convex function, strict convexity
+
+A domain $D$ is **convex** when it contains the full segment between any two of its points. For $p,q\in D$ and $0\leq t\leq1$, write $z=(1-t)p+tq$. An objective is **convex** on $D$ when
+
+$$
+L((1-t)p+tq)\leq(1-t)L(p)+tL(q)
+\quad\text{for all }p,q\in D,\ 0\leq t\leq1.
+$$
+
+It is **strictly convex** when the inequality is strict for distinct $p,q$ and $0<t<1$. Equality at $t=0,1$ is unavoidable, so those endpoints do not refute strict convexity. Define the chord gap as
+
+$$
+G=(1-t)L(p)+tL(q)-L(z).
+$$
+
+Convexity requires $G\geq0$ everywhere. The full plane and the half-plane $x>0$ are convex domains. A formula's domain is part of the claim: a logarithmic segment must stay inside $x>0$.
+
+## Mechanics: a slice is evidence about one family of segments
+
+The stage draws the slice $y=0$. Its left and right inputs specify x coordinates $u,v$; the interpolation fraction gives $x=(1-t)u+tv$. Read the objective height, chord height, and their difference at that same x coordinate. The filled area above the curve is the visible portion of the slice's epigraph, not a second objective.
+
+For the quadratic, the explorer's curvature control remains positive. The $a=0$ and $a<0$ cases below are analytic extensions for the reference code and exercises, beyond that bounded control. Moving the center $c$ shifts the curve but leaves its curvature and the gap for fixed endpoint separation unchanged.
+
+A favorable slice does not establish full two-dimensional convexity. For the saddle $x^2-y^2$, the horizontal slice is the convex parabola $x^2$, but the vertical slice is the concave parabola $-y^2$. Read the whole-domain classification beside the chosen chord rather than promoting that chord into a theorem.
+
+## Derivation: an exact gap and a supporting plane
+
+For $L(x,y)=a(x-c)^2/2+2y^2$, let $\Delta=q-p$. Expanding its two squares and canceling linear terms gives
+
+$$
+G=t(1-t)\left(\frac a2\Delta_x^2+2\Delta_y^2\right)
+=\frac{t(1-t)}2\Delta^{\mathsf T}H\Delta,
+\qquad H=\operatorname{diag}(a,4).
+$$
+
+For $a\geq0$ every factor makes $G\geq0$, proving convexity on the whole plane. For $a>0$, distinct endpoints make the gap positive at interior $t$, proving strict convexity. For $a=0$, horizontal segments give equality. For $a<0$, choose $\Delta_y=0$ and $\Delta_x\ne0$ to obtain a negative gap and disprove convexity.
+
+A differentiable convex objective also lies above each of its tangent planes:
+
+$$
+L(q)\geq L(p)+\nabla L(p)\cdot(q-p).
+$$
+
+To see why, convexity along $p+t(q-p)$ implies
+
+$$
+\frac{L(p+t(q-p))-L(p)}{t}\leq L(q)-L(p),\qquad t>0.
+$$
+
+Let $t$ tend to zero from above. The left side becomes $\nabla L(p)\cdot(q-p)$. If $\nabla L(p)=0$, the supporting-plane bound gives $L(q)\geq L(p)$ for every q: the stationary point is global.
+
+For twice continuously differentiable functions on an open convex domain, positive-semidefinite Hessians **everywhere** are equivalent to convexity. Along any segment the second derivative is $\Delta^{\mathsf T}H\Delta\geq0$. A Hessian at one point cannot establish this whole-domain condition.
+
+## Worked examples: a valid chord and a violating chord
+
+The canonical quadratic chord joins $p=(-2,0)$ and $q=(2,0)$ at $t=1/2$. Its midpoint is $(0,0)$, and
+
+$$
+L(p)=L(q)=2,\qquad L((p+q)/2)=0,\qquad G=2-0=2.
+$$
+
+The exact formula agrees: $t(1-t)\Delta_x^2/2=(1/4)(16/2)=2$. The worked stage returns to these canonical endpoints so the inspector and this substitution agree.
+
+<Stage caption="Replay the canonical quadratic midpoint: endpoint heights 2 and 2, curve height 0, chord height 2, and gap 2 at t=1/2."><OptimizationStage chapter="convexity" worked client:load /></Stage>
+
+In the opening explorer, change the endpoints to $(0,0)$ and $(2,0)$. Now the midpoint loss is $1/2$, the endpoint average is $1$, and the gap is $1/2$. This is the smaller exact chord used in the first exercise.
+
+For the double well use $(-1,0)$ and $(1,0)$. Both endpoint losses are $0$, but the midpoint loss is $1$. Thus $G=-1$, a complete counterexample to convexity. Having two equal minima alone is not the violation: the objective must be no higher along their connecting segment if it is convex.
+
+The tangent-plane identity also has an exact remainder for the quadratic:
+
+$$
+L(q)-L(p)-\nabla L(p)\cdot(q-p)
+=\frac12(q-p)^{\mathsf T}H(q-p).
+$$
+
+With $p=(2,1)$ and $q=(3/2,0)$, the left side is $9/8-4-(-5)=17/8$. The tangent plane underestimates the actual objective by that positive amount.
+
+## Executable reference code
+
+The standard-library reference computes both the chord gap from loss evaluations and its independent expanded formula with `Fraction`. It checks literal canonical-style gaps, positive, zero, and negative curvature extensions, and the exact supporting-plane remainder. An interpolation fraction outside $[0,1]$ is rejected because extrapolation is a different claim.
+
+The NumPy program broadcasts several endpoint pairs over multiple fractions and cross-checks the gap identity within absolute tolerance $10^{-14}$ on that bounded sample. It also uses `eigvalsh` on the constant Hessian. The algebraic gap formula and whole-domain Hessian condition justify the theorem; finite samples alone do not.
+
+<CodeFile source={reference} file="code/python/optimization_convexity.py" />
+<CodeFile source={practical} file="code/python/optimization_convexity_numpy.py" />
+
+## Explore: local curvature can hide a global violation
+
+Choose the double well and compare a chord around one well with the chord connecting both wells. The first can have a nonnegative gap despite the second's negative gap. Predict which statement remains true when a selected chord passes: that segment is compatible with convexity, while the objective can still be nonconvex elsewhere.
+
+Choose the saddle. Its y=0 slice passes the chord test; construct a vertical witness by hand using $(0,-1),(0,1)$ and their midpoint. Endpoint losses are $-1$, midpoint loss is $0$, and the gap is $-1$.
+
+For $\abs{x}+y^2$, predict whether the kink breaks convexity. The triangle inequality gives $\abs{(1-t)x_1+tx_2}\leq(1-t)\abs{x_1}+t\abs{x_2}$, and the square term is convex. Their sum is convex despite its missing classical derivative at $x=0$. For the logarithmic objective, use strictly positive endpoints; an undefined chord from an invalid endpoint is not a counterexample.
+
+## Common mistakes and counterexamples
+
+Convexity does not mean smoothness: absolute value has a kink. It does not mean a unique minimizer: the extension $a=0$ gives $L=2y^2$, whose entire line $y=0$ minimizes it. Strict convexity gives **at most one** minimizer, and still does not ensure existence.
+
+For example, $-\log x+y^2$ has positive-definite Hessian $\operatorname{diag}(1/x^2,2)$ throughout its open convex domain $x>0$, so it is strictly convex. Yet its loss tends to $-\infty$ along $y=0,x\to\infty$, and it has no minimizer. Its gradient $(-1/x,2y)$ never vanishes.
+
+Every local minimum of a convex function is global, even without differentiability. If a distant point q had lower loss, convexity would make $p+t(q-p)$ lower for every small positive t, contradicting a local minimum at p. Conversely, positive-definite curvature at the cubic's local minimum only establishes a local fact. It does not make the cubic convex everywhere.
+
+<Callout kind="scope" title="A guarantee needs its domain">
+Convexity concerns every segment inside the stated domain. A passing sampled chord is one observation. The smooth Hessian criterion needs curvature across the whole domain, and the stationary-point global guarantee needs differentiability at that point.
+</Callout>
+
+## Numerical considerations
+
+When the chord gap is small, subtracting two nearly equal floating heights can lose relative accuracy. The exact quadratic gap formula avoids that subtraction in the reference. In a binary64 display, a tiny gap near zero requires an error scale before its sign can be interpreted; rounded displayed equality is not exact affine behavior.
+
+Sampled curves and chords are binary64 approximations. The $10^{-14}$ tolerance in the NumPy check is for the bounded arithmetic it tests, not a universal definition of convexity. For logarithmic inputs close to zero, curvature becomes large and finite computations can overflow. Keep domain failure, unresolved numerical sign, and an analytic nonconvexity witness separate.
+
+## Engineering and ML connections
+
+[Least-squares fitting](../orthogonal-least-squares/) has a positive-semidefinite quadratic Hessian. Full column rank supplies uniqueness; rank deficiency can leave an entire set of minimizers. Adding a positive quadratic parameter penalty can supply positive curvature in previously flat directions, but it changes the objective and the fitted solution.
+
+Convexity explains why some optimization problems admit global guarantees and why those guarantees do not transfer automatically to neural-network objectives. An algorithm name does not make a loss convex. [Local and global optima](../local-global-optima/) provides the distinction, while [gradient descent](../gradient-descent/) uses the gradient to move and still needs a learning-rate condition for finite-step behavior.
+
+## Exercises
+
+State the gap convention, build a violating segment when possible, and distinguish globality, uniqueness, and existence.
+
+<Exercise id="optimization-convexity-1" client:load />
+<Exercise id="optimization-convexity-2" client:load />
+<Exercise id="optimization-convexity-3" client:load />
+<Exercise id="optimization-convexity-4" client:load />
+<Exercise id="optimization-convexity-5" client:load />
+
+## Summary and checkpoints
+
+Convexity means every valid parameter mixture lies below its score chord. Check that you can derive the quadratic gap, construct the double-well violation, and use a zero gradient with a supporting plane to prove globality. Keep existence and uniqueness distinct: strict convexity limits how many minimizers there can be, and additional assumptions must ensure a minimizer is attained.

@@ -1,0 +1,160 @@
+---
+kind: chapter
+curriculumId: VI.4
+title: "Gradient descent"
+hero: "Can you explain every component of one parameter *update*?"
+lede: Freeze the current parameters, evaluate their gradient, scale it by a negative learning rate, and add the resulting displacement. Replay the evaluated states to see exactly why the optimizer moved.
+description: Inspectable gradient descent, Euclidean steepest decrease and finite-step curvature, exact canonical updates and binary64 trajectories, independent Python and vectorized NumPy, and five graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import OptimizationStage from '../../lessons/optimization/OptimizationStage';
+import Exercise from '../../lessons/optimization/OptimizationExercise';
+import reference from '../../../code/python/optimization_descent.py?raw';
+import practical from '../../../code/python/optimization_descent_numpy.py?raw';
+
+<Stage caption="Replay one evaluated iteration at a time. Match current parameters, loss, gradient, rate, update, and next parameters with the actual displacement arrow and binary64 history."><OptimizationStage chapter="descent" client:load /></Stage>
+
+Start with $\theta_0=(2,1)$, $\eta=1/4$, and $L=x^2/2+2y^2$. Before advancing, predict the gradient $(2,4)$, the displacement $(-1/2,-1)$, the next point $(3/2,0)$, and the loss change $4\to9/8$. The stage's trajectory uses binary64; the hand calculation below is exact.
+
+## Intuition: downhill direction plus a chosen distance
+
+The gradient points toward the steepest local increase per unit Euclidean distance. Negating it gives a locally downhill direction. The learning rate scales that vector into a displacement, and adding the displacement produces a new parameter choice.
+
+One step is not an instruction to move directly to the minimum. It uses information at the current point, and the shape can change along the way. Even a downhill direction can cross a valley and end at a higher loss if the distance is too large. The next step must evaluate the gradient again at the new point rather than reuse an earlier one.
+
+## Definition: the update recurrence
+
+For a differentiable objective, gradient descent with positive learning rate $\eta$ uses
+
+$$
+g_k=\nabla L(\theta_k),\qquad
+\Delta\theta_k=-\eta g_k,\qquad
+\theta_{k+1}=\theta_k+\Delta\theta_k.
+$$
+
+The gradient, update vector, and next parameter vector are distinct. $g_k$ contains sensitivity; $\Delta\theta_k$ contains a signed movement; $\theta_{k+1}$ is an absolute point. With a fixed objective and fixed rate, the recurrence is deterministic. A stopping policy decides when the finite computation ends, which is separate from the mathematical definition of an iteration.
+
+The recurring model is $L=a(x-c)^2/2+2y^2$, with default $a=1,c=0$, gradient $(a(x-c),4y)$, and Hessian $\operatorname{diag}(a,4)$. This chapter uses full objective gradients; stochastic estimates and momentum are later algorithms with additional state or assumptions.
+
+## Mechanics: account for every quantity in the inspector
+
+For the selected iteration, read current $\theta_k$, current loss, actual gradient, learning rate, update vector, next $\theta$, and next loss. The update arrow must start at $\theta_k$ and end at $\theta_{k+1}$, so its coordinate difference is exactly the stored displacement. The table retains the evaluated binary64 history, including points outside the drawing window.
+
+Next, previous, and direct selection choose stored iteration states. They do not numerically undo a step or recompute a new path. Reset restores the canonical quadratic, start $(2,1)$, rate $1/4$, and iteration budget. Editing the start, rate, or objective produces a different run; changing the replay cursor only selects an already evaluated step.
+
+Every derivative for a step is evaluated at the same current vector before either coordinate changes. Computing the x update, then using that newly changed x to evaluate the y update would generally be a different algorithm. This separable quadratic can conceal such an error, so keep the simultaneous vector rule explicit.
+
+## Derivation: why the negative gradient, and why it can overshoot
+
+For a unit direction $u$, differentiability gives the first-order rate
+
+$$
+D_uL(\theta)=g\cdot u\geq-\norm{g},
+$$
+
+by Cauchy–Schwarz. For $g\ne0$, equality holds at $u=-g/\norm{g}$: the negative-gradient direction is steepest decrease under the Euclidean distance convention. Choosing displacement $-\eta g$ gives step length $\eta\norm{g}$ and linear predicted change $-\eta\norm{g}^2$. At $g=0$, the update is the well-defined zero vector; no normalization is needed.
+
+The quadratic's exact expansion includes curvature:
+
+$$
+L(\theta-\eta g)-L(\theta)
+=-\eta\norm{g}^2+\frac{\eta^2}{2}g^{\mathsf T}Hg.
+$$
+
+The first term is negative for a nonzero gradient, but the second term can dominate for a large rate. For the default Hessian $\operatorname{diag}(1,4)$,
+
+$$
+g^{\mathsf T}Hg\leq4\norm{g}^2,
+\qquad L(\theta-\eta g)-L(\theta)
+\leq-\eta(1-2\eta)\norm{g}^2.
+$$
+
+Thus $0<\eta<1/2$ guarantees a strict loss decrease whenever the gradient is nonzero for this particular quadratic. The largest curvature matters. Detailed convergence behavior belongs to VI.5; a small learning rate is not a universal guarantee for an arbitrary objective or invalid domain.
+
+## Worked example: the complete canonical step
+
+Substitute the current parameters before moving them:
+
+$$
+\theta_0=(2,1),\qquad
+L_0=\frac{2^2}{2}+2(1)^2=4,\qquad g_0=(2,4).
+$$
+
+Scale both components and add the displacement:
+
+$$
+\Delta\theta_0=-\frac14(2,4)=\left(-\frac12,-1\right),
+\qquad \theta_1=(2,1)+\left(-\frac12,-1\right)=\left(\frac32,0\right).
+$$
+
+The new loss is $L_1=(3/2)^2/2=9/8$. As an independent check, $\norm{g_0}^2=20$ and $g_0^{\mathsf T}Hg_0=68$. The exact loss change is $-20/4+68/32=-23/8$, agreeing with $9/8-4$.
+
+<Stage caption="Replay the canonical binary64 step beside its exact hand calculation: gradient (2,4), update (−1/2,−1), next point (3/2,0), and losses 4 → 9/8."><OptimizationStage chapter="descent" worked client:load /></Stage>
+
+For the second step, recompute $g_1=(3/2,0)$. The new displacement is $(-3/8,0)$, so $\theta_2=(9/8,0)$ and $L_2=81/128$. These are exact rational values; their dyadic denominators also make these first binary64 evaluations exactly representable.
+
+More generally the component recurrence is
+
+$$
+x_{k+1}-c=(1-\eta a)(x_k-c),\qquad
+y_{k+1}=(1-4\eta)y_k.
+$$
+
+For the default canonical run, y becomes zero after the first step, while $x_k=2(3/4)^k$. In exact arithmetic x tends to zero but remains positive at every finite k. A plotted line reaching the origin after rounding does not change that statement.
+
+## Executable reference code
+
+The standard-library program records exact step dictionaries containing the current vector, loss, gradient, rate, displacement, next vector, and next loss. Its literal assertions verify the first two canonical steps, then independently compare repeated updates with the closed-form recurrence. A zero-gradient point has a zero displacement, and a larger-rate example verifies a real loss increase.
+
+The NumPy version evolves several starting points simultaneously using matrix multiplication. Time steps remain sequential because each depends on the previous one; the batch axis is vectorized. A separate broadcasted closed form cross-checks the entire bounded path within absolute tolerance $10^{-14}$. These numerical trajectories are binary64 approximations even when the first dyadic values happen to be exact.
+
+<CodeFile source={reference} file="code/python/optimization_descent.py" />
+<CodeFile source={practical} file="code/python/optimization_descent_numpy.py" />
+
+## Explore: predict an update before replaying it
+
+Return to $(2,1)$ but change the rate to $3/4$. The gradient remains $(2,4)$ because the current point is unchanged. Predict displacement $(-3/2,-3)$ and next point $(1/2,-2)$. Its loss is $1/8+8=65/8$, which exceeds $4$. The direction is locally downhill, but the step overshoots in the high-curvature y direction.
+
+Select the saddle $x^2-y^2$ at $(0,0)$. Its gradient is zero, so the run has no nonzero step. Compare nearby $(0,h)$: the loss is $-h^2$, proving that the stopped point is not a minimum. Repeat with the peak and the flat minimum to separate algorithmic stopping from classification.
+
+Choose the absolute-value objective at its kink, then the logarithmic objective at $x=0$. The first has a valid loss but no classical gradient; the second has no valid loss at all. Neither permits an ordinary gradient-descent step from that state. Move the logarithmic start inside $x>0$ before evaluating an update, and verify the new point remains inside the domain as well.
+
+## Common mistakes and counterexamples
+
+Adding $+\eta g$ follows the ascent direction to first order. Replacing $\theta$ with $-\eta g$ confuses a displacement with a point. Reusing the old gradient after moving fails to implement the stated recurrence. In the canonical example the y component becomes zero, so the second gradient's y component must also be zero.
+
+A falling loss over several steps does not certify a global optimum. The cubic can settle at its nonglobal local minimum; a saddle can stop immediately. Also keep derivatives with respect to parameters separate from derivatives with respect to data. Training updates model coefficients, while the observed input data are held fixed for this full-objective calculation.
+
+<Callout kind="misconception" title="Direction and finite-step outcome are different claims">
+The negative gradient gives steepest local decrease for a fixed Euclidean step length. The rate determines a finite movement. Curvature and domain validity decide whether the actual endpoint improves the loss.
+</Callout>
+
+## Numerical considerations
+
+The replay is an evaluated binary64 trajectory and is labeled with approximation signs. The exact `Fraction` demonstration is a separate mathematical calculation; do not use it to imply that a long browser run remains exact. With a non-dyadic rate, rounding starts immediately. With dyadic rates, eventually long products, small changes, or underflow can still affect the stored path.
+
+A displacement smaller than the spacing of representable numbers near a coordinate can disappear when added. A repeated stored state then reports numerical stagnation, not a theorem that the real recurrence attained its limit. Large iterates or gradients can instead overflow. The NumPy reference rejects non-finite results, and the bounded explorer reports invalid domains or its stopping boundary instead of fabricating a valid endpoint.
+
+Loss change, gradient norm, parameter scale, and iteration budget answer different diagnostic questions. This chapter exposes the update; VI.10 will examine stopping criteria in depth. Display precision must never determine whether the gradient is mathematically zero or whether an objective has a global minimum.
+
+## Engineering and ML connections
+
+For squared-error regression, each residual contributes a parameter derivative, and the full gradient aggregates these contributions. [Automatic differentiation](../automatic-differentiation/) obtains such gradients through a computational graph; the optimizer then performs the separate subtraction shown here. Differentiation computes sensitivity, while optimization uses it to choose the next parameters.
+
+The [gradient chapter](../gradient-directional-derivatives/) supplies the directional argument, [curvature](../hessian-curvature/) supplies the finite-step correction, and [convexity](../convexity/) supplies some global guarantees. Neural-network training repeats the same vector update mechanism over many parameters, but its objective need not be convex. Coordinate units and objective scaling also affect the effective step, which motivates careful learning-rate choices rather than one universal setting.
+
+## Exercises
+
+Write the gradient, displacement, and next point as separate quantities. Re-evaluate the gradient for a second iteration and compare actual losses after an oversized step.
+
+<Exercise id="optimization-descent-1" client:load />
+<Exercise id="optimization-descent-2" client:load />
+<Exercise id="optimization-descent-3" client:load />
+<Exercise id="optimization-descent-4" client:load />
+<Exercise id="optimization-descent-5" client:load />
+
+## Summary and checkpoints
+
+A gradient-descent iteration evaluates the current gradient, multiplies by a negative rate, and adds the displacement to the current vector. Check that you can account for every component of $(2,1)\to(3/2,0)$ and the loss $4\to9/8$, recompute the second gradient, and explain both overshoot and a stopped saddle. The following chapter studies how the learning rate changes the resulting trajectory.

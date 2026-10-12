@@ -82,23 +82,24 @@ describe('curriculum structure', () => {
 const PART_III_PUBLISHED = Array.from({ length: 15 }, (_, k) => `III.${k + 1}`);
 const PART_IV_PUBLISHED = Array.from({ length: 16 }, (_, k) => `IV.${k + 1}`);
 describe('publication scope guard', () => {
-  it('I.3 remains the reference chapter and VI.4 the planned flagship', () => {
+  it('I.3 remains the reference chapter and VI.4 the flagship', () => {
     const i3 = findChapter('I.3')!;
     expect(i3.chapter.status).toBe('available');
     expect(i3.chapter.slug).toBe('vectors');
     expect(i3.chapter.role).toBe('reference');
     expect(findChapter('VI.4')!.chapter.role).toBe('flagship');
   });
-  it('M7+M8 publishes exactly 59 chapters in Parts I–IV and leaves 38 planned', () => {
+  it('M10 Block A adds 4 Optimization chapters to the 59-chapter baseline', () => {
     const published = allChapters.filter(r => r.chapter.status === 'available');
     expect(published.filter(r => r.part.numeral === 'I')).toHaveLength(9);
     expect(published.filter(r => r.part.numeral === 'II')).toHaveLength(19);
     expect(published.filter(r => r.part.numeral === 'III').map(r => r.id)).toEqual(PART_III_PUBLISHED);
     expect(published.filter(r => r.part.numeral === 'IV').map(r => r.id)).toEqual(PART_IV_PUBLISHED);
-    expect(published.every(r => ['I', 'II', 'III', 'IV'].includes(r.part.numeral))).toBe(true);
-    expect(published).toHaveLength(59);
-    expect(allChapters.filter(r => r.chapter.status === 'planned')).toHaveLength(38);
-    expect(published.map(r => r.id)).toEqual(allChapters.slice(0, 59).map(r => r.id));
+    expect(published.every(r => ['I', 'II', 'III', 'IV', 'VI'].includes(r.part.numeral))).toBe(true);
+    expect(published).toHaveLength(63);
+    expect(allChapters.filter(r => r.chapter.status === 'planned')).toHaveLength(34);
+    expect(published.map(r => r.id)).toEqual([...allChapters.slice(0, 59), ...allChapters.filter(r => r.part.numeral === 'VI' && r.chapter.n <= 4)].map(r => r.id));
+    expect(allChapters.filter(r => r.part.numeral === 'V').every(r => r.chapter.status === 'planned')).toBe(true);
   });
   it('navigates II.19 → III.1 → III.15 → IV.1 → IV.16 → V.1', () => {
     expect(neighbours(findChapter('II.19')!).next?.id).toBe('III.1');

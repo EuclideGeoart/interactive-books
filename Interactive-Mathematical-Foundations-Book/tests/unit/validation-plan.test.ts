@@ -185,7 +185,7 @@ describe('Part III calculus registration', () => {
   });
   it('the bivariate engine selects III.7, III.8, III.9 and III.11; the graph engine selects only III.10', () => {
     const b = makePlan({ files: ['src/math/calculus/bivariate.ts'], catalog: withProbability() });
-    expect(b.conservativeExpansion).toBe(false); expect(b.chapters.slice().sort()).toEqual(['III.11', 'III.7', 'III.8', 'III.9']); expect(b.oracles).toEqual(['multivariable']);
+    expect(b.conservativeExpansion).toBe(false); expect(b.chapters.slice().sort()).toEqual(['III.11', 'III.7', 'III.8', 'III.9', ...chapterCatalog().filter(c => c.id.startsWith('VI.')).map(c => c.id)].sort()); expect(b.oracles).toEqual(['multivariable','optimization_landscapes']);
     const a = makePlan({ files: ['src/math/calculus/autodiff.ts'], catalog: withProbability() });
     expect(a.chapters).toEqual(['III.10']); expect(a.oracles).toEqual(['autodiff']);
     expect(a.units).toEqual(expect.arrayContaining(['tests/unit/autodiff.test.ts', 'tests/unit/autodiff.parity.test.ts', 'tests/unit/autodiff-lesson.test.ts']));
@@ -218,7 +218,8 @@ describe('Part III calculus registration', () => {
     for (const file of ['src/lessons/calculus/CalculusStage.tsx', 'src/lessons/calculus/calculus-view.ts', 'src/lessons/calculus/exercises.ts', 'src/lessons/calculus/calculus.css', 'tests/unit/calculus-exercises.test.ts', 'tests/e2e/calculus-helpers.ts']) {
       const p = makePlan({ files: [file], catalog: withProbability() });
       expect(p.conservativeExpansion, file).toBe(false);
-      expect(p.chapters.slice().sort(), file).toEqual(chapterCatalog().filter(c => c.id.startsWith('III.')).map(c => c.id).sort());
+      const sharedWithOptimization = ['src/lessons/calculus/CalculusStage.tsx', 'src/lessons/calculus/calculus-view.ts', 'src/lessons/calculus/calculus.css', 'tests/e2e/calculus-helpers.ts'].includes(file);
+      expect(p.chapters.slice().sort(), file).toEqual(chapterCatalog().filter(c => c.id.startsWith('III.') || (sharedWithOptimization && c.id.startsWith('VI.'))).map(c => c.id).sort());
     }
   });
   it('calculus screenshots select exactly their chapter', () => {
@@ -236,7 +237,7 @@ describe('Part III calculus registration', () => {
 describe('M7/M8 integration validation ownership', () => {
   it('discovers 15 Calculus and 16 Probability stages with separate families', () => {
     const catalog = chapterCatalog();
-    expect(catalog).toHaveLength(59);
+    expect(catalog).toHaveLength(59 + catalog.filter(c => c.id.startsWith('VI.')).length);
     expect(catalog.filter(chapter => chapter.id.startsWith('III.'))).toHaveLength(15);
     expect(catalog.filter(chapter => chapter.id.startsWith('IV.'))).toHaveLength(16);
     for (const chapter of catalog.filter(chapter => /^(III|IV)\./.test(chapter.id))) {
@@ -256,7 +257,7 @@ describe('M7/M8 integration validation ownership', () => {
   });
   it('selects both visual families when the shared curriculum changes', () => {
     const p = makePlan({ files: ['src/curriculum/curriculum.ts'], chapters: ['III.15', 'IV.1'], mode: 'milestone' });
-    expect(p.chapters).toHaveLength(59);
+    expect(p.chapters).toHaveLength(chapterCatalog().length);
     expect(p.completeMath).toBe(true);
     expect(p.commands.some(c => c.gate === 'complete root browser')).toBe(false);
     const visuals = p.commands.find(c => c.gate === 'authoritative root visuals');
@@ -266,4 +267,21 @@ describe('M7/M8 integration validation ownership', () => {
     expect(makePlan({ files: ['tests/e2e/__screenshots__/visual-calculus.spec.ts/mobile-iii-calculus-limits.png'] }).chapters).toEqual(['III.1']);
     expect(makePlan({ files: ['tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-bayes-theorem-impossible.png'] }).chapters).toEqual(['IV.6']);
   });
+});
+
+
+describe('Part VI Optimization registration',()=>{
+ it('discovers each published Optimization chapter with a real mathematical family',()=>{
+  const c=chapterCatalog().filter(c=>c.id.startsWith('VI.'));expect(c.length).toBeGreaterThanOrEqual(4);
+  for(const item of c){expect(item.family).toMatch(/^optimization_/);expect(item.kind).toBeTruthy();}
+ });
+ it('objective changes select their real consumers without unrelated parts or exhaustive fallback',()=>{
+  const p=makePlan({files:['src/math/optimization/objectives.ts']});expect(p.conservativeExpansion).toBe(false);
+  expect(p.chapters.slice().sort()).toEqual(chapterCatalog().filter(c=>c.id.startsWith('VI.')).map(c=>c.id).sort());
+  expect(p.oracles).toContain('optimization_landscapes');expect(p.commands.some(c=>c.gate==='complete root browser')).toBe(false);
+  expect(p.commands.some(c=>c.command.includes('tests/e2e/optimization.spec.ts'))).toBe(true);
+ });
+ it('Optimization screenshot ownership does not select Statistics or an unrelated chapter',()=>{
+  expect(makePlan({files:['tests/e2e/__screenshots__/visual-optimization.spec.ts/mobile-vi-gradient-descent.png']}).chapters).toEqual(['VI.4']);
+ });
 });

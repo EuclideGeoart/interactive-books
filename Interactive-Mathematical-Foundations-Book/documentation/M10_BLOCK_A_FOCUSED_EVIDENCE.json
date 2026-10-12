@@ -1,0 +1,92 @@
+{
+  "phase": "M10 Block A, VI.1\u2013VI.4; focused checks only",
+  "baseline": "cdf2ebd5428d80999dcf52f93a8e3c0eee0ac167",
+  "branch": "feature/book-ii-part-vi-optimization",
+  "publication": {
+    "available": 63,
+    "total": 97,
+    "statistics": "planned"
+  },
+  "routes": [
+    "objective-landscapes",
+    "local-global-optima",
+    "convexity",
+    "gradient-descent"
+  ],
+  "exercises": 20,
+  "pythonReferences": 8,
+  "checks": {
+    "focusedUnits": {
+      "passed": 290,
+      "files": 8,
+      "log": "validation-results/m10-block-a/unit.log"
+    },
+    "storedTraceAndReviewedWindowUnits": {
+      "passed": 7,
+      "log": "validation-results/m10-block-a/view-unit.log"
+    },
+    "type": {
+      "errors": 0,
+      "warnings": 0,
+      "existingHints": 5,
+      "log": "validation-results/m10-block-a/type-final.log"
+    },
+    "python": {
+      "selfTests": 13,
+      "fixtures": 110,
+      "exactDescentTraces": 1,
+      "maxScaledUlpError": 1,
+      "allowedScaledUlps": 8
+    },
+    "interactionChecks": {
+      "passedInFixedRun": 19,
+      "remainingFailurePassed": 1,
+      "storedReplayDesktopMobilePassed": 2,
+      "logs": [
+        "validation-results/m10-block-a/interactions-fixed.log",
+        "validation-results/m10-block-a/interaction-continuation.log",
+        "validation-results/m10-block-a/replay-browser.log"
+      ]
+    },
+    "chapterContractsAndBothThemeAxe": {
+      "passed": 64,
+      "projects": [
+        "desktop",
+        "mobile"
+      ],
+      "log": "validation-results/m10-block-a/contracts.log"
+    },
+    "visual": {
+      "cases": 12,
+      "images": 24,
+      "projects": [
+        "desktop",
+        "tablet",
+        "mobile"
+      ],
+      "individuallyReviewed": true,
+      "capture": "validation-results/m10-block-a/visual-current-capture.log",
+      "comparison": "validation-results/m10-block-a/visual-reviewed-comparison.log"
+    }
+  },
+  "failuresRetained": [
+    "validation-results/m10-block-a/interactions-first-failed.log",
+    "validation-results/m10-block-a/first-interaction-failures",
+    "validation-results/m10-block-a/interactions-fixed.log",
+    "validation-results/m10-block-a/second-interaction-failure"
+  ],
+  "corrected": [
+    "Duplicate explorer/worked table and narrow-screen formula region names",
+    "Convexity domain explanation",
+    "Arrow test reads arrowhead endpoint rather than a segment",
+    "Replay retains one immutable run per canonical state",
+    "Loss slice drawing window and explicit parameter/loss labels"
+  ],
+  "snapshotPolicy": "Only the 24 new Optimization images captured. Explicit all capture required because changed mode retains images already within the unchanged 0.004 pixel-ratio tolerance. Model window and axis labels asserted separately.",
+  "heavyLock": "/tmp/imf-heavy.lock, every direct build/browser serialized",
+  "limitations": [
+    "No isolated milestone or exhaustive acceptance",
+    "No subpath acceptance yet",
+    "No Windows, physical devices or manual screen reader checks"
+  ]
+}

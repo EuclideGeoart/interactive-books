@@ -1,0 +1,168 @@
+---
+kind: chapter
+curriculumId: VI.1
+title: "Objective functions and optimization landscapes"
+hero: "What does one *number* tell us about a whole parameter choice?"
+lede: Choose a parameter point, read its objective value, and compare nearby alternatives. Contours, gradients, and curvature turn a scalar score into an inspectable optimization landscape.
+description: Objective domains, scalar loss and parameter vectors, quadratic contours and sensitivity, contrasting landscapes, exact Python and vectorized NumPy, and five worked graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import OptimizationStage from '../../lessons/optimization/OptimizationStage';
+import Exercise from '../../lessons/optimization/OptimizationExercise';
+import reference from '../../../code/python/optimization_landscapes.py?raw';
+import practical from '../../../code/python/optimization_landscapes_numpy.py?raw';
+
+<Stage caption="Choose a point on the objective landscape. Compare the same parameter coordinates with the loss and gradient shown in the inspector."><OptimizationStage chapter="landscapes" client:load /></Stage>
+
+On the default quadratic, compare $(2,0)$ with $(0,1)$ before reading the values. Both have loss $2$. Do they also have the same sensitivity to a small parameter change? Move to $(2,1)$ and recover loss $4$ from its two separate contributions.
+
+## Intuition: a score attached to every candidate
+
+An engineer choosing two controller gains needs a way to compare settings. A loss might combine tracking error with the energy used by the controller. Each parameter pair is one candidate; the objective assigns it one scalar score. Smaller scores are preferred when we minimize.
+
+The drawn landscape places parameter coordinates on the horizontal plane and objective values at their heights. A contour joins points with equal score. It is not an optimizer path: points on the same contour can have different gradients, and an algorithm can cross many contours in one update. The gradient describes local sensitivity; curvature describes how that sensitivity changes.
+
+## Definition: objective, domain, and optimizer
+
+An **objective function** is a map $L:D\to\R$ from a specified parameter domain $D$. Here $\theta=(x,y)$ abbreviates a two-component column vector. Minimization asks for the smallest attainable value, and for the parameter choices attaining it:
+
+$$
+L^*=\min_{\theta\in D}L(\theta),\qquad
+\argmin_{\theta\in D}L(\theta)
+=\{\theta\in D:L(\theta)=L^*\}.
+$$
+
+This notation assumes a minimum exists. The infimum can describe a lower bound without attainment, and an objective can instead be unbounded below. The scalar $L^*$ and the set of minimizing parameters are different objects. An **optimizer** is an algorithm searching for parameters; it is not the objective itself.
+
+Our recurring family is
+
+$$
+L(x,y)=\frac a2(x-c)^2+2y^2,
+\qquad a=1,\ c=0\text{ by default}.
+$$
+
+For $a>0$ its unique minimizer is $(c,0)$. The explorer keeps $a>0$. In the analytic extensions used by the code and exercises, $a=0$ makes every $(x,0)$ a minimizer, while $a<0$ makes the loss unbounded below along the x direction. The parameters $a,c$ describe the chosen landscape, while $x,y$ are the parameters being optimized within that landscape.
+
+## Mechanics: one point, several derived quantities
+
+Read the current point $\theta$, its loss $L(\theta)$, and its gradient together. Differentiate the gradient to obtain the Hessian used in the analysis below. Changing $x$ or $y$ evaluates a different candidate. Changing $c$ moves the quadratic's horizontal center. Changing $a$ changes horizontal curvature; it does not change the vertical curvature $4$.
+
+The default equations are
+
+$$
+L=\frac{x^2}{2}+2y^2,\qquad
+\nabla L=(x,4y),\qquad
+H=\begin{bmatrix}1&0\\0&4\end{bmatrix}.
+$$
+
+A negative gradient component means increasing that coordinate lowers the loss to first order. A positive component means decreasing it lowers the loss to first order. Neither statement yet chooses a finite distance to travel. Keep the plotted point, the inspector's coordinates, and the formula substitution in agreement.
+
+## Derivation: contours and the local model
+
+Differentiate each term of the family independently:
+
+$$
+\frac{\partial L}{\partial x}=a(x-c),\qquad
+\frac{\partial L}{\partial y}=4y,\qquad
+H=\operatorname{diag}(a,4).
+$$
+
+Expanding the squares gives an exact identity for a displacement $\delta=(u,v)$:
+
+$$
+L(\theta+\delta)
+=L(\theta)+\nabla L(\theta)\cdot\delta
++\frac12\delta^{\mathsf T}H\delta.
+$$
+
+The gradient term is the linear prediction of the loss change; the Hessian term accounts for the bending of this quadratic. For a general smooth function this expression is a local second-order approximation, with a remainder. For this family it is exact at every displacement.
+
+For $a>0$ and a positive contour level $\ell$, rearrange $L=\ell$:
+
+$$
+\frac{(x-c)^2}{2\ell/a}+\frac{y^2}{\ell/2}=1.
+$$
+
+These ellipses have horizontal radius $\sqrt{2\ell/a}$ and vertical radius $\sqrt{\ell/2}$. At the default $a=1$, equal horizontal and vertical parameter displacements have different costs. The fourfold vertical curvature produces the narrower vertical radius.
+
+## Worked examples: equal height does not mean equal slope
+
+At $(2,1)$ with $a=1,c=0$,
+
+$$
+L(2,1)=\frac{2^2}{2}+2(1)^2=4,
+\qquad \nabla L(2,1)=(2,4).
+$$
+
+The point $(2,0)$ has loss $2$ and gradient $(2,0)$. The point $(0,1)$ also has loss $2$, but gradient $(0,4)$. Their gradient norms are $2$ and $4$: equal heights on a contour do not give equal local steepness. A small displacement in the negative y direction from the second point changes loss twice as fast per unit distance as steepest descent from the first.
+
+Now choose $a=2,c=1$ and $\theta=(2,-1/2)$. The displacement from the center is $x-c=1$, so
+
+$$
+L=\frac{2(1)^2}{2}+2\left(-\frac12\right)^2=\frac32,
+\qquad \nabla L=(2,-2),\qquad H=\operatorname{diag}(2,4).
+$$
+
+<Stage caption="Replay the canonical quadratic evaluation at (2,1): loss 4 and gradient (2,4). Use the opening explorer for the shifted and equal-height comparisons."><OptimizationStage chapter="landscapes" worked client:load /></Stage>
+
+## Executable reference code
+
+The standard-library reference uses `Fraction` for the polynomial objectives, gradients, and the quadratic Hessian. It independently checks literal points on equal contours and the contrasting landscapes. The logarithmic example is separate: real logarithms are evaluated as binary64 approximations, with an explicit $x>0$ domain check.
+
+The NumPy program evaluates a batch of points through a quadratic form and matrix multiplication, cross-checks the Hessian spectrum with `eigvalsh`, and samples a double-well grid with array operations. Finding the smallest sampled grid value is evidence about those samples; it is not a proof of a whole-domain minimum.
+
+<CodeFile source={reference} file="code/python/optimization_landscapes.py" />
+<CodeFile source={practical} file="code/python/optimization_landscapes_numpy.py" />
+
+## Explore: compare different mechanisms
+
+Use the alternative landscapes as questions about the objective, before choosing an algorithm:
+
+| Objective | A useful observation |
+| --- | --- |
+| $(x^2-1)^2+y^2$ | Two separated zero-loss wells at $(\pm1,0)$ |
+| $x^3-3x+y^2$ | A local minimum at $(1,0)$, yet arbitrarily low values toward negative x |
+| $-x^2-y^2$ | The origin is a peak; moving outward lowers the objective |
+| $x^2-y^2$ | The origin rises along x and falls along y |
+| $x^4+y^4$ | A unique zero-loss minimum with zero Hessian at the origin |
+| $x^3+y^2$ | A stationary origin that still has nearby negative and positive values |
+| $\abs{x}+y^2$ | A minimum at the origin with no classical x derivative there |
+| $-\log x+y^2$ | Only $x>0$ is allowed, and increasing x can lower loss without bound |
+
+Predict the change along one coordinate, then inspect another. On the quadratic, increase $a$ while keeping $c$ fixed: which contours become narrower? Move $c$ without changing $a$: which derivatives change at a fixed $(x,y)$, and which second derivatives remain fixed?
+
+## Common mistakes and counterexamples
+
+A loss is not automatically a probability, a nonnegative quantity, or a distance. The cubic and logarithmic objectives legitimately have negative values. A zero objective value alone says nothing about optimality: $-\log x+y^2$ is zero at $(1,0)$ and lower at larger x with $y=0$.
+
+Changing the plotted vertical scale can disguise an actual change to the objective. If $\widetilde L=3L+7$, all rankings and minimizers stay the same, but $\nabla\widetilde L=3\nabla L$. An algorithm using the same learning rate now takes a triple displacement. The constant $7$ changes displayed heights but contributes no derivative.
+
+The displayed rectangle is also not the mathematical domain. A low point on the edge of a finite picture may simply be the lowest visible sample of an unbounded objective. Inspect the formula and its domain before declaring a winner.
+
+## Numerical considerations
+
+Exact rational substitutions in the polynomial examples justify equality signs. Logarithms, sampled contour geometry, and numerical trajectories use binary64 approximations; displayed rounding must not become an exact mathematical claim. Rounding two losses to the same visible number does not establish that the underlying values are equal.
+
+Large parameter magnitudes can overflow squared or higher-order terms even when inputs are finite. The references check the logarithmic domain and reject non-finite floating results where they expose floating inputs. A gap in a plot may represent an invalid domain point rather than a very high loss. Near $x=0$ the logarithmic gradient $-1/x$ also becomes large, so domain safety matters for updates as well as for display.
+
+## Engineering and ML connections
+
+A training objective often aggregates data-fitting errors and parameter penalties. Choosing a sum instead of a mean multiplies the data term by the number of examples. With no other terms that preserves minimizers but changes gradient scale; when a separate penalty is retained, it also changes their relative weight. State the entire objective before interpreting an optimizer trace.
+
+[Least squares](../orthogonal-least-squares/) gives concrete quadratic fitting objectives. The [gradient chapter](../gradient-directional-derivatives/) explains directional sensitivity, and [Hessian and curvature](../hessian-curvature/) explains local shape. These become the ingredients of the parameter updates in [gradient descent](../gradient-descent/). A better search algorithm cannot repair an objective that rewards the wrong engineering behavior.
+
+## Exercises
+
+Keep the objective value, its derivatives, and the domain distinct. Use exact fractions for the hand calculations.
+
+<Exercise id="optimization-landscapes-1" client:load />
+<Exercise id="optimization-landscapes-2" client:load />
+<Exercise id="optimization-landscapes-3" client:load />
+<Exercise id="optimization-landscapes-4" client:load />
+<Exercise id="optimization-landscapes-5" client:load />
+
+## Summary and checkpoints
+
+An objective maps a valid parameter choice to a scalar score. Contours preserve score; gradients describe local changes; Hessians describe curvature. Check that you can recover loss $4$, gradient $(2,4)$, and Hessian $\operatorname{diag}(1,4)$ at $(2,1)$, distinguish changing a point from changing a landscape, and reject an out-of-domain logarithmic input. Next, compare a nearby best point with a best point over the whole domain.

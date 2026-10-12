@@ -1,0 +1,151 @@
+---
+kind: chapter
+curriculumId: VI.2
+title: "Local vs global optima and stationary points"
+hero: "When does a *stop* mean we have found the best point?"
+lede: Compare local neighborhoods with the entire objective domain. Zero gradients locate candidates; curvature and explicit lower-value witnesses decide what those candidates actually guarantee.
+description: Local and global optima, stationary minima and saddles, cubic unboundedness, double wells, degenerate and nonsmooth cases, exact Python and NumPy cross-checks, and five graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import OptimizationStage from '../../lessons/optimization/OptimizationStage';
+import Exercise from '../../lessons/optimization/OptimizationExercise';
+import reference from '../../../code/python/optimization_optima.py?raw';
+import practical from '../../../code/python/optimization_optima_numpy.py?raw';
+
+<Stage caption="Compare a stationary point with nearby and distant points. A zero gradient supplies a candidate; loss comparisons and curvature explain its status."><OptimizationStage chapter="optima" client:load /></Stage>
+
+For the cubic $x^3-3x+y^2$, inspect $(1,0)$ and then $(-3,0)$. The first is a strict local minimum with loss $-2$; the second has loss $-18$. Predict why a correct local-minimum label and a failed global claim can both describe the same candidate.
+
+## Intuition: best nearby and best everywhere
+
+Imagine tuning a controller in small increments. Every small change from a setting may worsen its score, while a very different setting performs much better. The first comparison is local. A global claim must compare every feasible parameter choice, including regions a short run never visits.
+
+A stationary point is where first-order sensitivity vanishes. It may be a valley, a peak, a saddle, or a degenerate point that second-order curvature cannot classify. A gradient-based algorithm can remain fixed at any of these. No movement is a fact about its update rule; optimality is a claim about the objective.
+
+## Definition: neighborhoods, domains, and stationarity
+
+A point $p\in D$ is a **local minimum** if some radius $r>0$ satisfies
+
+$$
+L(p)\leq L(q)\quad\text{for all }q\in D\text{ with }\norm{q-p}<r.
+$$
+
+It is a strict local minimum when the inequality is strict for every such $q\ne p$. A **global minimum** satisfies $L(p)\leq L(q)$ for every $q\in D$. Maxima reverse these inequalities. A **stationary point** is a differentiable point with $\nabla L(p)=0$.
+
+Here a saddle has both higher and lower objective values arbitrarily near a stationary point. The term is local; it does not say whether distant global optima exist. Stationarity is a necessary condition for a differentiable interior local optimum, not a sufficient condition. Boundary and nonsmooth optima require different reasoning.
+
+## Mechanics: inspect the candidate and its witnesses
+
+For each candidate read its parameter coordinates, loss, and gradient, then calculate its Hessian for the curvature test. First check whether the objective is differentiable there and whether the gradient vanishes. Only then apply a stationary-point curvature test. A positive-definite Hessian at a nonstationary point describes local bending, not an optimum at that point.
+
+Use nearby displacements along both coordinate directions to test the meaning of a label. To disprove globality, one valid lower-loss point is enough. To prove globality, several successful comparisons are insufficient: use a bound or a whole-domain property. Resetting the view or changing its extent cannot supply that proof.
+
+## Derivation: why zero gradient is necessary but insufficient
+
+At a differentiable interior local minimum, consider any direction $u$. The one-variable function $\phi(t)=L(p+tu)$ has a minimum at $t=0$, so
+
+$$
+0=\phi'(0)=\nabla L(p)\cdot u.
+$$
+
+Taking each coordinate direction gives $\nabla L(p)=0$. This argument uses valid points on both sides of zero and differentiability. It cannot be applied to $\abs{x}$ at zero or to a direction leaving a feasible boundary.
+
+If $L$ is twice continuously differentiable near a stationary point, Taylor expansion gives
+
+$$
+L(p+\delta)-L(p)=\frac12\delta^{\mathsf T}H(p)\delta+o(\norm{\delta}^2).
+$$
+
+Positive-definite $H$ makes the leading quadratic positive in every nonzero direction, establishing a strict local minimum. Negative-definite $H$ establishes a strict local maximum. Opposite-sign eigenvalues establish a saddle. A zero eigenvalue leaves the test inconclusive because the remainder can decide the sign along a flat quadratic direction.
+
+For the cubic, solve the equations directly:
+
+$$
+\nabla L=(3x^2-3,2y)=0
+\quad\Longrightarrow\quad (x,y)=(-1,0)\text{ or }(1,0),
+\qquad H=\operatorname{diag}(6x,2).
+$$
+
+## Worked examples: one local minimum, no global minimum
+
+At $(1,0)$ the cubic has loss $-2$ and Hessian $\operatorname{diag}(6,2)$. An exact expansion makes the local guarantee visible:
+
+$$
+L(1+u,v)-L(1,0)=3u^2+u^3+v^2=u^2(3+u)+v^2.
+$$
+
+For $\abs{u}<1$, this is positive whenever $(u,v)\ne(0,0)$. Thus the point is a strict local minimum. Yet
+
+$$
+L(-3,0)=-27+9=-18<-2,
+\qquad L(-n,0)=-n^3+3n\longrightarrow-\infty.
+$$
+
+The witness disproves globality; the limit shows the entire objective is unbounded below, so it has no global minimum. At $(-1,0)$ the Hessian $\operatorname{diag}(-6,2)$ gives a saddle, not a two-dimensional maximum.
+
+The worked stage returns to the canonical quadratic rather than the cubic. At $(2,1)$ it has loss $4$ and gradient $(2,4)$, so the current candidate is not stationary. Its marked stationary point is $(0,0)$; nonnegativity of both squared terms proves that point is the unique global minimum. Use the opening explorer for the cubic comparisons.
+
+<Stage caption="Replay the canonical quadratic candidate (2,1), which is not stationary, and compare it with the marked unique global minimizer (0,0)."><OptimizationStage chapter="optima" worked client:load /></Stage>
+
+The double well behaves differently. Its gradient and Hessian are
+
+$$
+\nabla L=(4x(x^2-1),2y),\qquad H=\operatorname{diag}(12x^2-4,2).
+$$
+
+The stationary points are $(-1,0),(0,0),(1,0)$. Both outer points have loss $0$. Because $(x^2-1)^2+y^2\geq0$ everywhere, these are global minima. At the middle the loss is $1$ and the Hessian is $\operatorname{diag}(-4,2)$: movement along x lowers loss, while movement along y raises it. The middle is a saddle even though the horizontal slice has a local maximum there.
+
+## Executable reference code
+
+The independent standard-library reference solves the polynomial stationary cases by explicit substitution and evaluates their loss and diagonal Hessian entries exactly. Assertions include the literal cubic witness $-18$, both double-well minimizers, a maximum, a saddle, and inconclusive Hessians. Higher-order and one-sided evaluations check why inconclusive and nonsmooth cases need separate arguments.
+
+The NumPy reference batches the candidates and sends their symmetric Hessians to `numpy.linalg.eigvalsh`. This is a library cross-check of the signs, not a floating search for roots. Its finite tail values illustrate the cubic's decline; the analytic polynomial limit remains the proof of unboundedness.
+
+<CodeFile source={reference} file="code/python/optimization_optima.py" />
+<CodeFile source={practical} file="code/python/optimization_optima_numpy.py" />
+
+## Explore: identical stopping behavior, different outcomes
+
+At the origin, compare $-x^2-y^2$ and $x^2-y^2$. Both have zero gradient. The first has a unique global maximum of $0$; the second has a saddle, with losses $h^2$ and $-h^2$ along the coordinate directions. Neither is a minimum for an unconstrained minimization problem.
+
+Next compare $x^4+y^4$ with $x^3+y^2$. Both are stationary at the origin and have singular positive-semidefinite Hessians there. The fourth-power objective is positive at every nonzero point, proving a strict global minimum. The degenerate cubic takes values $-h^3$ and $h^3$ at $(-h,0)$ and $(h,0)$ for every $h>0$, proving a saddle.
+
+Finally inspect $\abs{x}+y^2$. It is nonnegative and vanishes only at the origin, so it has a unique global minimum. Its left and right x slopes are $-1$ and $1$, so the classical gradient is undefined there. A correct label must preserve both facts.
+
+## Common mistakes and counterexamples
+
+“Gradient zero” does not mean “minimum”: the peak and saddle already disprove it. “Positive Hessian here” does not mean “global”: the cubic's strict local minimum already disproves it. “Hessian semidefinite here” does not even mean “local minimum”: $x^3+y^2$ at the origin disproves that stronger claim.
+
+Do not judge classification by the sign of the loss. Adding a constant preserves every local and global comparison, so a positive loss can mark a minimum and a negative loss can mark a maximum. Also distinguish a one-dimensional slice from the full domain. The central double-well slice peaks in x while the full objective rises in y.
+
+<Callout kind="misconception" title="A local theorem has a local conclusion">
+Positive-definite curvature at the cubic point (1,0) proves a strict local minimum. It does not compare that point with the negative-x tail. The lower witness and unbounded tail are compatible with the local theorem.
+</Callout>
+
+## Numerical considerations
+
+The rational polynomial examples support exact stationary equations and exact sign tests. A numerical trajectory is a binary64 approximation: a small computed gradient can reflect proximity to a stationary point, poor scaling, rounding, or an unreliable derivative. It does not supply an exact stationarity certificate or a global comparison.
+
+Near a zero Hessian eigenvalue, small numerical errors can change a reported sign. Treat a numerically unresolved sign as unresolved and inspect scale and tolerances. Sampling a shrinking neighborhood can illustrate a saddle, but a plot that rounds all nearby values together may conceal higher-order behavior. For $x^4+y^4$, the loss decays as the fourth power of displacement, faster than its quadratic model can reveal.
+
+## Engineering and ML connections
+
+An optimizer's initialization can determine which region of a nonconvex objective it explores. Trying several starts can expose alternative outcomes, but it does not prove that the best observed one is globally optimal. An engineering report should say whether its guarantee is local, global, or only empirical.
+
+[Hessian and curvature](../hessian-curvature/) supplies the second-order test; [convexity](../convexity/) will add a whole-domain condition that converts local minima into global ones. In [gradient descent](../gradient-descent/), a zero update at a saddle will make the distinction operational. Nonsmooth penalties and feasible boundaries also require conditions beyond the differentiable-interior gradient test.
+
+## Exercises
+
+Use explicit witnesses when rejecting a global claim, and a bound when proving one. Every classification must state which hypotheses justify it.
+
+<Exercise id="optimization-optima-1" client:load />
+<Exercise id="optimization-optima-2" client:load />
+<Exercise id="optimization-optima-3" client:load />
+<Exercise id="optimization-optima-4" client:load />
+<Exercise id="optimization-optima-5" client:load />
+
+## Summary and checkpoints
+
+Local optima compare a neighborhood; global optima compare the whole domain. Zero gradients locate differentiable interior candidates, and definite Hessians classify them locally. Check that you can explain why $(1,0)$ is a cubic local minimum but not global, prove both double-well minima globally, and resolve singular or nonsmooth examples without fabricating a derivative. A stopped algorithm still needs an objective-level interpretation.

@@ -1,0 +1,9 @@
+/* Optimization uses the book's established planes, inspector, fields and replay controls. */
+.optimization-stage .calc-scenes {align-items:start;}
+.optimization-stage .inspector {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 1.5rem;}
+.optimization-stage .verdict {overflow-wrap:anywhere;}
+.optimization-stage .calc-table {max-height:22rem;}
+.optimization-stage [data-part="optimizer-path"] {stroke-width:3;}
+@media(max-width:40rem){.optimization-stage .inspector{grid-template-columns:1fr;}}
+
+.optimization-stage .axis-name {display:none;} /* The derived scenes label parameter axes and the loss axis explicitly. */

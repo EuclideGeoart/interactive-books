@@ -1,0 +1,2669 @@
+{
+  "policy": {
+    "method": "Independent hand-derived closed forms over Fraction(str(value)); Decimal(60) for log loss; exact affine quadratic descent",
+    "schema": {
+      "cases": "{objective, point:[x,y], a?, center?, expected:{status,loss,gradient,hessian}}; inputs are JSON numbers",
+      "quadratic": "L=a*(x-center)^2/2+2*y^2; a defaults to 1 and must be finite and positive; center defaults to 0 and must be finite; both allow at most two decimal places; invalid configuration raises ValueError; other objectives ignore these options",
+      "expected": "status is finite, domain, or non-finite; loss is number|null, gradient [gx,gy]|null, Hessian [[hxx,hxy],[hyx,hyy]]|null",
+      "descent": "{objective:quadratic,start:[x,y],eta,steps,expected:[{k,point:[fraction,fraction],loss:fraction,gradient:[fraction,fraction]}]}; reduced num/den strings include 0/1"
+    },
+    "finite": "Only finite binary64 coordinates and outputs; any non-finite coordinate or defined output makes loss, gradient and Hessian all null; invalid quadratic configuration is rejected separately",
+    "domain": "log requires x>0; otherwise domain with all quantities null; non-finite inputs take precedence",
+    "kink": "absolute at x=0 has finite loss but null gradient and Hessian; no invented derivative or subgradient",
+    "tolerance": {
+      "ulps": 8,
+      "scale": "max(1, abs(expected)); bound = 8 * ulp(scale)",
+      "rationale": "Exact rational results are rounded only on export; allow a few browser arithmetic roundings and log evaluation error",
+      "exact": "Status, nulls, zero outputs and reduced descent fractions match exactly"
+    }
+  },
+  "cases": [
+    {
+      "objective": "quadratic",
+      "point": [
+        -2,
+        -0.75
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 3.125,
+        "gradient": [
+          -2.0,
+          -3.0
+        ],
+        "hessian": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            4.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "quadratic",
+      "point": [
+        -1,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.5,
+        "gradient": [
+          -1.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            4.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "quadratic",
+      "point": [
+        -0.5,
+        0.25
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.25,
+        "gradient": [
+          -0.5,
+          1.0
+        ],
+        "hessian": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            4.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "quadratic",
+      "point": [
+        0,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.0,
+        "gradient": [
+          0.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            4.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "quadratic",
+      "point": [
+        0.1,
+        -0.2
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.085,
+        "gradient": [
+          0.1,
+          -0.8
+        ],
+        "hessian": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            4.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "quadratic",
+      "point": [
+        0.25,
+        1.5
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 4.53125,
+        "gradient": [
+          0.25,
+          6.0
+        ],
+        "hessian": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            4.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "quadratic",
+      "point": [
+        0.5,
+        -0.5
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.625,
+        "gradient": [
+          0.5,
+          -2.0
+        ],
+        "hessian": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            4.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "quadratic",
+      "point": [
+        1,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.5,
+        "gradient": [
+          1.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            4.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "quadratic",
+      "point": [
+        1.25,
+        0.75
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 1.90625,
+        "gradient": [
+          1.25,
+          3.0
+        ],
+        "hessian": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            4.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "quadratic",
+      "point": [
+        2,
+        -1
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 4.0,
+        "gradient": [
+          2.0,
+          -4.0
+        ],
+        "hessian": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            4.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "well",
+      "point": [
+        -2,
+        -0.75
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 9.5625,
+        "gradient": [
+          -24.0,
+          -1.5
+        ],
+        "hessian": [
+          [
+            44.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "well",
+      "point": [
+        -1,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.0,
+        "gradient": [
+          0.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            8.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "well",
+      "point": [
+        -0.5,
+        0.25
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.625,
+        "gradient": [
+          1.5,
+          0.5
+        ],
+        "hessian": [
+          [
+            -1.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "well",
+      "point": [
+        0,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 1.0,
+        "gradient": [
+          0.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            -4.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "well",
+      "point": [
+        0.1,
+        -0.2
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 1.0201,
+        "gradient": [
+          -0.396,
+          -0.4
+        ],
+        "hessian": [
+          [
+            -3.88,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "well",
+      "point": [
+        0.25,
+        1.5
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 3.12890625,
+        "gradient": [
+          -0.9375,
+          3.0
+        ],
+        "hessian": [
+          [
+            -3.25,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "well",
+      "point": [
+        0.5,
+        -0.5
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.8125,
+        "gradient": [
+          -1.5,
+          -1.0
+        ],
+        "hessian": [
+          [
+            -1.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "well",
+      "point": [
+        1,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.0,
+        "gradient": [
+          0.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            8.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "well",
+      "point": [
+        1.25,
+        0.75
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.87890625,
+        "gradient": [
+          2.8125,
+          1.5
+        ],
+        "hessian": [
+          [
+            14.75,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "well",
+      "point": [
+        2,
+        -1
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 10.0,
+        "gradient": [
+          24.0,
+          -2.0
+        ],
+        "hessian": [
+          [
+            44.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "ridge",
+      "point": [
+        -2,
+        -0.75
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": -4.5625,
+        "gradient": [
+          4.0,
+          1.5
+        ],
+        "hessian": [
+          [
+            -2.0,
+            0.0
+          ],
+          [
+            0.0,
+            -2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "ridge",
+      "point": [
+        -1,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": -1.0,
+        "gradient": [
+          2.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            -2.0,
+            0.0
+          ],
+          [
+            0.0,
+            -2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "ridge",
+      "point": [
+        -0.5,
+        0.25
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": -0.3125,
+        "gradient": [
+          1.0,
+          -0.5
+        ],
+        "hessian": [
+          [
+            -2.0,
+            0.0
+          ],
+          [
+            0.0,
+            -2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "ridge",
+      "point": [
+        0,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.0,
+        "gradient": [
+          0.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            -2.0,
+            0.0
+          ],
+          [
+            0.0,
+            -2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "ridge",
+      "point": [
+        0.1,
+        -0.2
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": -0.05,
+        "gradient": [
+          -0.2,
+          0.4
+        ],
+        "hessian": [
+          [
+            -2.0,
+            0.0
+          ],
+          [
+            0.0,
+            -2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "ridge",
+      "point": [
+        0.25,
+        1.5
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": -2.3125,
+        "gradient": [
+          -0.5,
+          -3.0
+        ],
+        "hessian": [
+          [
+            -2.0,
+            0.0
+          ],
+          [
+            0.0,
+            -2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "ridge",
+      "point": [
+        0.5,
+        -0.5
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": -0.5,
+        "gradient": [
+          -1.0,
+          1.0
+        ],
+        "hessian": [
+          [
+            -2.0,
+            0.0
+          ],
+          [
+            0.0,
+            -2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "ridge",
+      "point": [
+        1,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": -1.0,
+        "gradient": [
+          -2.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            -2.0,
+            0.0
+          ],
+          [
+            0.0,
+            -2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "ridge",
+      "point": [
+        1.25,
+        0.75
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": -2.125,
+        "gradient": [
+          -2.5,
+          -1.5
+        ],
+        "hessian": [
+          [
+            -2.0,
+            0.0
+          ],
+          [
+            0.0,
+            -2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "ridge",
+      "point": [
+        2,
+        -1
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": -5.0,
+        "gradient": [
+          -4.0,
+          2.0
+        ],
+        "hessian": [
+          [
+            -2.0,
+            0.0
+          ],
+          [
+            0.0,
+            -2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "saddle",
+      "point": [
+        -2,
+        -0.75
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 3.4375,
+        "gradient": [
+          -4.0,
+          1.5
+        ],
+        "hessian": [
+          [
+            2.0,
+            0.0
+          ],
+          [
+            0.0,
+            -2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "saddle",
+      "point": [
+        -1,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 1.0,
+        "gradient": [
+          -2.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            2.0,
+            0.0
+          ],
+          [
+            0.0,
+            -2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "saddle",
+      "point": [
+        -0.5,
+        0.25
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.1875,
+        "gradient": [
+          -1.0,
+          -0.5
+        ],
+        "hessian": [
+          [
+            2.0,
+            0.0
+          ],
+          [
+            0.0,
+            -2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "saddle",
+      "point": [
+        0,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.0,
+        "gradient": [
+          0.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            2.0,
+            0.0
+          ],
+          [
+            0.0,
+            -2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "saddle",
+      "point": [
+        0.1,
+        -0.2
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": -0.03,
+        "gradient": [
+          0.2,
+          0.4
+        ],
+        "hessian": [
+          [
+            2.0,
+            0.0
+          ],
+          [
+            0.0,
+            -2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "saddle",
+      "point": [
+        0.25,
+        1.5
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": -2.1875,
+        "gradient": [
+          0.5,
+          -3.0
+        ],
+        "hessian": [
+          [
+            2.0,
+            0.0
+          ],
+          [
+            0.0,
+            -2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "saddle",
+      "point": [
+        0.5,
+        -0.5
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.0,
+        "gradient": [
+          1.0,
+          1.0
+        ],
+        "hessian": [
+          [
+            2.0,
+            0.0
+          ],
+          [
+            0.0,
+            -2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "saddle",
+      "point": [
+        1,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 1.0,
+        "gradient": [
+          2.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            2.0,
+            0.0
+          ],
+          [
+            0.0,
+            -2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "saddle",
+      "point": [
+        1.25,
+        0.75
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 1.0,
+        "gradient": [
+          2.5,
+          -1.5
+        ],
+        "hessian": [
+          [
+            2.0,
+            0.0
+          ],
+          [
+            0.0,
+            -2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "saddle",
+      "point": [
+        2,
+        -1
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 3.0,
+        "gradient": [
+          4.0,
+          2.0
+        ],
+        "hessian": [
+          [
+            2.0,
+            0.0
+          ],
+          [
+            0.0,
+            -2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "flat",
+      "point": [
+        -2,
+        -0.75
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 16.31640625,
+        "gradient": [
+          -32.0,
+          -1.6875
+        ],
+        "hessian": [
+          [
+            48.0,
+            0.0
+          ],
+          [
+            0.0,
+            6.75
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "flat",
+      "point": [
+        -1,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 1.0,
+        "gradient": [
+          -4.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            12.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "flat",
+      "point": [
+        -0.5,
+        0.25
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.06640625,
+        "gradient": [
+          -0.5,
+          0.0625
+        ],
+        "hessian": [
+          [
+            3.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.75
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "flat",
+      "point": [
+        0,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.0,
+        "gradient": [
+          0.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "flat",
+      "point": [
+        0.1,
+        -0.2
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.0017,
+        "gradient": [
+          0.004,
+          -0.032
+        ],
+        "hessian": [
+          [
+            0.12,
+            0.0
+          ],
+          [
+            0.0,
+            0.48
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "flat",
+      "point": [
+        0.25,
+        1.5
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 5.06640625,
+        "gradient": [
+          0.0625,
+          13.5
+        ],
+        "hessian": [
+          [
+            0.75,
+            0.0
+          ],
+          [
+            0.0,
+            27.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "flat",
+      "point": [
+        0.5,
+        -0.5
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.125,
+        "gradient": [
+          0.5,
+          -0.5
+        ],
+        "hessian": [
+          [
+            3.0,
+            0.0
+          ],
+          [
+            0.0,
+            3.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "flat",
+      "point": [
+        1,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 1.0,
+        "gradient": [
+          4.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            12.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "flat",
+      "point": [
+        1.25,
+        0.75
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 2.7578125,
+        "gradient": [
+          7.8125,
+          1.6875
+        ],
+        "hessian": [
+          [
+            18.75,
+            0.0
+          ],
+          [
+            0.0,
+            6.75
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "flat",
+      "point": [
+        2,
+        -1
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 17.0,
+        "gradient": [
+          32.0,
+          -4.0
+        ],
+        "hessian": [
+          [
+            48.0,
+            0.0
+          ],
+          [
+            0.0,
+            12.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "degenerate",
+      "point": [
+        -2,
+        -0.75
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": -7.4375,
+        "gradient": [
+          12.0,
+          -1.5
+        ],
+        "hessian": [
+          [
+            -12.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "degenerate",
+      "point": [
+        -1,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": -1.0,
+        "gradient": [
+          3.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            -6.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "degenerate",
+      "point": [
+        -0.5,
+        0.25
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": -0.0625,
+        "gradient": [
+          0.75,
+          0.5
+        ],
+        "hessian": [
+          [
+            -3.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "degenerate",
+      "point": [
+        0,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.0,
+        "gradient": [
+          0.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "degenerate",
+      "point": [
+        0.1,
+        -0.2
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.041,
+        "gradient": [
+          0.03,
+          -0.4
+        ],
+        "hessian": [
+          [
+            0.6,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "degenerate",
+      "point": [
+        0.25,
+        1.5
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 2.265625,
+        "gradient": [
+          0.1875,
+          3.0
+        ],
+        "hessian": [
+          [
+            1.5,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "degenerate",
+      "point": [
+        0.5,
+        -0.5
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.375,
+        "gradient": [
+          0.75,
+          -1.0
+        ],
+        "hessian": [
+          [
+            3.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "degenerate",
+      "point": [
+        1,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 1.0,
+        "gradient": [
+          3.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            6.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "degenerate",
+      "point": [
+        1.25,
+        0.75
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 2.515625,
+        "gradient": [
+          4.6875,
+          1.5
+        ],
+        "hessian": [
+          [
+            7.5,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "degenerate",
+      "point": [
+        2,
+        -1
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 9.0,
+        "gradient": [
+          12.0,
+          -2.0
+        ],
+        "hessian": [
+          [
+            12.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "cubic",
+      "point": [
+        -2,
+        -0.75
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": -1.4375,
+        "gradient": [
+          9.0,
+          -1.5
+        ],
+        "hessian": [
+          [
+            -12.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "cubic",
+      "point": [
+        -1,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 2.0,
+        "gradient": [
+          0.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            -6.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "cubic",
+      "point": [
+        -0.5,
+        0.25
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 1.4375,
+        "gradient": [
+          -2.25,
+          0.5
+        ],
+        "hessian": [
+          [
+            -3.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "cubic",
+      "point": [
+        0,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.0,
+        "gradient": [
+          -3.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "cubic",
+      "point": [
+        0.1,
+        -0.2
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": -0.259,
+        "gradient": [
+          -2.97,
+          -0.4
+        ],
+        "hessian": [
+          [
+            0.6,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "cubic",
+      "point": [
+        0.25,
+        1.5
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 1.515625,
+        "gradient": [
+          -2.8125,
+          3.0
+        ],
+        "hessian": [
+          [
+            1.5,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "cubic",
+      "point": [
+        0.5,
+        -0.5
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": -1.125,
+        "gradient": [
+          -2.25,
+          -1.0
+        ],
+        "hessian": [
+          [
+            3.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "cubic",
+      "point": [
+        1,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": -2.0,
+        "gradient": [
+          0.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            6.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "cubic",
+      "point": [
+        1.25,
+        0.75
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": -1.234375,
+        "gradient": [
+          1.6875,
+          1.5
+        ],
+        "hessian": [
+          [
+            7.5,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "cubic",
+      "point": [
+        2,
+        -1
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 3.0,
+        "gradient": [
+          9.0,
+          -2.0
+        ],
+        "hessian": [
+          [
+            12.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "absolute",
+      "point": [
+        -2,
+        -0.75
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 2.5625,
+        "gradient": [
+          -1.0,
+          -1.5
+        ],
+        "hessian": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "absolute",
+      "point": [
+        -1,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 1.0,
+        "gradient": [
+          -1.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "absolute",
+      "point": [
+        -0.5,
+        0.25
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.5625,
+        "gradient": [
+          -1.0,
+          0.5
+        ],
+        "hessian": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "absolute",
+      "point": [
+        0,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.0,
+        "gradient": null,
+        "hessian": null
+      }
+    },
+    {
+      "objective": "absolute",
+      "point": [
+        0.1,
+        -0.2
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.14,
+        "gradient": [
+          1.0,
+          -0.4
+        ],
+        "hessian": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "absolute",
+      "point": [
+        0.25,
+        1.5
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 2.5,
+        "gradient": [
+          1.0,
+          3.0
+        ],
+        "hessian": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "absolute",
+      "point": [
+        0.5,
+        -0.5
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.75,
+        "gradient": [
+          1.0,
+          -1.0
+        ],
+        "hessian": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "absolute",
+      "point": [
+        1,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 1.0,
+        "gradient": [
+          1.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "absolute",
+      "point": [
+        1.25,
+        0.75
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 1.8125,
+        "gradient": [
+          1.0,
+          1.5
+        ],
+        "hessian": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "absolute",
+      "point": [
+        2,
+        -1
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 3.0,
+        "gradient": [
+          1.0,
+          -2.0
+        ],
+        "hessian": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "log",
+      "point": [
+        -2,
+        -0.75
+      ],
+      "expected": {
+        "status": "domain",
+        "loss": null,
+        "gradient": null,
+        "hessian": null
+      }
+    },
+    {
+      "objective": "log",
+      "point": [
+        -1,
+        0
+      ],
+      "expected": {
+        "status": "domain",
+        "loss": null,
+        "gradient": null,
+        "hessian": null
+      }
+    },
+    {
+      "objective": "log",
+      "point": [
+        -0.5,
+        0.25
+      ],
+      "expected": {
+        "status": "domain",
+        "loss": null,
+        "gradient": null,
+        "hessian": null
+      }
+    },
+    {
+      "objective": "log",
+      "point": [
+        0,
+        0
+      ],
+      "expected": {
+        "status": "domain",
+        "loss": null,
+        "gradient": null,
+        "hessian": null
+      }
+    },
+    {
+      "objective": "log",
+      "point": [
+        0.1,
+        -0.2
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 2.3425850929940455,
+        "gradient": [
+          -10.0,
+          -0.4
+        ],
+        "hessian": [
+          [
+            100.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "log",
+      "point": [
+        0.25,
+        1.5
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 3.636294361119891,
+        "gradient": [
+          -4.0,
+          3.0
+        ],
+        "hessian": [
+          [
+            16.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "log",
+      "point": [
+        0.5,
+        -0.5
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.9431471805599453,
+        "gradient": [
+          -2.0,
+          -1.0
+        ],
+        "hessian": [
+          [
+            4.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "log",
+      "point": [
+        1,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.0,
+        "gradient": [
+          -1.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "log",
+      "point": [
+        1.25,
+        0.75
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.33935644868579024,
+        "gradient": [
+          -0.8,
+          1.5
+        ],
+        "hessian": [
+          [
+            0.64,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "log",
+      "point": [
+        2,
+        -1
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.3068528194400547,
+        "gradient": [
+          -0.5,
+          -2.0
+        ],
+        "hessian": [
+          [
+            0.25,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "quadratic",
+      "point": [
+        2,
+        1
+      ],
+      "a": 0.25,
+      "center": 1,
+      "expected": {
+        "status": "finite",
+        "loss": 2.125,
+        "gradient": [
+          0.25,
+          4.0
+        ],
+        "hessian": [
+          [
+            0.25,
+            0.0
+          ],
+          [
+            0.0,
+            4.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "quadratic",
+      "point": [
+        0,
+        0
+      ],
+      "a": 0.5,
+      "center": 0,
+      "expected": {
+        "status": "finite",
+        "loss": 0.0,
+        "gradient": [
+          0.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            0.5,
+            0.0
+          ],
+          [
+            0.0,
+            4.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "quadratic",
+      "point": [
+        1,
+        0
+      ],
+      "a": 4,
+      "center": 1,
+      "expected": {
+        "status": "finite",
+        "loss": 0.0,
+        "gradient": [
+          0.0,
+          0.0
+        ],
+        "hessian": [
+          [
+            4.0,
+            0.0
+          ],
+          [
+            0.0,
+            4.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "quadratic",
+      "point": [
+        0.1,
+        -0.2
+      ],
+      "a": 0.5,
+      "center": -0.25,
+      "expected": {
+        "status": "finite",
+        "loss": 0.110625,
+        "gradient": [
+          0.175,
+          -0.8
+        ],
+        "hessian": [
+          [
+            0.5,
+            0.0
+          ],
+          [
+            0.0,
+            4.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "quadratic",
+      "point": [
+        -1.25,
+        0.5
+      ],
+      "a": 2,
+      "center": -1.25,
+      "expected": {
+        "status": "finite",
+        "loss": 0.5,
+        "gradient": [
+          0.0,
+          2.0
+        ],
+        "hessian": [
+          [
+            2.0,
+            0.0
+          ],
+          [
+            0.0,
+            4.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "quadratic",
+      "point": [
+        0.125,
+        -0.25
+      ],
+      "a": 0.25,
+      "center": 0.1,
+      "expected": {
+        "status": "finite",
+        "loss": 0.125078125,
+        "gradient": [
+          0.00625,
+          -1.0
+        ],
+        "hessian": [
+          [
+            0.25,
+            0.0
+          ],
+          [
+            0.0,
+            4.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "quadratic",
+      "point": [
+        2,
+        -1
+      ],
+      "a": 1,
+      "center": 0.75,
+      "expected": {
+        "status": "finite",
+        "loss": 2.78125,
+        "gradient": [
+          1.25,
+          -4.0
+        ],
+        "hessian": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            4.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "quadratic",
+      "point": [
+        0.5,
+        0.25
+      ],
+      "a": 4,
+      "center": 2,
+      "expected": {
+        "status": "finite",
+        "loss": 4.625,
+        "gradient": [
+          -6.0,
+          1.0
+        ],
+        "hessian": [
+          [
+            4.0,
+            0.0
+          ],
+          [
+            0.0,
+            4.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "flat",
+      "point": [
+        1e+80,
+        0
+      ],
+      "expected": {
+        "status": "non-finite",
+        "loss": null,
+        "gradient": null,
+        "hessian": null
+      }
+    },
+    {
+      "objective": "flat",
+      "point": [
+        0,
+        1e+80
+      ],
+      "expected": {
+        "status": "non-finite",
+        "loss": null,
+        "gradient": null,
+        "hessian": null
+      }
+    },
+    {
+      "objective": "quadratic",
+      "point": [
+        1e+154,
+        0
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 5e+307,
+        "gradient": [
+          1e+154,
+          0.0
+        ],
+        "hessian": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            4.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "quadratic",
+      "point": [
+        2e+154,
+        0
+      ],
+      "expected": {
+        "status": "non-finite",
+        "loss": null,
+        "gradient": null,
+        "hessian": null
+      }
+    },
+    {
+      "objective": "quadratic",
+      "point": [
+        1e+308,
+        0
+      ],
+      "expected": {
+        "status": "non-finite",
+        "loss": null,
+        "gradient": null,
+        "hessian": null
+      }
+    },
+    {
+      "objective": "quadratic",
+      "point": [
+        0,
+        1e+154
+      ],
+      "expected": {
+        "status": "non-finite",
+        "loss": null,
+        "gradient": null,
+        "hessian": null
+      }
+    },
+    {
+      "objective": "cubic",
+      "point": [
+        1e+103,
+        0
+      ],
+      "expected": {
+        "status": "non-finite",
+        "loss": null,
+        "gradient": null,
+        "hessian": null
+      }
+    },
+    {
+      "objective": "log",
+      "point": [
+        1e-200,
+        0
+      ],
+      "expected": {
+        "status": "non-finite",
+        "loss": null,
+        "gradient": null,
+        "hessian": null
+      }
+    },
+    {
+      "objective": "log",
+      "point": [
+        1e-154,
+        0.5
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 354.84810432108304,
+        "gradient": [
+          -1e+154,
+          1.0
+        ],
+        "hessian": [
+          [
+            1e+308,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "log",
+      "point": [
+        0.001,
+        -0.25
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 6.970255278982137,
+        "gradient": [
+          -1000.0,
+          -0.5
+        ],
+        "hessian": [
+          [
+            1000000.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "objective": "log",
+      "point": [
+        0,
+        1
+      ],
+      "expected": {
+        "status": "domain",
+        "loss": null,
+        "gradient": null,
+        "hessian": null
+      }
+    },
+    {
+      "objective": "absolute",
+      "point": [
+        0,
+        0.5
+      ],
+      "expected": {
+        "status": "finite",
+        "loss": 0.25,
+        "gradient": null,
+        "hessian": null
+      }
+    }
+  ],
+  "descent": [
+    {
+      "objective": "quadratic",
+      "start": [
+        2,
+        1
+      ],
+      "eta": 0.25,
+      "steps": 2,
+      "expected": [
+        {
+          "k": 0,
+          "point": [
+            "2/1",
+            "1/1"
+          ],
+          "loss": "4/1",
+          "gradient": [
+            "2/1",
+            "4/1"
+          ]
+        },
+        {
+          "k": 1,
+          "point": [
+            "3/2",
+            "0/1"
+          ],
+          "loss": "9/8",
+          "gradient": [
+            "3/2",
+            "0/1"
+          ]
+        },
+        {
+          "k": 2,
+          "point": [
+            "9/8",
+            "0/1"
+          ],
+          "loss": "81/128",
+          "gradient": [
+            "9/8",
+            "0/1"
+          ]
+        }
+      ]
+    }
+  ]
+}
