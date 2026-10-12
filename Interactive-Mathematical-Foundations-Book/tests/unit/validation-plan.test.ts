@@ -5,6 +5,39 @@ import { changedFiles, chapterCatalog, environmentLink, makePlan } from '../../s
 import { productionSignature } from '../../scripts/production-state.mjs';
 
 describe('conservative change-scoped validation', () => {
+  it('Bayes changes reach only Bayes chapters; shared probability presentation reaches actual consumers', () => {
+    const bayes = makePlan({ files: ['src/math/probability/bayes.ts'] });
+    expect(bayes.chapters).toEqual(['IV.6']); expect(bayes.conservativeExpansion).toBe(false);
+    expect(bayes.oracles).toEqual(['probability_finite']);
+    const shared = makePlan({ files: ['src/lessons/probability/StageFrame.tsx'] });
+    expect(shared.chapters.slice().sort()).toEqual(chapterCatalog().filter(c => c.id.startsWith('IV.')).map(c => c.id).sort());
+    expect(shared.conservativeExpansion).toBe(false);
+    expect(makePlan({ files: ['src/math/probability/bayes-deleted.ts'] }).commands.some(c => c.gate === 'complete root browser')).toBe(true);
+  });
+  it('registered probability oracles, browser families and screenshots select all named owners', () => {
+    const ids = ['IV.1', 'IV.2', 'IV.3', 'IV.4', 'IV.5', 'IV.6'];
+    for (const file of ['oracle/probability_finite_oracle.py', 'fixtures/probability_finite.fixtures.json', 'tests/e2e/probability-finite.spec.ts']) {
+      const p = makePlan({ files: [file] }); expect(p.conservativeExpansion).toBe(false); expect(p.chapters.slice().sort()).toEqual(ids);
+    }
+    expect(makePlan({ files: ['tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-bayes-theorem-impossible.png'] }).chapters).toEqual(['IV.6']);
+  });
+  it('the shared distribution model selects all actual distribution consumers and their cases', () => {
+    const p = makePlan({ files: ['src/math/probability/distributions.ts'] });
+    expect(p.chapters.slice().sort()).toEqual(['IV.8', 'IV.9', 'IV.10', 'IV.15', 'IV.16'].sort()); expect(p.conservativeExpansion).toBe(false);
+    expect(p.oracles).toEqual(['probability_distributions', 'probability_sampling']);
+    const visual = new RegExp(p.commands.find(c => c.gate === 'affected root visuals')!.command.at(-1)!);
+    for (const id of ['IV.8', 'IV.9', 'IV.10', 'IV.15', 'IV.16']) expect(visual.test(`${id}: opening and exceptional probability states`)).toBe(true);
+  });
+  it('joint and sampling ownership stays selective while unresolved probability dependencies expand', () => {
+    for (const [file, ids, oracles] of [
+      ['src/math/probability/joint.ts', ['IV.13', 'IV.14'], ['probability_joint']],
+      ['src/math/probability/sampling.ts', ['IV.15', 'IV.16'], ['probability_sampling']],
+      ['tests/e2e/probability-sampling.spec.ts', ['IV.13', 'IV.14', 'IV.15', 'IV.16'], ['probability_joint', 'probability_sampling']],
+    ] as const) {
+      const p = makePlan({ files: [file] }); expect(p.conservativeExpansion).toBe(false); expect(p.chapters.slice().sort()).toEqual([...ids].sort()); expect(p.oracles).toEqual([...oracles]);
+    }
+    expect(makePlan({ files: ['src/math/probability/missing-sampling.ts'], chapters: ['IV.16'] }).commands.some(c => c.gate === 'complete root browser')).toBe(true);
+  });
   it('discovers every current published chapter without a second publication registry', () => {
     expect(chapterCatalog().map(chapter => chapter.id).sort()).toEqual(allChapters.filter(ref => ref.chapter.status === 'available').map(ref => ref.id).sort());
   });
@@ -77,14 +110,16 @@ describe('conservative change-scoped validation', () => {
       expect(plan.completeMath).toBe(true);
       expect(plan.commands.some(command => command.gate === 'complete root browser')).toBe(true);
     }
-    const shared = makePlan({ files: ['src/ui/ParameterInput.tsx'], chapters: ['II.10'] });
-    expect(shared.sharedExpansion).toBe(true);
-    expect(shared.completeMath).toBe(true);
-    expect(shared.chapters).toHaveLength(chapterCatalog().length);
-    expect(shared.interactionChapters).toEqual(['II.10']);
-    expect(shared.commands.some(command => command.gate === 'all read-only chapter contracts + representative both-theme axe')).toBe(true);
-    expect(shared.commands.some(command => command.gate === 'shared cross-chapter controls')).toBe(true);
-    expect(shared.commands.some(command => command.gate === 'complete root browser')).toBe(false);
+    for (const file of ['src/ui/ParameterInput.tsx', 'tests/e2e/chapters.spec.ts']) {
+      const shared = makePlan({ files: [file], chapters: ['II.10'] });
+      expect(shared.sharedExpansion).toBe(true);
+      expect(shared.completeMath).toBe(true);
+      expect(shared.chapters).toHaveLength(chapterCatalog().length);
+      expect(shared.interactionChapters).toEqual(['II.10']);
+      expect(shared.commands.some(command => command.gate === 'all read-only chapter contracts + representative both-theme axe')).toBe(true);
+      expect(shared.commands.some(command => command.gate === 'shared cross-chapter controls')).toBe(true);
+      expect(shared.commands.some(command => command.gate === 'complete root browser')).toBe(false);
+    }
   });
   it('detects real untracked files as well as tracked edits', () => {
     const directory = mkdtempSync('tests/t0-untracked-');
@@ -94,7 +129,7 @@ describe('conservative change-scoped validation', () => {
   });
   it('keeps documentation-only work cheap and refuses misspelled selectors', () => {
     expect(makePlan({ files: ['documentation/report.md'] }).commands).toEqual([]);
-    expect(() => makePlan({ chapters: ['IV.1'] })).toThrow();
+    expect(() => makePlan({ chapters: ['V.1'] })).toThrow();
     expect(() => makePlan({ project: 'phone' })).toThrow();
     expect(() => makePlan({ only: 'unitt' })).toThrow();
   });
@@ -122,12 +157,8 @@ describe('conservative change-scoped validation', () => {
 });
 
 describe('Part III calculus registration', () => {
-  /** Synthetic Part IV chapters (the Probability branch is reconciled later): a calculus edit must never select them. */
-  const probability = [
-    { id: 'IV.1', slug: 'sample-spaces', path: 'src/content/chapters/sample-spaces.mdx', family: undefined, kind: undefined },
-    { id: 'IV.6', slug: 'bayes-theorem', path: 'src/content/chapters/bayes-theorem.mdx', family: undefined, kind: undefined },
-  ];
-  const withProbability = () => [...chapterCatalog(), ...probability];
+  /** Use the actual published Probability catalog, not synthetic placeholders. */
+  const withProbability = () => chapterCatalog();
   it('discovers every published calculus chapter with its family and visual kind from the wrapper stage', () => {
     const calculus = chapterCatalog().filter(c => c.id.startsWith('III.'));
     const expected: Record<string, readonly [string, string]> = { 'III.1': ['limits', 'limits'], 'III.2': ['limits', 'continuity'], 'III.3': ['derivatives', 'secant'],
@@ -199,5 +230,40 @@ describe('Part III calculus registration', () => {
     expect(environmentLink('src')).toBe(false);
     expect(environmentLink('src/node_modules')).toBe(false);
     expect(changedFiles()).not.toContain('node_modules');
+  });
+});
+
+describe('M7/M8 integration validation ownership', () => {
+  it('discovers 15 Calculus and 16 Probability stages with separate families', () => {
+    const catalog = chapterCatalog();
+    expect(catalog).toHaveLength(59);
+    expect(catalog.filter(chapter => chapter.id.startsWith('III.'))).toHaveLength(15);
+    expect(catalog.filter(chapter => chapter.id.startsWith('IV.'))).toHaveLength(16);
+    for (const chapter of catalog.filter(chapter => /^(III|IV)\./.test(chapter.id))) {
+      expect(chapter.family, chapter.id).toBeTruthy();
+      expect(chapter.kind, chapter.id).toBeTruthy();
+    }
+  });
+  it('keeps autodiff and Bayes changes independent', () => {
+    const calc = makePlan({ files: ['src/math/calculus/autodiff.ts'] });
+    const prob = makePlan({ files: ['src/math/probability/bayes.ts'] });
+    expect(calc.chapters).toEqual(['III.10']);
+    expect(prob.chapters).toEqual(['IV.6']);
+    expect(calc.oracles).toEqual(['autodiff']);
+    expect(prob.oracles).toEqual(['probability_finite']);
+    expect(calc.conservativeExpansion).toBe(false);
+    expect(prob.conservativeExpansion).toBe(false);
+  });
+  it('selects both visual families when the shared curriculum changes', () => {
+    const p = makePlan({ files: ['src/curriculum/curriculum.ts'], chapters: ['III.15', 'IV.1'], mode: 'milestone' });
+    expect(p.chapters).toHaveLength(59);
+    expect(p.completeMath).toBe(true);
+    expect(p.commands.some(c => c.gate === 'complete root browser')).toBe(false);
+    const visuals = p.commands.find(c => c.gate === 'authoritative root visuals');
+    expect(visuals?.command).toEqual(expect.arrayContaining(['tests/e2e/visual-calculus.spec.ts', 'tests/e2e/visual-probability.spec.ts']));
+  });
+  it('selects exactly one chapter for each new part screenshot', () => {
+    expect(makePlan({ files: ['tests/e2e/__screenshots__/visual-calculus.spec.ts/mobile-iii-calculus-limits.png'] }).chapters).toEqual(['III.1']);
+    expect(makePlan({ files: ['tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-bayes-theorem-impossible.png'] }).chapters).toEqual(['IV.6']);
   });
 });

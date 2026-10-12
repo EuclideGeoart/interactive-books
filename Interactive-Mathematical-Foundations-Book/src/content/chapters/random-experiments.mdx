@@ -1,0 +1,108 @@
+---
+kind: chapter
+curriculumId: IV.1
+title: "Random experiments, outcomes, and sample spaces"
+hero: "What could happen before we see what *did* happen?"
+lede: Select possible outcomes and build an event. The model assigns probability to all possibilities; one observed roll supplies only one result.
+description: Finite experiments, sample spaces, weighted outcomes, fairness assumptions, observations versus model probabilities, executable Python and NumPy, and five graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import FiniteStage from '../../lessons/probability/FiniteStage';
+import Exercise from '../../lessons/probability/BlockAExercise';
+import reference from '../../../code/python/probability_experiments.py?raw';
+import practical from '../../../code/python/probability_experiments_numpy.py?raw';
+
+<Stage caption="Select die outcomes to change event A. Compare its selected faces, individual weights, and total probability; reset to the fair six-sided die to replay the same model."><FiniteStage chapter="experiments" client:load /></Stage>
+
+Before changing anything, predict the mass of the even faces. Select just one face, then all six. Explain why an event can contain several outcomes although a single roll produces only one outcome.
+
+## Intuition: possibilities are not observations
+
+A die in your hand has not yet produced a result. A probability model describes what may happen and assigns weights to those possibilities. After a roll, you observe one face. The five other faces remain possibilities for a new roll under the same model; the observation does not erase them from the sample space.
+
+An event answers a question such as “was the face even?” It collects every outcome that would make the answer yes. A probability is the total mass of that collection, not a promise about the next observed result.
+
+## Definition
+
+A finite **sample space** $\Omega$ is a nonempty set of distinct outcomes. A probability model assigns a mass $p_\omega$ to each outcome, subject to
+
+$$
+p_\omega\ge0,\qquad \sum_{\omega\in\Omega}p_\omega=1.
+$$
+
+An **event** $A$ is a subset of $\Omega$, with probability $P(A)=\sum_{\omega\in A}p_\omega$. The empty event has probability zero and the whole sample space has probability one. A possible label may have mass zero in a specified model; nonempty does not always mean positive probability.
+
+For the canonical **fair six-sided die**, $\Omega=\{1,2,3,4,5,6\}$ and every mass is $1/6$. Fairness is an explicit assumption, not a consequence of having six labels.
+
+## Mechanics: one state, several views
+
+The stage holds the experiment's outcome weights and event membership. Selecting a face for A changes membership. **Edit weight** selects a face whose nonnegative raw weight you can change; the model divides all raw weights by their positive total to obtain normalized probabilities. Equal raw weights express the fairness assumption. The selected outcomes, mass inspector, equation, accessible description, and trace refer to that same state.
+
+Read the trace from defining the weighted experiment through its first seeded observation and the bounded repeated-trial counts. Compare those observations with the fixed model mass in the inspector. Replay the same seed to recover the same sequence; changing event membership changes which observations count toward its frequency, not the sequence itself.
+
+## Derivation: when counting is enough
+
+If there are $n$ equally likely outcomes, normalization gives $np=1$, hence $p=1/n$. If $A$ contains $m$ of them, then
+
+$$
+P(A)=m\frac1n=\frac{|A|}{|\Omega|}.
+$$
+
+This shortcut follows from equal masses. With unequal masses, the set still tells you which terms to add, but its size no longer tells you their sum. Nor does a short observed sequence determine the weights of a future experiment.
+
+## Worked examples
+
+For $A=\{2,4,6\}$ on the fair die, three selected outcomes each contribute $1/6$, so $P(A)=1/2$. For $B=\{4,5,6\}$, $P(B)=1/2$ as well. Their shared faces are $4$ and $6$, with total mass $1/3$; equal event masses do not make the events identical.
+
+<Stage caption="Toggle membership in the worked die model and follow the sum of selected 1/6 masses. Restore A = {2, 4, 6} and B = {4, 5, 6} to compare the two half-mass events."><FiniteStage chapter="experiments" worked client:load /></Stage>
+
+For two **independent fair coins**, distinguish the first and second positions: $\Omega=\{HH,HT,TH,TT\}$, each mass $1/4$. The event “exactly one head” contains $HT$ and $TH$, so its mass is $1/2$. If we describe only the number of heads, the labels $0,1,2$ have masses $1/4,1/2,1/4$. Grouping outcomes changes the labels, not the total mass associated with each group.
+
+## Executable reference code
+
+The standard-library program spells out exact `Fraction` masses, validates the finite model, sums event weights, and prints the die and coin examples. Its bounded observation sequence uses an explicit seed. The NumPy program compares boolean-mask sums against independently specified exact fractions; it performs no random experiment to manufacture an answer.
+
+<CodeFile source={reference} file="code/python/probability_experiments.py" />
+<CodeFile source={practical} file="code/python/probability_experiments_numpy.py" />
+
+## Explore
+
+Construct the singleton event containing $6$, the empty event, and the whole die space. Predict $1/6$, $0$, and $1$ before inspecting the answers. Return to the even faces and compare their model mass with the observed frequency. Change **Experiment seed**, increase **Observed trials**, then use **Replay seed**. Neither setting changes the model probabilities. The stage's display shows at most the first 16 outcomes while its frequency includes all requested trials, bounded at 2000.
+
+Choose **Weighted die** or edit a raw weight to break equiprobability. In the weighted reference example, compare two selected labels with half the total mass: the number of labels is not the denominator of a universal probability rule. Choose **Two fair coins** to inspect the four ordered outcomes.
+
+<Callout kind="scope" title="An invalid space is not an unlikely observation">
+An empty sample space cannot support total probability one. A negative mass or a total other than one is invalid input. A zero-mass event inside a valid model is a different issue: the model remains valid, but conditioning on that event will be undefined.
+</Callout>
+
+## Common mistakes and counterexamples
+
+Three even observations in a row do not imply that the model now contains only even faces. A fair independent die does not owe you an odd face after a streak. Conversely, a streak does not prove a die fair: fairness is stipulated here; estimating a physical die's probabilities from data is a later statistical problem.
+
+For a counterexample to counting alone, assign red, green, and blue masses $1/2,1/3,1/6$. Selecting green and blue gives $1/2$, although two of three labels are selected. Treating those labels as equally likely silently replaces the model.
+
+## Numerical considerations
+
+The finite examples have exact rational answers. Python constructs `Fraction(1, 6)` from integers; constructing a fraction from a binary floating-point approximation would preserve that approximation instead. NumPy arrays use floating-point masses and sums, so the reference marks these comparisons as approximate and checks absolute error with an explicit $10^{-12}$ tolerance, not a claim of exact equality.
+
+An empirical frequency is an integer count divided by the number of observed trials. It may differ substantially from model probability at small sample sizes. The seeded sequence is reproducible in the reference environment, bounded, and illustrative; it is not a proof of a probability or a cross-language random-generator contract.
+
+## Engineering and ML connections
+
+Finite models appear in categorical predictions, randomized tests, and simulation design. Before using a probability vector, check that labels are distinct, weights are nonnegative, and total mass is one. A model's predicted probability and an observed class count answer different questions; mixing them can make evaluation circular.
+
+## Exercises
+
+Enter exact fractions where appropriate. Each exercise offers corrective feedback and a worked solution after an attempt.
+
+<Exercise id="probability-experiments-even-mass" client:load />
+<Exercise id="probability-experiments-two-coins" client:load />
+<Exercise id="probability-experiments-biased-event" client:load />
+<Exercise id="probability-experiments-observation" client:load />
+<Exercise id="probability-experiments-invalid-model" client:load />
+
+## Summary and checkpoints
+
+A sample space lists possibilities; a probability model weights them; an event selects a set; an observation records what happened. Check that you can justify the fair-die denominator, keep two coin positions distinct, sum unequal weights, and reject invalid models without confusing them with rare outcomes.

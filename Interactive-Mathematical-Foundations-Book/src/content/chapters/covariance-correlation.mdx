@@ -1,0 +1,151 @@
+---
+kind: chapter
+curriculumId: IV.14
+title: "Covariance and correlation"
+hero: "What does a probability-weighted *tilt* reveal about dependence?"
+lede: Center a joint distribution, add its weighted cross-products, and compare association across scales. Then inspect a nonlinear relation that correlation misses.
+description: Exact centered covariance, standardized correlation, affine scaling and collapse, nonlinear zero-correlation dependence, causation limits, Python and NumPy references, and graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import JointStage from '../../lessons/probability/JointStage';
+import Exercise from '../../lessons/probability/BlockCExercise';
+import reference from '../../../code/python/probability_covariance.py?raw';
+import practical from '../../../code/python/probability_covariance_numpy.py?raw';
+
+<Stage caption="Read the weighted scatter and centered products from one joint table. Transform X=aU+b and Y=cV+d, then compare covariance, variances, and correlation."><JointStage chapter="covariance" client:load /></Stage>
+
+Predict how reflection of one coordinate changes the sign of association. Predict what remains defined when one scale becomes zero.
+
+## Intuition: signs of centered products
+
+When both coordinates lie above their means, their deviations have the same sign and their product is positive. The same is true when both lie below their means. Opposite deviations contribute negative products. Covariance adds those products using probability weights.
+
+The picture must preserve mass: a point of probability $1/4$ contributes twice the weight of a point of probability $1/8$. A scatterplot's occupied locations alone are insufficient. Positive covariance suggests a shared linear direction; cancellation can hide a curved relationship.
+
+## Definition
+
+For finite second moments, write $\mu_X=\mathbb E[X]$ and $\mu_Y=\mathbb E[Y]$. Covariance is
+
+$$
+\operatorname{Cov}(X,Y)=\mathbb E[(X-\mu_X)(Y-\mu_Y)]
+=\sum_{i,j}p_{ij}(x_i-\mu_X)(y_j-\mu_Y).
+$$
+
+If both variances are positive, correlation is
+
+$$
+\rho(X,Y)=\frac{\operatorname{Cov}(X,Y)}{\sigma_X\sigma_Y},
+\qquad -1\leq\rho\leq1.
+$$
+
+Covariance has the product of the two variables' units. Correlation is dimensionless. If either variable is constant on positive-mass outcomes, its variance is zero and correlation is undefined, even though covariance is well defined and zero.
+
+## Mechanics: distinguish latent cells from mapped points
+
+The latent table uses $U,V\in\{-1,0,1\}$ and canonical weights $[1,1,0;1,2,1;0,1,1]$. The mapped variables are $X=aU+b$ and $Y=cV+d$. The stage keeps the table clearly labeled by latent $U,V$, while its scatterplot and association rows describe mapped $X,Y$.
+
+Change a scale or shift through the controls. If multiple latent cells map to one scatter location, their probability masses are merged. A zero scale is valid and collapses one mapped variable to a constant; it does not erase or rewrite the latent table. Reset restores identity maps and canonical weights.
+
+## Derivation: centering removes shifts
+
+Expanding the centered product gives
+
+$$
+\operatorname{Cov}(X,Y)=\mathbb E[XY]-\mathbb E[X]\mathbb E[Y].
+$$
+
+For affine transformations, $aU+b-\mathbb E[aU+b]=a(U-\mathbb E[U])$, hence
+
+$$
+\operatorname{Cov}(aU+b,cV+d)=ac\operatorname{Cov}(U,V).
+$$
+
+The two variances multiply by $a^2$ and $c^2$. When both scales are nonzero,
+
+$$
+\rho(aU+b,cV+d)=\frac{ac}{|a||c|}\rho(U,V).
+$$
+
+Shifts leave covariance and correlation unchanged. Positive changes of units preserve correlation. Reflecting exactly one axis flips its sign; reflecting both restores it. The correlation formula above does not extend to a zero scale.
+
+## Worked examples
+
+Canonical means are zero and both variances are $1/2$. Only the two mass-$1/8$ diagonal corners contribute nonzero $UV$, so
+
+$$
+\operatorname{Cov}(U,V)=\frac18+\frac18=\frac14,
+\qquad \rho(U,V)=\frac{1/4}{\sqrt{(1/2)(1/2)}}=\frac12.
+$$
+
+For $X=-2U+3$ and $Y=3V-1$, means become $3,-1$, variances become $2,9/2$, and covariance becomes $-3/2$. Its correlation is $-1/2$.
+
+<Stage caption="Recover canonical covariance 1/4 and correlation 1/2. Reflect one coordinate, shift both, and collapse a scale to zero to inspect the undefined-correlation policy."><JointStage chapter="covariance" worked client:load /></Stage>
+
+A different table, $[0,0,1;0,1,0;0,0,1]$, assigns equal mass to $(-1,1),(0,0),(1,1)$. Here $V=U^2$. Its moments are
+
+$$
+\mathbb E[U]=0,\quad\mathbb E[V]=\frac23,\quad
+\operatorname{Var}(U)=\frac23,\quad\operatorname{Var}(V)=\frac29.
+$$
+
+Symmetry gives $\mathbb E[UV]=0$, so covariance and correlation are zero. Yet $\mathbb P(V=0\mid U=0)=1$ differs from $\mathbb P(V=0)=1/3$. The dependence is nonlinear and exact.
+
+## Executable reference code
+
+The exact reference computes centered weighted products with `Fraction`, checks the alternative moment identity, and merges mapped points. It tests mapped independence separately from latent dependence, including the constant-variable collapse. Correlation is approximate when its square-root denominator is irrational.
+
+The NumPy reference explicitly weights the nine cell coordinates. Calling an unweighted sample covariance routine on nine cell labels would ignore their probabilities and include zero-mass locations as observations; that is a different calculation.
+
+<CodeFile source={reference} file="code/python/probability_covariance.py" />
+<CodeFile source={practical} file="code/python/probability_covariance_numpy.py" />
+
+## Explore
+
+Shift both coordinates and verify that centered association remains fixed while the means move. Scale one axis by $-2$ and predict its variance, covariance, and correlation before inspecting the answer. Scale both axes negatively and explain why correlation's sign returns.
+
+Use the reversed preset for a sign change, the collapsed preset for a constant variable, or the diagonal preset for perfect positive association. Inspect the nonlinear example and identify which conditional probability disproves independence. Finally set $a=0$. Explain how constant $X=b$ is independent of $Y$ even if the latent $U,V$ remain dependent, and why this does not make correlation defined.
+
+## Common mistakes and counterexamples
+
+Independence with finite second moments implies zero covariance: independence factors $\mathbb E[XY]$. The converse fails in the $V=U^2$ example. Zero correlation means no centered linear association; it does not mean no relationship.
+
+Variance of a sum includes association:
+
+$$
+\operatorname{Var}(X+Y)=\operatorname{Var}(X)+\operatorname{Var}(Y)
++2\operatorname{Cov}(X,Y).
+$$
+
+For canonical $U,V$, the result is $3/2$, not $1$. Correlation also cannot establish causation: a common cause, selection rule, or measurement process can produce association without a direct causal effect.
+
+## Numerical considerations
+
+The stage preserves exact fractions for bounded weights, moments, covariance, and affine parameters. Correlation may require an irrational square root and is then labeled approximately. An exact zero variance produces an explicit undefined result, never a fabricated correlation of zero.
+
+Centered products help avoid subtracting large nearly equal floating moments. Near-zero variance can still make a correlation numerically sensitive; displayed rounding must not decide whether the denominator is zero. For floating cross-checks, record the tolerance and keep theoretical weighted moments separate from sample estimators.
+
+<Callout kind="misconception" title="A constant has undefined correlation">
+Its covariance is zero because every centered deviation is zero. Its correlation asks for division by a zero standard deviation. Independence of the constant variable remains a separate, well-defined statement.
+</Callout>
+
+## Engineering and ML connections
+
+Correlation can detect redundant linear feature directions and covariance can describe the spread of paired quantities. Changing measurement units rescales covariance, while positive unit conversion leaves correlation fixed. A zero-variance feature needs an explicit standardization policy.
+
+Feature screening by correlation alone can discard a predictive nonlinear relationship. Observational associations also need a causal model or experimental design before they justify an intervention; a signed coefficient is not that justification.
+
+## Exercises
+
+Use exact fractions for moments and covariance, and explain the denominator whenever correlation is undefined.
+
+<Exercise id="probability-covariance-canonical" client:load />
+<Exercise id="probability-covariance-affine" client:load />
+<Exercise id="probability-covariance-sum-variance" client:load />
+<Exercise id="probability-covariance-nonlinear" client:load />
+<Exercise id="probability-covariance-collapse-causation" client:load />
+
+## Summary and checkpoints
+
+Covariance averages centered cross-products; correlation divides by positive standard deviations. Check the canonical $1/4$ and $1/2$, the signed affine scale laws, zero-scale collapse, the dependent zero-correlation example, and the limits of a causal interpretation.

@@ -1,0 +1,118 @@
+---
+kind: chapter
+curriculumId: IV.9
+title: "Bernoulli and Binomial distributions"
+hero: "How many different sequences produce the same success *count*?"
+lede: Begin with one binary trial, then group independent trial sequences by their total successes. The binomial coefficient counts the ways to place those successes.
+description: Bernoulli indicators, binomial counts and assumptions, exact boundary cases, parameter domains, Python and NumPy references, and five graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import DistributionStage from '../../lessons/probability/DistributionStage';
+import Exercise from '../../lessons/probability/BlockBExercise';
+import reference from '../../../code/python/probability_binomial.py?raw';
+import practical from '../../../code/python/probability_binomial_numpy.py?raw';
+
+<Stage caption="Change trial count n and success probability p, then select a count k. Set n = 2 and p = 50%; the middle count has twice the mass of either extreme."><DistributionStage chapter="binomial" client:load /></Stage>
+
+Predict the three masses before reading them. Set the selected count outside the support and distinguish an impossible event from an invalid experiment.
+
+## Intuition: binary trials, numerical totals
+
+A trial records success as $1$ and failure as $0$. “Success” is simply the event being counted; it need not mean a desirable result. One trial is a Bernoulli variable. Adding several trials produces a success count.
+
+For two fair independent trials, the sequences are $00,01,10,11$. Their counts are $0,1,1,2$. The same grouping principle from random variables yields three count values, with more mass in the middle because two sequences feed it.
+
+## Definition
+
+A **Bernoulli** variable $B$ with parameter $p\in[0,1]$ has $P(B=1)=p$ and $P(B=0)=1-p$. If $B_1,\ldots,B_n$ are independent Bernoulli variables with the same $p$, then
+
+$$
+X=\sum_{i=1}^n B_i\sim\operatorname{Binomial}(n,p),
+\qquad P(X=k)=\binom nk p^k(1-p)^{n-k},\quad 0\le k\le n.
+$$
+
+Outside that integer support, the mass is zero. The parameter $n$ is a nonnegative integer; $n=0$ is valid. For $n=1$, the binomial model is Bernoulli. Independence and a common success probability are assumptions, not consequences of using binary labels.
+
+## Mechanics: parameters and selected events
+
+The stage accepts integer $n$ from $0$ through $30$, success percentage from $0$ through $100$ with two decimal places, and selected integer $k$ from $-1$ through $31$. These are teaching controls; divide a percentage by $100$ to obtain the probability parameter. The selected $k$ identifies one event without changing the distribution.
+
+Follow the trace from selecting $k$ success positions, through the probability of one such sequence, to their product. Compare the selected PMF mass with its CDF jump. Selecting $k=-1$ or $k>n$ yields mass zero; it must not be silently clamped to a possible count. Invalid parameters, such as negative $n$ or $p>1$, instead fail to define this model.
+
+## Derivation: multiply first, then count
+
+Independence makes any particular length-$n$ sequence with $k$ successes have mass $p^k(1-p)^{n-k}$. A common $p$ makes this mass the same for every sequence with that count. There are $\binom nk$ choices of success positions, giving the PMF above.
+
+The binomial theorem checks its total:
+
+$$
+\sum_{k=0}^n\binom nk p^k(1-p)^{n-k}
+=(p+(1-p))^n=1.
+$$
+
+With zero trials, the one empty sequence has success count $0$ and mass $1$. A zero exponent here denotes an empty product of value $1$, including boundary factors written $0^0$ in this combinatorial formula. This convention concerns empty products; it is not a universal statement about indeterminate limits.
+
+## Worked examples
+
+For $n=2$, $p=1/2$, all four sequences have mass $1/4$. Grouping gives $P(X=0)=1/4$, $P(X=1)=1/2$, $P(X=2)=1/4$. A single count label does not mean a single source sequence.
+
+<Stage caption="Recreate the two-trial PMF, then try n = 0, p = 0%, and p = 100%. The distribution remains valid in each boundary case."><DistributionStage chapter="binomial" worked client:load /></Stage>
+
+For $n=3$, $p=1/4$, exactly one success can occupy three positions. Each corresponding sequence has mass $(1/4)(3/4)^2=9/64$, so
+
+$$
+P(X=1)=3\times\frac9{64}=\frac{27}{64}.
+$$
+
+At $p=0$, all mass lies at $k=0$. At $p=1$, all mass lies at $k=n$. For $n=0$, these both name the same count. No factorial of a negative integer is needed for an impossible selected event.
+
+## Executable reference code
+
+The exact program uses standard-library `comb` and `Fraction`, returning zero before evaluating an out-of-support count. It checks literal worked values and sweeps $n=0,\ldots,30$ across deterministic, near-boundary, and ordinary probabilities, asserting normalization and mean $np$. `Fraction('12.34') / 100` represents $12.34\%$ exactly.
+
+The NumPy program exposes the coefficient array and elementwise powers. It compares each mass against exact rational products within absolute tolerance $10^{-12}$, with no SciPy dependency and no random sampling.
+
+<CodeFile source={reference} file="code/python/probability_binomial.py" />
+<CodeFile source={practical} file="code/python/probability_binomial_numpy.py" />
+
+## Explore
+
+Hold $n=2$ while moving $p$ from $0$ to $1$. Predict where mass collects at either end. Set $p=1/2$ and increase $n$: the support grows, but the selected event still asks for one count. Try $n=0$ with both $k=0$ and $k=1$. Reset returns the stage's starting model $n=8$, $p=35\%$, $k=3$.
+
+For $n=3$, $p=25\%$, select $k=1$ and explain the factor $3$ in the trace. Compare $p$ with $1-p$ and reflect the count $k$ into $n-k$: the success/failure roles swap, giving the same mass under the reflected parameter.
+
+## Common mistakes and counterexamples
+
+Three possible counts for two trials are not equally likely. Counting labels would yield three masses $1/3$ and discard sequence multiplicity. Also, $p$ is a probability, not the percentage number: $25\%$ means $p=1/4$, not $p=25$.
+
+Equal trial marginals alone are insufficient. If the second trial always copies the first fair trial, the count is $0$ or $2$, each with mass $1/2$, and never $1$. Independent trials with differing success probabilities also need a different count model; one common $p$ cannot encode them.
+
+## Numerical considerations
+
+Finite decimal percentages can be represented as exact rational inputs. Exact references avoid rounded factorial ratios by using integer combinations. The stage's bounded $n\le30$ keeps its examples small, but floating-point masses remain approximations unless an exact form is supplied.
+
+Boundary values deserve deliberate checks: $n=0$, $p=0$, $p=1$, and impossible $k$ are valid cases with exact answers. Do not use a numerical epsilon to declare a small positive probability zero. General large-$n$ algorithms would require additional numerical care beyond this bounded lesson.
+
+<Callout kind="misconception" title="An impossible count is not an invalid parameter">
+A valid Binomial(2, 1/2) model assigns probability zero to count 3. A negative trial count or success probability above one is invalid input and should be reported as such.
+</Callout>
+
+## Engineering and ML connections
+
+Binary indicators count errors, accepted requests, or successful tests. A binomial model is appropriate when independence and constant success probability are justified by the experiment. Reused inputs, common failures, or changing difficulty can violate those assumptions; a convenient formula does not repair the model.
+
+## Exercises
+
+Enter exact fractions for the finite probabilities. Check boundaries using their experiment meaning as well as the formula.
+
+<Exercise id="probability-binomial-two-trials" client:load />
+<Exercise id="probability-binomial-three-trials" client:load />
+<Exercise id="probability-binomial-boundaries" client:load />
+<Exercise id="probability-binomial-assumptions" client:load />
+<Exercise id="probability-binomial-impossible-count" client:load />
+
+## Summary and checkpoints
+
+A Bernoulli variable records one binary event; a binomial variable counts independent trials with common $p$. Check that you can explain both sequence probability and multiplicity, compute $27/64$ for the worked three-trial event, and handle zero trials, deterministic parameters, and impossible selected counts without changing the question.

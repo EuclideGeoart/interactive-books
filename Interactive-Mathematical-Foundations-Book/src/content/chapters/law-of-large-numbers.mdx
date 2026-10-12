@@ -1,0 +1,132 @@
+---
+kind: chapter
+curriculumId: IV.15
+title: "Law of Large Numbers"
+hero: "Why can a running average settle while each observation stays *random*?"
+lede: Follow one replayable sequence of observations and its actual prefix means. Separate a long-run convergence statement from the temporary rises and falls of one finite path.
+description: Seeded prefix means, the iid finite-mean LLN, nonmonotone deviations, theoretical mean spread, finite-run limitations, executable Python and NumPy, and five graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import SamplingStage from '../../lessons/probability/SamplingStage';
+import Exercise from '../../lessons/probability/BlockCExercise';
+import reference from '../../../code/python/probability_lln.py?raw';
+import practical from '../../../code/python/probability_lln_numpy.py?raw';
+
+<Stage caption="Replay a seed, inspect actual observations, and follow their prefix means beside the theoretical population mean. Increase trials without expecting every new point to get closer."><SamplingStage chapter="lln" client:load /></Stage>
+
+Predict whether the next observation can move an already-close mean farther away. Then switch between Bernoulli, uniform, and exponential sources: what should the target line represent?
+
+## Intuition: a sum grows, but each new contribution gets diluted
+
+A new observation enters the mean with weight $1/m$ at step $m$. Early observations can move it dramatically; later ones usually have less influence. Random fluctuations continue, but averaging independent information can make their collective effect smaller.
+
+This is a statement about averages. Individual observations do not converge to the population mean: a fair Bernoulli draw remains either $0$ or $1$ even after a million earlier draws. The running mean is a distinct variable built from the complete prefix.
+
+## Definition
+
+For independent identically distributed observations $X_1,X_2,\ldots$ with $\mathbb E[|X_1|]<\infty$, write $\mu=\mathbb E[X_1]$ and
+
+$$
+\bar X_m=\frac1m\sum_{j=1}^mX_j.
+$$
+
+The **strong Law of Large Numbers** states that $\bar X_m\to\mu$ almost surely. In words, convergence holds on an event of probability one in the ideal infinite iid experiment. It does not require each finite error to decrease or give a deterministic sample size that makes every possible path accurate.
+
+A weaker convergence-in-probability statement is enough for many applications: for every fixed $\varepsilon>0$, $\mathbb P(|\bar X_m-\mu|>\varepsilon)\to0$. The finite-variance argument below shows this weak statement under a stronger moment assumption.
+
+## Mechanics: actual observations, explicit seed
+
+The explorer's Bernoulli source has success probability $p$, entered as a percent. Its mean and variance are $p$ and $p(1-p)$ when $p$ is expressed as a probability. Uniform draws on $[0,1)$ have mean $1/2$ and variance $1/12$. Exponential rate-$1$ draws have mean and variance $1$ and are visibly skewed rather than Gaussian.
+
+The canonical run uses Bernoulli probability $1/4$ (25 percent), seed $42$, and $200$ trials. Set a uint32 seed and a trial count from $1$ to $4000$. Replay regenerates the same observations; every prefix mean comes from those observations. Reset restores the canonical source, seed, and count. The short and large presets use $10$ and $2000$ trials; the maximum uses $4000$. The trace inspects finite prefixes rather than replacing them with idealized trajectories.
+
+The explicit pseudo-random generator updates integer state by $(1664525s+1013904223)\bmod 2^{32}$ and divides by $2^{32}$. Bernoulli draws compare the result with $p$; uniform draws use it directly; exponential draws apply $-\log(1-u)$. A deterministic pseudo-random stream is a simulation device, not a mathematical proof of independence or a source of cryptographic randomness.
+
+## Derivation: shrinking variance of the mean
+
+For finite variance $\sigma^2$ and independent observations, the covariance terms vanish:
+
+$$
+\mathbb E[\bar X_m]=\mu,\qquad
+\operatorname{Var}(\bar X_m)
+=\frac1{m^2}\sum_{j=1}^m\operatorname{Var}(X_j)
+=\frac{\sigma^2}{m}.
+$$
+
+Thus the standard deviation of a repeated-sample mean is $\sigma/\sqrt m$. Chebyshev's inequality gives
+
+$$
+\mathbb P(|\bar X_m-\mu|\geq\varepsilon)
+\leq\frac{\sigma^2}{m\varepsilon^2}.
+$$
+
+This bound tends to zero for fixed positive $\varepsilon$, establishing convergence in probability in this finite-variance case. It is a probability bound over repetitions; it does not prohibit a particular run from exceeding a chosen error or prove the stronger almost-sure statement by itself.
+
+## Worked examples
+
+For the hand sequence $[1,0,1,1]$, prefix sums are $1,1,2,3$ and means are
+
+$$
+1,\quad\frac12,\quad\frac23,\quad\frac34.
+$$
+
+Against a fair Bernoulli mean $1/2$, the absolute errors are $1/2,0,1/6,1/4$. The last two errors increase. That finite behavior is fully compatible with the LLN.
+
+<Stage caption="Follow actual seeded prefix sums and means. Compare their deviations with the target line, while keeping σ/√m labeled as a theoretical repeated-mean scale."><SamplingStage chapter="lln" worked client:load /></Stage>
+
+For Bernoulli probability $1/4$, population variance is $3/16$. At $m=100$, the mean variance is $3/1600$ and its standard deviation is $\sqrt3/40\approx0.0433012701892$. Four times as many independent observations halve this standard deviation. They do not guarantee half the realized error in a particular path.
+
+With seed $42$ and Bernoulli probability $1/2$, the first three LCG-generated observations are $[1,1,0]$, giving means $[1,1,2/3]$. This is a replay check, separate from the hand sequence above.
+
+## Executable reference code
+
+The standard-library program explicitly implements the seed transition, stores observations, and calculates actual running sums. Assertions check literal generator states, first observations, replay, deterministic Bernoulli boundaries, trial bounds, and a nonmonotone hand path.
+
+The NumPy version exposes the same stream and uses `cumsum` divided by prefix lengths. Neither program asserts that a final simulated error must be small: favorable-run acceptance would confuse a statistical theorem with a selected outcome.
+
+<CodeFile source={reference} file="code/python/probability_lln.py" />
+<CodeFile source={practical} file="code/python/probability_lln_numpy.py" />
+
+## Explore
+
+Hold the seed and population fixed while increasing trials. Compare shared prefixes and explain why replay must preserve them. Find a step where absolute error increases, and identify the observation that moved the average away from the target.
+
+Switch to the skewed exponential population and compare its observations with its mean path. Change the seed to observe a different path with the same theoretical target. At Bernoulli probabilities $0$ or $1$, explain why every observation and prefix mean is deterministic and the theoretical mean spread is zero.
+
+## Common mistakes and counterexamples
+
+The law does not promise monotone improvement, exact equality at a finite step, or predictable compensation after a streak. A fair coin that has produced many successes still has success probability $1/2$ on its next independent trial. The average can adjust without the coin remembering past imbalance.
+
+If all observations repeat one common random variable $Y$, then $\bar X_m=Y$ at every $m$: there is no variance reduction. Common marginals alone do not supply independence. An iid Cauchy source gives a different warning: it lacks a finite absolute first moment and has no finite population mean to which this LLN version can assert convergence.
+
+## Numerical considerations
+
+The simulation is bounded and uses the exact integer seed transition. Uniform $u$ lies in $[0,1)$, so the exponential transform never asks for $\log(0)$. The code uses `log1p` to evaluate $\log(1-u)$ accurately near zero. Floating observations and running means are numerical approximations, even when the model's moments have exact rational forms.
+
+Finite simulation length, pseudo-random generator quality, floating accumulation, and sampling variability are separate limitations. A plotted $\sigma/\sqrt m$ scale describes theoretical spread under iid assumptions. It is neither a confidence interval nor a guarantee that the observed error lies inside it; interpreting coverage requires an additional probability statement.
+
+<Callout kind="scope" title="A path illustrates a theorem; it does not prove it">
+The displayed run ends after at most 4000 observations. LLN convergence concerns an infinite ideal experiment under explicit assumptions. A convincing finite trajectory cannot establish that asymptotic statement, and a temporary move away does not refute it.
+</Callout>
+
+## Engineering and ML connections
+
+A Monte Carlo estimate averages model-generated quantities. Its target is an expectation, and independent finite-variance samples give a standard-deviation scale proportional to $1/\sqrt m$. Reaching half the scale typically requires four times the work; reducing variance can be as valuable as drawing more samples.
+
+Training batches, simulation draws, and measured data can be dependent. Before using iid averaging intuition, inspect how examples are sampled and whether the intended expectation exists. More correlated observations need not provide the same information as more independent ones.
+
+## Exercises
+
+Compute exact prefix means and theoretical variances. Keep those model quantities separate from one observed path's error.
+
+<Exercise id="probability-lln-prefix-means" client:load />
+<Exercise id="probability-lln-uniform-mean-variance" client:load />
+<Exercise id="probability-lln-bernoulli-scale" client:load />
+<Exercise id="probability-lln-nonmonotone" client:load />
+<Exercise id="probability-lln-assumptions" client:load />
+
+## Summary and checkpoints
+
+The iid finite-mean LLN concerns long-run averages. Check that you can construct a prefix path, identify nonmonotone deviations, derive finite-variance mean spread $\sigma/\sqrt m$, explain dependence and Cauchy warnings, and distinguish seeded illustration from theorem proof.

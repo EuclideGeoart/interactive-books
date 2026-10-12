@@ -1,0 +1,69 @@
+.probability-stage .stage-body { grid-template-columns: minmax(0, 1.5fr) minmax(14rem, 1fr); }
+.probability-stage .inspector-row dd, .probability-stage .inspector-row .line { min-width: 0; white-space: normal; overflow-wrap: anywhere; }
+.prob-board { min-width: 0; padding: clamp(.8rem, 2vw, 1.5rem); background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); }
+.prob-description { font-size: .9rem; line-height: 1.55; }
+.prob-controls { display: flex; flex-wrap: wrap; align-items: start; gap: 1rem; margin-top: 1rem; }
+.prob-controls .param { flex: 1 1 10rem; min-width: 0; max-width: 18rem; }
+.prob-controls fieldset, .prob-selector { flex: 1 1 12rem; min-width: 0; border: 0; padding: 0; margin: 0; }
+.prob-controls select, .prob-controls label:has(select) { display: block; width: 100%; }
+.prob-controls select, .prob-controls button, .prob-outcomes button, .prob-presets button { min-height: 44px; }
+.prob-controls select { padding: .5rem; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: .4rem; font: inherit; }
+.prob-presets { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+.prob-verdict { border-left: 3px solid var(--c-derived); padding: .75rem 1rem; margin: 1rem 0; background: var(--surface); }
+.prob-error { color: var(--c-caution-text); font-weight: 600; }
+.prob-mass { margin: .7rem 0; }
+.prob-mass-label { display: flex; justify-content: space-between; gap: .5rem; flex-wrap: wrap; font-size: .86rem; }
+.prob-mass-label strong { overflow-wrap: anywhere; }
+.prob-track { width: 100%; height: 1.1rem; border: 1px solid var(--line); background: var(--surface); margin-top: .25rem; }
+.prob-track span { display: block; height: 100%; background: var(--c-primary); min-width: 0; }
+.role-x .prob-track span { background: var(--c-x); }
+.role-y .prob-track span { background: var(--c-y); }
+.role-derived .prob-track span { background: var(--c-derived); }
+.role-caution .prob-track span { background: var(--c-caution); }
+.prob-outcomes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; }
+.prob-outcome { border: 1px solid var(--line); border-radius: .5rem; background: var(--surface); padding: .6rem; min-width: 0; }
+.prob-outcome strong, .prob-outcome small { display: block; overflow-wrap: anywhere; }
+.prob-outcome [aria-pressed=true] { outline: 2px solid var(--c-primary); outline-offset: -2px; }
+.prob-outcome button { width: 100%; display: block; padding: .25rem; font-size: .85rem; margin-top: .3rem; }
+.prob-outcome.is-intersection { border-width: 3px; border-color: var(--c-derived); }
+.prob-outcome.is-excluded { opacity: .6; border-style: dashed; }
+.prob-observations { display: flex; flex-wrap: wrap; gap: .35rem; padding: 0; list-style: none; }
+.prob-observations li { padding: .3rem .6rem; background: var(--surface); border: 1px solid var(--line); font-family: var(--font-mono); }
+.prob-table-wrap { max-width: 100%; overflow: auto; }
+.prob-table { border-collapse: collapse; width: 100%; font-size: .85rem; }
+.prob-table th, .prob-table td { padding: .6rem .35rem; text-align: center; border: 1px solid var(--line); }
+.prob-table caption { text-align: left; font-weight: 600; margin-bottom: .5rem; }
+.prob-table button { min-height: 44px; min-width: 44px; width: 100%; }
+.prob-selections { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .4rem; padding: 0; list-style: none; }
+.prob-selections li { padding: .5rem; border: 1px solid var(--line); font-family: var(--font-mono); font-size: .8rem; overflow-wrap: anywhere; }
+.prob-slider { display: block; flex: 1 1 15rem; }
+.prob-slider input { width: 100%; min-height: 44px; accent-color: var(--c-primary); }
+.prob-chart { width: 100%; height: auto; display: block; overflow: visible; }
+.prob-chart .prob-axis { stroke: var(--ink); stroke-width: 1.5; }
+.prob-chart .prob-density { stroke: var(--c-primary); stroke-width: 3; fill: none; }
+.prob-chart .prob-cdf { stroke: var(--c-derived); stroke-width: 3; fill: none; stroke-dasharray: 7 3; }
+.prob-chart .prob-area { fill: var(--c-x); opacity: .22; }
+.prob-chart .prob-bar { fill: var(--c-primary); }
+.prob-chart .prob-selected { fill: var(--c-derived); }
+.prob-chart text { fill: var(--ink); font: 17px var(--font-body); }
+.prob-chart .prob-mean { stroke: var(--c-caution); stroke-width: 2; stroke-dasharray: 5 3; }
+.prob-chart .prob-sample { stroke: var(--c-x); stroke-width: 2; fill: none; }
+.prob-chart .prob-dot { fill: var(--c-primary); }
+.prob-figure { margin: .5rem 0; min-width: 0; }
+.prob-figure figcaption { font-weight: 650; font-size: .95rem; margin-bottom: .3rem; }
+.prob-axis-caption { margin: .25rem 0 .75rem; font-size: .8rem; line-height: 1.5; }
+.prob-squares { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0; }
+.prob-squares > div { flex: 1 1 100px; font-size: .8rem; }
+.prob-square-box { height: 100px; display: flex; align-items: end; margin: .3rem 0; }
+.prob-square { display: block; border: 2px solid var(--c-derived); background: color-mix(in srgb, var(--c-derived) 18%, transparent); }
+.prob-mini { margin-top: 1rem; border-top: 1px solid var(--line); padding-top: .8rem; }
+.prob-joint { table-layout: fixed; }
+.prob-joint th, .prob-joint td { overflow-wrap: anywhere; padding: .3rem .15rem; }
+.prob-joint button { color: var(--ink); font: inherit; border: 1px solid var(--line); border-radius: .25rem; padding: .3rem .1rem; overflow-wrap: anywhere; background: var(--surface); }
+.prob-joint [aria-pressed=true] { outline: 2px solid var(--c-derived); outline-offset: -2px; }
+.prob-samples { margin: 1rem 0; }
+.prob-samples summary { min-height: 44px; padding: .6rem 0; cursor: pointer; }
+.prob-sample-values { font: .85rem/1.65 var(--font-mono); overflow-wrap: anywhere; }
+.prob-assumption { border-left: 3px solid var(--c-caution); padding-left: .75rem; font-size: .85rem; }
+@media (max-width: 60rem) { .probability-stage .stage-body { grid-template-columns: 1fr; } }
+@media (max-width: 40rem) { .prob-outcomes { grid-template-columns: repeat(2, minmax(0, 1fr)); } .prob-selections { grid-template-columns: 1fr; } }

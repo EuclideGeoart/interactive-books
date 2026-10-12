@@ -1,0 +1,118 @@
+---
+kind: chapter
+curriculumId: IV.4
+title: "Conditional probability as restricted sample space"
+hero: "What changes when we know *B* happened?"
+lede: Restrict the visible probability mass to B, then normalize what remains. The denominator changes from the whole experiment to the mass of the known event.
+description: Conditional probability by restriction and renormalization, weighted examples, denominator changes, impossible evidence, Python and NumPy references, and five graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import FiniteStage from '../../lessons/probability/FiniteStage';
+import Exercise from '../../lessons/probability/BlockAExercise';
+import reference from '../../../code/python/probability_conditional.py?raw';
+import practical from '../../../code/python/probability_conditional_numpy.py?raw';
+
+<Stage caption="Select the conditioning event B and the target event A. Remove a face from B to change the retained denominator, then inspect the normalized mass of A within B; empty B to examine undefined conditioning."><FiniteStage chapter="conditional" client:load /></Stage>
+
+With a fair die, take $A=\{2,4,6\}$ and $B=\{4,5,6\}$. Given that B happened, the face must be 4, 5, or 6. Predict the chance of an even face before reading the equation.
+
+## Intuition: information changes the reference total
+
+Before observing B, all six die faces are relevant. After learning B, only three can explain the information. Of those, two are even. The original chance of evenness is $1/2$, the original shared mass is $1/3$, and the conditional chance is $2/3$. These are three different questions about the same experiment.
+
+Restriction keeps only outcomes compatible with the evidence. Normalization rescales their total to one. It preserves relative weights among the survivors rather than inventing a new equal-weight model.
+
+## Definition
+
+For events $A,B$ with $P(B)>0$, **conditional probability** is
+
+$$
+P(A\mid B)=\frac{P(A\cap B)}{P(B)}.
+$$
+
+For an individual outcome in a finite space, the conditional mass is $p_\omega/P(B)$ when $\omega\in B$, and zero otherwise. The event after the bar is the known condition and supplies the denominator. If $P(B)=0$, this event-ratio definition is undefined.
+
+## Mechanics: retain, total, normalize
+
+The stage separates original event mass from conditional mass. Changing B changes which outcomes survive and the retained total. Changing A selects which of those survivors answer the target question. The original weights continue to define the experiment; the conditional view is derived from them.
+
+Follow the trace: find $A\cap B$, add its original masses, find the original mass of B, and divide. The equation and inspector make the denominator visible. Replay after a membership change to explain why the same numerator can produce a different conditional answer.
+
+## Derivation: why divide by P(B)?
+
+Suppose every surviving weight is multiplied by a common factor $c$. We require a normalized conditional space, so
+
+$$
+\sum_{\omega\in B}cp_\omega=cP(B)=1.
+$$
+
+Thus $c=1/P(B)$, which exists only for positive retained mass. Summing these normalized weights over the target survivors gives the conditional formula. Rearranging also gives
+
+$$
+P(A\cap B)=P(B)P(A\mid B),\qquad P(B)>0.
+$$
+
+This multiplication rule does not assume independence. It pairs the probability of the evidence with the chance of the target after that evidence.
+
+## Worked examples
+
+For the canonical die, $P(A\cap B)=2/6=1/3$ and $P(B)=3/6=1/2$. Therefore
+
+$$
+P(A\mid B)=\frac{1/3}{1/2}=\frac23.
+$$
+
+Within B, faces 4, 5, and 6 each have conditional mass $1/3$. Two of them belong to A. Knowing B increases the chance of A from $1/2$ to $2/3$, so these events are dependent.
+
+<Stage caption="Toggle face 5 out of the worked conditioning event B. Predict P(A | B) = 1 because all retained faces are even, then restore B = {4, 5, 6} and replay the 2/3 update."><FiniteStage chapter="conditional" worked client:load /></Stage>
+
+For masses $p_x=1/2$, $p_y=1/3$, $p_z=1/6$, condition on $B=\{y,z\}$. Its mass is $1/2$, so the new masses are $2/3$ and $1/3$. Restricting to two outcomes does not make them equally likely.
+
+Direction matters too. On a fair die, let $C=\{2\}$ and $D=\{2,4,6\}$. Then $P(C\mid D)=1/3$, but $P(D\mid C)=1$. The shared numerator is the same; the two denominators differ.
+
+## Executable reference code
+
+The Python program validates normalized weights and events, constructs the full conditional distribution with exact fractions, and reports `None` for zero evidence. It checks normalization and the die and unequal-weight examples. NumPy masks the original array before division and checks the denominator first; its decimals are approximations of exact hand-worked answers.
+
+<CodeFile source={reference} file="code/python/probability_conditional.py" />
+<CodeFile source={practical} file="code/python/probability_conditional_numpy.py" />
+
+## Explore
+
+Keep A fixed and shrink B to $\{4,6\}$: the conditional probability becomes one. Change B to $\{5\}$: it becomes zero. Set B to the whole space: conditioning changes nothing. Finally empty B: no conditional distribution exists.
+
+Compare each case with the numerator and denominator separately. A zero numerator with positive denominator is a valid zero answer. A zero denominator prevents normalization entirely. You can perform these comparisons through membership controls and replay the derivation without waiting for random observations.
+
+<Callout kind="scope" title="Impossible evidence is undefined, not zero">
+An empty B has zero mass. A nonempty B containing only zero-weight outcomes also has zero mass. In both cases the formula would give 0/0, so the program must report undefined conditioning rather than return zero, one, or the original prior.
+</Callout>
+
+## Common mistakes and counterexamples
+
+Keeping the original denominator computes the joint event, not the conditional probability. Swapping the events after and before the bar changes the question. Neither conditioning nor changing a diagram establishes causation: learning an event occurred is not the same operation as intervening to force it.
+
+Another mistake is overwriting the original mass vector with a conditional one and then treating it as the original model in later calculations. Retain the base experiment so marginal, joint, and conditional quantities stay comparable.
+
+## Numerical considerations
+
+Exact fractions preserve the denominator-zero distinction. Small positive evidence is still valid evidence, not impossible evidence merely because its displayed decimal rounds to zero. However, division by a small evidence mass can amplify absolute input error, especially if the weights are measurements rather than exact specified values.
+
+The NumPy reference checks small known answers within absolute tolerance $10^{-12}$ and zero relative tolerance. This is a reference-comparison tolerance, not a rule for replacing tiny positive evidence with zero. Larger inference systems may need scaled or logarithmic weights to avoid underflow; such numerical choices must keep impossible evidence distinct from numerical loss of representable mass.
+
+## Engineering and ML connections
+
+Conditional summaries compare data inside an observed subgroup. Their denominator is subgroup size or subgroup weight, not full dataset size. Conditional models likewise describe predictions given inputs or context. A selection filter can change rates even when the original population is unchanged, so always name the conditioned population before interpreting a metric.
+
+## Exercises
+
+<Exercise id="probability-conditional-restricted-die" client:load />
+<Exercise id="probability-conditional-weighted-restriction" client:load />
+<Exercise id="probability-conditional-reverse-direction" client:load />
+<Exercise id="probability-conditional-impossible-evidence" client:load />
+<Exercise id="probability-conditional-trace" client:load />
+
+## Summary and checkpoints
+
+Conditioning restricts to B and divides by its original mass. Check that you can explain the changed denominator, renormalize unequal survivors, distinguish joint from conditional probability, reverse a conditional question correctly, and report zero-probability evidence as undefined.

@@ -1,0 +1,4573 @@
+{
+  "policy": {
+    "method": "Independent exact Fraction weighted sums; centered variance checked against second moment identity",
+    "rational": "Reduced num/den, including 0/1 and 1/1",
+    "weights": "Nonempty nonnegative integers with positive sum; openly normalized by total",
+    "values": "One finite numeric value per weight, at most two decimal places; Fraction(str(value))",
+    "transform": "Y=scale*X+shift; finite numeric scale and shift converted by Fraction(str(value))",
+    "distribution": "Original X values merged exactly, sorted ascending; zero-mass values omitted",
+    "variance": "Population variance: sum(w*(x-mean)^2)/sum(w), not sample variance"
+  },
+  "cases": [
+    {
+      "weights": [
+        1,
+        2,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "1/2",
+        "secondMoment": "5/1",
+        "variance": "19/4",
+        "scaledMean": "1/2",
+        "scaledVariance": "19/4",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/4"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/4"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "1/2",
+        "secondMoment": "5/1",
+        "variance": "19/4",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/4"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/4"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "1/2",
+        "secondMoment": "5/1",
+        "variance": "19/4",
+        "scaledMean": "2/1",
+        "scaledVariance": "19/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/4"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/4"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "1/2",
+        "secondMoment": "5/1",
+        "variance": "19/4",
+        "scaledMean": "-1/1",
+        "scaledVariance": "19/16",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/4"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/4"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "values": [
+        0,
+        0,
+        1,
+        1,
+        2,
+        2
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "1/1",
+        "secondMoment": "5/3",
+        "variance": "2/3",
+        "scaledMean": "1/1",
+        "scaledVariance": "2/3",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "1/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "2/1",
+            "mass": "1/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "values": [
+        0,
+        0,
+        1,
+        1,
+        2,
+        2
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "1/1",
+        "secondMoment": "5/3",
+        "variance": "2/3",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "1/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "2/1",
+            "mass": "1/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "values": [
+        0,
+        0,
+        1,
+        1,
+        2,
+        2
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "1/1",
+        "secondMoment": "5/3",
+        "variance": "2/3",
+        "scaledMean": "1/1",
+        "scaledVariance": "8/3",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "1/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "2/1",
+            "mass": "1/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "values": [
+        0,
+        0,
+        1,
+        1,
+        2,
+        2
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "1/1",
+        "secondMoment": "5/3",
+        "variance": "2/3",
+        "scaledMean": "-3/4",
+        "scaledVariance": "1/6",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "1/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "2/1",
+            "mass": "1/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "values": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "7/2",
+        "secondMoment": "91/6",
+        "variance": "35/12",
+        "scaledMean": "7/2",
+        "scaledVariance": "35/12",
+        "distribution": [
+          {
+            "value": "1/1",
+            "mass": "1/6"
+          },
+          {
+            "value": "2/1",
+            "mass": "1/6"
+          },
+          {
+            "value": "3/1",
+            "mass": "1/6"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/6"
+          },
+          {
+            "value": "5/1",
+            "mass": "1/6"
+          },
+          {
+            "value": "6/1",
+            "mass": "1/6"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "values": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "7/2",
+        "secondMoment": "91/6",
+        "variance": "35/12",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "1/1",
+            "mass": "1/6"
+          },
+          {
+            "value": "2/1",
+            "mass": "1/6"
+          },
+          {
+            "value": "3/1",
+            "mass": "1/6"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/6"
+          },
+          {
+            "value": "5/1",
+            "mass": "1/6"
+          },
+          {
+            "value": "6/1",
+            "mass": "1/6"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "values": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "7/2",
+        "secondMoment": "91/6",
+        "variance": "35/12",
+        "scaledMean": "-4/1",
+        "scaledVariance": "35/3",
+        "distribution": [
+          {
+            "value": "1/1",
+            "mass": "1/6"
+          },
+          {
+            "value": "2/1",
+            "mass": "1/6"
+          },
+          {
+            "value": "3/1",
+            "mass": "1/6"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/6"
+          },
+          {
+            "value": "5/1",
+            "mass": "1/6"
+          },
+          {
+            "value": "6/1",
+            "mass": "1/6"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "values": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "7/2",
+        "secondMoment": "91/6",
+        "variance": "35/12",
+        "scaledMean": "1/2",
+        "scaledVariance": "35/48",
+        "distribution": [
+          {
+            "value": "1/1",
+            "mass": "1/6"
+          },
+          {
+            "value": "2/1",
+            "mass": "1/6"
+          },
+          {
+            "value": "3/1",
+            "mass": "1/6"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/6"
+          },
+          {
+            "value": "5/1",
+            "mass": "1/6"
+          },
+          {
+            "value": "6/1",
+            "mass": "1/6"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        0
+      ],
+      "values": [
+        -100,
+        2.5,
+        100
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "5/2",
+        "secondMoment": "25/4",
+        "variance": "0/1",
+        "scaledMean": "5/2",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "5/2",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        0
+      ],
+      "values": [
+        -100,
+        2.5,
+        100
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "5/2",
+        "secondMoment": "25/4",
+        "variance": "0/1",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "5/2",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        0
+      ],
+      "values": [
+        -100,
+        2.5,
+        100
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "5/2",
+        "secondMoment": "25/4",
+        "variance": "0/1",
+        "scaledMean": "-2/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "5/2",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        0
+      ],
+      "values": [
+        -100,
+        2.5,
+        100
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "5/2",
+        "secondMoment": "25/4",
+        "variance": "0/1",
+        "scaledMean": "0/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "5/2",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1
+      ],
+      "values": [
+        -1.25
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "-5/4",
+        "secondMoment": "25/16",
+        "variance": "0/1",
+        "scaledMean": "-5/4",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-5/4",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1
+      ],
+      "values": [
+        -1.25
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "-5/4",
+        "secondMoment": "25/16",
+        "variance": "0/1",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-5/4",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1
+      ],
+      "values": [
+        -1.25
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "-5/4",
+        "secondMoment": "25/16",
+        "variance": "0/1",
+        "scaledMean": "11/2",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-5/4",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1
+      ],
+      "values": [
+        -1.25
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "-5/4",
+        "secondMoment": "25/16",
+        "variance": "0/1",
+        "scaledMean": "-15/8",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-5/4",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "values": [
+        4,
+        4,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "4/1",
+        "secondMoment": "16/1",
+        "variance": "0/1",
+        "scaledMean": "4/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "4/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "values": [
+        4,
+        4,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "4/1",
+        "secondMoment": "16/1",
+        "variance": "0/1",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "4/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "values": [
+        4,
+        4,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "4/1",
+        "secondMoment": "16/1",
+        "variance": "0/1",
+        "scaledMean": "-5/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "4/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        3
+      ],
+      "values": [
+        4,
+        4,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "4/1",
+        "secondMoment": "16/1",
+        "variance": "0/1",
+        "scaledMean": "3/4",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "4/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        3,
+        1,
+        2,
+        0
+      ],
+      "values": [
+        2,
+        -1.25,
+        2,
+        100
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "35/24",
+        "secondMoment": "115/32",
+        "variance": "845/576",
+        "scaledMean": "35/24",
+        "scaledVariance": "845/576",
+        "distribution": [
+          {
+            "value": "-5/4",
+            "mass": "1/6"
+          },
+          {
+            "value": "2/1",
+            "mass": "5/6"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        3,
+        1,
+        2,
+        0
+      ],
+      "values": [
+        2,
+        -1.25,
+        2,
+        100
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "35/24",
+        "secondMoment": "115/32",
+        "variance": "845/576",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-5/4",
+            "mass": "1/6"
+          },
+          {
+            "value": "2/1",
+            "mass": "5/6"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        3,
+        1,
+        2,
+        0
+      ],
+      "values": [
+        2,
+        -1.25,
+        2,
+        100
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "35/24",
+        "secondMoment": "115/32",
+        "variance": "845/576",
+        "scaledMean": "1/12",
+        "scaledVariance": "845/144",
+        "distribution": [
+          {
+            "value": "-5/4",
+            "mass": "1/6"
+          },
+          {
+            "value": "2/1",
+            "mass": "5/6"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        3,
+        1,
+        2,
+        0
+      ],
+      "values": [
+        2,
+        -1.25,
+        2,
+        100
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "35/24",
+        "secondMoment": "115/32",
+        "variance": "845/576",
+        "scaledMean": "-25/48",
+        "scaledVariance": "845/2304",
+        "distribution": [
+          {
+            "value": "-5/4",
+            "mass": "1/6"
+          },
+          {
+            "value": "2/1",
+            "mass": "5/6"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        3
+      ],
+      "values": [
+        0.01,
+        0.02
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "7/400",
+        "secondMoment": "13/40000",
+        "variance": "3/160000",
+        "scaledMean": "7/400",
+        "scaledVariance": "3/160000",
+        "distribution": [
+          {
+            "value": "1/100",
+            "mass": "1/4"
+          },
+          {
+            "value": "1/50",
+            "mass": "3/4"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        3
+      ],
+      "values": [
+        0.01,
+        0.02
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "7/400",
+        "secondMoment": "13/40000",
+        "variance": "3/160000",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "1/100",
+            "mass": "1/4"
+          },
+          {
+            "value": "1/50",
+            "mass": "3/4"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        3
+      ],
+      "values": [
+        0.01,
+        0.02
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "7/400",
+        "secondMoment": "13/40000",
+        "variance": "3/160000",
+        "scaledMean": "593/200",
+        "scaledVariance": "3/40000",
+        "distribution": [
+          {
+            "value": "1/100",
+            "mass": "1/4"
+          },
+          {
+            "value": "1/50",
+            "mass": "3/4"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        3
+      ],
+      "values": [
+        0.01,
+        0.02
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "7/400",
+        "secondMoment": "13/40000",
+        "variance": "3/160000",
+        "scaledMean": "-993/800",
+        "scaledVariance": "3/640000",
+        "distribution": [
+          {
+            "value": "1/100",
+            "mass": "1/4"
+          },
+          {
+            "value": "1/50",
+            "mass": "3/4"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        1
+      ],
+      "values": [
+        -0.01,
+        0.01
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "0/1",
+        "secondMoment": "1/10000",
+        "variance": "1/10000",
+        "scaledMean": "0/1",
+        "scaledVariance": "1/10000",
+        "distribution": [
+          {
+            "value": "-1/100",
+            "mass": "1/2"
+          },
+          {
+            "value": "1/100",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        1
+      ],
+      "values": [
+        -0.01,
+        0.01
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "0/1",
+        "secondMoment": "1/10000",
+        "variance": "1/10000",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-1/100",
+            "mass": "1/2"
+          },
+          {
+            "value": "1/100",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        1
+      ],
+      "values": [
+        -0.01,
+        0.01
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "0/1",
+        "secondMoment": "1/10000",
+        "variance": "1/10000",
+        "scaledMean": "3/1",
+        "scaledVariance": "1/2500",
+        "distribution": [
+          {
+            "value": "-1/100",
+            "mass": "1/2"
+          },
+          {
+            "value": "1/100",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        1
+      ],
+      "values": [
+        -0.01,
+        0.01
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "0/1",
+        "secondMoment": "1/10000",
+        "variance": "1/10000",
+        "scaledMean": "-5/4",
+        "scaledVariance": "1/40000",
+        "distribution": [
+          {
+            "value": "-1/100",
+            "mass": "1/2"
+          },
+          {
+            "value": "1/100",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1000000,
+        1
+      ],
+      "values": [
+        -2,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "-1999996/1000001",
+        "secondMoment": "4000016/1000001",
+        "variance": "36000000/1000002000001",
+        "scaledMean": "-1999996/1000001",
+        "scaledVariance": "36000000/1000002000001",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1000000/1000001"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/1000001"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1000000,
+        1
+      ],
+      "values": [
+        -2,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "-1999996/1000001",
+        "secondMoment": "4000016/1000001",
+        "variance": "36000000/1000002000001",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1000000/1000001"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/1000001"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1000000,
+        1
+      ],
+      "values": [
+        -2,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "-1999996/1000001",
+        "secondMoment": "4000016/1000001",
+        "variance": "36000000/1000002000001",
+        "scaledMean": "6999995/1000001",
+        "scaledVariance": "144000000/1000002000001",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1000000/1000001"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/1000001"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1000000,
+        1
+      ],
+      "values": [
+        -2,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "-1999996/1000001",
+        "secondMoment": "4000016/1000001",
+        "variance": "36000000/1000002000001",
+        "scaledMean": "-8999997/4000004",
+        "scaledVariance": "9000000/1000002000001",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1000000/1000001"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/1000001"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        0,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "4/1",
+        "secondMoment": "16/1",
+        "variance": "0/1",
+        "scaledMean": "4/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "4/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        0,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "4/1",
+        "secondMoment": "16/1",
+        "variance": "0/1",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "4/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        0,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "4/1",
+        "secondMoment": "16/1",
+        "variance": "0/1",
+        "scaledMean": "-5/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "4/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        0,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "4/1",
+        "secondMoment": "16/1",
+        "variance": "0/1",
+        "scaledMean": "3/4",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "4/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        0,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "4/1",
+        "secondMoment": "16/1",
+        "variance": "0/1",
+        "scaledMean": "4/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "4/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        0,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "4/1",
+        "secondMoment": "16/1",
+        "variance": "0/1",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "4/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        0,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "4/1",
+        "secondMoment": "16/1",
+        "variance": "0/1",
+        "scaledMean": "-5/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "4/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        0,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "4/1",
+        "secondMoment": "16/1",
+        "variance": "0/1",
+        "scaledMean": "3/4",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "4/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "0/1",
+        "secondMoment": "0/1",
+        "variance": "0/1",
+        "scaledMean": "0/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "0/1",
+        "secondMoment": "0/1",
+        "variance": "0/1",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "0/1",
+        "secondMoment": "0/1",
+        "variance": "0/1",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "0/1",
+        "secondMoment": "0/1",
+        "variance": "0/1",
+        "scaledMean": "-5/4",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "2/1",
+        "secondMoment": "8/1",
+        "variance": "4/1",
+        "scaledMean": "2/1",
+        "scaledVariance": "4/1",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "2/1",
+        "secondMoment": "8/1",
+        "variance": "4/1",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "2/1",
+        "secondMoment": "8/1",
+        "variance": "4/1",
+        "scaledMean": "-1/1",
+        "scaledVariance": "16/1",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "2/1",
+        "secondMoment": "8/1",
+        "variance": "4/1",
+        "scaledMean": "-1/4",
+        "scaledVariance": "1/1",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "8/3",
+        "secondMoment": "32/3",
+        "variance": "32/9",
+        "scaledMean": "8/3",
+        "scaledVariance": "32/9",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "4/1",
+            "mass": "2/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "8/3",
+        "secondMoment": "32/3",
+        "variance": "32/9",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "4/1",
+            "mass": "2/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "8/3",
+        "secondMoment": "32/3",
+        "variance": "32/9",
+        "scaledMean": "-7/3",
+        "scaledVariance": "128/9",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "4/1",
+            "mass": "2/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        1,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "8/3",
+        "secondMoment": "32/3",
+        "variance": "32/9",
+        "scaledMean": "1/12",
+        "scaledVariance": "8/9",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "4/1",
+            "mass": "2/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        2,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "0/1",
+        "secondMoment": "0/1",
+        "variance": "0/1",
+        "scaledMean": "0/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        2,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "0/1",
+        "secondMoment": "0/1",
+        "variance": "0/1",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        2,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "0/1",
+        "secondMoment": "0/1",
+        "variance": "0/1",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        2,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "0/1",
+        "secondMoment": "0/1",
+        "variance": "0/1",
+        "scaledMean": "-5/4",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        2,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "4/3",
+        "secondMoment": "16/3",
+        "variance": "32/9",
+        "scaledMean": "4/3",
+        "scaledVariance": "32/9",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "2/3"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        2,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "4/3",
+        "secondMoment": "16/3",
+        "variance": "32/9",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "2/3"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        2,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "4/3",
+        "secondMoment": "16/3",
+        "variance": "32/9",
+        "scaledMean": "1/3",
+        "scaledVariance": "128/9",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "2/3"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        2,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "4/3",
+        "secondMoment": "16/3",
+        "variance": "32/9",
+        "scaledMean": "-7/12",
+        "scaledVariance": "8/9",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "2/3"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        2,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "2/1",
+        "secondMoment": "8/1",
+        "variance": "4/1",
+        "scaledMean": "2/1",
+        "scaledVariance": "4/1",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        2,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "2/1",
+        "secondMoment": "8/1",
+        "variance": "4/1",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        2,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "2/1",
+        "secondMoment": "8/1",
+        "variance": "4/1",
+        "scaledMean": "-1/1",
+        "scaledVariance": "16/1",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        0,
+        2,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "2/1",
+        "secondMoment": "8/1",
+        "variance": "4/1",
+        "scaledMean": "-1/4",
+        "scaledVariance": "1/1",
+        "distribution": [
+          {
+            "value": "0/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        0,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "-2/1",
+        "secondMoment": "4/1",
+        "variance": "0/1",
+        "scaledMean": "-2/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        0,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "-2/1",
+        "secondMoment": "4/1",
+        "variance": "0/1",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        0,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "-2/1",
+        "secondMoment": "4/1",
+        "variance": "0/1",
+        "scaledMean": "7/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        0,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "-2/1",
+        "secondMoment": "4/1",
+        "variance": "0/1",
+        "scaledMean": "-9/4",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        0,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "1/1",
+        "secondMoment": "10/1",
+        "variance": "9/1",
+        "scaledMean": "1/1",
+        "scaledVariance": "9/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        0,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "1/1",
+        "secondMoment": "10/1",
+        "variance": "9/1",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        0,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "1/1",
+        "secondMoment": "10/1",
+        "variance": "9/1",
+        "scaledMean": "1/1",
+        "scaledVariance": "36/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        0,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "1/1",
+        "secondMoment": "10/1",
+        "variance": "9/1",
+        "scaledMean": "-3/4",
+        "scaledVariance": "9/4",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        0,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "2/1",
+        "secondMoment": "12/1",
+        "variance": "8/1",
+        "scaledMean": "2/1",
+        "scaledVariance": "8/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "4/1",
+            "mass": "2/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        0,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "2/1",
+        "secondMoment": "12/1",
+        "variance": "8/1",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "4/1",
+            "mass": "2/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        0,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "2/1",
+        "secondMoment": "12/1",
+        "variance": "8/1",
+        "scaledMean": "-1/1",
+        "scaledVariance": "32/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "4/1",
+            "mass": "2/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        0,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "2/1",
+        "secondMoment": "12/1",
+        "variance": "8/1",
+        "scaledMean": "-1/4",
+        "scaledVariance": "2/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "4/1",
+            "mass": "2/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        1,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "-1/1",
+        "secondMoment": "2/1",
+        "variance": "1/1",
+        "scaledMean": "-1/1",
+        "scaledVariance": "1/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        1,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "-1/1",
+        "secondMoment": "2/1",
+        "variance": "1/1",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        1,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "-1/1",
+        "secondMoment": "2/1",
+        "variance": "1/1",
+        "scaledMean": "5/1",
+        "scaledVariance": "4/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        1,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "-1/1",
+        "secondMoment": "2/1",
+        "variance": "1/1",
+        "scaledMean": "-7/4",
+        "scaledVariance": "1/4",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        1,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "2/3",
+        "secondMoment": "20/3",
+        "variance": "56/9",
+        "scaledMean": "2/3",
+        "scaledVariance": "56/9",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        1,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "2/3",
+        "secondMoment": "20/3",
+        "variance": "56/9",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        1,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "2/3",
+        "secondMoment": "20/3",
+        "variance": "56/9",
+        "scaledMean": "5/3",
+        "scaledVariance": "224/9",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        1,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "2/3",
+        "secondMoment": "20/3",
+        "variance": "56/9",
+        "scaledMean": "-11/12",
+        "scaledVariance": "14/9",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        1,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "3/2",
+        "secondMoment": "9/1",
+        "variance": "27/4",
+        "scaledMean": "3/2",
+        "scaledVariance": "27/4",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/4"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/4"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        1,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "3/2",
+        "secondMoment": "9/1",
+        "variance": "27/4",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/4"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/4"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        1,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "3/2",
+        "secondMoment": "9/1",
+        "variance": "27/4",
+        "scaledMean": "0/1",
+        "scaledVariance": "27/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/4"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/4"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        1,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "3/2",
+        "secondMoment": "9/1",
+        "variance": "27/4",
+        "scaledMean": "-1/2",
+        "scaledVariance": "27/16",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/4"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/4"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "-2/3",
+        "secondMoment": "4/3",
+        "variance": "8/9",
+        "scaledMean": "-2/3",
+        "scaledVariance": "8/9",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "0/1",
+            "mass": "2/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "-2/3",
+        "secondMoment": "4/3",
+        "variance": "8/9",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "0/1",
+            "mass": "2/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "-2/3",
+        "secondMoment": "4/3",
+        "variance": "8/9",
+        "scaledMean": "13/3",
+        "scaledVariance": "32/9",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "0/1",
+            "mass": "2/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "-2/3",
+        "secondMoment": "4/3",
+        "variance": "8/9",
+        "scaledMean": "-19/12",
+        "scaledVariance": "2/9",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "0/1",
+            "mass": "2/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "1/2",
+        "secondMoment": "5/1",
+        "variance": "19/4",
+        "scaledMean": "1/2",
+        "scaledVariance": "19/4",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/4"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/4"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "1/2",
+        "secondMoment": "5/1",
+        "variance": "19/4",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/4"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/4"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "1/2",
+        "secondMoment": "5/1",
+        "variance": "19/4",
+        "scaledMean": "2/1",
+        "scaledVariance": "19/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/4"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/4"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "1/2",
+        "secondMoment": "5/1",
+        "variance": "19/4",
+        "scaledMean": "-1/1",
+        "scaledVariance": "19/16",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/4"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/4"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "6/5",
+        "secondMoment": "36/5",
+        "variance": "144/25",
+        "scaledMean": "6/5",
+        "scaledVariance": "144/25",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/5"
+          },
+          {
+            "value": "0/1",
+            "mass": "2/5"
+          },
+          {
+            "value": "4/1",
+            "mass": "2/5"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "6/5",
+        "secondMoment": "36/5",
+        "variance": "144/25",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/5"
+          },
+          {
+            "value": "0/1",
+            "mass": "2/5"
+          },
+          {
+            "value": "4/1",
+            "mass": "2/5"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "6/5",
+        "secondMoment": "36/5",
+        "variance": "144/25",
+        "scaledMean": "3/5",
+        "scaledVariance": "576/25",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/5"
+          },
+          {
+            "value": "0/1",
+            "mass": "2/5"
+          },
+          {
+            "value": "4/1",
+            "mass": "2/5"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        1,
+        2,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "6/5",
+        "secondMoment": "36/5",
+        "variance": "144/25",
+        "scaledMean": "-13/20",
+        "scaledVariance": "36/25",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/5"
+          },
+          {
+            "value": "0/1",
+            "mass": "2/5"
+          },
+          {
+            "value": "4/1",
+            "mass": "2/5"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        0,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "-2/1",
+        "secondMoment": "4/1",
+        "variance": "0/1",
+        "scaledMean": "-2/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        0,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "-2/1",
+        "secondMoment": "4/1",
+        "variance": "0/1",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        0,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "-2/1",
+        "secondMoment": "4/1",
+        "variance": "0/1",
+        "scaledMean": "7/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        0,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "-2/1",
+        "secondMoment": "4/1",
+        "variance": "0/1",
+        "scaledMean": "-9/4",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        0,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "0/1",
+        "secondMoment": "8/1",
+        "variance": "8/1",
+        "scaledMean": "0/1",
+        "scaledVariance": "8/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "2/3"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        0,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "0/1",
+        "secondMoment": "8/1",
+        "variance": "8/1",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "2/3"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        0,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "0/1",
+        "secondMoment": "8/1",
+        "variance": "8/1",
+        "scaledMean": "3/1",
+        "scaledVariance": "32/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "2/3"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        0,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "0/1",
+        "secondMoment": "8/1",
+        "variance": "8/1",
+        "scaledMean": "-5/4",
+        "scaledVariance": "2/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "2/3"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        0,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "1/1",
+        "secondMoment": "10/1",
+        "variance": "9/1",
+        "scaledMean": "1/1",
+        "scaledVariance": "9/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        0,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "1/1",
+        "secondMoment": "10/1",
+        "variance": "9/1",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        0,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "1/1",
+        "secondMoment": "10/1",
+        "variance": "9/1",
+        "scaledMean": "1/1",
+        "scaledVariance": "36/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        0,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "1/1",
+        "secondMoment": "10/1",
+        "variance": "9/1",
+        "scaledMean": "-3/4",
+        "scaledVariance": "9/4",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        1,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "-4/3",
+        "secondMoment": "8/3",
+        "variance": "8/9",
+        "scaledMean": "-4/3",
+        "scaledVariance": "8/9",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "2/3"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        1,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "-4/3",
+        "secondMoment": "8/3",
+        "variance": "8/9",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "2/3"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        1,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "-4/3",
+        "secondMoment": "8/3",
+        "variance": "8/9",
+        "scaledMean": "17/3",
+        "scaledVariance": "32/9",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "2/3"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        1,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "-4/3",
+        "secondMoment": "8/3",
+        "variance": "8/9",
+        "scaledMean": "-23/12",
+        "scaledVariance": "2/9",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "2/3"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        1,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "0/1",
+        "secondMoment": "6/1",
+        "variance": "6/1",
+        "scaledMean": "0/1",
+        "scaledVariance": "6/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/4"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/4"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        1,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "0/1",
+        "secondMoment": "6/1",
+        "variance": "6/1",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/4"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/4"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        1,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "0/1",
+        "secondMoment": "6/1",
+        "variance": "6/1",
+        "scaledMean": "3/1",
+        "scaledVariance": "24/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/4"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/4"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        1,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "0/1",
+        "secondMoment": "6/1",
+        "variance": "6/1",
+        "scaledMean": "-5/4",
+        "scaledVariance": "3/2",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/4"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/4"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        1,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "4/5",
+        "secondMoment": "8/1",
+        "variance": "184/25",
+        "scaledMean": "4/5",
+        "scaledVariance": "184/25",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "2/5"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/5"
+          },
+          {
+            "value": "4/1",
+            "mass": "2/5"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        1,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "4/5",
+        "secondMoment": "8/1",
+        "variance": "184/25",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "2/5"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/5"
+          },
+          {
+            "value": "4/1",
+            "mass": "2/5"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        1,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "4/5",
+        "secondMoment": "8/1",
+        "variance": "184/25",
+        "scaledMean": "7/5",
+        "scaledVariance": "736/25",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "2/5"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/5"
+          },
+          {
+            "value": "4/1",
+            "mass": "2/5"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        1,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "4/5",
+        "secondMoment": "8/1",
+        "variance": "184/25",
+        "scaledMean": "-17/20",
+        "scaledVariance": "46/25",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "2/5"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/5"
+          },
+          {
+            "value": "4/1",
+            "mass": "2/5"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        2,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "-1/1",
+        "secondMoment": "2/1",
+        "variance": "1/1",
+        "scaledMean": "-1/1",
+        "scaledVariance": "1/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        2,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "-1/1",
+        "secondMoment": "2/1",
+        "variance": "1/1",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        2,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "-1/1",
+        "secondMoment": "2/1",
+        "variance": "1/1",
+        "scaledMean": "5/1",
+        "scaledVariance": "4/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        2,
+        0
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "-1/1",
+        "secondMoment": "2/1",
+        "variance": "1/1",
+        "scaledMean": "-7/4",
+        "scaledVariance": "1/4",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/2"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        2,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "0/1",
+        "secondMoment": "24/5",
+        "variance": "24/5",
+        "scaledMean": "0/1",
+        "scaledVariance": "24/5",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "2/5"
+          },
+          {
+            "value": "0/1",
+            "mass": "2/5"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/5"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        2,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "0/1",
+        "secondMoment": "24/5",
+        "variance": "24/5",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "2/5"
+          },
+          {
+            "value": "0/1",
+            "mass": "2/5"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/5"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        2,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "0/1",
+        "secondMoment": "24/5",
+        "variance": "24/5",
+        "scaledMean": "3/1",
+        "scaledVariance": "96/5",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "2/5"
+          },
+          {
+            "value": "0/1",
+            "mass": "2/5"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/5"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        2,
+        1
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "0/1",
+        "secondMoment": "24/5",
+        "variance": "24/5",
+        "scaledMean": "-5/4",
+        "scaledVariance": "6/5",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "2/5"
+          },
+          {
+            "value": "0/1",
+            "mass": "2/5"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/5"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        2,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 1,
+      "shift": 0,
+      "expected": {
+        "mean": "2/3",
+        "secondMoment": "20/3",
+        "variance": "56/9",
+        "scaledMean": "2/3",
+        "scaledVariance": "56/9",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        2,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0,
+      "shift": 3,
+      "expected": {
+        "mean": "2/3",
+        "secondMoment": "20/3",
+        "variance": "56/9",
+        "scaledMean": "3/1",
+        "scaledVariance": "0/1",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        2,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": -2,
+      "shift": 3,
+      "expected": {
+        "mean": "2/3",
+        "secondMoment": "20/3",
+        "variance": "56/9",
+        "scaledMean": "5/3",
+        "scaledVariance": "224/9",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/3"
+          }
+        ]
+      }
+    },
+    {
+      "weights": [
+        2,
+        2,
+        2
+      ],
+      "values": [
+        -2,
+        0,
+        4
+      ],
+      "scale": 0.5,
+      "shift": -1.25,
+      "expected": {
+        "mean": "2/3",
+        "secondMoment": "20/3",
+        "variance": "56/9",
+        "scaledMean": "-11/12",
+        "scaledVariance": "14/9",
+        "distribution": [
+          {
+            "value": "-2/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "0/1",
+            "mass": "1/3"
+          },
+          {
+            "value": "4/1",
+            "mass": "1/3"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "timestamp": "2026-10-11T23:20:57+00:00",
+  "rootAvailableBytes": 27754762240,
+  "rootAvailableGiB": 25.848636627197266,
+  "mandatoryPauseGiB": 15,
+  "mandatoryStopDiscretionaryWritesGiB": 10,
+  "directories": {
+    "dist": {
+      "apparentBytes": 16522198,
+      "allocatedBytes": 17358848
+    },
+    "dist-subpath": {
+      "apparentBytes": 16589161,
+      "allocatedBytes": 17477632
+    },
+    ".cache": {
+      "apparentBytes": 1699464,
+      "allocatedBytes": 1818624
+    },
+    "validation-results": {
+      "apparentBytes": 69572089,
+      "allocatedBytes": 71512064
+    },
+    "playwright-report": {
+      "apparentBytes": 614195,
+      "allocatedBytes": 618496
+    },
+    "tests/e2e/__screenshots__": {
+      "apparentBytes": 55738382,
+      "allocatedBytes": 56545280
+    },
+    "documentation": {
+      "apparentBytes": 6131124,
+      "allocatedBytes": 6242304
+    }
+  },
+  "book": {
+    "apparentBytes": 177836484,
+    "allocatedBytes": 184410112,
+    "dependencySymlinksFollowed": false
+  },
+  "newProbabilityScreenshots": {
+    "files": 135,
+    "bytes": 26397924
+  },
+  "probabilityFixtures": {
+    "files": 5,
+    "cases": 1088,
+    "bytes": 1073295
+  },
+  "screenshotFileBytesAtBase": 29341297,
+  "screenshotFileBytesNow": 55738382,
+  "screenshotFileByteDelta": 26397085,
+  "method": "du -sb for apparent bytes; du -sB1 for allocated bytes; symlinks are not followed; Git blob sizes for base screenshot comparison; os.statvfs available blocks for root disk. Includes retained pre-existing baselines and development/failure evidence. Final documentation itself adds a small amount after this measurement.",
+  "dependenciesInstalled": false,
+  "existingDataDeleted": false,
+  "baseScreenshotFiles": 237
+}

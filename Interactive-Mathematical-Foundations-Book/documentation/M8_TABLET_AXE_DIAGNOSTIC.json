@@ -1,0 +1,78 @@
+{
+  "tags": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa",
+    "wcag22aa",
+    "best-practice"
+  ],
+  "method": "Production tablet pages: repeat hydrateAll scrolling, run original axe tags, scan again at scrollY=0, and individually center affected inputs to verify actual size and pointer hit. The separately forced 24px-offset header viewport did not reproduce the rule and is retained without claiming that it did.",
+  "results": [
+    {
+      "slug": "joint-distributions",
+      "isolatedHydrationViolations": [
+        "target-size"
+      ],
+      "reproducedHeaderOcclusion": [],
+      "atTopViolations": [],
+      "visibleInputChecks": [
+        {
+          "selector": "form[data-exercise=\"probability-joint-conditional\"] [data-field=\"n2\"]",
+          "geometry": {
+            "width": 120,
+            "height": 44,
+            "y": 603.796875,
+            "centerReceivesPointer": true
+          }
+        }
+      ]
+    },
+    {
+      "slug": "covariance-correlation",
+      "isolatedHydrationViolations": [
+        "target-size"
+      ],
+      "reproducedHeaderOcclusion": [],
+      "atTopViolations": [],
+      "visibleInputChecks": [
+        {
+          "selector": "form[data-exercise=\"probability-covariance-affine\"] [data-field=\"n2\"]",
+          "geometry": {
+            "width": 120,
+            "height": 44,
+            "y": 604.296875,
+            "centerReceivesPointer": true
+          }
+        },
+        {
+          "selector": "form[data-exercise=\"probability-covariance-affine\"] [data-field=\"n3\"]",
+          "geometry": {
+            "width": 120,
+            "height": 44,
+            "y": 604.296875,
+            "centerReceivesPointer": true
+          }
+        },
+        {
+          "selector": "form[data-exercise=\"probability-covariance-affine\"] [data-field=\"n4\"]",
+          "geometry": {
+            "width": 120,
+            "height": 44,
+            "y": 604.296875,
+            "centerReceivesPointer": true
+          }
+        },
+        {
+          "selector": "form[data-exercise=\"probability-covariance-affine\"] [data-field=\"n5\"]",
+          "geometry": {
+            "width": 120,
+            "height": 44,
+            "y": 604.296875,
+            "centerReceivesPointer": true
+          }
+        }
+      ]
+    }
+  ]
+}

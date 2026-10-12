@@ -1,0 +1,104 @@
+---
+kind: chapter
+curriculumId: IV.3
+title: "Counting and finite probability where needed"
+hero: "Does changing the order make a *different* outcome?"
+lede: Choose labels with or without replacement, then decide whether order matters. Counts become probabilities only after you justify the weights of the counted outcomes.
+description: Ordered and unordered selection, replacement, permutations and combinations, empty and impossible selections, nonuniform multisets, Python and NumPy, and five graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import CountingStage from '../../lessons/probability/CountingStage';
+import Exercise from '../../lessons/probability/BlockAExercise';
+import reference from '../../../code/python/probability_counting.py?raw';
+import practical from '../../../code/python/probability_counting_numpy.py?raw';
+
+<Stage caption="Switch between ordered and unordered selections, toggle replacement, and change n from 2 to 8 and k from 0 to 4. Compare the outcomes and count before and after each change."><CountingStage client:load /></Stage>
+
+Begin with two selections from four labels without replacement. Predict the ordered count, then switch to unordered. Find the pair of ordered outcomes represented by one unordered selection. The stage names its labels A through H; the examples and Python use numbers 1 through 8 for the same distinct items.
+
+## Intuition: count what the experiment distinguishes
+
+Giving a first prize to label 1 and a second prize to label 2 differs from giving the prizes in the reverse order. Choosing a two-person team from those labels ignores that order. The same labels therefore support different outcome spaces depending on the experiment's question.
+
+Replacement asks a separate question: can a label be used again? Keeping these two choices separate prevents a correct counting formula from being used for the wrong experiment.
+
+## Definition
+
+Let $n$ be the number of distinct labels and $k$ the number selected, both integers. For ordered selection **without replacement**, there are
+
+$$
+n(n-1)\cdots(n-k+1)=\frac{n!}{(n-k)!}
+$$
+
+outcomes when $0\le k\le n$. Ignoring order gives the **combination count** $\binom nk=n!/(k!(n-k)!)$. The factorial convention is $0!=1$.
+
+With replacement, ordered sequences number $n^k$. Unordered selections are **multisets**, which record how many times each label appears; for $n\ge1$ they number $\binom{n+k-1}{k}$. These are counts, not automatically a uniform probability model.
+
+## Mechanics: classify before calculating
+
+The stage's state records $n$, $k$, order, and replacement. Its outcome representation and count follow those choices. Read the derivation trace from the same state: identify available labels for each slot, multiply choices, and account for ignored order when appropriate.
+
+The interactive range is $2\le n\le8$, $0\le k\le4$. It includes $k>n$ without replacement so you can see an impossible selection. Changing a control does not authorize an impossible draw or a probability with zero total outcomes. Reset returns to $n=4$, $k=2$, without replacement.
+
+## Derivation: multiplication and grouping
+
+Without replacement, the first slot has $n$ choices, the next has $n-1$, and so on. Multiply because each partial selection branches into that many next choices. Every unordered set of $k$ distinct labels has exactly $k!$ orderings. Dividing the ordered count by $k!$ therefore gives combinations.
+
+With replacement, every slot has $n$ choices, giving $n^k$. To count unordered multisets, distribute $k$ indistinguishable marks among $n$ labelled boxes. A row of $k$ marks and $n-1$ separators encodes the counts. Choosing the mark positions gives $\binom{n+k-1}{k}$.
+
+Repeated labels make the number of orderings vary by multiset. If a multiset has counts $c_1,\ldots,c_n$ summing to $k$, its number of ordered preimages is $k!/(c_1!\cdots c_n!)$. Under independent uniform draws its probability is that number divided by $n^k$; this is why “ignore order” does not automatically mean “make all unordered results uniform.”
+
+## Worked examples
+
+For $n=4$, $k=2$, without replacement, the ordered total is $4\times3=12$. Each pair occurs in two orders, so there are $12/2=6$ unordered pairs. The event “select labels 1 and 2” has probability $2/12=1/6$ under uniform ordered draws; equivalently it is one of six equally likely unordered pairs.
+
+<Stage caption="Change the worked two-of-four selection from ordered to unordered and inspect the 12-to-6 grouping. Turn replacement on to compare 16 sequences with 10 multisets."><CountingStage worked client:load /></Stage>
+
+With replacement, there are $4^2=16$ sequences and $\binom52=10$ multisets. Four multisets repeat a label; six contain distinct labels. The result $\{1,1\}$ has one preimage and mass $1/16$. The result $\{1,2\}$ has two preimages and mass $1/8$. Assigning $1/10$ to each describes a different experiment: direct uniform selection of multisets.
+
+## Executable reference code
+
+The Python program uses standard-library formulas and independently enumerates outcomes with `itertools` to check them throughout the stage's small parameter range. It groups replacement sequences by sorted tuples and assigns exact `Fraction` masses from preimage counts. NumPy checks the same finite grouping using rows of sequences, row sorting, and occurrence counts; no random sampling is needed.
+
+<CodeFile source={reference} file="code/python/probability_counting.py" />
+<CodeFile source={practical} file="code/python/probability_counting_numpy.py" />
+
+## Explore
+
+Set $k=0$ in all four modes. There is exactly one empty selection, including one empty ordered tuple. Under this valid experiment its probability is one. Then set $n=2$, $k=3$ without replacement: there are zero selections, so a normalized uniform selection model cannot be formed. Turn replacement on and observe that ordered choices become possible again.
+
+Predict counts for $n=5$, $k=3$ without replacement: $5\times4\times3=60$ ordered and $60/6=10$ unordered. Return to two-of-four with replacement and inspect which unordered results represent more sequences.
+
+<Callout kind="scope" title="Counting requires a probability assumption">
+“Favorable outcomes divided by all outcomes” requires those outcomes to be equally likely. A biased label picker, sampling with unequal weights, or grouping unequal numbers of ordered sequences invalidates an unqualified count ratio. State the sampling mechanism before choosing a denominator.
+</Callout>
+
+## Common mistakes and counterexamples
+
+Dividing every ordered replacement count by $k!$ fails when labels repeat. For two-of-four it gives $16/2=8$, but there are ten multisets. Using $n^k$ without replacement also overcounts repeated-label sequences that the experiment excludes.
+
+An impossible selection is not an empty selection. One has no outcome; the other has the single empty outcome. Do not evaluate a factorial with a negative argument to extend the without-replacement formula past $k=n$; report count zero and the unavailable sampling model.
+
+## Numerical considerations
+
+Counts are exact integers and probabilities are exact rational ratios in the standard-library reference. The bounded explorer permits enumeration, but $n^k$ grows quickly outside that range. A finite display must never be mistaken for an exhaustive list in a much larger experiment.
+
+Python integers grow as needed. NumPy integer arrays have fixed-width types, so a larger counting implementation must consider overflow before arithmetic. Here the bounded counts fit exactly; division into floating-point masses is approximate, checked with absolute tolerance $10^{-12}$ and zero relative tolerance. The reference does not claim a rounded array sum is an exact proof of normalization.
+
+## Engineering and ML connections
+
+Sampling a minibatch without replacement differs from independently choosing training examples with replacement. Sequence order matters for temporal input, whereas a selected subset may ignore it. Counting helps estimate search-space size and memory requirements, but probabilities still depend on the sampling rule. Grouping randomized outputs can introduce unequal category probabilities even when the underlying draws are uniform.
+
+## Exercises
+
+<Exercise id="probability-counting-default-selections" client:load />
+<Exercise id="probability-counting-replacement-orders" client:load />
+<Exercise id="probability-counting-target-pair" client:load />
+<Exercise id="probability-counting-multiset-weights" client:load />
+<Exercise id="probability-counting-empty-impossible" client:load />
+
+## Summary and checkpoints
+
+Choose an outcome space by specifying order and replacement. Multiply successive choices; divide by equal-size ordering groups only when justified. Check that you can explain 12 versus 6, 16 versus 10, the nonuniform replacement multisets, and the difference between one empty outcome and no possible outcome.

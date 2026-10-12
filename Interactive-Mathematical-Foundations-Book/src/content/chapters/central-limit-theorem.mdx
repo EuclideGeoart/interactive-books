@@ -1,0 +1,135 @@
+---
+kind: chapter
+curriculumId: IV.16
+title: "Central Limit Theorem"
+hero: "How can averages of a skewed source acquire a nearly Gaussian *shape*?"
+lede: Generate many independent sample blocks, retain their actual observations, and standardize their means. Change block size and repetition count separately to distinguish limiting shape from histogram noise.
+description: Repeated seeded means, classical iid CLT and standardization, honest histogram density and tails, finite-n and dependence warnings, executable Python and NumPy, and five graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import SamplingStage from '../../lessons/probability/SamplingStage';
+import Exercise from '../../lessons/probability/BlockCExercise';
+import reference from '../../../code/python/probability_clt.py?raw';
+import practical from '../../../code/python/probability_clt_numpy.py?raw';
+
+<Stage caption="Compare a non-Gaussian population, actual sample blocks, repeated sample means, and their standardized histogram beside a standard-normal reference. Increase n separately from repetitions."><SamplingStage chapter="clt" client:load /></Stage>
+
+Predict which control changes the finite-sample mean distribution and which mainly changes how noisily its histogram estimates it. Inspect the first sample blocks before trusting the bell-shaped picture.
+
+## Intuition: study many means, not one running path
+
+The previous chapter followed a single growing average. Here we repeatedly draw blocks of the same size $n$ and calculate one mean per block. Their collection has a distribution of its own. The source can remain skewed while the standardized mean distribution becomes more nearly Gaussian as $n$ grows.
+
+A raw mean's spread shrinks with $n$. To compare shape across block sizes, remove its theoretical center and divide by its theoretical standard deviation. This standardization keeps the reference spread fixed; it does not force observed bars to match a normal curve.
+
+## Definition
+
+Let $X_1,X_2,\ldots$ be iid with finite mean $\mu$ and finite positive variance $\sigma^2$. For the mean of a block of size $n$, define
+
+$$
+Z_n=\frac{\bar X_n-\mu}{\sigma/\sqrt n}
+=\frac{\sum_{j=1}^nX_j-n\mu}{\sigma\sqrt n}.
+$$
+
+The classical **Central Limit Theorem** states $Z_n\xrightarrow{d}\mathcal N(0,1)$. Convergence in distribution means that, at every real $z$ here, $\mathbb P(Z_n\leq z)$ tends to the standard-normal CDF $\Phi(z)$. It does not make finite-$n$ observations exactly Gaussian or specify a universal accuracy threshold such as $n=30$.
+
+If $\sigma^2=0$, the source is constant almost surely and this standardization is undefined. A normal overlay must not be presented as a valid standardized limit in that state.
+
+## Mechanics: one stream, contiguous sample blocks
+
+Choose Bernoulli, Uniform$[0,1)$, or rate-$1$ exponential observations. All have known finite moments; the exponential source supplies a clearly nonnormal skewed population. Block size ranges from $1$ to $100$, and repetitions from $10$ to $1000$, bounding an iid run at $100000$ draws.
+
+The canonical run uses the rate-$1$ exponential source, seed $42$, block size $n=8$, and $240$ repetitions. A uint32 seed drives the same explicit LCG used in the LLN chapter. Each iid block consumes its own contiguous portion of one stream. Open the sample details to inspect the first three complete actual samples retained along with their sums and means; all repeated means are standardized using the population moments. Reset restores canonical parameters, and replay reproduces the full run.
+
+The dependence preset uses a uniform source and repeats one draw throughout each block. Its displayed iid standardization is explicitly a violated reference. In that example the block mean is just the single draw and the correct mean variance is $\sigma^2$, not $\sigma^2/n$.
+
+## Derivation: why the center and scale take this form
+
+Under iid assumptions, linearity and zero cross-covariances give
+
+$$
+\mathbb E[\bar X_n]=\mu,\qquad
+\operatorname{Var}(\bar X_n)=\frac{\sigma^2}{n}.
+$$
+
+Subtracting $\mu$ centers the mean, and division by $\sigma/\sqrt n$ gives $\mathbb E[Z_n]=0$ and $\operatorname{Var}(Z_n)=1$. These moment identities explain the scaling but do not prove the Gaussian limit. Many nonnormal distributions also have mean zero and variance one; convergence in distribution is the additional theorem.
+
+An equivalent sum formulation subtracts $n\mu$ and divides by $\sigma\sqrt n$. Confusing sum and mean scales changes the variance of the standardized result and can create a misleadingly narrow or wide histogram.
+
+## Worked examples
+
+Four rate-$1$ exponential observations with sum $6$ have mean $3/2$. Their population mean and standard deviation are both $1$, so
+
+$$
+Z_4=\sqrt4\left(\frac32-1\right)=1.
+$$
+
+This is one standardized mean, not a proof about its distribution. For Bernoulli probability $1/4$ and $n=100$, the repeated means have theoretical expectation $1/4$ and variance $3/1600$.
+
+<Stage caption="Inspect actual blocks, their means, and standardized values. Compare small and larger n for a skewed source, then change repetitions while preserving the finite-n theoretical distribution."><SamplingStage chapter="clt" worked client:load /></Stage>
+
+For a fixed-window histogram with $1200$ repetitions, a width-$1/3$ bin containing $60$ observations has density $60/(1200\times1/3)=3/20$ and area $1/20$. If $1140$ observations lie inside the window, the displayed histogram area is $19/20$; the remaining empirical mass $1/20$ belongs to separately reported tails.
+
+## Executable reference code
+
+The standard-library program generates contiguous sample blocks, retains three actual samples, computes sums and means, and handles zero variance explicitly. It verifies literal seeded blocks, replay, dependence, count conservation, and the full bounded workload without requiring favorable random agreement with the normal reference.
+
+The NumPy program exposes a two-dimensional block array and averages along its sample axis. Its histogram first filters to the declared half-open window: NumPy otherwise includes the final right edge in the last bin. It divides counts by all repetitions and bin width, avoiding `density=True` renormalization of retained observations.
+
+<CodeFile source={reference} file="code/python/probability_clt.py" />
+<CodeFile source={practical} file="code/python/probability_clt_numpy.py" />
+
+## Explore
+
+Start with a skewed exponential source and $n=1$. Predict its standardized shape, then increase $n$ while checking the actual first sample blocks. Look for reduced skew without assuming the noisy histogram must improve monotonically at every chosen size.
+
+Compare the short preset at $n=1$ with the large preset at $n=30$, then hold $n$ fixed and increase repetitions. The theoretical mean distribution stays the same; its empirical histogram becomes a better estimate, subject to sampling variation. Switch to Bernoulli: finite-$n$ means remain on a lattice. More repetitions reveal that lattice more clearly rather than turning it into a continuous distribution.
+
+Inspect the dependence example and compare its actual mean variance with the iid reference. At Bernoulli probability $0$ or $1$, identify the zero denominator and explain why there are deterministic means but no defined standardized histogram.
+
+## Common mistakes and counterexamples
+
+The LLN concerns a mean approaching its target; the CLT concerns the distribution of its centered, rescaled fluctuations. Neither says the original observations become Gaussian. The population plot remains a separate object throughout the experiment.
+
+Perfect within-block dependence breaks the iid variance calculation. If every entry equals $Y$, then $\bar X_n=Y$ and the iid reference $\sqrt n(Y-\mu)/\sigma$ has variance $n$, not $1$. An iid Cauchy population violates the classical theorem's finite-variance and finite-mean assumptions; averaging it does not justify this Gaussian standardization.
+
+There is no universal finite sample size at which every source becomes “normal enough.” Tail behavior, skew, event of interest, and desired accuracy matter. One seeded histogram supplies an illustration rather than evidence that all theorem assumptions hold or that an asymptotic approximation is accurate for a particular application.
+
+## Numerical considerations
+
+The stage uses $24$ equal-width bins on $[-4,4)$, each of width $1/3$. Values below $-4$ and values at or above $4$ are counted separately. Bin density is
+
+$$
+h_k=\frac{c_k}{R\Delta},\qquad
+\sum_kh_k\Delta=\frac{R_{\mathrm{inside}}}{R},
+$$
+
+where $R$ is all repetitions and $\Delta$ is bin width. The histogram area is the retained empirical fraction, not automatically one. The analytic standard-normal reference is normalized over the entire real line and has positive tail mass outside every finite window; its omitted mass beyond $\pm4$ is approximately $0.000063342484$.
+
+The normal overlay uses the Gaussian density and CDF policy from the preceding distribution chapter; CDF approximations have a stated absolute error budget of $10^{-9}$, so a difference has budget $2\times10^{-9}$. This numerical error is separate from Monte Carlo noise, finite-$n$ approximation error, binning, finite drawing bounds, and pseudo-random stream limitations. None is removed by aligning plotted heights manually.
+
+<Callout kind="misconception" title="Repetitions estimate a shape; n changes the shape">
+For a Bernoulli source at n=1, a million repetitions still estimate a two-point distribution. Increasing n supplies more independent observations to each mean. Increasing repetitions supplies more examples of the current mean distribution.
+</Callout>
+
+## Engineering and ML connections
+
+The CLT motivates approximate Gaussian descriptions of accumulated independent finite-variance noise and some Monte Carlo estimation errors. The raw average's standard-deviation scale is $\sigma/\sqrt n$; using it requires checking the dependence and moment assumptions, and the approximation's usefulness depends on the event being estimated.
+
+Batch averages in learning systems often contain correlated observations, and heavy-tailed quantities can violate classical assumptions. The normal reference is a model to assess, not a consequence of drawing a smooth curve over data. Statistical confidence procedures build additional decisions on this probability foundation in the next part of the book.
+
+## Exercises
+
+Calculate standardization and histogram area exactly where possible. Explain what each sampling control changes and which assumption a counterexample violates.
+
+<Exercise id="probability-clt-standardize" client:load />
+<Exercise id="probability-clt-bernoulli-center-spread" client:load />
+<Exercise id="probability-clt-histogram-density" client:load />
+<Exercise id="probability-clt-two-controls" client:load />
+<Exercise id="probability-clt-invalid-iid" client:load />
+
+## Summary and checkpoints
+
+The classical iid CLT standardizes repeated means using finite positive population variance and describes their limiting distribution. Check that you can recover a standardized value from an actual sum, separate n from repetitions, preserve histogram tail mass, handle zero variance and dependence, and keep one finite simulation distinct from a theorem.

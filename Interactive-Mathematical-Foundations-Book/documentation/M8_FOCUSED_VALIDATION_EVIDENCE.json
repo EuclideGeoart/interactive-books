@@ -1,0 +1,1719 @@
+{
+  "description": "Original focused T0 manifests and compact stdout summaries, including failed attempts. Original results are unaltered; final milestone acceptance applies to corrected source. No dry run is claimed as execution.",
+  "manifests": [
+    {
+      "path": "validation-results/focused-2026-10-11T21-37-57-615Z/manifest.json",
+      "sha256": "f86258953c731440070e6b7ab0d6b2bb72cbacea3a12562120382736d4d0261a",
+      "manifest": {
+        "mode": "focused",
+        "partial": true,
+        "files": [
+          "../.gitignore",
+          "astro.config.mjs",
+          "code/python/probability_bayes.py",
+          "code/python/probability_bayes_numpy.py",
+          "code/python/probability_conditional.py",
+          "code/python/probability_conditional_numpy.py",
+          "code/python/probability_counting.py",
+          "code/python/probability_counting_numpy.py",
+          "code/python/probability_events.py",
+          "code/python/probability_events_numpy.py",
+          "code/python/probability_experiments.py",
+          "code/python/probability_experiments_numpy.py",
+          "code/python/probability_independence.py",
+          "code/python/probability_independence_numpy.py",
+          "fixtures/probability_finite.fixtures.json",
+          "oracle/probability_finite_oracle.py",
+          "oracle/test_probability_finite_oracle.py",
+          "scripts/validation-plan.mjs",
+          "src/content/chapters/bayes-theorem.mdx",
+          "src/content/chapters/conditional-probability.mdx",
+          "src/content/chapters/counting-probability.mdx",
+          "src/content/chapters/events-probability.mdx",
+          "src/content/chapters/independence.mdx",
+          "src/content/chapters/random-experiments.mdx",
+          "src/curriculum/curriculum.ts",
+          "src/lessons/probability/BayesStage.tsx",
+          "src/lessons/probability/BlockAExercise.tsx",
+          "src/lessons/probability/CountingStage.tsx",
+          "src/lessons/probability/FiniteStage.tsx",
+          "src/lessons/probability/StageFrame.tsx",
+          "src/lessons/probability/bayes-lesson.ts",
+          "src/lessons/probability/block-a-exercises.ts",
+          "src/lessons/probability/counting-lesson.ts",
+          "src/lessons/probability/finite-lesson.ts",
+          "src/lessons/probability/probability.css",
+          "src/lessons/probability/view.ts",
+          "src/math/probability/bayes.ts",
+          "src/math/probability/counting.ts",
+          "src/math/probability/finite.ts",
+          "src/math/probability/seeded.ts",
+          "tests/e2e/probability-finite.spec.ts",
+          "tests/e2e/visual-probability.spec.ts",
+          "tests/unit/curriculum.test.ts",
+          "tests/unit/probability-bayes.test.ts",
+          "tests/unit/probability-block-a-exercises.test.ts",
+          "tests/unit/probability-counting.test.ts",
+          "tests/unit/probability-finite.parity.test.ts",
+          "tests/unit/probability-finite.test.ts",
+          "tests/unit/validation-plan.test.ts",
+          "vitest.config.ts"
+        ],
+        "reasons": [
+          "IV.6: explicitly requested (additive, never hides detected changes)",
+          "../.gitignore: known shared infrastructure; all math/contracts, representative interactions/axe, all root visuals",
+          "astro.config.mjs: known shared infrastructure; all math/contracts, representative interactions/axe, all root visuals",
+          "code/python/probability_bayes.py: IV.6",
+          "code/python/probability_bayes_numpy.py: IV.6",
+          "code/python/probability_conditional.py: IV.4",
+          "code/python/probability_conditional_numpy.py: IV.4",
+          "code/python/probability_counting.py: IV.3",
+          "code/python/probability_counting_numpy.py: IV.3",
+          "code/python/probability_events.py: IV.2",
+          "code/python/probability_events_numpy.py: IV.2",
+          "code/python/probability_experiments.py: IV.1",
+          "code/python/probability_experiments_numpy.py: IV.1",
+          "code/python/probability_independence.py: IV.5",
+          "code/python/probability_independence_numpy.py: IV.5",
+          "fixtures/probability_finite.fixtures.json: probability_finite, probability_counting, probability_bayes",
+          "oracle/probability_finite_oracle.py: probability_finite, probability_counting, probability_bayes",
+          "oracle/test_probability_finite_oracle.py: probability_finite, probability_counting, probability_bayes",
+          "scripts/validation-plan.mjs: known shared infrastructure; all math/contracts, representative interactions/axe, all root visuals",
+          "src/content/chapters/bayes-theorem.mdx: IV.6",
+          "src/content/chapters/conditional-probability.mdx: IV.4",
+          "src/content/chapters/counting-probability.mdx: IV.3",
+          "src/content/chapters/events-probability.mdx: IV.2",
+          "src/content/chapters/independence.mdx: IV.5",
+          "src/content/chapters/random-experiments.mdx: IV.1",
+          "src/curriculum/curriculum.ts: known shared infrastructure; all math/contracts, representative interactions/axe, all root visuals",
+          "src/lessons/probability/BayesStage.tsx: IV.6",
+          "src/lessons/probability/BlockAExercise.tsx: IV.6, IV.4, IV.3, IV.2, IV.5, IV.1",
+          "src/lessons/probability/CountingStage.tsx: IV.3",
+          "src/lessons/probability/FiniteStage.tsx: IV.4, IV.2, IV.5, IV.1",
+          "src/lessons/probability/StageFrame.tsx: IV.6, IV.4, IV.3, IV.2, IV.5, IV.1",
+          "src/lessons/probability/bayes-lesson.ts: IV.6",
+          "src/lessons/probability/block-a-exercises.ts: IV.6, IV.4, IV.3, IV.2, IV.5, IV.1",
+          "src/lessons/probability/counting-lesson.ts: IV.3",
+          "src/lessons/probability/finite-lesson.ts: IV.4, IV.2, IV.5, IV.1",
+          "src/lessons/probability/probability.css: IV.6, IV.4, IV.3, IV.2, IV.5, IV.1",
+          "src/lessons/probability/view.ts: IV.6, IV.4, IV.3, IV.2, IV.5, IV.1",
+          "src/math/probability/bayes.ts: IV.6",
+          "src/math/probability/counting.ts: IV.3",
+          "src/math/probability/finite.ts: IV.4, IV.2, IV.5, IV.1",
+          "src/math/probability/seeded.ts: IV.4, IV.3, IV.2, IV.5, IV.1",
+          "tests/e2e/probability-finite.spec.ts: probability_finite, probability_counting, probability_bayes",
+          "tests/e2e/visual-probability.spec.ts: known shared infrastructure; all math/contracts, representative interactions/axe, all root visuals",
+          "tests/unit/curriculum.test.ts: known shared infrastructure; all math/contracts, representative interactions/axe, all root visuals",
+          "tests/unit/probability-bayes.test.ts: probability_bayes",
+          "tests/unit/probability-block-a-exercises.test.ts: probability_finite",
+          "tests/unit/probability-counting.test.ts: probability_counting",
+          "tests/unit/probability-finite.parity.test.ts: probability_finite",
+          "tests/unit/probability-finite.test.ts: probability_finite",
+          "tests/unit/validation-plan.test.ts: known shared infrastructure; all math/contracts, representative interactions/axe, all root visuals",
+          "vitest.config.ts: known shared infrastructure; all math/contracts, representative interactions/axe, all root visuals"
+        ],
+        "conservativeExpansion": true,
+        "sharedExpansion": true,
+        "chapters": [
+          "I.4",
+          "IV.6",
+          "IV.4",
+          "I.2",
+          "IV.3",
+          "II.17",
+          "IV.2",
+          "I.6",
+          "I.5",
+          "II.14",
+          "IV.5",
+          "II.16",
+          "II.13",
+          "II.10",
+          "II.12",
+          "II.8",
+          "II.11",
+          "II.9",
+          "I.9",
+          "II.18",
+          "I.1",
+          "IV.1",
+          "II.15",
+          "I.7",
+          "II.19",
+          "I.8",
+          "II.1",
+          "II.7",
+          "II.4",
+          "II.3",
+          "II.5",
+          "II.2",
+          "II.6",
+          "I.3"
+        ],
+        "crossChapterContracts": [
+          "II.10",
+          "I.9",
+          "I.1",
+          "II.1",
+          "I.3"
+        ],
+        "interactionChapters": [
+          "IV.6",
+          "IV.4",
+          "IV.3",
+          "IV.2",
+          "IV.5",
+          "IV.1"
+        ],
+        "completeMath": true,
+        "units": [
+          "tests/unit/algebra-exercises.test.ts",
+          "tests/unit/algebra-lesson.test.ts",
+          "tests/unit/algebra-model.test.ts",
+          "tests/unit/algebra.parity.test.ts",
+          "tests/unit/completion-exercises.test.ts",
+          "tests/unit/content.test.ts",
+          "tests/unit/coordinates-exercises.test.ts",
+          "tests/unit/coordinates-lesson.test.ts",
+          "tests/unit/coordinates-model.test.ts",
+          "tests/unit/coordinates.parity.test.ts",
+          "tests/unit/curriculum.test.ts",
+          "tests/unit/curve.test.ts",
+          "tests/unit/deployment-coverage.test.ts",
+          "tests/unit/direction.parity.test.ts",
+          "tests/unit/direction.test.ts",
+          "tests/unit/eigen-lesson.test.ts",
+          "tests/unit/eigenvalues.parity.test.ts",
+          "tests/unit/eigenvalues.test.ts",
+          "tests/unit/elimination-lesson.test.ts",
+          "tests/unit/elimination.parity.test.ts",
+          "tests/unit/elimination.test.ts",
+          "tests/unit/emblems.test.ts",
+          "tests/unit/exercise-kit.test.ts",
+          "tests/unit/families-circle.test.ts",
+          "tests/unit/families-exercises.test.ts",
+          "tests/unit/families-lesson.test.ts",
+          "tests/unit/families-roundtrip.test.ts",
+          "tests/unit/families.parity.test.ts",
+          "tests/unit/families.test.ts",
+          "tests/unit/format.test.ts",
+          "tests/unit/functions-exercises.test.ts",
+          "tests/unit/functions-lesson.test.ts",
+          "tests/unit/functions-model.test.ts",
+          "tests/unit/functions.parity.test.ts",
+          "tests/unit/least-squares-lesson.test.ts",
+          "tests/unit/least-squares.parity.test.ts",
+          "tests/unit/least-squares.test.ts",
+          "tests/unit/linear-algebra-lesson.test.ts",
+          "tests/unit/linear-algebra.parity.test.ts",
+          "tests/unit/linear-algebra.test.ts",
+          "tests/unit/matrices.parity.test.ts",
+          "tests/unit/matrices.test.ts",
+          "tests/unit/matrix-exercises.test.ts",
+          "tests/unit/matrix-lesson.test.ts",
+          "tests/unit/notation-exercises.test.ts",
+          "tests/unit/notation-lesson.test.ts",
+          "tests/unit/notation-table.test.ts",
+          "tests/unit/notation.parity.test.ts",
+          "tests/unit/notation.test.ts",
+          "tests/unit/params.test.ts",
+          "tests/unit/probability-bayes.test.ts",
+          "tests/unit/probability-block-a-exercises.test.ts",
+          "tests/unit/probability-counting.test.ts",
+          "tests/unit/probability-finite.parity.test.ts",
+          "tests/unit/probability-finite.test.ts",
+          "tests/unit/quantity-exercises.test.ts",
+          "tests/unit/quantity-lesson.test.ts",
+          "tests/unit/quantity-model.test.ts",
+          "tests/unit/quantity-worked.test.ts",
+          "tests/unit/quantity.parity.test.ts",
+          "tests/unit/quantity.test.ts",
+          "tests/unit/sets-lesson.test.ts",
+          "tests/unit/sets.parity.test.ts",
+          "tests/unit/sets.test.ts",
+          "tests/unit/summation-empty-geometric.test.ts",
+          "tests/unit/summation-lesson.test.ts",
+          "tests/unit/summation.parity.test.ts",
+          "tests/unit/summation.test.ts",
+          "tests/unit/svd-lesson.test.ts",
+          "tests/unit/svd.parity.test.ts",
+          "tests/unit/svd.test.ts",
+          "tests/unit/trace.test.ts",
+          "tests/unit/validation-plan.test.ts",
+          "tests/unit/validation-timing.test.ts",
+          "tests/unit/vector-lesson.test.ts",
+          "tests/unit/vector2.parity.test.ts",
+          "tests/unit/vector2.test.ts",
+          "tests/unit/vectors-lesson.test.ts",
+          "tests/unit/viewport.test.ts"
+        ],
+        "oracles": [
+          "algebra",
+          "coordinates",
+          "direction",
+          "eigenvalues",
+          "elimination",
+          "families",
+          "functions",
+          "least_squares",
+          "linear_algebra",
+          "matrices",
+          "notation",
+          "probability_finite",
+          "quantity",
+          "sets",
+          "summation",
+          "svd",
+          "vector2"
+        ],
+        "project": "desktop,tablet,mobile",
+        "phases": [
+          "math"
+        ],
+        "commands": [
+          {
+            "gate": "complete units",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/vitest/vitest.mjs",
+              "run"
+            ]
+          },
+          {
+            "gate": "complete oracle + freshness",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "scripts/run-oracle.mjs"
+            ]
+          }
+        ],
+        "base": "HEAD",
+        "shard": null,
+        "results": [
+          {
+            "gate": "complete units",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/vitest/vitest.mjs",
+              "run"
+            ],
+            "status": 0,
+            "wallMs": 12388
+          },
+          {
+            "gate": "complete oracle + freshness",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "scripts/run-oracle.mjs"
+            ],
+            "status": 0,
+            "wallMs": 33257
+          }
+        ],
+        "status": "passed"
+      }
+    },
+    {
+      "path": "validation-results/focused-2026-10-11T21-41-34-250Z/manifest.json",
+      "sha256": "293e01dd3150dc86c4bd43aecd16d3bb7f982b44ef95782bec0233f58730e9e5",
+      "manifest": {
+        "mode": "focused",
+        "partial": true,
+        "files": [],
+        "reasons": [
+          "IV.1: explicitly requested (additive, never hides detected changes)",
+          "IV.2: explicitly requested (additive, never hides detected changes)",
+          "IV.3: explicitly requested (additive, never hides detected changes)",
+          "IV.4: explicitly requested (additive, never hides detected changes)",
+          "IV.5: explicitly requested (additive, never hides detected changes)",
+          "IV.6: explicitly requested (additive, never hides detected changes)"
+        ],
+        "conservativeExpansion": false,
+        "sharedExpansion": false,
+        "chapters": [
+          "IV.6",
+          "IV.4",
+          "IV.3",
+          "IV.2",
+          "IV.5",
+          "IV.1"
+        ],
+        "crossChapterContracts": [],
+        "interactionChapters": [
+          "IV.6",
+          "IV.4",
+          "IV.3",
+          "IV.2",
+          "IV.5",
+          "IV.1"
+        ],
+        "completeMath": false,
+        "units": [
+          "tests/unit/probability-bayes.test.ts",
+          "tests/unit/probability-block-a-exercises.test.ts",
+          "tests/unit/probability-counting.test.ts",
+          "tests/unit/probability-finite.parity.test.ts",
+          "tests/unit/probability-finite.test.ts"
+        ],
+        "oracles": [
+          "probability_finite"
+        ],
+        "project": "mobile",
+        "phases": [
+          "browser"
+        ],
+        "commands": [
+          {
+            "gate": "chapter contracts + both-theme full-page axe",
+            "deployment": "root",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/@playwright/test/cli.js",
+              "test",
+              "tests/e2e/chapters.spec.ts",
+              "--trace",
+              "off",
+              "--project",
+              "mobile",
+              "--grep",
+              "(?:^|\\s)(?:IV\\.6|IV\\.4|IV\\.3|IV\\.2|IV\\.5|IV\\.1)(?: |:)|Part I publication"
+            ]
+          },
+          {
+            "gate": "affected chapter interactions: probability_bayes",
+            "deployment": "root",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/@playwright/test/cli.js",
+              "test",
+              "tests/e2e/probability-finite.spec.ts",
+              "--trace",
+              "off",
+              "--project",
+              "mobile",
+              "--grep",
+              "(?:^|\\s)(?:IV\\.6(?::| ))|publication"
+            ]
+          },
+          {
+            "gate": "affected chapter interactions: probability_finite",
+            "deployment": "root",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/@playwright/test/cli.js",
+              "test",
+              "tests/e2e/probability-finite.spec.ts",
+              "--trace",
+              "off",
+              "--project",
+              "mobile",
+              "--grep",
+              "(?:^|\\s)(?:IV\\.4(?::| )|IV\\.2(?::| )|IV\\.5(?::| )|IV\\.1(?::| ))|publication"
+            ]
+          },
+          {
+            "gate": "affected chapter interactions: probability_counting",
+            "deployment": "root",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/@playwright/test/cli.js",
+              "test",
+              "tests/e2e/probability-finite.spec.ts",
+              "--trace",
+              "off",
+              "--project",
+              "mobile",
+              "--grep",
+              "(?:^|\\s)(?:IV\\.3(?::| ))|publication"
+            ]
+          }
+        ],
+        "base": "HEAD",
+        "shard": null,
+        "results": [
+          {
+            "gate": "refresh root production",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/astro/astro.js",
+              "build"
+            ],
+            "status": 0,
+            "wallMs": 11690
+          },
+          {
+            "gate": "chapter contracts + both-theme full-page axe",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/@playwright/test/cli.js",
+              "test",
+              "tests/e2e/chapters.spec.ts",
+              "--trace",
+              "off",
+              "--project",
+              "mobile",
+              "--grep",
+              "(?:^|\\s)(?:IV\\.6|IV\\.4|IV\\.3|IV\\.2|IV\\.5|IV\\.1)(?: |:)|Part I publication",
+              "--output",
+              "validation-results/focused-2026-10-11T21-41-34-250Z/0-failures"
+            ],
+            "status": 1,
+            "wallMs": 22548
+          }
+        ]
+      }
+    },
+    {
+      "path": "validation-results/focused-2026-10-11T21-57-58-034Z/manifest.json",
+      "sha256": "31a1f3e8d2d480e68ef89f0afbe8222c54bdb8bbe880936e55eea7cc04e5845b",
+      "manifest": {
+        "mode": "focused",
+        "partial": true,
+        "files": [
+          "code/python/probability_binomial.py",
+          "code/python/probability_binomial_numpy.py",
+          "code/python/probability_continuous.py",
+          "code/python/probability_continuous_numpy.py",
+          "code/python/probability_expectation.py",
+          "code/python/probability_expectation_numpy.py",
+          "code/python/probability_representations.py",
+          "code/python/probability_representations_numpy.py",
+          "code/python/probability_variables.py",
+          "code/python/probability_variables_numpy.py",
+          "code/python/probability_variance.py",
+          "code/python/probability_variance_numpy.py",
+          "fixtures/probability_distributions.fixtures.json",
+          "fixtures/probability_moments.fixtures.json",
+          "oracle/probability_distributions_oracle.py",
+          "oracle/probability_moments_oracle.py",
+          "oracle/test_probability_distributions_oracle.py",
+          "oracle/test_probability_moments_oracle.py",
+          "scripts/validation-plan.mjs",
+          "src/content/chapters/bernoulli-binomial.mdx",
+          "src/content/chapters/expectation.mdx",
+          "src/content/chapters/pmf-pdf-cdf.mdx",
+          "src/content/chapters/random-variables.mdx",
+          "src/content/chapters/uniform-gaussian.mdx",
+          "src/content/chapters/variance-standard-deviation.mdx",
+          "src/curriculum/curriculum.ts",
+          "src/lessons/probability/BlockBExercise.tsx",
+          "src/lessons/probability/DistributionStage.tsx",
+          "src/lessons/probability/MomentsStage.tsx",
+          "src/lessons/probability/PlotView.tsx",
+          "src/lessons/probability/RandomVariableStage.tsx",
+          "src/lessons/probability/StageFrame.tsx",
+          "src/lessons/probability/block-b-exercises.ts",
+          "src/lessons/probability/distributions-lesson.ts",
+          "src/lessons/probability/moments-lesson.ts",
+          "src/lessons/probability/plot.ts",
+          "src/lessons/probability/probability.css",
+          "src/lessons/probability/variables-lesson.ts",
+          "src/math/probability/bayes.ts",
+          "src/math/probability/distributions.ts",
+          "src/math/probability/moments.ts",
+          "src/math/probability/percent.ts",
+          "tests/e2e/probability-distributions.spec.ts",
+          "tests/e2e/visual-probability.spec.ts",
+          "tests/unit/curriculum.test.ts",
+          "tests/unit/probability-block-b-exercises.test.ts",
+          "tests/unit/probability-distributions.parity.test.ts",
+          "tests/unit/probability-distributions.test.ts",
+          "tests/unit/probability-moments.parity.test.ts",
+          "tests/unit/probability-moments.test.ts",
+          "tests/unit/validation-plan.test.ts"
+        ],
+        "reasons": [
+          "IV.8: explicitly requested (additive, never hides detected changes)",
+          "code/python/probability_binomial.py: IV.9",
+          "code/python/probability_binomial_numpy.py: IV.9",
+          "code/python/probability_continuous.py: IV.10",
+          "code/python/probability_continuous_numpy.py: IV.10",
+          "code/python/probability_expectation.py: IV.11",
+          "code/python/probability_expectation_numpy.py: IV.11",
+          "code/python/probability_representations.py: IV.8",
+          "code/python/probability_representations_numpy.py: IV.8",
+          "code/python/probability_variables.py: IV.7",
+          "code/python/probability_variables_numpy.py: IV.7",
+          "code/python/probability_variance.py: IV.12",
+          "code/python/probability_variance_numpy.py: IV.12",
+          "fixtures/probability_distributions.fixtures.json: probability_distributions",
+          "fixtures/probability_moments.fixtures.json: probability_variables, probability_moments",
+          "oracle/probability_distributions_oracle.py: probability_distributions",
+          "oracle/probability_moments_oracle.py: probability_variables, probability_moments",
+          "oracle/test_probability_distributions_oracle.py: probability_distributions",
+          "oracle/test_probability_moments_oracle.py: probability_variables, probability_moments",
+          "scripts/validation-plan.mjs: known shared infrastructure; all math/contracts, representative interactions/axe, all root visuals",
+          "src/content/chapters/bernoulli-binomial.mdx: IV.9",
+          "src/content/chapters/expectation.mdx: IV.11",
+          "src/content/chapters/pmf-pdf-cdf.mdx: IV.8",
+          "src/content/chapters/random-variables.mdx: IV.7",
+          "src/content/chapters/uniform-gaussian.mdx: IV.10",
+          "src/content/chapters/variance-standard-deviation.mdx: IV.12",
+          "src/curriculum/curriculum.ts: known shared infrastructure; all math/contracts, representative interactions/axe, all root visuals",
+          "src/lessons/probability/BlockBExercise.tsx: IV.9, IV.11, IV.8, IV.7, IV.10, IV.12",
+          "src/lessons/probability/DistributionStage.tsx: IV.9, IV.8, IV.10",
+          "src/lessons/probability/MomentsStage.tsx: IV.11, IV.12",
+          "src/lessons/probability/PlotView.tsx: IV.9, IV.11, IV.8, IV.7, IV.10, IV.12",
+          "src/lessons/probability/RandomVariableStage.tsx: IV.7",
+          "src/lessons/probability/StageFrame.tsx: IV.6, IV.9, IV.4, IV.3, IV.2, IV.11, IV.5, IV.8, IV.1, IV.7, IV.10, IV.12",
+          "src/lessons/probability/block-b-exercises.ts: IV.9, IV.11, IV.8, IV.7, IV.10, IV.12",
+          "src/lessons/probability/distributions-lesson.ts: IV.9, IV.8, IV.10",
+          "src/lessons/probability/moments-lesson.ts: IV.11, IV.12",
+          "src/lessons/probability/plot.ts: IV.9, IV.11, IV.8, IV.7, IV.10, IV.12",
+          "src/lessons/probability/probability.css: IV.6, IV.9, IV.4, IV.3, IV.2, IV.11, IV.5, IV.8, IV.1, IV.7, IV.10, IV.12",
+          "src/lessons/probability/variables-lesson.ts: IV.7",
+          "src/math/probability/bayes.ts: IV.6",
+          "src/math/probability/distributions.ts: IV.9, IV.8, IV.10",
+          "src/math/probability/moments.ts: IV.9, IV.11, IV.8, IV.7, IV.10, IV.12",
+          "src/math/probability/percent.ts: IV.6, IV.9, IV.8, IV.10",
+          "tests/e2e/probability-distributions.spec.ts: probability_variables, probability_distributions, probability_moments",
+          "tests/e2e/visual-probability.spec.ts: known shared infrastructure; all math/contracts, representative interactions/axe, all root visuals",
+          "tests/unit/curriculum.test.ts: known shared infrastructure; all math/contracts, representative interactions/axe, all root visuals",
+          "tests/unit/probability-block-b-exercises.test.ts: probability_variables",
+          "tests/unit/probability-distributions.parity.test.ts: probability_distributions",
+          "tests/unit/probability-distributions.test.ts: probability_distributions",
+          "tests/unit/probability-moments.parity.test.ts: probability_variables",
+          "tests/unit/probability-moments.test.ts: probability_variables",
+          "tests/unit/validation-plan.test.ts: known shared infrastructure; all math/contracts, representative interactions/axe, all root visuals"
+        ],
+        "conservativeExpansion": true,
+        "sharedExpansion": true,
+        "chapters": [
+          "I.4",
+          "IV.6",
+          "IV.9",
+          "IV.4",
+          "I.2",
+          "IV.3",
+          "II.17",
+          "IV.2",
+          "IV.11",
+          "I.6",
+          "I.5",
+          "II.14",
+          "IV.5",
+          "II.16",
+          "II.13",
+          "II.10",
+          "II.12",
+          "II.8",
+          "II.11",
+          "II.9",
+          "I.9",
+          "II.18",
+          "IV.8",
+          "I.1",
+          "IV.1",
+          "IV.7",
+          "II.15",
+          "I.7",
+          "II.19",
+          "I.8",
+          "IV.10",
+          "IV.12",
+          "II.1",
+          "II.7",
+          "II.4",
+          "II.3",
+          "II.5",
+          "II.2",
+          "II.6",
+          "I.3"
+        ],
+        "crossChapterContracts": [
+          "II.10",
+          "I.9",
+          "I.1",
+          "II.1",
+          "I.3"
+        ],
+        "interactionChapters": [
+          "IV.6",
+          "IV.9",
+          "IV.4",
+          "IV.3",
+          "IV.2",
+          "IV.11",
+          "IV.5",
+          "IV.8",
+          "IV.1",
+          "IV.7",
+          "IV.10",
+          "IV.12"
+        ],
+        "completeMath": true,
+        "units": [
+          "tests/unit/algebra-exercises.test.ts",
+          "tests/unit/algebra-lesson.test.ts",
+          "tests/unit/algebra-model.test.ts",
+          "tests/unit/algebra.parity.test.ts",
+          "tests/unit/completion-exercises.test.ts",
+          "tests/unit/content.test.ts",
+          "tests/unit/coordinates-exercises.test.ts",
+          "tests/unit/coordinates-lesson.test.ts",
+          "tests/unit/coordinates-model.test.ts",
+          "tests/unit/coordinates.parity.test.ts",
+          "tests/unit/curriculum.test.ts",
+          "tests/unit/curve.test.ts",
+          "tests/unit/deployment-coverage.test.ts",
+          "tests/unit/direction.parity.test.ts",
+          "tests/unit/direction.test.ts",
+          "tests/unit/eigen-lesson.test.ts",
+          "tests/unit/eigenvalues.parity.test.ts",
+          "tests/unit/eigenvalues.test.ts",
+          "tests/unit/elimination-lesson.test.ts",
+          "tests/unit/elimination.parity.test.ts",
+          "tests/unit/elimination.test.ts",
+          "tests/unit/emblems.test.ts",
+          "tests/unit/exercise-kit.test.ts",
+          "tests/unit/families-circle.test.ts",
+          "tests/unit/families-exercises.test.ts",
+          "tests/unit/families-lesson.test.ts",
+          "tests/unit/families-roundtrip.test.ts",
+          "tests/unit/families.parity.test.ts",
+          "tests/unit/families.test.ts",
+          "tests/unit/format.test.ts",
+          "tests/unit/functions-exercises.test.ts",
+          "tests/unit/functions-lesson.test.ts",
+          "tests/unit/functions-model.test.ts",
+          "tests/unit/functions.parity.test.ts",
+          "tests/unit/least-squares-lesson.test.ts",
+          "tests/unit/least-squares.parity.test.ts",
+          "tests/unit/least-squares.test.ts",
+          "tests/unit/linear-algebra-lesson.test.ts",
+          "tests/unit/linear-algebra.parity.test.ts",
+          "tests/unit/linear-algebra.test.ts",
+          "tests/unit/matrices.parity.test.ts",
+          "tests/unit/matrices.test.ts",
+          "tests/unit/matrix-exercises.test.ts",
+          "tests/unit/matrix-lesson.test.ts",
+          "tests/unit/notation-exercises.test.ts",
+          "tests/unit/notation-lesson.test.ts",
+          "tests/unit/notation-table.test.ts",
+          "tests/unit/notation.parity.test.ts",
+          "tests/unit/notation.test.ts",
+          "tests/unit/params.test.ts",
+          "tests/unit/probability-bayes.test.ts",
+          "tests/unit/probability-block-a-exercises.test.ts",
+          "tests/unit/probability-block-b-exercises.test.ts",
+          "tests/unit/probability-counting.test.ts",
+          "tests/unit/probability-distributions.parity.test.ts",
+          "tests/unit/probability-distributions.test.ts",
+          "tests/unit/probability-finite.parity.test.ts",
+          "tests/unit/probability-finite.test.ts",
+          "tests/unit/probability-moments.parity.test.ts",
+          "tests/unit/probability-moments.test.ts",
+          "tests/unit/quantity-exercises.test.ts",
+          "tests/unit/quantity-lesson.test.ts",
+          "tests/unit/quantity-model.test.ts",
+          "tests/unit/quantity-worked.test.ts",
+          "tests/unit/quantity.parity.test.ts",
+          "tests/unit/quantity.test.ts",
+          "tests/unit/sets-lesson.test.ts",
+          "tests/unit/sets.parity.test.ts",
+          "tests/unit/sets.test.ts",
+          "tests/unit/summation-empty-geometric.test.ts",
+          "tests/unit/summation-lesson.test.ts",
+          "tests/unit/summation.parity.test.ts",
+          "tests/unit/summation.test.ts",
+          "tests/unit/svd-lesson.test.ts",
+          "tests/unit/svd.parity.test.ts",
+          "tests/unit/svd.test.ts",
+          "tests/unit/trace.test.ts",
+          "tests/unit/validation-plan.test.ts",
+          "tests/unit/validation-timing.test.ts",
+          "tests/unit/vector-lesson.test.ts",
+          "tests/unit/vector2.parity.test.ts",
+          "tests/unit/vector2.test.ts",
+          "tests/unit/vectors-lesson.test.ts",
+          "tests/unit/viewport.test.ts"
+        ],
+        "oracles": [
+          "algebra",
+          "coordinates",
+          "direction",
+          "eigenvalues",
+          "elimination",
+          "families",
+          "functions",
+          "least_squares",
+          "linear_algebra",
+          "matrices",
+          "notation",
+          "probability_distributions",
+          "probability_finite",
+          "probability_moments",
+          "quantity",
+          "sets",
+          "summation",
+          "svd",
+          "vector2"
+        ],
+        "project": "desktop,tablet,mobile",
+        "phases": [
+          "math"
+        ],
+        "commands": [
+          {
+            "gate": "complete units",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/vitest/vitest.mjs",
+              "run"
+            ]
+          },
+          {
+            "gate": "complete oracle + freshness",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "scripts/run-oracle.mjs"
+            ]
+          }
+        ],
+        "base": "HEAD",
+        "shard": null,
+        "results": [
+          {
+            "gate": "complete units",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/vitest/vitest.mjs",
+              "run"
+            ],
+            "status": 0,
+            "wallMs": 10116
+          },
+          {
+            "gate": "complete oracle + freshness",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "scripts/run-oracle.mjs"
+            ],
+            "status": 0,
+            "wallMs": 34673
+          }
+        ],
+        "status": "passed"
+      }
+    },
+    {
+      "path": "validation-results/focused-2026-10-11T21-59-44-449Z/manifest.json",
+      "sha256": "2071759a4a44b06a3dd930342dd2eb0d933f13b212efef475bb6d5837a336ba3",
+      "manifest": {
+        "mode": "focused",
+        "partial": true,
+        "files": [],
+        "reasons": [
+          "IV.1: explicitly requested (additive, never hides detected changes)",
+          "IV.2: explicitly requested (additive, never hides detected changes)",
+          "IV.3: explicitly requested (additive, never hides detected changes)",
+          "IV.4: explicitly requested (additive, never hides detected changes)",
+          "IV.5: explicitly requested (additive, never hides detected changes)",
+          "IV.6: explicitly requested (additive, never hides detected changes)",
+          "IV.7: explicitly requested (additive, never hides detected changes)",
+          "IV.8: explicitly requested (additive, never hides detected changes)",
+          "IV.9: explicitly requested (additive, never hides detected changes)",
+          "IV.10: explicitly requested (additive, never hides detected changes)",
+          "IV.11: explicitly requested (additive, never hides detected changes)",
+          "IV.12: explicitly requested (additive, never hides detected changes)"
+        ],
+        "conservativeExpansion": false,
+        "sharedExpansion": false,
+        "chapters": [
+          "IV.6",
+          "IV.9",
+          "IV.4",
+          "IV.3",
+          "IV.2",
+          "IV.11",
+          "IV.5",
+          "IV.8",
+          "IV.1",
+          "IV.7",
+          "IV.10",
+          "IV.12"
+        ],
+        "crossChapterContracts": [],
+        "interactionChapters": [
+          "IV.6",
+          "IV.9",
+          "IV.4",
+          "IV.3",
+          "IV.2",
+          "IV.11",
+          "IV.5",
+          "IV.8",
+          "IV.1",
+          "IV.7",
+          "IV.10",
+          "IV.12"
+        ],
+        "completeMath": false,
+        "units": [
+          "tests/unit/probability-bayes.test.ts",
+          "tests/unit/probability-block-a-exercises.test.ts",
+          "tests/unit/probability-block-b-exercises.test.ts",
+          "tests/unit/probability-counting.test.ts",
+          "tests/unit/probability-distributions.parity.test.ts",
+          "tests/unit/probability-distributions.test.ts",
+          "tests/unit/probability-finite.parity.test.ts",
+          "tests/unit/probability-finite.test.ts",
+          "tests/unit/probability-moments.parity.test.ts",
+          "tests/unit/probability-moments.test.ts"
+        ],
+        "oracles": [
+          "probability_distributions",
+          "probability_finite",
+          "probability_moments"
+        ],
+        "project": "mobile",
+        "phases": [
+          "browser"
+        ],
+        "commands": [
+          {
+            "gate": "chapter contracts + both-theme full-page axe",
+            "deployment": "root",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/@playwright/test/cli.js",
+              "test",
+              "tests/e2e/chapters.spec.ts",
+              "--trace",
+              "off",
+              "--project",
+              "mobile",
+              "--grep",
+              "(?:^|\\s)(?:IV\\.6|IV\\.9|IV\\.4|IV\\.3|IV\\.2|IV\\.11|IV\\.5|IV\\.8|IV\\.1|IV\\.7|IV\\.10|IV\\.12)(?: |:)|Part I publication"
+            ]
+          },
+          {
+            "gate": "affected chapter interactions: probability_bayes",
+            "deployment": "root",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/@playwright/test/cli.js",
+              "test",
+              "tests/e2e/probability-finite.spec.ts",
+              "--trace",
+              "off",
+              "--project",
+              "mobile",
+              "--grep",
+              "(?:^|\\s)(?:IV\\.6(?::| ))|publication"
+            ]
+          },
+          {
+            "gate": "affected chapter interactions: probability_distributions",
+            "deployment": "root",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/@playwright/test/cli.js",
+              "test",
+              "tests/e2e/probability-distributions.spec.ts",
+              "--trace",
+              "off",
+              "--project",
+              "mobile",
+              "--grep",
+              "(?:^|\\s)(?:IV\\.9(?::| )|IV\\.8(?::| )|IV\\.10(?::| ))|publication"
+            ]
+          },
+          {
+            "gate": "affected chapter interactions: probability_finite",
+            "deployment": "root",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/@playwright/test/cli.js",
+              "test",
+              "tests/e2e/probability-finite.spec.ts",
+              "--trace",
+              "off",
+              "--project",
+              "mobile",
+              "--grep",
+              "(?:^|\\s)(?:IV\\.4(?::| )|IV\\.2(?::| )|IV\\.5(?::| )|IV\\.1(?::| ))|publication"
+            ]
+          },
+          {
+            "gate": "affected chapter interactions: probability_counting",
+            "deployment": "root",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/@playwright/test/cli.js",
+              "test",
+              "tests/e2e/probability-finite.spec.ts",
+              "--trace",
+              "off",
+              "--project",
+              "mobile",
+              "--grep",
+              "(?:^|\\s)(?:IV\\.3(?::| ))|publication"
+            ]
+          },
+          {
+            "gate": "affected chapter interactions: probability_moments",
+            "deployment": "root",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/@playwright/test/cli.js",
+              "test",
+              "tests/e2e/probability-distributions.spec.ts",
+              "--trace",
+              "off",
+              "--project",
+              "mobile",
+              "--grep",
+              "(?:^|\\s)(?:IV\\.11(?::| )|IV\\.12(?::| ))|publication"
+            ]
+          },
+          {
+            "gate": "affected chapter interactions: probability_variables",
+            "deployment": "root",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/@playwright/test/cli.js",
+              "test",
+              "tests/e2e/probability-distributions.spec.ts",
+              "--trace",
+              "off",
+              "--project",
+              "mobile",
+              "--grep",
+              "(?:^|\\s)(?:IV\\.7(?::| ))|publication"
+            ]
+          }
+        ],
+        "base": "HEAD",
+        "shard": null,
+        "results": [
+          {
+            "gate": "refresh root production",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/astro/astro.js",
+              "build"
+            ],
+            "status": 0,
+            "wallMs": 12392
+          },
+          {
+            "gate": "chapter contracts + both-theme full-page axe",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/@playwright/test/cli.js",
+              "test",
+              "tests/e2e/chapters.spec.ts",
+              "--trace",
+              "off",
+              "--project",
+              "mobile",
+              "--grep",
+              "(?:^|\\s)(?:IV\\.6|IV\\.9|IV\\.4|IV\\.3|IV\\.2|IV\\.11|IV\\.5|IV\\.8|IV\\.1|IV\\.7|IV\\.10|IV\\.12)(?: |:)|Part I publication",
+              "--output",
+              "validation-results/focused-2026-10-11T21-59-44-449Z/0-failures"
+            ],
+            "status": 1,
+            "wallMs": 63947
+          }
+        ]
+      }
+    },
+    {
+      "path": "validation-results/focused-2026-10-11T22-16-07-164Z/manifest.json",
+      "sha256": "9785b7cb2a2c4226a3b4eae7804cc0a897a484b75fc095ca48ce56184264179a",
+      "manifest": {
+        "mode": "focused",
+        "partial": true,
+        "files": [
+          "code/python/probability_clt.py",
+          "code/python/probability_clt_numpy.py",
+          "code/python/probability_covariance.py",
+          "code/python/probability_covariance_numpy.py",
+          "code/python/probability_joint.py",
+          "code/python/probability_joint_numpy.py",
+          "code/python/probability_lln.py",
+          "code/python/probability_lln_numpy.py",
+          "fixtures/probability_joint.fixtures.json",
+          "fixtures/probability_sampling.fixtures.json",
+          "oracle/probability_joint_oracle.py",
+          "oracle/probability_sampling_oracle.py",
+          "oracle/test_probability_joint_oracle.py",
+          "oracle/test_probability_sampling_oracle.py",
+          "scripts/validation-plan.mjs",
+          "src/content/chapters/central-limit-theorem.mdx",
+          "src/content/chapters/covariance-correlation.mdx",
+          "src/content/chapters/joint-distributions.mdx",
+          "src/content/chapters/law-of-large-numbers.mdx",
+          "src/content/chapters/random-variables.mdx",
+          "src/curriculum/curriculum.ts",
+          "src/lessons/probability/BlockCExercise.tsx",
+          "src/lessons/probability/JointStage.tsx",
+          "src/lessons/probability/PlotView.tsx",
+          "src/lessons/probability/SamplingStage.tsx",
+          "src/lessons/probability/block-c-exercises.ts",
+          "src/lessons/probability/joint-lesson.ts",
+          "src/lessons/probability/plot.ts",
+          "src/lessons/probability/probability.css",
+          "src/lessons/probability/sampling-lesson.ts",
+          "src/math/probability/joint.ts",
+          "src/math/probability/sampling.ts",
+          "tests/e2e/probability-distributions.spec.ts",
+          "tests/e2e/probability-finite.spec.ts",
+          "tests/e2e/probability-sampling.spec.ts",
+          "tests/e2e/visual-probability.spec.ts",
+          "tests/unit/curriculum.test.ts",
+          "tests/unit/probability-block-c-exercises.test.ts",
+          "tests/unit/probability-joint.parity.test.ts",
+          "tests/unit/probability-joint.test.ts",
+          "tests/unit/probability-sampling.parity.test.ts",
+          "tests/unit/probability-sampling.test.ts",
+          "tests/unit/validation-plan.test.ts"
+        ],
+        "reasons": [
+          "IV.16: explicitly requested (additive, never hides detected changes)",
+          "code/python/probability_clt.py: IV.16",
+          "code/python/probability_clt_numpy.py: IV.16",
+          "code/python/probability_covariance.py: IV.14",
+          "code/python/probability_covariance_numpy.py: IV.14",
+          "code/python/probability_joint.py: IV.13",
+          "code/python/probability_joint_numpy.py: IV.13",
+          "code/python/probability_lln.py: IV.15",
+          "code/python/probability_lln_numpy.py: IV.15",
+          "fixtures/probability_joint.fixtures.json: probability_joint",
+          "fixtures/probability_sampling.fixtures.json: probability_sampling",
+          "oracle/probability_joint_oracle.py: probability_joint",
+          "oracle/probability_sampling_oracle.py: probability_sampling",
+          "oracle/test_probability_joint_oracle.py: probability_joint",
+          "oracle/test_probability_sampling_oracle.py: probability_sampling",
+          "scripts/validation-plan.mjs: known shared infrastructure; all math/contracts, representative interactions/axe, all root visuals",
+          "src/content/chapters/central-limit-theorem.mdx: IV.16",
+          "src/content/chapters/covariance-correlation.mdx: IV.14",
+          "src/content/chapters/joint-distributions.mdx: IV.13",
+          "src/content/chapters/law-of-large-numbers.mdx: IV.15",
+          "src/content/chapters/random-variables.mdx: IV.7",
+          "src/curriculum/curriculum.ts: known shared infrastructure; all math/contracts, representative interactions/axe, all root visuals",
+          "src/lessons/probability/BlockCExercise.tsx: IV.16, IV.14, IV.13, IV.15",
+          "src/lessons/probability/JointStage.tsx: IV.14, IV.13",
+          "src/lessons/probability/PlotView.tsx: IV.9, IV.16, IV.14, IV.11, IV.13, IV.15, IV.8, IV.7, IV.10, IV.12",
+          "src/lessons/probability/SamplingStage.tsx: IV.16, IV.15",
+          "src/lessons/probability/block-c-exercises.ts: IV.16, IV.14, IV.13, IV.15",
+          "src/lessons/probability/joint-lesson.ts: IV.14, IV.13",
+          "src/lessons/probability/plot.ts: IV.9, IV.16, IV.14, IV.11, IV.13, IV.15, IV.8, IV.7, IV.10, IV.12",
+          "src/lessons/probability/probability.css: IV.6, IV.9, IV.16, IV.4, IV.3, IV.14, IV.2, IV.11, IV.5, IV.13, IV.15, IV.8, IV.1, IV.7, IV.10, IV.12",
+          "src/lessons/probability/sampling-lesson.ts: IV.16, IV.15",
+          "src/math/probability/joint.ts: IV.14, IV.13",
+          "src/math/probability/sampling.ts: IV.16, IV.15",
+          "tests/e2e/probability-distributions.spec.ts: probability_variables, probability_distributions, probability_moments",
+          "tests/e2e/probability-finite.spec.ts: probability_finite, probability_counting, probability_bayes",
+          "tests/e2e/probability-sampling.spec.ts: probability_joint, probability_sampling",
+          "tests/e2e/visual-probability.spec.ts: known shared infrastructure; all math/contracts, representative interactions/axe, all root visuals",
+          "tests/unit/curriculum.test.ts: known shared infrastructure; all math/contracts, representative interactions/axe, all root visuals",
+          "tests/unit/probability-block-c-exercises.test.ts: probability_joint",
+          "tests/unit/probability-joint.parity.test.ts: probability_joint",
+          "tests/unit/probability-joint.test.ts: probability_joint",
+          "tests/unit/probability-sampling.parity.test.ts: probability_sampling",
+          "tests/unit/probability-sampling.test.ts: probability_sampling",
+          "tests/unit/validation-plan.test.ts: known shared infrastructure; all math/contracts, representative interactions/axe, all root visuals"
+        ],
+        "conservativeExpansion": true,
+        "sharedExpansion": true,
+        "chapters": [
+          "I.4",
+          "IV.6",
+          "IV.9",
+          "IV.16",
+          "IV.4",
+          "I.2",
+          "IV.3",
+          "IV.14",
+          "II.17",
+          "IV.2",
+          "IV.11",
+          "I.6",
+          "I.5",
+          "II.14",
+          "IV.5",
+          "II.16",
+          "IV.13",
+          "IV.15",
+          "II.13",
+          "II.10",
+          "II.12",
+          "II.8",
+          "II.11",
+          "II.9",
+          "I.9",
+          "II.18",
+          "IV.8",
+          "I.1",
+          "IV.1",
+          "IV.7",
+          "II.15",
+          "I.7",
+          "II.19",
+          "I.8",
+          "IV.10",
+          "IV.12",
+          "II.1",
+          "II.7",
+          "II.4",
+          "II.3",
+          "II.5",
+          "II.2",
+          "II.6",
+          "I.3"
+        ],
+        "crossChapterContracts": [
+          "II.10",
+          "I.9",
+          "I.1",
+          "II.1",
+          "I.3"
+        ],
+        "interactionChapters": [
+          "IV.6",
+          "IV.9",
+          "IV.16",
+          "IV.4",
+          "IV.3",
+          "IV.14",
+          "IV.2",
+          "IV.11",
+          "IV.5",
+          "IV.13",
+          "IV.15",
+          "IV.8",
+          "IV.1",
+          "IV.7",
+          "IV.10",
+          "IV.12"
+        ],
+        "completeMath": true,
+        "units": [
+          "tests/unit/algebra-exercises.test.ts",
+          "tests/unit/algebra-lesson.test.ts",
+          "tests/unit/algebra-model.test.ts",
+          "tests/unit/algebra.parity.test.ts",
+          "tests/unit/completion-exercises.test.ts",
+          "tests/unit/content.test.ts",
+          "tests/unit/coordinates-exercises.test.ts",
+          "tests/unit/coordinates-lesson.test.ts",
+          "tests/unit/coordinates-model.test.ts",
+          "tests/unit/coordinates.parity.test.ts",
+          "tests/unit/curriculum.test.ts",
+          "tests/unit/curve.test.ts",
+          "tests/unit/deployment-coverage.test.ts",
+          "tests/unit/direction.parity.test.ts",
+          "tests/unit/direction.test.ts",
+          "tests/unit/eigen-lesson.test.ts",
+          "tests/unit/eigenvalues.parity.test.ts",
+          "tests/unit/eigenvalues.test.ts",
+          "tests/unit/elimination-lesson.test.ts",
+          "tests/unit/elimination.parity.test.ts",
+          "tests/unit/elimination.test.ts",
+          "tests/unit/emblems.test.ts",
+          "tests/unit/exercise-kit.test.ts",
+          "tests/unit/families-circle.test.ts",
+          "tests/unit/families-exercises.test.ts",
+          "tests/unit/families-lesson.test.ts",
+          "tests/unit/families-roundtrip.test.ts",
+          "tests/unit/families.parity.test.ts",
+          "tests/unit/families.test.ts",
+          "tests/unit/format.test.ts",
+          "tests/unit/functions-exercises.test.ts",
+          "tests/unit/functions-lesson.test.ts",
+          "tests/unit/functions-model.test.ts",
+          "tests/unit/functions.parity.test.ts",
+          "tests/unit/least-squares-lesson.test.ts",
+          "tests/unit/least-squares.parity.test.ts",
+          "tests/unit/least-squares.test.ts",
+          "tests/unit/linear-algebra-lesson.test.ts",
+          "tests/unit/linear-algebra.parity.test.ts",
+          "tests/unit/linear-algebra.test.ts",
+          "tests/unit/matrices.parity.test.ts",
+          "tests/unit/matrices.test.ts",
+          "tests/unit/matrix-exercises.test.ts",
+          "tests/unit/matrix-lesson.test.ts",
+          "tests/unit/notation-exercises.test.ts",
+          "tests/unit/notation-lesson.test.ts",
+          "tests/unit/notation-table.test.ts",
+          "tests/unit/notation.parity.test.ts",
+          "tests/unit/notation.test.ts",
+          "tests/unit/params.test.ts",
+          "tests/unit/probability-bayes.test.ts",
+          "tests/unit/probability-block-a-exercises.test.ts",
+          "tests/unit/probability-block-b-exercises.test.ts",
+          "tests/unit/probability-block-c-exercises.test.ts",
+          "tests/unit/probability-counting.test.ts",
+          "tests/unit/probability-distributions.parity.test.ts",
+          "tests/unit/probability-distributions.test.ts",
+          "tests/unit/probability-finite.parity.test.ts",
+          "tests/unit/probability-finite.test.ts",
+          "tests/unit/probability-joint.parity.test.ts",
+          "tests/unit/probability-joint.test.ts",
+          "tests/unit/probability-moments.parity.test.ts",
+          "tests/unit/probability-moments.test.ts",
+          "tests/unit/probability-sampling.parity.test.ts",
+          "tests/unit/probability-sampling.test.ts",
+          "tests/unit/quantity-exercises.test.ts",
+          "tests/unit/quantity-lesson.test.ts",
+          "tests/unit/quantity-model.test.ts",
+          "tests/unit/quantity-worked.test.ts",
+          "tests/unit/quantity.parity.test.ts",
+          "tests/unit/quantity.test.ts",
+          "tests/unit/sets-lesson.test.ts",
+          "tests/unit/sets.parity.test.ts",
+          "tests/unit/sets.test.ts",
+          "tests/unit/summation-empty-geometric.test.ts",
+          "tests/unit/summation-lesson.test.ts",
+          "tests/unit/summation.parity.test.ts",
+          "tests/unit/summation.test.ts",
+          "tests/unit/svd-lesson.test.ts",
+          "tests/unit/svd.parity.test.ts",
+          "tests/unit/svd.test.ts",
+          "tests/unit/trace.test.ts",
+          "tests/unit/validation-plan.test.ts",
+          "tests/unit/validation-timing.test.ts",
+          "tests/unit/vector-lesson.test.ts",
+          "tests/unit/vector2.parity.test.ts",
+          "tests/unit/vector2.test.ts",
+          "tests/unit/vectors-lesson.test.ts",
+          "tests/unit/viewport.test.ts"
+        ],
+        "oracles": [
+          "algebra",
+          "coordinates",
+          "direction",
+          "eigenvalues",
+          "elimination",
+          "families",
+          "functions",
+          "least_squares",
+          "linear_algebra",
+          "matrices",
+          "notation",
+          "probability_distributions",
+          "probability_finite",
+          "probability_joint",
+          "probability_moments",
+          "probability_sampling",
+          "quantity",
+          "sets",
+          "summation",
+          "svd",
+          "vector2"
+        ],
+        "project": "desktop,tablet,mobile",
+        "phases": [
+          "math"
+        ],
+        "commands": [
+          {
+            "gate": "complete units",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/vitest/vitest.mjs",
+              "run"
+            ]
+          },
+          {
+            "gate": "complete oracle + freshness",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "scripts/run-oracle.mjs"
+            ]
+          }
+        ],
+        "base": "HEAD",
+        "shard": null,
+        "results": [
+          {
+            "gate": "complete units",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/vitest/vitest.mjs",
+              "run"
+            ],
+            "status": 0,
+            "wallMs": 10946
+          },
+          {
+            "gate": "complete oracle + freshness",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "scripts/run-oracle.mjs"
+            ],
+            "status": 0,
+            "wallMs": 35656
+          }
+        ],
+        "status": "passed"
+      }
+    },
+    {
+      "path": "validation-results/focused-2026-10-11T22-18-18-208Z/manifest.json",
+      "sha256": "0e15836fe12563c5dfdfa1be8838b2038726d8c904413f95b221f884a6f57755",
+      "manifest": {
+        "mode": "focused",
+        "partial": true,
+        "files": [],
+        "reasons": [
+          "IV.13: explicitly requested (additive, never hides detected changes)",
+          "IV.14: explicitly requested (additive, never hides detected changes)",
+          "IV.15: explicitly requested (additive, never hides detected changes)",
+          "IV.16: explicitly requested (additive, never hides detected changes)"
+        ],
+        "conservativeExpansion": false,
+        "sharedExpansion": false,
+        "chapters": [
+          "IV.16",
+          "IV.14",
+          "IV.13",
+          "IV.15"
+        ],
+        "crossChapterContracts": [],
+        "interactionChapters": [
+          "IV.16",
+          "IV.14",
+          "IV.13",
+          "IV.15"
+        ],
+        "completeMath": false,
+        "units": [
+          "tests/unit/probability-block-c-exercises.test.ts",
+          "tests/unit/probability-joint.parity.test.ts",
+          "tests/unit/probability-joint.test.ts",
+          "tests/unit/probability-sampling.parity.test.ts",
+          "tests/unit/probability-sampling.test.ts"
+        ],
+        "oracles": [
+          "probability_joint",
+          "probability_sampling"
+        ],
+        "project": "mobile",
+        "phases": [
+          "browser"
+        ],
+        "commands": [
+          {
+            "gate": "chapter contracts + both-theme full-page axe",
+            "deployment": "root",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/@playwright/test/cli.js",
+              "test",
+              "tests/e2e/chapters.spec.ts",
+              "--trace",
+              "off",
+              "--project",
+              "mobile",
+              "--grep",
+              "(?:^|\\s)(?:IV\\.16|IV\\.14|IV\\.13|IV\\.15)(?: |:)|Part I publication"
+            ]
+          },
+          {
+            "gate": "affected chapter interactions: probability_sampling",
+            "deployment": "root",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/@playwright/test/cli.js",
+              "test",
+              "tests/e2e/probability-sampling.spec.ts",
+              "--trace",
+              "off",
+              "--project",
+              "mobile",
+              "--grep",
+              "(?:^|\\s)(?:IV\\.16(?::| )|IV\\.15(?::| ))|publication"
+            ]
+          },
+          {
+            "gate": "affected chapter interactions: probability_joint",
+            "deployment": "root",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/@playwright/test/cli.js",
+              "test",
+              "tests/e2e/probability-sampling.spec.ts",
+              "--trace",
+              "off",
+              "--project",
+              "mobile",
+              "--grep",
+              "(?:^|\\s)(?:IV\\.14(?::| )|IV\\.13(?::| ))|publication"
+            ]
+          }
+        ],
+        "base": "HEAD",
+        "shard": null,
+        "results": [
+          {
+            "gate": "refresh root production",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/astro/astro.js",
+              "build"
+            ],
+            "status": 0,
+            "wallMs": 13251
+          },
+          {
+            "gate": "chapter contracts + both-theme full-page axe",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/@playwright/test/cli.js",
+              "test",
+              "tests/e2e/chapters.spec.ts",
+              "--trace",
+              "off",
+              "--project",
+              "mobile",
+              "--grep",
+              "(?:^|\\s)(?:IV\\.16|IV\\.14|IV\\.13|IV\\.15)(?: |:)|Part I publication",
+              "--output",
+              "validation-results/focused-2026-10-11T22-18-18-208Z/0-failures"
+            ],
+            "status": 0,
+            "wallMs": 27947
+          },
+          {
+            "gate": "affected chapter interactions: probability_sampling",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/@playwright/test/cli.js",
+              "test",
+              "tests/e2e/probability-sampling.spec.ts",
+              "--trace",
+              "off",
+              "--project",
+              "mobile",
+              "--grep",
+              "(?:^|\\s)(?:IV\\.16(?::| )|IV\\.15(?::| ))|publication",
+              "--output",
+              "validation-results/focused-2026-10-11T22-18-18-208Z/1-failures"
+            ],
+            "status": 0,
+            "wallMs": 5690
+          },
+          {
+            "gate": "affected chapter interactions: probability_joint",
+            "command": [
+              "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+              "node_modules/@playwright/test/cli.js",
+              "test",
+              "tests/e2e/probability-sampling.spec.ts",
+              "--trace",
+              "off",
+              "--project",
+              "mobile",
+              "--grep",
+              "(?:^|\\s)(?:IV\\.14(?::| )|IV\\.13(?::| ))|publication",
+              "--output",
+              "validation-results/focused-2026-10-11T22-18-18-208Z/2-failures"
+            ],
+            "status": 0,
+            "wallMs": 4819
+          }
+        ],
+        "status": "passed"
+      }
+    }
+  ],
+  "logs": [
+    {
+      "path": "validation-results/M8_AB_INTERACTION_RETRY.log",
+      "sha256": "618033077297301b5eb426b0e7779bce3e6f9586e5c443ecee437aff60fb393c",
+      "summary": [
+        "1 failed",
+        "4 passed (1.9s)"
+      ]
+    },
+    {
+      "path": "validation-results/M8_AB_MOBILE.log",
+      "sha256": "1d3f626fc0f92908117f197294f379e7f3dacf9cb08bfb472f552790fd587196",
+      "summary": [
+        "2 failed",
+        "95 passed (1.1m)"
+      ]
+    },
+    {
+      "path": "validation-results/M8_AB_MOBILE_PLAN.log",
+      "sha256": "e1fc18130d2a8c2d14a10d8ec4b47a0df40c703adab12c35ad1bb129ff56aee7",
+      "summary": []
+    },
+    {
+      "path": "validation-results/M8_AB_MOBILE_RETRY.log",
+      "sha256": "5c6f9c02599f11e421490098016761d529e53ec1fddd3d6cd964d1c4140ebee6",
+      "summary": [
+        "5 failed",
+        "25 passed (48.7s)"
+      ]
+    },
+    {
+      "path": "validation-results/M8_BLOCK_A_MOBILE.log",
+      "sha256": "d95564797be21686d46c324fb5d360ffc2532da3d7bc68402a8ec5fa71c1a1a1",
+      "summary": [
+        "12 failed",
+        "37 passed (22.2s)"
+      ]
+    },
+    {
+      "path": "validation-results/M8_BLOCK_B_DISTRIBUTIONS.log",
+      "sha256": "a3d4dc391650cb3a29816292bb734753a125f03117ba2b390291ea13613062fd",
+      "summary": [
+        "Test Files  2 passed (2)",
+        "Tests  392 passed (392)"
+      ]
+    },
+    {
+      "path": "validation-results/M8_BLOCK_B_MATH.log",
+      "sha256": "fa66eece583a62c57368ffc90c77f8430477fd7de91012bc174e515fce3061de",
+      "summary": [
+        "Test Files  84 passed (84)",
+        "Tests  11474 passed (11474)",
+        "Ran 326 tests in 21.716s",
+        "Passed 2 selected gates (focused, partial coverage). No unselected suite is claimed."
+      ]
+    },
+    {
+      "path": "validation-results/M8_BLOCK_B_PLAN.log",
+      "sha256": "72bc194a71852d488aa7f8c3882add66c19905436753f1f82b0d1eb37c08b5ca",
+      "summary": []
+    },
+    {
+      "path": "validation-results/M8_BLOCK_B_TYPES.log",
+      "sha256": "b4846f4abb8dd0eb54ba1718c056eae024895f55c195e20059febfcd7f7f5e07",
+      "summary": [
+        "Result (417 files):"
+      ]
+    },
+    {
+      "path": "validation-results/M8_BLOCK_B_UNITS.log",
+      "sha256": "9e541418af1330a0a5f39b300ba1b8ead9b0af2e2427b22ecb12adc39f020ac3",
+      "summary": [
+        "\u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 1 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+        "Test Files  1 failed | 3 passed (4)",
+        "Tests  1 failed | 539 passed (540)"
+      ]
+    },
+    {
+      "path": "validation-results/M8_BLOCK_C_MATH.log",
+      "sha256": "6af7c364ab4cecea1ff4e2aeedaba31f054812ea94db1af72b472b7434af4c3a",
+      "summary": [
+        "Test Files  89 passed (89)",
+        "Tests  11701 passed (11701)",
+        "Ran 346 tests in 22.718s",
+        "Passed 2 selected gates (focused, partial coverage). No unselected suite is claimed."
+      ]
+    },
+    {
+      "path": "validation-results/M8_BLOCK_C_PLAN.log",
+      "sha256": "c474082e524e5a8a2e984992077aebc2d7e0a65e0f378f3e37bb19aee12593bc",
+      "summary": []
+    },
+    {
+      "path": "validation-results/M8_BLOCK_C_TYPES.log",
+      "sha256": "e3383d838b289067c78bc8b5ce6b08b0134472198a2c47c775433bbe292a0c19",
+      "summary": [
+        "Result (431 files):"
+      ]
+    },
+    {
+      "path": "validation-results/M8_BLOCK_C_UNITS.log",
+      "sha256": "a63428a29fcfec6d68a91b3f23506383833b16c10b02efb3632acd717803bd0f",
+      "summary": []
+    },
+    {
+      "path": "validation-results/M8_BLOCK_C_UNITS_RETRY.log",
+      "sha256": "c541d23f3df2a0cf58a1a1248378f254ecae7babd594655ea009985271920cad",
+      "summary": [
+        "Test Files  4 passed (4)",
+        "Tests  201 passed (201)"
+      ]
+    },
+    {
+      "path": "validation-results/M8_CAPTURE_AND_PERFORMANCE.log",
+      "sha256": "8c603cd7c3c990a74a134000ab24312e65ace31451721eb6b98958b165590cc6",
+      "summary": [
+        "48 passed (36.8s)",
+        "4 skipped",
+        "8 passed (3.7s)"
+      ]
+    },
+    {
+      "path": "validation-results/M8_CHART_RECAPTURE_AND_PERFORMANCE.log",
+      "sha256": "4e900344f191a131a695375a331e4708af88ad40a577dc302cf50a097020bb70",
+      "summary": [
+        "27 passed (32.2s)"
+      ]
+    },
+    {
+      "path": "validation-results/M8_C_MOBILE.log",
+      "sha256": "d73e217db28862b123f604506f5a8595472ddfac82ec607c6ea4b5cafbd2868f",
+      "summary": [
+        "33 passed (27.6s)",
+        "7 passed (5.4s)",
+        "6 passed (4.5s)",
+        "Passed 3 selected gates (focused, partial coverage). No unselected suite is claimed."
+      ]
+    },
+    {
+      "path": "validation-results/M8_C_MOBILE_PLAN.log",
+      "sha256": "cde38b346ff1c627a74e0d1856380648eb824214987c58984fbf2882c949302d",
+      "summary": []
+    },
+    {
+      "path": "validation-results/M8_DEGENERATE_CAPTURE.log",
+      "sha256": "9dd835d3a462ab577a3139e98311375e8ef022967976e152ba299102073619e5",
+      "summary": [
+        "3 passed (1.4s)",
+        "3 passed (4.0s)"
+      ]
+    },
+    {
+      "path": "validation-results/M8_FINAL_LABEL_CAPTURE.log",
+      "sha256": "23ec40d70fe3458ea0f74ef57950810d52702c43e0b604f512327d81387bcc9e",
+      "summary": [
+        "15 passed (15.9s)"
+      ]
+    },
+    {
+      "path": "validation-results/M8_MILESTONE_PLAN.log",
+      "sha256": "d6631a1268b766193c450549dbbae5882ce81729fbbd5a2b96a59d8212538bff",
+      "summary": []
+    },
+    {
+      "path": "validation-results/M8_PUBLICATION_FRESH_CAPTURE.log",
+      "sha256": "fe5b173388ee4309cdf6ee891b4a9aecfac9eb5288e00bfca73052262ab0b378",
+      "summary": [
+        "4 skipped",
+        "8 passed (3.8s)"
+      ]
+    },
+    {
+      "path": "validation-results/M8_REVIEW_FIXES_UNITS.log",
+      "sha256": "bca037cb277af7fb222f57c64a43c3819008e2bb4125d3000ec22401966b19cb",
+      "summary": [
+        "Test Files  1 passed (1)",
+        "Tests  7 passed (7)"
+      ]
+    },
+    {
+      "path": "validation-results/M8_UNIFORM_CAPTION_CAPTURE.log",
+      "sha256": "694116e3b3381183031c7cb2f90836c03b15c0b1dc167e8c8944b2e38cbeec07",
+      "summary": [
+        "Test Files  1 passed (1)",
+        "Tests  8 passed (8)",
+        "6 passed (4.6s)"
+      ]
+    },
+    {
+      "path": "validation-results/M8_UNIFORM_FRESH_CAPTURE.log",
+      "sha256": "a8ed018c6d501de052a8d20d163960a3d7a9a157b730c5ac2a154e5297b6a4e1",
+      "summary": [
+        "6 passed (6.1s)"
+      ]
+    }
+  ]
+}

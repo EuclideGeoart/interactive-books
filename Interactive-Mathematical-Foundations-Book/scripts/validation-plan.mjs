@@ -24,6 +24,14 @@ export const families = {
   multivariable: { lesson: 'calculus', stages: { PartialStage: 'partials', GradientStage: 'gradient', JacobianStage: 'jacobian', HessianStage: 'hessian' }, units: /^multivariable/, oracles: ['multivariable'], browser: 'multivariable' },
   autodiff: { lesson: 'calculus', stages: { AutodiffStage: 'autodiff' }, units: /^autodiff/, oracles: ['autodiff'], browser: 'autodiff' },
   integration: { lesson: 'calculus', stages: { RiemannStage: 'riemann', AccumulationStage: 'accumulation', QuadratureStage: 'quadrature' }, units: /^integration/, oracles: ['integration'], browser: 'integration' },
+  probability_finite: { lesson: 'probability', stage: 'FiniteStage', units: /^probability-(finite|block-a)/, oracles: ['probability_finite'], browser: 'probability-finite' },
+  probability_counting: { lesson: 'probability', stage: 'CountingStage', units: /^probability-counting/, oracles: ['probability_finite'], browser: 'probability-finite' },
+  probability_bayes: { lesson: 'probability', stage: 'BayesStage', units: /^probability-bayes/, oracles: ['probability_finite'], browser: 'probability-finite' },
+  probability_variables: { lesson: 'probability', stage: 'RandomVariableStage', units: /^probability-(variables|moments|block-b)/, oracles: ['probability_moments'], browser: 'probability-distributions' },
+  probability_distributions: { lesson: 'probability', stage: 'DistributionStage', units: /^probability-(distributions|block-b)/, oracles: ['probability_distributions'], browser: 'probability-distributions' },
+  probability_moments: { lesson: 'probability', stage: 'MomentsStage', units: /^probability-(moments|block-b)/, oracles: ['probability_moments'], browser: 'probability-distributions' },
+  probability_joint: { lesson: 'probability', stage: 'JointStage', units: /^probability-(joint|block-c)/, oracles: ['probability_joint'], browser: 'probability-sampling' },
+  probability_sampling: { lesson: 'probability', stage: 'SamplingStage', units: /^probability-(sampling|block-c)/, oracles: ['probability_sampling'], browser: 'probability-sampling' },
 };
 const calculusFamilies = Object.keys(families).filter(name => families[name].lesson === 'calculus');
 /** Part III wrapper stage named by an MDX source, with its family and visual kind. */
@@ -49,10 +57,14 @@ export function chapterCatalog() {
     if (!id) return [];
     const lesson = /lessons\/([^/]+)\//.exec(source)?.[1];
     const calculus = lesson === 'calculus' ? calculusStage(source) : undefined;
-    const family = calculus ? calculus.family : lesson === 'linear-algebra' ? Object.keys(families).find(name => families[name].stage && source.includes('/' + families[name].stage)) ?? 'linear_algebra'
+    const stageOwned = ['linear-algebra', 'probability'].includes(lesson);
+    const family = calculus ? calculus.family : stageOwned
+      ? Object.keys(families).find(name => families[name].lesson === lesson && families[name].stage && source.includes('/' + families[name].stage)) ?? (lesson === 'linear-algebra' ? 'linear_algebra' : undefined)
       : Object.keys(families).find(name => families[name].lesson === lesson);
     const slug = posix.basename(path, '.mdx');
-    const kind = calculus ? calculus.kind : /<(?:MatrixStage|LinearStage|EliminationStage) chapter="([^"]+)"/.exec(source)?.[1] ?? (family === 'eigenvalues' ? 'eigenvalues' : family === 'least_squares' ? 'least-squares' : family === 'svd' ? 'svd' : undefined);
+    const kind = calculus ? calculus.kind
+      : (/<(?:MatrixStage|LinearStage|EliminationStage|FiniteStage|DistributionStage|MomentsStage|JointStage|SamplingStage) chapter="([^"]+)"/.exec(source)?.[1]
+        ?? (family === 'eigenvalues' ? 'eigenvalues' : family === 'least_squares' ? 'least-squares' : family === 'svd' ? 'svd' : lesson === 'probability' ? slug : undefined));
     return [{ id, slug, path, family, kind }];
   });
 }
@@ -114,6 +126,17 @@ function familyOfFile(path) {
     if (/^(svd|SVD)/.test(base)) return 'svd';
     return /^(matri|Matri)/.test(base) ? 'matrices' : 'linear_algebra';
   }
+  if (/^src\/(lessons|math)\/probability\//.test(path)) {
+    if (/^(finite|Finite)/.test(base)) return 'probability_finite';
+    if (/^(counting|Counting)/.test(base)) return 'probability_counting';
+    if (/^(bayes|Bayes)/.test(base)) return 'probability_bayes';
+    if (/^(distributions|Distribution)/.test(base)) return 'probability_distributions';
+    if (/^(variables|RandomVariable)/.test(base)) return 'probability_variables';
+    if (/^(moments|Moments)/.test(base)) return 'probability_moments';
+    if (/^(joint|Joint)/.test(base)) return 'probability_joint';
+    if (/^(sampling|Sampling)/.test(base)) return 'probability_sampling';
+    return null;
+  }
   return Object.keys(families).find(name => path.startsWith('src/lessons/' + families[name].lesson + '/') ||
     path.startsWith('src/math/' + (name === 'vectors' ? 'vector2' : name) + '/'));
 }
@@ -149,8 +172,9 @@ export function makePlan({ mode = 'focused', files = [], chapters = [], only, pr
       }
       const image = posix.basename(file).replace(/^(desktop|tablet|mobile)-/, '');
       const targets = catalog.filter(chapter => image.startsWith(`part-i-${chapter.slug}.`) ||
+        image.startsWith(`iv-${chapter.slug}.`) || image.startsWith(`iv-${chapter.slug}-`) ||
         (chapter.kind && calculusFamilies.includes(chapter.family) && (image.startsWith(`iii-calculus-${chapter.kind}.`) || image.startsWith(`iii-calculus-${chapter.kind}-`))) ||
-        (chapter.kind && !calculusFamilies.includes(chapter.family) && image.startsWith(`ii-${chapter.family === 'matrices' ? 'matrix-' : ['elimination', 'eigenvalues', 'least_squares', 'svd'].includes(chapter.family) ? 'completion-' : ''}${chapter.kind}`)) ||
+        (chapter.kind && !calculusFamilies.includes(chapter.family) && !chapter.family?.startsWith('probability_') && image.startsWith(`ii-${chapter.family === 'matrices' ? 'matrix-' : ['elimination', 'eigenvalues', 'least_squares', 'svd'].includes(chapter.family) ? 'completion-' : ''}${chapter.kind}`)) ||
         (chapter.slug === 'vectors' && image.startsWith('chapter-')));
       if (targets.length) {
         for (const chapter of targets) { selected.add(chapter.id); if (chapter.family) groups.add(chapter.family); }
@@ -165,7 +189,13 @@ export function makePlan({ mode = 'focused', files = [], chapters = [], only, pr
       continue;
     }
     if (!existsSync(file)) { broad = true; reasons.push(`${file}: deleted/unresolved file; expanded conservatively`); }
-    if (/^(src\/(ui|platform|shell|curriculum|pages)\/|src\/styles\/(?!chapters\/)|public\/)/.test(file) || ['scripts/validation-plan.mjs', 'tests/unit/validation-plan.test.ts', 'tests/unit/curriculum.test.ts', 'tests/unit/completion-exercises.test.ts', 'tests/e2e/visual-linear-algebra.spec.ts', 'tests/e2e/visual-calculus.spec.ts'].includes(file)) {
+    if (/^(src\/(ui|platform|shell|curriculum|pages)\/|src\/styles\/(?!chapters\/)|public\/)/.test(file) || [
+      '../.gitignore', 'astro.config.mjs', 'vitest.config.ts',
+      'scripts/validation-plan.mjs', 'scripts/measure-probability-input.mjs',
+      'tests/unit/validation-plan.test.ts', 'tests/unit/curriculum.test.ts', 'tests/unit/completion-exercises.test.ts',
+      'tests/e2e/chapters.spec.ts', 'tests/e2e/visual-linear-algebra.spec.ts',
+      'tests/e2e/visual-calculus.spec.ts', 'tests/e2e/visual-probability.spec.ts',
+    ].includes(file)) {
       shared = true;
       reasons.push(`${file}: known shared infrastructure; all math/contracts, representative interactions/axe, all root visuals`);
       continue;
@@ -174,10 +204,12 @@ export function makePlan({ mode = 'focused', files = [], chapters = [], only, pr
     for (const chapter of matches) { selected.add(chapter.id); if (chapter.family) groups.add(chapter.family); else broad = true; }
     for (const unit of unitFiles) if (closure(unit).has(file)) units.add(unit);
     const own = familyOfFile(file);
-    if (own) groups.add(own);
-    if (matches.length === 0 && own) for (const chapter of catalog.filter(item => item.family === own)) selected.add(chapter.id);
+    const owners = /^(oracle|fixtures)\//.test(file) ? Object.keys(families).filter(name => families[name].oracles.some(oracle => posix.basename(file).startsWith(oracle + '.') || posix.basename(file) === oracle + '_oracle.py' || posix.basename(file) === 'test_' + oracle + '_oracle.py'))
+      : file.startsWith('tests/e2e/') ? Object.keys(families).filter(name => posix.basename(file) === families[name].browser + '.spec.ts') : own ? [own] : [];
+    for (const owner of owners) groups.add(owner);
+    if (matches.length === 0 && owners.length) for (const chapter of catalog.filter(item => owners.includes(item.family))) selected.add(chapter.id);
     if (file.startsWith('tests/unit/') && unitFiles.includes(file)) units.add(file);
-    if (matches.length || own) { reasons.push(`${file}: ${matches.length ? matches.map(item => item.id).join(', ') : own}`); continue; }
+    if (matches.length || owners.length) { reasons.push(`${file}: ${matches.length ? matches.map(item => item.id).join(', ') : owners.join(', ')}`); continue; }
     // Baselines are platform-specific; an unknown screenshot still gets the conservative complete visual gate.
     broad = true;
     reasons.push(`${file}: shared/unknown input; expanded to all mathematical and browser coverage`);
@@ -220,7 +252,7 @@ export function makePlan({ mode = 'focused', files = [], chapters = [], only, pr
       for (const group of new Set(interactions.map(chapter => chapter.family))) {
         if (!group) continue;
         const entries = interactions.filter(chapter => chapter.family === group);
-        const grep = idScoped.includes(group) ? '(?:^|\\s)(?:' + entries.map(chapter => escape(chapter.id) + '(?::| )').join('|') + ')|publication' : undefined;
+        const grep = idScoped.includes(group) || group.startsWith('probability_') ? '(?:^|\\s)(?:' + entries.map(chapter => escape(chapter.id) + '(?::| )').join('|') + ')|publication' : undefined;
         playwright('affected chapter interactions: ' + group, [families[group].browser + '.spec.ts'], grep);
       }
       if (mode === 'milestone' || shared) playwright('shared cross-chapter controls', ['vectors.spec.ts', 'quantities.spec.ts'], 'keyboard|Arrow|rejected|reset|announc');
@@ -230,13 +262,15 @@ export function makePlan({ mode = 'focused', files = [], chapters = [], only, pr
     else if (mode === 'milestone') playwright('subpath prefix-dependent navigation, assets, anchors, routes and hydration', ['navigation.spec.ts', 'deployment.spec.ts'], undefined, true);
   }
   if (phases.includes('visual') && (affected.length || broad)) {
-    if (broad || shared) playwright('authoritative root visuals', ['visual.spec.ts', 'visual-part-i.spec.ts', 'visual-linear-algebra.spec.ts', 'visual-calculus.spec.ts']);
+    const visualSpecs = ['visual.spec.ts', 'visual-part-i.spec.ts', 'visual-linear-algebra.spec.ts', 'visual-calculus.spec.ts', 'visual-probability.spec.ts'];
+    if (broad || shared) playwright('authoritative root visuals', visualSpecs);
     else {
       const patterns = affected.map(chapter => calculusFamilies.includes(chapter.family) ? `calculus ${escape(chapter.kind)}:`
+        : chapter.family?.startsWith('probability_') ? `${escape(chapter.id)}:`
         : chapter.family === 'matrices' ? `matrix ${escape(chapter.kind)}:`
         : ['elimination', 'eigenvalues', 'least_squares', 'svd'].includes(chapter.family) ? `completion ${escape(chapter.kind)}:`
         : chapter.family === 'linear_algebra' ? `${escape(chapter.kind)}: opening` : chapter.slug === 'vectors' ? 'vectors chapter' : escape(chapter.slug) + ' — opening');
-      playwright('affected root visuals', ['visual.spec.ts', 'visual-part-i.spec.ts', 'visual-linear-algebra.spec.ts', 'visual-calculus.spec.ts'], patterns.join('|'));
+      playwright('affected root visuals', visualSpecs, patterns.join('|'));
     }
   }
   return { mode, partial: Boolean(only || project), files, reasons, conservativeExpansion: broad || shared, sharedExpansion: shared,

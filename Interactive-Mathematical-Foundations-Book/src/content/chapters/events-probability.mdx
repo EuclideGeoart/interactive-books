@@ -1,0 +1,106 @@
+---
+kind: chapter
+curriculumId: IV.2
+title: "Events and probability mass"
+hero: "How much mass belongs to *either* event?"
+lede: Toggle membership in two events and follow union, intersection, and complement. Overlap is counted once, and the underlying outcome weights stay the same.
+description: Events as sets, union, intersection, complement, disjointness, exact probability mass and inclusion-exclusion, weighted examples, Python and NumPy, and five graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import FiniteStage from '../../lessons/probability/FiniteStage';
+import Exercise from '../../lessons/probability/BlockAExercise';
+import reference from '../../../code/python/probability_events.py?raw';
+import practical from '../../../code/python/probability_events_numpy.py?raw';
+
+<Stage caption="Select outcomes for A and B. Move a face into both events, then out of one; compare intersection and union mass as the membership labels and formulas update together."><FiniteStage chapter="events" client:load /></Stage>
+
+Start with the fair die's $A=\{2,4,6\}$ and $B=\{4,5,6\}$. Predict whether adding the two half-masses gives the union's mass. Locate the two faces that would be counted twice.
+
+## Intuition: mass lives on outcomes
+
+Events do not own separate copies of probability. They select from a single space whose weights sum to one. An outcome that belongs to both events still has one weight. This is why overlapping regions cannot simply be added when the question is “A or B.”
+
+The geometry of overlap is set membership. Probability measures its mass. Two regions with the same number of labels can have different probabilities when their weights differ.
+
+## Definition
+
+For events $A,B\subseteq\Omega$, the **union** $A\cup B$ contains outcomes in at least one event; the **intersection** $A\cap B$ contains outcomes in both. The **complement** $A^c=\Omega\setminus A$ contains outcomes outside $A$ but inside the chosen sample space. Events are **disjoint** when $A\cap B=\varnothing$.
+
+For every event, $P(A)=\sum_{\omega\in A}p_\omega$, using the same nonnegative, normalized weights. Therefore $0\le P(A)\le1$, $P(\varnothing)=0$, and $P(\Omega)=1$.
+
+## Mechanics: follow membership and weight separately
+
+The stage uses outcome membership to show the two events and their overlap. Toggling A or B changes a set, not its probability weight. **Edit weight** selects a nonnegative raw weight to change; all raw weights are divided by their positive total to obtain one normalized mass model. Read the labels along with the shading: colour alone should not be your evidence that a face belongs to both events.
+
+Inspect the original event masses and the combined sets. Replay the trace after moving a face from A-only to both: its intersection contribution appears, but its union contribution was already present. The inspector, equation, and accessible interpretation describe the same memberships and weights.
+
+## Derivation: inclusion-exclusion
+
+Separate the union into three disjoint pieces: $A\setminus B$, $A\cap B$, and $B\setminus A$. Adding $P(A)+P(B)$ includes the middle piece twice. Subtract it once:
+
+$$
+P(A\cup B)=P(A)+P(B)-P(A\cap B).
+$$
+
+The sample space also splits into the disjoint pieces $A$ and $A^c$, so
+
+$$
+P(A^c)=1-P(A).
+$$
+
+These identities require neither equal outcome weights nor independence. For disjoint events the intersection is empty, and the subtraction term is zero. For $A=B$, the union is simply $A$, not twice its mass.
+
+## Worked examples
+
+On the fair die, $P(A)=P(B)=1/2$. The intersection $\{4,6\}$ has mass $1/3$. The union $\{2,4,5,6\}$ has mass $2/3$, agreeing with $1/2+1/2-1/3$. The complement $A^c=\{1,3,5\}$ has mass $1/2$.
+
+<Stage caption="Toggle face 4 out of B, then restore it. Follow how removing a shared 1/6 contribution changes the intersection while leaving that face in the union through A."><FiniteStage chapter="events" worked client:load /></Stage>
+
+For a weighted space $\Omega=\{x,y,z\}$ with masses $1/2,1/3,1/6$, choose $A=\{x,y\}$ and $B=\{y,z\}$. The marginal masses are $5/6$ and $1/2$, intersection mass is $1/3$, and union mass is $1$. Inclusion-exclusion still gives $5/6+1/2-1/3=1$.
+
+## Executable reference code
+
+The Python program validates the model, performs actual set operations, and sums exact fractions over each result. Assertions check the literal die answers and weighted identities. NumPy represents membership with boolean masks: OR for union, AND for intersection, and NOT for complement. Its printed decimal sums approximate the exact reference fractions.
+
+<CodeFile source={reference} file="code/python/probability_events.py" />
+<CodeFile source={practical} file="code/python/probability_events_numpy.py" />
+
+## Explore
+
+Make B equal to A. Predict that intersection and union both become A. Then choose B to be the complement of A: the intersection becomes empty and the union becomes the whole space. Finally empty A while keeping B fixed; explain why the union remains B and the intersection has mass zero.
+
+For every change, check inclusion-exclusion against direct union summation. A trace that adds weights over selected outcomes provides a second view of the same mathematical identity, rather than evidence from random trials.
+
+<Callout kind="scope" title="Zero overlap mass does not always mean empty overlap">
+In a finite model with strictly positive weights, zero intersection mass means disjoint sets. If zero weights are allowed, two events can share a zero-mass outcome. Set disjointness is about membership; zero joint probability is about mass.
+</Callout>
+
+## Common mistakes and counterexamples
+
+“Or” in union is inclusive: an outcome in both counts. Exclusive OR would omit the intersection and describe a different event. A complement is relative to the declared space; the complement of even die faces does not include the integer $7$.
+
+Equal probabilities do not imply equal sets. The even faces and the top three faces each have mass $1/2$ but differ. Disjointness also does not mean independence: odd and even are mutually exclusive and each has positive mass, so knowing one happened rules out the other.
+
+## Numerical considerations
+
+Rational summation preserves exact union and complement identities for these finite examples. Floating-point code may accumulate tiny summation errors. The NumPy reference checks its small arrays against exact fractions with absolute tolerance $10^{-12}$ and zero relative tolerance; it does not silently clip a negative weight or renormalize an invalid vector.
+
+Boolean set membership itself is exact. Keep that separate from approximate mass arithmetic. A tiny rounded joint mass should not decide whether two sets are disjoint, and a displayed decimal such as $0.3333$ is not the exact fraction $1/3$.
+
+## Engineering and ML connections
+
+Boolean masks select rows, category groups, and evaluation subsets. A union of error categories requires overlap correction or an OR mask; adding category counts can double-count the same examples. Weighted data requires summing weights over the mask. The same structure appears when grouping predicted categorical probabilities.
+
+## Exercises
+
+<Exercise id="probability-events-overlap-union" client:load />
+<Exercise id="probability-events-complement" client:load />
+<Exercise id="probability-events-weighted-union" client:load />
+<Exercise id="probability-events-disjoint" client:load />
+<Exercise id="probability-events-code-union" client:load />
+
+## Summary and checkpoints
+
+Events select outcomes from one weighted space. Union counts each selected outcome once; intersection requires both memberships; complement fills the rest of the space. Check that you can derive inclusion-exclusion, apply it to unequal weights, and distinguish set disjointness from zero mass and independence.

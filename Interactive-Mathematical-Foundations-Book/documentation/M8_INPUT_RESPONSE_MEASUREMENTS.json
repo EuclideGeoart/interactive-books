@@ -1,0 +1,1054 @@
+{
+  "timestamp": "2026-10-11T23:18:32.213Z",
+  "productionSignature": "24bf8b81507692d41ad7863b8f97ec164258f599a7f1b96f4498054d1ccf41b8",
+  "browser": "155.0.8059.39",
+  "executablePath": "/opt/google/chrome/chrome",
+  "platform": "linux",
+  "cpu": "12th Gen Intel(R) Core(TM) i5-12600",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "cpuThrottle": "1\u00d7, unthrottled",
+  "reducedMotion": "reduce",
+  "units": "milliseconds",
+  "percentilePolicy": "Nearest rank over measured samples; warmups excluded",
+  "method": "Capture-phase trusted pointermove/native input or click \u2192 first requestAnimationFrame \u2192 MessageChannel task. Assert accepted changed slider value and rendered output, or deterministic replay plus changed announcement. Next-frame scheduling is included; physical input, scanout and presentation completion are not measured. Sequential isolated events measure response, not sustained drag throughput. --locked asserts the caller holds /tmp/imf-heavy.lock.",
+  "results": [
+    {
+      "slug": "bayes-theorem",
+      "field": "prior",
+      "bounds": [
+        5,
+        80
+      ],
+      "kind": "slider",
+      "input": "Trusted Playwright mouse drag \u2192 native range input \u2192 accepted model render",
+      "warmupsDiscarded": 5,
+      "acceptedEvents": 85,
+      "measuredEvents": 80,
+      "eventToFrameMs": {
+        "samples": 80,
+        "p50": 5.899999991059303,
+        "p95": 8.600000008940697,
+        "p99": 9.899999991059303,
+        "max": 9.899999991059303,
+        "over16_7": 0
+      },
+      "pointerToFrameMs": {
+        "samples": 80,
+        "p50": 5.9000000059604645,
+        "p95": 8.700000002980232,
+        "p99": 9.899999991059303,
+        "max": 9.899999991059303,
+        "over16_7": 0
+      },
+      "rawSamples": [
+        {
+          "eventMs": 5.299999997019768,
+          "pointerMs": 5.4000000059604645,
+          "value": 80
+        },
+        {
+          "eventMs": 5.5,
+          "pointerMs": 5.5,
+          "value": 5
+        },
+        {
+          "eventMs": 6,
+          "pointerMs": 6.100000008940697,
+          "value": 80
+        },
+        {
+          "eventMs": 6.299999997019768,
+          "pointerMs": 6.4000000059604645,
+          "value": 5
+        },
+        {
+          "eventMs": 5.700000002980232,
+          "pointerMs": 5.700000002980232,
+          "value": 80
+        },
+        {
+          "eventMs": 5.799999997019768,
+          "pointerMs": 5.9000000059604645,
+          "value": 5
+        },
+        {
+          "eventMs": 6.0999999940395355,
+          "pointerMs": 6.0999999940395355,
+          "value": 80
+        },
+        {
+          "eventMs": 5.9000000059604645,
+          "pointerMs": 5.9000000059604645,
+          "value": 5
+        },
+        {
+          "eventMs": 5.799999997019768,
+          "pointerMs": 5.799999997019768,
+          "value": 80
+        },
+        {
+          "eventMs": 5.700000002980232,
+          "pointerMs": 5.700000002980232,
+          "value": 5
+        },
+        {
+          "eventMs": 5.4000000059604645,
+          "pointerMs": 5.4000000059604645,
+          "value": 80
+        },
+        {
+          "eventMs": 5.799999997019768,
+          "pointerMs": 5.9000000059604645,
+          "value": 5
+        },
+        {
+          "eventMs": 6.699999988079071,
+          "pointerMs": 6.699999988079071,
+          "value": 80
+        },
+        {
+          "eventMs": 5.9000000059604645,
+          "pointerMs": 6,
+          "value": 5
+        },
+        {
+          "eventMs": 5.899999991059303,
+          "pointerMs": 5.899999991059303,
+          "value": 80
+        },
+        {
+          "eventMs": 6,
+          "pointerMs": 6.100000008940697,
+          "value": 5
+        },
+        {
+          "eventMs": 8.600000008940697,
+          "pointerMs": 8.700000002980232,
+          "value": 80
+        },
+        {
+          "eventMs": 6.700000002980232,
+          "pointerMs": 6.700000002980232,
+          "value": 5
+        },
+        {
+          "eventMs": 5.799999997019768,
+          "pointerMs": 5.9000000059604645,
+          "value": 80
+        },
+        {
+          "eventMs": 5.700000002980232,
+          "pointerMs": 5.700000002980232,
+          "value": 5
+        },
+        {
+          "eventMs": 5.700000002980232,
+          "pointerMs": 5.800000011920929,
+          "value": 80
+        },
+        {
+          "eventMs": 5.5999999940395355,
+          "pointerMs": 5.799999997019768,
+          "value": 5
+        },
+        {
+          "eventMs": 5.5999999940395355,
+          "pointerMs": 5.5999999940395355,
+          "value": 80
+        },
+        {
+          "eventMs": 5.5999999940395355,
+          "pointerMs": 5.5999999940395355,
+          "value": 5
+        },
+        {
+          "eventMs": 5.9000000059604645,
+          "pointerMs": 5.9000000059604645,
+          "value": 80
+        },
+        {
+          "eventMs": 8.900000005960464,
+          "pointerMs": 9,
+          "value": 5
+        },
+        {
+          "eventMs": 5.899999991059303,
+          "pointerMs": 5.899999991059303,
+          "value": 80
+        },
+        {
+          "eventMs": 9.899999991059303,
+          "pointerMs": 9.899999991059303,
+          "value": 5
+        },
+        {
+          "eventMs": 5.5,
+          "pointerMs": 5.5,
+          "value": 80
+        },
+        {
+          "eventMs": 5.600000008940697,
+          "pointerMs": 5.600000008940697,
+          "value": 5
+        },
+        {
+          "eventMs": 8.799999997019768,
+          "pointerMs": 8.900000005960464,
+          "value": 80
+        },
+        {
+          "eventMs": 5.799999997019768,
+          "pointerMs": 5.799999997019768,
+          "value": 5
+        },
+        {
+          "eventMs": 5.700000002980232,
+          "pointerMs": 5.700000002980232,
+          "value": 80
+        },
+        {
+          "eventMs": 8.299999997019768,
+          "pointerMs": 8.299999997019768,
+          "value": 5
+        },
+        {
+          "eventMs": 8.5,
+          "pointerMs": 8.599999994039536,
+          "value": 80
+        },
+        {
+          "eventMs": 8.200000002980232,
+          "pointerMs": 8.200000002980232,
+          "value": 5
+        },
+        {
+          "eventMs": 5.5,
+          "pointerMs": 5.600000008940697,
+          "value": 80
+        },
+        {
+          "eventMs": 8.400000005960464,
+          "pointerMs": 8.400000005960464,
+          "value": 5
+        },
+        {
+          "eventMs": 8.599999994039536,
+          "pointerMs": 8.599999994039536,
+          "value": 80
+        },
+        {
+          "eventMs": 8.5,
+          "pointerMs": 8.5,
+          "value": 5
+        },
+        {
+          "eventMs": 8.5,
+          "pointerMs": 8.599999994039536,
+          "value": 80
+        },
+        {
+          "eventMs": 8.5,
+          "pointerMs": 8.600000008940697,
+          "value": 5
+        },
+        {
+          "eventMs": 8.400000005960464,
+          "pointerMs": 8.5,
+          "value": 80
+        },
+        {
+          "eventMs": 8.400000005960464,
+          "pointerMs": 8.5,
+          "value": 5
+        },
+        {
+          "eventMs": 8.5,
+          "pointerMs": 8.700000002980232,
+          "value": 80
+        },
+        {
+          "eventMs": 8.399999991059303,
+          "pointerMs": 8.5,
+          "value": 5
+        },
+        {
+          "eventMs": 8.400000005960464,
+          "pointerMs": 8.599999994039536,
+          "value": 80
+        },
+        {
+          "eventMs": 8.400000005960464,
+          "pointerMs": 8.5,
+          "value": 5
+        },
+        {
+          "eventMs": 9.100000008940697,
+          "pointerMs": 9.200000002980232,
+          "value": 80
+        },
+        {
+          "eventMs": 8.200000002980232,
+          "pointerMs": 8.200000002980232,
+          "value": 5
+        },
+        {
+          "eventMs": 8,
+          "pointerMs": 8.100000008940697,
+          "value": 80
+        },
+        {
+          "eventMs": 5.5999999940395355,
+          "pointerMs": 5.700000002980232,
+          "value": 5
+        },
+        {
+          "eventMs": 5.5999999940395355,
+          "pointerMs": 5.5999999940395355,
+          "value": 80
+        },
+        {
+          "eventMs": 5.399999991059303,
+          "pointerMs": 5.5,
+          "value": 5
+        },
+        {
+          "eventMs": 5.399999991059303,
+          "pointerMs": 5.5,
+          "value": 80
+        },
+        {
+          "eventMs": 5.4000000059604645,
+          "pointerMs": 5.5,
+          "value": 5
+        },
+        {
+          "eventMs": 5.600000008940697,
+          "pointerMs": 5.600000008940697,
+          "value": 80
+        },
+        {
+          "eventMs": 5.9000000059604645,
+          "pointerMs": 6,
+          "value": 5
+        },
+        {
+          "eventMs": 5.5999999940395355,
+          "pointerMs": 5.699999988079071,
+          "value": 80
+        },
+        {
+          "eventMs": 5.5,
+          "pointerMs": 5.5,
+          "value": 5
+        },
+        {
+          "eventMs": 5.700000002980232,
+          "pointerMs": 5.799999997019768,
+          "value": 80
+        },
+        {
+          "eventMs": 5.700000002980232,
+          "pointerMs": 5.700000002980232,
+          "value": 5
+        },
+        {
+          "eventMs": 5.5999999940395355,
+          "pointerMs": 5.5999999940395355,
+          "value": 80
+        },
+        {
+          "eventMs": 5.799999997019768,
+          "pointerMs": 5.9000000059604645,
+          "value": 5
+        },
+        {
+          "eventMs": 5.799999997019768,
+          "pointerMs": 5.899999991059303,
+          "value": 80
+        },
+        {
+          "eventMs": 5.5999999940395355,
+          "pointerMs": 5.5999999940395355,
+          "value": 5
+        },
+        {
+          "eventMs": 5.9000000059604645,
+          "pointerMs": 6,
+          "value": 80
+        },
+        {
+          "eventMs": 5.5,
+          "pointerMs": 5.5,
+          "value": 5
+        },
+        {
+          "eventMs": 5.800000011920929,
+          "pointerMs": 5.9000000059604645,
+          "value": 80
+        },
+        {
+          "eventMs": 5.600000008940697,
+          "pointerMs": 5.600000008940697,
+          "value": 5
+        },
+        {
+          "eventMs": 5.9000000059604645,
+          "pointerMs": 6,
+          "value": 80
+        },
+        {
+          "eventMs": 5.899999991059303,
+          "pointerMs": 5.899999991059303,
+          "value": 5
+        },
+        {
+          "eventMs": 7.899999991059303,
+          "pointerMs": 8,
+          "value": 80
+        },
+        {
+          "eventMs": 7.5,
+          "pointerMs": 7.700000002980232,
+          "value": 5
+        },
+        {
+          "eventMs": 4.699999988079071,
+          "pointerMs": 4.799999997019768,
+          "value": 80
+        },
+        {
+          "eventMs": 6.5,
+          "pointerMs": 6.5999999940395355,
+          "value": 5
+        },
+        {
+          "eventMs": 5.899999991059303,
+          "pointerMs": 6,
+          "value": 80
+        },
+        {
+          "eventMs": 6.4000000059604645,
+          "pointerMs": 6.5,
+          "value": 5
+        },
+        {
+          "eventMs": 8.299999997019768,
+          "pointerMs": 8.5,
+          "value": 80
+        },
+        {
+          "eventMs": 5.200000002980232,
+          "pointerMs": 5.299999997019768,
+          "value": 5
+        }
+      ]
+    },
+    {
+      "slug": "uniform-gaussian",
+      "field": "lower",
+      "bounds": [
+        -3,
+        -0.3
+      ],
+      "kind": "slider",
+      "input": "Trusted Playwright mouse drag \u2192 native range input \u2192 accepted model render",
+      "warmupsDiscarded": 5,
+      "acceptedEvents": 85,
+      "measuredEvents": 80,
+      "eventToFrameMs": {
+        "samples": 80,
+        "p50": 5.399999991059303,
+        "p95": 5.700000002980232,
+        "p99": 6.299999997019768,
+        "max": 6.299999997019768,
+        "over16_7": 0
+      },
+      "pointerToFrameMs": {
+        "samples": 80,
+        "p50": 5.4000000059604645,
+        "p95": 5.799999997019768,
+        "p99": 6.299999997019768,
+        "max": 6.299999997019768,
+        "over16_7": 0
+      },
+      "rawSamples": [
+        {
+          "eventMs": 5.5,
+          "pointerMs": 5.5,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.700000002980232,
+          "pointerMs": 5.700000002980232,
+          "value": -3
+        },
+        {
+          "eventMs": 5.699999988079071,
+          "pointerMs": 5.699999988079071,
+          "value": -0.3
+        },
+        {
+          "eventMs": 6,
+          "pointerMs": 6.100000008940697,
+          "value": -3
+        },
+        {
+          "eventMs": 5.5,
+          "pointerMs": 5.5,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.399999991059303,
+          "pointerMs": 5.5,
+          "value": -3
+        },
+        {
+          "eventMs": 5.300000011920929,
+          "pointerMs": 5.300000011920929,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.4000000059604645,
+          "pointerMs": 5.4000000059604645,
+          "value": -3
+        },
+        {
+          "eventMs": 5.5,
+          "pointerMs": 5.5,
+          "value": -0.3
+        },
+        {
+          "eventMs": 6.200000002980232,
+          "pointerMs": 6.200000002980232,
+          "value": -3
+        },
+        {
+          "eventMs": 5.600000008940697,
+          "pointerMs": 5.700000002980232,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.5,
+          "pointerMs": 5.600000008940697,
+          "value": -3
+        },
+        {
+          "eventMs": 5.4000000059604645,
+          "pointerMs": 5.4000000059604645,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.5,
+          "pointerMs": 5.5,
+          "value": -3
+        },
+        {
+          "eventMs": 5.5,
+          "pointerMs": 5.5,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.600000008940697,
+          "pointerMs": 5.700000002980232,
+          "value": -3
+        },
+        {
+          "eventMs": 5.399999991059303,
+          "pointerMs": 5.399999991059303,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.299999997019768,
+          "pointerMs": 5.399999991059303,
+          "value": -3
+        },
+        {
+          "eventMs": 5.399999991059303,
+          "pointerMs": 5.399999991059303,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.299999997019768,
+          "pointerMs": 5.299999997019768,
+          "value": -3
+        },
+        {
+          "eventMs": 5.299999997019768,
+          "pointerMs": 5.299999997019768,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.200000002980232,
+          "pointerMs": 5.299999997019768,
+          "value": -3
+        },
+        {
+          "eventMs": 5.4000000059604645,
+          "pointerMs": 5.4000000059604645,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.300000011920929,
+          "pointerMs": 5.4000000059604645,
+          "value": -3
+        },
+        {
+          "eventMs": 5.600000008940697,
+          "pointerMs": 5.700000002980232,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.600000008940697,
+          "pointerMs": 5.600000008940697,
+          "value": -3
+        },
+        {
+          "eventMs": 5.399999991059303,
+          "pointerMs": 5.399999991059303,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.300000011920929,
+          "pointerMs": 5.300000011920929,
+          "value": -3
+        },
+        {
+          "eventMs": 5.600000008940697,
+          "pointerMs": 5.600000008940697,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.399999991059303,
+          "pointerMs": 5.399999991059303,
+          "value": -3
+        },
+        {
+          "eventMs": 5.299999997019768,
+          "pointerMs": 5.4000000059604645,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.299999997019768,
+          "pointerMs": 5.299999997019768,
+          "value": -3
+        },
+        {
+          "eventMs": 5.399999991059303,
+          "pointerMs": 5.399999991059303,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.300000011920929,
+          "pointerMs": 5.300000011920929,
+          "value": -3
+        },
+        {
+          "eventMs": 5.399999991059303,
+          "pointerMs": 5.399999991059303,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.399999991059303,
+          "pointerMs": 5.399999991059303,
+          "value": -3
+        },
+        {
+          "eventMs": 5.299999997019768,
+          "pointerMs": 5.299999997019768,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.4000000059604645,
+          "pointerMs": 5.5,
+          "value": -3
+        },
+        {
+          "eventMs": 5.5,
+          "pointerMs": 5.5,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.5,
+          "pointerMs": 5.5999999940395355,
+          "value": -3
+        },
+        {
+          "eventMs": 5.5,
+          "pointerMs": 5.5,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.299999997019768,
+          "pointerMs": 5.4000000059604645,
+          "value": -3
+        },
+        {
+          "eventMs": 5.5,
+          "pointerMs": 5.5999999940395355,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.399999991059303,
+          "pointerMs": 5.399999991059303,
+          "value": -3
+        },
+        {
+          "eventMs": 6.299999997019768,
+          "pointerMs": 6.299999997019768,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.200000002980232,
+          "pointerMs": 5.200000002980232,
+          "value": -3
+        },
+        {
+          "eventMs": 5.4000000059604645,
+          "pointerMs": 5.5,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.299999997019768,
+          "pointerMs": 5.299999997019768,
+          "value": -3
+        },
+        {
+          "eventMs": 5.4000000059604645,
+          "pointerMs": 5.4000000059604645,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.4000000059604645,
+          "pointerMs": 5.5,
+          "value": -3
+        },
+        {
+          "eventMs": 5.4000000059604645,
+          "pointerMs": 5.5,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.300000011920929,
+          "pointerMs": 5.4000000059604645,
+          "value": -3
+        },
+        {
+          "eventMs": 5.100000008940697,
+          "pointerMs": 5.200000002980232,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.299999997019768,
+          "pointerMs": 5.299999997019768,
+          "value": -3
+        },
+        {
+          "eventMs": 5.4000000059604645,
+          "pointerMs": 5.4000000059604645,
+          "value": -0.3
+        },
+        {
+          "eventMs": 6,
+          "pointerMs": 6,
+          "value": -3
+        },
+        {
+          "eventMs": 5.700000002980232,
+          "pointerMs": 5.799999997019768,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.5,
+          "pointerMs": 5.5,
+          "value": -3
+        },
+        {
+          "eventMs": 5.399999991059303,
+          "pointerMs": 5.399999991059303,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.299999997019768,
+          "pointerMs": 5.299999997019768,
+          "value": -3
+        },
+        {
+          "eventMs": 5.299999997019768,
+          "pointerMs": 5.299999997019768,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.399999991059303,
+          "pointerMs": 5.399999991059303,
+          "value": -3
+        },
+        {
+          "eventMs": 5.299999997019768,
+          "pointerMs": 5.4000000059604645,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.299999997019768,
+          "pointerMs": 5.299999997019768,
+          "value": -3
+        },
+        {
+          "eventMs": 5.200000002980232,
+          "pointerMs": 5.200000002980232,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.299999997019768,
+          "pointerMs": 5.299999997019768,
+          "value": -3
+        },
+        {
+          "eventMs": 5.299999997019768,
+          "pointerMs": 5.299999997019768,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.200000002980232,
+          "pointerMs": 5.200000002980232,
+          "value": -3
+        },
+        {
+          "eventMs": 5.5999999940395355,
+          "pointerMs": 5.5999999940395355,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.5,
+          "pointerMs": 5.5999999940395355,
+          "value": -3
+        },
+        {
+          "eventMs": 5.299999997019768,
+          "pointerMs": 5.299999997019768,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.299999997019768,
+          "pointerMs": 5.299999997019768,
+          "value": -3
+        },
+        {
+          "eventMs": 5.200000002980232,
+          "pointerMs": 5.200000002980232,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.200000002980232,
+          "pointerMs": 5.200000002980232,
+          "value": -3
+        },
+        {
+          "eventMs": 5.299999997019768,
+          "pointerMs": 5.4000000059604645,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.299999997019768,
+          "pointerMs": 5.299999997019768,
+          "value": -3
+        },
+        {
+          "eventMs": 5.4000000059604645,
+          "pointerMs": 5.4000000059604645,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.399999991059303,
+          "pointerMs": 5.399999991059303,
+          "value": -3
+        },
+        {
+          "eventMs": 5.299999997019768,
+          "pointerMs": 5.299999997019768,
+          "value": -0.3
+        },
+        {
+          "eventMs": 5.100000008940697,
+          "pointerMs": 5.100000008940697,
+          "value": -3
+        }
+      ]
+    },
+    {
+      "slug": "central-limit-theorem",
+      "bounds": {
+        "n": 100,
+        "repetitions": 1000
+      },
+      "drawsPerReplay": 100000,
+      "kind": "replay",
+      "seed": 42,
+      "population": "exponential",
+      "input": "Trusted replay click \u2192 bounded recomputation and announcement render; output must replay identically",
+      "warmupsDiscarded": 5,
+      "acceptedEvents": 25,
+      "measuredEvents": 20,
+      "eventToFrameMs": {
+        "samples": 20,
+        "p50": 14.399999991059303,
+        "p95": 14.699999988079071,
+        "p99": 15.200000002980232,
+        "max": 15.200000002980232,
+        "over16_7": 0
+      },
+      "rawSamples": [
+        {
+          "eventMs": 13.599999994039536
+        },
+        {
+          "eventMs": 13.5
+        },
+        {
+          "eventMs": 13.699999988079071
+        },
+        {
+          "eventMs": 14.399999991059303
+        },
+        {
+          "eventMs": 14.599999994039536
+        },
+        {
+          "eventMs": 14.100000008940697
+        },
+        {
+          "eventMs": 15.200000002980232
+        },
+        {
+          "eventMs": 14.599999994039536
+        },
+        {
+          "eventMs": 14.400000005960464
+        },
+        {
+          "eventMs": 14.400000005960464
+        },
+        {
+          "eventMs": 14.5
+        },
+        {
+          "eventMs": 14.099999994039536
+        },
+        {
+          "eventMs": 14.5
+        },
+        {
+          "eventMs": 14.699999988079071
+        },
+        {
+          "eventMs": 14.399999991059303
+        },
+        {
+          "eventMs": 14.199999988079071
+        },
+        {
+          "eventMs": 13.299999997019768
+        },
+        {
+          "eventMs": 13.099999994039536
+        },
+        {
+          "eventMs": 13.200000002980232
+        },
+        {
+          "eventMs": 14.599999994039536
+        }
+      ]
+    },
+    {
+      "slug": "law-of-large-numbers",
+      "bounds": {
+        "trials": 4000
+      },
+      "drawsPerReplay": 4000,
+      "kind": "replay",
+      "seed": 42,
+      "population": "bernoulli",
+      "input": "Trusted replay click \u2192 bounded recomputation and announcement render; output must replay identically",
+      "warmupsDiscarded": 5,
+      "acceptedEvents": 25,
+      "measuredEvents": 20,
+      "eventToFrameMs": {
+        "samples": 20,
+        "p50": 14.400000005960464,
+        "p95": 15,
+        "p99": 15,
+        "max": 15,
+        "over16_7": 0
+      },
+      "rawSamples": [
+        {
+          "eventMs": 13.600000008940697
+        },
+        {
+          "eventMs": 15
+        },
+        {
+          "eventMs": 15
+        },
+        {
+          "eventMs": 14.400000005960464
+        },
+        {
+          "eventMs": 14.5
+        },
+        {
+          "eventMs": 14.799999997019768
+        },
+        {
+          "eventMs": 14
+        },
+        {
+          "eventMs": 14.799999997019768
+        },
+        {
+          "eventMs": 14.599999994039536
+        },
+        {
+          "eventMs": 14.600000008940697
+        },
+        {
+          "eventMs": 14.299999997019768
+        },
+        {
+          "eventMs": 14
+        },
+        {
+          "eventMs": 13.899999991059303
+        },
+        {
+          "eventMs": 14.399999991059303
+        },
+        {
+          "eventMs": 14.5
+        },
+        {
+          "eventMs": 14.5
+        },
+        {
+          "eventMs": 14.200000002980232
+        },
+        {
+          "eventMs": 14.400000005960464
+        },
+        {
+          "eventMs": 14.299999997019768
+        },
+        {
+          "eventMs": 14.099999994039536
+        }
+      ]
+    }
+  ],
+  "runtimeCommit": "831306d00cc9f5776901541fd81cf51ad533b4b1",
+  "acceptanceTestCommit": "dca3cc1a3887448ea475ab79b49c7096c1df1a0f",
+  "sourceRecord": "validation-results/M8_INPUT_RESPONSE_ACCEPTANCE/probability-input.json",
+  "summarySelfCheck": "node scripts/measure-probability-input.mjs --check; passed"
+}

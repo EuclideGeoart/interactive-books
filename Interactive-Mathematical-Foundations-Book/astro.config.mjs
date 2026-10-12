@@ -11,6 +11,9 @@ const base = process.env.BOOK_BASE || '/';
 
 export default defineConfig({
   output: 'static',
+  // Shared dependency symlinks are read-only; all generated caches belong to this worktree.
+  cacheDir: './.cache/astro',
+  vite: { cacheDir: './.cache/vite' },
   base,
   trailingSlash: 'always',
   integrations: [mdx(), preact()],

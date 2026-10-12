@@ -25,6 +25,8 @@ test('Part I publication: the contents page links exactly the published chapters
   expect(links.map(l => l.id)).toEqual(published.map(r => r.id));
   for (const [i, l] of links.entries()) expect(l.href.endsWith(`chapters/${published[i]!.chapter.slug}/`)).toBe(true);
   await expect(page.locator('main [data-chapter-id]')).toHaveCount(97);
+  await expect(page.locator('main .lede')).toContainText(`${published.length} of ${allChapters.length}`);
+  await expect(page.locator('.map-sub')).toContainText(`${published.length} of ${allChapters.length}`);
 });
 
 for (const ref of published) {
@@ -127,6 +129,8 @@ for (const ref of published) {
         await page.emulateMedia({ colorScheme: scheme });
         await navigate(page, path);
         await hydrateAll(page);
+        // Hydration scrolls through islands; start initial axe clear of sticky-header occlusion.
+        await page.evaluate(() => window.scrollTo(0, 0));
         await axe(page, `${ref.id} (${scheme})`);
         await timed('feedback', async () => {
           for (const ex of await page.locator('[data-exercise]').all()) {

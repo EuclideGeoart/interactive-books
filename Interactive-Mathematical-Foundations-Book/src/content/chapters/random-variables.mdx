@@ -1,0 +1,111 @@
+---
+kind: chapter
+curriculumId: IV.7
+title: "Random variables"
+hero: "How does an uncertain outcome become a *number*?"
+lede: Map each die face to a value, then watch probability flow into the value groups. The function is fixed; uncertainty comes from the outcome that occurs.
+description: Random variables as functions, preimage events, induced finite distributions, unequal weights, exact Python and practical NumPy, and five graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import RandomVariableStage from '../../lessons/probability/RandomVariableStage';
+import Exercise from '../../lessons/probability/BlockBExercise';
+import reference from '../../../code/python/probability_variables.py?raw';
+import practical from '../../../code/python/probability_variables_numpy.py?raw';
+
+<Stage caption="Change a die face's assigned value and follow its probability into the induced PMF. Reset to values [0, 0, 1, 1, 2, 2] on a fair die."><RandomVariableStage client:load /></Stage>
+
+Before editing, predict how many faces feed the value 1. Move just one face into another group: does the original die become less fair, or does only its numerical summary change?
+
+## Intuition: an outcome and its value
+
+A die roll produces a face. A program might record the face itself, whether it is even, or a score assigned to it. Those are different numerical descriptions of the same experiment. The assignment does not have to give different numbers to different faces.
+
+The canonical stage assigns faces 1 through 6 the values $[0,0,1,1,2,2]$. There are six equally likely outcomes but only three value groups. Keeping those two spaces distinct explains why each group has mass $1/3$, rather than $1/6$.
+
+## Definition
+
+A real-valued **random variable** is a function $X:\Omega\to\mathbb R$. On a finite sample space, it assigns exactly one real number to each outcome. For a value $x$, its induced probability is
+
+$$
+P(X=x)=\sum_{\omega:X(\omega)=x}p_\omega.
+$$
+
+More generally, $P(X\in S)=P(\{\omega:X(\omega)\in S\})$. The set inside the probability is the **preimage** of the value event. Several outcomes can share a value; the function need not be one-to-one. Here every finite assignment defines measurable events automatically; general infinite-space measurability is outside this chapter.
+
+## Mechanics: group, then add
+
+Read each row as an original outcome, its probability weight, and its assigned value. Edit one value or weight and compare the induced bars, probability inspector, formula, and trace. Raw weights are normalized by their positive total; they are not probabilities until normalized. Changing a value redirects a face's existing mass. Changing a weight changes the experiment's mass distribution.
+
+The trace first normalizes the source weights, then groups outcomes by equal value, and finally adds each group's masses. The PMF describes the numerical variable, while the original outcome labels still describe the experiment. Reset restores the same mapping and equal weights.
+
+## Derivation: why total mass survives
+
+Every outcome belongs to exactly one value group. Summing across the distinct values therefore counts every source mass exactly once:
+
+$$
+\begin{aligned}
+\sum_x P(X=x)&=\sum_x\sum_{\omega:X(\omega)=x}p_\omega\\
+&=\sum_{\omega\in\Omega}p_\omega=1.
+\end{aligned}
+$$
+
+This establishes normalization without assuming equally likely value labels. Nonnegative source masses also make every induced mass nonnegative. A many-to-one mapping combines mass; it never duplicates mass.
+
+## Worked examples
+
+For the canonical fair die, $X=0$ on faces $1,2$, $X=1$ on $3,4$, and $X=2$ on $5,6$. Each pair contributes $1/6+1/6=1/3$. The event $X\ge1$ pulls back to $\{3,4,5,6\}$, giving probability $2/3$.
+
+<Stage caption="Rebuild the three equal-mass groups and identify the four faces in X ≥ 1. Then merge every face into the single value 2."><RandomVariableStage worked client:load /></Stage>
+
+For a weighted experiment with outcomes $a,b,c$ of masses $1/2,1/4,1/4$, map $a,b$ to $0$ and $c$ to $1$. The resulting masses are $3/4$ and $1/4$. The number of labels has fallen to two, but equal-label counting would discard the source weights.
+
+## Executable reference code
+
+The standard-library program explicitly loops over outcome/value pairs and accumulates exact `Fraction` masses. It asserts the canonical PMF, the pulled-back event probability, unequal-weight grouping, zero-mass labels, and rejection of invalid models. The NumPy version uses `unique` to form groups and `bincount` to accumulate their masses. Read the loop first; the array indices implement the same grouping mechanics.
+
+<CodeFile source={reference} file="code/python/probability_variables.py" />
+<CodeFile source={practical} file="code/python/probability_variables_numpy.py" />
+
+## Explore
+
+Choose **Every face maps to 2**. Predict the sole induced mass before inspecting it: $P(X=2)=1$, although the die still has six source outcomes. Choose **Distinct values** to recover one value per face. Compare the bar count and the source-outcome count in both states.
+
+Reset and change one source weight. Explain how that face's value group gains or loses probability after normalization. Then move that face to another value without changing its weight. Trace the mass through both operations; do not infer an event probability from the number of bars.
+
+## Common mistakes and counterexamples
+
+“Random” does not mean the assignment itself must be redrawn after every roll. Once the model fixes $X$, observing a face fixes its value. Assigning two values to one outcome without a selection rule would fail the definition of a function.
+
+A value is not its probability: $X=2$ can have mass $1/3$, and a negative score can have positive probability. A constant random variable is valid. A listed value whose only preimages have zero mass is also valid and has probability zero; this differs from an invalid all-zero weight model.
+
+## Numerical considerations
+
+Grouping needs a rule for equality. These examples use integer or exact rational values, so equal labels can be identified exactly. With floating-point measurements, two nearly equal numbers are not automatically the same category; a rounding or binning policy would define a different variable and must be stated.
+
+Exact `Fraction` arithmetic preserves the finite sums. NumPy uses finite floating-point inputs and checks mass normalization within absolute tolerance $10^{-12}$. A tolerance in a numerical check does not turn probability-zero values into missing observations or justify merging nearby labels.
+
+<Callout kind="scope" title="A valid mapping needs a valid source model">
+Require one value per outcome, nonnegative finite weights, and a positive weight total. Missing assignments or negative masses are invalid inputs; many-to-one assignments and zero-mass labels are valid mathematical cases.
+</Callout>
+
+## Engineering and ML connections
+
+A loss function turns an uncertain example into a number. An indicator maps an event to $1$ and its complement to $0$. A class-count variable groups detailed trial sequences by their success totals. In each case, probabilities belong to the underlying experiment and flow through the chosen function.
+
+Changing a scoring function changes the random variable, while changing the data-generating model changes the source probabilities. Keeping these decisions separate prevents a visualization or evaluation metric from silently inventing equal weights.
+
+## Exercises
+
+Use exact fractions for finite masses. Each attempt provides corrective feedback and a worked solution.
+
+<Exercise id="probability-variables-induced-masses" client:load />
+<Exercise id="probability-variables-preimage-event" client:load />
+<Exercise id="probability-variables-weighted-group" client:load />
+<Exercise id="probability-variables-function" client:load />
+<Exercise id="probability-variables-zero-mass" client:load />
+
+## Summary and checkpoints
+
+A random variable assigns numbers to outcomes. Its distribution sums source masses over equal-value groups, and a value event pulls back to an outcome event. Check that you can recover the canonical three $1/3$ masses, preserve unequal weights, and distinguish constant or zero-mass values from invalid models.

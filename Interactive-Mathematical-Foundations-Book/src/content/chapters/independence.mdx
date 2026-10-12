@@ -1,0 +1,119 @@
+---
+kind: chapter
+curriculumId: IV.5
+title: "Independence"
+hero: "Does knowing B change the *chance* of A?"
+lede: Compare joint mass with the product of the two marginal masses. Independent events may overlap; mutually exclusive positive-mass events cannot be independent.
+description: Independence by exact joint-product equality, dependent die and independent coin examples, disjoint and zero-mass cases, Python and NumPy comparisons, and five graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import FiniteStage from '../../lessons/probability/FiniteStage';
+import Exercise from '../../lessons/probability/BlockAExercise';
+import reference from '../../../code/python/probability_independence.py?raw';
+import practical from '../../../code/python/probability_independence_numpy.py?raw';
+
+<Stage caption="Change memberships of A and B, then compare P(A ∩ B) with P(A)P(B). Try overlapping and disjoint selections and inspect whether the exact equality holds."><FiniteStage chapter="independence" client:load /></Stage>
+
+The opening model uses **Two fair coins**: A means first coin H, and B means second coin H. Compare the joint mass $1/4$ with the marginal product. Then choose **Fair die** for the even faces and top three faces. Both still have mass $1/2$: predict whether that fact alone makes them independent, then inspect the changed shared mass.
+
+## Intuition: compare information, not diagram separation
+
+If learning that B happened leaves the chance of A unchanged, the events provide no probability update about each other. This can happen even though they share outcomes. Two independent fair coins illustrate it: knowing the second coin is heads leaves the first coin's chance of heads at $1/2$.
+
+By contrast, mutually exclusive events forbid each other. Knowing a die roll is odd makes its chance of being even zero. Their drawn regions may be separate, but that separation encodes strong information.
+
+## Definition
+
+Events A and B are **independent** exactly when
+
+$$
+P(A\cap B)=P(A)P(B).
+$$
+
+The probabilities of A and B alone are their **marginal** masses; the intersection is their **joint** mass. If $P(B)>0$, the product equality is equivalent to $P(A\mid B)=P(A)$. If $P(A)>0$, it is also equivalent to $P(B\mid A)=P(B)$.
+
+The product definition includes zero-mass cases without division. Independence of two events is a statement about those events under a specified model. It does not imply that every pair of events in the same experiment is independent.
+
+## Mechanics: test the equality from one model
+
+The stage sums original weights for A, B, and their intersection. Its comparison uses these derived masses. Change membership and read the joint term and product separately before looking at the classification. Equal-sized event drawings alone cannot determine it.
+
+Replay the trace: collect marginal weights, collect shared weights, multiply the marginals, and compare. Where a conditioning mass is positive, relate the result to the conditional inspector. Where it is zero, use the product comparison and keep the corresponding conditional probability undefined.
+
+## Derivation: the conditional equivalence
+
+With positive B mass,
+
+$$
+P(A\mid B)=P(A)
+\quad\Longleftrightarrow\quad
+\frac{P(A\cap B)}{P(B)}=P(A)
+\quad\Longleftrightarrow\quad
+P(A\cap B)=P(A)P(B).
+$$
+
+The last condition is symmetric even though the original conditional expression is directional. Independence also extends to complements: subtract the joint mass from $P(A)$ to obtain
+
+$$
+P(A\cap B^c)=P(A)-P(A\cap B)
+=P(A)(1-P(B))=P(A)P(B^c).
+$$
+
+For disjoint events with positive marginals, joint mass is zero and the product is positive, so equality fails. If one marginal is zero, its intersection is a subset of a zero-mass event and also has zero mass; equality then holds.
+
+## Worked examples
+
+For the canonical fair die, $A=\{2,4,6\}$ and $B=\{4,5,6\}$. The joint mass is $1/3$, while the product is $(1/2)(1/2)=1/4$. They are dependent; indeed $P(A\mid B)=2/3\ne1/2$.
+
+<Stage caption="Choose Fair die in this worked explorer, then manipulate A and B and follow the joint-product comparison. Restore the even faces and top three faces to verify 1/3 ≠ 1/4; switch to Two fair coins to compare the independent events."><FiniteStage chapter="independence" worked client:load /></Stage>
+
+For two independent fair coins, $\Omega=\{HH,HT,TH,TT\}$ with masses $1/4$. Let A mean first coin H and B mean second coin H. Then $A=\{HH,HT\}$, $B=\{HH,TH\}$, and $A\cap B=\{HH\}$. The joint mass $1/4$ equals the marginal product. Given B, $HH$ and $TH$ remain equally weighted, so the first coin still has heads probability $1/2$.
+
+For a counterexample within the same coin model, let C mean “both coins H.” Then $P(C\mid A)=1/2$ but $P(C)=1/4$. Independent component tosses do not make arbitrary derived events independent.
+
+## Executable reference code
+
+Python checks the exact product definition by summing `Fraction` weights over sets. It verifies the dependent die, independent coin events, mutually exclusive positive events, and a zero-mass event with undefined reverse conditioning. NumPy computes the same small event masses with masks and prints the numerical joint-minus-product difference; exact fractions remain the reference for classification.
+
+<CodeFile source={reference} file="code/python/probability_independence.py" />
+<CodeFile source={practical} file="code/python/probability_independence_numpy.py" />
+
+## Explore
+
+Choose **Fair die**, then make B the whole die space: the joint mass equals $P(A)$ and the product equals $P(A)\times1$, so independence holds. Make B empty: both terms are zero, so independence again holds, while conditioning on B is undefined. Make A odd and B even: both marginal masses are $1/2$, but the joint mass is zero and independence fails. **Reset** in this chapter restores the independent two-coin model.
+
+Use the coin reference to inspect the four joint cells. For independent A and B with masses $1/3$ and $1/2$, the cells A-and-B, A-and-not-B, not-A-and-B, and neither have masses $1/6,1/6,1/3,1/3$. Their row and column sums recover the marginals, and their total is one.
+
+<Callout kind="scope" title="Pairwise is not mutual independence">
+Two-event independence is the scope of this explorer. For three or more events, pairwise checks are insufficient for mutual independence. With two independent fair coins, “first H,” “second H,” and “the coins match” are pairwise independent, but their triple intersection has mass 1/4 rather than the product 1/8.
+</Callout>
+
+## Common mistakes and counterexamples
+
+Independence does not mean disjointness or equal probabilities. Events of mass zero are independent of every event under the product definition, yet conditioning on them remains undefined. An event is independent of itself only if its mass is zero or one, because $p=p^2$ then holds.
+
+Do not infer independence from a short empirical run, apparent visual separation, or lack of an obvious causal link. Independence is a property of the specified joint probability model. Correlation, introduced later, summarizes a different feature of numerical variables and is not a general replacement for this definition.
+
+## Numerical considerations
+
+The finite rational reference compares joint and product exactly. Decimal formatting cannot turn $1/3$ into $1/4$, and an exact small discrepancy remains dependence. NumPy's absolute tolerance $10^{-12}$ with zero relative tolerance is appropriate for cross-checking these small hand-worked values; an approximate equality test alone cannot prove exact independence of arbitrary floating-point or measured inputs.
+
+If a larger numerical model reports “approximately independent,” it needs an explicit error and modeling policy. The stage's exact entered model and uncertainty in a physical data source are separate issues. A sampling fluctuation also need not reflect a defect in a model that assumes independence.
+
+## Engineering and ML connections
+
+Independent draws support many simulation and learning algorithms, but repeated use of the same observation, shared sources, or coordinated selection can create dependence. Naive Bayes later assumes certain features are independent **conditional on a class**, a stronger modeling choice than merely observing small correlations. Test the assumption against the intended joint structure rather than the visual layout of a dataset.
+
+## Exercises
+
+<Exercise id="probability-independence-die-test" client:load />
+<Exercise id="probability-independence-two-coins" client:load />
+<Exercise id="probability-independence-exclusive" client:load />
+<Exercise id="probability-independence-zero-event" client:load />
+<Exercise id="probability-independence-construct-joint" client:load />
+
+## Summary and checkpoints
+
+Independence means joint mass equals the product of marginal masses. Check that you can verify the coin example, reject the die example, distinguish independence from mutual exclusion, and apply the zero-mass definition without inventing an undefined conditional ratio.
