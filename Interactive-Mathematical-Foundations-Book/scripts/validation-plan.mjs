@@ -219,7 +219,7 @@ export function makePlan({ mode = 'focused', files = [], chapters = [], only, pr
       '../.gitignore', 'astro.config.mjs', 'vitest.config.ts',
       'scripts/validation-plan.mjs', 'scripts/measure-probability-input.mjs',
       'tests/unit/validation-plan.test.ts', 'tests/unit/curriculum.test.ts', 'tests/unit/completion-exercises.test.ts',
-      'tests/e2e/chapters.spec.ts', 'tests/e2e/visual-linear-algebra.spec.ts',
+      'tests/e2e/chapters.spec.ts', 'tests/e2e/navigation.spec.ts', 'tests/e2e/visual-linear-algebra.spec.ts',
       'tests/e2e/visual-calculus.spec.ts', 'tests/e2e/visual-probability.spec.ts', 'tests/e2e/visual-optimization.spec.ts',
     ].includes(file)) {
       shared = true;
