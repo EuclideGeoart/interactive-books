@@ -1,0 +1,82 @@
+---
+kind: chapter
+curriculumId: VII.6
+title: "Logits and softmax"
+hero: "How do unconstrained scores become *probabilities*?"
+lede: Edit the class scores and inspect exponentials, their denominator and normalized probabilities. Compare naive computation with the stable pipeline.
+description: Edit the class scores and inspect exponentials, their denominator and normalized probabilities. Compare naive computation with the stable pipeline.
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import Xref from '../../shell/Xref.astro';
+import LogitStage from '../../lessons/information-theory/LogitStage';
+import Exercise from '../../lessons/information-theory/BlockCExercise';
+import reference from '../../../code/python/information_softmax.py?raw';
+import practical from '../../../code/python/information_softmax_numpy.py?raw';
+
+<Stage caption="Edit the class scores and inspect exponentials, their denominator and normalized probabilities. Compare naive computation with the stable pipeline."><LogitStage chapter="softmax" client:load /></Stage>
+
+## Intuition
+
+Scores can be negative or larger than one because they are not probabilities. Exponentiating makes relative scores positive; dividing by their total makes the outputs sum to one. A common offset changes the exponential scale but cancels out of the mathematical probabilities.
+
+## Definition
+
+For a nonempty finite logit vector $\mathbf z\in\mathbb R^n$, $p_i=\operatorname{softmax}(\mathbf z)_i=e^{z_i}/\sum_j e^{z_j}$. Every mathematical output is positive and their sum is one. An optional explicit −∞ score denotes an excluded class with zero mass; at least one score must remain finite.
+
+## Mechanics
+
+Each score control changes one entry in the authoritative vector. The table exposes actual naive exponentials and probabilities alongside stable output. The inspector exposes the naive denominator, shifted denominator, log-sum-exp and selected class probability. Common finite shift changes the effective input vector, with a displayed probability difference relative to the original scores.
+
+## Derivation
+
+Sum the output probabilities to obtain $\sum_i e^{z_i}/\sum_j e^{z_j}=1$. For a common finite shift c, $e^{z_i+c}=e^ce^{z_i}$, so the common factor cancels: $\operatorname{softmax}(\mathbf z+c\mathbf1)=\operatorname{softmax}(\mathbf z)$. The same cancellation permits subtraction of the largest score before exponentiation.
+
+## Worked examples
+
+For logits $(\log2,0)$, exponentials are (2,1), denominator 3 and probabilities (2/3,1/3). For equal logits (0,0,0), outputs are (1/3,1/3,1/3). The canonical scores (2,1,0) produce approximately (0.665241,0.244728,0.090031). Adding 1000 preserves the mathematical ratios even though direct exponentials overflow.
+
+<Stage caption="Replay actual scores, normalization, log probabilities and the selected result."><LogitStage chapter="softmax" worked client:load /></Stage>
+
+## Executable reference code
+
+The standalone pedagogical implementation exposes the operations. Its NumPy companion uses array reductions and explicit domain/mask guards. Both run hand-worked assertions and execute under the independent oracle tests.
+
+<CodeFile source={reference} file="code/python/information_softmax.py" />
+<CodeFile source={practical} file="code/python/information_softmax_numpy.py" />
+
+## Explore
+
+Predict which class gets the largest mass. Change one score through the keyboard and numeric field, then apply a common shift. Select Overflow + tiny probability and compare the naive denominator failure with the stable prediction. Use Equal logits to confirm the uniform output.
+
+## Common mistakes and counterexamples
+
+Logits need not sum to one, and negative logits are not negative probabilities. Softmax is invariant to a common additive shift, not to arbitrary changes of relative score or multiplication by a common factor. The selected class is a user-chosen index; it is not secretly replaced by the argmax.
+
+## Numerical considerations
+
+The bounded explorer has 1–6 model classes and three canonical editable classes. Finite controls accept two-place scores and shifts in [−1000,1000]. Real exponentials are finite for finite scores, but binary64 exp(1000) overflows. Stable shifted exponentials are at most one. Normalization is checked at 32×epsilon×6, about 4.27e−14; independent Decimal400 reference probabilities have a separate 2e−14 absolute parity budget. Adding a huge common shift in binary64 can round away the original score differences, so invariance is a mathematical identity with a numerical input-rounding caveat.
+
+## Engineering and ML connections
+
+Classification and vocabulary prediction use relative scores to define categorical probabilities. A logit is an input to this transformation, not an event probability. Cross entropy scores the resulting prediction against a target, and the next chapter retains log probabilities without taking a logarithm of underflowed outputs.
+
+Connect to <Xref to="chapters/cross-entropy-nll/">the accepted prerequisite mechanism</Xref>.
+
+## Exercises
+
+Predict intermediate quantities, calculate small cases and explain numerical or mask boundaries.
+
+<Exercise id="information-softmax-1" client:load />
+
+<Exercise id="information-softmax-2" client:load />
+
+<Exercise id="information-softmax-3" client:load />
+
+<Exercise id="information-softmax-4" client:load />
+
+<Exercise id="information-softmax-5" client:load />
+
+## Summary and checkpoints
+
+Scores can be negative or larger than one because they are not probabilities. Exponentiating makes relative scores positive; dividing by their total makes the outputs sum to one. A common offset changes the exponential scale but cancels out of the mathematical probabilities. Read the actual pipeline, preserve the log information and state which inputs contribute.

@@ -14,3 +14,5 @@ it('all fifteen graders accept the worked answer and reject malformed/incorrect 
   const exercises=Object.values(EXERCISES).flat();expect(exercises).toHaveLength(15);
   exercises.forEach((e,i)=>{const a=e.choices?{choice:answers[i]![0]!}:Object.fromEntries(answers[i]!.map((v,j)=>[`n${j}`,v]));expect(e.grade(a).correct,e.id).toBe(true);expect(e.grade({}).correct,e.id).toBe(false);expect(e.grade(e.choices?{choice:'malformed'}:{n0:'Infinity'}).correct,e.id).toBe(false);expect(e.solution.length).toBeGreaterThan(30);});
 });
+
+it('bit entropy uses base-2 in the upper bound and inspector symbol',()=>{const d=deriveProbabilityLesson('entropy',{...CANONICAL,unit:'bits'});expect(d.view.formulas[1]).toContain('\\log_2 n');expect(d.view.rows.find(r=>r.id==='maximum')!.symbolTex).toBe('\\log_2 n');});

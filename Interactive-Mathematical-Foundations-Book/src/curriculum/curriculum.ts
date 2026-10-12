@@ -203,9 +203,9 @@ export const parts: readonly Part[] = [
       available(3, "Entropy", "entropy"),
       available(4, "Cross entropy and negative log-likelihood", "cross-entropy-nll"),
       available(5, "KL divergence", "kl-divergence"),
-      planned(6, "Logits and softmax"),
-      planned(7, "Numerical stability: log-sum-exp and stable softmax"),
-      planned(8, "From token logits to language-model loss"),
+      available(6, "Logits and softmax", "logits-softmax"),
+      available(7, "Numerical stability: log-sum-exp and stable softmax", "stable-logsumexp"),
+      available(8, "From token logits to language-model loss", "token-logits-loss"),
     ],
   },
   {

@@ -54,7 +54,7 @@ export function probabilityProduct(input: ProductInput) {
     if (k === input.repeat || k % Math.max(1, Math.ceil(input.repeat / 40)) === 0) history.push({x:k,direct,log:k*cycleLog});
   }
   return { input, masses, logs, cycle, exact, direct, logLikelihood, recovered: Math.exp(logLikelihood), history,
-    status: exact.num === 0n ? 'impossible' as const : direct === 0 ? 'underflow' as const : 'positive' as const };
+    status: exact.num === 0n ? 'impossible' as const : direct === 0 || cmp(exact,rational(1n,2n**1022n))<0 ? 'underflow' as const : 'positive' as const };
 }
 export function surpriseModel(value: number, unit: Unit) {
   const mass = decimalProbability(value), information = selfInformation(mass, unit);

@@ -5,6 +5,7 @@ describe('exact probability sources and approximate information',()=>{
   it('products equal log sums; underflow never changes exact support',()=>{
     const d=probabilityProduct({probabilities:[.5,.25,.8],repeat:1});expect(d.exact).toEqual(q(1n,10n));expect(d.logLikelihood).toBeCloseTo(-Math.log(10),14);
     const small=probabilityProduct({probabilities:[.5,.5,.5],repeat:400});expect(small.exact.num).toBe(1n);expect(small.direct).toBe(0);expect(small.logLikelihood).toBeCloseTo(-1200*Math.LN2,12);expect(small.status).toBe('underflow');
+    const subnormal=probabilityProduct({probabilities:[.8,.8,.8],repeat:1200});expect(subnormal.direct).toBeGreaterThan(0);expect(subnormal.status).toBe('underflow');
     expect(probabilityProduct({probabilities:[0,.5],repeat:1}).status).toBe('impossible');
   });
   it('keeps mathematical boundaries explicit, including tiny exact probabilities',()=>{

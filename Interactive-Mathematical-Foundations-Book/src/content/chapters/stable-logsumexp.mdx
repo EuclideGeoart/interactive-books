@@ -1,0 +1,82 @@
+---
+kind: chapter
+curriculumId: VII.7
+title: "Numerical stability: log-sum-exp and stable softmax"
+hero: "Which part of a tiny probability can remain *finite*?"
+lede: Follow the actual maximum, shifted scores, exponentials, denominator and log probabilities. Compare naive overflow, probability underflow and explicit domain policies.
+description: Follow the actual maximum, shifted scores, exponentials, denominator and log probabilities. Compare naive overflow, probability underflow and explicit domain policies.
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import Xref from '../../shell/Xref.astro';
+import LogitStage from '../../lessons/information-theory/LogitStage';
+import Exercise from '../../lessons/information-theory/BlockCExercise';
+import reference from '../../../code/python/information_stability.py?raw';
+import practical from '../../../code/python/information_stability_numpy.py?raw';
+
+<Stage caption="Follow the actual maximum, shifted scores, exponentials, denominator and log probabilities. Compare naive overflow, probability underflow and explicit domain policies."><LogitStage chapter="stability" client:load /></Stage>
+
+## Intuition
+
+A score offset can make every direct exponential enormous or tiny while leaving relative probabilities unchanged. Removing that common scale protects normalization. A very small final probability can still underflow, but its logarithm can be computed without constructing that tiny number.
+
+## Definition
+
+For a nonempty score vector with at least one finite entry, let $m=\max_i z_i$. Then $\operatorname{LSE}(\mathbf z)=\log\sum_i e^{z_i}=m+\log\sum_i e^{z_i-m}$ and $\log p_i=z_i-\operatorname{LSE}(\mathbf z)$. Compute the latter equivalently as $(z_i-m)-\log\sum_j e^{z_j-m}$ to keep the correction after centering.
+
+## Mechanics
+
+The table shows the actual input z, subtraction z−m, shifted exp, stable log probability and final probability for every class. The inspector displays the actual maximum, denominator, LSE and normalization residual. The naive denominator remains visible as a separate computation. Boundary presets present their actual exceptional vector; the model reports its policy without generating unrelated predictions.
+
+## Derivation
+
+Factor out $e^m$ from the exponential sum. Taking log yields $m+\log\sum_i e^{z_i-m}$. Every finite shifted score is at most zero, at least one is zero, and the shifted denominator lies in [1,n]. Thus unnecessary exponential overflow disappears. For log-softmax, algebraically subtract the correction after centering; this avoids subtracting two huge rounded values. Computing $\log$ of a final rounded probability would discard information already present in the scores.
+
+## Worked examples
+
+At (1000,999,998), m=1000, shifted scores (0,−1,−2), shifted exponentials $(1,e^{-1},e^{-2})$, denominator approximately 1.503215 and LSE approximately 1000.407606. At (1000,0,−1000), final binary64 probabilities are (1,0,0), but stable log probabilities remain (0,−1000,−2000). At two equal scores near $10^{308}$, the rounded LSE equals the common score; the centered log probabilities still equal $-\log2$.
+
+<Stage caption="Replay actual scores, normalization, log probabilities and the selected result."><LogitStage chapter="stability" worked client:load /></Stage>
+
+## Executable reference code
+
+The standalone pedagogical implementation exposes the operations. Its NumPy companion uses array reductions and explicit domain/mask guards. Both run hand-worked assertions and execute under the independent oracle tests.
+
+<CodeFile source={reference} file="code/python/information_stability.py" />
+<CodeFile source={practical} file="code/python/information_stability_numpy.py" />
+
+## Explore
+
+Select Overflow + tiny probability and identify every actual intermediate value. Next select Naive denominator underflows: the stable result still normalizes. Select One excluded class, All −∞, Reject +∞, Reject NaN and Empty vector; explain why they are different mathematical policies. Huge equal finite logits verifies that the log correction survives a huge common offset.
+
+## Common mistakes and counterexamples
+
+Stabilization cannot guarantee that every tiny output probability is representable. Numerical probability zero from finite scores does not mean impossible support. A mathematical −∞ input explicitly excludes a class. All −∞ has a zero denominator and no unique distribution; inventing uniform probabilities would silently change the model. Positive infinity and NaN are rejected here rather than assigned an arbitrary limiting rule.
+
+## Numerical considerations
+
+Empty vectors, more than six entries, NaN and +∞ are invalid. An isolated −∞ is accepted as excluded support; all −∞ is undefined. Finite max-shift subtraction can itself exceed binary64 range at extreme opposite scores; that −∞ log result is labeled numerical range loss, not mathematical impossibility. Stable output comes from the evaluated max-shift algorithm. Decimal400 raw-exp references are independent for feasible scores, with analytic equal/dominant identities for enormous fixtures. Logs use a 2e−12 scaled absolute/relative parity budget; probabilities use 2e−14 absolute error. Normalization budget is 32×epsilon×6. These are numerical allowances, not proofs of analytic identities.
+
+## Engineering and ML connections
+
+Log-softmax lets a classifier or language model compute a finite NLL for a token whose displayed probability underflows. The next chapter selects the target’s stable log probability directly. Numerical stability changes the evaluation of the same mathematical model; it does not authorize smoothing impossible events.
+
+Connect to <Xref to="chapters/logits-softmax/">the accepted prerequisite mechanism</Xref>.
+
+## Exercises
+
+Predict intermediate quantities, calculate small cases and explain numerical or mask boundaries.
+
+<Exercise id="information-stability-1" client:load />
+
+<Exercise id="information-stability-2" client:load />
+
+<Exercise id="information-stability-3" client:load />
+
+<Exercise id="information-stability-4" client:load />
+
+<Exercise id="information-stability-5" client:load />
+
+## Summary and checkpoints
+
+A score offset can make every direct exponential enormous or tiny while leaving relative probabilities unchanged. Removing that common scale protects normalization. A very small final probability can still underflow, but its logarithm can be computed without constructing that tiny number. Read the actual pipeline, preserve the log information and state which inputs contribute.

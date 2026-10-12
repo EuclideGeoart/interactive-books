@@ -3,6 +3,8 @@ import { join, posix, relative, resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
 
 export const families = {
+  information_logits: { lesson: 'information-theory', stage: 'LogitStage', units: /^information-logits/, oracles: ['information_logits'], browser: 'information-logits' },
+  information_tokens: { lesson: 'information-theory', stage: 'TokenStage', units: /^information-tokens/, oracles: ['information_logits'], browser: 'information-tokens' },
   information_comparison: { lesson: 'information-theory', stage: 'ComparisonStage', units: /^information-comparison/, oracles: ['information_comparison'], browser: 'information-comparison' },
   information_probability: { lesson: 'information-theory', stage: 'ProbabilityStage', units: /^information-probability/, oracles: ['information_probability'], browser: 'information-probability' },
   statistics_likelihood: { lesson: 'statistics', stage: 'LikelihoodStage', units: /^statistics-likelihood/, oracles: ['statistics_likelihood'], browser: 'statistics-likelihood' },
@@ -124,6 +126,8 @@ function familyOfFile(path) {
   if (/^src\/(lessons|math)\/information-theory\//.test(path)) {
     if (/^(probabilit|Probability)/.test(base)) return 'information_probability';
     if (/^(comparison|Comparison)/.test(base)) return 'information_comparison';
+    if (/^(softmax|logit|Logit)/.test(base)) return 'information_logits';
+    if (/^(tokens?|Token)/.test(base)) return 'information_tokens';
     return null;
   }
   if (/^src\/(lessons|math)\/optimization\//.test(path)) {
