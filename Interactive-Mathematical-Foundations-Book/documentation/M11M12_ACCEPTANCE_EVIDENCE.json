@@ -1,0 +1,739 @@
+{
+  "status": "passed",
+  "date": "2026-10-12",
+  "milestoneInvocations": 1,
+  "continuations": [],
+  "partial": false,
+  "baseline": "5c97622e5ef16b0f2a1d83d8adb906db7df04bbd",
+  "implementationHeads": {
+    "informationTheory": "d4012b70014f43927c70fd9a66fae6686635695e",
+    "numericalComputing": "dc0fc9fb3a855d3003dab1cb6e2c4b40bd6ece59"
+  },
+  "mergeRevision": "62798ff4730c7ca80b6925a72c7c78b8bf24e78b",
+  "mergeParents": [
+    "dc0fc9fb3a855d3003dab1cb6e2c4b40bd6ece59",
+    "d4012b70014f43927c70fd9a66fae6686635695e"
+  ],
+  "finalSourceRevision": "46e97c1b752a80cbb79fd544bffe89b7bd055a18",
+  "branch": "feature/book-ii-m11m12-integration",
+  "worktree": "/work/interactive-books-m11m12-integration",
+  "command": "npm run validate:milestone -- --base 5c97622e5ef16b0f2a1d83d8adb906db7df04bbd",
+  "publication": {
+    "available": 97,
+    "total": 97,
+    "planned": 0,
+    "newChapters": 18,
+    "newExercises": 90,
+    "newPythonReferences": 36,
+    "renderedExercises": 534,
+    "uniqueExerciseIds": 534,
+    "renderedPythonReferences": 205,
+    "uniquePythonFiles": 205,
+    "newRoutes": [
+      {
+        "id": "VII.1",
+        "title": "Logarithms and log probabilities in computation",
+        "route": "/chapters/log-probabilities/"
+      },
+      {
+        "id": "VII.2",
+        "title": "Self-information",
+        "route": "/chapters/self-information/"
+      },
+      {
+        "id": "VII.3",
+        "title": "Entropy",
+        "route": "/chapters/entropy/"
+      },
+      {
+        "id": "VII.4",
+        "title": "Cross entropy and negative log-likelihood",
+        "route": "/chapters/cross-entropy-nll/"
+      },
+      {
+        "id": "VII.5",
+        "title": "KL divergence",
+        "route": "/chapters/kl-divergence/"
+      },
+      {
+        "id": "VII.6",
+        "title": "Logits and softmax",
+        "route": "/chapters/logits-softmax/"
+      },
+      {
+        "id": "VII.7",
+        "title": "Numerical stability: log-sum-exp and stable softmax",
+        "route": "/chapters/stable-logsumexp/"
+      },
+      {
+        "id": "VII.8",
+        "title": "From token logits to language-model loss",
+        "route": "/chapters/token-logits-loss/"
+      },
+      {
+        "id": "VIII.1",
+        "title": "Floating-point representation",
+        "route": "/chapters/floating-point-representation/"
+      },
+      {
+        "id": "VIII.2",
+        "title": "Rounding and representation error",
+        "route": "/chapters/rounding-representation-error/"
+      },
+      {
+        "id": "VIII.3",
+        "title": "Error propagation and conditioning",
+        "route": "/chapters/error-propagation-conditioning/"
+      },
+      {
+        "id": "VIII.4",
+        "title": "Catastrophic cancellation",
+        "route": "/chapters/catastrophic-cancellation/"
+      },
+      {
+        "id": "VIII.5",
+        "title": "Overflow and underflow",
+        "route": "/chapters/overflow-underflow/"
+      },
+      {
+        "id": "VIII.6",
+        "title": "Stable algorithms",
+        "route": "/chapters/stable-algorithms/"
+      },
+      {
+        "id": "VIII.7",
+        "title": "Numerical linear algebra realities",
+        "route": "/chapters/numerical-linear-algebra/"
+      },
+      {
+        "id": "VIII.8",
+        "title": "Sparse matrices and sparse structure",
+        "route": "/chapters/sparse-matrices-structure/"
+      },
+      {
+        "id": "VIII.9",
+        "title": "Vectorized computation",
+        "route": "/chapters/vectorized-computation/"
+      },
+      {
+        "id": "VIII.10",
+        "title": "Reproducibility, random seeds, and nondeterminism",
+        "route": "/chapters/reproducibility-random-seeds/"
+      }
+    ]
+  },
+  "mathematics": {
+    "typeCheck": {
+      "files": 616,
+      "errors": 0,
+      "warnings": 0,
+      "existingHints": 5
+    },
+    "unitFiles": 140,
+    "unitTests": 13729,
+    "pythonSelfTests": 477,
+    "freshOracleFamilies": 38,
+    "newOracleFamilies": 6,
+    "newFixtureCases": 433,
+    "newPythonSelfTests": 33,
+    "numericalActualValueUlpBudget": 4,
+    "numericalWorstObservedUlps": 2,
+    "informationScaledLogBudget": 2e-12,
+    "informationAbsoluteProbabilityBudget": 2e-14,
+    "stableProbabilityNormalizationBudget": "32 * Number.EPSILON * 6",
+    "exact": "bits and special signs, classifications, rational quantities, support/rank policy, shapes, indices, counts, discrete RNG states"
+  },
+  "production": {
+    "root": {
+      "base": "/",
+      "pages": 101,
+      "stylesheets": 8,
+      "filesChecked": 407,
+      "bytesApproxKiB": 30832,
+      "buildRecord": {
+        "base": "/",
+        "signature": "f14e42b444bdf77e47ea10e6dfa5c2427485cb8c8b2514bc8f7f75df8655cadc"
+      }
+    },
+    "subpath": {
+      "base": "/math-foundations/",
+      "pages": 101,
+      "stylesheets": 8,
+      "filesChecked": 407,
+      "bytesApproxKiB": 31020,
+      "buildRecord": {
+        "base": "/math-foundations/",
+        "signature": "79b96b2b27dbaff05fb719697df63954c03c572faf06f545686bfaef403aadfe"
+      }
+    }
+  },
+  "selection": {
+    "contracts": 97,
+    "newInteractionChapters": [
+      "VIII.4",
+      "VII.4",
+      "VII.3",
+      "VIII.3",
+      "VIII.1",
+      "VII.5",
+      "VII.1",
+      "VII.6",
+      "VIII.7",
+      "VIII.5",
+      "VIII.10",
+      "VIII.2",
+      "VII.2",
+      "VIII.8",
+      "VIII.6",
+      "VII.7",
+      "VII.8",
+      "VIII.9"
+    ],
+    "earlierInteractionRegressions": [
+      "IV.6",
+      "III.6",
+      "V.2",
+      "VI.4",
+      "II.10"
+    ],
+    "bothThemeContractRegressions": [
+      "IV.6",
+      "III.6",
+      "V.2",
+      "VI.4",
+      "II.10",
+      "I.9",
+      "I.1",
+      "II.1",
+      "I.3"
+    ],
+    "completeMath": true,
+    "sharedExpansion": true,
+    "unclassifiedInputs": [],
+    "selectedGates": 22,
+    "executedResultsIncludingRefreshes": 24
+  },
+  "execution": {
+    "browserAndVisualPassed": 2958,
+    "viewportSpecificSkipped": 45,
+    "failed": 0,
+    "selectedGateWallSeconds": 1136.014,
+    "gates": [
+      {
+        "gate": "complete type/content check",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/astro/astro.js",
+          "check"
+        ],
+        "status": 0,
+        "wallMs": 13223,
+        "browserPassed": null,
+        "browserSkipped": 0
+      },
+      {
+        "gate": "complete units",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/vitest/vitest.mjs",
+          "run"
+        ],
+        "status": 0,
+        "wallMs": 13263,
+        "browserPassed": null,
+        "browserSkipped": 0
+      },
+      {
+        "gate": "complete oracle + freshness",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "scripts/run-oracle.mjs"
+        ],
+        "status": 0,
+        "wallMs": 43610,
+        "browserPassed": null,
+        "browserSkipped": 0
+      },
+      {
+        "gate": "refresh root production",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/astro/astro.js",
+          "build"
+        ],
+        "status": 0,
+        "wallMs": 20233,
+        "browserPassed": null,
+        "browserSkipped": 0
+      },
+      {
+        "gate": "root production verification",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "scripts/check-dist.mjs",
+          "dist",
+          "/"
+        ],
+        "status": 0,
+        "wallMs": 252,
+        "browserPassed": null,
+        "browserSkipped": 0
+      },
+      {
+        "gate": "refresh subpath production",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "scripts/build-subpath.mjs"
+        ],
+        "status": 0,
+        "wallMs": 20550,
+        "browserPassed": null,
+        "browserSkipped": 0
+      },
+      {
+        "gate": "subpath production verification",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "scripts/check-dist.mjs",
+          "dist-subpath",
+          "/math-foundations/"
+        ],
+        "status": 0,
+        "wallMs": 258,
+        "browserPassed": null,
+        "browserSkipped": 0
+      },
+      {
+        "gate": "all read-only chapter contracts + representative both-theme axe",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/chapters.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "read-only checks|(?:^|\\s)(?:VIII\\.4|VII\\.4|VII\\.3|VIII\\.3|VIII\\.1|VII\\.5|VII\\.1|VII\\.6|VIII\\.7|VIII\\.5|VIII\\.10|VIII\\.2|VII\\.2|VIII\\.8|VIII\\.6|VII\\.7|VII\\.8|VIII\\.9|IV\\.6|III\\.6|V\\.2|VI\\.4|II\\.10|I\\.9|I\\.1|II\\.1|I\\.3)(?: |:)|Part I publication",
+          "--output",
+          "validation-results/milestone-2026-10-12T17-47-52-221Z/5-failures"
+        ],
+        "status": 0,
+        "wallMs": 455771,
+        "browserPassed": 1911,
+        "browserSkipped": 0
+      },
+      {
+        "gate": "affected chapter interactions: numerical_floating",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/numerical-computing.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "(?:^|\\s)(?:VIII\\.4(?::| )|VIII\\.3(?::| )|VIII\\.1(?::| )|VIII\\.5(?::| )|VIII\\.2(?::| ))|publication",
+          "--output",
+          "validation-results/milestone-2026-10-12T17-47-52-221Z/6-failures"
+        ],
+        "status": 0,
+        "wallMs": 35572,
+        "browserPassed": 46,
+        "browserSkipped": 2
+      },
+      {
+        "gate": "affected chapter interactions: information_comparison",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/information-comparison.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "(?:^|\\s)(?:VII\\.4(?::| )|VII\\.5(?::| ))|publication",
+          "--output",
+          "validation-results/milestone-2026-10-12T17-47-52-221Z/7-failures"
+        ],
+        "status": 0,
+        "wallMs": 14430,
+        "browserPassed": 20,
+        "browserSkipped": 4
+      },
+      {
+        "gate": "affected chapter interactions: information_probability",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/information-probability.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "(?:^|\\s)(?:VII\\.3(?::| )|VII\\.1(?::| )|VII\\.2(?::| ))|publication",
+          "--output",
+          "validation-results/milestone-2026-10-12T17-47-52-221Z/8-failures"
+        ],
+        "status": 0,
+        "wallMs": 21039,
+        "browserPassed": 39,
+        "browserSkipped": 6
+      },
+      {
+        "gate": "affected chapter interactions: information_logits",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/information-logits.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "(?:^|\\s)(?:VII\\.6(?::| )|VII\\.7(?::| ))|publication",
+          "--output",
+          "validation-results/milestone-2026-10-12T17-47-52-221Z/9-failures"
+        ],
+        "status": 0,
+        "wallMs": 16065,
+        "browserPassed": 23,
+        "browserSkipped": 4
+      },
+      {
+        "gate": "affected chapter interactions: numerical_algorithms",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/numerical-computing.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "(?:^|\\s)(?:VIII\\.7(?::| )|VIII\\.6(?::| ))|publication",
+          "--output",
+          "validation-results/milestone-2026-10-12T17-47-52-221Z/10-failures"
+        ],
+        "status": 0,
+        "wallMs": 18436,
+        "browserPassed": 18,
+        "browserSkipped": 0
+      },
+      {
+        "gate": "affected chapter interactions: numerical_structure",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/numerical-computing.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "(?:^|\\s)(?:VIII\\.10(?::| )|VIII\\.8(?::| )|VIII\\.9(?::| ))|publication",
+          "--output",
+          "validation-results/milestone-2026-10-12T17-47-52-221Z/11-failures"
+        ],
+        "status": 0,
+        "wallMs": 24629,
+        "browserPassed": 28,
+        "browserSkipped": 2
+      },
+      {
+        "gate": "affected chapter interactions: information_tokens",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/information-tokens.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "(?:^|\\s)(?:VII\\.8(?::| ))|publication",
+          "--output",
+          "validation-results/milestone-2026-10-12T17-47-52-221Z/12-failures"
+        ],
+        "status": 0,
+        "wallMs": 10594,
+        "browserPassed": 13,
+        "browserSkipped": 2
+      },
+      {
+        "gate": "affected chapter interactions: probability_bayes",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/probability-finite.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "(?:^|\\s)(?:IV\\.6(?::| ))|publication",
+          "--output",
+          "validation-results/milestone-2026-10-12T17-47-52-221Z/13-failures"
+        ],
+        "status": 0,
+        "wallMs": 10076,
+        "browserPassed": 12,
+        "browserSkipped": 0
+      },
+      {
+        "gate": "affected chapter interactions: derivatives",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/derivatives.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "(?:^|\\s)(?:III\\.6(?::| ))|publication",
+          "--output",
+          "validation-results/milestone-2026-10-12T17-47-52-221Z/14-failures"
+        ],
+        "status": 0,
+        "wallMs": 19425,
+        "browserPassed": 18,
+        "browserSkipped": 0
+      },
+      {
+        "gate": "affected chapter interactions: statistics_data",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/statistics-data.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "(?:^|\\s)(?:V\\.2(?::| ))|publication",
+          "--output",
+          "validation-results/milestone-2026-10-12T17-47-52-221Z/15-failures"
+        ],
+        "status": 0,
+        "wallMs": 8172,
+        "browserPassed": 12,
+        "browserSkipped": 0
+      },
+      {
+        "gate": "affected chapter interactions: optimization_descent",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/optimization.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "(?:^|\\s)(?:VI\\.4(?::| ))|publication",
+          "--output",
+          "validation-results/milestone-2026-10-12T17-47-52-221Z/16-failures"
+        ],
+        "status": 0,
+        "wallMs": 11112,
+        "browserPassed": 9,
+        "browserSkipped": 0
+      },
+      {
+        "gate": "affected chapter interactions: matrices",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/matrices.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "(?:^|\\s)(?:II\\.10(?::| ))|publication",
+          "--output",
+          "validation-results/milestone-2026-10-12T17-47-52-221Z/17-failures"
+        ],
+        "status": 0,
+        "wallMs": 33099,
+        "browserPassed": 28,
+        "browserSkipped": 2
+      },
+      {
+        "gate": "shared cross-chapter controls",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/vectors.spec.ts",
+          "tests/e2e/quantities.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "keyboard|Arrow|rejected|reset|announc",
+          "--output",
+          "validation-results/milestone-2026-10-12T17-47-52-221Z/18-failures"
+        ],
+        "status": 0,
+        "wallMs": 13005,
+        "browserPassed": 45,
+        "browserSkipped": 0
+      },
+      {
+        "gate": "root shared shell, navigation, accessibility and deployment",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/smoke.spec.ts",
+          "tests/e2e/stage.spec.ts",
+          "tests/e2e/navigation.spec.ts",
+          "tests/e2e/a11y.spec.ts",
+          "tests/e2e/deployment.spec.ts",
+          "--trace",
+          "off",
+          "--output",
+          "validation-results/milestone-2026-10-12T17-47-52-221Z/19-failures"
+        ],
+        "status": 0,
+        "wallMs": 150677,
+        "browserPassed": 316,
+        "browserSkipped": 5
+      },
+      {
+        "gate": "subpath prefix-dependent navigation, assets, anchors, routes and hydration",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/navigation.spec.ts",
+          "tests/e2e/deployment.spec.ts",
+          "--trace",
+          "off",
+          "--config",
+          "playwright.subpath.config.ts",
+          "--output",
+          "validation-results/milestone-2026-10-12T17-47-52-221Z/20-failures"
+        ],
+        "status": 0,
+        "wallMs": 62858,
+        "browserPassed": 102,
+        "browserSkipped": 3
+      },
+      {
+        "gate": "authoritative root visuals",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/visual.spec.ts",
+          "tests/e2e/visual-part-i.spec.ts",
+          "tests/e2e/visual-linear-algebra.spec.ts",
+          "tests/e2e/visual-calculus.spec.ts",
+          "tests/e2e/visual-probability.spec.ts",
+          "tests/e2e/visual-statistics.spec.ts",
+          "tests/e2e/visual-optimization.spec.ts",
+          "tests/e2e/visual-information-theory.spec.ts",
+          "tests/e2e/visual-numerical-computing.spec.ts",
+          "--trace",
+          "off",
+          "--output",
+          "validation-results/milestone-2026-10-12T17-47-52-221Z/21-failures"
+        ],
+        "status": 0,
+        "wallMs": 119665,
+        "browserPassed": 318,
+        "browserSkipped": 15
+      }
+    ]
+  },
+  "visualReview": {
+    "authoritativeRootTestsPassed": 318,
+    "viewportSpecificSkipped": 15,
+    "rootBaselineFiles": 780,
+    "newPartVIIReviewedImages": 48,
+    "newPartVIIIReviewedImages": 93,
+    "changedPublicationReviewedImages": 4,
+    "inventories": [
+      "documentation/M11_INFORMATION_THEORY_SCREENSHOT_INVENTORY.json",
+      "documentation/M12_SCREENSHOT_INVENTORY.json",
+      "documentation/M11M12_PUBLICATION_SCREENSHOT_INVENTORY.json"
+    ],
+    "inventoryHashesMatchFinalFiles": true,
+    "unchangedMaxDiffPixelRatio": 0.004
+  },
+  "preservation": {
+    "outsideBookIIChanged": 0,
+    "masterPlanAndEarlierModelsChanged": 0,
+    "renderedPythonReferences": 205,
+    "uniqueRenderedPythonFiles": 205,
+    "sourceRevision": "46e97c1b752a80cbb79fd544bffe89b7bd055a18",
+    "rootBuild": {
+      "base": "/",
+      "signature": "f14e42b444bdf77e47ea10e6dfa5c2427485cb8c8b2514bc8f7f75df8655cadc"
+    },
+    "subpathBuild": {
+      "base": "/math-foundations/",
+      "signature": "79b96b2b27dbaff05fb719697df63954c03c572faf06f545686bfaef403aadfe"
+    }
+  },
+  "disk": {
+    "rootFreeGiBApprox": 20,
+    "bookDirectoryMiBApprox": 231,
+    "localNodeOverlayKiB": 1616,
+    "localCachesKiB": 2224,
+    "ignoredValidationEvidenceKiB": 712,
+    "allBaselineFilesKiB": 143936,
+    "sourceKiB": 4876,
+    "codeKiB": 900,
+    "packagesInstalled": 0,
+    "browsersDownloaded": 0,
+    "clonesCreated": 0,
+    "virtualEnvironmentsCreated": 0,
+    "worktreesRemoved": 0
+  },
+  "environment": {
+    "node": "24.18.0",
+    "python": "3.12.3",
+    "numpy": "2.5.3",
+    "platform": "Linux x86_64, kernel 6.8.0-146-generic, glibc 2.39",
+    "browser": "existing system Chrome, Playwright 1.63.0; desktop/tablet/mobile emulation"
+  },
+  "originalPartialImplementationManifests": [
+    {
+      "path": "documentation/M11_INITIAL_FOCUSED_BROWSER_MANIFEST.json",
+      "sha256": "4efc29a50e84184be7aab760d105a10860eedc57b116017874f7ce383059c54e",
+      "partial": true,
+      "status": "retained initial failed run"
+    },
+    {
+      "path": "documentation/M11_FOCUSED_MATH_MANIFEST.json",
+      "sha256": "c448536c9b3a7a7a93e96dca9ecc8c6ecab165490a8fc420f371c5a2aaba58c8",
+      "partial": true,
+      "status": "passed"
+    },
+    {
+      "path": "documentation/M11_FOCUSED_VISUAL_MANIFEST.json",
+      "sha256": "ef5c62882361496d49514a8b7557715d053ff180dfee08f0c9bf313144f6a5ed",
+      "partial": true,
+      "status": "passed"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "documentation/M11M12_MILESTONE_MANIFEST.json",
+      "sha256": "bf1b7dd769104b867a0324ff5716c6047ae6d17d520d99d8fd372ec952281440"
+    },
+    {
+      "path": "documentation/M11M12_DRY_RUN_MANIFEST.json",
+      "sha256": "14ba9b2cdc7ad486fbc2f05d06a9f7fb3836770ceaea10bf0e08ea31b688c331"
+    },
+    {
+      "path": "documentation/M11M12_MILESTONE_RUN.log",
+      "sha256": "d96a0ad06de614a072446a52c9ca821c66bd31ee0db85434f6981384891c9acb"
+    }
+  ],
+  "limits": [
+    "No exhaustive certification",
+    "Windows visual baselines unreviewed for new chapters",
+    "No physical-device or human screen-reader acceptance",
+    "FP16/BF16 emulated, not hardware execution",
+    "Bounded educational numerical engines; no LAPACK replacement or arbitrary tensor/RNG/environment reproducibility guarantees"
+  ],
+  "remoteActions": {
+    "push": false,
+    "deploy": false,
+    "mergeMain": false
+  }
+}
