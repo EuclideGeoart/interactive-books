@@ -7,7 +7,7 @@
  * fails the build. Taglines are Book II copy and are not part of the plan.
  *
  * To publish a chapter: add `src/content/chapters/<slug>.mdx` (`kind: chapter`, `curriculumId`), then replace
- * `planned(n, title[, role])` by `available(n, title, slug[, role])` — same number, same title, same role.
+ * its entry with `available(n, title, slug[, role])` — same number, same title, same role.
  * Nothing else needs to change; `tests/unit/content.test.ts` and `curriculum.test.ts` check the pairing.
  */
 
@@ -39,7 +39,6 @@ export interface Part {
   readonly chapters: readonly ChapterEntry[];
 }
 
-const planned = (n: number, title: string, role?: ChapterRole): ChapterEntry => ({ n, title, role, status: 'planned' });
 /** A published chapter: it has a page at `/chapters/<slug>/` (an MDX file named `<slug>.mdx`). */
 const available = (n: number, title: string, slug: string, role?: ChapterRole): ChapterEntry => ({ n, title, role, status: 'available', slug });
 
@@ -198,14 +197,14 @@ export const parts: readonly Part[] = [
     purpose: "prepare the learner for classification loss, probabilistic models, and language-model training.",
     exitCondition: "cross entropy and token prediction loss are no longer mysterious formulas.",
     chapters: [
-      planned(1, "Logarithms and log probabilities in computation"),
-      planned(2, "Self-information"),
-      planned(3, "Entropy"),
-      planned(4, "Cross entropy and negative log-likelihood"),
-      planned(5, "KL divergence"),
-      planned(6, "Logits and softmax"),
-      planned(7, "Numerical stability: log-sum-exp and stable softmax"),
-      planned(8, "From token logits to language-model loss"),
+      available(1, "Logarithms and log probabilities in computation", "log-probabilities"),
+      available(2, "Self-information", "self-information"),
+      available(3, "Entropy", "entropy"),
+      available(4, "Cross entropy and negative log-likelihood", "cross-entropy-nll"),
+      available(5, "KL divergence", "kl-divergence"),
+      available(6, "Logits and softmax", "logits-softmax"),
+      available(7, "Numerical stability: log-sum-exp and stable softmax", "stable-logsumexp"),
+      available(8, "From token logits to language-model loss", "token-logits-loss"),
     ],
   },
   {

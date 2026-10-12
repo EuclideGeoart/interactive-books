@@ -178,9 +178,11 @@ test.describe('chapter shell', () => {
 });
 
 
-test('M9+M10: IV.16 → V.1, V.10 → VI.1 and VI.10 → planned VII.1 boundaries',async({page})=>{
- for(const [slug,nextId,nextSlug] of [['central-limit-theorem','V.1','data-summaries'],['maximum-a-posteriori','VI.1','objective-landscapes']] as const){await page.goto(`chapters/${slug}/`);const next=page.locator('.chapter-pager .pager-next');await expect(next).toContainText(nextId+' ·');await expect(next).toHaveAttribute('href',new RegExp(`chapters/${nextSlug}/$`));await next.click();await expect(page).toHaveURL(new RegExp(`chapters/${nextSlug}/$`));await expect(page.locator('h1')).toHaveCount(1);}
- await page.goto('chapters/optimization-diagnostics/');const planned=page.locator('.chapter-pager .pager-next');await expect(planned).toContainText('VII.1 ·');await expect(planned).toContainText('planned');expect(await planned.getAttribute('href')).toBeNull();
+test('M11+M12: earlier boundaries, VI.10 → VII.1 → VII.8 → VIII.1 and final chapter',async({page})=>{
+ for(const [slug,nextId,nextSlug] of [['central-limit-theorem','V.1','data-summaries'],['maximum-a-posteriori','VI.1','objective-landscapes'],['optimization-diagnostics','VII.1','log-probabilities'],['token-logits-loss','VIII.1','floating-point-representation']] as const){await page.goto(`chapters/${slug}/`);const next=page.locator('.chapter-pager .pager-next');await expect(next).toContainText(nextId+' ·');await expect(next).toHaveAttribute('href',new RegExp(`chapters/${nextSlug}/$`));await next.click();await expect(page).toHaveURL(new RegExp(`chapters/${nextSlug}/$`));await expect(page.locator('h1')).toHaveCount(1);}
+ await page.goto('chapters/log-probabilities/');await expect(page.locator('.chapter-pager .pager-previous')).toHaveAttribute('href',/chapters\/optimization-diagnostics\/$/);
+ await page.goto('chapters/floating-point-representation/');await expect(page.locator('.chapter-pager .pager-previous')).toHaveAttribute('href',/chapters\/token-logits-loss\/$/);
+ await page.goto('chapters/reproducibility-random-seeds/');await expect(page.locator('.chapter-pager .pager-next')).toHaveCount(0);await expect(page.locator('.chapter-pager .pager-previous')).toHaveAttribute('href',/chapters\/vectorized-computation\/$/);
 });
 
 

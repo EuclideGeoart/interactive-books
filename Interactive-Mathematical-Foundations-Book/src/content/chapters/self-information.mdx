@@ -1,0 +1,82 @@
+---
+kind: chapter
+curriculumId: VII.2
+title: "Self-information"
+hero: "How much information comes from a *rare* event?"
+lede: Move one event probability and watch its surprise change on the graph and in the inspector. Switch between nats and bits without changing the event.
+description: Move one event probability and watch its surprise change on the graph and in the inspector. Switch between nats and bits without changing the event.
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import Xref from '../../shell/Xref.astro';
+import ProbabilityStage from '../../lessons/information-theory/ProbabilityStage';
+import Exercise from '../../lessons/information-theory/BlockAExercise';
+import reference from '../../../code/python/information_surprise.py?raw';
+import practical from '../../../code/python/information_surprise_numpy.py?raw';
+
+<Stage caption="Move one event probability and watch its surprise change on the graph and in the inspector. Switch between nats and bits without changing the event."><ProbabilityStage chapter="surprise" client:load /></Stage>
+
+## Intuition
+
+A guaranteed event teaches us nothing unexpected. An event assigned a small probability is surprising if it occurs. The vertical coordinate measures this surprise, not a second probability.
+
+## Definition
+
+For an event or discrete observation $x$ with probability $p(x)$, define $I(x)=-\log p(x)$ in nats, or $I_2(x)=-\log_2p(x)$ in bits. Its real-valued domain is $0<p(x)\le1$, with the extended convention $I(x)=+\infty$ when $p(x)=0$.
+
+## Mechanics
+
+The event probability control is the only probability source. The curve samples the same self-information function that computes the inspector and selected point. At probability zero no finite graph point is drawn: the explicit text and inspector report infinity.
+
+## Derivation
+
+Surprise should add for independent observations: if $p(x,y)=p(x)p(y)$, then $I(x,y)=I(x)+I(y)$. The negative logarithm supplies that identity and decreases as probability increases. A unit choice scales the logarithm: $I_2=I/\log2$. One bit equals $\log2$ nats.
+
+## Worked examples
+
+For $p=1/4$, surprise is $-\log_2(1/4)=2$ bits, or $\log4\approx1.386294$ nats. Doubling probability from $1/8$ to $1/4$ decreases surprise from 3 to 2 bits. At $p=1$, both units give zero.
+
+<Stage caption="Replay the actual mathematical inputs, terms and result."><ProbabilityStage chapter="surprise" worked client:load /></Stage>
+
+## Executable reference code
+
+Run the standalone pedagogical version to see each operation; the NumPy companion shows the practical array form. Both execute assertions and are exercised by the independent oracle tests.
+
+<CodeFile source={reference} file="code/python/information_surprise.py" />
+<CodeFile source={practical} file="code/python/information_surprise_numpy.py" />
+
+## Explore
+
+Predict the effect of halving probability. Select Certain event and Impossible event, then explain why one gives zero and the other infinite surprise. Switch units and check that the selected probability remains fixed.
+
+## Common mistakes and counterexamples
+
+Surprise is not the probability of surprise. An impossible event cannot be observed under a model assigning it probability zero; an actual occurrence would challenge that model. Infinite surprise is a mathematical boundary, not a large finite constant or a floating-point overflow.
+
+## Numerical considerations
+
+Probability is an exact two-place decimal fraction. Logarithms are approximate binary64 values. The graph samples p from 0.01 to 1 and explicitly excludes the infinite endpoint at zero; it does not pretend that the finite plotted range contains the limit. All views use the same selected derived information. Invalid probabilities are rejected.
+
+## Engineering and ML connections
+
+Coding theory interprets −log₂ p as ideal information content. Individual codeword lengths must respect discrete coding constraints, so this value need not be the length of a particular codeword. A classifier’s observed-label loss is the same quantity in nats.
+
+Continue from <Xref to="chapters/log-probabilities/">the preceding mathematical connection</Xref>.
+
+## Exercises
+
+Predict, compute and explain the actual quantities. Each question offers corrective feedback and a worked solution.
+
+<Exercise id="information-surprise-1" client:load />
+
+<Exercise id="information-surprise-2" client:load />
+
+<Exercise id="information-surprise-3" client:load />
+
+<Exercise id="information-surprise-4" client:load />
+
+<Exercise id="information-surprise-5" client:load />
+
+## Summary and checkpoints
+
+A guaranteed event teaches us nothing unexpected. An event assigned a small probability is surprising if it occurs. The vertical coordinate measures this surprise, not a second probability. Check the assumptions, unit and boundary before interpreting the computed result.

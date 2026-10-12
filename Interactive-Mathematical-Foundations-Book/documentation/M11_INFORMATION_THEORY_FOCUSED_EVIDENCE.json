@@ -1,0 +1,1736 @@
+{
+  "status": "focused-implementation-passed-with-retained-failures-and-targeted-continuations",
+  "partial": true,
+  "milestoneAcceptance": false,
+  "exhaustiveCertification": false,
+  "date": "2026-10-12",
+  "baseline": "5c97622e5ef16b0f2a1d83d8adb906db7df04bbd",
+  "sourceRevision": "102926a55cf006f25fc2290153c59c095c691e7f",
+  "commits": {
+    "blockA": "08b0a80e89dc3862894854998148861ee3223042",
+    "blockB": "c89ec63a70af71d465e6e80bda090597ae8dca84",
+    "blockC": "ad2bad9e8d723cb1e1db205640cf0ea327e999ac",
+    "reviewFixes": "102926a55cf006f25fc2290153c59c095c691e7f"
+  },
+  "publication": {
+    "available": 87,
+    "total": 97,
+    "planned": 10,
+    "chapters": 8,
+    "exercises": 40,
+    "pythonReferences": 16
+  },
+  "mathematics": {
+    "informationUnitFiles": 10,
+    "informationUnitTests": 25,
+    "guardFiles": 3,
+    "guardTests": 165,
+    "pythonSelfTests": 16,
+    "fixtures": [
+      {
+        "family": "information_probability",
+        "path": "fixtures/information_probability.fixtures.json",
+        "sha256": "6ff0d36c31bb08a1a695403da321db3a9fee8c2714afdef2aa92cc2fde7d9ee1",
+        "cases": {
+          "products": 7,
+          "surprises": 14,
+          "entropies": 18
+        },
+        "policy": "Exact Fraction masses/products; Decimal100 natural logarithms. Binary64 absolute/relative budget 2e-12*max(1,abs(expected)): up to six log terms, scaled across at most 1200 repetitions; no bound is used for exact fractions or signed infinity. Direct products intentionally expose underflow and are not repaired.",
+        "freshness": "passed --check"
+      },
+      {
+        "family": "information_comparison",
+        "path": "fixtures/information_comparison.fixtures.json",
+        "sha256": "554bed0fd464c87e2407a40aa39d4eb37e6d0555bf28980b6f388d7ee087d762",
+        "cases": {
+          "cases": 44
+        },
+        "policy": "Exact normalized Fraction source masses, Decimal100 log-difference terms and independent CE\u2212H total. Binary64 budget 2e-12*max(1,abs(expected)); six logarithmic terms with bounded source normalization. Individual KL terms may be negative; small residuals are rounding, not a counterexample to the analytic inequality. Exact equality and infinity require exact policy matches.",
+        "freshness": "passed --check"
+      },
+      {
+        "family": "information_logits",
+        "path": "fixtures/information_logits.fixtures.json",
+        "sha256": "120d08b49350f14f696128c4243ffc381b5f4acf781d8dab4dd2d3fe71f2270a",
+        "cases": {
+          "logits": 17,
+          "sequences": 6
+        },
+        "policy": "Independent Decimal400 raw exp sum and log(total), with analytic equal/dominant enormous cases. Exact binary64 inputs via Decimal.from_float. Log/denominator budget 2e-12*max(1,abs(expected)); probability absolute budget 2e-14 (underflow rounds to zero or subnormal). Normalization budget 32*epsilon*6=4.2633e-14 for at most six nonnegative terms. NaN/+Infinity/empty rejected; all \u2212Infinity undefined; isolated \u2212Infinity excludes a class. Finite-logit range overflow is numerical, not excluded support. Masked mean denominator is the number of contributing positions.",
+        "freshness": "passed --check"
+      }
+    ],
+    "worstScaledLogErrors": {
+      "information_probability": 8.837300888713011e-16,
+      "information_comparison": 2.220446049250313e-16,
+      "information_logits": 1.844526124325947e-16
+    },
+    "worstProbabilityAbsoluteError": 1.1102230246251565e-16,
+    "guardCommand": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "tests/unit/curriculum.test.ts",
+      "tests/unit/content.test.ts",
+      "tests/unit/validation-plan.test.ts"
+    ]
+  },
+  "typecheck": {
+    "errors": 0,
+    "warnings": 0,
+    "existingHints": 5,
+    "log": "validation-results/m11-final-typecheck.log",
+    "sha256": "15d4e5e442e60516bb9cd67953c079337e4d5648df80360f4bd7b210f6287559",
+    "command": [
+      "node",
+      "node_modules/astro/astro.js",
+      "check"
+    ]
+  },
+  "rootStatic": {
+    "summary": "dist @ /: 91 pages, 8 stylesheets, 391 files checked \u2014 OK",
+    "log": "validation-results/m11-root-static.log",
+    "sha256": "2386474e38911136566c40a9a36a717de8e15786759f98dc0ebe094660293b53",
+    "command": [
+      "node",
+      "scripts/check-dist.mjs",
+      "dist",
+      "/"
+    ]
+  },
+  "selectedBrowserCoverage": {
+    "uniquePassed": 290,
+    "viewportTouchSkips": 16,
+    "allEightMobileTouchCasesPassed": true,
+    "initialContractPasses": 153,
+    "repairedAxeCases": 42,
+    "deepInteractionPasses": 95,
+    "selectorRepairPasses": 6,
+    "additionalFinalAxisCanaries": 3,
+    "unresolvedFailures": 0,
+    "rawRuns": [
+      {
+        "path": "validation-results/m11-browser-continuation.json",
+        "sha256": "6fb8cbea2c3997dc6b30419d1488194f6665497694faa4ec2eb3357ccae79609",
+        "stats": {
+          "startTime": "2026-10-12T16:41:02.394Z",
+          "duration": 134379.03,
+          "expected": 131,
+          "skipped": 16,
+          "unexpected": 6,
+          "flaky": 0
+        },
+        "cases": [
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.1 Logarithms and log probabilities in computation > axe \u2014 light theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.1 Logarithms and log probabilities in computation > axe \u2014 dark theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.1 Logarithms and log probabilities in computation > axe \u2014 light theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.1 Logarithms and log probabilities in computation > axe \u2014 dark theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.1 Logarithms and log probabilities in computation > axe \u2014 light theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.1 Logarithms and log probabilities in computation > axe \u2014 dark theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.3 Entropy > axe \u2014 light theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.3 Entropy > axe \u2014 dark theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.3 Entropy > axe \u2014 light theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.3 Entropy > axe \u2014 dark theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.3 Entropy > axe \u2014 light theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.3 Entropy > axe \u2014 dark theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.4 Cross entropy and negative log-likelihood > axe \u2014 light theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.4 Cross entropy and negative log-likelihood > axe \u2014 dark theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.4 Cross entropy and negative log-likelihood > axe \u2014 light theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.4 Cross entropy and negative log-likelihood > axe \u2014 dark theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.4 Cross entropy and negative log-likelihood > axe \u2014 light theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.4 Cross entropy and negative log-likelihood > axe \u2014 dark theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.5 KL divergence > axe \u2014 light theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.5 KL divergence > axe \u2014 dark theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.5 KL divergence > axe \u2014 light theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.5 KL divergence > axe \u2014 dark theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.5 KL divergence > axe \u2014 light theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.5 KL divergence > axe \u2014 dark theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.6 Logits and softmax > axe \u2014 light theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.6 Logits and softmax > axe \u2014 dark theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.6 Logits and softmax > axe \u2014 light theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.6 Logits and softmax > axe \u2014 dark theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.6 Logits and softmax > axe \u2014 light theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.6 Logits and softmax > axe \u2014 dark theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.7 Numerical stability: log-sum-exp and stable softmax > axe \u2014 light theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.7 Numerical stability: log-sum-exp and stable softmax > axe \u2014 dark theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.7 Numerical stability: log-sum-exp and stable softmax > axe \u2014 light theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.7 Numerical stability: log-sum-exp and stable softmax > axe \u2014 dark theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.7 Numerical stability: log-sum-exp and stable softmax > axe \u2014 light theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.7 Numerical stability: log-sum-exp and stable softmax > axe \u2014 dark theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.8 From token logits to language-model loss > axe \u2014 light theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.8 From token logits to language-model loss > axe \u2014 dark theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.8 From token logits to language-model loss > axe \u2014 light theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.8 From token logits to language-model loss > axe \u2014 dark theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.8 From token logits to language-model loss > axe \u2014 light theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "chapters.spec.ts",
+            "title": "chapters.spec.ts > VII.8 From token logits to language-model loss > axe \u2014 dark theme: initial state, then every exercise answered wrongly with its solution shown",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-comparison.spec.ts",
+            "title": "information-comparison.spec.ts > VII.4: fixed P editable Q one-hot or direction exception and replay",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-comparison.spec.ts",
+            "title": "information-comparison.spec.ts > VII.4: light infinite state accessibility",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-comparison.spec.ts",
+            "title": "information-comparison.spec.ts > VII.4: dark infinite state accessibility",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-comparison.spec.ts",
+            "title": "information-comparison.spec.ts > VII.5: fixed P editable Q one-hot or direction exception and replay",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-comparison.spec.ts",
+            "title": "information-comparison.spec.ts > VII.5: light infinite state accessibility",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-comparison.spec.ts",
+            "title": "information-comparison.spec.ts > VII.5: dark infinite state accessibility",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-comparison.spec.ts",
+            "title": "information-comparison.spec.ts > VII.4: touchscreen parameter and reset preserve model identity",
+            "project": "desktop",
+            "status": "skipped",
+            "expectedStatus": "skipped"
+          },
+          {
+            "file": "information-comparison.spec.ts",
+            "title": "information-comparison.spec.ts > VII.5: touchscreen parameter and reset preserve model identity",
+            "project": "desktop",
+            "status": "skipped",
+            "expectedStatus": "skipped"
+          },
+          {
+            "file": "information-comparison.spec.ts",
+            "title": "information-comparison.spec.ts > VII.4: fixed P editable Q one-hot or direction exception and replay",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-comparison.spec.ts",
+            "title": "information-comparison.spec.ts > VII.4: light infinite state accessibility",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-comparison.spec.ts",
+            "title": "information-comparison.spec.ts > VII.4: dark infinite state accessibility",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-comparison.spec.ts",
+            "title": "information-comparison.spec.ts > VII.5: fixed P editable Q one-hot or direction exception and replay",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-comparison.spec.ts",
+            "title": "information-comparison.spec.ts > VII.5: light infinite state accessibility",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-comparison.spec.ts",
+            "title": "information-comparison.spec.ts > VII.5: dark infinite state accessibility",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-comparison.spec.ts",
+            "title": "information-comparison.spec.ts > VII.4: touchscreen parameter and reset preserve model identity",
+            "project": "tablet",
+            "status": "skipped",
+            "expectedStatus": "skipped"
+          },
+          {
+            "file": "information-comparison.spec.ts",
+            "title": "information-comparison.spec.ts > VII.5: touchscreen parameter and reset preserve model identity",
+            "project": "tablet",
+            "status": "skipped",
+            "expectedStatus": "skipped"
+          },
+          {
+            "file": "information-comparison.spec.ts",
+            "title": "information-comparison.spec.ts > VII.4: fixed P editable Q one-hot or direction exception and replay",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-comparison.spec.ts",
+            "title": "information-comparison.spec.ts > VII.4: light infinite state accessibility",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-comparison.spec.ts",
+            "title": "information-comparison.spec.ts > VII.4: dark infinite state accessibility",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-comparison.spec.ts",
+            "title": "information-comparison.spec.ts > VII.5: fixed P editable Q one-hot or direction exception and replay",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-comparison.spec.ts",
+            "title": "information-comparison.spec.ts > VII.5: light infinite state accessibility",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-comparison.spec.ts",
+            "title": "information-comparison.spec.ts > VII.5: dark infinite state accessibility",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-comparison.spec.ts",
+            "title": "information-comparison.spec.ts > VII.4: touchscreen parameter and reset preserve model identity",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-comparison.spec.ts",
+            "title": "information-comparison.spec.ts > VII.5: touchscreen parameter and reset preserve model identity",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.6: score numeric keyboard pointer shift invariance reset and stable geometry",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.6: light extreme pipeline accessibility",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.6: dark extreme pipeline accessibility",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.7: score numeric keyboard pointer shift invariance reset and stable geometry",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.7: light extreme pipeline accessibility",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.7: dark extreme pipeline accessibility",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.7: exceptional vectors explicit exclusion and huge equal correction",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.6: touchscreen parameter and reset preserve model identity",
+            "project": "desktop",
+            "status": "skipped",
+            "expectedStatus": "skipped"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.7: touchscreen parameter and reset preserve model identity",
+            "project": "desktop",
+            "status": "skipped",
+            "expectedStatus": "skipped"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.6: score numeric keyboard pointer shift invariance reset and stable geometry",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.6: light extreme pipeline accessibility",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.6: dark extreme pipeline accessibility",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.7: score numeric keyboard pointer shift invariance reset and stable geometry",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.7: light extreme pipeline accessibility",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.7: dark extreme pipeline accessibility",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.7: exceptional vectors explicit exclusion and huge equal correction",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.6: touchscreen parameter and reset preserve model identity",
+            "project": "tablet",
+            "status": "skipped",
+            "expectedStatus": "skipped"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.7: touchscreen parameter and reset preserve model identity",
+            "project": "tablet",
+            "status": "skipped",
+            "expectedStatus": "skipped"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.6: score numeric keyboard pointer shift invariance reset and stable geometry",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.6: light extreme pipeline accessibility",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.6: dark extreme pipeline accessibility",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.7: score numeric keyboard pointer shift invariance reset and stable geometry",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.7: light extreme pipeline accessibility",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.7: dark extreme pipeline accessibility",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.7: exceptional vectors explicit exclusion and huge equal correction",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.6: touchscreen parameter and reset preserve model identity",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-logits.spec.ts",
+            "title": "information-logits.spec.ts > VII.7: touchscreen parameter and reset preserve model identity",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.1: numeric keyboard pointer rejection reset replay and feedback",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.2: numeric keyboard pointer rejection reset replay and feedback",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.3: numeric keyboard pointer rejection reset replay and feedback",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.1: positive underflow and impossible zero remain distinct",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.2: plot inspector and boundary text agree",
+            "project": "desktop",
+            "status": "unexpected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.3: exact normalization contributions extrema and rejected all-zero weights",
+            "project": "desktop",
+            "status": "unexpected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.1: light exceptional state axe and model description",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.1: dark exceptional state axe and model description",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.2: light exceptional state axe and model description",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.2: dark exceptional state axe and model description",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.3: light exceptional state axe and model description",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.3: dark exceptional state axe and model description",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.1: touchscreen parameter and reset preserve model identity",
+            "project": "desktop",
+            "status": "skipped",
+            "expectedStatus": "skipped"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.2: touchscreen parameter and reset preserve model identity",
+            "project": "desktop",
+            "status": "skipped",
+            "expectedStatus": "skipped"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.3: touchscreen parameter and reset preserve model identity",
+            "project": "desktop",
+            "status": "skipped",
+            "expectedStatus": "skipped"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.1: numeric keyboard pointer rejection reset replay and feedback",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.2: numeric keyboard pointer rejection reset replay and feedback",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.3: numeric keyboard pointer rejection reset replay and feedback",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.1: positive underflow and impossible zero remain distinct",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.2: plot inspector and boundary text agree",
+            "project": "tablet",
+            "status": "unexpected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.3: exact normalization contributions extrema and rejected all-zero weights",
+            "project": "tablet",
+            "status": "unexpected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.1: light exceptional state axe and model description",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.1: dark exceptional state axe and model description",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.2: light exceptional state axe and model description",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.2: dark exceptional state axe and model description",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.3: light exceptional state axe and model description",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.3: dark exceptional state axe and model description",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.1: touchscreen parameter and reset preserve model identity",
+            "project": "tablet",
+            "status": "skipped",
+            "expectedStatus": "skipped"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.2: touchscreen parameter and reset preserve model identity",
+            "project": "tablet",
+            "status": "skipped",
+            "expectedStatus": "skipped"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.3: touchscreen parameter and reset preserve model identity",
+            "project": "tablet",
+            "status": "skipped",
+            "expectedStatus": "skipped"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.1: numeric keyboard pointer rejection reset replay and feedback",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.2: numeric keyboard pointer rejection reset replay and feedback",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.3: numeric keyboard pointer rejection reset replay and feedback",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.1: positive underflow and impossible zero remain distinct",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.2: plot inspector and boundary text agree",
+            "project": "mobile",
+            "status": "unexpected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.3: exact normalization contributions extrema and rejected all-zero weights",
+            "project": "mobile",
+            "status": "unexpected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.1: light exceptional state axe and model description",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.1: dark exceptional state axe and model description",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.2: light exceptional state axe and model description",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.2: dark exceptional state axe and model description",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.3: light exceptional state axe and model description",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.3: dark exceptional state axe and model description",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.1: touchscreen parameter and reset preserve model identity",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.2: touchscreen parameter and reset preserve model identity",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.3: touchscreen parameter and reset preserve model identity",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-tokens.spec.ts",
+            "title": "information-tokens.spec.ts > VII.8: actual positions targets stable NLL masks denominator and replay",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-tokens.spec.ts",
+            "title": "information-tokens.spec.ts > VII.8: score keyboard numeric rejection and touch-equivalent controls",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-tokens.spec.ts",
+            "title": "information-tokens.spec.ts > VII.8: light all-masked undefined mean accessibility",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-tokens.spec.ts",
+            "title": "information-tokens.spec.ts > VII.8: dark all-masked undefined mean accessibility",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-tokens.spec.ts",
+            "title": "information-tokens.spec.ts > VII.8: touchscreen position target and explicit mask reduction",
+            "project": "desktop",
+            "status": "skipped",
+            "expectedStatus": "skipped"
+          },
+          {
+            "file": "information-tokens.spec.ts",
+            "title": "information-tokens.spec.ts > VII.8: actual positions targets stable NLL masks denominator and replay",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-tokens.spec.ts",
+            "title": "information-tokens.spec.ts > VII.8: score keyboard numeric rejection and touch-equivalent controls",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-tokens.spec.ts",
+            "title": "information-tokens.spec.ts > VII.8: light all-masked undefined mean accessibility",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-tokens.spec.ts",
+            "title": "information-tokens.spec.ts > VII.8: dark all-masked undefined mean accessibility",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-tokens.spec.ts",
+            "title": "information-tokens.spec.ts > VII.8: touchscreen position target and explicit mask reduction",
+            "project": "tablet",
+            "status": "skipped",
+            "expectedStatus": "skipped"
+          },
+          {
+            "file": "information-tokens.spec.ts",
+            "title": "information-tokens.spec.ts > VII.8: actual positions targets stable NLL masks denominator and replay",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-tokens.spec.ts",
+            "title": "information-tokens.spec.ts > VII.8: score keyboard numeric rejection and touch-equivalent controls",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-tokens.spec.ts",
+            "title": "information-tokens.spec.ts > VII.8: light all-masked undefined mean accessibility",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-tokens.spec.ts",
+            "title": "information-tokens.spec.ts > VII.8: dark all-masked undefined mean accessibility",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-tokens.spec.ts",
+            "title": "information-tokens.spec.ts > VII.8: touchscreen position target and explicit mask reduction",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          }
+        ],
+        "command": [
+          "node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/chapters.spec.ts",
+          "tests/e2e/information-probability.spec.ts",
+          "tests/e2e/information-comparison.spec.ts",
+          "tests/e2e/information-logits.spec.ts",
+          "tests/e2e/information-tokens.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "VII\\.(?:1|3|4|5|6|7|8) .*axe|VII\\.[1-8]:",
+          "--output",
+          "validation-results/m11-browser-continuation-failures",
+          "--reporter",
+          "list,json"
+        ],
+        "lock": "/tmp/imf-heavy.lock",
+        "environment": {
+          "PLAYWRIGHT_JSON_OUTPUT_FILE": "validation-results/m11-browser-continuation.json"
+        }
+      },
+      {
+        "path": "validation-results/m11-browser-selector-retry.json",
+        "sha256": "1338735e86353fe65f63e13c1fe8441512a0813424db87f5d5b371fdc1bdba98",
+        "stats": {
+          "startTime": "2026-10-12T16:44:55.286Z",
+          "duration": 2594.481,
+          "expected": 6,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "cases": [
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.2: plot inspector and boundary text agree",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.3: exact normalization contributions extrema and rejected all-zero weights",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.2: plot inspector and boundary text agree",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.3: exact normalization contributions extrema and rejected all-zero weights",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.2: plot inspector and boundary text agree",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.3: exact normalization contributions extrema and rejected all-zero weights",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          }
+        ],
+        "command": [
+          "node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/information-probability.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "VII\\.2: plot inspector|VII\\.3: exact normalization",
+          "--output",
+          "validation-results/m11-browser-selector-retry-failures",
+          "--reporter",
+          "list,json"
+        ],
+        "lock": "/tmp/imf-heavy.lock",
+        "environment": {
+          "PLAYWRIGHT_JSON_OUTPUT_FILE": "validation-results/m11-browser-selector-retry.json"
+        }
+      },
+      {
+        "path": "validation-results/m11-axis-canary.json",
+        "sha256": "a038744f7bddaf32beff18c570264132d0e99f4639095abd0c03145271e294b8",
+        "stats": {
+          "startTime": "2026-10-12T16:52:45.570Z",
+          "duration": 1309.8990000000001,
+          "expected": 3,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "cases": [
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.1: positive underflow and impossible zero remain distinct",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.1: positive underflow and impossible zero remain distinct",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "information-probability.spec.ts",
+            "title": "information-probability.spec.ts > VII.1: positive underflow and impossible zero remain distinct",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          }
+        ],
+        "command": [
+          "node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/information-probability.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "VII\\.1: positive underflow",
+          "--output",
+          "validation-results/m11-axis-canary-failures",
+          "--reporter",
+          "list,json"
+        ],
+        "lock": "/tmp/imf-heavy.lock",
+        "environment": {
+          "PLAYWRIGHT_JSON_OUTPUT_FILE": "validation-results/m11-axis-canary.json"
+        }
+      },
+      {
+        "path": "validation-results/m11-visual-capture.json",
+        "sha256": "a34ae2ff158a1d836c48fb83e45db7d4a844d6325aae0792f502d3bcc600fe4f",
+        "stats": {
+          "startTime": "2026-10-12T16:47:12.111Z",
+          "duration": 13500.244,
+          "expected": 24,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "cases": [
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.6: opening and exceptional information states",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.7: opening and exceptional information states",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.8: opening and exceptional information states",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.4: opening and exceptional information states",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.5: opening and exceptional information states",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.1: opening and exceptional information states",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.2: opening and exceptional information states",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.3: opening and exceptional information states",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.6: opening and exceptional information states",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.7: opening and exceptional information states",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.8: opening and exceptional information states",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.4: opening and exceptional information states",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.5: opening and exceptional information states",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.1: opening and exceptional information states",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.2: opening and exceptional information states",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.3: opening and exceptional information states",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.6: opening and exceptional information states",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.7: opening and exceptional information states",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.8: opening and exceptional information states",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.4: opening and exceptional information states",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.5: opening and exceptional information states",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.1: opening and exceptional information states",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.2: opening and exceptional information states",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.3: opening and exceptional information states",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          }
+        ],
+        "command": [
+          "node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/visual-information-theory.spec.ts",
+          "--trace",
+          "off",
+          "--update-snapshots",
+          "--output",
+          "validation-results/m11-visual-capture-failures",
+          "--reporter",
+          "list,json"
+        ],
+        "lock": "/tmp/imf-heavy.lock",
+        "environment": {
+          "PLAYWRIGHT_JSON_OUTPUT_FILE": "validation-results/m11-visual-capture.json"
+        }
+      },
+      {
+        "path": "validation-results/m11-visual-repair.json",
+        "sha256": "ed807a5827c9f8c0dee63b27ef7365349c111fad7b6b23ae3bd961a5fea439ab",
+        "stats": {
+          "startTime": "2026-10-12T16:52:47.189Z",
+          "duration": 3812.6880000000006,
+          "expected": 6,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "cases": [
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.5: opening and exceptional information states",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.1: opening and exceptional information states",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.5: opening and exceptional information states",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.1: opening and exceptional information states",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.5: opening and exceptional information states",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.1: opening and exceptional information states",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          }
+        ],
+        "command": [
+          "node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/visual-information-theory.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "VII\\.(?:1|5):",
+          "--update-snapshots",
+          "--output",
+          "validation-results/m11-visual-repair-failures",
+          "--reporter",
+          "list,json"
+        ],
+        "lock": "/tmp/imf-heavy.lock",
+        "environment": {
+          "PLAYWRIGHT_JSON_OUTPUT_FILE": "validation-results/m11-visual-repair.json"
+        }
+      },
+      {
+        "path": "validation-results/m11-visual-force-refresh.json",
+        "sha256": "ffbc324063b1cf5929e6f142f59ac72bafaafd8761437eaaa43e688e614966e7",
+        "stats": {
+          "startTime": "2026-10-12T16:58:59.028Z",
+          "duration": 4336.568,
+          "expected": 6,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "cases": [
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.5: opening and exceptional information states",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.1: opening and exceptional information states",
+            "project": "desktop",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.5: opening and exceptional information states",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.1: opening and exceptional information states",
+            "project": "tablet",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.5: opening and exceptional information states",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          },
+          {
+            "file": "visual-information-theory.spec.ts",
+            "title": "visual-information-theory.spec.ts > VII.1: opening and exceptional information states",
+            "project": "mobile",
+            "status": "expected",
+            "expectedStatus": "passed"
+          }
+        ],
+        "command": [
+          "node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/visual-information-theory.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "VII\\.(?:1|5):",
+          "--update-snapshots",
+          "all",
+          "--output",
+          "validation-results/m11-visual-force-refresh-failures",
+          "--reporter",
+          "list,json"
+        ],
+        "lock": "/tmp/imf-heavy.lock",
+        "environment": {
+          "PLAYWRIGHT_JSON_OUTPUT_FILE": "validation-results/m11-visual-force-refresh.json"
+        }
+      }
+    ]
+  },
+  "visual": {
+    "baselines": 48,
+    "reviewed": 48,
+    "projects": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "finalComparisonCases": 24,
+    "finalComparison": "passed",
+    "snapshotToleranceUnchanged": 0.004,
+    "inventory": "documentation/M11_INFORMATION_THEORY_SCREENSHOT_INVENTORY.json"
+  },
+  "manifests": [
+    {
+      "path": "documentation/M11_INITIAL_FOCUSED_BROWSER_MANIFEST.json",
+      "origin": "validation-results/focused-2026-10-12T16-36-33-656Z/manifest.json",
+      "sha256": "4efc29a50e84184be7aab760d105a10860eedc57b116017874f7ce383059c54e",
+      "copiedByteForByte": true
+    },
+    {
+      "path": "documentation/M11_FOCUSED_MATH_MANIFEST.json",
+      "origin": "validation-results/focused-2026-10-12T16-54-39-045Z/manifest.json",
+      "sha256": "c448536c9b3a7a7a93e96dca9ecc8c6ecab165490a8fc420f371c5a2aaba58c8",
+      "copiedByteForByte": true
+    },
+    {
+      "path": "documentation/M11_FOCUSED_VISUAL_MANIFEST.json",
+      "origin": "validation-results/focused-2026-10-12T17-04-20-818Z/manifest.json",
+      "sha256": "ef5c62882361496d49514a8b7557715d053ff180dfee08f0c9bf313144f6a5ed",
+      "copiedByteForByte": true
+    }
+  ],
+  "production": {
+    "base": "/",
+    "signature": "348dea531520804b07c7c6b6204b6bdbd6ff2e4b23da6e46b31d3b71569cf876"
+  }
+}

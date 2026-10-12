@@ -1,0 +1,82 @@
+---
+kind: chapter
+curriculumId: VII.3
+title: "Entropy"
+hero: "How uncertain is the whole *distribution*?"
+lede: Change explicit weights, inspect the normalized rational masses, and see each mass-weighted surprise contribution before they sum to entropy.
+description: Change explicit weights, inspect the normalized rational masses, and see each mass-weighted surprise contribution before they sum to entropy.
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import Xref from '../../shell/Xref.astro';
+import ProbabilityStage from '../../lessons/information-theory/ProbabilityStage';
+import Exercise from '../../lessons/information-theory/BlockAExercise';
+import reference from '../../../code/python/information_entropy.py?raw';
+import practical from '../../../code/python/information_entropy_numpy.py?raw';
+
+<Stage caption="Change explicit weights, inspect the normalized rational masses, and see each mass-weighted surprise contribution before they sum to entropy."><ProbabilityStage chapter="entropy" client:load /></Stage>
+
+## Intuition
+
+A point mass always produces the same outcome and has no uncertainty. Spreading fixed total mass over several outcomes creates uncertainty. Entropy asks how surprising an observation is on average under that distribution.
+
+## Definition
+
+For a finite discrete distribution $P=(p_1,\ldots,p_n)$ with $p_i\ge0$ and $\sum_i p_i=1$, $H(P)=-\sum_i p_i\log p_i=\mathbb E_P[I(X)]$. Natural logs give nats; base-2 logs give bits. Define the zero-mass contribution by $0\log0=0$.
+
+## Mechanics
+
+The controls are nonnegative integer weights. The displayed rule pᵢ=wᵢ/Σwⱼ normalizes those weights once into authoritative exact masses. The probability graph and contribution bars both use that derived distribution; bar lengths encode actual pᵢIᵢ values, which also appear in the table. An all-zero weight vector is rejected.
+
+## Derivation
+
+Take the expectation of surprise: each $-\log p_i$ occurs with probability $p_i$. The limit $\lim_{p\downarrow0}p\log p=0$ follows by writing $p=e^{-t}$, so $p\log p=-te^{-t}\to0$. Every positive-mass surprise is nonnegative, so $H\ge0$. Equality requires all positive mass to be at probability 1. For the upper bound, strict concavity of log gives $\sum_{p_i>0}p_i\log(1/p_i)\le\log(\sum_{p_i>0}1)\le\log n$. Equality at fixed support n requires every $p_i=1/n$.
+
+## Worked examples
+
+For $P=(1/2,1/4,1/4)$, surprises are $(1,2,2)$ bits and contributions are $(1/2,1/2,1/2)$ bits. Thus $H(P)=3/2$ bits. For a uniform three-outcome distribution, $H=\log_2 3\approx1.584963$ bits. For $(1,0,0)$, every contribution is zero.
+
+<Stage caption="Replay the actual mathematical inputs, terms and result."><ProbabilityStage chapter="entropy" worked client:load /></Stage>
+
+## Executable reference code
+
+Run the standalone pedagogical version to see each operation; the NumPy companion shows the practical array form. Both execute assertions and are exercised by the independent oracle tests.
+
+<CodeFile source={reference} file="code/python/information_entropy.py" />
+<CodeFile source={practical} file="code/python/information_entropy_numpy.py" />
+
+## Explore
+
+Compare Point mass and Uniform masses without changing support size. Then move weight into one outcome and identify the contribution that changes. Make one weight zero and explain why its infinite single-event surprise contributes zero to the expectation.
+
+## Common mistakes and counterexamples
+
+Entropy belongs to a distribution; surprise belongs to one observation. A rare event can have huge surprise while contributing little to entropy. Entropy does not ignore probabilities and merely count labels. A zero-weight label still belongs to the fixed support used for the maximum comparison.
+
+## Numerical considerations
+
+Supported distributions have 1–6 outcomes with integer weights up to 1,000,000 in the model (controls use 0–100). Exact rational normalization preserves total mass exactly. Zero terms are branched before evaluating products; no 0×∞ is computed. Logarithms and entropy sums use binary64 and are checked against exact Fraction/Decimal100 sources at 2e−12 scaled absolute/relative budget. Numerical examples verify implementation; concavity supplies the mathematical maximum proof.
+
+## Engineering and ML connections
+
+Entropy is the best distribution-averaged log loss attainable by predicting the target distribution itself. Cross entropy will measure a prediction distribution against this baseline, and KL will expose the excess loss.
+
+Continue from <Xref to="chapters/self-information/">the preceding mathematical connection</Xref>.
+
+## Exercises
+
+Predict, compute and explain the actual quantities. Each question offers corrective feedback and a worked solution.
+
+<Exercise id="information-entropy-1" client:load />
+
+<Exercise id="information-entropy-2" client:load />
+
+<Exercise id="information-entropy-3" client:load />
+
+<Exercise id="information-entropy-4" client:load />
+
+<Exercise id="information-entropy-5" client:load />
+
+## Summary and checkpoints
+
+A point mass always produces the same outcome and has no uncertainty. Spreading fixed total mass over several outcomes creates uncertainty. Entropy asks how surprising an observation is on average under that distribution. Check the assumptions, unit and boundary before interpreting the computed result.

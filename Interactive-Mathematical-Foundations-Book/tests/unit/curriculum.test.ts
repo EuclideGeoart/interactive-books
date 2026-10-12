@@ -78,7 +78,7 @@ describe('curriculum structure', () => {
   });
 });
 
-/** M9 Statistics publication: exactly Parts I–V  are available, preserving the master 97-chapter curriculum. */
+/** Combined M11/M12 publication preserves the authoritative 97-chapter curriculum. */
 const PART_III_PUBLISHED = Array.from({ length: 15 }, (_, k) => `III.${k + 1}`);
 const PART_IV_PUBLISHED = Array.from({ length: 16 }, (_, k) => `IV.${k + 1}`);
 describe('publication scope guard', () => {
@@ -89,7 +89,7 @@ describe('publication scope guard', () => {
     expect(i3.chapter.role).toBe('reference');
     expect(findChapter('VI.4')!.chapter.role).toBe('flagship');
   });
-  it('M12 publishes 89 chapters with all eight Information Theory chapters planned', () => {
+  it('M11+M12 publishes all 97 chapters with zero planned', () => {
     const published = allChapters.filter(r => r.chapter.status === 'available');
     expect(published.filter(r => r.part.numeral === 'I')).toHaveLength(9);
     expect(published.filter(r => r.part.numeral === 'II')).toHaveLength(19);
@@ -97,13 +97,14 @@ describe('publication scope guard', () => {
     expect(published.filter(r => r.part.numeral === 'IV').map(r => r.id)).toEqual(PART_IV_PUBLISHED);
     expect(published.filter(r => r.part.numeral === 'V')).toHaveLength(10);
     expect(published.filter(r => r.part.numeral === 'VI')).toHaveLength(10);
-    expect(published.every(r => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VIII'].includes(r.part.numeral))).toBe(true);
-    expect(published).toHaveLength(89);
+    expect(published.every(r => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'].includes(r.part.numeral))).toBe(true);
+    expect(published).toHaveLength(97);
+    expect(published.filter(r=>r.part.numeral==='VII')).toHaveLength(8);
     expect(published.filter(r=>r.part.numeral==='VIII')).toHaveLength(10);
-    expect(allChapters.filter(r => r.chapter.status === 'planned')).toHaveLength(8);
-    expect(published.map(r => r.id)).toEqual(allChapters.filter(r=>r.part.numeral!=='VII' && (r.part.numeral!=='VIII'||r.chapter.n<=10)).map(r=>r.id));
+    expect(allChapters.filter(r => r.chapter.status === 'planned')).toHaveLength(0);
+    expect(published.map(r => r.id)).toEqual(allChapters.map(r=>r.id));
   });
-  it('navigates II.19 → III.1 → III.15 → IV.1 → IV.16 → V.1 → V.10 → VI.1 → VI.10 → VII.1', () => {
+  it('navigates II.19 → III.1 → III.15 → IV.1 → IV.16 → V.1 → V.10 → VI.1 → VI.10 → VII.1 → VII.8 → VIII.1 → VIII.10', () => {
     expect(neighbours(findChapter('II.19')!).next?.id).toBe('III.1');
     expect(neighbours(findChapter('III.15')!).next?.id).toBe('IV.1');
     expect(neighbours(findChapter('IV.1')!).previous?.id).toBe('III.15');
@@ -112,6 +113,9 @@ describe('publication scope guard', () => {
     expect(neighbours(findChapter('V.10')!).next?.id).toBe('VI.1');
     expect(neighbours(findChapter('VI.1')!).previous?.id).toBe('V.10');
     expect(neighbours(findChapter('VI.10')!).next?.id).toBe('VII.1');
-    expect(findChapter('VII.1')!.chapter.status).toBe('planned');
+    expect(findChapter('VII.1')!.chapter.status).toBe('available');
+    expect(neighbours(findChapter('VII.8')!).next?.id).toBe('VIII.1');
+    expect(neighbours(findChapter('VIII.1')!).previous?.id).toBe('VII.8');
+    expect(neighbours(findChapter('VIII.10')!).next).toBeUndefined();
   });
 });

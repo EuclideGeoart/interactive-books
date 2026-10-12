@@ -1,0 +1,82 @@
+---
+kind: chapter
+curriculumId: VII.8
+title: "From token logits to language-model loss"
+hero: "How does the next-token prediction become one scalar *loss*?"
+lede: Select a sequence position, inspect its four vocabulary logits, choose the observed target token and reduce stable token losses over explicit unmasked positions.
+description: Select a sequence position, inspect its four vocabulary logits, choose the observed target token and reduce stable token losses over explicit unmasked positions.
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import Xref from '../../shell/Xref.astro';
+import TokenStage from '../../lessons/information-theory/TokenStage';
+import Exercise from '../../lessons/information-theory/BlockCExercise';
+import reference from '../../../code/python/information_tokens.py?raw';
+import practical from '../../../code/python/information_tokens_numpy.py?raw';
+
+<Stage caption="Select a sequence position, inspect its four vocabulary logits, choose the observed target token and reduce stable token losses over explicit unmasked positions."><TokenStage client:load /></Stage>
+
+## Intuition
+
+At each position a model assigns scores to possible next tokens. The actual target selects one probability from that vocabulary distribution. Its negative log probability is the position’s loss. A sequence loss averages those actual losses, counting only the positions explicitly included.
+
+## Definition
+
+Use vocabulary $V=\{\mathrm{the},\mathrm{cat},\mathrm{sat},\mathrm{eos}\}$. Position t has supplied logits $z_{t,i}$ and observed target index $y_t$. Its NLL is $L_t=-\log\operatorname{softmax}(\mathbf z_t)_{y_t}=\operatorname{LSE}(\mathbf z_t)-z_{t,y_t}$. If U is the set of unmasked positions, $\overline L=(1/|U|)\sum_{t\in U}L_t$ for $|U|>0$. When U is empty, mean loss is undefined.
+
+## Mechanics
+
+The explicit vocabulary is the, cat, sat and &lt;eos&gt;. Position buttons select which actual vector and target to inspect. Numeric score controls and Target token update that selected position. Ignore selected position changes its explicit mask; the sequence table shows all individual losses and inclusion flags. The aggregate count, total and mean derive from those same rows.
+
+## Derivation
+
+Stable log-softmax gives $\log p_{t,i}=(z_{t,i}-m_t)-\log\sum_j e^{z_{t,j}-m_t}$. Negating the target entry yields NLL directly from scores. A one-hot target has exactly one nonzero coefficient, so $-\sum_i\mathbf1\{i=y_t\}\log p_{t,i}=-\log p_{t,y_t}$. The table shows those actual one-hot terms. For the gradient bridge, differentiating $\log\sum_i e^{z_i}-z_y$ gives $\partial L/\partial z_j=p_j-\mathbf1\{j=y\}$; the chain rule connects logits to model parameters.
+
+## Worked examples
+
+With four equal logits, every token has probability 1/4 and target NLL is $\log4\approx1.386294$ nats, or 2 bits. For logits (1000,0,−1000,−1000) and target &lt;eos&gt;, probability underflows to zero but NLL remains 2000 nats. If three position losses are (2,4,8) and the middle is masked, count=2 and mean=(2+8)/2=5 nats. An all-masked sequence has total zero and undefined mean.
+
+<Stage caption="Replay actual scores, normalization, log probabilities and the selected result."><TokenStage worked client:load /></Stage>
+
+## Executable reference code
+
+The standalone pedagogical implementation exposes the operations. Its NumPy companion uses array reductions and explicit domain/mask guards. Both run hand-worked assertions and execute under the independent oracle tests.
+
+<CodeFile source={reference} file="code/python/information_tokens.py" />
+<CodeFile source={practical} file="code/python/information_tokens_numpy.py" />
+
+## Explore
+
+Change position and identify its different logits and target. Switch the observed target without changing the vector and inspect the changed one-hot term. Choose Tiny target probability, finite loss and compare probability zero with finite NLL. Ignore that position and verify the denominator decreases by exactly one. Mask every position, then include them again.
+
+## Common mistakes and counterexamples
+
+The target need not be the token with highest predicted probability. Never take log of an underflowed probability when stable log-softmax is available. Masks are explicit; a large loss does not automatically disappear. Mean denominator is the contributing count, not sequence length or vocabulary size. An undefined empty mean is not zero loss.
+
+## Numerical considerations
+
+This toy has four named vocabulary entries and one to four supplied positions, with explicit target indices and boolean masks. Invalid targets, vector shapes and undefined predictions are rejected even in ignored positions. Finite scores are bounded to [−1000,1000], with explicit −∞ exclusions allowed by the model. Scores and loss are approximate binary64 quantities. Individual unmasked infinite NLL propagates to the aggregate; masked infinities are skipped before summation rather than multiplied by zero. Stable logs are computed directly from logits, with independent raw Decimal400 references. This is a supplied-score explorer: it has no transformer, tokenizer, external API or network training engine.
+
+## Engineering and ML connections
+
+Language-model training evaluates a target token at each contributing sequence position and reduces to a scalar. Given a differentiable score-producing model, the chain rule turns that scalar into parameter gradients. The accepted Optimization update then applies a learning rate to those gradients. This chapter exposes the loss mechanism without implementing a model or optimizer.
+
+Connect to <Xref to="chapters/gradient-descent/">the accepted prerequisite mechanism</Xref>.
+
+## Exercises
+
+Predict intermediate quantities, calculate small cases and explain numerical or mask boundaries.
+
+<Exercise id="information-tokens-1" client:load />
+
+<Exercise id="information-tokens-2" client:load />
+
+<Exercise id="information-tokens-3" client:load />
+
+<Exercise id="information-tokens-4" client:load />
+
+<Exercise id="information-tokens-5" client:load />
+
+## Summary and checkpoints
+
+At each position a model assigns scores to possible next tokens. The actual target selects one probability from that vocabulary distribution. Its negative log probability is the position’s loss. A sequence loss averages those actual losses, counting only the positions explicitly included. Read the actual pipeline, preserve the log information and state which inputs contribute.

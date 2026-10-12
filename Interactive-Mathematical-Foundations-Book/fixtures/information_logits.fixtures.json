@@ -1,0 +1,691 @@
+{
+  "policy": "Independent Decimal400 raw exp sum and log(total), with analytic equal/dominant enormous cases. Exact binary64 inputs via Decimal.from_float. Log/denominator budget 2e-12*max(1,abs(expected)); probability absolute budget 2e-14 (underflow rounds to zero or subnormal). Normalization budget 32*epsilon*6=4.2633e-14 for at most six nonnegative terms. NaN/+Infinity/empty rejected; all \u2212Infinity undefined; isolated \u2212Infinity excludes a class. Finite-logit range overflow is numerical, not excluded support. Masked mean denominator is the number of contributing positions.",
+  "logits": [
+    {
+      "input": [
+        0
+      ],
+      "expected": {
+        "status": "valid",
+        "max": 0,
+        "denominator": 1.0,
+        "logsumexp": 0.0,
+        "shiftedExponentials": [
+          1.0
+        ],
+        "probabilities": [
+          1.0
+        ],
+        "logProbabilities": [
+          0.0
+        ]
+      }
+    },
+    {
+      "input": [
+        0,
+        0
+      ],
+      "expected": {
+        "status": "valid",
+        "max": 0,
+        "denominator": 2.0,
+        "logsumexp": 0.6931471805599453,
+        "shiftedExponentials": [
+          1.0,
+          1.0
+        ],
+        "probabilities": [
+          0.5,
+          0.5
+        ],
+        "logProbabilities": [
+          -0.6931471805599453,
+          -0.6931471805599453
+        ]
+      }
+    },
+    {
+      "input": [
+        1,
+        2,
+        3
+      ],
+      "expected": {
+        "status": "valid",
+        "max": 3,
+        "denominator": 1.503214724408055,
+        "logsumexp": 3.40760596444438,
+        "shiftedExponentials": [
+          0.1353352832366127,
+          0.36787944117144233,
+          1.0
+        ],
+        "probabilities": [
+          0.09003057317038046,
+          0.24472847105479764,
+          0.6652409557748219
+        ],
+        "logProbabilities": [
+          -2.40760596444438,
+          -1.4076059644443804,
+          -0.4076059644443803
+        ]
+      }
+    },
+    {
+      "input": [
+        1000,
+        1001,
+        1002
+      ],
+      "expected": {
+        "status": "valid",
+        "max": 1002,
+        "denominator": 1.503214724408055,
+        "logsumexp": 1002.4076059644444,
+        "shiftedExponentials": [
+          0.1353352832366127,
+          0.36787944117144233,
+          1.0
+        ],
+        "probabilities": [
+          0.09003057317038046,
+          0.24472847105479764,
+          0.6652409557748219
+        ],
+        "logProbabilities": [
+          -2.40760596444438,
+          -1.4076059644443804,
+          -0.4076059644443803
+        ]
+      }
+    },
+    {
+      "input": [
+        -1000,
+        -1001,
+        -1002
+      ],
+      "expected": {
+        "status": "valid",
+        "max": -1000,
+        "denominator": 1.503214724408055,
+        "logsumexp": -999.5923940355556,
+        "shiftedExponentials": [
+          1.0,
+          0.36787944117144233,
+          0.1353352832366127
+        ],
+        "probabilities": [
+          0.6652409557748219,
+          0.24472847105479764,
+          0.09003057317038046
+        ],
+        "logProbabilities": [
+          -0.4076059644443803,
+          -1.4076059644443804,
+          -2.40760596444438
+        ]
+      }
+    },
+    {
+      "input": [
+        1000,
+        0,
+        -1000
+      ],
+      "expected": {
+        "status": "valid",
+        "max": 1000,
+        "denominator": 1.0,
+        "logsumexp": 1000.0,
+        "shiftedExponentials": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "probabilities": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "logProbabilities": [
+          0.0,
+          -1000.0,
+          -2000.0
+        ]
+      }
+    },
+    {
+      "input": [
+        0,
+        -745,
+        -746
+      ],
+      "expected": {
+        "status": "valid",
+        "max": 0,
+        "denominator": 1.0,
+        "logsumexp": 5e-324,
+        "shiftedExponentials": [
+          1.0,
+          5e-324,
+          0.0
+        ],
+        "probabilities": [
+          1.0,
+          5e-324,
+          0.0
+        ],
+        "logProbabilities": [
+          -5e-324,
+          -745.0,
+          -746.0
+        ]
+      }
+    },
+    {
+      "input": [
+        -10000,
+        0,
+        10000
+      ],
+      "expected": {
+        "status": "valid",
+        "max": 10000,
+        "denominator": 1.0,
+        "logsumexp": 10000.0,
+        "shiftedExponentials": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "probabilities": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "logProbabilities": [
+          -20000.0,
+          -10000.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "input": [
+        0,
+        "-Infinity",
+        1
+      ],
+      "expected": {
+        "status": "valid",
+        "max": 1,
+        "denominator": 1.3678794411714423,
+        "logsumexp": 1.3132616875182228,
+        "shiftedExponentials": [
+          0.36787944117144233,
+          0.0,
+          1.0
+        ],
+        "probabilities": [
+          0.2689414213699951,
+          0.0,
+          0.7310585786300049
+        ],
+        "logProbabilities": [
+          -1.3132616875182228,
+          "-Infinity",
+          -0.3132616875182228
+        ]
+      }
+    },
+    {
+      "input": [
+        "-Infinity",
+        "-Infinity"
+      ],
+      "expected": {
+        "status": "undefined"
+      }
+    },
+    {
+      "input": [],
+      "expected": {
+        "status": "invalid"
+      }
+    },
+    {
+      "input": [
+        "NaN",
+        0
+      ],
+      "expected": {
+        "status": "invalid"
+      }
+    },
+    {
+      "input": [
+        "Infinity",
+        0
+      ],
+      "expected": {
+        "status": "invalid"
+      }
+    },
+    {
+      "input": [
+        1e+308,
+        1e+308
+      ],
+      "expected": {
+        "status": "valid",
+        "max": 1e+308,
+        "denominator": 2.0,
+        "logsumexp": 1e+308,
+        "shiftedExponentials": [
+          1.0,
+          1.0
+        ],
+        "probabilities": [
+          0.5,
+          0.5
+        ],
+        "logProbabilities": [
+          -0.6931471805599453,
+          -0.6931471805599453
+        ]
+      }
+    },
+    {
+      "input": [
+        1.7976931348623157e+308,
+        -1.7976931348623157e+308
+      ],
+      "expected": {
+        "status": "valid",
+        "max": 1.7976931348623157e+308,
+        "denominator": 1.0,
+        "logsumexp": 1.7976931348623157e+308,
+        "shiftedExponentials": [
+          1.0,
+          0.0
+        ],
+        "probabilities": [
+          1.0,
+          0.0
+        ],
+        "logProbabilities": [
+          0.0,
+          "-Infinity"
+        ]
+      }
+    },
+    {
+      "input": [
+        0.1,
+        0.2,
+        0.3,
+        0.4
+      ],
+      "expected": {
+        "status": "valid",
+        "max": 0.4,
+        "denominator": 3.464386391795659,
+        "logsumexp": 1.6425355294551627,
+        "shiftedExponentials": [
+          0.7408182206817179,
+          0.8187307530779818,
+          0.9048374180359595,
+          1.0
+        ],
+        "probabilities": [
+          0.21383822036598443,
+          0.23632778232153767,
+          0.26118259215507555,
+          0.28865140515740234
+        ],
+        "logProbabilities": [
+          -1.5425355294551628,
+          -1.4425355294551627,
+          -1.3425355294551629,
+          -1.2425355294551628
+        ]
+      }
+    },
+    {
+      "input": [
+        -1.25,
+        2.5,
+        0,
+        -3.75
+      ],
+      "expected": {
+        "status": "valid",
+        "max": 2.5,
+        "denominator": 1.1075331986161356,
+        "logsumexp": 2.602135198664975,
+        "shiftedExponentials": [
+          0.023517745856009107,
+          1.0,
+          0.0820849986238988,
+          0.0019304541362277093
+        ],
+        "probabilities": [
+          0.02123434844697619,
+          0.9029074715317803,
+          0.07411515855819413,
+          0.0017430214630494278
+        ],
+        "logProbabilities": [
+          -3.852135198664975,
+          -0.10213519866497466,
+          -2.602135198664975,
+          -6.352135198664975
+        ]
+      }
+    }
+  ],
+  "sequences": [
+    {
+      "input": [
+        {
+          "logits": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "target": 2,
+          "ignored": false
+        },
+        {
+          "logits": [
+            1000,
+            0,
+            -1000,
+            -1000
+          ],
+          "target": 3,
+          "ignored": false
+        }
+      ],
+      "expected": {
+        "losses": [
+          1.3862943611198906,
+          2000.0
+        ],
+        "oneHotTerms": [
+          [
+            0.0,
+            0.0,
+            1.3862943611198906,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            2000.0
+          ]
+        ],
+        "count": 2,
+        "total": 2001.3862943611198,
+        "mean": 1000.6931471805599
+      }
+    },
+    {
+      "input": [
+        {
+          "logits": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "target": 2,
+          "ignored": false
+        },
+        {
+          "logits": [
+            1000,
+            0,
+            -1000,
+            -1000
+          ],
+          "target": 3,
+          "ignored": true
+        }
+      ],
+      "expected": {
+        "losses": [
+          1.3862943611198906,
+          2000.0
+        ],
+        "oneHotTerms": [
+          [
+            0.0,
+            0.0,
+            1.3862943611198906,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            2000.0
+          ]
+        ],
+        "count": 1,
+        "total": 1.3862943611198906,
+        "mean": 1.3862943611198906
+      }
+    },
+    {
+      "input": [
+        {
+          "logits": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "target": 2,
+          "ignored": true
+        },
+        {
+          "logits": [
+            1000,
+            0,
+            -1000,
+            -1000
+          ],
+          "target": 3,
+          "ignored": true
+        }
+      ],
+      "expected": {
+        "losses": [
+          1.3862943611198906,
+          2000.0
+        ],
+        "oneHotTerms": [
+          [
+            0.0,
+            0.0,
+            1.3862943611198906,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            2000.0
+          ]
+        ],
+        "count": 0,
+        "total": 0.0,
+        "mean": null
+      }
+    },
+    {
+      "input": [
+        {
+          "logits": [
+            0,
+            "-Infinity",
+            0,
+            0
+          ],
+          "target": 1,
+          "ignored": false
+        }
+      ],
+      "expected": {
+        "losses": [
+          "Infinity"
+        ],
+        "oneHotTerms": [
+          [
+            0.0,
+            "Infinity",
+            0.0,
+            0.0
+          ]
+        ],
+        "count": 1,
+        "total": "Infinity",
+        "mean": "Infinity"
+      }
+    },
+    {
+      "input": [
+        {
+          "logits": [
+            0,
+            "-Infinity",
+            0,
+            0
+          ],
+          "target": 1,
+          "ignored": true
+        },
+        {
+          "logits": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "target": 0,
+          "ignored": false
+        }
+      ],
+      "expected": {
+        "losses": [
+          "Infinity",
+          1.3862943611198906
+        ],
+        "oneHotTerms": [
+          [
+            0.0,
+            "Infinity",
+            0.0,
+            0.0
+          ],
+          [
+            1.3862943611198906,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "count": 1,
+        "total": 1.3862943611198906,
+        "mean": 1.3862943611198906
+      }
+    },
+    {
+      "input": [
+        {
+          "logits": [
+            2,
+            0,
+            -1,
+            -2
+          ],
+          "target": 0,
+          "ignored": false
+        },
+        {
+          "logits": [
+            -1,
+            2,
+            0,
+            -2
+          ],
+          "target": 1,
+          "ignored": false
+        },
+        {
+          "logits": [
+            -1,
+            0,
+            2,
+            1
+          ],
+          "target": 2,
+          "ignored": false
+        },
+        {
+          "logits": [
+            -2,
+            -1,
+            0,
+            2
+          ],
+          "target": 3,
+          "ignored": false
+        }
+      ],
+      "expected": {
+        "losses": [
+          0.18518245260381255,
+          0.18518245260381255,
+          0.44018969856119533,
+          0.18518245260381255
+        ],
+        "oneHotTerms": [
+          [
+            0.18518245260381255,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.18518245260381255,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.44018969856119533,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.18518245260381255
+          ]
+        ],
+        "count": 4,
+        "total": 0.995737056372633,
+        "mean": 0.24893426409315825
+      }
+    }
+  ]
+}

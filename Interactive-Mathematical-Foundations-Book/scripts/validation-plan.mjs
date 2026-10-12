@@ -6,6 +6,10 @@ export const families = {
   numerical_structure: { lesson: 'numerical-computing', stage: 'StructureStage', kinds: ['sparse','broadcasting','reproducibility'], units: /^numerical-(structure|lesson|exercises|validation)/, oracles: ['numerical_structure'], browser: 'numerical-computing' },
   numerical_algorithms: { lesson: 'numerical-computing', stage: 'AlgorithmsStage', kinds: ['stable','solver'], units: /^numerical-(algorithms|lesson|exercises|validation)/, oracles: ['numerical_algorithms'], browser: 'numerical-computing' },
   numerical_floating: { lesson: 'numerical-computing', stage: 'NumbersStage', kinds: ['representation','rounding','conditioning','cancellation','range'], units: /^numerical-(floating|lesson|exercises|validation)/, oracles: ['numerical_floating'], browser: 'numerical-computing' },
+  information_logits: { lesson: 'information-theory', stage: 'LogitStage', units: /^information-logits/, oracles: ['information_logits'], browser: 'information-logits' },
+  information_tokens: { lesson: 'information-theory', stage: 'TokenStage', units: /^information-tokens/, oracles: ['information_logits'], browser: 'information-tokens' },
+  information_comparison: { lesson: 'information-theory', stage: 'ComparisonStage', units: /^information-comparison/, oracles: ['information_comparison'], browser: 'information-comparison' },
+  information_probability: { lesson: 'information-theory', stage: 'ProbabilityStage', units: /^information-probability/, oracles: ['information_probability'], browser: 'information-probability' },
   statistics_likelihood: { lesson: 'statistics', stage: 'LikelihoodStage', units: /^statistics-likelihood/, oracles: ['statistics_likelihood'], browser: 'statistics-likelihood' },
   statistics_intervals: { lesson: 'statistics', stage: 'IntervalStage', units: /^statistics-(uncertainty|intervals)/, oracles: ['statistics_uncertainty'], browser: 'statistics-uncertainty' },
   statistics_scatter: { lesson: 'statistics', stage: 'ScatterStage', units: /^statistics-(uncertainty|scatter)/, oracles: ['statistics_uncertainty'], browser: 'statistics-uncertainty' },
@@ -72,13 +76,13 @@ export function chapterCatalog() {
     const numerical = numericalKind ? Object.keys(families).find(name => families[name].lesson === lesson && families[name].kinds?.includes(numericalKind)) : undefined;
     const optimizationKind = lesson === 'optimization' ? /<OptimizationStage chapter="([^"]+)"/.exec(source)?.[1] : undefined;
     const optimization = optimizationKind ? Object.keys(families).find(name => families[name].lesson === lesson && families[name].kinds?.includes(optimizationKind)) : undefined;
-    const stageOwned = ['linear-algebra', 'probability', 'statistics'].includes(lesson);
+    const stageOwned = ['linear-algebra', 'probability', 'statistics', 'information-theory'].includes(lesson);
     const family = numerical ?? optimization ?? (calculus ? calculus.family : stageOwned
       ? Object.keys(families).find(name => families[name].lesson === lesson && families[name].stage && source.includes('/' + families[name].stage)) ?? (lesson === 'linear-algebra' ? 'linear_algebra' : undefined)
       : Object.keys(families).find(name => families[name].lesson === lesson));
     const slug = posix.basename(path, '.mdx');
     const kind = numericalKind ?? optimizationKind ?? (calculus ? calculus.kind
-      : (/<(?:MatrixStage|LinearStage|EliminationStage|FiniteStage|DistributionStage|MomentsStage|JointStage|SamplingStage|DataStage|ScatterStage|LikelihoodStage) chapter="([^"]+)"/.exec(source)?.[1]
+      : (/<(?:MatrixStage|LinearStage|EliminationStage|FiniteStage|DistributionStage|MomentsStage|JointStage|SamplingStage|DataStage|ScatterStage|LikelihoodStage|ProbabilityStage|ComparisonStage|LogitStage|TokenStage) chapter="([^"]+)"/.exec(source)?.[1]
         ?? (family === 'statistics_intervals' ? 'intervals' : family === 'eigenvalues' ? 'eigenvalues' : family === 'least_squares' ? 'least-squares' : family === 'svd' ? 'svd' : lesson === 'probability' ? slug : undefined)));
     return [{ id, slug, path, family, kind }];
   });
@@ -129,6 +133,13 @@ function dependencies() {
 function familyOfFile(path) {
   const base = posix.basename(path);
   if (/^src\/(lessons|math)\/numerical-computing\//.test(path)) return null;
+  if (/^src\/(lessons|math)\/information-theory\//.test(path)) {
+    if (/^(probabilit|Probability)/.test(base)) return 'information_probability';
+    if (/^(comparison|Comparison)/.test(base)) return 'information_comparison';
+    if (/^(softmax|logit|Logit)/.test(base)) return 'information_logits';
+    if (/^(tokens?|Token)/.test(base)) return 'information_tokens';
+    return null;
+  }
   if (/^src\/(lessons|math)\/optimization\//.test(path)) {
     if (base === 'objectives.ts') return 'optimization_landscapes';
     if (base === 'descent.ts') return 'optimization_descent';
@@ -203,7 +214,7 @@ export function makePlan({ mode = 'focused', files = [], chapters = [], only, pr
       const image = posix.basename(file).replace(/^(desktop|tablet|mobile)-/, '');
       const targets = catalog.filter(chapter => image.startsWith(`part-i-${chapter.slug}.`) ||
         image.startsWith(`v-${chapter.slug}.`) || image.startsWith(`v-${chapter.slug}-`) || image.startsWith(`iv-${chapter.slug}.`) || image.startsWith(`iv-${chapter.slug}-`) ||
-        image.startsWith(`vi-${chapter.slug}.`) || image.startsWith(`vi-${chapter.slug}-`) || image.startsWith(`viii-${chapter.slug}.`) || image.startsWith(`viii-${chapter.slug}-`) ||
+        image.startsWith(`vi-${chapter.slug}.`) || image.startsWith(`vi-${chapter.slug}-`) || image.startsWith(`vii-${chapter.slug}.`) || image.startsWith(`vii-${chapter.slug}-`) || image.startsWith(`viii-${chapter.slug}.`) || image.startsWith(`viii-${chapter.slug}-`) ||
         (chapter.kind && calculusFamilies.includes(chapter.family) && (image.startsWith(`iii-calculus-${chapter.kind}.`) || image.startsWith(`iii-calculus-${chapter.kind}-`))) ||
         (chapter.kind && !calculusFamilies.includes(chapter.family) && !chapter.family?.startsWith('probability_') && image.startsWith(`ii-${chapter.family === 'matrices' ? 'matrix-' : ['elimination', 'eigenvalues', 'least_squares', 'svd'].includes(chapter.family) ? 'completion-' : ''}${chapter.kind}`)) ||
         (chapter.slug === 'vectors' && image.startsWith('chapter-')));
@@ -216,6 +227,11 @@ export function makePlan({ mode = 'focused', files = [], chapters = [], only, pr
     if (file === 'tests/e2e/visual-numerical-computing.spec.ts' && existsSync(file)) {
       for (const chapter of catalog.filter(c => c.family?.startsWith('numerical_'))) { selected.add(chapter.id); groups.add(chapter.family); }
       reasons.push(`${file}: Numerical Computing visual support; Part VIII only`); continue;
+    }
+    if (file === 'tests/e2e/visual-information-theory.spec.ts' && existsSync(file)) {
+      for (const chapter of catalog.filter(c => c.family?.startsWith('information_'))) { selected.add(chapter.id); groups.add(chapter.family); }
+      reasons.push(`${file}: Information Theory visual support; Part VII only`);
+      continue;
     }
     if (file === 'tests/e2e/visual-statistics.spec.ts' && existsSync(file)) {
       for (const chapter of catalog.filter(c => c.family?.startsWith('statistics_'))) { selected.add(chapter.id); groups.add(chapter.family); }
@@ -264,7 +280,8 @@ export function makePlan({ mode = 'focused', files = [], chapters = [], only, pr
   const affected = catalog.filter(chapter => selected.has(chapter.id));
   const interactions = shared && !broad ? direct : affected;
   const representative = mode === 'milestone' || shared ? catalog.filter(chapter =>
-    ['I.1', 'I.3', 'I.9', 'II.1', ...(shared ? ['II.10'] : [])].includes(chapter.id) && !interactions.some(item => item.id === chapter.id)) : [];
+    ['I.1', 'I.3', 'I.9', 'II.1', ...(shared ? ['II.10'] : []), 'III.6', 'IV.6', 'V.2', 'VI.4'].includes(chapter.id) && !interactions.some(item => item.id === chapter.id)) : [];
+  const regressionInteractions = representative.filter(chapter => ['II.10', 'III.6', 'IV.6', 'V.2', 'VI.4'].includes(chapter.id));
   /** @type {{gate: string, command: string[], deployment?: string}[]} */
   const commands = [];
   const node = (gate, script, args = []) => commands.push({ gate, command: [process.execPath, script, ...args] });
@@ -289,10 +306,11 @@ export function makePlan({ mode = 'focused', files = [], chapters = [], only, pr
     else if (interactions.length || representative.length) {
       const ids = [...interactions, ...representative].map(chapter => escape(chapter.id));
       playwright(shared ? 'all read-only chapter contracts + representative both-theme axe' : 'chapter contracts + both-theme full-page axe', ['chapters.spec.ts'], `${shared ? 'read-only checks|' : ''}(?:^|\\s)(?:${ids.join('|')})(?: |:)|Part I publication`);
-      for (const group of new Set(interactions.map(chapter => chapter.family))) {
+      const deepInteractions = [...interactions, ...regressionInteractions];
+      for (const group of new Set(deepInteractions.map(chapter => chapter.family))) {
         if (!group) continue;
-        const entries = interactions.filter(chapter => chapter.family === group);
-        const grep = idScoped.includes(group) || group.startsWith('probability_') || group.startsWith('optimization_') || group.startsWith('statistics_') || group.startsWith('numerical_') ? '(?:^|\\s)(?:' + entries.map(chapter => escape(chapter.id) + '(?::| )').join('|') + ')|publication' : undefined;
+        const entries = deepInteractions.filter(chapter => chapter.family === group);
+        const grep = idScoped.includes(group) || group.startsWith('probability_') || group.startsWith('optimization_') || group.startsWith('statistics_') || group.startsWith('numerical_') || group.startsWith('information_') ? '(?:^|\\s)(?:' + entries.map(chapter => escape(chapter.id) + '(?::| )').join('|') + ')|publication' : undefined;
         playwright('affected chapter interactions: ' + group, [families[group].browser + '.spec.ts'], grep);
       }
       if (mode === 'milestone' || shared) playwright('shared cross-chapter controls', ['vectors.spec.ts', 'quantities.spec.ts'], 'keyboard|Arrow|rejected|reset|announc');
@@ -302,11 +320,11 @@ export function makePlan({ mode = 'focused', files = [], chapters = [], only, pr
     else if (mode === 'milestone') playwright('subpath prefix-dependent navigation, assets, anchors, routes and hydration', ['navigation.spec.ts', 'deployment.spec.ts'], undefined, true);
   }
   if (phases.includes('visual') && (affected.length || broad)) {
-    const visualSpecs = ['visual.spec.ts', 'visual-part-i.spec.ts', 'visual-linear-algebra.spec.ts', 'visual-calculus.spec.ts', 'visual-probability.spec.ts', 'visual-statistics.spec.ts', 'visual-optimization.spec.ts', 'visual-numerical-computing.spec.ts'];
+    const visualSpecs = ['visual.spec.ts', 'visual-part-i.spec.ts', 'visual-linear-algebra.spec.ts', 'visual-calculus.spec.ts', 'visual-probability.spec.ts', 'visual-statistics.spec.ts', 'visual-optimization.spec.ts', 'visual-information-theory.spec.ts', 'visual-numerical-computing.spec.ts'];
     if (broad || shared) playwright('authoritative root visuals', visualSpecs);
     else {
       const patterns = affected.map(chapter => calculusFamilies.includes(chapter.family) ? `calculus ${escape(chapter.kind)}:`
-        : (chapter.family?.startsWith('probability_') || chapter.family?.startsWith('optimization_') || chapter.family?.startsWith('statistics_') || chapter.family?.startsWith('numerical_')) ? `${escape(chapter.id)}:`
+        : (chapter.family?.startsWith('probability_') || chapter.family?.startsWith('optimization_') || chapter.family?.startsWith('statistics_') || chapter.family?.startsWith('numerical_') || chapter.family?.startsWith('information_')) ? `${escape(chapter.id)}:`
         : chapter.family === 'matrices' ? `matrix ${escape(chapter.kind)}:`
         : ['elimination', 'eigenvalues', 'least_squares', 'svd'].includes(chapter.family) ? `completion ${escape(chapter.kind)}:`
         : chapter.family === 'linear_algebra' ? `${escape(chapter.kind)}: opening` : chapter.slug === 'vectors' ? 'vectors chapter' : escape(chapter.slug) + ' — opening');
@@ -315,6 +333,6 @@ export function makePlan({ mode = 'focused', files = [], chapters = [], only, pr
   }
   return { mode, partial: Boolean(only || project), files, reasons, conservativeExpansion: broad || shared, sharedExpansion: shared,
     chapters: affected.map(chapter => chapter.id), crossChapterContracts: representative.map(chapter => chapter.id),
-    interactionChapters: interactions.map(chapter => chapter.id),
+    interactionChapters: interactions.map(chapter => chapter.id), regressionInteractionChapters: regressionInteractions.map(chapter => chapter.id),
     completeMath, units: completeMath ? unitFiles.sort() : [...units].sort(), oracles, project: project ?? 'desktop,tablet,mobile', phases, commands };
 }

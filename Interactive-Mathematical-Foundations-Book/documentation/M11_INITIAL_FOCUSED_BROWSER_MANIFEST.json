@@ -1,0 +1,163 @@
+{
+  "mode": "focused",
+  "partial": true,
+  "files": [],
+  "reasons": [
+    "VII.1: explicitly requested (additive, never hides detected changes)",
+    "VII.2: explicitly requested (additive, never hides detected changes)",
+    "VII.3: explicitly requested (additive, never hides detected changes)",
+    "VII.4: explicitly requested (additive, never hides detected changes)",
+    "VII.5: explicitly requested (additive, never hides detected changes)",
+    "VII.6: explicitly requested (additive, never hides detected changes)",
+    "VII.7: explicitly requested (additive, never hides detected changes)",
+    "VII.8: explicitly requested (additive, never hides detected changes)"
+  ],
+  "conservativeExpansion": false,
+  "sharedExpansion": false,
+  "chapters": [
+    "VII.4",
+    "VII.3",
+    "VII.5",
+    "VII.1",
+    "VII.6",
+    "VII.2",
+    "VII.7",
+    "VII.8"
+  ],
+  "crossChapterContracts": [],
+  "interactionChapters": [
+    "VII.4",
+    "VII.3",
+    "VII.5",
+    "VII.1",
+    "VII.6",
+    "VII.2",
+    "VII.7",
+    "VII.8"
+  ],
+  "completeMath": false,
+  "units": [
+    "tests/unit/information-comparison-lesson.test.ts",
+    "tests/unit/information-comparison.parity.test.ts",
+    "tests/unit/information-comparison.test.ts",
+    "tests/unit/information-logits-lesson.test.ts",
+    "tests/unit/information-logits.parity.test.ts",
+    "tests/unit/information-logits.test.ts",
+    "tests/unit/information-probability-lesson.test.ts",
+    "tests/unit/information-probability.parity.test.ts",
+    "tests/unit/information-probability.test.ts",
+    "tests/unit/information-tokens.test.ts"
+  ],
+  "oracles": [
+    "information_comparison",
+    "information_logits",
+    "information_probability"
+  ],
+  "project": "desktop,tablet,mobile",
+  "phases": [
+    "browser"
+  ],
+  "commands": [
+    {
+      "gate": "chapter contracts + both-theme full-page axe",
+      "deployment": "root",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/chapters.spec.ts",
+        "--trace",
+        "off",
+        "--grep",
+        "(?:^|\\s)(?:VII\\.4|VII\\.3|VII\\.5|VII\\.1|VII\\.6|VII\\.2|VII\\.7|VII\\.8)(?: |:)|Part I publication"
+      ]
+    },
+    {
+      "gate": "affected chapter interactions: information_comparison",
+      "deployment": "root",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/information-comparison.spec.ts",
+        "--trace",
+        "off",
+        "--grep",
+        "(?:^|\\s)(?:VII\\.4(?::| )|VII\\.5(?::| ))|publication"
+      ]
+    },
+    {
+      "gate": "affected chapter interactions: information_probability",
+      "deployment": "root",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/information-probability.spec.ts",
+        "--trace",
+        "off",
+        "--grep",
+        "(?:^|\\s)(?:VII\\.3(?::| )|VII\\.1(?::| )|VII\\.2(?::| ))|publication"
+      ]
+    },
+    {
+      "gate": "affected chapter interactions: information_logits",
+      "deployment": "root",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/information-logits.spec.ts",
+        "--trace",
+        "off",
+        "--grep",
+        "(?:^|\\s)(?:VII\\.6(?::| )|VII\\.7(?::| ))|publication"
+      ]
+    },
+    {
+      "gate": "affected chapter interactions: information_tokens",
+      "deployment": "root",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/information-tokens.spec.ts",
+        "--trace",
+        "off",
+        "--grep",
+        "(?:^|\\s)(?:VII\\.8(?::| ))|publication"
+      ]
+    }
+  ],
+  "base": "HEAD",
+  "shard": null,
+  "results": [
+    {
+      "gate": "refresh root production",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/astro/astro.js",
+        "build"
+      ],
+      "status": 0,
+      "wallMs": 19410
+    },
+    {
+      "gate": "chapter contracts + both-theme full-page axe",
+      "command": [
+        "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "tests/e2e/chapters.spec.ts",
+        "--trace",
+        "off",
+        "--grep",
+        "(?:^|\\s)(?:VII\\.4|VII\\.3|VII\\.5|VII\\.1|VII\\.6|VII\\.2|VII\\.7|VII\\.8)(?: |:)|Part I publication",
+        "--output",
+        "validation-results/focused-2026-10-12T16-36-33-656Z/0-failures"
+      ],
+      "status": 1,
+      "wallMs": 67252
+    }
+  ]
+}

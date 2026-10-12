@@ -129,7 +129,7 @@ describe('conservative change-scoped validation', () => {
   });
   it('keeps documentation-only work cheap and refuses misspelled selectors', () => {
     expect(makePlan({ files: ['documentation/report.md'] }).commands).toEqual([]);
-    expect(() => makePlan({ chapters: ['VII.1'] })).toThrow();
+    expect(() => makePlan({ chapters: ['VII.9'] })).toThrow();
     expect(() => makePlan({ project: 'phone' })).toThrow();
     expect(() => makePlan({ only: 'unitt' })).toThrow();
   });
@@ -302,9 +302,58 @@ describe('Statistics likelihood ownership',()=>{
 });
 
 describe('M9/M10 combined ownership and publication',()=>{
- it('discovers all 79 chapters and all new families without omissions',()=>{const c=chapterCatalog();expect(c).toHaveLength(allChapters.filter(r=>r.chapter.status==='available').length);expect(c.filter(x=>x.id.startsWith('V.'))).toHaveLength(10);expect(c.filter(x=>x.id.startsWith('VI.'))).toHaveLength(10);for(const x of c.filter(x=>/^VI?\./.test(x.id)))expect(x.family,x.id).toMatch(/^(statistics|optimization)_/);});
+ it('discovers every published chapter and the Statistics/Optimization families without omissions',()=>{const c=chapterCatalog();expect(c).toHaveLength(allChapters.filter(r=>r.chapter.status==='available').length);expect(c.filter(x=>x.id.startsWith('V.'))).toHaveLength(10);expect(c.filter(x=>x.id.startsWith('VI.'))).toHaveLength(10);for(const x of c.filter(x=>/^VI?\./.test(x.id)))expect(x.family,x.id).toMatch(/^(statistics|optimization)_/);});
  it('Statistics estimator models and Optimization transitions select separate real consumers',()=>{const stat=makePlan({files:['src/math/statistics/data.ts']}),opt=makePlan({files:['src/math/optimization/descent.ts']});expect(stat.chapters.slice().sort()).toEqual(['V.1','V.2','V.3','V.4']);expect(opt.chapters.slice().sort()).toEqual(chapterCatalog().filter(c=>c.id.startsWith('VI.')).map(c=>c.id).sort());expect(stat.chapters.some(id=>id.startsWith('VI.'))).toBe(false);expect(opt.chapters.some(id=>id.startsWith('V.'))).toBe(false);expect(stat.conservativeExpansion).toBe(false);expect(opt.conservativeExpansion).toBe(false);});
  it('combined milestone includes all contracts, all 20 new interactions and both new visual families',()=>{const files=chapterCatalog().filter(c=>/^VI?\./.test(c.id)).map(c=>c.path),p=makePlan({mode:'milestone',files:[...files,'src/curriculum/curriculum.ts']});expect(p.chapters).toHaveLength(chapterCatalog().length);expect(p.interactionChapters).toHaveLength(20);expect(p.completeMath).toBe(true);expect(p.oracles).toEqual(expect.arrayContaining(['statistics_data','statistics_uncertainty','statistics_likelihood','optimization_landscapes','optimization_dynamics','optimization_constraints']));expect(p.commands.find(c=>c.gate==='authoritative root visuals')!.command).toEqual(expect.arrayContaining(['tests/e2e/visual-statistics.spec.ts','tests/e2e/visual-optimization.spec.ts']));expect(p.commands.some(c=>c.gate==='complete root browser')).toBe(false);});
 });
 
 it('navigation regression edits retain the known shared-shell gate without exhaustive fallback',()=>{const p=makePlan({files:['tests/e2e/navigation.spec.ts'],mode:'milestone'});expect(p.sharedExpansion).toBe(true);expect(p.commands.some(c=>c.gate==='complete root browser')).toBe(false);expect(p.commands.some(c=>c.gate==='root shared shell, navigation, accessibility and deployment')).toBe(true);expect(p.crossChapterContracts).toEqual(expect.arrayContaining(['I.1','I.3','I.9','II.1','II.10']));});
+
+
+describe('Part VII registered validation ownership',()=>{
+  it('probability model selects its actual information consumers, units, oracle and browser',()=>{
+    const p=makePlan({files:['src/math/information-theory/probabilities.ts']});
+    expect(p.chapters.slice().sort()).toEqual(['VII.1','VII.2','VII.3','VII.4','VII.5']);
+    expect(p.conservativeExpansion).toBe(false);expect(p.oracles).toEqual(['information_comparison','information_probability']);
+    expect(p.units).toContain('tests/unit/information-probability.parity.test.ts');
+    expect(p.commands.some(c=>c.command.includes('tests/e2e/information-probability.spec.ts'))).toBe(true);
+    expect(p.chapters.some(id=>id.startsWith('VIII.'))).toBe(false);
+  });
+  it('Part VII screenshots select their owner; missing models remain conservative',()=>{
+    expect(makePlan({files:['tests/e2e/__screenshots__/visual-information-theory.spec.ts/mobile-vii-entropy-point.png']}).chapters).toEqual(['VII.3']);
+    for(const file of ['src/math/information-theory/deleted.ts','src/math/unregistered-information.ts'])expect(makePlan({files:[file],chapters:['VII.1']}).commands.some(c=>c.gate==='complete root browser')).toBe(true);
+  });
+});
+
+
+describe('Information Theory pipeline consumer ownership',()=>{
+  it('score models reach both logit chapters and token loss without selecting Numerical Computing',()=>{
+    const p=makePlan({files:['src/math/information-theory/softmax.ts']});expect(p.chapters.slice().sort()).toEqual(['VII.6','VII.7','VII.8']);expect(p.oracles).toEqual(['information_logits']);expect(p.conservativeExpansion).toBe(false);
+    expect(p.units).toContain('tests/unit/information-tokens.test.ts');expect(p.units).toContain('tests/unit/information-logits.parity.test.ts');expect(p.chapters.some(id=>id.startsWith('VIII.'))).toBe(false);
+    for(const file of ['oracle/information_logits_oracle.py','fixtures/information_logits.fixtures.json'])expect(makePlan({files:[file]}).chapters.slice().sort()).toEqual(['VII.6','VII.7','VII.8']);
+  });
+  it('a token model edit reaches only token consumers; missing pipeline inputs remain conservative',()=>{
+    expect(makePlan({files:['src/math/information-theory/tokens.ts']}).chapters).toEqual(['VII.8']);
+    expect(makePlan({files:['src/math/information-theory/comparison.ts']}).chapters.slice().sort()).toEqual(['VII.4','VII.5']);
+    for(const file of ['src/math/information-theory/softmax-deleted.ts','src/math/information-theory/future.ts'])expect(makePlan({files:[file]}).commands.some(c=>c.gate==='complete root browser')).toBe(true);
+  });
+});
+
+
+describe('M11/M12 combined milestone responsibilities',()=>{
+ it('selects 97 contracts, all 18 new interactions, both mounts, all six new oracles and earlier-part regressions',()=>{
+  const files=chapterCatalog().filter(c=>/^VIII?\./.test(c.id)).map(c=>c.path),p=makePlan({mode:'milestone',files:[...files,'src/curriculum/curriculum.ts']});
+  expect(p.chapters).toHaveLength(97);expect(p.interactionChapters).toHaveLength(18);expect(p.completeMath).toBe(true);expect(p.partial).toBe(false);
+  expect(p.oracles).toEqual(expect.arrayContaining(['information_probability','information_comparison','information_logits','numerical_floating','numerical_algorithms','numerical_structure']));
+  expect(p.regressionInteractionChapters.slice().sort()).toEqual(['II.10','III.6','IV.6','V.2','VI.4'].sort());
+  for(const spec of ['matrices','derivatives','probability-finite','statistics-data','optimization'])expect(p.commands.some(c=>c.command.includes(`tests/e2e/${spec}.spec.ts`))).toBe(true);
+  expect(p.commands.some(c=>c.gate==='complete root browser')).toBe(false);expect(p.commands.some(c=>c.gate==='subpath prefix-dependent navigation, assets, anchors, routes and hydration')).toBe(true);
+  expect(p.commands.find(c=>c.gate==='authoritative root visuals')!.command).toEqual(expect.arrayContaining(['tests/e2e/visual-information-theory.spec.ts','tests/e2e/visual-numerical-computing.spec.ts']));
+ });
+ it('keeps both exact chapter screenshot mappings and unknown-input conservative fallback after integration',()=>{
+  for(const [file,id]of [['visual-information-theory.spec.ts/mobile-vii-stable-logsumexp-extreme.png','VII.7'],['visual-numerical-computing.spec.ts/mobile-viii-vectorized-computation-batched.png','VIII.9']]){
+   const p=makePlan({files:[`tests/e2e/__screenshots__/${file}`]});expect(p.chapters).toEqual([id]);expect(p.conservativeExpansion).toBe(false);
+  }
+  for(const file of ['src/math/information-theory/unowned.ts','src/math/numerical-computing/unowned.ts','code/python/unowned_new_reference.py'])expect(makePlan({files:[file]}).commands.some(c=>c.gate==='complete root browser')).toBe(true);
+ });
+});

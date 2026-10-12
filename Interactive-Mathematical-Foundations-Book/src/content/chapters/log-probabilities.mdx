@@ -1,0 +1,82 @@
+---
+kind: chapter
+curriculumId: VII.1
+title: "Logarithms and log probabilities in computation"
+hero: "Why can a positive probability disappear during *multiplication*?"
+lede: Change actual probability factors, then compare their exact product with direct binary64 multiplication and a sum of logarithms.
+description: Change actual probability factors, then compare their exact product with direct binary64 multiplication and a sum of logarithms.
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import Xref from '../../shell/Xref.astro';
+import ProbabilityStage from '../../lessons/information-theory/ProbabilityStage';
+import Exercise from '../../lessons/information-theory/BlockAExercise';
+import reference from '../../../code/python/information_logs.py?raw';
+import practical from '../../../code/python/information_logs_numpy.py?raw';
+
+<Stage caption="Change actual probability factors, then compare their exact product with direct binary64 multiplication and a sum of logarithms."><ProbabilityStage chapter="logs" client:load /></Stage>
+
+## Intuition
+
+A long chain of likely events can have a tiny joint probability. The multiplication path can lose that positive value to underflow. Adding logs retains a useful finite score even when converting the score back to a probability underflows.
+
+## Definition
+
+For independent observed events with probabilities $p_i\in[0,1]$, $L=\prod_i p_i$. For strictly positive factors, the natural log-likelihood is $\ell=\log L=\sum_i\log p_i$. Here a repeated block gives $L=(\prod_i p_i)^r$. Independence is an explicit modeling assumption; correlated events require conditional factors.
+
+## Mechanics
+
+The three factor controls and repeated-block count own the state. The table shows exact rational factors and approximate log factors. The graph plots log-likelihood after each sampled block; the inspector shows the same final quantity alongside the actual direct multiplication result.
+
+## Derivation
+
+The identity $\log(ab)=\log a+\log b$ follows because if $a=e^u$ and $b=e^v$, then $ab=e^{u+v}$. Repeating it yields $\ell$. Logs are increasing, so maximizing positive likelihood and maximizing its log choose the same parameters. Changing to negative log-likelihood turns that maximization into minimization.
+
+## Worked examples
+
+At $p=(1/2,1/4,4/5)$, $L=1/10$ and $\ell=-\log 10\approx-2.302585$ nats. At three factors of $1/2$ repeated 400 times, $L=2^{-1200}>0$ and $\ell=-1200\log2\approx-831.776617$. Binary64 cannot represent that positive product, but the log remains finite.
+
+<Stage caption="Replay the actual mathematical inputs, terms and result."><ProbabilityStage chapter="logs" worked client:load /></Stage>
+
+## Executable reference code
+
+Run the standalone pedagogical version to see each operation; the NumPy companion shows the practical array form. Both execute assertions and are exercised by the independent oracle tests.
+
+<CodeFile source={reference} file="code/python/information_logs.py" />
+<CodeFile source={practical} file="code/python/information_logs_numpy.py" />
+
+## Explore
+
+Predict what happens when one factor reaches zero. Then select Positive product underflows and distinguish the exact product from the displayed direct zero. Raise a probability and explain why the log-likelihood increases toward zero.
+
+## Common mistakes and counterexamples
+
+Log probability is nonpositive; surprise is its negative. A finite log does not make an impossible event possible. Substituting epsilon for zero changes the model. Multiplying marginal probabilities without independence is not generally a joint probability.
+
+## Numerical considerations
+
+Factors use exact decimal probabilities with at most two places; there are 1–6 supported factors and 1–1200 repetitions. Exact products remain BigInt fractions. Long exact products are displayed as an equivalent power of the exact block product. The approximate log is evaluated from the factors, independently checked against Decimal100 log of the exact product. Direct multiplication and exponentiating the log can underflow. The extended log of zero is −∞; negative, non-finite or out-of-range probability inputs are rejected.
+
+## Engineering and ML connections
+
+The accepted Statistics likelihood chapters treat observed data as fixed while candidate parameters vary. Log-likelihood makes long sequences additive. Classification and token loss will negate these log scores to give an optimization objective.
+
+Continue from <Xref to="chapters/likelihood/">the preceding mathematical connection</Xref>.
+
+## Exercises
+
+Predict, compute and explain the actual quantities. Each question offers corrective feedback and a worked solution.
+
+<Exercise id="information-logs-1" client:load />
+
+<Exercise id="information-logs-2" client:load />
+
+<Exercise id="information-logs-3" client:load />
+
+<Exercise id="information-logs-4" client:load />
+
+<Exercise id="information-logs-5" client:load />
+
+## Summary and checkpoints
+
+A long chain of likely events can have a tiny joint probability. The multiplication path can lose that positive value to underflow. Adding logs retains a useful finite score even when converting the score back to a probability underflows. Check the assumptions, unit and boundary before interpreting the computed result.
