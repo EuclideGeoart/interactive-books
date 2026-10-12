@@ -1,0 +1,174 @@
+---
+kind: chapter
+curriculumId: VI.6
+title: "Momentum"
+hero: "What changes when the optimizer remembers its *direction*?"
+lede: Track a velocity vector alongside the parameters. Each gradient adds to decaying history, so the next displacement can keep moving after the current gradient changes or vanishes.
+description: Explicit unnormalized momentum, velocity memory and damping, exact first and second quadratic steps, rising-loss and zero-gradient probes, independent Python and NumPy, and five graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import OptimizationStage from '../../lessons/optimization/OptimizationStage';
+import Exercise from '../../lessons/optimization/OptimizationExercise';
+import reference from '../../../code/python/optimization_momentum.py?raw';
+import practical from '../../../code/python/optimization_momentum_numpy.py?raw';
+
+<Stage caption="Read previous velocity, current gradient, updated velocity, and actual displacement together. Replay the canonical first two steps to see why the y coordinate moves again after reaching zero."><OptimizationStage chapter="momentum" client:load /></Stage>
+
+Start at $(2,1)$ with zero velocity, $\beta=0.8$, and $\eta=0.25$. The first point matches ordinary gradient descent: $(3/2,0)$. Before advancing again, predict whether zero current y gradient also means zero next y displacement. The stored velocity supplies the missing information.
+
+## Intuition: current slope plus a fading history
+
+Plain gradient descent chooses a displacement from the current gradient alone. Momentum adds memory. Gradients that repeatedly point the same way accumulate, while older contributions fade. A newly opposing gradient must first cancel some retained history before the accumulated direction can reverse.
+
+The mechanical analogy is motion with damping, but the velocity here is an optimizer state vector with a stated sign convention. Positive velocity produces a negative parameter displacement because the update subtracts it. It need not equal physical velocity, the current gradient, or a unit direction.
+
+Memory can help persistent directions dominate short-lived reversals, but it can also carry a point past a low-loss region. Inspect the extra state instead of assuming that smoothing or convexity makes every step lower the objective.
+
+## Definition: the complete two-state recurrence
+
+This chapter uses **unnormalized accumulated gradients**:
+
+$$
+g_k=\nabla L(\theta_k),\qquad
+v_{k+1}=\beta v_k+g_k,\qquad
+\theta_{k+1}=\theta_k-\eta v_{k+1},
+\qquad v_0=(0,0).
+$$
+
+The parameters satisfy $\eta>0$ and $0\leq\beta<1$. Both $\theta_k$ and $v_k$ belong to the optimizer state. Two runs reaching the same parameter point with different velocities can take different next steps.
+
+The recurring quadratic is $L=a(x-c)^2/2+2y^2$, with gradient $(a(x-c),4y)$. The canonical run uses $a=1,c=0$, start $(2,1)$, $\eta=1/4$, and $\beta=4/5$. A normalized moving average $\beta v+(1-\beta)g$ is a different convention; the gradient factor is deliberately absent here.
+
+## Mechanics: inspect the retained direction before adding it
+
+The selected step exposes the previous velocity, current gradient, updated velocity, decay, rate, displacement, and next parameters. First compute $\beta v_k$, then add $g_k$, then multiply the resulting vector by $-\eta$. The arrow's endpoint difference must equal that last vector, not merely $-\eta g_k$.
+
+Reset restores the canonical parameters and zero velocity. Changing the rate, start, or decay creates a new evaluated trajectory. Replay selects stored parameter-and-velocity states; it does not reconstruct velocity by guessing from a rounded path or reverse a floating-point update.
+
+The no-memory preset sets $\beta=0$. It should recover ordinary gradient descent with the same point and rate. Compare it with the canonical momentum run at the second step, where their histories first produce different displacements.
+
+## Derivation: what the memory actually contains
+
+Unroll the velocity recurrence from $v_0=0$:
+
+$$
+v_1=g_0,\qquad
+v_2=\beta g_0+g_1,\qquad
+v_{k+1}=\sum_{j=0}^{k}\beta^{k-j}g_j.
+$$
+
+Every previous gradient is weighted by a power of the decay factor. For a constant gradient g, this becomes
+
+$$
+v_{k+1}=\frac{1-\beta^{k+1}}{1-\beta}g
+\longrightarrow\frac{g}{1-\beta}.
+$$
+
+At $\beta=4/5$, persistent gradient magnitude is amplified toward five times g under this convention. The normalized average instead tends to g. For identical histories from zero state, its velocity is $(1-\beta)$ times the unnormalized one; matching displacements would require dividing its learning rate by $1-\beta$.
+
+The parameter history gives another view. Since $v_k=(\theta_{k-1}-\theta_k)/\eta$ for $k\geq1$,
+
+$$
+\theta_{k+1}=(1+\beta)\theta_k-\beta\theta_{k-1}-\eta g_k.
+$$
+
+For a quadratic error mode of curvature $\lambda$, this is
+
+$$
+e_{k+1}=(1+\beta-\eta\lambda)e_k-\beta e_{k-1}.
+$$
+
+It is a second-order recurrence, unlike gradient descent's single error multiplier. The previous rate condition for plain descent is therefore not a complete momentum stability analysis. The memory and rate act together.
+
+## Worked example: the same first step, a different second step
+
+At $\theta_0=(2,1)$, $g_0=(2,4)$ and $v_0=(0,0)$, so
+
+$$
+v_1=(2,4),\quad
+\Delta\theta_0=-\frac14(2,4)=(-1/2,-1),\quad
+\theta_1=(3/2,0),\quad L_1=9/8.
+$$
+
+Now recompute $g_1=(3/2,0)$, retaining $v_1$. The next velocity is
+
+$$
+v_2=\frac45(2,4)+(3/2,0)
+=(31/10,16/5)=(3.1,3.2).
+$$
+
+Its displacement and next point are
+
+$$
+\Delta\theta_1=(-31/40,-4/5)=(-0.775,-0.8),\qquad
+\theta_2=(29/40,-4/5)=(0.725,-0.8).
+$$
+
+The new loss is
+
+$$
+L_2=\frac12\left(\frac{29}{40}\right)^2
++2\left(-\frac45\right)^2
+=\frac{841+4096}{3200}=\frac{4937}{3200}>\frac98.
+$$
+
+The loss rises from $1.125$ to $1.5428125$ in exact decimal arithmetic. The y contribution rises because the retained positive y velocity moves the parameter below zero. All equalities here are hand calculations; the evaluated stage history is labeled binary64 approximation.
+
+<Stage caption="Replay the canonical momentum steps. At the second step, gradient (3/2,0) combines with stored velocity (2,4) to produce velocity (31/10,16/5) and point (29/40,−4/5)."><OptimizationStage chapter="momentum" worked client:load /></Stage>
+
+## Executable reference code
+
+The standard-library reference records exact `Fraction` frames and verifies the literal first and second steps, including the rising loss $4937/3200$. It then checks the same path with the independently derived second-order parameter recurrence. Additional assertions cover no memory, constant-gradient accumulation, and a zero current gradient with retained velocity.
+
+The NumPy program advances several starts simultaneously. It independently builds a four-state linear transition matrix for quadratic errors and velocities, then cross-checks the trajectory with `numpy.linalg.matrix_power`. This library calculation verifies the bounded implementation; it does not create a universal guarantee for arbitrary momentum settings or objectives.
+
+<CodeFile source={reference} file="code/python/optimization_momentum.py" />
+<CodeFile source={practical} file="code/python/optimization_momentum_numpy.py" />
+
+## Explore: compare damping, history, and displacement
+
+Choose no memory and verify that the second point is $(9/8,0)$ instead of $(29/40,-4/5)$. The parameter point at the start of the second step is the same, but the velocity rule is different. Return to the canonical decay and locate the first y sign reversal; compare the current gradient with the accumulated direction before each move.
+
+Reduce the decay, keeping the rate and start fixed. Older gradients now lose influence faster. Predict which terms in $v_{k+1}=\sum_j\beta^{k-j}g_j$ change before judging the plotted path. Increasing decay also changes accumulated magnitude under this unnormalized convention, so it is not solely a change in smoothness.
+
+As a hand probe, suppose $\theta=(0,0)$ and retained velocity is $(1,-2)$. The current gradient is zero, but the next velocity is $(4/5,-8/5)$ and next point $(-1/5,2/5)$. This is a state-level counterexample to treating a zero current gradient as an automatic momentum stop. The explorer's fresh runs always begin with zero velocity; this probe deliberately supplies nonzero history.
+
+## Common mistakes and counterexamples
+
+Do not insert $(1-\beta)$ into this chapter's recurrence. The normalized-average formula can be useful, but mixing it with an unnormalized learning rate changes the displacement. Likewise, multiplying the old velocity by the rate before updating it changes the chosen state convention unless the entire recurrence is transformed consistently.
+
+A zero current gradient does not erase memory. A current gradient sign change need not immediately reverse the updated velocity. A convex objective still permits a momentum loss increase: its whole-domain minimum exists independently of whether this two-state algorithm descends on every step.
+
+<Callout kind="misconception" title="The arrow follows the updated velocity">
+The second canonical y gradient is zero, but its velocity is still 16/5 after damping. Subtracting one quarter of that velocity moves y from 0 to −4/5. Drawing a zero y update would contradict the stated momentum recurrence.
+</Callout>
+
+## Numerical considerations
+
+The exact reference uses rational inputs and arithmetic. Its binary64 counterpart rounds velocity accumulation and parameter addition; decimal values such as $3.1$ are not exactly representable in binary64. The inspector therefore shows approximation signs even when a hand calculation has a terminating decimal.
+
+Large retained velocities can overflow or create a non-finite displacement before the objective is evaluated at the next point. Check the optimizer state as well as the loss. When $\beta$ is close to 1, a long persistent-gradient history has large total weight $1/(1-\beta)$, making scale and rate choices consequential.
+
+Reproducible replay must preserve the stored velocity together with each parameter point. Reconstructing it from rounded coordinates can alter later updates. The matrix-power cross-check uses absolute tolerance $10^{-12}$ for the bounded run; this tolerance verifies arithmetic agreement, not convergence for all possible histories.
+
+## Engineering and ML connections
+
+The velocity recurrence resembles a first-order filter of a gradient signal: it discounts older samples while retaining direction. In learning systems, keeping optimizer state across updates affects behavior; restarting only the parameters and silently discarding velocity creates a different run.
+
+[Learning-rate behavior](../learning-rate-convergence/) explains how curvature acts on a one-state method. Momentum changes that recurrence, while [stochastic gradients](../stochastic-mini-batch-descent/) will add sampling variation. [Adam](../adam/) also retains a signed first moment, but uses a normalized average, a squared-gradient moment, and bias correction. Similar names or arrows should not hide these different equations.
+
+## Exercises
+
+Keep previous velocity, updated velocity, and displacement separate. Verify the loss after a step rather than assuming it must fall.
+
+<Exercise id="optimization-momentum-1" client:load />
+<Exercise id="optimization-momentum-2" client:load />
+<Exercise id="optimization-momentum-3" client:load />
+<Exercise id="optimization-momentum-4" client:load />
+<Exercise id="optimization-momentum-5" client:load />
+
+## Summary and checkpoints
+
+Momentum updates a decaying accumulated gradient before moving the parameters. Check that you can recover the first two canonical velocities and points, explain why the second y move persists, and account for the loss increase to $4937/3200$. The optimizer's memory is mathematical state; a point and a current gradient alone no longer determine its next displacement.

@@ -19,7 +19,8 @@ export const families = {
   least_squares: { lesson: 'linear-algebra', stage: 'LeastSquaresStage', units: /^least-squares/, oracles: ['least_squares'], browser: 'least-squares' },
   svd: { lesson: 'linear-algebra', stage: 'SVDStage', units: /^svd/, oracles: ['svd'], browser: 'svd' },
   optimization_landscapes: { lesson: 'optimization', kinds: ['landscapes', 'optima', 'convexity'], units: /^optimization-(objectives|landscapes|lesson|exercises)/, oracles: ['optimization_landscapes'], browser: 'optimization' },
-  optimization_descent: { lesson: 'optimization', kinds: ['descent'], units: /^optimization-(descent|lesson|exercises)/, oracles: ['optimization_landscapes'], browser: 'optimization' },
+  optimization_descent: { lesson: 'optimization', kinds: ['descent', 'rate'], units: /^optimization-(descent|dynamics|lesson|exercises)/, oracles: ['optimization_landscapes', 'optimization_dynamics'], browser: 'optimization' },
+  optimization_dynamics: { lesson: 'optimization', kinds: ['momentum', 'stochastic', 'adam'], units: /^optimization-(dynamics|lesson|exercises)/, oracles: ['optimization_dynamics'], browser: 'optimization' },
   // Part III: several families share src/lessons/calculus/; each chapter's thin wrapper stage names its family and visual kind.
   limits: { lesson: 'calculus', stages: { LimitStage: 'limits', ContinuityStage: 'continuity' }, units: /^limits/, oracles: ['limits'], browser: 'limits' },
   derivatives: { lesson: 'calculus', stages: { SecantStage: 'secant', LinearModelStage: 'linear-model', RulesStage: 'rules', ChainStage: 'chain', FiniteDifferenceStage: 'finite-difference' }, units: /^derivatives/, oracles: ['derivatives'], browser: 'derivatives' },
@@ -116,6 +117,7 @@ function familyOfFile(path) {
   if (/^src\/(lessons|math)\/optimization\//.test(path)) {
     if (base === 'objectives.ts') return 'optimization_landscapes';
     if (base === 'descent.ts') return 'optimization_descent';
+    if (base === 'dynamics.ts') return 'optimization_dynamics';
     return null;
   }
   if (/^src\/(lessons|math)\/calculus\//.test(path)) {

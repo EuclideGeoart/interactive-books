@@ -51,8 +51,12 @@ export function objectiveModel(config: ObjectiveConfig): { evaluate(point: Vecto
   }
   if (p) {
     const gx = dx2(p), gy = dy2(p), hxx = dx2(gx), hxy = dy2(gx), hyx = dx2(gy), hyy = dy2(gy);
-    return { polynomial: p, evaluate: ([x,y]) => finiteEvaluation(eval2Number(p!,x,y),
-      [eval2Number(gx,x,y),eval2Number(gy,x,y)], [[eval2Number(hxx,x,y),eval2Number(hxy,x,y)],[eval2Number(hyx,x,y),eval2Number(hyy,x,y)]]) };
+    return { polynomial:p, evaluate:([x,y])=>{
+      // Shift first and weight before multiplying: avoid cancellation and gratuitous square overflow.
+      const loss=config.objective==='quadratic'?(config.a/2)*(x-config.center)*(x-config.center)+2*y*y:eval2Number(p!,x,y);
+      const gradient:Vector=config.objective==='quadratic'?[config.a*(x-config.center),4*y]:[eval2Number(gx,x,y),eval2Number(gy,x,y)];
+      return finiteEvaluation(loss,gradient,[[eval2Number(hxx,x,y),eval2Number(hxy,x,y)],[eval2Number(hyx,x,y),eval2Number(hyy,x,y)]]);
+    } };
   }
   return { polynomial: null, evaluate(point) {
     const [x,y] = point;

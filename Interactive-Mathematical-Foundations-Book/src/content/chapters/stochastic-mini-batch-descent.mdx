@@ -1,0 +1,190 @@
+---
+kind: chapter
+curriculumId: VI.7
+title: "Stochastic and mini-batch gradient descent"
+hero: "Can a few examples give a useful but noisy *gradient*?"
+lede: Retain the exact indices selected by each update, evaluate their residuals, and average their parameter gradients. Compare that sampled direction with the full objective while replaying the same seeded path.
+description: Fixed-data regression, full and sampled gradient means, with-replacement uint32 sampling, conditional unbiasedness and reproducibility limits, executable Python and NumPy, and five graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import OptimizationStage from '../../lessons/optimization/OptimizationStage';
+import Exercise from '../../lessons/optimization/OptimizationExercise';
+import reference from '../../../code/python/optimization_stochastic.py?raw';
+import practical from '../../../code/python/optimization_stochastic_numpy.py?raw';
+
+<Stage caption="Inspect each selected zero-based data index, its residual and parameter gradient, the batch average, and the resulting update. Compare the full-data gradient and loss using the same current parameters."><OptimizationStage chapter="stochastic" client:load /></Stage>
+
+The canonical start is $(w,b)=(0,0)$ with rate $0.1$, seed $42$, and two selected slots. Predict whether its first sampled gradient equals the full gradient $(-7/4,-1)$. The actual selected indices are $[1,0]$, so this batch gives $(-1/2,0)$ instead. Both quantities are valid; they answer different questions.
+
+## Intuition: estimate the direction using actual examples
+
+A full-data gradient combines every example's contribution before an update. A stochastic gradient uses one selected example, and a mini-batch gradient averages several selected slots. This changes the direction supplied to the optimizer while preserving the same full objective we ultimately care about.
+
+Different examples can pull parameters in different directions. Their complete average can vanish even though individual gradients do not. Sampling therefore introduces variation into the path, including motion near a full-data minimum. A larger batch can reduce gradient-estimation variance under a stated sampling model; it does not make every observed update identical to the full gradient.
+
+## Definition: one loss per example, one mean objective
+
+Use the four fixed data pairs with zero-based indices:
+
+$$
+(x_i,y_i)\in\{(-1,-1),(0,1),(1,2),(2,2)\},\qquad i=0,1,2,3.
+$$
+
+The model is $\widehat y_i=wx_i+b$, with parameter vector $\theta=(w,b)$. Data coordinates $x_i,y_i$ are fixed observations, not the coordinates being optimized. Define
+
+$$
+r_i=wx_i+b-y_i,\qquad
+\ell_i(\theta)=\frac12r_i^2,\qquad
+L(\theta)=\frac14\sum_{i=0}^{3}\ell_i(\theta).
+$$
+
+Differentiating each residual gives its parameter gradient
+
+$$
+g_i(\theta)=\nabla\ell_i(\theta)=(r_ix_i,r_i),\qquad
+\nabla L(\theta)=\frac14\sum_{i=0}^{3}g_i(\theta).
+$$
+
+A selected batch of B slots has indices $I_1,\ldots,I_B$, retains any repeats, and uses
+
+$$
+\widehat g_B(\theta)=\frac1B\sum_{s=1}^{B}g_{I_s}(\theta),\qquad
+\theta_{k+1}=\theta_k-\eta\widehat g_B(\theta_k).
+$$
+
+The deterministic full batch is $[0,1,2,3]$ exactly once each. Four random draws with replacement are not automatically that full batch.
+
+## Mechanics: one generator transition per selected slot
+
+The default mini-batch has $B=2$, start $(0,0)$, rate $1/10$, and uint32 seed $42$. Each sampled slot advances the explicit generator and maps its new state to one of four indices:
+
+$$
+s_{\mathrm{next}}=(1664525s+1013904223)\bmod2^{32},\qquad
+I=\left\lfloor\frac{4s_{\mathrm{next}}}{2^{32}}\right\rfloor.
+$$
+
+A slot can select an index already present in the same batch. The next slot continues from the updated state; it does not restart from the seed. One sampled example consumes one transition, and a two-slot mini-batch consumes two. Full-batch mode consumes no random draws and preserves the generator state.
+
+Inspect the selected-example table alongside the selected mean gradient, full gradient, full loss, batch loss, and generator states. The update uses the selected gradient, while the displayed objective history evaluates all four examples. Replaying a stored step reveals its actual batch; replay does not draw a replacement batch.
+
+## Derivation: unbiasedness is a conditional expectation claim
+
+Suppose that, conditional on the current parameters $\theta$, fresh indices are independent and uniform on $\{0,1,2,3\}$. Every slot then has
+
+$$
+\mathbb E[g_{I_s}(\theta)\mid\theta]
+=\frac14\sum_{i=0}^{3}g_i(\theta)=\nabla L(\theta).
+$$
+
+Linearity gives $\mathbb E[\widehat g_B\mid\theta]=\nabla L(\theta)$. Independent slots also give
+
+$$
+\operatorname{Cov}(\widehat g_B\mid\theta)
+=\frac1B\operatorname{Cov}(g_I(\theta)\mid\theta).
+$$
+
+This identity concerns repeated ideal draws at the same current point. It does not require an observed batch to contain distinct examples. Sampling without replacement would need a different covariance calculation; the lesson deliberately uses replacement.
+
+The fixed-seed LCG supplies reproducibility rather than literal iid randomness. Given its seed, the entire sequence is determined. A finite run cannot prove the ideal conditional independence assumptions or an optimizer convergence theorem. Keep the sampling theorem's assumptions separate from the deterministic implementation used to illustrate it.
+
+For this dataset the full gradient can also be expanded directly:
+
+$$
+\nabla L(w,b)=\left(\frac32w+\frac12b-\frac74,
+\frac12w+b-1\right),\qquad
+H=\begin{bmatrix}3/2&1/2\\1/2&1\end{bmatrix}.
+$$
+
+Solving $\nabla L=0$ gives $(w,b)=(1,1/2)$. The Hessian is positive definite because its leading diagonal entry is positive and determinant is $5/4>0$, so this is the unique full-data global minimum.
+
+## Worked example: seed 42 selects a different direction
+
+At $(0,0)$, compute every contribution before averaging:
+
+| Index | Residual | Half-squared loss | Gradient (w,b) |
+| --- | --- | --- | --- |
+| 0 | $1$ | $1/2$ | $(-1,1)$ |
+| 1 | $-1$ | $1/2$ | $(0,-1)$ |
+| 2 | $-2$ | $2$ | $(-2,-2)$ |
+| 3 | $-2$ | $2$ | $(-4,-2)$ |
+
+Thus $L=5/4$ and $\nabla L=(-7/4,-1)$. Seed $42$ advances first to $1083814273$, selecting index 1, then to $378494188$, selecting index 0. The selected loss is $1/2$ and the selected mean gradient is
+
+$$
+\widehat g_2=\frac12\bigl((0,-1)+(-1,1)\bigr)=(-1/2,0).
+$$
+
+With $\eta=1/10$ the update is $(1/20,0)$, giving next parameters $(1/20,0)$. Their four residuals are $19/20,-1,-39/20,-19/10$, so the new full loss is
+
+$$
+L(1/20,0)=\frac18\left[
+\left(\frac{19}{20}\right)^2+1+
+\left(-\frac{39}{20}\right)^2+
+\left(-\frac{19}{10}\right)^2\right]
+=\frac{1863}{1600}.
+$$
+
+<Stage caption="Replay the canonical seed-42 mini-batch: indices [1,0], averaged gradient (−1/2,0), next parameters (1/20,0), and full loss 1863/1600."><OptimizationStage chapter="stochastic" worked client:load /></Stage>
+
+Continue from state $378494188$. The second batch is $[2,0]$, ending at state $955863294$. At the current point its mean gradient is $(-29/20,-1/2)$, giving next parameters $(39/200,1/20)$. Resetting the generator at each iteration would produce a different path.
+
+A full-batch first step instead uses $(-7/4,-1)$, moves to $(7/40,1/10)$, and leaves seed state $42$ unchanged. The optimizer rate is the same, but the supplied gradient and generator transition differ.
+
+## Executable reference code
+
+The standard-library program evaluates fixed-data residuals, losses, and gradients exactly with `Fraction`. Its integer generator computes the specified updated states and indices without floating-point conversion. Assertions verify both seed-42 batches, the first two parameter updates, full-batch non-advancement, repeated indices, and literal full-objective values.
+
+It also enumerates all 16 ordered pairs under the ideal uniform two-draw model and checks that their mean gradient equals the full gradient. That is a finite expectation calculation for this dataset, separate from any claim about a seeded PRNG's independence.
+
+The NumPy program uses gathered design-matrix rows and vectorized residual and gradient calculations across several seeds. Slots advance sequentially, while the seed axis is vectorized. It uses the same explicit LCG rather than substituting NumPy's random generator, then independently checks full gradients, ordered-pair expectations, and noisy movement at the optimum.
+
+<CodeFile source={reference} file="code/python/optimization_stochastic.py" />
+<CodeFile source={practical} file="code/python/optimization_stochastic_numpy.py" />
+
+## Explore: reproduce a path, then change its sampling
+
+Replay the canonical path and verify its first two batches before changing anything. Switch to full batch and confirm that the selected indices are always $[0,1,2,3]$ and the generator state does not advance. Switch to one sampled example: the first index uses the same stream, but subsequent iteration boundaries occur after a different number of draws.
+
+Keep the start and rate fixed while changing the seed. The full gradient at that initial point stays fixed; the selected gradient and path can change. Increase mini-batch size to four and inspect repeats. Seed 42 begins $[1,0,2,0]$, omitting index 3, so this sampled four-slot batch is still not the full batch.
+
+At the full-data optimum $(1,1/2)$, individual residuals are $1/2,-1/2,-1/2,1/2$. As a repeat example, two slots selecting $[0,0]$ have mean gradient $(-1/2,1/2)$. A rate $1/10$ moves to $(21/20,9/20)$ and raises full loss from $1/8=200/1600$ to $203/1600$. A fixed-rate sampled update need not stop at the exact full minimum.
+
+## Common mistakes and counterexamples
+
+Unbiased does not mean every observed estimate equals its target. The first canonical selected gradient already differs from the full one. More draws can reduce estimation variance under the ideal assumptions, while a particular observed batch can still point away from a full-data minimum.
+
+Do not remove duplicate indices or divide by the number of distinct examples. Both would change the requested with-replacement average. Do not call a sampled size-four batch a full batch. Do not reseed each slot or iteration unless deliberately teaching a different deterministic process.
+
+<Callout kind="misconception" title="The sampled loss is not the complete objective">
+The canonical batch has mean loss 1/2 at the origin, while the full mean loss is 5/4. Its update uses the sampled gradient. Evaluating improvement in the full objective requires recomputing all four example losses at the new parameters.
+</Callout>
+
+## Numerical considerations
+
+The uint32 transitions and their four index bins are exact integer operations. The standard-library reference uses a floor-equivalent integer quotient, preserving the updated-state convention. Residual, loss, and gradient trajectories in the stage and NumPy reference use binary64 approximations and are labeled accordingly.
+
+Summation and division can introduce rounding even with a tiny fixed dataset. On larger data, residual magnitude and feature scale can amplify it. Separate genuine batch variation from numerical error and display rounding; a jagged path is not evidence that every source of variation is stochastic.
+
+A seed is only part of a reproducibility record. Retain current parameters, generator state, draw order, batch size, sampling mode, objective normalization, and optimizer settings. Switching from mini to full changes how many draws occur; reverse replay must select saved states rather than advance the stream again.
+
+## Engineering and ML connections
+
+[Least squares](../orthogonal-least-squares/) supplies the fixed-data objective, and [expectation](../expectation/) explains why a uniformly selected contribution has the full average as its mean. [Covariance](../covariance-correlation/) describes how independent averaging reduces variability. Those links depend on the stated sampling model, not on the appearance of a particular path.
+
+A small batch uses fewer example-gradient evaluations per update, while a larger batch carries more information about the full mean. Comparing algorithms therefore requires counting work as well as steps. [Momentum](../momentum/) can filter a sampled gradient history, and [Adam](../adam/) retains both signed and squared-gradient averages. Neither memory mechanism makes conditional sampling assumptions automatic or supplies a global convergence guarantee.
+
+## Exercises
+
+Use zero-based indices, preserve repeated slots, and distinguish batch values from full-data values. State the ideal probability assumptions separately from the seeded demonstration.
+
+<Exercise id="optimization-stochastic-1" client:load />
+<Exercise id="optimization-stochastic-2" client:load />
+<Exercise id="optimization-stochastic-3" client:load />
+<Exercise id="optimization-stochastic-4" client:load />
+<Exercise id="optimization-stochastic-5" client:load />
+
+## Summary and checkpoints
+
+A sampled update averages the actual selected example gradients, with repeats, while the full objective remains the mean of all four losses. Check that you can reconstruct seed 42's batches, recover full gradient $(-7/4,-1)$ and selected gradient $(-1/2,0)$ at the origin, and explain movement at a full-data optimum. Reproducible finite paths illustrate sampling; unbiasedness and variance reduction require their ideal conditional assumptions.

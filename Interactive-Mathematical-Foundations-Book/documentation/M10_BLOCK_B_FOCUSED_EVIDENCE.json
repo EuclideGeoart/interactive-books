@@ -1,0 +1,101 @@
+{
+  "phase": "M10 Block B, VI.5\u2013VI.8; focused checks only",
+  "baseline": "cdf2ebd5428d80999dcf52f93a8e3c0eee0ac167",
+  "blockA": "37f2e8c8938a37307755aa7eb7276110343ca1a2",
+  "publication": {
+    "available": 67,
+    "total": 97,
+    "statistics": "planned"
+  },
+  "exercisesAdded": 20,
+  "pythonReferencesAdded": 8,
+  "checks": {
+    "mathematicalUnitsAndParity": {
+      "passed": 214,
+      "log": "validation-results/m10-block-b-parity-fourth.log",
+      "dynamicsMaxScaledUlps": 16,
+      "dynamicsAllowance": 128,
+      "landscapesMaxScaledUlps": 1,
+      "landscapesAllowance": 8
+    },
+    "lessonExerciseCurriculumOwnership": {
+      "passed": 182,
+      "files": 6,
+      "log": "validation-results/m10-block-b-unit.log"
+    },
+    "oracle": {
+      "selfTests": 18,
+      "fixtures": 66,
+      "referencesExecuted": 8,
+      "fresh": true,
+      "log": "validation-results/m10-block-b-oracle.log"
+    },
+    "type": {
+      "errors": 0,
+      "warnings": 0,
+      "existingHints": 5,
+      "log": "validation-results/m10-block-b-check.log"
+    },
+    "desktopMobileContractsAxeInteractionsExercises": {
+      "passedInitially": 78,
+      "failedInitially": 2,
+      "correctedCanariesPassed": 2,
+      "logs": [
+        "validation-results/m10-block-b-browser.log",
+        "validation-results/m10-block-b-browser-continuation-fixed.log"
+      ]
+    },
+    "visual": {
+      "newImages": 24,
+      "allImagesIndividuallyReviewed": true,
+      "comparisonCasesPassed": 24,
+      "comparisonIncludesUnchangedBlockA": true,
+      "log": "validation-results/m10-block-b-visual-comparison.log",
+      "inventory": [
+        "desktop-vi-adam-zero.png",
+        "desktop-vi-adam.png",
+        "desktop-vi-learning-rate-convergence-boundary.png",
+        "desktop-vi-learning-rate-convergence.png",
+        "desktop-vi-momentum-overshoot.png",
+        "desktop-vi-momentum.png",
+        "desktop-vi-stochastic-mini-batch-descent-full.png",
+        "desktop-vi-stochastic-mini-batch-descent.png",
+        "mobile-vi-adam-zero.png",
+        "mobile-vi-adam.png",
+        "mobile-vi-learning-rate-convergence-boundary.png",
+        "mobile-vi-learning-rate-convergence.png",
+        "mobile-vi-momentum-overshoot.png",
+        "mobile-vi-momentum.png",
+        "mobile-vi-stochastic-mini-batch-descent-full.png",
+        "mobile-vi-stochastic-mini-batch-descent.png",
+        "tablet-vi-adam-zero.png",
+        "tablet-vi-adam.png",
+        "tablet-vi-learning-rate-convergence-boundary.png",
+        "tablet-vi-learning-rate-convergence.png",
+        "tablet-vi-momentum-overshoot.png",
+        "tablet-vi-momentum.png",
+        "tablet-vi-stochastic-mini-batch-descent-full.png",
+        "tablet-vi-stochastic-mini-batch-descent.png"
+      ]
+    }
+  },
+  "corrected": [
+    "Stable shifted quadratic evaluation avoids gratuitous intermediate square overflow.",
+    "Adam bias denominators use expm1 to avoid subtraction cancellation.",
+    "An ideal-arithmetic zero-decay Adam trajectory is ill-conditioned near zero; every actual binary64 transition is independently checked with Fraction/Decimal(80) at its input values, using the same 128-ulp tolerance. All ideal fixture transitions are also checked.",
+    "Stochastic reset test now makes a valid noncanonical change before testing reset."
+  ],
+  "failedEvidenceRetained": [
+    "validation-results/m10-block-b-parity.log",
+    "validation-results/m10-block-b-parity-second.log",
+    "validation-results/m10-block-b-parity-third.log",
+    "validation-results/m10-block-b-browser",
+    "validation-results/m10-block-b-browser-continuation"
+  ],
+  "heavyLock": "/tmp/imf-heavy.lock",
+  "limitations": [
+    "No isolated final M10 milestone or exhaustive gate",
+    "Root focused browsers only; combined acceptance owns subpath",
+    "No Windows, physical devices or manual screen reader checks"
+  ]
+}

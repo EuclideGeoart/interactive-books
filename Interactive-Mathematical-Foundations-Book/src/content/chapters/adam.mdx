@@ -1,0 +1,186 @@
+---
+kind: chapter
+curriculumId: VI.8
+title: "Adam intuition"
+hero: "How do signed and squared histories set an adaptive *update*?"
+lede: Inspect Adam's two moment vectors, correct their zero-start weight deficit, then scale each coordinate using its own squared-gradient history. Keep the time index and epsilon placement explicit at every step.
+description: Algorithm 1 Adam, signed and raw squared moments, t=1 bias correction and epsilon outside the root, zero and reversed gradients, Decimal and vectorized NumPy, and five graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import OptimizationStage from '../../lessons/optimization/OptimizationStage';
+import Exercise from '../../lessons/optimization/OptimizationExercise';
+import reference from '../../../code/python/optimization_adam.py?raw';
+import practical from '../../../code/python/optimization_adam_numpy.py?raw';
+
+<Stage caption="Inspect both raw moments, their bias corrections, the positive coordinate denominators, and the actual update. The first optimizer iteration k=0 is Adam time t=1."><OptimizationStage chapter="adam" client:load /></Stage>
+
+At the canonical start $(2,1)$, the gradient is $(2,4)$. Ordinary descent with rate $1/4$ would move by $(-1/2,-1)$. Adam's first update instead moves both coordinates by nearly $-1/4$. Predict how dividing by the square root of a squared-gradient history produces that change, then inspect the moments rather than treating the arrow as a magic rescaling.
+
+## Intuition: direction history and magnitude history
+
+A signed average remembers which way gradients have tended to point. An average of their squares remembers their typical magnitudes while discarding their signs. Adam uses the first history in the numerator and the square root of the second in the denominator, separately for each coordinate.
+
+This can make coordinates with very different gradient magnitudes receive similarly sized first updates. Later updates also depend on the entire retained history, so a new sign change need not reverse the signed average immediately. Adam is not a Hessian method, a unit-gradient method, or a promise that every update lowers the objective.
+
+Both moment vectors start at zero. Their initial geometric weights sum to less than one, which shrinks their early raw values. Bias correction removes this zero-initialization weight deficit. It does not replace a sampled gradient with the exact full gradient or make old gradients describe the current point perfectly.
+
+## Definition: Algorithm 1 with an explicit first time index
+
+These elementwise equations follow [Kingma and Ba's Algorithm 1](https://arxiv.org/pdf/1412.6980#page=2). Start with $m_0=v_0=0$. At time $t\geq1$, evaluate $g_t=\nabla L(\theta_{t-1})$ and use
+
+$$
+m_t=\beta_1m_{t-1}+(1-\beta_1)g_t,\qquad
+v_t=\beta_2v_{t-1}+(1-\beta_2)g_t^{\odot2},
+$$
+
+$$
+\widehat m_t=\frac{m_t}{1-\beta_1^t},\qquad
+\widehat v_t=\frac{v_t}{1-\beta_2^t},\qquad
+\theta_t=\theta_{t-1}-\eta\frac{\widehat m_t}{\sqrt{\widehat v_t}+\epsilon}.
+$$
+
+Squares, square roots, and division are componentwise. Require $0\leq\beta_1,\beta_2<1$, $\eta>0$, and $\epsilon>0$. Epsilon is **outside** the square root. The first update uses $t=1$, corresponding to the stage's first iteration $k=0$.
+
+The lesson uses $\beta_1=0.9$, $\beta_2=0.999$, $\epsilon=10^{-8}$, rate $\eta=0.25$, and the default quadratic start $(2,1)$. The rate is this toy lesson's setting for visible movement. The notation $v$ now names a raw squared-gradient moment, distinct from the unnormalized velocity in the preceding momentum chapter.
+
+## Mechanics: account for every state component
+
+Read the current parameters and gradient, previous moments, updated moments, corrected moments, time, decay factors, epsilon, and displacement together. The denominator for coordinate j is $\sqrt{\widehat v_{t,j}}+\epsilon$; it must use the same corrected second moment shown in the inspector.
+
+The first time is 1 even though the history table begins at iteration 0. Increasing the replay cursor chooses an evaluated moment-and-parameter state; it does not change the time denominator independently or recompute a different gradient. Reset restores zero moments, zero initial time, the canonical point, and the canonical settings.
+
+Change the rate or decay factors in the opening explorer to produce another run. The worked stage retains the canonical run. Epsilon remains the displayed configured positive constant; the deliberately enlarged epsilon in one exercise is a separate hand probe, not a claim about the explorer's default.
+
+## Derivation: correct the missing weight, not the current gradient
+
+Unrolling the first moment gives
+
+$$
+m_t=(1-\beta_1)\sum_{j=1}^{t}\beta_1^{t-j}g_j.
+$$
+
+Its weights sum to
+
+$$
+(1-\beta_1)\sum_{j=1}^{t}\beta_1^{t-j}=1-\beta_1^t.
+$$
+
+Dividing by that sum produces a normalized weighted history. For a constant gradient g, $m_t=(1-\beta_1^t)g$ and $\widehat m_t=g$ exactly. If gradient distributions have a constant mean over time, the same calculation explains the initialization bias in expectation. When gradients change, the corrected vector remains a history average rather than necessarily the newest gradient.
+
+Likewise,
+
+$$
+v_t=(1-\beta_2)\sum_{j=1}^{t}\beta_2^{t-j}g_j^{\odot2},
+\qquad
+\widehat v_t=\frac{v_t}{1-\beta_2^t}.
+$$
+
+This is a **raw second moment**: it averages squares without centering around a mean. It is not a variance, a covariance matrix, or a Hessian. Squaring removes each gradient sign; the first moment determines the update sign because the denominator is positive.
+
+At the first step from zero history, $\widehat m_1=g_1$ and $\widehat v_1=g_1^{\odot2}$, so coordinate j has
+
+$$
+\Delta\theta_j=-\eta\frac{g_{1,j}}{\abs{g_{1,j}}+\epsilon}.
+$$
+
+For a nonzero component much larger than epsilon, this is close to $-\eta\operatorname{sign}(g_{1,j})$. For a zero component it is exactly zero. This first-step cancellation does not hold in the same form once historical gradients differ.
+
+## Worked example: two different magnitudes, nearly equal steps
+
+On $L=x^2/2+2y^2$ at $\theta_0=(2,1)$, $g_1=(2,4)$. At $t=1$ the raw moments are
+
+$$
+m_1=(0.2,0.4),\qquad
+v_1=(0.004,0.016).
+$$
+
+Their denominators are $1-0.9=0.1$ and $1-0.999=0.001$, giving exact hand values
+
+$$
+\widehat m_1=(2,4),\qquad \widehat v_1=(4,16).
+$$
+
+With the lesson's epsilon and rate, the update is
+
+$$
+\Delta\theta_0=
+\left(-\frac{(1/4)2}{2+10^{-8}},
+-\frac{(1/4)4}{4+10^{-8}}\right)
+\approx(-0.24999999875,-0.249999999375).
+$$
+
+Therefore
+
+$$
+\theta_1\approx(1.75000000125,0.750000000625).
+$$
+
+The raw gradient's y component was twice its x component, but its corrected squared magnitude produces twice the square-root denominator. This first update is different from plain descent's $(3/2,0)$ at the same nominal rate. One step does not decide which algorithm is preferable for a complete problem.
+
+<Stage caption="Replay canonical Adam time t=1: m=(0.2,0.4), v=(0.004,0.016), corrected moments (2,4) and (4,16), and next parameters approximately (1.75000000125,0.750000000625)."><OptimizationStage chapter="adam" worked client:load /></Stage>
+
+As a separate scalar sign probe, prescribe gradients $2$ then $-2$ rather than taking the canonical quadratic's next gradient. At $t=2$,
+
+$$
+m_2=0.9(0.2)+0.1(-2)=-0.02,\quad
+v_2=0.999(0.004)+0.001(4)=0.007996.
+$$
+
+Bias denominators $0.19$ and $0.001999$ give $\widehat m_2=-2/19$ and $\widehat v_2=4$. The second moment retains magnitude while the signed moment reverses. This explicit gradient sequence tests the state recurrence; it is not a replacement for the actual gradients in the stage's quadratic trajectory.
+
+## Executable reference code
+
+The standard-library program implements Algorithm 1 with an independent 80-digit `Decimal` calculation. The first moments and corrected literal values are exact for the decimal inputs; later square roots and divisions are high-precision approximations. Assertions cover the canonical first update, positive epsilon, zero history, zero current input with retained history, sign reversals, and an enlarged-epsilon hand calculation.
+
+It also evolves eight actual quadratic steps and independently checks the moment recurrences against explicit weighted gradient histories. The NumPy program evolves multiple starts with array operations and cross-checks those moments against a lower-triangular weight matrix acting on the saved gradients. Its binary64 tolerance is $10^{-14}$ on that bounded run. Neither program imports another book reference or installs an optimizer library.
+
+<CodeFile source={reference} file="code/python/optimization_adam.py" />
+<CodeFile source={practical} file="code/python/optimization_adam_numpy.py" />
+
+## Explore: zero coordinates and changing direction
+
+Choose zero gradients. With zero moment history and a zero initial gradient, both raw and corrected moments remain zero. The denominator is epsilon, so the displacement is the defined zero vector. Choose one zero component instead: the corresponding history stays zero while the other coordinate evolves.
+
+Use the sign-change preset and compare current gradient signs with corrected first-moment signs before reading the displacement. The squared moment remains nonnegative; it cannot reverse a denominator's sign. A small opposing gradient can leave the signed average pointing its old way.
+
+For a hand example of that lag, prescribe scalar gradients $2$ then $-1/10$ with $\beta_1=9/10$. The second first moment is $0.9(0.2)+0.1(-0.1)=0.17>0$. The update is therefore still negative despite a negative current gradient. With retained nonzero moments, a zero current gradient can likewise leave a nonzero update after decay. A fresh zero-history preset and a zero gradient inside an ongoing run are different states.
+
+## Common mistakes and counterexamples
+
+Starting the correction at $t=0$ divides by zero. Using $1-\beta$ at every time treats all updates like the first one. Bias correction normalizes a whole weighted history, so its denominator depends on the actual count of parameter updates, not the number of examples in a mini-batch.
+
+Moving epsilon inside the root changes the algorithm. To see the difference exactly, keep the first corrected moments but use $\epsilon=1$ for a hand probe. The denominators are $\sqrt4+1=3$ and $\sqrt{16}+1=5$, so the update is $(-1/6,-1/5)$ and next point $(11/6,4/5)$. Replacing the denominators by $\sqrt5$ and $\sqrt{17}$ would produce different values.
+
+<Callout kind="misconception" title="Adaptive scaling does not establish optimality">
+Adam's positive denominator scales a signed moment history. That history can oppose the current gradient, and the objective can be nonconvex or unbounded below. Neither moment estimates nor a finite favorable trajectory certify global convergence or a global minimum.
+</Callout>
+
+## Numerical considerations
+
+The stage records binary64 approximations, including powers, corrections, square roots, and parameter additions. The Decimal reference is a high-precision cross-check rather than a symbolic guarantee that every returned decimal expansion is exact. Keep hand-exact moments separate from rounded numerical trajectory values.
+
+When a decay is close to 1, calculating $1-\beta^t$ subtracts nearby numbers and can lose relative accuracy. Squaring a very small gradient can underflow; squaring a large finite gradient can overflow before a parameter update is computed. Check raw and corrected moments for finite values instead of accepting a misleading zero update from an infinite denominator.
+
+Positive epsilon prevents division by zero at zero corrected second moment and controls behavior when gradient scale is tiny. It also means rescaling all gradients does not give exact scale invariance in general: the constant epsilon does not scale with them. Epsilon placement and magnitude are therefore mathematical parts of the chosen update, not display details.
+
+## Engineering and ML connections
+
+[Momentum](../momentum/) retains an unnormalized accumulated gradient, while Adam retains a normalized signed average plus a normalized squared-gradient history and corrects their initial weights. [Stochastic mini-batches](../stochastic-mini-batch-descent/) can supply the gradients, but Adam's moments do not turn biased sampling into unbiased sampling.
+
+A restart must preserve parameters, both moment vectors, the time count, and the configured decay and epsilon values to continue the same run. Keeping only the parameters and resetting the moments changes later displacements. [Automatic differentiation](../automatic-differentiation/) computes gradients; Adam's state transition is the separate mechanism using them. [Convexity](../convexity/) describes an objective's global structure, which no optimizer name can supply automatically.
+
+## Exercises
+
+Use exact rational answers for moment arithmetic and the enlarged-epsilon probe. State when a gradient sequence is prescribed rather than generated by the canonical objective.
+
+<Exercise id="optimization-adam-1" client:load />
+<Exercise id="optimization-adam-2" client:load />
+<Exercise id="optimization-adam-3" client:load />
+<Exercise id="optimization-adam-4" client:load />
+<Exercise id="optimization-adam-5" client:load />
+
+## Summary and checkpoints
+
+Adam updates signed and squared-gradient histories, divides by their accumulated weight sums, and scales each coordinate by a square-root denominator with epsilon outside. Check that you can recover the canonical first moments and update, identify the first time as 1, preserve sign information in the correct vector, and distinguish zero input from zero history. Adaptive state explains movement; it does not by itself prove convergence or optimality.

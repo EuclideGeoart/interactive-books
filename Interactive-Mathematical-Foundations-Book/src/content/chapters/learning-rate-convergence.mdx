@@ -1,0 +1,167 @@
+---
+kind: chapter
+curriculumId: VI.5
+title: "Learning rate and convergence behavior"
+hero: "When does a larger *step* help, oscillate, or run away?"
+lede: Follow the same quadratic from the same starting point at several learning rates. Curvature turns the shared rate into a separate error multiplier for each coordinate, making convergence and failure predictable.
+description: Quadratic error factors, all-start stability bounds, slow and damped convergence, nondecaying boundaries and zero-mode exceptions, exact Python and vectorized NumPy, and five graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import OptimizationStage from '../../lessons/optimization/OptimizationStage';
+import Exercise from '../../lessons/optimization/OptimizationExercise';
+import reference from '../../../code/python/optimization_rate.py?raw';
+import practical from '../../../code/python/optimization_rate_numpy.py?raw';
+
+<Stage caption="Compare slow, contracting, damped, boundary, and divergent runs from the same quadratic start. Inspect both error factors beside the actual binary64 update history."><OptimizationStage chapter="rate" client:load /></Stage>
+
+At the default $\eta=1/4$, predict what happens separately to x and y. Now choose the no-decay preset $\eta=1/2$. The first loss still drops, but does the entire parameter vector converge to the minimum? Read the y values over several iterations before answering.
+
+## Intuition: one distance scale, two sensitivities
+
+A narrow valley has one direction in which small movements change the gradient sharply and another in which they change it slowly. A shared learning rate must handle both. Too small a rate makes progress slow in the gentle direction; too large a rate overshoots in the steep one.
+
+Overshooting does not automatically mean failure. A coordinate can cross its target on every step and still get closer. The useful distinction is whether its error magnitude shrinks, remains constant, or grows. A path's zigzag shape alone cannot decide that distinction, and a short initial loss decrease cannot prove long-run convergence.
+
+## Definition: error contraction and all-start stability
+
+For $L=a(x-c)^2/2+2y^2$ with $a>0$, the unique minimizer is $\theta^*=(c,0)$. Define error coordinates $e_x=x-c$ and $e_y=y$. Gradient descent uses $\theta_{k+1}=\theta_k-\eta\nabla L(\theta_k)$ with $\eta>0$.
+
+A scalar error mode with curvature $\lambda>0$ obeys
+
+$$
+e_{k+1}=(1-\eta\lambda)e_k.
+$$
+
+Here the Hessian eigenvalues are $a$ and $4$, so the two multipliers are $r_x=1-\eta a$ and $r_y=1-4\eta$. In exact real arithmetic, convergence to the minimizer **from every starting point** requires
+
+$$
+\abs{r_x}<1,\qquad\abs{r_y}<1
+\quad\Longleftrightarrow\quad
+0<\eta<\frac{2}{\max(a,4)}.
+$$
+
+This is an all-start guarantee for this positive-curvature quadratic. An unstable or nondecaying mode whose initial error is exactly zero remains absent. Such a particular run can converge outside the all-start interval. Neither the formula nor a successful run supplies a universal rate bound for other objectives.
+
+## Mechanics: change the rate, keep the comparison controlled
+
+Reset restores the default quadratic, $a=1,c=0$, start $(2,1)$, and rate $1/4$. The selected iteration exposes its current point, loss, gradient, rate, displacement, and next point. The error-factor rows connect that evaluated step with the recurrence's longer-term prediction.
+
+Compare the presets at $\eta=0.03,0.25,0.4,0.5,0.75$. Their x factors are $0.97,0.75,0.6,0.5,0.25$, while their y factors are $0.88,0,-0.6,-1,-2$. The first pair is slow, the middle negative factor produces decaying oscillation, and the final two y factors separate nondecay from growth.
+
+The history stores evaluated binary64 states. Replay selects a previous state rather than undoing arithmetic. When the path leaves the plotting window, use the retained table and stated stopping reason; leaving the visible rectangle does not change the mathematical recurrence.
+
+## Derivation: the curvature condition is a geometric-series condition
+
+The gradient is $(a(x-c),4y)$, so direct substitution gives
+
+$$
+x_{k+1}-c=x_k-c-\eta a(x_k-c)=(1-\eta a)(x_k-c),
+\qquad y_{k+1}=(1-4\eta)y_k.
+$$
+
+Unrolling each recurrence yields
+
+$$
+x_k-c=(1-\eta a)^k(x_0-c),\qquad
+y_k=(1-4\eta)^ky_0.
+$$
+
+For a nonzero initial component, a power $r^k$ tends to zero exactly when $\abs r<1$. Solve $-1<1-\eta\lambda<1$: subtract 1 and divide by positive $\lambda$ to obtain $0<\eta<2/\lambda$. Both modes must satisfy this, so the larger curvature sets the shared upper boundary.
+
+| Mode factor r | Nonzero error behavior |
+| --- | --- |
+| $0<r<1$ | Same-side contraction |
+| $r=0$ | That component reaches its target in one step |
+| $-1<r<0$ | Alternating, shrinking error |
+| $r=-1$ | Alternating without decay |
+| $\abs r>1$ | Growing error magnitude |
+
+The loss follows squared factors:
+
+$$
+L_k=\frac a2r_x^{2k}(x_0-c)^2+2r_y^{2k}y_0^2.
+$$
+
+Within the strict all-start interval, each active contribution decreases. Negative factors can therefore produce decreasing loss even while coordinates alternate. At a boundary, an active contribution can remain fixed while another decreases.
+
+## Worked examples: a drop, a boundary, and an exception
+
+With $\eta=1/4$, the factors are $(3/4,0)$. The canonical first step is
+
+$$
+(2,1)\longmapsto(3/2,0),\qquad L:4\longmapsto9/8.
+$$
+
+The second point is $(9/8,0)$ with loss $81/128$. For every $k\geq1$, the y component is zero and $x_k=2(3/4)^k$. This is the default worked replay.
+
+<Stage caption="Replay the canonical η=1/4 run: x errors multiply by 3/4, y reaches zero in one step, and the first losses are 4, 9/8, 81/128."><OptimizationStage chapter="rate" worked client:load /></Stage>
+
+At $\eta=1/2$, the factors become $(1/2,-1)$. The first two next points and losses are
+
+$$
+\theta_1=(1,-1),\ L_1=5/2,\qquad
+\theta_2=(1/2,1),\ L_2=17/8.
+$$
+
+Loss approaches $2$ while y alternates between $1$ and $-1$. The vector does not converge to $(0,0)$; decreasing loss has concealed a nondecaying mode.
+
+At $\eta=3/4$, a start $(2,1)$ has $y_k=(-2)^k$, so its y error grows. A start $(2,0)$ instead has $y_k=0$ and $x_k=2(1/4)^k$, so it converges. This zero-mode exception does not refute the all-start boundary $1/2$.
+
+For a balanced comparison inside the interval, $\eta=2/5$ gives factors $(3/5,-3/5)$. Its first point is $(6/5,-3/5)$ and loss $36/25$. Both squared contributions multiply by $9/25$ thereafter. This first loss is higher than the canonical first loss, yet its worst error factor is smaller: fastest initial improvement and fastest eventual contraction need not select the same rate.
+
+## Executable reference code
+
+The standard-library program uses exact `Fraction` arithmetic for the gradient steps, then independently checks every stored point against the closed-form powers. Literal assertions cover slow contraction, canonical steps, the boundary, damped oscillation, a growing mode, and a zero-mode exception. It also supports positive curvature beyond the bounded explorer, including the hand-worked $a=8$ exercise.
+
+The NumPy program advances multiple rates simultaneously with matrix operations, then compares the complete bounded path with a separately broadcasted power grid. Its documented tolerances apply to these binary64 calculations; the analytic recurrence establishes the convergence condition. No finite iteration budget proves an asymptotic theorem by itself.
+
+<CodeFile source={reference} file="code/python/optimization_rate.py" />
+<CodeFile source={practical} file="code/python/optimization_rate_numpy.py" />
+
+## Explore: predict an active mode before running
+
+Compare the slow preset with the canonical run. Identify the error factor closest to magnitude 1, then predict which coordinate will dominate after many steps. On the default quadratic the x curvature is smaller, so a small rate can erase y error sooner while leaving x progress slow.
+
+Choose damped oscillation and count sign changes in y while comparing its magnitude. Then choose no decay and repeat the comparison. Finally choose the divergent preset with y set to zero, predict the exceptional behavior, and introduce a small nonzero y start to excite the unstable mode.
+
+Move the center c while leaving a and the rate fixed. The x error remains $x-c$; the multiplier does not change. As a hand extension, use $a=8,c=1$, rate $1/8$, and start $(2,1)$. The x error disappears immediately and y halves, producing $(1,1/2)$. The all-start upper boundary is now $1/4$, set by the x curvature rather than y.
+
+## Common mistakes and counterexamples
+
+The rate is not the error multiplier. Different curvatures convert the same rate into different factors. Also apply the x factor to $x-c$, not to x, when the center is shifted.
+
+Oscillation does not imply divergence: a factor of $-1/2$ contracts, while $-1$ does not decay and $-2$ grows. A short decreasing loss trace does not imply parameter convergence, as the $\eta=1/2$ example demonstrates. A zero starting mode can also make an unstable rate appear safe until that mode is perturbed.
+
+<Callout kind="scope" title="The bound quantifies over every start">
+For a positive-curvature quadratic, 0 &lt; η &lt; 2/max(a,4) makes every mode contract. Outside that interval, a particular trajectory can still converge when each unstable or nondecaying mode has exactly zero initial error.
+</Callout>
+
+## Numerical considerations
+
+The convergence derivation concerns exact real arithmetic. A binary64 trajectory can stagnate when a displacement rounds away, underflow to zero, overflow, or stop at a finite iteration budget. These are computational events, distinct from the behavior of $r^k$ as $k\to\infty$.
+
+Near a boundary, a small rate or curvature perturbation can move a factor from slightly inside to slightly outside magnitude 1. Compare the unrounded state and a stated numerical error scale rather than a rounded displayed factor. An exactly absent mode is also a special case; small representation or input errors in that coordinate can matter greatly when its factor has magnitude above 1.
+
+The references label numerical trajectories binary64 and reject non-finite states. Their finite tolerance checks verify implementation on a bounded set of runs; the tolerance is not part of the mathematical definition of stability.
+
+## Engineering and ML connections
+
+The [Hessian](../hessian-curvature/) describes directional curvature, and [gradient descent](../gradient-descent/) turns that curvature into repeated errors. For a positive-definite quadratic, a large ratio of largest to smallest curvature can force a shared stable rate that contracts the gentle direction slowly. Parameter scaling can therefore change how efficiently the same optimizer moves.
+
+A neural-network objective usually lacks one constant Hessian valid across the full path, so this quadratic interval must not be presented as its global safety certificate. It is a local mechanism to inspect: changes in curvature, gradient scale, and parameter units can change a rate's behavior. The next chapter adds [momentum](../momentum/), whose extra memory changes the recurrence and requires its own analysis.
+
+## Exercises
+
+Calculate factors before predicting a path. State whether a claim concerns every start, an active mode, a finite numerical run, or an exact limit.
+
+<Exercise id="optimization-rate-1" client:load />
+<Exercise id="optimization-rate-2" client:load />
+<Exercise id="optimization-rate-3" client:load />
+<Exercise id="optimization-rate-4" client:load />
+<Exercise id="optimization-rate-5" client:load />
+
+## Summary and checkpoints
+
+A quadratic gradient step multiplies each error mode by $1-\eta\lambda$. Check that you can derive the all-start interval, distinguish shrinking oscillation from nondecay, recover the boundary's limiting loss $2$, and explain why an absent unstable mode is an exception. A rate controls a complete trajectory, and its first few favorable updates do not establish the limiting outcome.

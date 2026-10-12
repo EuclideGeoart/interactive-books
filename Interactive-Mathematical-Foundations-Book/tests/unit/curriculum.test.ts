@@ -89,16 +89,16 @@ describe('publication scope guard', () => {
     expect(i3.chapter.role).toBe('reference');
     expect(findChapter('VI.4')!.chapter.role).toBe('flagship');
   });
-  it('M10 Block A adds 4 Optimization chapters to the 59-chapter baseline', () => {
+  it('M10 Blocks A–B add 8 Optimization chapters to the 59-chapter baseline', () => {
     const published = allChapters.filter(r => r.chapter.status === 'available');
     expect(published.filter(r => r.part.numeral === 'I')).toHaveLength(9);
     expect(published.filter(r => r.part.numeral === 'II')).toHaveLength(19);
     expect(published.filter(r => r.part.numeral === 'III').map(r => r.id)).toEqual(PART_III_PUBLISHED);
     expect(published.filter(r => r.part.numeral === 'IV').map(r => r.id)).toEqual(PART_IV_PUBLISHED);
     expect(published.every(r => ['I', 'II', 'III', 'IV', 'VI'].includes(r.part.numeral))).toBe(true);
-    expect(published).toHaveLength(63);
-    expect(allChapters.filter(r => r.chapter.status === 'planned')).toHaveLength(34);
-    expect(published.map(r => r.id)).toEqual([...allChapters.slice(0, 59), ...allChapters.filter(r => r.part.numeral === 'VI' && r.chapter.n <= 4)].map(r => r.id));
+    expect(published).toHaveLength(67);
+    expect(allChapters.filter(r => r.chapter.status === 'planned')).toHaveLength(30);
+    expect(published.map(r => r.id)).toEqual([...allChapters.slice(0, 59), ...allChapters.filter(r => r.part.numeral === 'VI' && r.chapter.n <= 8)].map(r => r.id));
     expect(allChapters.filter(r => r.part.numeral === 'V').every(r => r.chapter.status === 'planned')).toBe(true);
   });
   it('navigates II.19 → III.1 → III.15 → IV.1 → IV.16 → V.1', () => {
