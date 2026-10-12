@@ -7,6 +7,7 @@ lede: Read raw gradients, optional clipped gradients, finite updates, loss chang
 description: Ordered plain-descent diagnostics, raw-gradient and absolute loss-change tolerances, explicit zero gradients, clipping effects, budgets and finite guards, Python and NumPy checks, and five graded exercises.
 ---
 import Stage from '../../shell/Stage.astro';
+import Xref from '../../shell/Xref.astro';
 import Callout from '../../shell/Callout.astro';
 import CodeFile from '../../shell/CodeFile.astro';
 import OptimizationStage from '../../lessons/optimization/OptimizationStage';
@@ -188,7 +189,7 @@ Near a tolerance boundary, binary64 rounding can decide which side of the compar
 
 A useful training record includes the objective definition, parameter scale, rate, raw and applied gradients, clipping settings, tolerances, budget, and final reason. Without those, identical-looking endpoints can conceal different stopping events or interventions.
 
-[Learning rates](../learning-rate-convergence/) affect both progress and measured loss change. [Constraints and penalties](../constraints-regularization/) change feasibility or the objective; clipping instead changes an update. The explicit zero-gradient rule here belongs to plain descent: [momentum](../momentum/) or [Adam](../adam/) can retain nonzero optimizer history even when the current raw gradient vanishes.
+<Xref to="chapters/learning-rate-convergence/">Learning rates</Xref> affect both progress and measured loss change. <Xref to="chapters/constraints-regularization/">Constraints and penalties</Xref> change feasibility or the objective; clipping instead changes an update. The explicit zero-gradient rule here belongs to plain descent: <Xref to="chapters/momentum/">momentum</Xref> or <Xref to="chapters/adam/">Adam</Xref> can retain nonzero optimizer history even when the current raw gradient vanishes.
 
 ## Exercises
 

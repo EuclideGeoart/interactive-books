@@ -7,6 +7,7 @@ lede: Choose a parameter point, read its objective value, and compare nearby alt
 description: Objective domains, scalar loss and parameter vectors, quadratic contours and sensitivity, contrasting landscapes, exact Python and vectorized NumPy, and five worked graded exercises.
 ---
 import Stage from '../../shell/Stage.astro';
+import Xref from '../../shell/Xref.astro';
 import Callout from '../../shell/Callout.astro';
 import CodeFile from '../../shell/CodeFile.astro';
 import OptimizationStage from '../../lessons/optimization/OptimizationStage';
@@ -151,7 +152,7 @@ Large parameter magnitudes can overflow squared or higher-order terms even when 
 
 A training objective often aggregates data-fitting errors and parameter penalties. Choosing a sum instead of a mean multiplies the data term by the number of examples. With no other terms that preserves minimizers but changes gradient scale; when a separate penalty is retained, it also changes their relative weight. State the entire objective before interpreting an optimizer trace.
 
-[Least squares](../orthogonal-least-squares/) gives concrete quadratic fitting objectives. The [gradient chapter](../gradient-directional-derivatives/) explains directional sensitivity, and [Hessian and curvature](../hessian-curvature/) explains local shape. These become the ingredients of the parameter updates in [gradient descent](../gradient-descent/). A better search algorithm cannot repair an objective that rewards the wrong engineering behavior.
+<Xref to="chapters/orthogonal-least-squares/">Least squares</Xref> gives concrete quadratic fitting objectives. The <Xref to="chapters/gradient-directional-derivatives/">gradient chapter</Xref> explains directional sensitivity, and <Xref to="chapters/hessian-curvature/">Hessian and curvature</Xref> explains local shape. These become the ingredients of the parameter updates in <Xref to="chapters/gradient-descent/">gradient descent</Xref>. A better search algorithm cannot repair an objective that rewards the wrong engineering behavior.
 
 ## Exercises
 

@@ -7,6 +7,7 @@ lede: Freeze the current parameters, evaluate their gradient, scale it by a nega
 description: Inspectable gradient descent, Euclidean steepest decrease and finite-step curvature, exact canonical updates and binary64 trajectories, independent Python and vectorized NumPy, and five graded exercises.
 ---
 import Stage from '../../shell/Stage.astro';
+import Xref from '../../shell/Xref.astro';
 import Callout from '../../shell/Callout.astro';
 import CodeFile from '../../shell/CodeFile.astro';
 import OptimizationStage from '../../lessons/optimization/OptimizationStage';
@@ -141,9 +142,9 @@ Loss change, gradient norm, parameter scale, and iteration budget answer differe
 
 ## Engineering and ML connections
 
-For squared-error regression, each residual contributes a parameter derivative, and the full gradient aggregates these contributions. [Automatic differentiation](../automatic-differentiation/) obtains such gradients through a computational graph; the optimizer then performs the separate subtraction shown here. Differentiation computes sensitivity, while optimization uses it to choose the next parameters.
+For squared-error regression, each residual contributes a parameter derivative, and the full gradient aggregates these contributions. <Xref to="chapters/automatic-differentiation/">Automatic differentiation</Xref> obtains such gradients through a computational graph; the optimizer then performs the separate subtraction shown here. Differentiation computes sensitivity, while optimization uses it to choose the next parameters.
 
-The [gradient chapter](../gradient-directional-derivatives/) supplies the directional argument, [curvature](../hessian-curvature/) supplies the finite-step correction, and [convexity](../convexity/) supplies some global guarantees. Neural-network training repeats the same vector update mechanism over many parameters, but its objective need not be convex. Coordinate units and objective scaling also affect the effective step, which motivates careful learning-rate choices rather than one universal setting.
+The <Xref to="chapters/gradient-directional-derivatives/">gradient chapter</Xref> supplies the directional argument, <Xref to="chapters/hessian-curvature/">curvature</Xref> supplies the finite-step correction, and <Xref to="chapters/convexity/">convexity</Xref> supplies some global guarantees. Neural-network training repeats the same vector update mechanism over many parameters, but its objective need not be convex. Coordinate units and objective scaling also affect the effective step, which motivates careful learning-rate choices rather than one universal setting.
 
 ## Exercises
 

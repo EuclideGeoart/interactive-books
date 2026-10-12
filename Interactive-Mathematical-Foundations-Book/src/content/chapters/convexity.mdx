@@ -7,6 +7,7 @@ lede: Compare an objective with straight-line interpolation between two values. 
 description: Convex domains and chord inequalities, quadratic gap derivation, supporting planes and global guarantees, strictness and existence counterexamples, Python and NumPy, and five graded exercises.
 ---
 import Stage from '../../shell/Stage.astro';
+import Xref from '../../shell/Xref.astro';
 import Callout from '../../shell/Callout.astro';
 import CodeFile from '../../shell/CodeFile.astro';
 import OptimizationStage from '../../lessons/optimization/OptimizationStage';
@@ -139,9 +140,9 @@ Sampled curves and chords are binary64 approximations. The $10^{-14}$ tolerance 
 
 ## Engineering and ML connections
 
-[Least-squares fitting](../orthogonal-least-squares/) has a positive-semidefinite quadratic Hessian. Full column rank supplies uniqueness; rank deficiency can leave an entire set of minimizers. Adding a positive quadratic parameter penalty can supply positive curvature in previously flat directions, but it changes the objective and the fitted solution.
+<Xref to="chapters/orthogonal-least-squares/">Least-squares fitting</Xref> has a positive-semidefinite quadratic Hessian. Full column rank supplies uniqueness; rank deficiency can leave an entire set of minimizers. Adding a positive quadratic parameter penalty can supply positive curvature in previously flat directions, but it changes the objective and the fitted solution.
 
-Convexity explains why some optimization problems admit global guarantees and why those guarantees do not transfer automatically to neural-network objectives. An algorithm name does not make a loss convex. [Local and global optima](../local-global-optima/) provides the distinction, while [gradient descent](../gradient-descent/) uses the gradient to move and still needs a learning-rate condition for finite-step behavior.
+Convexity explains why some optimization problems admit global guarantees and why those guarantees do not transfer automatically to neural-network objectives. An algorithm name does not make a loss convex. <Xref to="chapters/local-global-optima/">Local and global optima</Xref> provides the distinction, while <Xref to="chapters/gradient-descent/">gradient descent</Xref> uses the gradient to move and still needs a learning-rate condition for finite-step behavior.
 
 ## Exercises
 

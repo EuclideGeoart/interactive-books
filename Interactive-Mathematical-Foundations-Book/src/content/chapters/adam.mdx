@@ -7,6 +7,7 @@ lede: Inspect Adam's two moment vectors, correct their zero-start weight deficit
 description: Algorithm 1 Adam, signed and raw squared moments, t=1 bias correction and epsilon outside the root, zero and reversed gradients, Decimal and vectorized NumPy, and five graded exercises.
 ---
 import Stage from '../../shell/Stage.astro';
+import Xref from '../../shell/Xref.astro';
 import Callout from '../../shell/Callout.astro';
 import CodeFile from '../../shell/CodeFile.astro';
 import OptimizationStage from '../../lessons/optimization/OptimizationStage';
@@ -28,7 +29,7 @@ Both moment vectors start at zero. Their initial geometric weights sum to less t
 
 ## Definition: Algorithm 1 with an explicit first time index
 
-These elementwise equations follow [Kingma and Ba's Algorithm 1](https://arxiv.org/pdf/1412.6980#page=2). Start with $m_0=v_0=0$. At time $t\geq1$, evaluate $g_t=\nabla L(\theta_{t-1})$ and use
+These elementwise equations follow Kingma and Ba's *Adam: A Method for Stochastic Optimization* (2014), arXiv:1412.6980, Algorithm 1. Start with $m_0=v_0=0$. At time $t\geq1$, evaluate $g_t=\nabla L(\theta_{t-1})$ and use
 
 $$
 m_t=\beta_1m_{t-1}+(1-\beta_1)g_t,\qquad
@@ -167,9 +168,9 @@ Positive epsilon prevents division by zero at zero corrected second moment and c
 
 ## Engineering and ML connections
 
-[Momentum](../momentum/) retains an unnormalized accumulated gradient, while Adam retains a normalized signed average plus a normalized squared-gradient history and corrects their initial weights. [Stochastic mini-batches](../stochastic-mini-batch-descent/) can supply the gradients, but Adam's moments do not turn biased sampling into unbiased sampling.
+<Xref to="chapters/momentum/">Momentum</Xref> retains an unnormalized accumulated gradient, while Adam retains a normalized signed average plus a normalized squared-gradient history and corrects their initial weights. <Xref to="chapters/stochastic-mini-batch-descent/">Stochastic mini-batches</Xref> can supply the gradients, but Adam's moments do not turn biased sampling into unbiased sampling.
 
-A restart must preserve parameters, both moment vectors, the time count, and the configured decay and epsilon values to continue the same run. Keeping only the parameters and resetting the moments changes later displacements. [Automatic differentiation](../automatic-differentiation/) computes gradients; Adam's state transition is the separate mechanism using them. [Convexity](../convexity/) describes an objective's global structure, which no optimizer name can supply automatically.
+A restart must preserve parameters, both moment vectors, the time count, and the configured decay and epsilon values to continue the same run. Keeping only the parameters and resetting the moments changes later displacements. <Xref to="chapters/automatic-differentiation/">Automatic differentiation</Xref> computes gradients; Adam's state transition is the separate mechanism using them. <Xref to="chapters/convexity/">Convexity</Xref> describes an objective's global structure, which no optimizer name can supply automatically.
 
 ## Exercises
 

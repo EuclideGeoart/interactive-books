@@ -7,6 +7,7 @@ lede: Keep an unconstrained gradient proposal visible before projecting it into 
 description: Box and unit-disk projection, explicit feasible initialization, proposal versus correction and displacement, L2 objective and curvature changes, independent Python and NumPy checks, and five graded exercises.
 ---
 import Stage from '../../shell/Stage.astro';
+import Xref from '../../shell/Xref.astro';
 import Callout from '../../shell/Callout.astro';
 import CodeFile from '../../shell/CodeFile.astro';
 import OptimizationStage from '../../lessons/optimization/OptimizationStage';
@@ -190,7 +191,7 @@ The high-precision reference supplies an independent numerical check, not symbol
 
 Hard parameter limits can encode an admissible physical range or a norm budget. L2 regularization instead adds a cost for parameter size, changing the balance of the modeled objective. The coefficient and parameter units matter; the same numeric penalty after rescaling parameters describes a different preference.
 
-[Learning-rate behavior](../learning-rate-convergence/) explains how the added curvature affects a plain update. [Least squares](../orthogonal-least-squares/) separates fit from residual geometry, while [convexity](../convexity/) supplies the structure behind this toy problem's unique minima. [Numerical diagnostics](../optimization-diagnostics/) monitor a run's arithmetic and stopping reasons; regularizing a model and protecting a numerical update are separate decisions.
+<Xref to="chapters/learning-rate-convergence/">Learning-rate behavior</Xref> explains how the added curvature affects a plain update. <Xref to="chapters/orthogonal-least-squares/">Least squares</Xref> separates fit from residual geometry, while <Xref to="chapters/convexity/">convexity</Xref> supplies the structure behind this toy problem's unique minima. <Xref to="chapters/optimization-diagnostics/">Numerical diagnostics</Xref> monitor a run's arithmetic and stopping reasons; regularizing a model and protecting a numerical update are separate decisions.
 
 ## Exercises
 

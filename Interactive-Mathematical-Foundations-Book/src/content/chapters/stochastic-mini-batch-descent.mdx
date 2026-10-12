@@ -7,6 +7,7 @@ lede: Retain the exact indices selected by each update, evaluate their residuals
 description: Fixed-data regression, full and sampled gradient means, with-replacement uint32 sampling, conditional unbiasedness and reproducibility limits, executable Python and NumPy, and five graded exercises.
 ---
 import Stage from '../../shell/Stage.astro';
+import Xref from '../../shell/Xref.astro';
 import Callout from '../../shell/Callout.astro';
 import CodeFile from '../../shell/CodeFile.astro';
 import OptimizationStage from '../../lessons/optimization/OptimizationStage';
@@ -171,9 +172,9 @@ A seed is only part of a reproducibility record. Retain current parameters, gene
 
 ## Engineering and ML connections
 
-[Least squares](../orthogonal-least-squares/) supplies the fixed-data objective, and [expectation](../expectation/) explains why a uniformly selected contribution has the full average as its mean. [Covariance](../covariance-correlation/) describes how independent averaging reduces variability. Those links depend on the stated sampling model, not on the appearance of a particular path.
+<Xref to="chapters/orthogonal-least-squares/">Least squares</Xref> supplies the fixed-data objective, and <Xref to="chapters/expectation/">expectation</Xref> explains why a uniformly selected contribution has the full average as its mean. <Xref to="chapters/covariance-correlation/">Covariance</Xref> describes how independent averaging reduces variability. Those links depend on the stated sampling model, not on the appearance of a particular path.
 
-A small batch uses fewer example-gradient evaluations per update, while a larger batch carries more information about the full mean. Comparing algorithms therefore requires counting work as well as steps. [Momentum](../momentum/) can filter a sampled gradient history, and [Adam](../adam/) retains both signed and squared-gradient averages. Neither memory mechanism makes conditional sampling assumptions automatic or supplies a global convergence guarantee.
+A small batch uses fewer example-gradient evaluations per update, while a larger batch carries more information about the full mean. Comparing algorithms therefore requires counting work as well as steps. <Xref to="chapters/momentum/">Momentum</Xref> can filter a sampled gradient history, and <Xref to="chapters/adam/">Adam</Xref> retains both signed and squared-gradient averages. Neither memory mechanism makes conditional sampling assumptions automatic or supplies a global convergence guarantee.
 
 ## Exercises
 

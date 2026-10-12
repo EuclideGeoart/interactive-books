@@ -7,6 +7,7 @@ lede: Track a velocity vector alongside the parameters. Each gradient adds to de
 description: Explicit unnormalized momentum, velocity memory and damping, exact first and second quadratic steps, rising-loss and zero-gradient probes, independent Python and NumPy, and five graded exercises.
 ---
 import Stage from '../../shell/Stage.astro';
+import Xref from '../../shell/Xref.astro';
 import Callout from '../../shell/Callout.astro';
 import CodeFile from '../../shell/CodeFile.astro';
 import OptimizationStage from '../../lessons/optimization/OptimizationStage';
@@ -157,7 +158,7 @@ Reproducible replay must preserve the stored velocity together with each paramet
 
 The velocity recurrence resembles a first-order filter of a gradient signal: it discounts older samples while retaining direction. In learning systems, keeping optimizer state across updates affects behavior; restarting only the parameters and silently discarding velocity creates a different run.
 
-[Learning-rate behavior](../learning-rate-convergence/) explains how curvature acts on a one-state method. Momentum changes that recurrence, while [stochastic gradients](../stochastic-mini-batch-descent/) will add sampling variation. [Adam](../adam/) also retains a signed first moment, but uses a normalized average, a squared-gradient moment, and bias correction. Similar names or arrows should not hide these different equations.
+<Xref to="chapters/learning-rate-convergence/">Learning-rate behavior</Xref> explains how curvature acts on a one-state method. Momentum changes that recurrence, while <Xref to="chapters/stochastic-mini-batch-descent/">stochastic gradients</Xref> will add sampling variation. <Xref to="chapters/adam/">Adam</Xref> also retains a signed first moment, but uses a normalized average, a squared-gradient moment, and bias correction. Similar names or arrows should not hide these different equations.
 
 ## Exercises
 

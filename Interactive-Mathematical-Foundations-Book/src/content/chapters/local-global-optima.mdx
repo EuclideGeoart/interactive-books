@@ -7,6 +7,7 @@ lede: Compare local neighborhoods with the entire objective domain. Zero gradien
 description: Local and global optima, stationary minima and saddles, cubic unboundedness, double wells, degenerate and nonsmooth cases, exact Python and NumPy cross-checks, and five graded exercises.
 ---
 import Stage from '../../shell/Stage.astro';
+import Xref from '../../shell/Xref.astro';
 import Callout from '../../shell/Callout.astro';
 import CodeFile from '../../shell/CodeFile.astro';
 import OptimizationStage from '../../lessons/optimization/OptimizationStage';
@@ -134,7 +135,7 @@ Near a zero Hessian eigenvalue, small numerical errors can change a reported sig
 
 An optimizer's initialization can determine which region of a nonconvex objective it explores. Trying several starts can expose alternative outcomes, but it does not prove that the best observed one is globally optimal. An engineering report should say whether its guarantee is local, global, or only empirical.
 
-[Hessian and curvature](../hessian-curvature/) supplies the second-order test; [convexity](../convexity/) will add a whole-domain condition that converts local minima into global ones. In [gradient descent](../gradient-descent/), a zero update at a saddle will make the distinction operational. Nonsmooth penalties and feasible boundaries also require conditions beyond the differentiable-interior gradient test.
+<Xref to="chapters/hessian-curvature/">Hessian and curvature</Xref> supplies the second-order test; <Xref to="chapters/convexity/">convexity</Xref> will add a whole-domain condition that converts local minima into global ones. In <Xref to="chapters/gradient-descent/">gradient descent</Xref>, a zero update at a saddle will make the distinction operational. Nonsmooth penalties and feasible boundaries also require conditions beyond the differentiable-interior gradient test.
 
 ## Exercises
 

@@ -7,6 +7,7 @@ lede: Follow the same quadratic from the same starting point at several learning
 description: Quadratic error factors, all-start stability bounds, slow and damped convergence, nondecaying boundaries and zero-mode exceptions, exact Python and vectorized NumPy, and five graded exercises.
 ---
 import Stage from '../../shell/Stage.astro';
+import Xref from '../../shell/Xref.astro';
 import Callout from '../../shell/Callout.astro';
 import CodeFile from '../../shell/CodeFile.astro';
 import OptimizationStage from '../../lessons/optimization/OptimizationStage';
@@ -148,9 +149,9 @@ The references label numerical trajectories binary64 and reject non-finite state
 
 ## Engineering and ML connections
 
-The [Hessian](../hessian-curvature/) describes directional curvature, and [gradient descent](../gradient-descent/) turns that curvature into repeated errors. For a positive-definite quadratic, a large ratio of largest to smallest curvature can force a shared stable rate that contracts the gentle direction slowly. Parameter scaling can therefore change how efficiently the same optimizer moves.
+The <Xref to="chapters/hessian-curvature/">Hessian</Xref> describes directional curvature, and <Xref to="chapters/gradient-descent/">gradient descent</Xref> turns that curvature into repeated errors. For a positive-definite quadratic, a large ratio of largest to smallest curvature can force a shared stable rate that contracts the gentle direction slowly. Parameter scaling can therefore change how efficiently the same optimizer moves.
 
-A neural-network objective usually lacks one constant Hessian valid across the full path, so this quadratic interval must not be presented as its global safety certificate. It is a local mechanism to inspect: changes in curvature, gradient scale, and parameter units can change a rate's behavior. The next chapter adds [momentum](../momentum/), whose extra memory changes the recurrence and requires its own analysis.
+A neural-network objective usually lacks one constant Hessian valid across the full path, so this quadratic interval must not be presented as its global safety certificate. It is a local mechanism to inspect: changes in curvature, gradient scale, and parameter units can change a rate's behavior. The next chapter adds <Xref to="chapters/momentum/">momentum</Xref>, whose extra memory changes the recurrence and requires its own analysis.
 
 ## Exercises
 
