@@ -65,7 +65,7 @@ For logits [1000,1001,999], unshifted exponentials overflow. Shift by 1001 to ge
 
 ## Executable reference code
 
-The pedagogical program cross-checks scaled norms, math.fsum, specialized elementary functions and shifted probabilities using Decimal and exact Fraction values. The NumPy version performs actual array operations and shows their numerical outcomes. Neither file promises identical elementary-function bits on arbitrary platforms. The browser's independent fixture comparisons use small actual-value ULP budgets and exact checks for classifications and rational quantities.
+The pedagogical program cross-checks scaled norms, math.fsum, specialized elementary functions and shifted probabilities using Decimal and exact Fraction values. The NumPy version performs actual array operations and shows their numerical outcomes. Neither file promises identical elementary-function bits on arbitrary platforms. When comparing numerical results, use a small actual-value ULP allowance for approximate values and exact equality for classifications and rational quantities.
 
 <CodeFile source={reference} file="code/python/stable_algorithms.py" />
 <CodeFile source={practical} file="code/python/stable_algorithms_numpy.py" />

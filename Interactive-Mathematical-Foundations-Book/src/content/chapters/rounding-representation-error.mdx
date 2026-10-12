@@ -92,7 +92,7 @@ Subtracting displayed decimal strings is not a trustworthy measurement of repres
 
 The sum model performs exact rational addition of encoded operands, then one direct rounding to the chosen format. Binary64 parity checks include the actual JavaScript 0.1+0.2 result. Inputs that already round to infinity cannot enter the finite-operand sum experiment; the range explorer explains that failure separately.
 
-The direct conversion avoids an intermediate binary format. Its halfway tests cover more than ordinary small decimals: subnormal carries, signed zero, large integers and overflow thresholds are committed independent fixtures. Error budgets apply to particular numerical evaluations, never to bit or rational comparisons.
+The direct conversion avoids an intermediate binary format. Halfway rounding examples should cover more than ordinary small decimals: include subnormal carries, signed zero, large integers and overflow thresholds. Error budgets apply to particular numerical evaluations, never to bit or rational comparisons.
 
 ## Engineering and ML connections
 

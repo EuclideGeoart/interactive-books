@@ -40,7 +40,7 @@ For logits $(\log2,0)$, exponentials are (2,1), denominator 3 and probabilities 
 
 ## Executable reference code
 
-The standalone pedagogical implementation exposes the operations. Its NumPy companion uses array reductions and explicit domain/mask guards. Both run hand-worked assertions and execute under the independent oracle tests.
+The standalone pedagogical implementation exposes the operations. Its NumPy companion uses array reductions and explicit domain/mask guards. Both include assertions for the hand-worked examples.
 
 <CodeFile source={reference} file="code/python/information_softmax.py" />
 <CodeFile source={practical} file="code/python/information_softmax_numpy.py" />
@@ -55,7 +55,7 @@ Logits need not sum to one, and negative logits are not negative probabilities. 
 
 ## Numerical considerations
 
-The bounded explorer has 1–6 model classes and three canonical editable classes. Finite controls accept two-place scores and shifts in [−1000,1000]. Real exponentials are finite for finite scores, but binary64 exp(1000) overflows. Stable shifted exponentials are at most one. Normalization is checked at 32×epsilon×6, about 4.27e−14; independent Decimal400 reference probabilities have a separate 2e−14 absolute parity budget. Adding a huge common shift in binary64 can round away the original score differences, so invariance is a mathematical identity with a numerical input-rounding caveat.
+The bounded explorer has 1–6 model classes and three canonical editable classes. Finite controls accept two-place scores and shifts in [−1000,1000]. Real exponentials are finite for finite scores, but binary64 exp(1000) overflows. Stable shifted exponentials are at most one. Normalization is checked at 32×epsilon×6, about 4.27e−14; independent Decimal400 reference probabilities have a separate 2e−14 absolute comparison tolerance. Adding a huge common shift in binary64 can round away the original score differences, so invariance is a mathematical identity with a numerical input-rounding caveat.
 
 ## Engineering and ML connections
 

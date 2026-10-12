@@ -87,7 +87,7 @@ A subnormal is nonzero and finite. Overflow infinity is not evidence that the tr
 
 The conversion model implements gradual underflow and nearest/ties-even for every supported layout. FP16 and BF16 are explicitly emulated, and actual hardware may flush subnormals or select a different rounding mode. No hardware exception flags or performance claims are simulated.
 
-Direct rational conversion avoids unintended double rounding. Independent fixtures test half-subnormal ties, the normal/subnormal carry, signed zero, maximum finite values and overflow ties. Subsequent algorithms still need guards for exceptional intermediates: a finite input can yield an infinite product long before its final mathematical expression would overflow.
+Direct rational conversion avoids unintended double rounding. Important boundary examples include half-subnormal ties, the normal/subnormal carry, signed zero, maximum finite values and overflow ties. Subsequent algorithms still need guards for exceptional intermediates: a finite input can yield an infinite product long before its final mathematical expression would overflow.
 
 ## Engineering and ML connections
 

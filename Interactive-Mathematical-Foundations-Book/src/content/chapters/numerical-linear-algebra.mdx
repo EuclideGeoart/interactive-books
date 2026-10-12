@@ -96,7 +96,7 @@ Explicit inversion is not a general shortcut to numerical reliability. Pivoting 
 
 The accepted exact rational matrix model classifies the intended problem and supplies a 2×2 solution when unique. Actual binary64 operations own the computed methods. Residual evaluation against the intended problem reads computed solution components back as exact represented rationals, so it does not lose a small discrepancy in a second floating subtraction.
 
-The pivot warning compares the second pivot magnitude with a chosen fraction of the matrix infinity norm. Zero disables the nonzero-pivot warning but never disables rank or finite-value guards. Non-finite computed solutions remain unavailable. Near-singular fixtures measure the error they actually have; tests do not relax accuracy claims to hide sensitivity.
+The pivot warning compares the second pivot magnitude with a chosen fraction of the matrix infinity norm. Zero disables the nonzero-pivot warning but never disables rank or finite-value guards. Non-finite computed solutions remain unavailable. For a near-singular system, measure the actual solution error; a looser tolerance does not make the problem less sensitive.
 
 ## Engineering and ML connections
 

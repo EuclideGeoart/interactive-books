@@ -66,7 +66,7 @@ Direct conversion first represents the intended decimal as a rational, locates t
 
 Near one, FP16 spacing is $2^{-10}=1/1024$. The decimal 1.00048828125 is exactly $1+2^{-11}$, halfway between 1 and 1.0009765625. The first has an even trailing significand bit, so ties-to-even chooses 1.
 
-The decimal 1.000488281250000000000000000001 lies strictly above that midpoint. Direct FP16 rounding chooses 1.0009765625. Converting this text to binary64 first can erase the tiny excess, after which a second rounding incorrectly chooses 1 for a claimed direct conversion. The above-halfway preset and committed independent fixture expose that double-rounding trap.
+The decimal 1.000488281250000000000000000001 lies strictly above that midpoint. Direct FP16 rounding chooses 1.0009765625. Converting this text to binary64 first can erase the tiny excess, after which a second rounding incorrectly chooses 1 for a claimed direct conversion. Use the above-halfway preset to see that double-rounding trap.
 
 For 0.1, the intended exact value is $1/10$. Its binary64 encoding instead stores $3602879701896397/36028797018963968$. The neighboring values, its encoded fields and its exact error all come from that same bit pattern.
 
@@ -74,7 +74,7 @@ For 0.1, the intended exact value is $1/10$. Its binary64 encoding instead store
 
 ## Executable reference code
 
-The pedagogical program reads decimal strings through Fraction and rounds only once to the requested format. The NumPy program inspects the actual array bits of ordinary binary64, binary32 and binary16 inputs; it explicitly keeps BF16 emulated. NumPy's dtype conversion is a cross-check for these ordinary inputs, not the oracle for the direct-decimal halfway counterexample. These examples run from the repository; later references import the first program from the same directory.
+The pedagogical program reads decimal strings through Fraction and rounds only once to the requested format. The NumPy program inspects the actual array bits of ordinary binary64, binary32 and binary16 inputs; it explicitly keeps BF16 emulated. NumPy's dtype conversion provides a comparison for these ordinary inputs; use the Fraction-based program for the direct-decimal halfway counterexample. Keep the files in the same directory, because later examples import the first program.
 
 <CodeFile source={reference} file="code/python/floating_point_representation.py" />
 <CodeFile source={practical} file="code/python/floating_point_representation_numpy.py" />
@@ -95,7 +95,7 @@ Infinity can encode an explicitly entered infinity or a finite input that overfl
 
 This model implements nearest, ties-to-even with gradual underflow. Hardware can use different modes or flush subnormals; that would be a different numerical policy. The emulation is not a timing benchmark and does not assert physical hardware support.
 
-Exact bits and rational errors are compared exactly in tests. Independent Python fixtures locate nearest representable values by ordered-bit search, a different algorithm from the browser's scaled-significand rounding. Literal checks include ties, signs, subnormal boundaries, overflow and special values. A displayed decimal is rounded only for reading; it never drives the bit model.
+Compare bit patterns and rational errors exactly. An independent way to locate the nearest representable value is to search ordered bit patterns, rather than round a scaled significand. Include ties, signs, subnormal boundaries, overflow and special values when comparing conversion methods. A displayed decimal is rounded only for reading; it never drives the bit model.
 
 ## Engineering and ML connections
 

@@ -40,7 +40,7 @@ For P=(1/2,1/4,1/4), Q=(1/4,1/2,1/4), signed bit terms are (1/2,−1/4,0), total
 
 ## Executable reference code
 
-The pedagogical version keeps exact source masses and branches on support. The NumPy version uses masks before logarithms and ratios. Both files run hand-worked assertions and execute in the oracle tests.
+The pedagogical version keeps exact source masses and branches on support. The NumPy version uses masks before logarithms and ratios. Both files include assertions for the hand-worked examples.
 
 <CodeFile source={reference} file="code/python/information_kl.py" />
 <CodeFile source={practical} file="code/python/information_kl_numpy.py" />
@@ -55,7 +55,7 @@ Individual KL terms can be negative; the complete normalized sum is nonnegative.
 
 ## Numerical considerations
 
-Exact rational masses and support decisions are preserved. Positive rational ratios are formed exactly before their approximate logarithm is taken. The independent oracle uses Decimal100 log differences and separately totals CE−H; it does not translate the ratio algorithm. Finite results and identity residuals use a 2e−12 scaled absolute/relative budget. Tiny signed rounding residuals are not a mathematical violation of non-negativity; no sampled plot is a proof.
+Exact rational masses and support decisions are preserved. Positive rational ratios are formed exactly before their approximate logarithm is taken. For an independent numerical comparison of finite cases, use 100-digit Decimal log differences and separately total CE−H. Finite results and identity residuals use a 2e−12 scaled absolute/relative budget. Tiny signed rounding residuals are not a mathematical violation of non-negativity; no sampled plot is a proof.
 
 ## Engineering and ML connections
 

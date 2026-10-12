@@ -146,7 +146,7 @@ Four computations, each shown step by step with every number taken from the same
 
 ## Executable reference code
 
-The Python below is stored in the repository and executed by the test suite, so what you read is known to run. The comments record what each line returns.
+Run the Python examples below to follow the calculations step by step. The comments record what each line returns.
 
 First the exponential and the logarithm: the round trip, the places where each fails, a square and its root, change of base, and bits and nats. Notice the line `math.log(1000, 10)`: it returns `2.9999999999999996`, because it divides two rounded logarithms, while `math.log10(1000.0)` is built for the job and returns `3.0`.
 

@@ -40,7 +40,7 @@ With four equal logits, every token has probability 1/4 and target NLL is $\log4
 
 ## Executable reference code
 
-The standalone pedagogical implementation exposes the operations. Its NumPy companion uses array reductions and explicit domain/mask guards. Both run hand-worked assertions and execute under the independent oracle tests.
+The standalone pedagogical implementation exposes the operations. Its NumPy companion uses array reductions and explicit domain/mask guards. Both include assertions for the hand-worked examples.
 
 <CodeFile source={reference} file="code/python/information_tokens.py" />
 <CodeFile source={practical} file="code/python/information_tokens_numpy.py" />
@@ -61,7 +61,7 @@ This toy has four named vocabulary entries and one to four supplied positions, w
 
 Language-model training evaluates a target token at each contributing sequence position and reduces to a scalar. Given a differentiable score-producing model, the chain rule turns that scalar into parameter gradients. The accepted Optimization update then applies a learning rate to those gradients. This chapter exposes the loss mechanism without implementing a model or optimizer.
 
-Connect to <Xref to="chapters/gradient-descent/">the accepted prerequisite mechanism</Xref>.
+Connect to <Xref to="chapters/gradient-descent/">the gradient-descent update</Xref>.
 
 ## Exercises
 

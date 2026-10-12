@@ -40,7 +40,7 @@ At (1000,999,998), m=1000, shifted scores (0,−1,−2), shifted exponentials $(
 
 ## Executable reference code
 
-The standalone pedagogical implementation exposes the operations. Its NumPy companion uses array reductions and explicit domain/mask guards. Both run hand-worked assertions and execute under the independent oracle tests.
+The standalone pedagogical implementation exposes the operations. Its NumPy companion uses array reductions and explicit domain/mask guards. Both include assertions for the hand-worked examples.
 
 <CodeFile source={reference} file="code/python/information_stability.py" />
 <CodeFile source={practical} file="code/python/information_stability_numpy.py" />
@@ -55,13 +55,13 @@ Stabilization cannot guarantee that every tiny output probability is representab
 
 ## Numerical considerations
 
-Empty vectors, more than six entries, NaN and +∞ are invalid. An isolated −∞ is accepted as excluded support; all −∞ is undefined. Finite max-shift subtraction can itself exceed binary64 range at extreme opposite scores; that −∞ log result is labeled numerical range loss, not mathematical impossibility. Stable output comes from the evaluated max-shift algorithm. Decimal400 raw-exp references are independent for feasible scores, with analytic equal/dominant identities for enormous fixtures. Logs use a 2e−12 scaled absolute/relative parity budget; probabilities use 2e−14 absolute error. Normalization budget is 32×epsilon×6. These are numerical allowances, not proofs of analytic identities.
+Empty vectors, more than six entries, NaN and +∞ are invalid. An isolated −∞ is accepted as excluded support; all −∞ is undefined. Finite max-shift subtraction can itself exceed binary64 range at extreme opposite scores; that −∞ log result is labeled numerical range loss, not mathematical impossibility. Stable output comes from the evaluated max-shift algorithm. Direct exponential normalization with 400-digit Decimal arithmetic provides an independent comparison for feasible scores; analytic equal/dominant identities provide references for enormous-score examples. Logs use a 2e−12 scaled absolute/relative comparison tolerance; probabilities use 2e−14 absolute error. Normalization budget is 32×epsilon×6. These are numerical allowances, not proofs of analytic identities.
 
 ## Engineering and ML connections
 
 Log-softmax lets a classifier or language model compute a finite NLL for a token whose displayed probability underflows. The next chapter selects the target’s stable log probability directly. Numerical stability changes the evaluation of the same mathematical model; it does not authorize smoothing impossible events.
 
-Connect to <Xref to="chapters/logits-softmax/">the accepted prerequisite mechanism</Xref>.
+Connect to <Xref to="chapters/logits-softmax/">softmax normalization</Xref>.
 
 ## Exercises
 

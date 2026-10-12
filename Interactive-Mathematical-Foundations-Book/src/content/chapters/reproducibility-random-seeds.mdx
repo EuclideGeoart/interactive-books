@@ -97,13 +97,13 @@ Change absolute and relative tolerance independently. Explain the budget's scale
 
 A seed alone does not identify arbitrary RNG implementations, initial state layouts or sample-consumption patterns. A fixed algorithm can also produce a different later draw if a previous code path consumed extra samples. Record version, algorithm, state and draw order when those matter.
 
-Floating-point equality is suitable for exact discrete states and prescribed bit-level fixtures. It is not a substitute for a budgeted approximation check on a computed transcendental answer. Conversely, a tolerance should never permit an incorrect index, sample count or RNG state to pass as “close enough.”
+Floating-point equality is suitable for exact discrete states and specified binary64 reference results. It is not a substitute for a budgeted approximation check on a computed transcendental answer. Conversely, a tolerance should never permit an incorrect index, sample count or RNG state to pass as “close enough.”
 
 ## Numerical considerations
 
 The LCG recurrence uses the accepted explicit uint32 seeded utility; Python independently computes the same modular integers without copying its floating implementation. Its uniforms fit exactly in binary64 because their denominator is $2^{32}$. The actual stream is deterministic under that specified contract.
 
-The arithmetic-order comparison uses actual JavaScript binary64 operations at fixed represented inputs. Its exact intended reference remains rational. Across environments, elementary functions, fused operations, accumulation precision, subnormal handling and reduction order can still differ. A platform or library upgrade needs source-matched deterministic fixtures and appropriate approximate checks, not a broad promise that one seed settles every difference.
+The arithmetic-order comparison uses actual JavaScript binary64 operations at fixed represented inputs. Its exact intended reference remains rational. Across environments, elementary functions, fused operations, accumulation precision, subnormal handling and reduction order can still differ. After a platform or library upgrade, record the code version, repeat the same inputs and sample sequence, and compare approximate results using justified tolerances; a seed alone does not settle every difference.
 
 Routine mathematical rendering contains no unseeded randomness. User-started trace playback changes only which immutable frame is selected; elapsed time does not generate a new numerical sample.
 

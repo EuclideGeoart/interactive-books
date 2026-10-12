@@ -54,7 +54,7 @@ A 95% frequentist interval does not assign 95% posterior probability to the fixe
 
 ## Numerical considerations
 
-The 90%, 95% and 99% normal critical values are explicit binary64 constants, independently checked against Python NormalDist. Endpoints and Box–Muller normal samples are binary64 approximations; fixture tolerance is 2e−12 times max(1, absolute expected value). Analytic coverage uses the accepted normal CDF with absolute interval-probability error at most 2e−9. The seeded generator consumes two uniforms per observation and discards the sine partner; 1−u is positive so logarithms stay finite. The experiment stores at most 80 samples of 64 observations. Coverage classifications compare the computed endpoints directly; no sample is adjusted to achieve nominal coverage.
+The 90%, 95% and 99% normal critical values are explicit binary64 constants, independently checked against Python NormalDist. Endpoints and Box–Muller normal samples are binary64 approximations; the reference-comparison tolerance is 2e−12 times max(1, absolute expected value). Analytic coverage uses the accepted normal CDF with absolute interval-probability error at most 2e−9. The seeded generator consumes two uniforms per observation and discards the sine partner; 1−u is positive so logarithms stay finite. The experiment stores at most 80 samples of 64 observations. Coverage classifications compare the computed endpoints directly; no sample is adjusted to achieve nominal coverage.
 
 ## Engineering and ML connections
 

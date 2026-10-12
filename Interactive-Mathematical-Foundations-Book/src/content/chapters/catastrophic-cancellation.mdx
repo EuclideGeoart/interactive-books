@@ -67,7 +67,7 @@ At x=0 the exact result is one; both methods return one. At x=1 the result is $\
 
 ## Executable reference code
 
-The pedagogical program computes actual binary64 intermediates and a Decimal450 reference through the rationalized mathematical identity. The NumPy version applies both algorithms to arrays and checks the stable answers against independent high-precision values at the actual stored inputs. The browser oracle separately checks the intended exact-decimal inputs; intended and stored-input references should not be conflated.
+The pedagogical program computes actual binary64 intermediates and a Decimal450 reference through the rationalized mathematical identity. The NumPy version applies both algorithms to arrays and checks the stable answers against independent high-precision values at the actual stored inputs. For an intended-decimal comparison, evaluate the expression at the exact decimal input instead; intended and stored-input references answer different questions.
 
 <CodeFile source={reference} file="code/python/catastrophic_cancellation.py" />
 <CodeFile source={practical} file="code/python/catastrophic_cancellation_numpy.py" />
@@ -88,7 +88,7 @@ An algebraic rearrangement can improve this evaluation without improving the con
 
 The supported range is the intended exact interval 0≤x≤1e300. It keeps the square-root sum finite and its reciprocal representable in binary64. Extending the implementation to arbitrary finite or infinite x would require additional range and exceptional-value policies, not simply reusing the current formula.
 
-For each current input, exact rational endpoints bound the true result and the signed error of each numerical answer. Decimal450 fixtures check literal hand cases and widely separated scales; platform square-root comparisons use a small actual-value ULP allowance. No tolerance can turn the naive zero into the positive mathematical answer.
+For each current input, exact rational endpoints bound the true result and the signed error of each numerical answer. For independent comparisons, use 450-digit Decimal arithmetic on hand-worked examples and widely separated scales; allow a small actual-value ULP difference when comparing platform square-root results. No tolerance can turn the naive zero into the positive mathematical answer.
 
 Rationalization still uses rounded input, addition, roots, denominator and division. It reduces the cancellation mechanism but does not promise an exactly rounded answer for all inputs. The error intervals preserve that remaining limitation.
 

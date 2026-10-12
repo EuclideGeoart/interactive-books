@@ -73,7 +73,7 @@ For (0,3)+(1,3), the output has shape (0,3) and contains no elements. Reducing a
 
 ## Executable reference code
 
-The pedagogical program uses Cartesian products and indexed dictionaries to select elements under the broadcasting rule. The NumPy version uses actual array broadcasting and axis sums and checks their literal values and shapes. Independent fixtures use a separate Cartesian construction and optionally cross-check NumPy; their committed bytes do not depend on having NumPy installed.
+The pedagogical program uses Cartesian products and indexed dictionaries to select elements under the broadcasting rule. The NumPy version uses actual array broadcasting and axis sums and checks their literal values and shapes. Use the Cartesian construction to check the NumPy shapes and values, including scalar, batched and empty-axis examples.
 
 <CodeFile source={reference} file="code/python/vectorized_computation.py" />
 <CodeFile source={practical} file="code/python/vectorized_computation_numpy.py" />
