@@ -1,0 +1,45 @@
+{
+  "platform": "Linux system Chrome",
+  "scope": "Only four shared publication-sensitive contents/map images; all other historical/new-Part screenshots unchanged during integration.",
+  "published": 97,
+  "planned": 0,
+  "images": [
+    {
+      "path": "tests/e2e/__screenshots__/visual.spec.ts/desktop-contents-fold.png",
+      "sha256": "fb1301ac1894c9fb2fbfd90389370c32fb28764d9399546051f09e832892a4cb",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "review": "Individually inspected by Agent B at final pixels: 97 of 97 is visible; complete publication copy; no clipped controls or overlaps."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual.spec.ts/desktop-map.png",
+      "sha256": "693910732cb9cc7bf2383f60c2f8856dfbead579aa7c10896800ccc330106cde",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "review": "Individually inspected by Agent B at final pixels: 97 of 97 is visible; complete publication copy; no clipped controls or overlaps."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual.spec.ts/mobile-contents-fold.png",
+      "sha256": "449b7166b12de2d1f3ef57f250f582dd3e0ed498779fee9f37bc2f2a73d5e11e",
+      "dimensions": [
+        390,
+        844
+      ],
+      "review": "Individually inspected by Agent B at final pixels: 97 of 97 is visible; complete publication copy; no clipped controls or overlaps."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual.spec.ts/mobile-map.png",
+      "sha256": "e667bbab2c7d25202eee6e606545cc2f8f183601a7ee247986a2651410b2a78c",
+      "dimensions": [
+        390,
+        844
+      ],
+      "review": "Individually inspected by Agent B at final pixels: 97 of 97 is visible; complete publication copy; no clipped controls or overlaps."
+    }
+  ],
+  "history": "Initial four captures passed and were individually reviewed. Review found stale planned-chapter prose on contents; fixed source and refreshed/reviewed only those two contents images. Map successes retained."
+}

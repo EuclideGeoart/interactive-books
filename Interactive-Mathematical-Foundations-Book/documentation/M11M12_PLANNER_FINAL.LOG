@@ -1,0 +1,10 @@
+
+ RUN  v3.2.7 /work/interactive-books-m11m12-integration/Interactive-Mathematical-Foundations-Book
+
+ ✓ tests/unit/validation-plan.test.ts (55 tests) 3328ms
+
+ Test Files  1 passed (1)
+      Tests  55 passed (55)
+   Start at  19:41:52
+   Duration  3.58s (transform 59ms, setup 0ms, collect 66ms, tests 3.33s, environment 0ms, prepare 44ms)
+

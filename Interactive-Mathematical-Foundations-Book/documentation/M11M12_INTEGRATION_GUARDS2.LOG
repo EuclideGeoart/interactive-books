@@ -1,0 +1,14 @@
+
+ RUN  v3.2.7 /work/interactive-books-m11m12-integration/Interactive-Mathematical-Foundations-Book
+
+ ✓ tests/unit/curriculum.test.ts (12 tests) 10ms
+ ✓ tests/unit/content.test.ts (110 tests) 449ms
+ ✓ tests/unit/numerical-validation.test.ts (3 tests) 650ms
+   ✓ structure families retain actual sparse/tensor/replay consumers and all new screenshot owners  351ms
+ ✓ tests/unit/validation-plan.test.ts (53 tests) 3241ms
+
+ Test Files  4 passed (4)
+      Tests  178 passed (178)
+   Start at  19:39:22
+   Duration  3.50s (transform 145ms, setup 0ms, collect 266ms, tests 4.35s, environment 1ms, prepare 210ms)
+

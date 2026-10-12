@@ -1,0 +1,32 @@
+[WebServer] (node:173602) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 6 tests using 3 workers
+
+(node:173614) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:173616) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:173615) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  -  3 [tablet] › tests/e2e/visual.spec.ts:80:1 › contents — top of the page
+  -  4 [tablet] › tests/e2e/visual.spec.ts:87:1 › the book map dialog
+/work/interactive-books-m11m12-integration/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual.spec.ts/desktop-contents-fold.png is re-generated, writing actual.
+/work/interactive-books-m11m12-integration/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual.spec.ts/desktop-contents-fold.png is re-generated, writing actual.
+(node:174079) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 [desktop] › tests/e2e/visual.spec.ts:80:1 › contents — top of the page (674ms)
+/work/interactive-books-m11m12-integration/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual.spec.ts/desktop-map.png is re-generated, writing actual.
+/work/interactive-books-m11m12-integration/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual.spec.ts/desktop-map.png is re-generated, writing actual.
+(node:174130) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [desktop] › tests/e2e/visual.spec.ts:87:1 › the book map dialog (1.0s)
+/work/interactive-books-m11m12-integration/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual.spec.ts/mobile-contents-fold.png is re-generated, writing actual.
+/work/interactive-books-m11m12-integration/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual.spec.ts/mobile-contents-fold.png is re-generated, writing actual.
+  ✓  5 [mobile] › tests/e2e/visual.spec.ts:80:1 › contents — top of the page (512ms)
+/work/interactive-books-m11m12-integration/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual.spec.ts/mobile-map.png is re-generated, writing actual.
+/work/interactive-books-m11m12-integration/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual.spec.ts/mobile-map.png is re-generated, writing actual.
+  ✓  6 [mobile] › tests/e2e/visual.spec.ts:87:1 › the book map dialog (692ms)
+
+  2 skipped
+  4 passed (2.4s)

@@ -24,6 +24,7 @@ test.describe('the map of the book (contents page)', () => {
     await expect(i3).toContainText('available');
     await expect(i3.getByRole('link')).toHaveAttribute('href', /chapters\/vectors\/$/);
     await expect(page.locator('main .lede')).toContainText(`${availableCount} of 97 chapters are written`);
+    if(planned===0)await expect(page.locator('main .lede')).not.toContainText('planned');
     await expect(page.locator('main [data-chapter-id="VI.4"]')).toContainText('flagship chapter');
   });
   test('direct access to a Part anchor lands on that Part', async ({ page }) => {
