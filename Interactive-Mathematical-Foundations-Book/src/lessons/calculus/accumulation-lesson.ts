@@ -55,7 +55,8 @@ export function deriveAccumulation(s: AccumulationState): CalcDerived {
   Fplot.description = `F starts at 0 at x = a = ${gtext(s.a)} and accumulates signed area. At x = ${gtext(s.x)}, F = ${Fx.kind === 'value' ? valueText(Fx) : 'undefined'}; `
     + (dF.kind === 'value' ? `its slope there is ${valueText({ value: dF.value!, exact: dF.exact })}, equal to f(x).` : `it has a corner: left slope ${oneSidedText(dF.left)}, right slope ${oneSidedText(dF.right)}.`);
   const formulas = [
-    `F(x)=\\int_{${gtex(s.a)}}^{x}f(t)\\,dt${F.pieceFormulas.length === 1 ? `=${polyTex(F.pieceFormulas[0]!.poly)}` : ''}`,
+    `F(x)=\\int_{${gtex(s.a)}}^{x}f(t)\\,dt`,
+    ...(F.pieceFormulas.length === 1 ? [`F(x)=${polyTex(F.pieceFormulas[0]!.poly)}`] : []),
     `F(${gtex(s.x)})=${Fx.kind === 'value' ? rtex(Fx.exact!) : '\\text{undefined}'}`,
     `\\Delta F=\\int_x^{x+\\Delta x}f(t)\\,dt=${delta ? rtex(delta) : '\\text{undefined}'}`,
     `f(x)\\,\\Delta x=${fdx ? rtex(fdx.exact) : '\\text{undefined}'}`,
@@ -75,9 +76,9 @@ export function deriveAccumulation(s: AccumulationState): CalcDerived {
     : `The strip from x to x + Δx adds ΔF = ${delta ? rtext(delta) : '?'}, close to f(x)·Δx = ${fdx ? rtext(fdx.exact) : '?'}. As Δx → 0 the ratio ΔF/Δx tends to f(x) = ${fx.kind === 'value' ? valueText(fx) : '?'}: F′(x) = f(x).${s.x < s.a ? ' (x < a: F(x) is minus the area from x to a.)' : ''}`;
   const frames = traceFrom<CalcFrame>([
     { state: { semantic: { a: A, F0: 0 }, title: 'Start the accumulator at a', detail: `F(a) = ∫ from a to a = 0 by definition.`, formula: `F(${gtex(s.a)})=0` } satisfies CalcFrame },
-    { state: { semantic: { x: X, F: Fx }, title: 'Accumulate up to x', detail: `F(${gtext(s.x)}) is the signed area from a to x: above-axis parts add, below-axis parts subtract.`, formula: formulas[1]! } satisfies CalcFrame },
-    { state: { semantic: { dx: DX, delta, fdx: fdx?.exact ?? null }, title: 'Add one thin strip', detail: `Over [x, x + Δx] the accumulator grows by ΔF; for small Δx the strip is nearly a rectangle of height f(x).`, formula: formulas[2]! } satisfies CalcFrame },
-    { state: { semantic: { slope: dF }, title: 'Let the strip shrink', detail: verdict, formula: formulas[4]! } satisfies CalcFrame },
+    { state: { semantic: { x: X, F: Fx }, title: 'Accumulate up to x', detail: `F(${gtext(s.x)}) is the signed area from a to x: above-axis parts add, below-axis parts subtract.`, formula: formulas.find(t => t.startsWith(`F(${gtex(s.x)})=`))! } satisfies CalcFrame },
+    { state: { semantic: { dx: DX, delta, fdx: fdx?.exact ?? null }, title: 'Add one thin strip', detail: `Over [x, x + Δx] the accumulator grows by ΔF; for small Δx the strip is nearly a rectangle of height f(x).`, formula: formulas.find(t => t.startsWith('\\Delta F'))! } satisfies CalcFrame },
+    { state: { semantic: { slope: dF }, title: 'Let the strip shrink', detail: verdict, formula: formulas.at(-1)! } satisfies CalcFrame },
   ]);
   return {
     rows, formulas, verdict, status, caution: status !== 'ftc', scenes: [fPlot, Fplot], frames,

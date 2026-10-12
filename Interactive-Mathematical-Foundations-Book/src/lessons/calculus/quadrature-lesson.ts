@@ -54,13 +54,13 @@ export function deriveQuadrature(s: QuadratureState): CalcDerived {
   plot.curves.push({ name: 'graph', lines: cachedCurve(`${P.g.id}-q`, x => P.g.f.number(x), P.window, P.g.f.breaks, 600), role: 'ink', width: 2.5 });
   plot.description = `f(x) = ${integrandText(P.g)} (${P.note}). ${n <= 64 ? `${n} ${s.rule} panels are drawn.` : `With n = ${n} the panels are narrower than a pixel and are not drawn.`} Approximation ${sum.kind === 'value' ? valueText(sum) : 'undefined'}, reference ${valueText(I)}.`;
   const low = Math.min(...RULES.flatMap(r => table.get(r)!.map(v => lg(v.value)))), CONV = convWindow(low);
-  const conv = scene('convergence', 'log₁₀ |error| versus k (n = 2ᵏ)', '', CONV);
+  const conv = scene('convergence', 'log₁₀|error| vs k (n = 2ᵏ): selected rule solid, other rules dashed', '', CONV);
   const roles = { left: 'x', right: 'y', midpoint: 'derived', trapezoid: 'primary' } as const;
   for (const r of RULES) conv.curves.push({ name: `conv-${r}`, lines: [table.get(r)!.map((v, k) => ({ x: k, y: lg(v.value) })) as Point[]], role: roles[r], width: r === s.rule ? 3 : 1.6, dashed: r !== s.rule });
   conv.markers.push({ name: 'now', at: { x: s.k, y: lg(e.value) }, role: roles[s.rule], filled: true });
   conv.handles.push({ id: 'k', label: `refinement level k = ${s.k}, n = ${n}, error ${sciText(e.value)}`, at: { x: s.k, y: lg(e.value) }, role: 'primary', xField: 'k', step: 1 });
   conv.description = `Errors of all four rules for n = 1 … 1024 on a log scale. The selected ${s.rule} rule has error ${sciText(e.value)} at n = ${n}${order !== null ? `; halving h divided it by about ${(2 ** order).toFixed(2)}` : ''}.`;
-  const tbl = { caption: `${s.rule} rule: error and observed order as n doubles`, head: ['k', 'n', 'error', 'observed order'],
+  const tbl = { caption: `${s.rule} rule: error and observed order as n doubles`, head: ['k', 'n', 'Qₙ − I (signed)', 'observed order'],
     rows: errs.map((v, k) => [`${k}`, `${2 ** k}`, v.exact ? rtext(v.exact) : sciText(v.value), observedOrder(errs, k)?.toFixed(3) ?? '—']) };
   const theory = s.rule === 'left' || s.rule === 'right' ? 1 : 2;
   const formulas = [

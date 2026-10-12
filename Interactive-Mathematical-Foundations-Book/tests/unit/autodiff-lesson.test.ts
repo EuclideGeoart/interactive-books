@@ -28,7 +28,7 @@ describe('III.10 autodiff lesson', () => {
     expect(layout(GRAPHS.square!).edges.map(e => e.parallel)).toEqual([-1, 1]);
   });
   it('the cost table states forward passes = inputs and reverse passes = outputs', () => {
-    expect(deriveAutodiff({ ...AUTODIFF_CANONICAL, graph: 'scalar-loss' }).table.rows[0]!.slice(1)).toEqual(['3', '1', '3', '1']);
-    expect(deriveAutodiff({ ...AUTODIFF_CANONICAL, graph: 'many-outputs' }).table.rows[0]!.slice(1)).toEqual(['1', '3', '1', '3']);
+    expect(deriveAutodiff({ ...AUTODIFF_CANONICAL, graph: 'scalar-loss' }).table.rows[0]!).toEqual(['3', '1', '3', '1']);
+    expect(deriveAutodiff({ ...AUTODIFF_CANONICAL, graph: 'many-outputs' }).table.rows[0]!).toEqual(['1', '3', '1', '3']);
   });
 });

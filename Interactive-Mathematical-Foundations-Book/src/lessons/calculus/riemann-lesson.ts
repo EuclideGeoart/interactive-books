@@ -46,8 +46,9 @@ export function deriveRiemann(s: RiemannState): CalcDerived {
       return [`${n}`, rtext(t.dx), t.kind === 'value' ? valueText(t) : 'undefined', e]; }) };
   const formulas = [
     `\\Delta x=\\frac{b-a}{n}=\\frac{${gtex(s.b)}-${s.a < 0 ? `(${gtex(s.a)})` : gtex(s.a)}}{${s.n}}=${valueTex({ value: toNumber(sum.dx), exact: sum.dx })}`,
-    s.rule === 'trapezoid' ? `T_n=\\sum_{i=0}^{n-1}\\frac{f(x_i)+f(x_{i+1})}{2}\\,\\Delta x${sum.kind === 'value' ? `${sum.exact ? '=' : '\\approx'}${valueTex(sum)}` : ''}`
-      : `S_n=\\sum_{i=0}^{n-1}f(\\xi_i)\\,\\Delta x${sum.kind === 'value' ? `${sum.exact ? '=' : '\\approx'}${valueTex(sum)}` : ''}`,
+    s.rule === 'trapezoid' ? `T_n=\\sum_{i=0}^{n-1}\\frac{f(x_i)+f(x_{i+1})}{2}\\,\\Delta x`
+      : `S_n=\\sum_{i=0}^{n-1}f(\\xi_i)\\,\\Delta x`,
+    `${s.rule === 'trapezoid' ? 'T_n' : 'S_n'}${sum.kind === 'value' ? `${sum.exact ? '=' : '\\approx'}${valueTex(sum)}` : '\\ \\text{undefined}'}`,
     `\\int_{${gtex(s.a)}}^{${gtex(s.b)}} f(x)\\,dx${I.exact ? '=' : '\\approx'}${valueTex(I)}`,
     ...(err ? [`${s.rule === 'trapezoid' ? 'T_n' : 'S_n'}-\\int${err.exact ? '=' : '\\approx'}${valueTex(err)}`] : []),
     ...(parts ? [`\\int|f|=${valueTex({ value: toNumber(parts.area), exact: parts.area })}`, `\\int f^+=${valueTex({ value: toNumber(parts.positive), exact: parts.positive })},\\quad \\int f^-=${valueTex({ value: toNumber(parts.negative), exact: parts.negative })}`] : []),
@@ -72,7 +73,7 @@ export function deriveRiemann(s: RiemannState): CalcDerived {
     ...sum.panels.slice(0, 5).map((p, k) => ({ state: { semantic: { panel: k, x0: p.x0, x1: p.x1, contribution: p.exact ?? p.signed }, title: `Panel ${k + 1}: [${gtext(p.x0)}, ${gtext(p.x1)}]`,
       detail: `${s.rule === 'trapezoid' ? 'The average of the two end heights' : 'The sampled height'} times the signed width Δx gives the contribution ${p.exact ? rtext(p.exact) : `≈ ${p.signed.toFixed(6)}`}; a negative height or a negative Δx makes it negative.`,
       formula: `\\text{panel } ${k + 1}:\\ ${p.exact ? valueTex({ value: p.signed, exact: p.exact }) : p.signed.toFixed(6)}` } satisfies CalcFrame })),
-    { state: { semantic: { sum: sum.kind === 'value' ? (sum.exact ?? sum.value) : null, integral: I.exact ?? I.value }, title: 'Add every panel and compare', detail: verdict, formula: formulas[2]! } satisfies CalcFrame },
+    { state: { semantic: { sum: sum.kind === 'value' ? (sum.exact ?? sum.value) : null, integral: I.exact ?? I.value }, title: 'Add every panel and compare', detail: verdict, formula: formulas.find(t => t.startsWith('\\int_{'))! } satisfies CalcFrame },
   ]);
   return {
     rows, formulas, verdict, status, caution: ['reversed', 'undefined', 'signed'].includes(status), scenes: [plot], frames, table,

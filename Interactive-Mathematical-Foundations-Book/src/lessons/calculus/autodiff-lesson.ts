@@ -164,7 +164,7 @@ export function deriveAutodiff(s: AutodiffState): AutodiffDerived {
   const fd = centralDifference(g, inputs, out, s.mode === 'reverse' ? g.inputs[0]! : seed);
   rows.push(row('fd', '\\delta_h', `Central difference, h = 10⁻⁶ (numerical evidence)`, fd === null ? undefinedDesc('f is undefined at this point; a difference quotient across it measures no derivative.') : numericDesc(fd), 'ink', true));
   const table: CalcTable = { caption: 'Cost of a full gradient/Jacobian: forward mode needs one pass per INPUT, reverse mode one pass per OUTPUT',
-    head: ['graph', 'inputs n', 'outputs m', 'forward passes', 'reverse passes'], rows: [[g.label, `${g.inputs.length}`, `${g.outputs.length}`, `${g.inputs.length}`, `${g.outputs.length}`]] };
+    head: ['inputs n', 'outputs m', 'forward passes', 'reverse passes'], rows: [[`${g.inputs.length}`, `${g.outputs.length}`, `${g.inputs.length}`, `${g.outputs.length}`]] };
   const undefinedOut = e.values[out]!.kind === 'undefined';
   const status = undefinedOut ? 'undefined' : s.mode;
   const total = (id: string) => txt(rev.adjoints[id]!);

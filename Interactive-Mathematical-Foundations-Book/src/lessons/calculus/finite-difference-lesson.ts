@@ -49,7 +49,7 @@ export function deriveFD(s: FDState): CalcDerived {
     + `Errors first fall (truncation) then rise (rounding); the dashed curves are the documented error budgets. At h = ${pow10(s.k)}: forward ${sci(at('forward').error)}, centered ${sci(at('centered').error)}.`;
   const hf = optimalStep('forward', Math.abs(F.f(x)), m2, m3), hc = optimalStep('centered', Math.abs(F.f(x)), m2, m3);
   const table = { caption: `Errors of binary64 quotients against the independent reference derivative ${F.refText}${s.fn === 'cubic' ? ' (exact rational)' : ''}`, head: ['k', 'h', 'forward error', 'centered error', 'forward budget'],
-    rows: all.get('forward')!.map((d, i) => [`${i + 1}`, `1e-${i + 1}`, sci(d.error), sci(all.get('centered')![i]!.error), sci(budget(d))]) };
+    rows: all.get('forward')!.map((d, i) => [`${i + 1}`, pow10(i + 1), sci(d.error), sci(all.get('centered')![i]!.error), sci(budget(d))]) };
   const c = at('centered'), f = at('forward'), b = at('backward');
   const dominated = f.truncationBudget >= f.roundingBudget ? 'truncation' : 'rounding';
   const formulas = [
