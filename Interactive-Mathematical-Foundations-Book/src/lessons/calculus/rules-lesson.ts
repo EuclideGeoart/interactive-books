@@ -31,19 +31,23 @@ export function deriveRules(s: RulesState): CalcDerived {
   const R = applyRule(s.mode, A, B, C, X, DX), U = uPoly(A, B), V = vPoly(C);
   const op = s.mode === 'sum' ? '+' : s.mode === 'product' ? '·' : '/';
   const w = (t: number) => { const u = evalPolyNumber(U, t), v = evalPolyNumber(V, t); return s.mode === 'sum' ? u + v : s.mode === 'product' ? u * v : v === 0 ? null : u / v; };
-  const poles = s.c < 0 ? [-Math.sqrt(-s.c), Math.sqrt(-s.c)] : s.c === 0 ? [0] : [];
+  const zeros = s.c < 0 ? [-Math.sqrt(-s.c), Math.sqrt(-s.c)] : s.c === 0 ? [0] : [];
+  // Where v = 0, the quotient is undefined. If u vanishes there too (u = a(x − r)), the gap is a removable hole with limit a/(2r) (l'Hôpital), not a pole.
+  const isHole = (r: number) => s.mode === 'quotient' && Math.abs(s.a * r + s.b) < 1e-12 && s.a !== 0 && r !== 0;
+  const poles = s.mode === 'quotient' ? zeros.filter(r => !isHole(r)) : [], holes = s.mode === 'quotient' ? zeros.filter(isHole) : [];
   const key = `${s.mode}-${s.a}-${s.b}-${s.c}`;
   const graph = scene('graph', `w(x) = u(x) ${op} v(x) and its tangent at x = ${gtext(s.x)}`, '', GRAPH);
   graph.curves.push({ name: 'u', lines: cachedCurve(`u-${s.a}-${s.b}`, t => evalPolyNumber(U, t), GRAPH), role: 'x', dashed: true, width: 1.8 },
     { name: 'v', lines: cachedCurve(`v-${s.c}`, t => evalPolyNumber(V, t), GRAPH), role: 'y', dashed: true, width: 1.8 },
-    { name: 'w', lines: cachedCurve(key, w, GRAPH, poles), role: 'ink', width: 2.8 });
+    { name: 'w', lines: cachedCurve(key, w, GRAPH, [...poles, ...holes]), role: 'ink', width: 2.8 });
+  for (const h of holes) graph.markers.push({ name: `hole-${h}`, at: { x: h, y: s.a / (2 * h) }, role: 'ink', filled: false });
   const P = { x: s.x, y: R.value?.value ?? 0 };
   if (R.value && R.rule) graph.segments.push({ name: 'tangent', ...lineThrough(P, R.rule.value, GRAPH), role: 'primary', width: 2.5 });
   for (const p of poles) graph.segments.push({ name: `pole-${p}`, from: { x: p, y: GRAPH.yMin }, to: { x: p, y: GRAPH.yMax }, role: 'caution', dashed: true, width: 1.5 });
   graph.handles.push({ id: 'x', label: `point x = ${gtext(s.x)}, w(x) ${R.value ? '= ' + valueText(R.value) : 'undefined'}`, at: P, role: 'primary', xField: 'x', step: 0.25 });
   graph.labels.push({ name: 'label-u', at: { x: 2.4, y: evalPolyNumber(U, 2.4) }, text: 'u', role: 'x', dx: 12, dy: 0 }, { name: 'label-v', at: { x: -2.2, y: evalPolyNumber(V, -2.2) }, text: 'v', role: 'y', dx: -12, dy: 0 });
   graph.description = `u(x) = ${polyText(U)} (dashed blue), v(x) = ${polyText(V)} (dashed green) and w = u ${op} v (solid). At x = ${gtext(s.x)}: `
-    + (R.value ? `w = ${valueText(R.value)}, tangent slope by the rule ${valueText(R.rule!)}.` : R.reason!) + (poles.length ? ` v vanishes at x = ${poles.map(p => p.toFixed(3)).join(', ')}.` : '');
+    + (R.value ? `w = ${valueText(R.value)}, tangent slope by the rule ${valueText(R.rule!)}.` : R.reason!) + (poles.length ? ` Vertical asymptote where v vanishes and u does not: x = ${poles.map(p => p.toFixed(3)).join(', ')}.` : '') + (holes.length ? ` Removable hole (u and v both vanish) at x = ${holes.map(p => p.toFixed(3)).join(', ')}.` : '');
   const scenes = [graph];
   if (R.increment) {
     const I = R.increment, u = R.u.value, v = R.v.value, u2 = I.u2.value, v2 = I.v2.value;
@@ -67,9 +71,9 @@ export function deriveRules(s: RulesState): CalcDerived {
     `${valueTex(R.increment!.total)}=${valueTex(R.increment!.vDu)}+${valueTex(R.increment!.uDv)}+${valueTex(R.increment!.corner)}\\quad(\\Delta x=${gtex(s.dx)})`);
   if (s.mode === 'quotient') formulas.push(R.rule
     ? `\\left(\\frac{u}{v}\\right)'(${x})=\\frac{u'v-uv'}{v^2}=\\frac{${valueTex(R.terms[0]!)}-${R.terms[1]!.value < 0 ? `(${valueTex(R.terms[1]!)})` : valueTex(R.terms[1]!)}}{${valueTex(R.terms[2]!)}}=${valueTex(R.rule)}`
-    : `v(${x})=0\\ \\Rightarrow\\ \\frac{u}{v}\\ \\text{and}\\ \\left(\\frac{u}{v}\\right)'\\ \\text{are undefined at } x=${x}`,
+    : `v(${x})=0\\ \\Rightarrow\\ \\frac{u}{v}\\ \\text{undefined}`,
     `u=q\\,v\\ \\Rightarrow\\ u'=q'v+qv'`, `q'=\\frac{u'-q\\,v'}{v}${R.independent ? `=${valueTex(R.independent)}` : ''}`);
-  if (s.mode !== 'quotient') { const W = s.mode === 'sum' ? addPoly(U, V) : mulPoly(U, V); formulas.push(`\\frac{d}{dx}\\left(${polyTex(W)}\\right)=${polyTex(derivative(W))}\\ \\Big|_{x=${x}}=${valueTex(R.independent!)}\\quad\\text{(expand first)}`); }
+  if (s.mode !== 'quotient') { const W = s.mode === 'sum' ? addPoly(U, V) : mulPoly(U, V); formulas.push(`\\frac{d}{dx}\\left(${polyTex(W)}\\right)=${polyTex(derivative(W))}`, `\\text{at } x=${x}:\\ ${valueTex(R.independent!)}\\quad\\text{(expand first)}`); }
   const rows = [
     row('x', 'x', 'Point', givenDesc(s.x), 'primary'),
     row('u', 'u(x)', 'First factor', valueDesc(R.u), 'x'), row('v', 'v(x)', 'Second factor', valueDesc(R.v), 'y'),

@@ -68,7 +68,7 @@ export function deriveContinuity(s: ContinuityState): CalcDerived {
     row('c1', '\\text{(i)}', 'f(a) exists', yes(exists, 'a is not in the domain.'), 'ink'),
     row('c2', '\\text{(ii)}', 'The two-sided limit exists', yes(hasLimit, 'The one-sided limits are not one finite number.'), 'ink'),
     row('c3', '\\text{(iii)}', 'The limit equals f(a)', yes(equal, exists && hasLimit ? 'The limit and the value differ.' : 'Needs (i) and (ii).'), 'ink'),
-    row('global', '\\mathcal D', 'Discontinuities in view', exactDesc(breaks.length ? breaks.map(b => `x = ${gtext(b.x)} (${b.kind})`).join('; ') : 'none'), 'ink', true),
+    row('global', '\\mathcal D', 'Discontinuities in view', exactDesc(breaks.length ? breaks.map(b => `at ${gtext(b.x)} (${b.kind})`).join('; ') : 'none'), 'ink', true),
   ];
   const verdict = ({
     continuous: `Continuous at ${a}: f(${a}) exists, the limit exists, and they agree.${breaks.length ? ` (The function still breaks elsewhere: continuity is a LOCAL property.)` : ''}`,

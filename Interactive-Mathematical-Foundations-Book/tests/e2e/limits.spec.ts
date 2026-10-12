@@ -73,7 +73,7 @@ test.describe('III.2: continuity', () => {
     const s = await open(page, slug, kind);
     await s.locator('[data-preset="pole"]').click(); await expect(s).toHaveAttribute('data-status', 'infinite');
     await s.locator('[data-preset="endpoint"]').click(); await expect(s).toHaveAttribute('data-status', 'right-continuous');
-    await s.locator('[data-preset="local"]').click(); await expect(s).toHaveAttribute('data-status', 'continuous'); await expect(s.locator('[data-quantity="global"]')).toContainText('x = 1');
+    await s.locator('[data-preset="local"]').click(); await expect(s).toHaveAttribute('data-status', 'continuous'); await expect(s.locator('[data-quantity="global"]')).toContainText('at 1');
   });
   test('worked replay', async ({ page }) => { await open(page, slug, kind); const w = await replayWorked(page, kind); await expect(w.locator('[data-trace-count]')).toContainText('of 3'); });
   test('five graded exercises', async ({ page }) => { await open(page, slug, kind); await exercises(page, { 'iii2-join': ['2'], 'iii2-repair': ['6'] }, 'iii2-'); });

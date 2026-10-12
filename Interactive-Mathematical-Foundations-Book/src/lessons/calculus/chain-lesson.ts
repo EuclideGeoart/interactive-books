@@ -1,7 +1,6 @@
 /** III.6 — the chain rule: x → u = g(x) → y = f(u), local sensitivities multiply. */
 import { fromDecimal, type Rational } from '../../math/quantity/rational';
 import { chain, INNER, OUTER } from '../../math/calculus/chain';
-import { polyTex } from '../../math/calculus/polynomial';
 import { traceFrom } from '../../platform/trace';
 import type { WorldWindow } from '../../platform/geometry/viewport';
 import {
@@ -14,7 +13,7 @@ export const CHAIN_CANONICAL: ChainState = { inner: 'square', outer: 'cube', x: 
 export const chainPresets = [
   { id: 'polynomial', label: 'Exact: (x²/2 − 1)³/4', state: CHAIN_CANONICAL },
   { id: 'flat-inner', label: 'Inner slope 0 (x = 0)', state: { ...CHAIN_CANONICAL, x: 0 } },
-  { id: 'sin-exp', label: 'e^(sin x) (binary64)', state: { inner: 'sin', outer: 'exp', x: 1, dx: 0.5 } },
+  { id: 'sin-exp', label: 'exp(sin x) (binary64)', state: { inner: 'sin', outer: 'exp', x: 1, dx: 0.5 } },
   { id: 'linear-sin', label: 'sin(2x − 1)', state: { inner: 'linear', outer: 'sin', x: 0.5, dx: 0.5 } },
   { id: 'large-step', label: 'Large Δx = 1.5', state: { ...CHAIN_CANONICAL, dx: 1.5 } },
 ] as const satisfies readonly { id: string; label: string; state: ChainState }[];
@@ -49,11 +48,11 @@ export function deriveChain(s: ChainState): CalcDerived {
   whole.description = `Composite y = f(g(x)); its tangent slope at x = ${gtext(s.x)} is the product ${valueText(c.outerSlope)} × ${valueText(c.innerSlope)} = ${valueText(c.product)}.`;
   const x = gtex(s.x), rel = c.product.exact ? '=' : '\\approx';
   const formulas = [
-    `x=${x}\\ \\xrightarrow{\\;g\\;}\\ u=${valueTex(c.u)}\\ \\xrightarrow{\\;f\\;}\\ y=${valueTex(c.y)}`,
+    `x=${x}\\ \\xrightarrow{\\;g\\;}\\ u${c.u.exact ? '=' : '\\approx'}${valueTex(c.u)}\\ \\xrightarrow{\\;f\\;}\\ y${c.y.exact ? '=' : '\\approx'}${valueTex(c.y)}`,
     `\\frac{dy}{dx}=\\underbrace{f'(u)}_{${valueTex(c.outerSlope)}}\\cdot\\underbrace{g'(x)}_{${valueTex(c.innerSlope)}}${rel}${valueTex(c.product)}`,
-    `\\Delta u${c.du.exact ? '=' : '\\approx'}${valueTex(c.du)}\\ (\\text{linear: }${valueTex(c.duLinear)})`,
-    `\\Delta y${c.dy.exact ? '=' : '\\approx'}${valueTex(c.dy)}\\ (\\text{linear: }${valueTex(c.dyLinear)})`,
-    ...(c.composed ? [`h(x)=${polyTex(c.composed)}`, `h'(${x})=${valueTex(c.direct!)}`] : []),
+    `\\Delta u${c.du.exact ? '=' : '\\approx'}${valueTex(c.du)}\\ (\\text{linear: }${c.duLinear.exact ? '' : '\\approx'}${valueTex(c.duLinear)})`,
+    `\\Delta y${c.dy.exact ? '=' : '\\approx'}${valueTex(c.dy)}\\ (\\text{linear: }${c.dyLinear.exact ? '' : '\\approx'}${valueTex(c.dyLinear)})`,
+    ...(c.composed ? [`h'(${x})=${valueTex(c.direct!)}\\quad\\text{(composed, then differentiated)}`] : []),
   ];
   const rows = [
     row('x', 'x', 'Input', givenDesc(s.x), 'primary'), row('u', 'u', 'Intermediate value g(x)', valueDesc(c.u), 'x'), row('y', 'y', 'Output f(u)', valueDesc(c.y), 'y'),
@@ -65,7 +64,7 @@ export function deriveChain(s: ChainState): CalcDerived {
   ];
   const verdict = c.innerSlope.value === 0 ? `The inner function is flat here (g′(${gtext(s.x)}) = 0): a small change in x barely moves u, so the whole chain is insensitive, whatever f′(u) is.`
     : Math.abs(s.dx) >= 1.5 ? `With a large Δx the linearized change ${valueText(c.dyLinear)} misses the actual change ${valueText(c.dy)}: the chain rule is a statement about LOCAL rates.`
-      : `Sensitivities multiply: dy/dx = f′(u)·g′(x), here ${bare(c.outerSlope)} × ${bare(c.innerSlope)} = ${bare(c.product)}${c.product.exact ? ' exactly' : ' (binary64 approximations)'}. The outer slope is evaluated at u = g(x), not at x.`;
+      : `Sensitivities multiply: dy/dx = f′(u)·g′(x), here ${bare(c.outerSlope)} × ${bare(c.innerSlope)} ${c.product.exact ? '=' : '≈'} ${bare(c.product)}${c.product.exact ? ' exactly' : ' (binary64 approximations)'}. The outer slope is evaluated at u = g(x), not at x.`;
   const frames = traceFrom<CalcFrame>([
     { state: { semantic: { x: X, u: c.u }, title: 'Forward: inner stage', detail: `u = g(${gtext(s.x)}) ${c.u.exact ? '= ' : ''}${valueText(c.u)}.`, formula: `u=g(${x})${c.u.exact ? '=' : '\\approx'}${valueTex(c.u)}` } satisfies CalcFrame },
     { state: { semantic: { u: c.u, y: c.y }, title: 'Forward: outer stage', detail: `y = f(u) ${c.y.exact ? '= ' : ''}${valueText(c.y)}.`, formula: `y=f(u)${c.y.exact ? '=' : '\\approx'}${valueTex(c.y)}` } satisfies CalcFrame },

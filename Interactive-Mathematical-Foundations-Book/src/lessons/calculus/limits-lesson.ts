@@ -83,7 +83,7 @@ export function deriveLimit(s: LimitState): CalcDerived {
   const frames = traceFrom<CalcFrame>([
     ...rows8.slice(0, 6).map(r => ({ state: { semantic: { k: r.k, delta: r.delta, left: r.left, right: r.right }, title: `Approach step ${r.k + 1}: δ = ${rtext(r.delta)}`,
       detail: `Evaluate at a − δ and a + δ, both different from a: f(a − δ) ${eqShow(r.left)}, f(a + δ) ${eqShow(r.right)}.`,
-      formula: `f(${gtex(s.a)}-${rtext(r.delta)})${relTex(r.left)},\\quad f(${gtex(s.a)}+${rtext(r.delta)})${relTex(r.right)}` } satisfies CalcFrame })),
+      formula: `\\begin{aligned}f(${gtex(s.a)}-${rtext(r.delta)})&${relTex(r.left)}\\\\ f(${gtex(s.a)}+${rtext(r.delta)})&${relTex(r.right)}\\end{aligned}` } satisfies CalcFrame })),
     { state: { semantic: { left: d.left, right: d.right, limit: d.limit, value: d.value, kind: d.kind }, title: 'Decide the limit analytically', detail: `${verdict} The table supports this reading; the decision comes from the function's exact description.`, formula: formulas[2]! } satisfies CalcFrame },
   ]);
   return {

@@ -116,7 +116,7 @@ export function deriveSecant(s: SecantState): CalcDerived {
       const q = secant(f, X, hk);
       return { state: { semantic: { k, h: hk, slope: q.kind === 'value' ? (q.exactSlope ?? q.slope) : null }, title: `Secant ${k + 1}: h = ${rtext(hk)}`,
         detail: q.kind === 'value' ? `Two distinct points, x and x + h, give the slope ${valueText({ value: q.slope, exact: q.exactSlope })}. No division by zero occurs.` : `No secant: ${q.reason}`,
-        formula: q.kind === 'value' ? `m\\left(${rtex(hk)}\\right)=\\frac{f(${gtex(s.x)}+${rtex(hk)})-f(${gtex(s.x)})}{${rtex(hk)}}${q.exactSlope ? '=' : '\\approx'}${valueTex({ value: q.slope, exact: q.exactSlope })}` : `m(h)\\ \\text{undefined}` } satisfies CalcFrame };
+        formula: q.kind === 'value' ? `m(${rtex(hk)})=\\frac{f(${gtex(s.x)}+${rtex(hk)})-f(${gtex(s.x)})}{${rtex(hk)}}${q.exactSlope ? '=' : '\\approx'}${valueTex({ value: q.slope, exact: q.exactSlope })}` : `m(h)\\ \\text{undefined}` } satisfies CalcFrame };
     }),
     { state: { semantic: { derivative: d.kind === 'value' ? (d.exact ?? d.value) : null, left: d.left, right: d.right }, title: 'The limit, derived separately',
       detail: d.kind === 'value' ? `The analytic derivative is f′(${gtext(s.x)}) ${d.exact ? '=' : '≈'} ${valueText({ value: d.value!, exact: d.exact }).replace(/^≈ /, '')}. The table shows the secant slopes approaching it; the table alone is evidence, not proof.` : `No derivative: ${d.reason}`,

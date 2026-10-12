@@ -128,7 +128,7 @@ test.describe('III.5: derivative rules', () => {
   test('a zero denominator makes the quotient and its derivative undefined', async ({ page }) => {
     const s = await open(page, slug, kind); await s.locator('[data-preset="pole"]').click();
     await expect(s).toHaveAttribute('data-status', 'undefined'); await expect(s.locator('[data-quantity="rule"]')).toHaveAttribute('data-status', 'undefined');
-    await expect(s.locator('line[data-part="tangent"]')).toHaveCount(0); await expect(s.locator('line[data-part^="pole-"]')).toHaveCount(2);
+    await expect(s.locator('line[data-part="tangent"]')).toHaveCount(0); await expect(s.locator('line[data-part^="pole-"]')).toHaveCount(1); await expect(s.locator('circle[data-part^="hole-"]')).toHaveCount(1); // x = −1 is a removable hole, x = 1 a pole
   });
   test('worked replay and exercises', async ({ page }) => {
     await open(page, slug, kind); await replayWorked(page, kind);

@@ -80,7 +80,8 @@ export function deriveLinear(s: LinearState): CalcDerived {
   const x0t = gtex(s.x0);
   const formulas = model ? [
     `L(\\Delta x)=f(${x0t})+f'(${x0t})\\,\\Delta x`,
-    `L(${gtex(s.dx)})=${valueTex(model.fx)}+${pg(model.slope.value)}\\cdot${pg(s.dx)}${model.linear.exact ? '=' : '\\approx'}${valueTex(model.linear)}`,
+    `L(${gtex(s.dx)})=${valueTex(model.fx)}+${pg(model.slope.value)}\\cdot${pg(s.dx)}`,
+    `L(${gtex(s.dx)})${model.linear.exact ? '=' : '\\approx'}${valueTex(model.linear)}`,
     `f(${x0t}+${pg(s.dx)})${model.actual.exact ? '=' : '\\approx'}${valueTex(model.actual)}`,
     `e=f-L${model.error.exact ? '=' : '\\approx'}${valueTex(model.error)}`,
     `\\bar m=\\frac{f(x_0+\\Delta x)-f(x_0)}{\\Delta x}${avg.kind === 'value' ? `${avg.exactSlope ? '=' : '\\approx'}${valueTex({ value: avg.slope, exact: avg.exactSlope })}` : '\\ \\text{undefined}'}`,
@@ -105,7 +106,7 @@ export function deriveLinear(s: LinearState): CalcDerived {
     const lm = localModel(f, X0, h)!;
     return { state: { semantic: { k, dx: h, linear: lm.linear, actual: lm.actual, error: lm.error }, title: `Δx = ${rtext(h)}`,
       detail: `Model ${valueText(lm.linear)}, true value ${valueText(lm.actual)}, error ${valueText(lm.error)}, error/Δx ${valueText(lm.relative!)}.`,
-      formula: `e(${rtext(h)})=f(x_0+${rtext(h)})-L(${rtext(h)})${lm.error.exact ? '=' : '\\approx'}${valueTex(lm.error)}` } satisfies CalcFrame };
+      formula: `e(${rtext(h)})${lm.error.exact ? '=' : '\\approx'}${valueTex(lm.error)}` } satisfies CalcFrame };
   }) : [{ state: { semantic: { slope: d }, title: 'No tangent model', detail: verdict, formula: formulas[0]! } satisfies CalcFrame }]);
   return {
     rows, formulas, verdict, status, caution: status !== 'local', scenes: [plot, errPlot], frames, table,
