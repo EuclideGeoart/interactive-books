@@ -198,9 +198,9 @@ export const parts: readonly Part[] = [
     purpose: "prepare the learner for classification loss, probabilistic models, and language-model training.",
     exitCondition: "cross entropy and token prediction loss are no longer mysterious formulas.",
     chapters: [
-      planned(1, "Logarithms and log probabilities in computation"),
-      planned(2, "Self-information"),
-      planned(3, "Entropy"),
+      available(1, "Logarithms and log probabilities in computation", "log-probabilities"),
+      available(2, "Self-information", "self-information"),
+      available(3, "Entropy", "entropy"),
       planned(4, "Cross entropy and negative log-likelihood"),
       planned(5, "KL divergence"),
       planned(6, "Logits and softmax"),

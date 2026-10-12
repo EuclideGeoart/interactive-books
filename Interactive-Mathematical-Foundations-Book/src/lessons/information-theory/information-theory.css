@@ -1,0 +1,17 @@
+.information-stage .info-table { font: .78rem/1.5 var(--font-mono); }
+.information-stage .info-table th { font-family:var(--font-body); }
+.info-bars { margin:.75rem 0; }
+.info-bars figcaption { font-weight:650; }
+.info-bars ol { padding:0; list-style:none; }
+.info-bars li { margin:.6rem 0; font-size:.85rem; }
+.info-bars li>span { display:block; overflow-wrap:anywhere; }
+.information-stage button, .information-stage select { min-height:44px; min-width:44px; }
+.info-select { display:flex; flex-direction:column; gap:.3rem; min-width:9rem; }
+.info-select select { background:var(--surface); color:var(--ink); border:1px solid var(--line); padding:.5rem; font:inherit; }
+.info-weights { display:flex; flex-wrap:wrap; gap:1rem; width:100%; }
+.info-weights .param { flex:1 1 9rem; max-width:15rem; }
+.info-summary { padding:.6rem 0; font: .9rem/1.6 var(--font-mono); overflow-wrap:anywhere; }
+.info-position { display:flex; flex-wrap:wrap; gap:.5rem; margin:.75rem 0; }
+.info-position [aria-pressed=true] { outline:2px solid var(--c-primary); }
+.info-mask { display:flex; align-items:center; gap:.5rem; min-height:44px; }
+.info-mask input { width:24px; height:24px; }

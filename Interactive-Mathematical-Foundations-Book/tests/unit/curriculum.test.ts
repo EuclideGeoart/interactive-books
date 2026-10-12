@@ -89,7 +89,7 @@ describe('publication scope guard', () => {
     expect(i3.chapter.role).toBe('reference');
     expect(findChapter('VI.4')!.chapter.role).toBe('flagship');
   });
-  it('M9+M10 publish 79 chapters and leave 18 planned', () => {
+  it('M11 Block A publishes 82 chapters and leaves 15 planned', () => {
     const published = allChapters.filter(r => r.chapter.status === 'available');
     expect(published.filter(r => r.part.numeral === 'I')).toHaveLength(9);
     expect(published.filter(r => r.part.numeral === 'II')).toHaveLength(19);
@@ -97,10 +97,10 @@ describe('publication scope guard', () => {
     expect(published.filter(r => r.part.numeral === 'IV').map(r => r.id)).toEqual(PART_IV_PUBLISHED);
     expect(published.filter(r => r.part.numeral === 'V')).toHaveLength(10);
     expect(published.filter(r => r.part.numeral === 'VI')).toHaveLength(10);
-    expect(published.every(r => ['I', 'II', 'III', 'IV', 'V', 'VI'].includes(r.part.numeral))).toBe(true);
-    expect(published).toHaveLength(79);
-    expect(allChapters.filter(r => r.chapter.status === 'planned')).toHaveLength(18);
-    expect(published.map(r => r.id)).toEqual(allChapters.slice(0, 79).map(r => r.id));
+    expect(published.every(r => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'].includes(r.part.numeral))).toBe(true);
+    expect(published).toHaveLength(82);
+    expect(allChapters.filter(r => r.chapter.status === 'planned')).toHaveLength(15);
+    expect(published.map(r => r.id)).toEqual(allChapters.slice(0, 82).map(r => r.id));
   });
   it('navigates II.19 → III.1 → III.15 → IV.1 → IV.16 → V.1 → V.10 → VI.1 → VI.10 → VII.1', () => {
     expect(neighbours(findChapter('II.19')!).next?.id).toBe('III.1');
@@ -111,6 +111,6 @@ describe('publication scope guard', () => {
     expect(neighbours(findChapter('V.10')!).next?.id).toBe('VI.1');
     expect(neighbours(findChapter('VI.1')!).previous?.id).toBe('V.10');
     expect(neighbours(findChapter('VI.10')!).next?.id).toBe('VII.1');
-    expect(findChapter('VII.1')!.chapter.status).toBe('planned');
+    expect(findChapter('VII.1')!.chapter.status).toBe('available');
   });
 });
