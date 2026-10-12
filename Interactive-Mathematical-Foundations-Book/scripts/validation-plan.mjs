@@ -3,6 +3,7 @@ import { join, posix, relative, resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
 
 export const families = {
+  statistics_data: { lesson: 'statistics', stage: 'DataStage', units: /^statistics-data/, oracles: ['statistics_data'], browser: 'statistics-data' },
   quantity: { lesson: 'quantities', units: /^quantity/, oracles: ['quantity'], browser: 'quantities' },
   coordinates: { lesson: 'coordinates', units: /^coordinates/, oracles: ['coordinates'], browser: 'coordinates' },
   vectors: { lesson: 'vectors', units: /^(vectors?-lesson|vector2|direction)/, oracles: ['vector2', 'direction'], browser: 'vectors' },
@@ -57,13 +58,13 @@ export function chapterCatalog() {
     if (!id) return [];
     const lesson = /lessons\/([^/]+)\//.exec(source)?.[1];
     const calculus = lesson === 'calculus' ? calculusStage(source) : undefined;
-    const stageOwned = ['linear-algebra', 'probability'].includes(lesson);
+    const stageOwned = ['linear-algebra', 'probability', 'statistics'].includes(lesson);
     const family = calculus ? calculus.family : stageOwned
       ? Object.keys(families).find(name => families[name].lesson === lesson && families[name].stage && source.includes('/' + families[name].stage)) ?? (lesson === 'linear-algebra' ? 'linear_algebra' : undefined)
       : Object.keys(families).find(name => families[name].lesson === lesson);
     const slug = posix.basename(path, '.mdx');
     const kind = calculus ? calculus.kind
-      : (/<(?:MatrixStage|LinearStage|EliminationStage|FiniteStage|DistributionStage|MomentsStage|JointStage|SamplingStage) chapter="([^"]+)"/.exec(source)?.[1]
+      : (/<(?:MatrixStage|LinearStage|EliminationStage|FiniteStage|DistributionStage|MomentsStage|JointStage|SamplingStage|DataStage) chapter="([^"]+)"/.exec(source)?.[1]
         ?? (family === 'eigenvalues' ? 'eigenvalues' : family === 'least_squares' ? 'least-squares' : family === 'svd' ? 'svd' : lesson === 'probability' ? slug : undefined));
     return [{ id, slug, path, family, kind }];
   });
@@ -126,6 +127,9 @@ function familyOfFile(path) {
     if (/^(svd|SVD)/.test(base)) return 'svd';
     return /^(matri|Matri)/.test(base) ? 'matrices' : 'linear_algebra';
   }
+  if (/^src\/(lessons|math)\/statistics\//.test(path)) {
+    return /^(data|Data)/.test(base) ? 'statistics_data' : null;
+  }
   if (/^src\/(lessons|math)\/probability\//.test(path)) {
     if (/^(finite|Finite)/.test(base)) return 'probability_finite';
     if (/^(counting|Counting)/.test(base)) return 'probability_counting';
@@ -172,7 +176,7 @@ export function makePlan({ mode = 'focused', files = [], chapters = [], only, pr
       }
       const image = posix.basename(file).replace(/^(desktop|tablet|mobile)-/, '');
       const targets = catalog.filter(chapter => image.startsWith(`part-i-${chapter.slug}.`) ||
-        image.startsWith(`iv-${chapter.slug}.`) || image.startsWith(`iv-${chapter.slug}-`) ||
+        image.startsWith(`v-${chapter.slug}.`) || image.startsWith(`v-${chapter.slug}-`) || image.startsWith(`iv-${chapter.slug}.`) || image.startsWith(`iv-${chapter.slug}-`) ||
         (chapter.kind && calculusFamilies.includes(chapter.family) && (image.startsWith(`iii-calculus-${chapter.kind}.`) || image.startsWith(`iii-calculus-${chapter.kind}-`))) ||
         (chapter.kind && !calculusFamilies.includes(chapter.family) && !chapter.family?.startsWith('probability_') && image.startsWith(`ii-${chapter.family === 'matrices' ? 'matrix-' : ['elimination', 'eigenvalues', 'least_squares', 'svd'].includes(chapter.family) ? 'completion-' : ''}${chapter.kind}`)) ||
         (chapter.slug === 'vectors' && image.startsWith('chapter-')));
@@ -252,7 +256,7 @@ export function makePlan({ mode = 'focused', files = [], chapters = [], only, pr
       for (const group of new Set(interactions.map(chapter => chapter.family))) {
         if (!group) continue;
         const entries = interactions.filter(chapter => chapter.family === group);
-        const grep = idScoped.includes(group) || group.startsWith('probability_') ? '(?:^|\\s)(?:' + entries.map(chapter => escape(chapter.id) + '(?::| )').join('|') + ')|publication' : undefined;
+        const grep = idScoped.includes(group) || (group.startsWith('probability_') || group.startsWith('statistics_')) ? '(?:^|\\s)(?:' + entries.map(chapter => escape(chapter.id) + '(?::| )').join('|') + ')|publication' : undefined;
         playwright('affected chapter interactions: ' + group, [families[group].browser + '.spec.ts'], grep);
       }
       if (mode === 'milestone' || shared) playwright('shared cross-chapter controls', ['vectors.spec.ts', 'quantities.spec.ts'], 'keyboard|Arrow|rejected|reset|announc');
@@ -262,11 +266,11 @@ export function makePlan({ mode = 'focused', files = [], chapters = [], only, pr
     else if (mode === 'milestone') playwright('subpath prefix-dependent navigation, assets, anchors, routes and hydration', ['navigation.spec.ts', 'deployment.spec.ts'], undefined, true);
   }
   if (phases.includes('visual') && (affected.length || broad)) {
-    const visualSpecs = ['visual.spec.ts', 'visual-part-i.spec.ts', 'visual-linear-algebra.spec.ts', 'visual-calculus.spec.ts', 'visual-probability.spec.ts'];
+    const visualSpecs = ['visual.spec.ts', 'visual-part-i.spec.ts', 'visual-linear-algebra.spec.ts', 'visual-calculus.spec.ts', 'visual-probability.spec.ts', 'visual-statistics.spec.ts'];
     if (broad || shared) playwright('authoritative root visuals', visualSpecs);
     else {
       const patterns = affected.map(chapter => calculusFamilies.includes(chapter.family) ? `calculus ${escape(chapter.kind)}:`
-        : chapter.family?.startsWith('probability_') ? `${escape(chapter.id)}:`
+        : (chapter.family?.startsWith('probability_') || chapter.family?.startsWith('statistics_')) ? `${escape(chapter.id)}:`
         : chapter.family === 'matrices' ? `matrix ${escape(chapter.kind)}:`
         : ['elimination', 'eigenvalues', 'least_squares', 'svd'].includes(chapter.family) ? `completion ${escape(chapter.kind)}:`
         : chapter.family === 'linear_algebra' ? `${escape(chapter.kind)}: opening` : chapter.slug === 'vectors' ? 'vectors chapter' : escape(chapter.slug) + ' — opening');

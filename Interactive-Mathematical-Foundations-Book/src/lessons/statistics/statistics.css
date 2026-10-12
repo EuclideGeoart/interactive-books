@@ -1,0 +1,10 @@
+.statistics-stage .plane-wrap { max-width: 34rem; margin: auto; }
+.statistics-stage .stat-values { display: flex; flex-wrap: wrap; gap: .4rem; padding: 0; list-style: none; }
+.statistics-stage .stat-values button { min-height: 44px; min-width: 44px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); padding: .4rem; }
+.statistics-stage .stat-values [aria-pressed=true] { outline: 2px solid var(--c-primary); }
+.statistics-stage .stat-observed { font: .85rem/1.65 var(--font-mono); overflow-wrap: anywhere; }
+.statistics-stage .stat-table { max-height: 20rem; overflow: auto; }
+.statistics-stage .stat-miss { stroke: var(--c-caution); stroke-dasharray: 5 3; }
+.statistics-stage .stat-hit { stroke: var(--c-derived); }
+.statistics-stage .stat-intervals { width: 100%; height: auto; }
+.statistics-stage .stat-intervals text { fill: var(--ink); font: 14px var(--font-body); }

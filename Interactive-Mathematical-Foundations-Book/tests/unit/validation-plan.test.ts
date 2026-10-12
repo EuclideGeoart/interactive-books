@@ -129,7 +129,7 @@ describe('conservative change-scoped validation', () => {
   });
   it('keeps documentation-only work cheap and refuses misspelled selectors', () => {
     expect(makePlan({ files: ['documentation/report.md'] }).commands).toEqual([]);
-    expect(() => makePlan({ chapters: ['V.1'] })).toThrow();
+    expect(() => makePlan({ chapters: ['VII.1'] })).toThrow();
     expect(() => makePlan({ project: 'phone' })).toThrow();
     expect(() => makePlan({ only: 'unitt' })).toThrow();
   });
@@ -236,7 +236,7 @@ describe('Part III calculus registration', () => {
 describe('M7/M8 integration validation ownership', () => {
   it('discovers 15 Calculus and 16 Probability stages with separate families', () => {
     const catalog = chapterCatalog();
-    expect(catalog).toHaveLength(59);
+    expect(catalog).toHaveLength(allChapters.filter(c=>c.chapter.status==='available').length);
     expect(catalog.filter(chapter => chapter.id.startsWith('III.'))).toHaveLength(15);
     expect(catalog.filter(chapter => chapter.id.startsWith('IV.'))).toHaveLength(16);
     for (const chapter of catalog.filter(chapter => /^(III|IV)\./.test(chapter.id))) {
@@ -256,7 +256,7 @@ describe('M7/M8 integration validation ownership', () => {
   });
   it('selects both visual families when the shared curriculum changes', () => {
     const p = makePlan({ files: ['src/curriculum/curriculum.ts'], chapters: ['III.15', 'IV.1'], mode: 'milestone' });
-    expect(p.chapters).toHaveLength(59);
+    expect(p.chapters).toHaveLength(allChapters.filter(c=>c.chapter.status==='available').length);
     expect(p.completeMath).toBe(true);
     expect(p.commands.some(c => c.gate === 'complete root browser')).toBe(false);
     const visuals = p.commands.find(c => c.gate === 'authoritative root visuals');
@@ -266,4 +266,9 @@ describe('M7/M8 integration validation ownership', () => {
     expect(makePlan({ files: ['tests/e2e/__screenshots__/visual-calculus.spec.ts/mobile-iii-calculus-limits.png'] }).chapters).toEqual(['III.1']);
     expect(makePlan({ files: ['tests/e2e/__screenshots__/visual-probability.spec.ts/mobile-iv-bayes-theorem-impossible.png'] }).chapters).toEqual(['IV.6']);
   });
+});
+
+describe('Statistics validation ownership',()=>{
+ it('data models reach exactly their chapter consumers, with owned mathematical and browser checks',()=>{const p=makePlan({files:['src/math/statistics/data.ts']});expect(p.conservativeExpansion).toBe(false);expect(p.chapters.slice().sort()).toEqual(['V.1','V.2','V.3','V.4']);expect(p.oracles).toEqual(['statistics_data']);expect(p.units).toContain('tests/unit/statistics-data.parity.test.ts');const c=p.commands.find(x=>x.command.includes('tests/e2e/statistics-data.spec.ts'))!;expect(c).toBeDefined();expect(new RegExp(c.command.at(-1)!).test('V.4: actual estimates')).toBe(true);expect(p.chapters.some(id=>id.startsWith('IV.')||id.startsWith('VI.'))).toBe(false);});
+ it('Statistics stages, oracle ownership, screenshot names and missing files remain selective or conservative',()=>{for(const file of ['oracle/statistics_data_oracle.py','fixtures/statistics_data.fixtures.json','tests/e2e/statistics-data.spec.ts'])expect(makePlan({files:[file]}).chapters.slice().sort()).toEqual(['V.1','V.2','V.3','V.4']);expect(makePlan({files:['tests/e2e/__screenshots__/visual-statistics.spec.ts/mobile-v-data-spread-single.png']}).chapters).toEqual(['V.2']);expect(makePlan({files:['src/math/statistics/deleted.ts']}).conservativeExpansion).toBe(true);});
 });

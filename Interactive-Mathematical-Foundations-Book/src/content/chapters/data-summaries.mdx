@@ -1,0 +1,77 @@
+---
+kind: chapter
+curriculumId: V.1
+title: "Data summaries: mean, median, mode"
+hero: "How much can one observation move the *center*?"
+lede: Move a real observation and compare the mean, median and frequency counts. Ordered values, plotted observations and summaries share one exact dataset.
+description: Move a real observation and compare the mean, median and frequency counts. Ordered values, plotted observations and summaries share one exact dataset.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import DataStage from '../../lessons/statistics/DataStage';
+import Exercise from '../../lessons/statistics/DataExercise';
+import reference from '../../../code/python/statistics_summaries.py?raw';
+import practical from '../../../code/python/statistics_summaries_numpy.py?raw';
+
+<Stage caption="Move a real observation and compare the mean, median and frequency counts. Ordered values, plotted observations and summaries share one exact dataset."><DataStage chapter="summaries" client:load /></Stage>
+
+## Intuition
+
+The mean is a balance point: every observation contributes to the sum. The median asks where the ordered middle lies. A mode asks which observed value occurs most often. They answer different questions, so disagreement can be useful information. Try moving the selected 7 to 20 before reading on.
+
+## Definition
+
+For a nonempty dataset $x_1,\ldots,x_n$, the mean is $\bar x=n^{-1}\sum_i x_i$. Order the observations as $x_{(1)}\leq\cdots\leq x_{(n)}$. For odd $n$, the median is $x_{((n+1)/2)}$; for even $n$, average $x_{(n/2)}$ and $x_{(n/2+1)}$. Modes maximize observed frequency.
+
+## Mechanics
+
+Select an observation by its numbered button, then drag its number-line handle, use arrow keys, or enter a value. Add or remove observations and watch the ordered list and histogram update. Values may repeat: the frequency view keeps counts while the number line can show coincident points. Reset restores [1,2,2,3,7].
+
+## Derivation
+
+The mean uniquely minimizes $\sum_i(x_i-a)^2$: expanding around $\bar x$ gives $\sum_i(x_i-a)^2=\sum_i(x_i-\bar x)^2+n(a-\bar x)^2$. By contrast, a median minimizes the sum of absolute distances; for an even dataset a whole interval can minimize that objective, while our reported convention averages the middle pair.
+
+## Worked examples
+
+For $[1,2,2,3,7]$, the sum is 15, so the mean is 3. The middle observation is 2 and its frequency is 2: median and single mode are both 2. Replacing 7 by 20 gives mean $28/5$ and the same median 2. For $[1,1,3,3]$, both 1 and 3 are modes.
+
+<Stage caption="Replay the worked mathematical steps using the same canonical state and actual derived quantities."><DataStage chapter="summaries" worked client:load /></Stage>
+
+## Executable reference code
+
+Run both files. The pedagogical program exposes the arithmetic; the NumPy companion uses array operations. Literal assertions check the worked example rather than testing a simulation against a desired statistical outcome.
+
+<CodeFile source={reference} file="code/python/statistics_summaries.py" />
+<CodeFile source={practical} file="code/python/statistics_summaries_numpy.py" />
+
+## Explore
+
+Compare the outlier, singleton, multiple-mode and distinct-value presets. Predict the result before moving a point. Find two different datasets with the same mean but different medians; then explain why one number cannot reconstruct the observations.
+
+## Common mistakes and counterexamples
+
+Do not choose a tied mode arbitrarily. When every distinct value occurs once, every value ties for maximal frequency; this explorer reports no repeated value and no uniquely determined mode. Some textbooks call every tied value a mode. This declared convention avoids implying a preferred value. A singleton has its own value as all three summaries.
+
+## Numerical considerations
+
+Inputs contain at most two decimal places and lie between −20 and 20; datasets have 1–24 observations. Sorting, sums, medians and frequency equality use exact rational arithmetic. Rendering converts these exact values to binary64 coordinates. Rounded inspector companions use ≈, while observed fractions use =. The plot reports data values, not unknown population parameters.
+
+## Engineering and ML connections
+
+Latency, sensor readings and feature distributions often have a long right tail. A mean can reveal total load, while a median describes a typical ordered observation. A mode is useful for discrete categories but depends on bin choices for continuous data; this chapter uses actual repeated values rather than inventing histogram modes.
+
+## Exercises
+
+Predict, calculate and explain before checking the corrective feedback. Each solution states the relevant rule and its conditions.
+
+<Exercise id="statistics-summaries-1" client:load />
+<Exercise id="statistics-summaries-2" client:load />
+<Exercise id="statistics-summaries-3" client:load />
+<Exercise id="statistics-summaries-4" client:load />
+<Exercise id="statistics-summaries-5" client:load />
+
+## Summary and checkpoints
+
+Check that you can order observations, distinguish three definitions, calculate an even median, retain mode ties and explain an outlier. A summary compresses observations; always retain enough of the dataset to inspect what it hides.
+

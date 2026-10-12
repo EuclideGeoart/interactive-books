@@ -1,0 +1,77 @@
+---
+kind: chapter
+curriculumId: V.2
+title: "Spread: variance, standard deviation, robust interpretation"
+hero: "What does the area of a deviation *square* measure?"
+lede: Connect squared distances to two variance conventions, then compare them with the median and unscaled median absolute deviation.
+description: Connect squared distances to two variance conventions, then compare them with the median and unscaled median absolute deviation.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import DataStage from '../../lessons/statistics/DataStage';
+import Exercise from '../../lessons/statistics/DataExercise';
+import reference from '../../../code/python/statistics_spread.py?raw';
+import practical from '../../../code/python/statistics_spread_numpy.py?raw';
+
+<Stage caption="Connect squared distances to two variance conventions, then compare them with the median and unscaled median absolute deviation."><DataStage chapter="spread" client:load /></Stage>
+
+## Intuition
+
+Two datasets can share a center and have very different spreads. The mean-centered deviation measures signed displacement; summing deviations gives zero and loses spread. Squaring keeps all distances nonnegative, and the square pictures make large deviations visibly influential.
+
+## Definition
+
+Population variance of these finite observations is $v_n=n^{-1}\sum_i(x_i-\bar x)^2$. Usual sample variance is $s^2=(n-1)^{-1}\sum_i(x_i-\bar x)^2$ for $n>1$. Their standard deviations are the nonnegative square roots. The unscaled median absolute deviation is $\operatorname{MAD}=\operatorname{median}_i|x_i-m|$, where $m$ is the observed median.
+
+## Mechanics
+
+Move or select observed values. Every square area is proportional to its displayed squared deviation; all squares share a scale within the dataset. The histogram, inspector and immutable replay use the same observations. The one-observation preset deliberately makes the usual sample variance undefined.
+
+## Derivation
+
+Expansion yields $\sum_i(x_i-\bar x)^2=\sum_i x_i^2-n\bar x^2$. For iid data with finite population variance $\sigma^2$, $E[\sum_i(X_i-\bar X)^2]=(n-1)\sigma^2$. Division by $n-1$ makes $s^2$ unbiased for that model; it does not imply that $s$ is an unbiased estimator of $\sigma$.
+
+## Worked examples
+
+For $[1,2,3]$, mean 2 gives deviations $[-1,0,1]$ and squared sum 2. Thus $v_n=2/3$ and $s^2=1$. For $[1,2,2,3,20]$, median 2 gives absolute distances $[1,0,0,1,18]$, whose median is 1. The variance reacts strongly to 20; MAD remains 1.
+
+<Stage caption="Replay the worked mathematical steps using the same canonical state and actual derived quantities."><DataStage chapter="spread" worked client:load /></Stage>
+
+## Executable reference code
+
+Run both files. The pedagogical program exposes the arithmetic; the NumPy companion uses array operations. Literal assertions check the worked example rather than testing a simulation against a desired statistical outcome.
+
+<CodeFile source={reference} file="code/python/statistics_spread.py" />
+<CodeFile source={practical} file="code/python/statistics_spread_numpy.py" />
+
+## Explore
+
+Move the extreme observation while keeping the middle values fixed. Predict which center and spread will change. Add the same constant to every value; then multiply all observations by two. Variances scale by four, standard deviations and MAD by two.
+
+## Common mistakes and counterexamples
+
+A small MAD need not mean every observation is close to the median: a minority of extreme points can coexist with a small central spread. MAD can be zero in a nonconstant discrete dataset when enough values coincide. Robust means resistant to some contamination, not immune to every change.
+
+## Numerical considerations
+
+All supported centered sums and rational variance identities are exact. Square roots and drawing coordinates use binary64; exact root forms are displayed when supported. Raw second-moment subtraction is dangerous for large nearly equal floating values; the teaching model centers exact fractions and bounds inputs. Unscaled MAD is not automatically a Gaussian standard-deviation estimate.
+
+## Engineering and ML connections
+
+Feature scaling and uncertainty estimates need a stated spread convention. Standard deviation measures squared-error scale, while median/MAD can help diagnose contaminated measurements. The factor 1.4826 sometimes applied to MAD assumes a normal calibration; this explorer deliberately uses the unscaled descriptive quantity.
+
+## Exercises
+
+Predict, calculate and explain before checking the corrective feedback. Each solution states the relevant rule and its conditions.
+
+<Exercise id="statistics-spread-1" client:load />
+<Exercise id="statistics-spread-2" client:load />
+<Exercise id="statistics-spread-3" client:load />
+<Exercise id="statistics-spread-4" client:load />
+<Exercise id="statistics-spread-5" client:load />
+
+## Summary and checkpoints
+
+Identify which denominator is appropriate, calculate a squared sum, explain the singleton exception and compare ordinary with robust summaries. Units matter: variance has squared units; standard deviation and MAD return to the observation units.
+
