@@ -8,5 +8,5 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <nav class="chapter-pagination" aria-label="Adjacent chapters">
   {previous ? <a href={`${base}/chapters/${previous.slug}/`}>← {previous.number} / {previous.title}</a> : <span>Start of Part 0</span>}
-  {next ? <a href={`${base}/chapters/${next.slug}/`}>{next.number} / {next.title} →</a> : <span>End of this chapter bundle</span>}
+  {next ? <a href={`${base}/chapters/${next.slug}/`}>{next.number} / {next.title} →</a> : <span>End of the book</span>}
 </nav>

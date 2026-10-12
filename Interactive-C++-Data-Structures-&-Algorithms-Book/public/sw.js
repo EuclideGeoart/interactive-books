@@ -1,9 +1,10 @@
 // Bump this when the worker's caching or routing behavior changes.
 const CACHE_PREFIX = 'interactive-cpp-book-';
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2-part-first';
 const CACHE_NAME = `${CACHE_PREFIX}${CACHE_VERSION}`;
 const SCOPE_URL = new URL(self.registration.scope);
 const HOME_URL = new URL('./', SCOPE_URL).href;
+const CONTENTS_URL = new URL('contents/', SCOPE_URL).href;
 const CHAPTER_ZERO_URL = new URL('chapters/00-cpp-foundations/', SCOPE_URL).href;
 const OFFLINE_URL = new URL('offline.html', SCOPE_URL).href;
 const CORE_URLS = [
@@ -54,7 +55,7 @@ self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE_NAME);
     const assets = new Set(CORE_URLS);
-    for (const pageUrl of [HOME_URL, CHAPTER_ZERO_URL]) {
+    for (const pageUrl of [HOME_URL, CONTENTS_URL, CHAPTER_ZERO_URL]) {
       const response = await fetchInto(cache, pageUrl);
       for (const asset of localBuildAssets(await response.clone().text(), pageUrl)) assets.add(asset);
     }

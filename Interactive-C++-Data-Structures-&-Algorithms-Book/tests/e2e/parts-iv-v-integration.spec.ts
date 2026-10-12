@@ -1,21 +1,26 @@
 import { test, expect } from '@playwright/test';
 import { chapters } from '../../src/content/book';
+import { parts } from '../../src/content/parts';
 
 test('canonical registry preserves Chapters 1–50 and includes current later Parts', async ({ page, request }) => {
   const numbers = chapters.map(c => Number(c.number));
   expect(numbers.filter(n => n >= 1 && n <= 50)).toEqual(Array.from({ length: 50 }, (_, i) => i + 1));
   expect(numbers.filter(n => n >= 60)).toEqual([60, 61, 62, 63, 64, 65, 66]);
   expect(numbers).toEqual([...new Set(numbers)].sort((a, b) => a - b));
-  await page.goto('/chapters/24-graph-fundamentals/');
-  for (const selector of ['.book-sidebar', '[data-mobile-nav]']) {
-    const groups = page.locator(`${selector} .book-navigation .nav-part`).filter({ has: page.locator('a.chapter-link') });
-    const systems = chapters.filter(c => Number(c.number) >= 51 && Number(c.number) <= 59).length;
-    const sizes = [1, 5, 4, 8, 6, 13, 8, 6, ...(systems ? [systems] : []), 7];
-    await expect(groups).toHaveCount(sizes.length);
-    for (let i = 0; i < sizes.length; i++) await expect(groups.nth(i).locator('a.chapter-link')).toHaveCount(sizes[i]!);
-    expect(await page.locator(`${selector} a.chapter-link`).evaluateAll(nodes => nodes.map(n => n.getAttribute('href'))))
-      .toEqual(chapters.map(c => `/chapters/${c.slug}/`));
+  await page.goto('/contents/');
+  await expect(page.locator('.contents-part')).toHaveCount(parts.length);
+  for (const part of parts) {
+    await expect(page.locator(`#${part.id} .contents-chapters a`)).toHaveCount(part.chapters.length);
   }
+  expect(await page.locator('.contents-chapters a').evaluateAll(nodes => nodes.map(n => n.getAttribute('href'))))
+    .toEqual(chapters.map(c => `/chapters/${c.slug}/`));
+  await page.goto('/chapters/24-graph-fundamentals/');
+  await page.locator('[data-nav-toggle]').click();
+  const contextual = page.locator('[data-mobile-nav] .chapter-link');
+  expect(await contextual.evaluateAll(nodes => nodes.map(n => n.getAttribute('href'))))
+    .toEqual(parts.find(part => part.numeral === 'V')!.chapters.map(c => `/chapters/${c.slug}/`));
+  await expect(page.locator('[data-mobile-nav] [aria-current="page"]')).toHaveAttribute('href', '/chapters/24-graph-fundamentals/');
+  await page.keyboard.press('Escape');
   const index = JSON.parse((await page.locator('[data-search-index]').textContent())!) as { number: string }[];
   expect([...new Set(index.map(entry => entry.number))]).toEqual(chapters.map(c => c.number));
   for (const { number } of chapters) expect(index.filter(entry => entry.number === number)).toHaveLength(number === '00' ? 14 : 13);

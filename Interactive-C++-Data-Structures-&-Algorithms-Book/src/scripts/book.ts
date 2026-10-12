@@ -14,49 +14,54 @@ themeToggle.addEventListener('click', () => {
   document.documentElement.dataset.theme = next; storage.write('theme', next); themeLabel();
 });
 themeLabel();
-const nav = document.querySelector<HTMLDialogElement>('[data-mobile-nav]')!;
-const navToggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]')!;
-const isMobile = () => matchMedia('(max-width: 800px)').matches;
-function updateNavState() { navToggle.setAttribute('aria-expanded', String(isMobile() ? nav.open : document.body.dataset.collapsed !== 'true')); }
-navToggle.addEventListener('click', () => {
-  if (isMobile()) nav.showModal();
-  else document.body.dataset.collapsed = String(document.body.dataset.collapsed !== 'true');
-  updateNavState();
-});
-nav.querySelector('[data-nav-close]')!.addEventListener('click', () => nav.close());
-nav.addEventListener('click', event => { if ((event.target as Element).closest('a')) nav.close(); });
-nav.addEventListener('close', updateNavState);
-matchMedia('(max-width: 800px)').addEventListener('change', () => { nav.close(); updateNavState(); });
-updateNavState();
-const chapterNumber = document.body.dataset.chapterNumber ?? '01';
-const progressKey = `chapter-${chapterNumber}`;
-const sections = [...document.querySelectorAll<HTMLElement>('[data-section]')];
-let visited = new Set<string>();
-try { const saved: unknown = JSON.parse(storage.read(progressKey) || '[]'); if (Array.isArray(saved)) visited = new Set(saved.filter(id => typeof id === 'string' && sections.some(section => section.id === id))); } catch { /* Ignore obsolete or malformed local progress. */ }
-const completeButton = document.querySelector<HTMLButtonElement>('[data-complete]')!;
-function updateProgress() {
-  const percent = Math.round(visited.size / sections.length * 100);
-  document.querySelector('[data-progress-label]')!.textContent = `${percent}%`;
-  document.querySelector<HTMLProgressElement>('[data-reading-progress]')!.value = percent;
-  completeButton.setAttribute('aria-pressed', String(percent === 100));
-  completeButton.textContent = percent === 100 ? 'Chapter complete ✓' : 'Mark chapter complete ✓';
-  storage.write(progressKey, JSON.stringify([...visited]));
+const nav = document.querySelector<HTMLDialogElement>('[data-mobile-nav]');
+const navToggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+if (nav && navToggle) {
+  const updateNavState = () => navToggle.setAttribute('aria-expanded', String(nav.open));
+  navToggle.addEventListener('click', () => { nav.showModal(); updateNavState(); });
+  nav.querySelector('[data-nav-close]')!.addEventListener('click', () => nav.close());
+  nav.addEventListener('click', event => { if ((event.target as Element).closest('a')) nav.close(); });
+  nav.addEventListener('close', updateNavState);
 }
-const observer = new IntersectionObserver(entries => {
-  for (const entry of entries) if (entry.isIntersecting) {
-    const section = (entry.target as HTMLElement).closest<HTMLElement>('[data-section]')!;
-    visited.add(section.id);
-    document.querySelectorAll('.chapter-outline a').forEach(link => {
-      if (link.getAttribute('href') === `#${section.id}`) link.setAttribute('aria-current', 'location');
-      else link.removeAttribute('aria-current');
-    });
+const outline = document.querySelector<HTMLDetailsElement>('[data-reader-outline]');
+if (outline) {
+  const wide = matchMedia('(min-width: 801px)');
+  const updateOutline = () => { outline.open = wide.matches; };
+  wide.addEventListener('change', updateOutline);
+  updateOutline();
+}
+const chapterNumber = document.body.dataset.chapterNumber;
+const sections = [...document.querySelectorAll<HTMLElement>('[data-section]')];
+// Home and contents use the shared shell without chapter progress or completion controls.
+if (chapterNumber && sections.length) {
+  const progressKey = `chapter-${chapterNumber}`;
+  let visited = new Set<string>();
+  try { const saved: unknown = JSON.parse(storage.read(progressKey) || '[]'); if (Array.isArray(saved)) visited = new Set(saved.filter(id => typeof id === 'string' && sections.some(section => section.id === id))); } catch { /* Ignore obsolete or malformed local progress. */ }
+  const completeButton = document.querySelector<HTMLButtonElement>('[data-complete]')!;
+  function updateProgress() {
+    const percent = Math.round(visited.size / sections.length * 100);
+    document.querySelector('[data-progress-label]')!.textContent = `${percent}%`;
+    document.querySelector<HTMLProgressElement>('[data-reading-progress]')!.value = percent;
+    completeButton.setAttribute('aria-pressed', String(percent === 100));
+    completeButton.textContent = percent === 100 ? 'Chapter complete ✓' : 'Mark chapter complete ✓';
+    storage.write(progressKey, JSON.stringify([...visited]));
   }
+  const observer = new IntersectionObserver(entries => {
+    for (const entry of entries) if (entry.isIntersecting) {
+      const section = (entry.target as HTMLElement).closest<HTMLElement>('[data-section]')!;
+      visited.add(section.id);
+      document.querySelectorAll('.chapter-outline a, .mobile-outline a').forEach(link => {
+        if (link.getAttribute('href') === `#${section.id}`) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      });
+    }
+    updateProgress();
+  }, { rootMargin: '-80px 0px -25% 0px', threshold: 0 });
+  sections.forEach(section => observer.observe(section.querySelector('.section-heading')!));
+  completeButton.addEventListener('click', () => { visited = new Set(sections.map(section => section.id)); updateProgress(); });
+  document.querySelector('[data-reset-progress]')!.addEventListener('click', () => { visited.clear(); updateProgress(); });
   updateProgress();
-}, { rootMargin: '-80px 0px -25% 0px', threshold: 0 });
-sections.forEach(section => observer.observe(section.querySelector('.section-heading')!));
-completeButton.addEventListener('click', () => { visited = new Set(sections.map(section => section.id)); updateProgress(); });
-document.querySelector('[data-reset-progress]')!.addEventListener('click', () => { visited.clear(); updateProgress(); });
-updateProgress();
+}
 const search = document.querySelector<HTMLDialogElement>('[data-search-dialog]')!;
 const input = search.querySelector<HTMLInputElement>('input')!;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -82,3 +87,14 @@ input.addEventListener('input', searchResults);
 document.addEventListener('keydown', event => {
   if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); search.open ? search.close() : openSearch(); }
 });
+
+// Keep Tab inside the modal instead of letting browser chrome take focus at its edges.
+for (const dialog of document.querySelectorAll<HTMLDialogElement>('dialog')) {
+  dialog.addEventListener('keydown', event => {
+    if (event.key !== 'Tab') return;
+    const controls = [...dialog.querySelectorAll<HTMLElement>('a[href], button, input')].filter(control => control.getClientRects().length);
+    const first = controls[0], last = controls.at(-1);
+    if (event.shiftKey && document.activeElement === first && last) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last && first) { event.preventDefault(); first.focus(); }
+  });
+}

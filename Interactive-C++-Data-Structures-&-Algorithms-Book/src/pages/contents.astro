@@ -1,0 +1,14 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import '../styles/landing.css';
+import { chapters } from '../content/book';
+import { parts } from '../content/parts';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<SiteLayout title="Contents" description="The complete map of Book I: ten Parts and all 67 chapters of interactive C++ data structures and algorithms.">
+  <main id="main-content" class="atlas-page contents-page" tabindex="-1">
+    <header class="contents-header"><a class="atlas-back" href={`${base}/`}>← Book homepage</a><p class="atlas-kicker">THE COMPLETE BOOK MAP</p><h1>Find your next <em>chapter.</em></h1><p class="atlas-lede">{parts.length} Parts. {chapters.length} chapters. Every chapter is available.<br/>Chapter 00 builds the C++ foundations; the remaining Parts explore structures and algorithms.</p></header>
+    <nav class="contents-jumps" aria-label="Jump to a Part"><ul>{parts.map(part => <li><a href={`#${part.id}`}><span>{part.numeral}</span>{part.title}</a></li>)}</ul></nav>
+    <div class="contents-map">{parts.map(part => <section class="contents-part" id={part.id} aria-labelledby={`${part.id}-title`}><header><p class="part-numeral">PART {part.numeral} · {part.chapters.length} {part.chapters.length === 1 ? 'CHAPTER' : 'CHAPTERS'}</p><h2 id={`${part.id}-title`}>{part.title}</h2><p>{part.description}</p></header><ol class="contents-chapters">{part.chapters.map(chapter => <li><a href={`${base}/chapters/${chapter.slug}/`}><span class="contents-number">{chapter.number}</span><span>{chapter.title}</span><span class="contents-arrow" aria-hidden="true">→</span></a></li>)}</ol></section>)}</div>
+  </main>
+</SiteLayout>

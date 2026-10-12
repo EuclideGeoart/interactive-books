@@ -1,5 +1,29 @@
 ---
-import BookLayout from '../layouts/BookLayout.astro';
-import Chapter from '../content/chapters/00-cpp-foundations.mdx';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import PartThumbnail from '../components/book/PartThumbnail.astro';
+import '../styles/landing.css';
+import { chapters } from '../content/book';
+import { parts } from '../content/parts';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
-<BookLayout number="00" title="C++ Foundations for DSA"><Chapter /></BookLayout>
+<SiteLayout title="Interactive C++ Data Structures & Algorithms" description="Explore ten Parts and 67 interactive C++ chapters through visual models, execution traces, memory diagrams, invariants and exercises.">
+  <main id="main-content" class="atlas-page" tabindex="-1">
+    <section class="atlas-hero" aria-labelledby="home-title">
+      <div>
+        <p class="atlas-kicker">BOOK I · THE INTERACTIVE C++ BOOK</p>
+        <h1 id="home-title">Data structures &amp; algorithms.<br/><em>C++ you can see.</em></h1>
+        <p class="atlas-lede">Understand the structure. See the execution. Explore interactive visual models, follow real C++ source one step at a time, and watch what happens in memory.</p>
+        <div class="atlas-actions"><a class="button button-primary" href={`${base}/chapters/${chapters[0]!.slug}/`}>Start with C++ Foundations →</a><a class="button" href={`${base}/contents/`}>Explore all chapters</a></div>
+      </div>
+      <div class="learning-lens">
+        <p class="atlas-kicker">INSIDE EACH CHAPTER</p>
+        <ol><li><span>01</span><div><strong>See the model</strong><p>Inspect objects, values and pointers.</p></div></li><li><span>02</span><div><strong>Follow the execution</strong><p>Step through C++ and its memory changes.</p></div></li><li><span>03</span><div><strong>Reason about the result</strong><p>Check invariants, explore cost, try exercises.</p></div></li></ol>
+        <p class="lens-signature">[ objects · pointers · lifetime ]</p>
+      </div>
+    </section>
+    <section aria-labelledby="parts-title" class="atlas-parts">
+      <div class="atlas-section-heading"><div><p class="atlas-kicker">CHOOSE YOUR SUBJECT</p><h2 id="parts-title">Ten Parts. Your starting point.</h2></div><p>All {chapters.length} chapters are available.<br/>Begin with the foundations or jump to a topic.</p></div>
+      <ul class="part-grid">{parts.map(part => <li><a class:list={['part-card', { 'foundations-card': part.numeral === '0' }]} href={`${base}/contents/#${part.id}`}><PartThumbnail part={part} /><div class="part-card-body"><div class="part-card-top"><span class="part-numeral">Part {part.numeral}</span><span class="part-range">{part.chapters[0]!.number}{part.chapters.length > 1 && `–${part.chapters.at(-1)!.number}`}</span></div><h3>{part.title}</h3><p>{part.description}</p><div class="part-card-foot"><span>{part.chapters.length} {part.chapters.length === 1 ? 'chapter' : 'chapters'}{part.numeral === '0' && ' · Start here'}</span><span aria-hidden="true">↗</span></div></div></a></li>)}</ul>
+    </section>
+  </main>
+</SiteLayout>

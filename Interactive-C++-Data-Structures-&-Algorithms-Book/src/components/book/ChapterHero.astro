@@ -1,6 +1,9 @@
 ---
 interface Props { number: string; title: string; overline: string; description: string; chain: string; facts: [string, string][]; part?: string }
-const { number, title, overline, description, chain, facts, part = Number(Astro.props.number) >= 18 && Number(Astro.props.number) <= 23 ? 'PART IV / HASHING' : Number(Astro.props.number) >= 10 && Number(Astro.props.number) <= 17 ? 'PART III / TREES' : 'PART I / LINEAR STRUCTURES & MEMORY' } = Astro.props;
+import { partForChapter } from '../../content/parts';
+const { number, title, overline, description, chain, facts, part: label } = Astro.props;
+const bookPart = partForChapter(number)!;
+const part = label ?? `PART ${bookPart.numeral} / ${bookPart.title.toUpperCase()}`;
 ---
 <header class="chapter-hero bundle-hero" id="top">
   <div class="hero-top"><span class="eyebrow">{part}</span><span class="hero-edition">C++20 · CHAPTER {number}</span></div>

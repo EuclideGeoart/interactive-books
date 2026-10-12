@@ -1,0 +1,69 @@
+/* The navigation release owns the shell; lesson and diagram styles stay in book.css. */
+.part-first .book-body { margin-left: 0; }
+.part-first .shell-topbar { padding: 0 28px; gap: 24px; }
+.shell-brand { display: flex; align-items: center; gap: 12px; color: var(--ink); text-decoration: none; flex-shrink: 0; }
+.shell-mark { font: 24px var(--mono); letter-spacing: -4px; color: var(--pointer); }
+.shell-brand > span:last-child { font-size: 24px; font-weight: 700; line-height: 1; }
+.shell-brand small { display: block; font: 600 8px/1.5 var(--mono); letter-spacing: .9px; margin-top: 5px; }
+.part-ruler { margin: 0 auto; }
+.part-ruler ol { display: flex; list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--border); }
+.part-ruler a { display: grid; place-items: center; min-width: 40px; min-height: 44px; font: 12px var(--mono); text-decoration: none; color: var(--muted); border-bottom: 2px solid transparent; }
+.part-ruler a:hover, .part-ruler a[aria-current] { color: var(--pointer); border-bottom-color: var(--pointer); background: var(--pointer-fill); }
+.part-first .topbar-actions { gap: 16px; }
+.shell-contents { display: inline-flex; align-items: center; min-height: 44px; font-size: 12px; font-weight: 600; text-decoration: none; }
+.part-first .search-button { min-height: 44px; }
+.part-first .shell-topbar .icon-button, .part-first .dialog-heading .icon-button { width: 44px; height: 44px; flex-shrink: 0; }
+.part-first .search-button kbd { margin-left: 4px; }
+.chapter-toolbar { max-width: calc(1320px + var(--sidebar)); margin: auto; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-bottom: 1px solid var(--border); }
+.reader-breadcrumb { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; color: var(--muted); font-size: 12px; }
+.reader-breadcrumb a { text-decoration: none; }
+.reader-breadcrumb [aria-current] { color: var(--ink); }
+.part-menu-button { display: flex; align-items: center; justify-content: space-between; gap: 14px; min-height: 44px; padding: 8px 14px; flex-shrink: 0; color: var(--pointer); font-size: 12px; }
+.chapter-reader { display: grid; grid-template-columns: minmax(0, 1fr) var(--sidebar); max-width: calc(1320px + var(--sidebar)); margin: auto; }
+.part-first .chapter-content { min-width: 0; width: 100%; grid-column: 1; grid-row: 1; }
+.reading-rail { grid-column: 2; grid-row: 1; position: sticky; top: 86px; align-self: start; padding: 39px 22px 24px 0; max-height: calc(100dvh - 86px); overflow-y: auto; scrollbar-width: thin; }
+.reader-outline > summary { min-height: 44px; padding: 10px 12px; font: 600 11px/1.5 var(--mono); color: var(--muted); }
+.part-first .chapter-outline { border-top: 0; padding: 0; }
+.part-first .chapter-outline a { min-height: 32px; font-size: 12px; line-height: 1.5; }
+.part-first .reading-progress { margin: 20px 0 0; padding: 18px 12px 0; }
+.part-first .reading-progress button { display: block; min-height: 28px; font-size: 11px; background: transparent; }
+.part-first .book-footer { max-width: calc(1320px + var(--sidebar)); margin: auto; }
+.part-first .mobile-navigation { width: 460px; max-width: calc(100vw - 30px); height: auto; max-height: 85dvh; margin: auto; }
+.part-first .dialog-heading h2 { font-size: 21px; letter-spacing: -.5px; }
+.part-chapters { list-style: none; margin: 0; padding: 0; }
+.part-first .chapter-link { min-height: 44px; font-size: 13px; }
+.all-parts-link { display: inline-flex; align-items: center; min-height: 44px; margin: 16px 11px 0; font-size: 13px; }
+.part-first .mobile-outline a { min-height: 44px; }
+@media (max-width: 1250px) {
+  .part-first .shell-topbar { gap: 14px; padding: 0 22px; }
+  .part-ruler a { min-width: 36px; }
+  .reading-rail { padding-top: 30px; padding-right: 18px; }
+}
+@media (max-width: 900px) { .part-ruler { display: none; } .part-first .topbar-actions { margin-left: auto; } }
+@media (max-width: 800px) {
+  .chapter-toolbar { padding: 12px 24px; flex-wrap: wrap; gap: 10px; }
+  .chapter-reader { display: block; }
+  .reading-rail { position: static; max-height: none; padding: 14px 24px 0; display: grid; grid-template-columns: minmax(0, 1fr) 155px; align-items: start; gap: 12px; overflow: visible; }
+  .reader-outline { min-width: 0; }
+  .reader-outline[open] { grid-column: 1 / -1; }
+  .reader-outline > summary { padding-left: 0; }
+  .part-first .reading-progress { margin: 0; padding: 6px 0 0; border-top: 0; grid-column: 2; }
+  .part-first .reading-progress > div { font-size: 8px; line-height: 14px; }
+  .part-first .reading-progress progress { margin: 6px 0 0; }
+  .part-first .reading-progress button { font-size: 10px; }
+  .part-first .chapter-outline a { min-height: 44px; }
+}
+@media (max-width: 560px) {
+  .part-first .shell-topbar { padding: 0 17px; gap: 12px; }
+  .shell-brand { gap: 8px; }
+  .shell-brand small { display: none; }
+  .shell-brand > span:last-child { font-size: 22px; }
+  .part-first .topbar-actions { gap: 14px; }
+  .part-first .search-button { min-width: 32px; justify-content: center; }
+  .chapter-toolbar { padding: 12px 17px; }
+  .reader-breadcrumb { gap: 7px; font-size: 11px; line-height: 20px; }
+  .reader-breadcrumb > a:first-child, .reader-breadcrumb > span:nth-child(2) { display: none; }
+  .part-menu-button { width: 100%; }
+  .reading-rail { padding: 12px 17px 0; }
+  .part-first .mobile-navigation { height: calc(100dvh - 30px); max-height: calc(100dvh - 30px); margin: 15px auto; padding: 18px; }
+}

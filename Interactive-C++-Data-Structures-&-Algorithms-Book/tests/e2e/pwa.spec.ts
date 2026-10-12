@@ -64,6 +64,7 @@ test('production PWA scopes to its base and serves visited pages offline', async
     return (await cache.keys()).map(request => new URL(request.url).pathname);
   });
   expect(cachedShell).toContain(manifest.base);
+  expect(cachedShell).toContain(`${manifest.base}contents/`);
   expect(cachedShell).toContain(`${manifest.base}chapters/00-cpp-foundations/`);
   expect(cachedShell.some(path => path.endsWith('.css'))).toBe(true);
 
@@ -86,7 +87,10 @@ test('production PWA scopes to its base and serves visited pages offline', async
 
   await context.setOffline(true);
   await page.goto(home);
-  await expect(page.locator('body')).toHaveAttribute('data-chapter-number', '00');
+  await expect(page.locator('.part-card')).toHaveCount(10);
+  await expect(page.locator('body')).not.toHaveAttribute('data-chapter-number', '00');
+  await page.goto(new URL('contents/', home).href);
+  await expect(page.locator('.contents-chapters a')).toHaveCount(67);
   await page.goto(chapterZero);
   await expect(page.locator('body')).toHaveAttribute('data-chapter-number', '00');
   await page.getByRole('navigation', { name: 'Adjacent chapters' }).getByRole('link').click();
@@ -102,4 +106,30 @@ test('production PWA scopes to its base and serves visited pages offline', async
   await page.goto(new URL('chapters/02-stack/', home).href);
   await expect(page.getByRole('heading', { name: 'You’re offline.' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Open the saved book home' })).toHaveAttribute('href', manifest.base);
+});
+
+
+test('navigation release replaces the old homepage cache', async ({ page, context }) => {
+  await page.goto('./');
+  await page.evaluate(async () => {
+    const registration = await navigator.serviceWorker.ready;
+    const old = await caches.open('interactive-cpp-book-v1');
+    await old.put(registration.scope, new Response('<h1>Legacy Chapter 00 homepage</h1>'));
+    await registration.unregister();
+    await caches.delete('interactive-cpp-book-v2-part-first');
+  });
+  await page.close();
+  const fresh = await context.newPage();
+  await fresh.goto('./');
+  await fresh.evaluate(async () => {
+    await navigator.serviceWorker.ready;
+    if (!navigator.serviceWorker.controller) await new Promise<void>(resolve => {
+      navigator.serviceWorker.addEventListener('controllerchange', () => resolve(), { once: true });
+    });
+  });
+  expect(await fresh.evaluate(() => caches.keys())).not.toContain('interactive-cpp-book-v1');
+  await context.setOffline(true);
+  await fresh.reload();
+  await expect(fresh.locator('.part-card')).toHaveCount(10);
+  await expect(fresh.getByText('Legacy Chapter 00 homepage')).toHaveCount(0);
 });

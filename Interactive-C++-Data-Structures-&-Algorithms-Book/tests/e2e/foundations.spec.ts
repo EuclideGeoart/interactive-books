@@ -4,7 +4,7 @@ import AxeBuilder from '@axe-core/playwright';
 test('Chapter 0 joins the book and its mechanics work by keyboard and touch', async ({ page, request }, info) => {
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
-  await page.goto('/');
+  await page.goto('/chapters/00-cpp-foundations/');
   await expect(page.locator('body')).toHaveAttribute('data-chapter-number', '00');
   await expect(page.getByRole('heading', { level: 1 })).toContainText('C++ foundations for DSA');
   await expect(page.locator('main [data-section]')).toHaveCount(14);

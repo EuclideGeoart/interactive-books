@@ -21,15 +21,18 @@ test('book navigation, search, persistent theme and progress', async ({ page }, 
   await page.getByRole('button', { name: 'Mark chapter complete' }).click();
   await page.reload();
   await expect(page.getByRole('button', { name: 'Chapter complete' })).toHaveAttribute('aria-pressed', 'true');
-  await page.getByRole('button', { name: 'Toggle book navigation' }).click();
+  const opener = page.getByRole('button', { name: 'Chapters in this Part', exact: true });
+  await opener.click();
+  const navigation = page.locator('[data-mobile-nav]');
+  await expect(navigation).toBeVisible();
+  await expect(navigation.locator('[aria-current="page"]')).toHaveAttribute('href', chapter);
   if (info.project.name === 'mobile') {
-    await expect(page.locator('[data-mobile-nav]')).toBeVisible();
-    await page.locator('[data-mobile-nav]').getByRole('link', { name: 'Interactive operations', exact: true }).click();
-    await expect(page.locator('[data-mobile-nav]')).not.toBeVisible();
+    await navigation.getByRole('link', { name: 'Interactive operations', exact: true }).click();
+    await expect(navigation).not.toBeVisible();
   } else {
-    await expect(page.locator('.book-sidebar')).not.toBeVisible();
-    await page.getByRole('button', { name: 'Toggle book navigation' }).click();
-    await expect(page.locator('.book-sidebar')).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(navigation).not.toBeVisible();
+    await expect(opener).toBeFocused();
   }
 });
 
@@ -219,10 +222,13 @@ test('canonical header and example are downloadable', async ({ page, request }) 
   await expect(page.getByRole('link', { name: 'Download .hpp' })).toHaveAttribute('download', '');
 });
 
-test('visual regression: chapter entry and operation workspace', async ({ page }, info) => {
+test('visual regression: chapter entry', async ({ page }) => {
   await page.evaluate(() => scrollTo(0, 0));
   await page.waitForTimeout(150);
   await expect(page).toHaveScreenshot('chapter-overview.png', { animations: 'disabled', maxDiffPixelRatio: 0.005 });
+});
+
+test('visual regression: operation workspace', async ({ page }, info) => {
   await page.addStyleTag({ content: '.topbar,.skip-link{visibility:hidden} .playback-controls{position:static}' });
   await expect(page.locator('[data-lab]')).toHaveScreenshot('operation-lab.png', { animations: 'disabled', maxDiffPixelRatio: 0.005 });
   if (info.project.name === 'desktop') {

@@ -1,5 +1,9 @@
+---
+import { partForChapter } from '../../content/parts';
+const part = partForChapter('01')!;
+---
 <header class="chapter-hero" id="top">
-  <div class="hero-top"><span class="eyebrow">PART I / LINEAR STRUCTURES & MEMORY</span><span class="hero-edition">C++20 · CHAPTER 01</span></div>
+  <div class="hero-top"><span class="eyebrow">{`PART ${part.numeral} / ${part.title.toUpperCase()}`}</span><span class="hero-edition">C++20 · CHAPTER 01</span></div>
   <div class="hero-title"><div><p class="hero-overline">One pointer. A whole chain of possibilities.</p><h1>Singly<br/>linked list<span class="title-dot">.</span></h1></div><span class="hero-number" aria-hidden="true">01</span></div>
   <p class="hero-description">A sequence of nodes, each holding a value and a pointer to the next. Follow the links. See what happens in memory.</p>
   <div class="hero-chain" aria-label="head points to 10, then 20, then 30, then nullptr"><span class="hero-pointer">head</span><span class="hero-arrow">→</span><span class="mini-node">10<span>●</span></span><span class="hero-arrow">→</span><span class="mini-node">20<span>●</span></span><span class="hero-arrow">→</span><span class="mini-node">30<span>●</span></span><span class="hero-arrow">→</span><span class="hero-null">nullptr</span></div>

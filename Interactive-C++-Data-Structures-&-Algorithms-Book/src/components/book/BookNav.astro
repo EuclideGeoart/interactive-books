@@ -1,46 +1,14 @@
 ---
-import { chapters } from '../../content/book';
+import { partForChapter } from '../../content/parts';
+interface Props { current: string }
+const { current } = Astro.props;
+const part = partForChapter(current)!;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-interface Props { current?: string }
-const { current = '01' } = Astro.props;
 ---
-<nav class="book-navigation" aria-label="Book chapters">
-  <p class="nav-label">THE BOOK</p>
-  <details class="nav-part" open={current === '00'}><summary><span>0</span> C++ foundations</summary>{chapters.filter(chapter => chapter.number === '00').map(chapter => <a class:list={['chapter-link', { 'current-chapter': chapter.number === current }]} href={`${base}/chapters/${chapter.slug}/`} aria-current={chapter.number === current ? 'page' : undefined}><span>{chapter.number}</span>{chapter.title}{chapter.number === current && <span class="current-mark">●</span>}</a>)}</details>
-  <details class="nav-part" open>
-    <summary><span>I</span> Linear structures</summary>
-    {chapters.filter(chapter => Number(chapter.number) >= 1 && Number(chapter.number) <= 5).map(chapter => <a class:list={['chapter-link', { 'current-chapter': chapter.number === current }]} href={`${base}/chapters/${chapter.slug}/`} aria-current={chapter.number === current ? 'page' : undefined}><span>{chapter.number}</span>{chapter.title}{chapter.number === current && <span class="current-mark">●</span>}</a>)}
-  </details>
-  <details class="nav-part" open={Number(current) >= 6 && Number(current) <= 9}>
-    <summary><span>II</span>Queues &amp; ordered access</summary>
-    {chapters.filter(chapter => Number(chapter.number) >= 6 && Number(chapter.number) <= 9).map(chapter => <a class:list={['chapter-link', { 'current-chapter': chapter.number === current }]} href={`${base}/chapters/${chapter.slug}/`} aria-current={chapter.number === current ? 'page' : undefined}><span>{chapter.number}</span>{chapter.title}{chapter.number === current && <span class="current-mark">●</span>}</a>)}
-  </details>
-  <details class="nav-part" open={Number(current) >= 10 && Number(current) <= 17}>
-    <summary><span>III</span>Trees</summary>
-    {chapters.filter(chapter => Number(chapter.number) >= 10 && Number(chapter.number) <= 17).map(chapter => <a class:list={['chapter-link', { 'current-chapter': chapter.number === current }]} href={`${base}/chapters/${chapter.slug}/`} aria-current={chapter.number === current ? 'page' : undefined}><span>{chapter.number}</span>{chapter.title}{chapter.number === current && <span class="current-mark">●</span>}</a>)}
-  </details>
-  <details class="nav-part" open={Number(current) >= 18 && Number(current) <= 23}>
-    <summary><span>IV</span>Hashing</summary>
-    {chapters.filter(chapter => Number(chapter.number) >= 18 && Number(chapter.number) <= 23).map(chapter => <a class:list={['chapter-link', { 'current-chapter': chapter.number === current }]} href={`${base}/chapters/${chapter.slug}/`} aria-current={chapter.number === current ? 'page' : undefined}><span>{chapter.number}</span>{chapter.title}{chapter.number === current && <span class="current-mark">●</span>}</a>)}
-  </details>
-  <details class="nav-part" open={Number(current) >= 24 && Number(current) <= 36}>
-    <summary><span>V</span>Graphs</summary>
-    {chapters.filter(chapter => Number(chapter.number) >= 24 && Number(chapter.number) <= 36).map(chapter => <a class:list={['chapter-link', { 'current-chapter': chapter.number === current }]} href={`${base}/chapters/${chapter.slug}/`} aria-current={chapter.number === current ? 'page' : undefined}><span>{chapter.number}</span>{chapter.title}{chapter.number === current && <span class="current-mark">●</span>}</a>)}
-  </details>
-  <details class="nav-part" open={Number(current) >= 37 && Number(current) <= 44}>
-    <summary><span>VI</span>Searching &amp; sorting</summary>
-    {chapters.filter(chapter => Number(chapter.number) >= 37 && Number(chapter.number) <= 44).map(chapter => <a class:list={['chapter-link', { 'current-chapter': chapter.number === current }]} href={`${base}/chapters/${chapter.slug}/`} aria-current={chapter.number === current ? 'page' : undefined}><span>{chapter.number}</span>{chapter.title}{chapter.number === current && <span class="current-mark">●</span>}</a>)}
-  </details>
-  <details class="nav-part" open={Number(current) >= 45 && Number(current) <= 50}>
-    <summary><span>VII</span>Algorithmic techniques</summary>
-    {chapters.filter(chapter => Number(chapter.number) >= 45 && Number(chapter.number) <= 50).map(chapter => <a class:list={['chapter-link', { 'current-chapter': chapter.number === current }]} href={`${base}/chapters/${chapter.slug}/`} aria-current={chapter.number === current ? 'page' : undefined}><span>{chapter.number}</span>{chapter.title}{chapter.number === current && <span class="current-mark">●</span>}</a>)}
-  </details>
-  <details class="nav-part" open={Number(current) >= 51 && Number(current) <= 59}>
-    <summary><span>VIII</span>Engine &amp; systems</summary>
-    {chapters.filter(chapter => Number(chapter.number) >= 51 && Number(chapter.number) <= 59).map(chapter => <a class:list={['chapter-link', { 'current-chapter': chapter.number === current }]} href={`${base}/chapters/${chapter.slug}/`} aria-current={chapter.number === current ? 'page' : undefined}><span>{chapter.number}</span>{chapter.title}{chapter.number === current && <span class="current-mark">●</span>}</a>)}
-  </details>
-  <details class="nav-part" open={Number(current) >= 60 && Number(current) <= 66}>
-    <summary><span>IX</span>Spatial structures</summary>
-    {chapters.filter(chapter => Number(chapter.number) >= 60 && Number(chapter.number) <= 66).map(chapter => <a class:list={['chapter-link', { 'current-chapter': chapter.number === current }]} href={`${base}/chapters/${chapter.slug}/`} aria-current={chapter.number === current ? 'page' : undefined}><span>{chapter.number}</span>{chapter.title}{chapter.number === current && <span class="current-mark">●</span>}</a>)}
-  </details>
+<nav class="book-navigation" aria-label="Chapters in this Part">
+  <p class="nav-label">PART {part.numeral} / {part.title}</p>
+  <ol class="part-chapters">
+    {part.chapters.map(chapter => <li><a class:list={['chapter-link', { 'current-chapter': chapter.number === current }]} href={`${base}/chapters/${chapter.slug}/`} aria-current={chapter.number === current ? 'page' : undefined}><span>{chapter.number}</span>{chapter.title}{chapter.number === current && <span class="current-mark" aria-hidden="true">●</span>}</a></li>)}
+  </ol>
+  <a class="all-parts-link" href={`${base}/contents/`}>Explore all Parts &amp; chapters →</a>
 </nav>

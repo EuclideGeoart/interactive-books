@@ -8,7 +8,7 @@ const partII = [
   ['09', '09-binary-heap', 'BinaryHeap.hpp', 'sift'],
 ] as const;
 
-test('Part II navigation, search and progress connect all four chapters', async ({ page }, info) => {
+test('Part II navigation, search and progress connect all four chapters', async ({ page }) => {
   for (const [number, slug, , term] of partII) {
     await page.goto('/chapters/01-singly-linked-list/');
     await page.getByRole('button', { name: 'Search the book', exact: true }).click();
@@ -21,13 +21,13 @@ test('Part II navigation, search and progress connect all four chapters', async 
     await expect(page.locator('.hero-top')).toContainText('PART II / QUEUES & ORDERED ACCESS');
     await expect(page.locator('[data-section]')).toHaveCount(13);
     await expect(page.getByRole('button', { name: 'Mark chapter complete' })).toHaveAttribute('aria-pressed', 'false');
-    const scope = info.project.name === 'mobile' ? page.locator('[data-mobile-nav]') : page.locator('.book-sidebar');
-    if (info.project.name === 'mobile') await page.getByRole('button', { name: 'Toggle book navigation' }).click();
+    const scope = page.locator('[data-mobile-nav]');
+    await page.getByRole('button', { name: 'Chapters in this Part', exact: true }).click();
     const current = scope.locator('[aria-current="page"]');
     await expect(current).toHaveAttribute('href', `/chapters/${slug}/`);
     await expect(current).toBeVisible();
-    await expect(current.locator('..')).toHaveAttribute('open', '');
-    if (info.project.name === 'mobile') await page.keyboard.press('Escape');
+    await expect(scope.getByRole('navigation', { name: 'Chapters in this Part' })).toContainText('PART II');
+    await page.keyboard.press('Escape');
     await page.getByRole('button', { name: 'Mark chapter complete' }).click();
     expect(await page.evaluate(n => JSON.parse(localStorage.getItem(`cpp-book:chapter-${n}`) || '[]').length, number)).toBe(13);
   }

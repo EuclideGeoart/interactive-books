@@ -1,0 +1,67 @@
+---
+import type { BookPart } from '../../content/parts';
+import { arrowDefinitions, referenceArrow } from '../visualizers/primitives';
+interface Props { part: BookPart }
+const { part } = Astro.props;
+const marker = `thumbnail-${part.id}`;
+const tree = [[160, 24], [104, 64], [216, 64], [72, 106], [136, 106], [188, 106], [252, 106]];
+const graph = [[54, 66], [114, 30], [174, 70], [248, 34], [268, 104], [110, 108]];
+---
+<!-- Wayfinding motifs only; these never create or inspect a lesson state. -->
+<svg class="part-thumbnail" viewBox="0 0 320 132" aria-hidden="true" focusable="false" data-part-thumbnail={part.id}>
+  <g set:html={arrowDefinitions(marker)} />
+  {part.numeral === '0' && <g>
+    <rect class="thumb-blue" x="92" y="19" width="136" height="94" rx="6" />
+    <text class="thumb-code" x="160" y="65" text-anchor="middle">{'{ }'}</text>
+    <path class="thumb-link" d="M112 83H137M145 83H176M184 83H208" />
+    <text class="thumb-caption" x="160" y="103" text-anchor="middle">C++20</text>
+  </g>}
+  {part.numeral === 'I' && <g>
+    {[34, 134, 234].map((x, i) => <g><rect class="thumb-green" x={x} y="45" width="52" height="42" rx="5"/><text class="thumb-value" x={x + 26} y="71" text-anchor="middle">{['A', 'B', 'C'][i]}</text></g>)}
+    <g set:html={referenceArrow('M86 66H134', marker) + referenceArrow('M186 66H234', marker)} />
+  </g>}
+  {part.numeral === 'II' && <g>
+    <circle class="thumb-grid" cx="160" cy="66" r="43" />
+    {Array.from({ length: 8 }, (_, i) => <circle class={i < 3 ? 'thumb-green' : 'thumb-blue'} cx={160 + 43 * Math.cos(i * Math.PI / 4 - Math.PI / 2)} cy={66 + 43 * Math.sin(i * Math.PI / 4 - Math.PI / 2)} r="10" />)}
+    <text class="thumb-caption" x="160" y="63" text-anchor="middle">head</text><text class="thumb-caption" x="160" y="78" text-anchor="middle">tail</text>
+    <path class="thumb-link" d="M215 37Q229 62 218 85" />
+  </g>}
+  {part.numeral === 'III' && <g>
+    <path class="thumb-link" d="M160 24L104 64M160 24L216 64M104 64L72 106M104 64L136 106M216 64L188 106M216 64L252 106" />
+    {tree.map(([x, y], i) => <circle class={i === 0 ? 'thumb-amber' : 'thumb-green'} cx={x} cy={y} r="11" />)}
+  </g>}
+  {part.numeral === 'IV' && <g>
+    <rect class="thumb-blue" x="30" y="48" width="56" height="34" rx="4" /><text class="thumb-caption" x="58" y="69" text-anchor="middle">key</text>
+    <circle class="thumb-green" cx="136" cy="65" r="15" /><text class="thumb-caption" x="136" y="69" text-anchor="middle">h</text>
+    {[22, 45, 68, 91].map((y, i) => <g><rect class={i === 2 ? 'thumb-green' : 'thumb-blue'} x="180" y={y} width="108" height="20" rx="3"/><text class="thumb-caption" x="194" y={y + 14}>{i}</text><path class="thumb-grid" d={`M211 ${y}V${y + 20}`} /></g>)}
+    <g set:html={referenceArrow('M86 65H120', marker) + referenceArrow('M151 65H164V78H180', marker)} />
+  </g>}
+  {part.numeral === 'V' && <g>
+    {[[0,1],[0,5],[1,2],[2,3],[2,4],[2,5],[3,4]].map(([a,b]) => <path class="thumb-link" d={`M${graph[a!]![0]} ${graph[a!]![1]}L${graph[b!]![0]} ${graph[b!]![1]}`} />)}
+    {graph.map(([x,y],i) => <circle class={i === 2 ? 'thumb-amber' : 'thumb-green'} cx={x} cy={y} r="10" />)}
+  </g>}
+  {part.numeral === 'VI' && <g>
+    {[48, 24, 56, 32].map((height, i) => <rect class="thumb-blue" x={34 + 25 * i} y={100 - height} width="16" height={height} rx="2" />)}
+    {[20, 32, 44, 56].map((height, i) => <rect class="thumb-green" x={194 + 25 * i} y={100 - height} width="16" height={height} rx="2" />)}
+    <g set:html={referenceArrow('M141 70H178', marker)} />
+    <text class="thumb-caption" x="80" y="119" text-anchor="middle">before</text><text class="thumb-caption" x="240" y="119" text-anchor="middle">after</text>
+  </g>}
+  {part.numeral === 'VII' && <g>
+    <path class="thumb-link" d="M160 44L94 64M160 44L226 64M94 92L76 114M94 92L112 114M226 92L208 114M226 92L244 114" />
+    <rect class="thumb-amber" x="123" y="16" width="74" height="28" rx="4"/><text class="thumb-caption" x="160" y="34" text-anchor="middle">f(n)</text>
+    {[['f(n−1)', 53], ['f(n−2)', 185]].map(([label,x]) => <g><rect class="thumb-green" x={Number(x)} y="64" width="82" height="28" rx="4"/><text class="thumb-caption" x={Number(x) + 41} y="82" text-anchor="middle">{label}</text></g>)}
+    {[76,112,208,244].map(x => <circle class="thumb-dot" cx={x} cy="116" r="3"/>)}
+  </g>}
+  {part.numeral === 'VIII' && <g>
+    <text class="thumb-caption" x="60" y="34" text-anchor="middle">handle</text><text class="thumb-caption" x="194" y="34" text-anchor="middle">storage</text>
+    <rect class="thumb-amber" x="38" y="48" width="44" height="34" rx="4"/><text class="thumb-caption" x="60" y="69" text-anchor="middle">h</text>
+    {[106,150,194,238].map((x,i) => <g><rect class={i === 0 ? 'thumb-green' : 'thumb-blue'} x={x} y="48" width="44" height="34"/><rect class="thumb-blue" x={x} y="90" width="44" height="13" /></g>)}
+    <g set:html={referenceArrow('M82 65H106', marker)} />
+  </g>}
+  {part.numeral === 'IX' && <g>
+    <rect class="thumb-blue" x="82" y="15" width="156" height="102" rx="3" />
+    <path class="thumb-grid" d="M160 15V117M82 66H238M199 66V117M160 91H238" />
+    <rect class="thumb-query" x="188" y="77" width="46" height="35" rx="2" />
+    {[[102,32],[120,62],[142,94],[190,38],[210,82],[228,104]].map(([x,y],i) => <circle class={i >= 4 ? 'thumb-query-dot' : 'thumb-dot'} cx={x} cy={y} r="3.5" />)}
+  </g>}
+</svg>

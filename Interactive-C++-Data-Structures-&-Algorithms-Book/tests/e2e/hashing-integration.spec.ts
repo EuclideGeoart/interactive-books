@@ -56,16 +56,16 @@ test('Part IV canonical downloads preserve every local dependency and hide fixtu
   }
 });
 
-test('Part IV joins search, progress and sequential navigation through Chapter 23', async ({ page }, info) => {
+test('Part IV joins search, progress and sequential navigation through Chapter 23', async ({ page }) => {
   await page.goto('/chapters/17-tries/');
   await page.getByRole('navigation', { name: 'Adjacent chapters' }).locator('a[href*="18-hashing-fundamentals"]').click();
   for (const chapter of hashing) {
     await expect(page).toHaveURL(new RegExp(`${chapter.slug}/$`));
     await expect(page.getByRole('button', { name: 'Mark chapter complete' })).toHaveAttribute('aria-pressed', 'false');
-    const scope = info.project.name === 'mobile' ? page.locator('[data-mobile-nav]') : page.locator('.book-sidebar');
-    if (info.project.name === 'mobile') await page.getByRole('button', { name: 'Toggle book navigation' }).click();
+    const scope = page.locator('[data-mobile-nav]');
+    await page.getByRole('button', { name: 'Chapters in this Part', exact: true }).click();
     await expect(scope.locator('[aria-current="page"]')).toBeVisible();
-    if (info.project.name === 'mobile') await page.keyboard.press('Escape');
+    await page.keyboard.press('Escape');
     await page.getByRole('button', { name: 'Mark chapter complete' }).click();
     const next = hashing[hashing.indexOf(chapter) + 1];
     if (next) await page.getByRole('navigation', { name: 'Adjacent chapters' }).locator(`a[href*="${next.slug}"]`).click();

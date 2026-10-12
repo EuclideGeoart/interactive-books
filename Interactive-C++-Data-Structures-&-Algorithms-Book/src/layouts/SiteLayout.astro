@@ -1,0 +1,43 @@
+---
+import '../styles/book.css';
+import '../styles/shell.css';
+import { chapters } from '../content/book';
+import { parts, partForChapter } from '../content/parts';
+import { searchIndex } from '../content/search';
+interface Props { title: string; description: string; number?: string }
+const { title, description, number } = Astro.props;
+const part = number ? partForChapter(number) : undefined;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#142b40" />
+    <title>{title} — The Interactive C++ Book</title>
+    <link rel="icon" href={`${base}/favicon.svg`} type="image/svg+xml" />
+    <link rel="manifest" href={`${base}/manifest.webmanifest`} />
+    <link rel="apple-touch-icon" href={`${base}/icons/icon-192.png`} />
+    <script is:inline>try{const t=localStorage.getItem('cpp-book:theme');document.documentElement.dataset.theme=t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch{document.documentElement.dataset.theme='light'}</script>
+  </head>
+  <body class="part-first" data-chapter-number={number} id={number ? undefined : 'top'}>
+    <a class="skip-link" href="#main-content">Skip to {number ? 'chapter content' : 'content'}</a>
+    <header class="topbar shell-topbar">
+      <a class="shell-brand" href={`${base}/`} aria-label="The Interactive C++ Book homepage"><span class="shell-mark" aria-hidden="true">[→]</span><span>C++<small>DATA STRUCTURES &amp; ALGORITHMS</small></span></a>
+      <nav class="part-ruler" aria-label="Parts of the book"><ol>{parts.map(item => <li><a href={`${base}/contents/#${item.id}`} aria-label={`Part ${item.numeral}: ${item.title}`} title={`Part ${item.numeral}: ${item.title}`} aria-current={item.id === part?.id ? 'true' : undefined}>{item.numeral}</a></li>)}</ol></nav>
+      <div class="topbar-actions">
+        <a class="shell-contents" href={`${base}/contents/`}>Contents</a>
+        <button type="button" class="search-button" data-search-open aria-label="Search the book"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.5"/><path d="m13 13 4 4" stroke="currentColor" stroke-width="1.5"/></svg><span>Search the book</span><kbd>⌘ K</kbd></button>
+        <button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme"><span aria-hidden="true">◐</span></button>
+      </div>
+    </header>
+    <div class="book-body"><slot />
+      <footer class="book-footer"><div class="book-footer-signature"><span>[→] THE INTERACTIVE C++ BOOK</span><small>Created by Mario Balit with Chatgpt</small></div><p>Understand the structure. See the execution.</p><a href="#top">Back to top ↑</a></footer>
+    </div>
+    <slot name="navigation" />
+    <dialog class="search-dialog" data-search-dialog aria-labelledby="search-title"><div class="dialog-heading"><h2 id="search-title">Search the book</h2><button class="icon-button" type="button" data-search-close aria-label="Close search">×</button></div><label class="sr-only" for="book-search">Search Chapters 0–{Number(chapters.at(-1)!.number)}</label><input id="book-search" type="search" placeholder="Try “pointer”, “delete”, or “complexity”…" autocomplete="off" /><p class="search-scope">Search all {chapters.length} available chapters</p><ul data-search-results></ul><p data-search-count class="sr-only" aria-live="polite"></p></dialog>
+    <script type="application/json" data-search-index set:html={JSON.stringify(searchIndex).replace(/</g, '\\u003c')} />
+    <script>import '../scripts/book'; import '../scripts/register-sw';</script>
+  </body>
+</html>
