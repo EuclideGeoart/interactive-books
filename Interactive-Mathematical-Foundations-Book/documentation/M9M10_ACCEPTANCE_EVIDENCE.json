@@ -1,0 +1,444 @@
+{
+  "status": "selected-acceptance-passed-with-source-matched-continuations",
+  "uninterrupted": false,
+  "exhaustiveReleaseCertification": false,
+  "baseline": "cdf2ebd5428d80999dcf52f93a8e3c0eee0ac167",
+  "mergeCommit": "8d03aa8adc7f1a407199c8af9f9fe653d89d6f36",
+  "acceptedSourceRevision": "eb19ee047fcc17e283d0f85a590f8d3838525135",
+  "implementationHeads": {
+    "statistics": "218ab4df627f3231c9fe6e9808adb419197c524b",
+    "optimization": "8b5ed1c359887d3f92c23f75f1cff4ab796077fb"
+  },
+  "publication": {
+    "available": 79,
+    "total": 97,
+    "planned": 18
+  },
+  "selectedGates": [
+    {
+      "gate": "complete type/content check",
+      "selectedCoverageStatus": "passed",
+      "evidence": {
+        "gate": "complete type/content check",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/astro/astro.js",
+          "check"
+        ],
+        "status": 0,
+        "wallMs": 12994
+      }
+    },
+    {
+      "gate": "complete units",
+      "selectedCoverageStatus": "passed",
+      "evidence": {
+        "gate": "complete units",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/vitest/vitest.mjs",
+          "run"
+        ],
+        "status": 0,
+        "wallMs": 13680
+      }
+    },
+    {
+      "gate": "complete oracle + freshness",
+      "selectedCoverageStatus": "passed",
+      "evidence": {
+        "gate": "complete oracle + freshness",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "scripts/run-oracle.mjs"
+        ],
+        "status": 0,
+        "wallMs": 45487
+      }
+    },
+    {
+      "gate": "root production verification",
+      "selectedCoverageStatus": "passed",
+      "evidence": {
+        "gate": "root production verification",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "scripts/check-dist.mjs",
+          "dist",
+          "/"
+        ],
+        "status": 0,
+        "wallMs": 247
+      }
+    },
+    {
+      "gate": "subpath production verification",
+      "selectedCoverageStatus": "passed",
+      "evidence": {
+        "gate": "subpath production verification",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "scripts/check-dist.mjs",
+          "dist-subpath",
+          "/math-foundations/"
+        ],
+        "status": 0,
+        "wallMs": 262
+      }
+    },
+    {
+      "gate": "all read-only chapter contracts + representative both-theme axe",
+      "selectedCoverageStatus": "passed",
+      "evidence": {
+        "initialPassed": 1563,
+        "initialFailed": 12,
+        "repairedCasesPassed": 12,
+        "sources": [
+          "documentation/M9M10_BROWSER_FAILED_MANIFEST.json",
+          "documentation/M9M10_VALIDATION_MANIFEST.json"
+        ],
+        "sourceMatch": "Two JSX accessibility attribute fixes; evaluated state and numerical models unchanged."
+      }
+    },
+    {
+      "gate": "affected chapter interactions: optimization_dynamics",
+      "selectedCoverageStatus": "passed",
+      "evidence": {
+        "gate": "affected chapter interactions: optimization_dynamics",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/optimization.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "(?:^|\\s)(?:VI\\.8(?::| )|VI\\.6(?::| )|VI\\.7(?::| ))|publication",
+          "--output",
+          "validation-results/m9m10-remaining-2026-10-12T13-58-51-765Z/1-failures"
+        ],
+        "status": 0,
+        "wallMs": 32261
+      }
+    },
+    {
+      "gate": "affected chapter interactions: statistics_intervals",
+      "selectedCoverageStatus": "passed",
+      "evidence": {
+        "gate": "affected chapter interactions: statistics_intervals",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/statistics-uncertainty.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "(?:^|\\s)(?:V\\.5(?::| ))|publication",
+          "--output",
+          "validation-results/m9m10-remaining-2026-10-12T13-58-51-765Z/2-failures"
+        ],
+        "status": 0,
+        "wallMs": 8347
+      }
+    },
+    {
+      "gate": "affected chapter interactions: optimization_constraints",
+      "selectedCoverageStatus": "passed",
+      "evidence": {
+        "gate": "affected chapter interactions: optimization_constraints",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/optimization.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "(?:^|\\s)(?:VI\\.9(?::| )|VI\\.10(?::| ))|publication",
+          "--output",
+          "validation-results/m9m10-remaining-2026-10-12T13-58-51-765Z/3-failures"
+        ],
+        "status": 0,
+        "wallMs": 28927
+      }
+    },
+    {
+      "gate": "affected chapter interactions: optimization_landscapes",
+      "selectedCoverageStatus": "passed",
+      "evidence": {
+        "gate": "affected chapter interactions: optimization_landscapes",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/optimization.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "(?:^|\\s)(?:VI\\.3(?::| )|VI\\.2(?::| )|VI\\.1(?::| ))|publication",
+          "--output",
+          "validation-results/m9m10-remaining-2026-10-12T13-58-51-765Z/4-failures"
+        ],
+        "status": 0,
+        "wallMs": 22752
+      }
+    },
+    {
+      "gate": "affected chapter interactions: statistics_scatter",
+      "selectedCoverageStatus": "passed",
+      "evidence": {
+        "gate": "affected chapter interactions: statistics_scatter",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/statistics-uncertainty.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "(?:^|\\s)(?:V\\.6(?::| )|V\\.7(?::| ))|publication",
+          "--output",
+          "validation-results/m9m10-remaining-2026-10-12T13-58-51-765Z/5-failures"
+        ],
+        "status": 0,
+        "wallMs": 15005
+      }
+    },
+    {
+      "gate": "affected chapter interactions: statistics_data",
+      "selectedCoverageStatus": "passed",
+      "evidence": {
+        "gate": "affected chapter interactions: statistics_data",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/statistics-data.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "(?:^|\\s)(?:V\\.2(?::| )|V\\.1(?::| )|V\\.4(?::| )|V\\.3(?::| ))|publication",
+          "--output",
+          "validation-results/m9m10-remaining-2026-10-12T13-58-51-765Z/6-failures"
+        ],
+        "status": 0,
+        "wallMs": 12394
+      }
+    },
+    {
+      "gate": "affected chapter interactions: optimization_descent",
+      "selectedCoverageStatus": "passed",
+      "evidence": {
+        "gate": "affected chapter interactions: optimization_descent",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/optimization.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "(?:^|\\s)(?:VI\\.4(?::| )|VI\\.5(?::| ))|publication",
+          "--output",
+          "validation-results/m9m10-remaining-2026-10-12T13-58-51-765Z/7-failures"
+        ],
+        "status": 0,
+        "wallMs": 21357
+      }
+    },
+    {
+      "gate": "affected chapter interactions: statistics_likelihood",
+      "selectedCoverageStatus": "passed",
+      "evidence": {
+        "gate": "affected chapter interactions: statistics_likelihood",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/statistics-likelihood.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "(?:^|\\s)(?:V\\.8(?::| )|V\\.10(?::| )|V\\.9(?::| ))|publication",
+          "--output",
+          "validation-results/m9m10-remaining-2026-10-12T13-58-51-765Z/8-failures"
+        ],
+        "status": 0,
+        "wallMs": 19574
+      }
+    },
+    {
+      "gate": "shared cross-chapter controls",
+      "selectedCoverageStatus": "passed",
+      "evidence": {
+        "gate": "shared cross-chapter controls",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/vectors.spec.ts",
+          "tests/e2e/quantities.spec.ts",
+          "--trace",
+          "off",
+          "--grep",
+          "keyboard|Arrow|rejected|reset|announc",
+          "--output",
+          "validation-results/m9m10-remaining-2026-10-12T13-58-51-765Z/9-failures"
+        ],
+        "status": 0,
+        "wallMs": 14910
+      }
+    },
+    {
+      "gate": "root shared shell, navigation, accessibility and deployment",
+      "selectedCoverageStatus": "passed",
+      "evidence": {
+        "gate": "root shared shell, navigation, accessibility and deployment",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/smoke.spec.ts",
+          "tests/e2e/stage.spec.ts",
+          "tests/e2e/navigation.spec.ts",
+          "tests/e2e/a11y.spec.ts",
+          "tests/e2e/deployment.spec.ts",
+          "--trace",
+          "off",
+          "--output",
+          "validation-results/m9m10-remaining-2026-10-12T13-58-51-765Z/10-failures"
+        ],
+        "status": 0,
+        "wallMs": 165468
+      }
+    },
+    {
+      "gate": "subpath prefix-dependent navigation, assets, anchors, routes and hydration",
+      "selectedCoverageStatus": "passed",
+      "evidence": {
+        "gate": "subpath prefix-dependent navigation, assets, anchors, routes and hydration",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/navigation.spec.ts",
+          "tests/e2e/deployment.spec.ts",
+          "--trace",
+          "off",
+          "--config",
+          "playwright.subpath.config.ts",
+          "--output",
+          "validation-results/m9m10-remaining-2026-10-12T13-58-51-765Z/11-failures"
+        ],
+        "status": 0,
+        "wallMs": 59727
+      }
+    },
+    {
+      "gate": "authoritative root visuals",
+      "selectedCoverageStatus": "passed",
+      "evidence": {
+        "gate": "authoritative root visuals",
+        "command": [
+          "/home/mario-geometry/.nvm/versions/node/v24.18.0/bin/node",
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "tests/e2e/visual.spec.ts",
+          "tests/e2e/visual-part-i.spec.ts",
+          "tests/e2e/visual-linear-algebra.spec.ts",
+          "tests/e2e/visual-calculus.spec.ts",
+          "tests/e2e/visual-probability.spec.ts",
+          "tests/e2e/visual-statistics.spec.ts",
+          "tests/e2e/visual-optimization.spec.ts",
+          "--trace",
+          "off",
+          "--output",
+          "validation-results/m9m10-remaining-2026-10-12T13-58-51-765Z/12-failures"
+        ],
+        "status": 0,
+        "wallMs": 117084
+      }
+    }
+  ],
+  "actualManifests": [
+    {
+      "path": "validation-results/milestone-2026-10-12T13-33-26-308Z/manifest.json",
+      "sha256": "ef8f69d4ff8599bc6e00c98bf1b7bd7415dd49be271768a2957968a44d64ac96"
+    },
+    {
+      "path": "validation-results/milestone-2026-10-12T13-40-25-804Z/manifest.json",
+      "sha256": "5dcdf472e4c166a98387442e54bdffa2d96584c9ca4c44c0708438dc20698a20"
+    },
+    {
+      "path": "validation-results/milestone-2026-10-12T13-56-34-836Z/manifest.json",
+      "sha256": "52b9b2af16ac9d1f9b7076cb5667ca45b4572ea10fc5f5fff4eab7da63f42c87"
+    },
+    {
+      "path": "validation-results/m9m10-remaining-2026-10-12T13-58-51-765Z/manifest.json",
+      "sha256": "82bcd031556b0df8099f5fec5ad03453be9f9fec9d57c2248ded60fbd76841dc"
+    }
+  ],
+  "browserSummaries": {
+    "repaired V.3/V.4 both-theme chapter accessibility audits": {
+      "passed": 12
+    },
+    "affected chapter interactions: optimization_dynamics": {
+      "passed": 18
+    },
+    "affected chapter interactions: statistics_intervals": {
+      "passed": 12
+    },
+    "affected chapter interactions: optimization_constraints": {
+      "passed": 12
+    },
+    "affected chapter interactions: optimization_landscapes": {
+      "passed": 21
+    },
+    "affected chapter interactions: statistics_scatter": {
+      "passed": 24
+    },
+    "affected chapter interactions: statistics_data": {
+      "passed": 27
+    },
+    "affected chapter interactions: optimization_descent": {
+      "passed": 15
+    },
+    "affected chapter interactions: statistics_likelihood": {
+      "passed": 36
+    },
+    "shared cross-chapter controls": {
+      "passed": 45
+    },
+    "root shared shell, navigation, accessibility and deployment": {
+      "skipped": 5,
+      "passed": 310
+    },
+    "subpath prefix-dependent navigation, assets, anchors, routes and hydration": {
+      "skipped": 3,
+      "passed": 96
+    },
+    "authoritative root visuals": {
+      "skipped": 15,
+      "passed": 264
+    }
+  },
+  "mathematics": {
+    "unitFiles": 121,
+    "unitTests": 13247,
+    "oracleFamilies": 32,
+    "pythonSelfTests": 444,
+    "fixturesFresh": true
+  },
+  "sourceMatchedProduction": {
+    "dist": {
+      "base": "/",
+      "signature": "5a624488ed566aedde228d613e170aded96152f6400b77556eafa0c54fd242b1"
+    },
+    "dist-subpath": {
+      "base": "/math-foundations/",
+      "signature": "5824f895734125d77024f1518aba686bba29b6e2fa1c3d867730eac4438fa501"
+    }
+  },
+  "scope": "One full combined milestone invocation; failed gates retained; only source-affected or previously unrun gates continued. Final raw scoped manifest remains partial:true."
+}

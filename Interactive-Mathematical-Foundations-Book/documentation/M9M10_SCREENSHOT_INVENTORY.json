@@ -1,0 +1,853 @@
+{
+  "platform": "Linux system Chrome",
+  "visualTolerance": "0.004 unchanged",
+  "images": [
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/desktop-v-confidence-intervals-small.png",
+      "width": 836,
+      "height": 2595,
+      "sha256": "c2616fdc6280651c6ff572300439ef4ad8e5f804e27bcc0270a5ff09944d4d44",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/desktop-v-confidence-intervals.png",
+      "width": 836,
+      "height": 2544,
+      "sha256": "d3138f9fc80a8019eabca1f438d1aa46691e26c6438a6095f2eb7612dd631ee3",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/desktop-v-covariance-matrices-repeated.png",
+      "width": 836,
+      "height": 2066,
+      "sha256": "c0010c2e7f4848b86deff1291b16b495032a1ddc34ba31cb9ca1e2c9d241fcd1",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/desktop-v-covariance-matrices.png",
+      "width": 836,
+      "height": 2046,
+      "sha256": "0f91cc83637b31ccbbb7711e8034c7262bd72f4e470a80c6dfe9a9dd72b7bc65",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/desktop-v-data-spread-single.png",
+      "width": 836,
+      "height": 2655,
+      "sha256": "75c5f5dae0eb9cdc1fe3107047b76af7ea3563534ba1900057940564bfc06f6b",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/desktop-v-data-spread.png",
+      "width": 836,
+      "height": 2735,
+      "sha256": "3b21c4402c7ec86cb3382ee0e3ea9d22069bef5f9044dec16540772b613b39c9",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/desktop-v-data-summaries-multiple.png",
+      "width": 836,
+      "height": 2460,
+      "sha256": "67bd856bbbfaf1befa16ac332d27a2f41a4229346892642a47763ff884558983",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/desktop-v-data-summaries.png",
+      "width": 836,
+      "height": 2431,
+      "sha256": "8b7455516c0fcdd5ed0c2f6903c9ea52ab76eecc03c1a5d82fd166f32e783da6",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/desktop-v-estimators-estimation.png",
+      "width": 836,
+      "height": 2194,
+      "sha256": "99064eb8d017d2169b81f1d8192b80f94995fcd0dc60c06f582bda2075b43540",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/desktop-v-likelihood-impossible.png",
+      "width": 836,
+      "height": 1908,
+      "sha256": "d7272e22770340b65f003a70a76878d982650730489a1bc012728758803042e0",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/desktop-v-likelihood.png",
+      "width": 836,
+      "height": 1825,
+      "sha256": "7aed9a770d817416b532ec489cc7c087e625acb68075cb1f29b7cbad38fec66b",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/desktop-v-maximum-a-posteriori-two-boundaries.png",
+      "width": 836,
+      "height": 3681,
+      "sha256": "472673e2909a63fbad4a83d18b0562e41a854069d1590107fb24e963964014ab",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/desktop-v-maximum-a-posteriori.png",
+      "width": 836,
+      "height": 3643,
+      "sha256": "7c3e6a7c034582a756dc03c30ddceb0f207fc266628e381504822070e62a32bc",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/desktop-v-maximum-likelihood-empty.png",
+      "width": 836,
+      "height": 1836,
+      "sha256": "48eeb12ff96b51d87f72292939a1bdd87ddfa5bea1aaa17a8b16cecb4b84b894",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/desktop-v-maximum-likelihood.png",
+      "width": 836,
+      "height": 1882,
+      "sha256": "2b7836f1eac65ad5e43825532c84cf169e7737c47d3b9d3d87f22cb24d4826d3",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/desktop-v-population-sampling.png",
+      "width": 836,
+      "height": 2144,
+      "sha256": "8a7cbcc7ebf2f45a6043e1a663b2083af734fdc8bc314cd504b31b1140f482ff",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/desktop-v-regression-fundamentals-degenerate.png",
+      "width": 836,
+      "height": 2018,
+      "sha256": "8eda9039723301c3291d02e255295230e6b34043de51fb5906496c3a97d7de82",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/desktop-v-regression-fundamentals.png",
+      "width": 836,
+      "height": 2004,
+      "sha256": "6b3f48f91a850d38c9e9567e36e0f49e7f4f8dcd05fd8cfa8fd0ecca1d02a149",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/mobile-v-confidence-intervals-small.png",
+      "width": 356,
+      "height": 2993,
+      "sha256": "723af050ba1894ea6dadb930f1061de1c50704b2abdfa64b48025bf959a7b39a",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/mobile-v-confidence-intervals.png",
+      "width": 356,
+      "height": 2948,
+      "sha256": "fda2956342e7027eb4caca732982a46aa6933aa5eaf9fb4a9c5ad66c42abd62a",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/mobile-v-covariance-matrices-repeated.png",
+      "width": 356,
+      "height": 2657,
+      "sha256": "32c1a707152d99e9b4e307bbab273f86ec90ad5a036cd833fa9e5d15a6485377",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/mobile-v-covariance-matrices.png",
+      "width": 356,
+      "height": 2643,
+      "sha256": "b024aea3c1264dda2cbe8e5949f923e0143ad98bd098996bf1ce3974e3fc4f8a",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/mobile-v-data-spread-single.png",
+      "width": 356,
+      "height": 2768,
+      "sha256": "df6b14f538b79210652b179871ffb256994c1e614cfd823084fe4dd6980b58bf",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/mobile-v-data-spread.png",
+      "width": 356,
+      "height": 3174,
+      "sha256": "128b79790bf6d9dbf5c7509864f1ec63e50c115bab28b2aa5c720b2b9aea22c6",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/mobile-v-data-summaries-multiple.png",
+      "width": 356,
+      "height": 2409,
+      "sha256": "ed2127a081682c3a5eb0c4edafb89bf7acd5610976524be351d46acce2f925a8",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/mobile-v-data-summaries.png",
+      "width": 356,
+      "height": 2432,
+      "sha256": "afaa82eea5b30bec6df6568a57ad148a701e38ef8bccc5bcb9b45da3028d7e2f",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/mobile-v-estimators-estimation.png",
+      "width": 356,
+      "height": 2676,
+      "sha256": "2c6611aebc8edce7982e2ce72fe190f27c7b72c177beade928233fd76d293995",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/mobile-v-likelihood-impossible.png",
+      "width": 356,
+      "height": 2261,
+      "sha256": "51a2c69739191c40aaeaa5116d899299d11a604aa68dbb292b387a838d938a5e",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/mobile-v-likelihood.png",
+      "width": 356,
+      "height": 2150,
+      "sha256": "694a5ae2d675f4b57b27e0354a241e9372b5ba52124cb948f6f27fd71c69e1a4",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/mobile-v-maximum-a-posteriori-two-boundaries.png",
+      "width": 356,
+      "height": 4176,
+      "sha256": "76366dfed793768dedacb19c5cc10bcfb195455ec91a737e59f602987c600b77",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/mobile-v-maximum-a-posteriori.png",
+      "width": 356,
+      "height": 3857,
+      "sha256": "848fb8e62b978f5f17fd6e34ccbd96a009bffbb645efd30098a52bd4aebb2e06",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/mobile-v-maximum-likelihood-empty.png",
+      "width": 356,
+      "height": 2161,
+      "sha256": "fe32ad65181a27e22a48fa1b4c190d14ef8a401174008ba7d98df1f70af03f79",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/mobile-v-maximum-likelihood.png",
+      "width": 356,
+      "height": 2178,
+      "sha256": "8ec265c25eb3f347fdd034e7f7a6e38f6bdede57564ef8bf1fce50ffa240fe51",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/mobile-v-population-sampling.png",
+      "width": 356,
+      "height": 2566,
+      "sha256": "2cd87bb7fe2343d08d75117afd1efc4647ede1072c35fb2f4adffa5b1a51c524",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/mobile-v-regression-fundamentals-degenerate.png",
+      "width": 356,
+      "height": 2365,
+      "sha256": "769c0389424a910ce0a04c8b9deae9f808a463d3e9aa65b25e99370c0ea8fb21",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/mobile-v-regression-fundamentals.png",
+      "width": 356,
+      "height": 2217,
+      "sha256": "e32f1f6ded4cc802af5c8e63adf4a9c50bdf119e77a481288c931657cf6979c9",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/tablet-v-confidence-intervals-small.png",
+      "width": 748,
+      "height": 2549,
+      "sha256": "0b358f2ab02345e5b40c69dfc23349c4e3dffc3e727344c1e8947e4f1370f923",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/tablet-v-confidence-intervals.png",
+      "width": 748,
+      "height": 2527,
+      "sha256": "8056d69135009070259bb4ada7e6930d5747b020ba15f947690e8413649ee198",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/tablet-v-covariance-matrices-repeated.png",
+      "width": 748,
+      "height": 2064,
+      "sha256": "437358891d7dc3b8bbcf15875240e142f892cc20f78b68180c16ebf30a1522ac",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/tablet-v-covariance-matrices.png",
+      "width": 748,
+      "height": 2045,
+      "sha256": "59dfd0573fa3c761fc5dde06dc5075e47b82273b5bf27457082992a59999dba5",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/tablet-v-data-spread-single.png",
+      "width": 748,
+      "height": 2621,
+      "sha256": "4ae8e8cc24a0e9e98a9982f0d0588b0bcf2ba2883c37d9a9087621ac39d03e6d",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/tablet-v-data-spread.png",
+      "width": 748,
+      "height": 2692,
+      "sha256": "fb3216c37d26b447efcd4ab6812089177b3242cd2b0357baf4c956006b0ba7f5",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/tablet-v-data-summaries-multiple.png",
+      "width": 748,
+      "height": 2418,
+      "sha256": "2c13179567ae9056b10a24e639224fefecafc5a6e3c7f7a0d56846699f39f954",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/tablet-v-data-summaries.png",
+      "width": 748,
+      "height": 2396,
+      "sha256": "a78218b66ada67da24b3b66c06b018e21f712e0a3de9f417f99f1c136ae9115c",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/tablet-v-estimators-estimation.png",
+      "width": 748,
+      "height": 2130,
+      "sha256": "8b9ae796d225f1cb36e155f7a800b6e204d265989adb7239483d44c2914ca749",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/tablet-v-likelihood-impossible.png",
+      "width": 748,
+      "height": 1872,
+      "sha256": "0a8f5f6b853128f13211c0eae73fc315e0452ea3aa2ee0f7b34454721e47a859",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/tablet-v-likelihood.png",
+      "width": 748,
+      "height": 1812,
+      "sha256": "340524f0f3ae17a0a3dba0dd4507d6006eaf667feaae199a2d8d6e0cefbac351",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/tablet-v-maximum-a-posteriori-two-boundaries.png",
+      "width": 748,
+      "height": 3648,
+      "sha256": "a9df04ab8df88c470a8fe6a346296ab8ebef76f7f85af3c8e704e3e4b3319fd7",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/tablet-v-maximum-a-posteriori.png",
+      "width": 748,
+      "height": 3528,
+      "sha256": "b1bd8e934cfb8bcb1901f1043532bba94a786800b905956c8fadfa4571ddbea8",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/tablet-v-maximum-likelihood-empty.png",
+      "width": 748,
+      "height": 1823,
+      "sha256": "81498fdf1ca78e26d2fc5fdc63e055a8a431a3f3716514baf312fd102404d1db",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/tablet-v-maximum-likelihood.png",
+      "width": 748,
+      "height": 1847,
+      "sha256": "134b4334694a37d040400a36e2cb3903c4bb45789bbbe1bd3f7b92588245dd5d",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/tablet-v-population-sampling.png",
+      "width": 748,
+      "height": 2129,
+      "sha256": "1941b180287c838774810a08634c933e6ef0280b0742eb12a39e268d49ea9a6f",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/tablet-v-regression-fundamentals-degenerate.png",
+      "width": 748,
+      "height": 2010,
+      "sha256": "34c80a50e82583a80b76a33901f27cb9be0051f37a94f494b69efb49c3097ef4",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-statistics.spec.ts/tablet-v-regression-fundamentals.png",
+      "width": 748,
+      "height": 1996,
+      "sha256": "ad2a4c02cb08b19b6c69aec26455b381aa1c3d1cbd459fc2279959658255e3c9",
+      "review": "Agent A individual Linux review, accepted handoff at 218ab4df; image bytes preserved"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/desktop-vi-adam-zero.png",
+      "width": 836,
+      "height": 2611,
+      "sha256": "57f27bd101cee36477e348e0bd51f54da2a8ebd2aa385cc09e9fa7042f661ea8",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/desktop-vi-adam.png",
+      "width": 836,
+      "height": 2634,
+      "sha256": "8499fc2aecc066c88efb1c88a85ba2fae4073071803273a276d26347658bd69b",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/desktop-vi-constraints-regularization-disk.png",
+      "width": 836,
+      "height": 2540,
+      "sha256": "beecd703f6b6c476b744cfd07674388b21548d600d82f0c89300b7cbbefab60d",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/desktop-vi-constraints-regularization.png",
+      "width": 836,
+      "height": 2493,
+      "sha256": "a3c8f74c63233082521388f79e18ea1ec702c9117247a094283f67fa53923121",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/desktop-vi-convexity-well.png",
+      "width": 836,
+      "height": 1446,
+      "sha256": "0b928c2e6717ffd3757fe44d1be93c139ac7b67f698ba6b105c3b920511c7f43",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/desktop-vi-convexity.png",
+      "width": 836,
+      "height": 1400,
+      "sha256": "87f7548e973b60e9e505d9466285777f41cc9360b33eabe15b6472f34eba4cda",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/desktop-vi-gradient-descent-well.png",
+      "width": 836,
+      "height": 2069,
+      "sha256": "35ce0f11aa01c618ced6f27c0f84d06a0bd633b9e7604bdde55a2c27734da5df",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/desktop-vi-gradient-descent.png",
+      "width": 836,
+      "height": 2195,
+      "sha256": "a583249a475456348810d0ec9a4447c89ee9c332eedc3f47b3e1b4c3ed626c8c",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/desktop-vi-learning-rate-convergence-boundary.png",
+      "width": 836,
+      "height": 2330,
+      "sha256": "2f820398c849278b361301f0649eb6a587ed89ccc92b21e992a4711650eb07ab",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/desktop-vi-learning-rate-convergence.png",
+      "width": 836,
+      "height": 2353,
+      "sha256": "e996f6d91abad0391646ac837a6f7c9f7f32d0af44987810b9f8a2d82eaea220",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/desktop-vi-local-global-optima-flat.png",
+      "width": 836,
+      "height": 1522,
+      "sha256": "b5eb847ff55bcb0285ff28495814b69b5c1d157090468c91036147bb64b115c1",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/desktop-vi-local-global-optima.png",
+      "width": 836,
+      "height": 1538,
+      "sha256": "1190caf999065ee8e4b5e519421eea2c5349bd2e07042b8129ac691887673bb5",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/desktop-vi-momentum-overshoot.png",
+      "width": 836,
+      "height": 2266,
+      "sha256": "fa4aa4a911ebca53b8acd8645ce5755542585b69b8c8325a92e41d47ca0c1f52",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/desktop-vi-momentum.png",
+      "width": 836,
+      "height": 2266,
+      "sha256": "0b0da4f154d44bf2447c01f151f8a71de8469f195f5791e31187e587438265e1",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/desktop-vi-objective-landscapes-absolute.png",
+      "width": 836,
+      "height": 1396,
+      "sha256": "056df7825023d263ed59cb2c2402cc242b96b75005ad6a7a29ac066c180ad137",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/desktop-vi-objective-landscapes.png",
+      "width": 836,
+      "height": 1322,
+      "sha256": "d7c51652a35d313652943b11102e27d8c3eeea181ea62c55cc6ee1f2b28c4052",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/desktop-vi-optimization-diagnostics-clipped.png",
+      "width": 836,
+      "height": 3046,
+      "sha256": "079659aa9c5a3acfb5b2151067db1d048bba5a7c23247dd70e3001543e381f50",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/desktop-vi-optimization-diagnostics-nonfinite.png",
+      "width": 836,
+      "height": 2676,
+      "sha256": "6cbd8ee0051abe144324c7198faaca911f83e071abf3ad034170307525af98bc",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/desktop-vi-optimization-diagnostics.png",
+      "width": 836,
+      "height": 2693,
+      "sha256": "dd0241a76a0a4bf053c819b5fea0711cbb1b57b865d599922f5e2d2f0eca5ab3",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/desktop-vi-stochastic-mini-batch-descent-full.png",
+      "width": 836,
+      "height": 2631,
+      "sha256": "a5dae7ce37757b26b3cdb971e17e40d5ee71c052fc56afd8017b946b64487080",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/desktop-vi-stochastic-mini-batch-descent.png",
+      "width": 836,
+      "height": 2547,
+      "sha256": "94a0677cb1d4dbcaf612af167979e080d3e4a4ffad466b56c800219f8b1ddb55",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/mobile-vi-adam-zero.png",
+      "width": 356,
+      "height": 4128,
+      "sha256": "a40c218cd8980f29622a58dae97012f83887a199c51acfd2edf1c1e924d377a9",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/mobile-vi-adam.png",
+      "width": 356,
+      "height": 4198,
+      "sha256": "6efc6c95f895656039c8d4abc877c91417c6cc790fdc34b545e1f9a43d54e11c",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/mobile-vi-constraints-regularization-disk.png",
+      "width": 356,
+      "height": 4177,
+      "sha256": "f92852e8870f46f90aa48fb389e17c2360d7825a7cdf06db1f33a5f91d2bfbcb",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/mobile-vi-constraints-regularization.png",
+      "width": 356,
+      "height": 4071,
+      "sha256": "7559bc63f1668ef09b2ebdafbe06b1795cf79778b83670bf9b9e03b8d41ad1dc",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/mobile-vi-convexity-well.png",
+      "width": 356,
+      "height": 2423,
+      "sha256": "38f7e2db6797c774a16b89eb660dbee4b6232523643d91d2fcc523d5f0343f50",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/mobile-vi-convexity.png",
+      "width": 356,
+      "height": 2371,
+      "sha256": "cdb3d7b42b2ee2c8718e58ef74a3b4e6bbab8ba7f88f1a7fc78008e0ea8b880d",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/mobile-vi-gradient-descent-well.png",
+      "width": 356,
+      "height": 3162,
+      "sha256": "06949c29b2fcfe888f687208d81fd4b46a5f23964f3b4104bb397fd61c4a107b",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/mobile-vi-gradient-descent.png",
+      "width": 356,
+      "height": 3250,
+      "sha256": "1c30c080f931ded1d330adce61e188737cd7361837e07ebdbecda6d9a08d271e",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/mobile-vi-learning-rate-convergence-boundary.png",
+      "width": 356,
+      "height": 3542,
+      "sha256": "c24d8760281ffdec26e40fa66eb858907edcbcc808ce3a1488896d6a4d856e37",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/mobile-vi-learning-rate-convergence.png",
+      "width": 356,
+      "height": 3564,
+      "sha256": "a2cfaf9f9d482430fb2a0718c5f5811ad0e10e73a2c3577c7b69364fc422c73d",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/mobile-vi-local-global-optima-flat.png",
+      "width": 356,
+      "height": 2288,
+      "sha256": "6c6fe82ba8a9dfee70a57c2f43559d9f2cbcc25788ddcd0864a1ae6c9414e166",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/mobile-vi-local-global-optima.png",
+      "width": 356,
+      "height": 2407,
+      "sha256": "83cfa3c4fed00e6efbf6269a905d291dc5b1b18df980218b060ca6fd6174dedb",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/mobile-vi-momentum-overshoot.png",
+      "width": 356,
+      "height": 3531,
+      "sha256": "8e5e24844c51052f32b452e1bef9dbfdd852edd8c072b5f48f602de98521d415",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/mobile-vi-momentum.png",
+      "width": 356,
+      "height": 3531,
+      "sha256": "123e128fbd9597a0913baab6c01f06b184c2c041e71a14193d6316b90b19718a",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/mobile-vi-objective-landscapes-absolute.png",
+      "width": 356,
+      "height": 2304,
+      "sha256": "1a0768dc77f40ebd732f6fc9fde4c3f34377116f8f360b5d7da22bed3e01dd35",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/mobile-vi-objective-landscapes.png",
+      "width": 356,
+      "height": 2191,
+      "sha256": "ea7927ccc3b72bc51f754c58178950020ed4fc00907be6fc0492a3907ee561f0",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/mobile-vi-optimization-diagnostics-clipped.png",
+      "width": 356,
+      "height": 4941,
+      "sha256": "b8867cbc5ed47cfb911ae1b56da1d938d0f541821ba321039368f4e2de64f903",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/mobile-vi-optimization-diagnostics-nonfinite.png",
+      "width": 356,
+      "height": 4511,
+      "sha256": "a8e28685c14bb4dd1dea9f5ce0cd360b400e616702bf6af938feb2989a9474cd",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/mobile-vi-optimization-diagnostics.png",
+      "width": 356,
+      "height": 4295,
+      "sha256": "5df478fa90f88d5afd2ee7e26a0bb5ed95b13ec6e9fd1546e4cad33b18655b29",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/mobile-vi-stochastic-mini-batch-descent-full.png",
+      "width": 356,
+      "height": 3869,
+      "sha256": "9dafbcd79ba3ecc65be13af0b5d0a43a092ecd26f5b88b7f66e0e7206be7ba8b",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/mobile-vi-stochastic-mini-batch-descent.png",
+      "width": 356,
+      "height": 3808,
+      "sha256": "635f57ea84c04edb0ab962ffd13d500aebbc5abd5170f4041e758fc861140b61",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/tablet-vi-adam-zero.png",
+      "width": 748,
+      "height": 2636,
+      "sha256": "20c14292bc0bc7eee0cd2ef87c5e8b5db9eaae4a50fe7c03fd973e3a1c874c92",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/tablet-vi-adam.png",
+      "width": 748,
+      "height": 2735,
+      "sha256": "47c1e9163e604fca61be2928be6c58bb8c29ab9c59c82f4770c1d7cf2322a09c",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/tablet-vi-constraints-regularization-disk.png",
+      "width": 748,
+      "height": 2657,
+      "sha256": "e17ab25b4a8705b4f8eb1314860fead8bc989833e730c4ce65ebab40c05f0676",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/tablet-vi-constraints-regularization.png",
+      "width": 748,
+      "height": 2605,
+      "sha256": "dad3108f1fc2c2851d13dc974916dac534c5155fbb9dca44374a55cc4b4becc1",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/tablet-vi-convexity-well.png",
+      "width": 748,
+      "height": 1448,
+      "sha256": "4cd1fb588acf27cdabc633209fb623c00bb34927e424aaab477b51c99234c81e",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/tablet-vi-convexity.png",
+      "width": 748,
+      "height": 1448,
+      "sha256": "d665cbcabcdfceb2decf989fd0bc43335754afcf18b0690cf8e20e15ffb5d33a",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/tablet-vi-gradient-descent-well.png",
+      "width": 748,
+      "height": 2118,
+      "sha256": "68a042723961887ee74513e4c883968ab5c658f989ce594990b5ce1e8021ed3c",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/tablet-vi-gradient-descent.png",
+      "width": 748,
+      "height": 2197,
+      "sha256": "762fda495b68ef71c7c9b719356c3628ada2cfca7ba2e81d41495ff8e87c2fe6",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/tablet-vi-learning-rate-convergence-boundary.png",
+      "width": 748,
+      "height": 2401,
+      "sha256": "c6081ddb0a475bbab406e139cec3ef83667947b519fa576c2e27d1a36fcdd2ee",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/tablet-vi-learning-rate-convergence.png",
+      "width": 748,
+      "height": 2401,
+      "sha256": "723ce34cd4b54f782eeaa6eddd2f0771894d07467c86fce197fd65dcc6795d0f",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/tablet-vi-local-global-optima-flat.png",
+      "width": 748,
+      "height": 1548,
+      "sha256": "f325430979905913f6efbde912009de1e6ac6ec319285322593df0f9b1eba374",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/tablet-vi-local-global-optima.png",
+      "width": 748,
+      "height": 1564,
+      "sha256": "d24f014df5538054e33c7eab4430345970e1e566278424595966cb0c30cbf64b",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/tablet-vi-momentum-overshoot.png",
+      "width": 748,
+      "height": 2291,
+      "sha256": "198035019446b2309ed7b3365de588f63fd0d35fed27d4bd41c483c6579abaf7",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/tablet-vi-momentum.png",
+      "width": 748,
+      "height": 2291,
+      "sha256": "4d4083002a659a94618e8325ce71b28c346e0cae7d230ee38e9ac728fe287175",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/tablet-vi-objective-landscapes-absolute.png",
+      "width": 748,
+      "height": 1421,
+      "sha256": "42d22fc11834cd50c51770a6f24c2b3a062d0afc07491987fe96ce0ab9dfcbab",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/tablet-vi-objective-landscapes.png",
+      "width": 748,
+      "height": 1348,
+      "sha256": "a9962fa77acd94c4378fcd747a1ba4e9d803173e94102a6bf503d59683b6439d",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/tablet-vi-optimization-diagnostics-clipped.png",
+      "width": 748,
+      "height": 3120,
+      "sha256": "e8f9eec4753a2c9ad90b17675b5b174334107c3b4fe568d506db0877f64df2fc",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/tablet-vi-optimization-diagnostics-nonfinite.png",
+      "width": 748,
+      "height": 2719,
+      "sha256": "4a47e22b78b6ab5011475951ab558939de065fbb5238ffd7acf67fb64b320daa",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/tablet-vi-optimization-diagnostics.png",
+      "width": 748,
+      "height": 2783,
+      "sha256": "5dd3b451ebd0418b20998a99a3c600d0c25da32958bfd36f1b66efcec487aabf",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/tablet-vi-stochastic-mini-batch-descent-full.png",
+      "width": 748,
+      "height": 2750,
+      "sha256": "2c0f80644fa7b90cec5be460778216d7c4dd58a2b8e76d357e1f841c5897ea87",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-optimization.spec.ts/tablet-vi-stochastic-mini-batch-descent.png",
+      "width": 748,
+      "height": 2689,
+      "sha256": "28a83c6ac0c440b7921fe97908de22076aca9992bac871eb5a51b4818915e30d",
+      "review": "Agent B individual Linux review in Blocks A/B/C"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual.spec.ts/desktop-contents-fold.png",
+      "width": 1440,
+      "height": 900,
+      "sha256": "9abd2ab7274214d67204007f605077ef9c2e0fd399d5972e3bfba65edef533a4",
+      "review": "Agent B individual combined 79/97 publication review"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual.spec.ts/desktop-map.png",
+      "width": 1440,
+      "height": 900,
+      "sha256": "70f1eea7d612e666b0f1f1a2d82e62039ca490648f54d3c9ed85f61879684ca5",
+      "review": "Agent B individual combined 79/97 publication review"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual.spec.ts/mobile-contents-fold.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "dca257a1110c2c6d13a4bb1dc4860f677f86cc66fa2793376688d0697a04c566",
+      "review": "Agent B individual combined 79/97 publication review"
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual.spec.ts/mobile-map.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "131c5c67b6367e3335f293bae945b8a7435d8bc6dbfa10d32e16addadf59d6c0",
+      "review": "Agent B individual combined 79/97 publication review"
+    }
+  ]
+}
