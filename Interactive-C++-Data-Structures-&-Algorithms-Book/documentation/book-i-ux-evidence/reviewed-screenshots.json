@@ -1,0 +1,67 @@
+{
+  "reviewed_individually": 38,
+  "viewports": {
+    "desktop": [
+      1440,
+      1000
+    ],
+    "tablet": [
+      1024,
+      900
+    ],
+    "mobile": [
+      390,
+      844
+    ]
+  },
+  "checks": [
+    "hierarchy",
+    "wrapping",
+    "overflow",
+    "overlap",
+    "light/dark palettes",
+    "thumbnail motifs",
+    "current Part and chapter",
+    "mobile dialog"
+  ],
+  "sha256": {
+    "desktop/contents-dark.png": "49fbef3195171d2160b6cd3a5ac7fb0a8e94e9668ada20c49fb28bc69b3de593",
+    "desktop/contents-light.png": "3af63e55df6eea56b467d1585d26c67c4e128f01f1cd9f98266d54f5ef4e1341",
+    "desktop/foundations-dark.png": "9731894a9c65849aa484dc724d6d641197036cc06df9d708bb4137f89b3e7f79",
+    "desktop/foundations-light.png": "83ebde23ce886e7aed7e2773d5a5da373d7299de1777a6d2256d146ee3474bdb",
+    "desktop/graphs-chapter-dark.png": "34eb0d814f90011a2dc534ba46008a3ca83ee08ae5d8e3aa177fb202605ef165",
+    "desktop/graphs-chapter-light.png": "ce298526e1ccbeae688829aa283b5dbcdb827c59c541b451c80dd26418a7dd1f",
+    "desktop/graphs-map-dark.png": "01b81c09547f65a555f10b7f48a260ade0daf23466df444a81687a92130ddf11",
+    "desktop/graphs-map-light.png": "3faf8ea4477d3e960c6e7d9ce9feefe82edf5e3a71ca763dcb574cdc98bcc3da",
+    "desktop/home-dark.png": "79e48cd28b61a892ae858f35a9e17e29b9a24f86186da10b98651545d410320e",
+    "desktop/home-light.png": "dd658034cd196d9b29093f18156d1926c3e8be524c10aac884ff1fef9461cc0b",
+    "desktop/interactive-dark.png": "88f27bec8ca9c445927587bacbe2a15ddf739a3eb6ad8ea8869c8d5c7f98bdba",
+    "desktop/interactive-light.png": "51656482cb055402c6f7e56721bec8fa343e49f164f238b0f237c4ccf51d1187",
+    "mobile/chapter-navigation-dark.png": "4142671c0304d3801feab1c0ca203b48c8bc8c1e597f59a47462d06189a960a9",
+    "mobile/chapter-navigation-light.png": "2ee8269e5e738082f61a58244362c084757a437f0ccc0e9cc4a305d3e040ee2d",
+    "mobile/contents-dark.png": "1979128f8e4c036c3e3eb013594622e7b6ba0759d8950d88d8a9ac29e1a7803a",
+    "mobile/contents-light.png": "551b6fbe9b8368981347de4227943ae6c9f49079dd3eb85bbd770d1d7ce73c39",
+    "mobile/foundations-dark.png": "9bb4f11a18aa8857916b26d16e804af05f79108ff024f2f21a31c8fe3bac2263",
+    "mobile/foundations-light.png": "0dd2c7519cb69e525c8c6b036fe4d316cf4405daf51fd506a724ad8d8e17115f",
+    "mobile/graphs-chapter-dark.png": "a49c7ce9eb79511acc2d0f3ef299964ffd622beae06e1c92a54a338ca2762a90",
+    "mobile/graphs-chapter-light.png": "bfbf45c28eb0335be1dc53518fb77b27836e9887457437125ea113eb93a65534",
+    "mobile/graphs-map-dark.png": "1703f9fa5287b3256d46df6573ee9040cd4fc28c862b885401ec048a4bd386cf",
+    "mobile/graphs-map-light.png": "ca5b52bf6e260bdecbf969a7d2e9747af10c8ec247d43a2760180fcd64379c59",
+    "mobile/home-dark.png": "0c19493f1d73ccd47acc9e331d098d06f91cedc41493286e605cf11cb40345b2",
+    "mobile/home-light.png": "a1f5d18ca00da3404f76c23aee59b6d1d3e983f5ef4f6d8bcd588afa215ea6be",
+    "mobile/interactive-dark.png": "787b59eab797e9cb6b7a520d7d62a0c1f8b92e2eb5e9d96022b0e2560bcd27dc",
+    "mobile/interactive-light.png": "63332b337a2b24a0955855202b8f65496b1ebf2f480281e80bb5b9658d6b3811",
+    "tablet/contents-dark.png": "ab77758efe9a742ca6ca61c02277592734a5072e92625ef30eff4809053b049e",
+    "tablet/contents-light.png": "f2a0d65e979ac0bcfd2d2388758ab6ced43bc298ddc26d23f277008a47095392",
+    "tablet/foundations-dark.png": "deecc25cfbf24817700439292c3e99c5de3de19cd3f1f29d43492af10ee9a569",
+    "tablet/foundations-light.png": "3029b8b7dc71787c65fabb52d230ba882841f17e35ab692a42da36397ac3b8e2",
+    "tablet/graphs-chapter-dark.png": "5d02f7fb17c34bb96b685c1db9fa9644bfa821a6d49da8dba52a60dab5411701",
+    "tablet/graphs-chapter-light.png": "1df888a9b8ac2f0a8f23b7571d21a79d0bd6e97580b939111d463faf0b9f1a3b",
+    "tablet/graphs-map-dark.png": "cce7dead75b67db9e9962a2f3c0db2e7f33e9444e2ced8a874aa39ad1f79dfe0",
+    "tablet/graphs-map-light.png": "205824c8a01afc768d8e8c67f7d2d7e77ecfdf3e584bdba8cd15b59d11a6a1d2",
+    "tablet/home-dark.png": "13654668b5431a7b59615212e6239803ae6a26c016d52af6e79cf3494dd4b342",
+    "tablet/home-light.png": "67a5ffd336b5374cc04d6942cf70e27d6dce20e7c912e77b316702da5253d2a9",
+    "tablet/interactive-dark.png": "3642eeaf65ba696a4a8492cb2f6e025f39f4d7b73e87ece8373f27c0aff8ad8d",
+    "tablet/interactive-light.png": "b0d011c8240c8c126a5e8c4182c3eb72b49b731554b0d1453124558e9af8a260"
+  }
+}

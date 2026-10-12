@@ -1,0 +1,171 @@
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme1n1p3  190G  161G   20G  90% /
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme1n1p3  190G  161G   20G  90% /
+
+> interactive-cpp-book@0.1.0 test:e2e
+> playwright test tests/e2e/part-first.spec.ts tests/e2e/book.spec.ts tests/e2e/foundations.spec.ts tests/e2e/pwa.spec.ts tests/e2e/part-ii-integration.spec.ts tests/e2e/parts-iv-v-integration.spec.ts tests/e2e/hashing-integration.spec.ts --grep-invert visual regression --workers=3 --reporter=list,html,json
+
+[WebServer] (node:634191) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 114 tests using 3 workers
+
+(node:634256) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:634255) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:634254) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓    1 [desktop] › tests/e2e/book.spec.ts:39:1 › Escape closes search with a populated query and restores focus (828ms)
+  ✓    2 [desktop] › tests/e2e/book.spec.ts:49:1 › head insertion preserves old head until publication and supports exact reverse (1.1s)
+  ✓    3 [desktop] › tests/e2e/book.spec.ts:10:1 › book navigation, search, persistent theme and progress (1.6s)
+  ✓    6 [desktop] › tests/e2e/book.spec.ts:113:1 › pointer inspector, memory ordering and SVG keyboard operation (723ms)
+  ✓    5 [desktop] › tests/e2e/book.spec.ts:91:1 › head, middle and tail deletion expose ended lifetime without stale fields (1.9s)
+  ✓    8 [desktop] › tests/e2e/book.spec.ts:153:1 › custom data, first match semantics, failed searches and visible input errors (1.0s)
+  ✓    7 [desktop] › tests/e2e/book.spec.ts:132:1 › play, pause, speed, scrubber and replay stay synchronized (1.6s)
+  ✓   10 [desktop] › tests/e2e/book.spec.ts:188:1 › complexity changes measured visits and exercises reveal answers (733ms)
+  ✓    4 [desktop] › tests/e2e/book.spec.ts:71:1 › all six operations work on standard, single-node, empty and duplicate lists (4.1s)
+  ✓    9 [desktop] › tests/e2e/book.spec.ts:174:1 › Break-It detects each fault and restores valid state (1.0s)
+  ✓   12 [desktop] › tests/e2e/book.spec.ts:215:1 › canonical header and example are downloadable (495ms)
+  ✓   13 [desktop] › tests/e2e/book.spec.ts:240:1 › rejected input never changes the loaded operation or source panel (626ms)
+  -   14 [desktop] › tests/e2e/book.spec.ts:251:1 › mobile playback stays visible with the diagram and echoes the exact source line
+  ✓   15 [desktop] › tests/e2e/book.spec.ts:262:1 › pointer paths avoid unrelated objects in logical and memory layouts (1.7s)
+  ✓   17 [desktop] › tests/e2e/hashing-integration.spec.ts:8:3 › 18: Part IV sections, keyboard navigation and contained memory view (793ms)
+  ✓   11 [desktop] › tests/e2e/book.spec.ts:202:1 › no page overflow, no runtime errors, and usable light and dark accessibility (4.0s)
+  ✓   18 [desktop] › tests/e2e/hashing-integration.spec.ts:8:3 › 19: Part IV sections, keyboard navigation and contained memory view (996ms)
+  ✓   19 [desktop] › tests/e2e/hashing-integration.spec.ts:8:3 › 20: Part IV sections, keyboard navigation and contained memory view (1.2s)
+  ✓   20 [desktop] › tests/e2e/hashing-integration.spec.ts:8:3 › 21: Part IV sections, keyboard navigation and contained memory view (1.2s)
+  ✓   21 [desktop] › tests/e2e/hashing-integration.spec.ts:8:3 › 22: Part IV sections, keyboard navigation and contained memory view (1.4s)
+  ✓   22 [desktop] › tests/e2e/hashing-integration.spec.ts:8:3 › 23: Part IV sections, keyboard navigation and contained memory view (1.2s)
+  ✓   23 [desktop] › tests/e2e/hashing-integration.spec.ts:41:1 › Part IV canonical downloads preserve every local dependency and hide fixtures (119ms)
+  ✓   24 [desktop] › tests/e2e/hashing-integration.spec.ts:59:1 › Part IV joins search, progress and sequential navigation through Chapter 23 (3.6s)
+  ✓   25 [desktop] › tests/e2e/part-first.spec.ts:10:1 › homepage offers ten Parts, Foundations and the full map without chapter initialization (4.9s)
+  ✓   27 [desktop] › tests/e2e/part-first.spec.ts:72:1 › shared search and theme work on home and contents without progress writes (1.4s)
+  ✓   16 [desktop] › tests/e2e/foundations.spec.ts:4:1 › Chapter 0 joins the book and its mechanics work by keyboard and touch (12.5s)
+  ✓   26 [desktop] › tests/e2e/part-first.spec.ts:43:1 › contents preserves every chapter URL, title, section and adjacent link (3.9s)
+  ✓   28 [desktop] › tests/e2e/part-first.spec.ts:105:1 › current-Part dialog identifies the chapter and supports keyboard focus and section jumps (1.5s)
+  ✓   29 [desktop] › tests/e2e/part-first.spec.ts:142:1 › chapter progress keeps stored identities through the homepage, contents and reset (1.8s)
+  ✓   30 [desktop] › tests/e2e/part-first.spec.ts:169:1 › homepage, contents and a large Part are accessible in both themes and responsive (5.4s)
+  ✓   33 [desktop] › tests/e2e/part-ii-integration.spec.ts:48:1 › Part II canonical downloads contain only executable learner sources (64ms)
+  ✓   32 [desktop] › tests/e2e/part-ii-integration.spec.ts:11:1 › Part II navigation, search and progress connect all four chapters (5.3s)
+  ✓   34 [desktop] › tests/e2e/parts-iv-v-integration.spec.ts:5:1 › canonical registry preserves Chapters 1–50 and includes current later Parts (1.3s)
+  ✓   36 [desktop] › tests/e2e/parts-iv-v-integration.spec.ts:66:1 › Parts VI and VII preserve progress and continue to the next implemented Part (2.0s)
+  ✓   35 [desktop] › tests/e2e/parts-iv-v-integration.spec.ts:32:1 › hashing and graphs share navigation, persistent progress, search and theme (2.8s)
+  ✓   38 [desktop] › tests/e2e/pwa.spec.ts:112:1 › navigation release replaces the old homepage cache (872ms)
+(node:640052) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   37 [desktop] › tests/e2e/pwa.spec.ts:3:1 › production PWA scopes to its base and serves visited pages offline (2.4s)
+(node:640236) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   39 [tablet] › tests/e2e/book.spec.ts:10:1 › book navigation, search, persistent theme and progress (1.6s)
+  ✓   40 [tablet] › tests/e2e/book.spec.ts:39:1 › Escape closes search with a populated query and restores focus (767ms)
+  ✓   41 [tablet] › tests/e2e/book.spec.ts:49:1 › head insertion preserves old head until publication and supports exact reverse (932ms)
+  ✓   43 [tablet] › tests/e2e/book.spec.ts:91:1 › head, middle and tail deletion expose ended lifetime without stale fields (1.8s)
+  ✓   31 [desktop] › tests/e2e/part-first.spec.ts:185:1 › chapter shell screenshots preserve Foundations and interactive chapter layouts (15.1s)
+(node:640920) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   44 [tablet] › tests/e2e/book.spec.ts:113:1 › pointer inspector, memory ordering and SVG keyboard operation (831ms)
+  ✓   42 [tablet] › tests/e2e/book.spec.ts:71:1 › all six operations work on standard, single-node, empty and duplicate lists (4.6s)
+  ✓   45 [tablet] › tests/e2e/book.spec.ts:153:1 › custom data, first match semantics, failed searches and visible input errors (1.3s)
+  ✓   48 [tablet] › tests/e2e/book.spec.ts:188:1 › complexity changes measured visits and exercises reveal answers (649ms)
+  ✓   46 [tablet] › tests/e2e/book.spec.ts:132:1 › play, pause, speed, scrubber and replay stay synchronized (1.8s)
+  ✓   47 [tablet] › tests/e2e/book.spec.ts:174:1 › Break-It detects each fault and restores valid state (958ms)
+  ✓   50 [tablet] › tests/e2e/book.spec.ts:215:1 › canonical header and example are downloadable (444ms)
+  -   52 [tablet] › tests/e2e/book.spec.ts:251:1 › mobile playback stays visible with the diagram and echoes the exact source line
+  ✓   51 [tablet] › tests/e2e/book.spec.ts:240:1 › rejected input never changes the loaded operation or source panel (659ms)
+  ✓   53 [tablet] › tests/e2e/book.spec.ts:262:1 › pointer paths avoid unrelated objects in logical and memory layouts (1.7s)
+  ✓   55 [tablet] › tests/e2e/hashing-integration.spec.ts:8:3 › 18: Part IV sections, keyboard navigation and contained memory view (869ms)
+  ✓   49 [tablet] › tests/e2e/book.spec.ts:202:1 › no page overflow, no runtime errors, and usable light and dark accessibility (4.0s)
+  ✓   56 [tablet] › tests/e2e/hashing-integration.spec.ts:8:3 › 19: Part IV sections, keyboard navigation and contained memory view (1.0s)
+  ✓   57 [tablet] › tests/e2e/hashing-integration.spec.ts:8:3 › 20: Part IV sections, keyboard navigation and contained memory view (1.2s)
+  ✓   58 [tablet] › tests/e2e/hashing-integration.spec.ts:8:3 › 21: Part IV sections, keyboard navigation and contained memory view (1.2s)
+  ✓   59 [tablet] › tests/e2e/hashing-integration.spec.ts:8:3 › 22: Part IV sections, keyboard navigation and contained memory view (1.2s)
+  ✓   61 [tablet] › tests/e2e/hashing-integration.spec.ts:41:1 › Part IV canonical downloads preserve every local dependency and hide fixtures (89ms)
+  ✓   60 [tablet] › tests/e2e/hashing-integration.spec.ts:8:3 › 23: Part IV sections, keyboard navigation and contained memory view (942ms)
+  ✓   62 [tablet] › tests/e2e/hashing-integration.spec.ts:59:1 › Part IV joins search, progress and sequential navigation through Chapter 23 (3.6s)
+  ✓   54 [tablet] › tests/e2e/foundations.spec.ts:4:1 › Chapter 0 joins the book and its mechanics work by keyboard and touch (10.3s)
+  ✓   63 [tablet] › tests/e2e/part-first.spec.ts:10:1 › homepage offers ten Parts, Foundations and the full map without chapter initialization (4.7s)
+  ✓   65 [tablet] › tests/e2e/part-first.spec.ts:72:1 › shared search and theme work on home and contents without progress writes (1.2s)
+  ✓   66 [tablet] › tests/e2e/part-first.spec.ts:105:1 › current-Part dialog identifies the chapter and supports keyboard focus and section jumps (1.3s)
+  ✓   64 [tablet] › tests/e2e/part-first.spec.ts:43:1 › contents preserves every chapter URL, title, section and adjacent link (3.7s)
+  ✓   67 [tablet] › tests/e2e/part-first.spec.ts:142:1 › chapter progress keeps stored identities through the homepage, contents and reset (1.7s)
+  ✓   68 [tablet] › tests/e2e/part-first.spec.ts:169:1 › homepage, contents and a large Part are accessible in both themes and responsive (5.4s)
+  ✓   71 [tablet] › tests/e2e/part-ii-integration.spec.ts:48:1 › Part II canonical downloads contain only executable learner sources (71ms)
+  ✓   72 [tablet] › tests/e2e/parts-iv-v-integration.spec.ts:5:1 › canonical registry preserves Chapters 1–50 and includes current later Parts (1.3s)
+  ✓   70 [tablet] › tests/e2e/part-ii-integration.spec.ts:11:1 › Part II navigation, search and progress connect all four chapters (5.5s)
+  ✓   74 [tablet] › tests/e2e/parts-iv-v-integration.spec.ts:66:1 › Parts VI and VII preserve progress and continue to the next implemented Part (2.1s)
+  ✓   73 [tablet] › tests/e2e/parts-iv-v-integration.spec.ts:32:1 › hashing and graphs share navigation, persistent progress, search and theme (2.9s)
+  ✓   76 [tablet] › tests/e2e/pwa.spec.ts:112:1 › navigation release replaces the old homepage cache (875ms)
+(node:642443) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   75 [tablet] › tests/e2e/pwa.spec.ts:3:1 › production PWA scopes to its base and serves visited pages offline (2.4s)
+(node:642540) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   77 [mobile] › tests/e2e/book.spec.ts:10:1 › book navigation, search, persistent theme and progress (1.4s)
+  ✓   78 [mobile] › tests/e2e/book.spec.ts:39:1 › Escape closes search with a populated query and restores focus (666ms)
+  ✓   79 [mobile] › tests/e2e/book.spec.ts:49:1 › head insertion preserves old head until publication and supports exact reverse (788ms)
+  ✓   69 [tablet] › tests/e2e/part-first.spec.ts:185:1 › chapter shell screenshots preserve Foundations and interactive chapter layouts (12.7s)
+(node:642741) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   81 [mobile] › tests/e2e/book.spec.ts:91:1 › head, middle and tail deletion expose ended lifetime without stale fields (1.7s)
+  ✓   82 [mobile] › tests/e2e/book.spec.ts:113:1 › pointer inspector, memory ordering and SVG keyboard operation (820ms)
+  ✓   84 [mobile] › tests/e2e/book.spec.ts:153:1 › custom data, first match semantics, failed searches and visible input errors (954ms)
+  ✓   80 [mobile] › tests/e2e/book.spec.ts:71:1 › all six operations work on standard, single-node, empty and duplicate lists (3.8s)
+  ✓   83 [mobile] › tests/e2e/book.spec.ts:132:1 › play, pause, speed, scrubber and replay stay synchronized (1.5s)
+  ✓   85 [mobile] › tests/e2e/book.spec.ts:174:1 › Break-It detects each fault and restores valid state (879ms)
+  ✓   86 [mobile] › tests/e2e/book.spec.ts:188:1 › complexity changes measured visits and exercises reveal answers (609ms)
+  ✓   88 [mobile] › tests/e2e/book.spec.ts:215:1 › canonical header and example are downloadable (339ms)
+  ✓   89 [mobile] › tests/e2e/book.spec.ts:240:1 › rejected input never changes the loaded operation or source panel (497ms)
+  ✓   90 [mobile] › tests/e2e/book.spec.ts:251:1 › mobile playback stays visible with the diagram and echoes the exact source line (490ms)
+  ✓   87 [mobile] › tests/e2e/book.spec.ts:202:1 › no page overflow, no runtime errors, and usable light and dark accessibility (2.5s)
+  ✓   91 [mobile] › tests/e2e/book.spec.ts:262:1 › pointer paths avoid unrelated objects in logical and memory layouts (1.5s)
+  ✓   93 [mobile] › tests/e2e/hashing-integration.spec.ts:8:3 › 18: Part IV sections, keyboard navigation and contained memory view (790ms)
+  ✓   94 [mobile] › tests/e2e/hashing-integration.spec.ts:8:3 › 19: Part IV sections, keyboard navigation and contained memory view (891ms)
+  ✓   95 [mobile] › tests/e2e/hashing-integration.spec.ts:8:3 › 20: Part IV sections, keyboard navigation and contained memory view (1.0s)
+  ✓   96 [mobile] › tests/e2e/hashing-integration.spec.ts:8:3 › 21: Part IV sections, keyboard navigation and contained memory view (1.1s)
+  ✓   97 [mobile] › tests/e2e/hashing-integration.spec.ts:8:3 › 22: Part IV sections, keyboard navigation and contained memory view (1.1s)
+  ✓   98 [mobile] › tests/e2e/hashing-integration.spec.ts:8:3 › 23: Part IV sections, keyboard navigation and contained memory view (839ms)
+  ✓   99 [mobile] › tests/e2e/hashing-integration.spec.ts:41:1 › Part IV canonical downloads preserve every local dependency and hide fixtures (89ms)
+  ✓  100 [mobile] › tests/e2e/hashing-integration.spec.ts:59:1 › Part IV joins search, progress and sequential navigation through Chapter 23 (3.1s)
+  ✓  101 [mobile] › tests/e2e/part-first.spec.ts:10:1 › homepage offers ten Parts, Foundations and the full map without chapter initialization (4.3s)
+  ✓   92 [mobile] › tests/e2e/foundations.spec.ts:4:1 › Chapter 0 joins the book and its mechanics work by keyboard and touch (9.1s)
+  ✓  103 [mobile] › tests/e2e/part-first.spec.ts:72:1 › shared search and theme work on home and contents without progress writes (1.2s)
+  ✓  104 [mobile] › tests/e2e/part-first.spec.ts:105:1 › current-Part dialog identifies the chapter and supports keyboard focus and section jumps (1.4s)
+  ✓  102 [mobile] › tests/e2e/part-first.spec.ts:43:1 › contents preserves every chapter URL, title, section and adjacent link (3.5s)
+  ✓  105 [mobile] › tests/e2e/part-first.spec.ts:142:1 › chapter progress keeps stored identities through the homepage, contents and reset (1.7s)
+  ✓  106 [mobile] › tests/e2e/part-first.spec.ts:169:1 › homepage, contents and a large Part are accessible in both themes and responsive (4.5s)
+  ✓  109 [mobile] › tests/e2e/part-ii-integration.spec.ts:48:1 › Part II canonical downloads contain only executable learner sources (72ms)
+  ✓  110 [mobile] › tests/e2e/parts-iv-v-integration.spec.ts:5:1 › canonical registry preserves Chapters 1–50 and includes current later Parts (1.2s)
+  ✓  108 [mobile] › tests/e2e/part-ii-integration.spec.ts:11:1 › Part II navigation, search and progress connect all four chapters (5.1s)
+  ✓  112 [mobile] › tests/e2e/parts-iv-v-integration.spec.ts:66:1 › Parts VI and VII preserve progress and continue to the next implemented Part (2.1s)
+  ✓  111 [mobile] › tests/e2e/parts-iv-v-integration.spec.ts:32:1 › hashing and graphs share navigation, persistent progress, search and theme (2.8s)
+  ✓  114 [mobile] › tests/e2e/pwa.spec.ts:112:1 › navigation release replaces the old homepage cache (884ms)
+  ✓  113 [mobile] › tests/e2e/pwa.spec.ts:3:1 › production PWA scopes to its base and serves visited pages offline (2.4s)
+  ✓  107 [mobile] › tests/e2e/part-first.spec.ts:185:1 › chapter shell screenshots preserve Foundations and interactive chapter layouts (11.6s)
+
+  2 skipped
+  112 passed (1.5m)
+	Command being timed: "env BOOK_TEST_PORT=4378 BOOK_TEST_DIST=/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/dist ASTRO_TELEMETRY_DISABLED=1 PLAYWRIGHT_JSON_OUTPUT_NAME=/tmp/book-i-ux-production.json PLAYWRIGHT_HTML_OPEN=never npm run test:e2e -- tests/e2e/part-first.spec.ts tests/e2e/book.spec.ts tests/e2e/foundations.spec.ts tests/e2e/pwa.spec.ts tests/e2e/part-ii-integration.spec.ts tests/e2e/parts-iv-v-integration.spec.ts tests/e2e/hashing-integration.spec.ts --grep-invert visual regression --workers=3 --reporter=list,html,json"
+	User time (seconds): 121.53
+	System time (seconds): 31.01
+	Percent of CPU this job got: 166%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:31.74
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 708468
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 11697
+	Minor (reclaiming a frame) page faults: 8499719
+	Voluntary context switches: 1046088
+	Involuntary context switches: 55351
+	Swaps: 0
+	File system inputs: 72
+	File system outputs: 4094896
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

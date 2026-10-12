@@ -1,0 +1,418 @@
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme1n1p3  190G  161G   20G  90% /
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme1n1p3  190G  161G   20G  90% /
+
+> interactive-cpp-book@0.1.0 build
+> astro build
+
+01:40:57 [content] Syncing content
+01:40:57 [content] Synced content
+01:40:57 [types] Generated 248ms
+01:40:57 [build] output: "static"
+01:40:57 [build] mode: "static"
+01:40:57 [build] directory: /work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/dist/
+01:40:57 [build] Collecting build info...
+01:40:57 [build] ✓ Completed in 266ms.
+01:40:57 [build] Building static entrypoints...
+01:41:00 [vite] ✓ built in 2.57s
+01:41:00 [build] ✓ Completed in 2.59s.
+
+ building client (vite)
+01:41:00 [vite] transforming...
+01:41:00 [vite] ✓ 188 modules transformed.
+01:41:00 [vite] rendering chunks...
+01:41:00 [vite] computing gzip size...
+01:41:00 [vite] dist/_astro/HashDistribution.astro_astro_type_script_index_0_lang.tRZTA7_e.js             0.16 kB │ gzip:  0.14 kB
+01:41:00 [vite] dist/_astro/SpscPreview.astro_astro_type_script_index_0_lang.rxmXy3nM.js                  0.21 kB │ gzip:  0.16 kB
+01:41:00 [vite] dist/_astro/TechniquePreview.astro_astro_type_script_index_0_lang.D_adZZaW.js             0.21 kB │ gzip:  0.17 kB
+01:41:00 [vite] dist/_astro/SpatialLab.astro_astro_type_script_index_0_lang.CDI1OR0e.js                   0.21 kB │ gzip:  0.17 kB
+01:41:00 [vite] dist/_astro/SpatialPreview.astro_astro_type_script_index_0_lang.CDI1OR0e.js               0.21 kB │ gzip:  0.17 kB
+01:41:00 [vite] dist/_astro/SystemsMemoryPreview.astro_astro_type_script_index_0_lang.CrUPcvTp.js         0.21 kB │ gzip:  0.17 kB
+01:41:00 [vite] dist/_astro/SystemsOrganizationPreview.astro_astro_type_script_index_0_lang.BBOkwi_k.js   0.22 kB │ gzip:  0.17 kB
+01:41:00 [vite] dist/_astro/hash.j9zjWU-h.js                                                              0.23 kB │ gzip:  0.21 kB
+01:41:00 [vite] dist/_astro/GraphDagLab.astro_astro_type_script_index_0_lang.BvoN2ip3.js                  0.24 kB │ gzip:  0.18 kB
+01:41:00 [vite] dist/_astro/GraphStructureLab.astro_astro_type_script_index_0_lang.BvoN2ip3.js            0.24 kB │ gzip:  0.18 kB
+01:41:00 [vite] dist/_astro/GraphWeightedLab.astro_astro_type_script_index_0_lang.BvoN2ip3.js             0.24 kB │ gzip:  0.18 kB
+01:41:00 [vite] dist/_astro/BTreeLab.astro_astro_type_script_index_0_lang.Cymr7f9V.js                     0.29 kB │ gzip:  0.20 kB
+01:41:00 [vite] dist/_astro/BinaryTreeLab.astro_astro_type_script_index_0_lang.Cymr7f9V.js                0.29 kB │ gzip:  0.20 kB
+01:41:00 [vite] dist/_astro/BstLab.astro_astro_type_script_index_0_lang.Cymr7f9V.js                       0.29 kB │ gzip:  0.20 kB
+01:41:00 [vite] dist/_astro/RedBlackLab.astro_astro_type_script_index_0_lang.Cymr7f9V.js                  0.29 kB │ gzip:  0.20 kB
+01:41:00 [vite] dist/_astro/TraversalLab.astro_astro_type_script_index_0_lang.Cymr7f9V.js                 0.29 kB │ gzip:  0.20 kB
+01:41:00 [vite] dist/_astro/TreeMutationLab.astro_astro_type_script_index_0_lang.Cymr7f9V.js              0.29 kB │ gzip:  0.20 kB
+01:41:00 [vite] dist/_astro/TrieLab.astro_astro_type_script_index_0_lang.Cymr7f9V.js                      0.29 kB │ gzip:  0.20 kB
+01:41:00 [vite] dist/_astro/HashFundamentalsLab.astro_astro_type_script_index_0_lang.GNRjSFcR.js          0.35 kB │ gzip:  0.22 kB
+01:41:00 [vite] dist/_astro/OpenAddressingLab.astro_astro_type_script_index_0_lang.GNRjSFcR.js            0.35 kB │ gzip:  0.22 kB
+01:41:00 [vite] dist/_astro/RobinHoodLab.astro_astro_type_script_index_0_lang.GNRjSFcR.js                 0.35 kB │ gzip:  0.22 kB
+01:41:00 [vite] dist/_astro/UnorderedMapLab.astro_astro_type_script_index_0_lang.GNRjSFcR.js              0.35 kB │ gzip:  0.22 kB
+01:41:00 [vite] dist/_astro/TraceLab.astro_astro_type_script_index_0_lang.fXcWxE-Q.js                     0.57 kB │ gzip:  0.30 kB
+01:41:00 [vite] dist/_astro/DoublyComplexity.astro_astro_type_script_index_0_lang.DsthGpHT.js             0.61 kB │ gzip:  0.40 kB
+01:41:00 [vite] dist/_astro/GraphStructureBreakIt.astro_astro_type_script_index_0_lang.BIXXNp6q.js        0.62 kB │ gzip:  0.40 kB
+01:41:00 [vite] dist/_astro/HeapExplorer.astro_astro_type_script_index_0_lang.qXbSS-Yp.js                 0.66 kB │ gzip:  0.44 kB
+01:41:00 [vite] dist/_astro/HashPolicyBreakIt.astro_astro_type_script_index_0_lang.BqZHDNL7.js            0.77 kB │ gzip:  0.44 kB
+01:41:00 [vite] dist/_astro/playback.DXC1HbBv.js                                                          0.93 kB │ gzip:  0.41 kB
+01:41:00 [vite] dist/_astro/PriorityBreakIt.astro_astro_type_script_index_0_lang.CJtEu4V0.js              1.07 kB │ gzip:  0.57 kB
+01:41:00 [vite] dist/_astro/HashProbingExplorer.astro_astro_type_script_index_0_lang.DNcfuKBW.js          1.08 kB │ gzip:  0.68 kB
+01:41:00 [vite] dist/_astro/PriorityExplorer.astro_astro_type_script_index_0_lang.BIhgUXhF.js             1.12 kB │ gzip:  0.58 kB
+01:41:00 [vite] dist/_astro/ComplexityExplorer.astro_astro_type_script_index_0_lang.BYxPuGH5.js           1.22 kB │ gzip:  0.69 kB
+01:41:00 [vite] dist/_astro/RedBlackBreakIt.astro_astro_type_script_index_0_lang.cyBFXz40.js              1.24 kB │ gzip:  0.68 kB
+01:41:00 [vite] dist/_astro/HeapBreakIt.astro_astro_type_script_index_0_lang.DFyYIQmo.js                  1.24 kB │ gzip:  0.64 kB
+01:41:00 [vite] dist/_astro/TreeFoundationsBreakIt.astro_astro_type_script_index_0_lang.BmZoyTex.js       1.26 kB │ gzip:  0.70 kB
+01:41:00 [vite] dist/_astro/PointKeyContract.astro_astro_type_script_index_0_lang.DG1ZBQ2i.js             1.37 kB │ gzip:  0.79 kB
+01:41:00 [vite] dist/_astro/inspector.Bn2d4pZ6.js                                                         1.44 kB │ gzip:  0.71 kB
+01:41:00 [vite] dist/_astro/DoublyBreakIt.astro_astro_type_script_index_0_lang.PC4idU0P.js                1.55 kB │ gzip:  0.77 kB
+01:41:00 [vite] dist/_astro/invariants.BKfF-745.js                                                        1.63 kB │ gzip:  0.81 kB
+01:41:00 [vite] dist/_astro/BreakIt.astro_astro_type_script_index_0_lang.5LuBPfvj.js                      1.70 kB │ gzip:  0.80 kB
+01:41:00 [vite] dist/_astro/QueueBreakIt.astro_astro_type_script_index_0_lang.Cb661NWA.js                 1.84 kB │ gzip:  0.98 kB
+01:41:00 [vite] dist/_astro/AdvancedSortLab.astro_astro_type_script_index_0_lang.Dtp0brJ-.js              2.00 kB │ gzip:  0.99 kB
+01:41:00 [vite] dist/_astro/RingBreakIt.astro_astro_type_script_index_0_lang.DU3CTBBb.js                  2.14 kB │ gzip:  1.10 kB
+01:41:00 [vite] dist/_astro/inspection-diagram.DcYqp_x4.js                                                2.22 kB │ gzip:  0.88 kB
+01:41:00 [vite] dist/_astro/QueueComparison.astro_astro_type_script_index_0_lang.CGuu_u_J.js              2.30 kB │ gzip:  1.08 kB
+01:41:00 [vite] dist/_astro/diagram.4pX0nxTk.js                                                           2.40 kB │ gzip:  1.25 kB
+01:41:00 [vite] dist/_astro/primitives.DDx0tYGv.js                                                        2.44 kB │ gzip:  1.12 kB
+01:41:00 [vite] dist/_astro/MentalModel.astro_astro_type_script_index_0_lang.BO7DPsaT.js                  2.61 kB │ gzip:  1.09 kB
+01:41:00 [vite] dist/_astro/diagram.BgFL4gsU.js                                                           2.76 kB │ gzip:  1.40 kB
+01:41:00 [vite] dist/_astro/HashBreakIt.astro_astro_type_script_index_0_lang.Bweo1haA.js                  2.94 kB │ gzip:  1.51 kB
+01:41:00 [vite] dist/_astro/adapter.DC7iTyi4.js                                                           2.95 kB │ gzip:  1.52 kB
+01:41:00 [vite] dist/_astro/model.BSyRpI_4.js                                                             3.04 kB │ gzip:  1.44 kB
+01:41:00 [vite] dist/_astro/model.BRCu0pNK.js                                                             3.42 kB │ gzip:  1.65 kB
+01:41:00 [vite] dist/_astro/SearchSortLab.astro_astro_type_script_index_0_lang.BSlh6hVe.js                3.88 kB │ gzip:  1.80 kB
+01:41:00 [vite] dist/_astro/model.CykS1TIv.js                                                             4.24 kB │ gzip:  1.91 kB
+01:41:00 [vite] dist/_astro/SortingComplexity.astro_astro_type_script_index_0_lang.CIPCBElO.js            4.38 kB │ gzip:  2.20 kB
+01:41:00 [vite] dist/_astro/adapter.BgJ5OJX1.js                                                           4.47 kB │ gzip:  2.11 kB
+01:41:00 [vite] dist/_astro/model.DYXX4yvL.js                                                             4.51 kB │ gzip:  2.00 kB
+01:41:00 [vite] dist/_astro/trace-lab.BOzal9ry.js                                                         4.53 kB │ gzip:  1.89 kB
+01:41:00 [vite] dist/_astro/TreeComplexity.astro_astro_type_script_index_0_lang.DWUwdqka.js               4.60 kB │ gzip:  2.24 kB
+01:41:00 [vite] dist/_astro/FullSource.astro_astro_type_script_index_0_lang.Bps6LR0n.js                   4.71 kB │ gzip:  1.27 kB
+01:41:00 [vite] dist/_astro/OperationLab.astro_astro_type_script_index_0_lang.Z6Lc6-Z1.js                 5.38 kB │ gzip:  2.30 kB
+01:41:00 [vite] dist/_astro/SiteLayout.astro_astro_type_script_index_0_lang.CVyyj8HP.js                   5.54 kB │ gzip:  2.25 kB
+01:41:00 [vite] dist/_astro/model.DUNe_xGW.js                                                             5.77 kB │ gzip:  2.45 kB
+01:41:00 [vite] dist/_astro/model.CjrAiUgf.js                                                             6.25 kB │ gzip:  2.75 kB
+01:41:00 [vite] dist/_astro/adapter.Bpolmcmi.js                                                           6.80 kB │ gzip:  3.05 kB
+01:41:00 [vite] dist/_astro/model.C8PJTQqh.js                                                             7.30 kB │ gzip:  3.04 kB
+01:41:00 [vite] dist/_astro/diagram.ZCkj8p7b.js                                                           7.70 kB │ gzip:  3.15 kB
+01:41:00 [vite] dist/_astro/presentation.VPgCzzI1.js                                                      8.11 kB │ gzip:  3.61 kB
+01:41:00 [vite] dist/_astro/model.BHaPY-K2.js                                                             8.27 kB │ gzip:  3.33 kB
+01:41:00 [vite] dist/_astro/adapter.WCFI8Q94.js                                                          11.85 kB │ gzip:  4.98 kB
+01:41:00 [vite] dist/_astro/ChainingLab.astro_astro_type_script_index_0_lang.BbaV8F7d.js                 12.57 kB │ gzip:  4.70 kB
+01:41:00 [vite] dist/_astro/adapter.BUVFyAiK.js                                                          12.66 kB │ gzip:  4.26 kB
+01:41:00 [vite] dist/_astro/FoundationsLab.astro_astro_type_script_index_0_lang.a9pi6tdL.js              12.73 kB │ gzip:  4.73 kB
+01:41:00 [vite] dist/_astro/adapter.Bkypadoi.js                                                          14.52 kB │ gzip:  5.54 kB
+01:41:00 [vite] dist/_astro/model.DyeSF7r0.js                                                            14.99 kB │ gzip:  5.62 kB
+01:41:00 [vite] dist/_astro/model.PcnTyDxJ.js                                                            15.22 kB │ gzip:  5.92 kB
+01:41:00 [vite] dist/_astro/SpscLab.astro_astro_type_script_index_0_lang.Bm9Io9uu.js                     18.40 kB │ gzip:  7.01 kB
+01:41:00 [vite] dist/_astro/SystemsMemoryLab.astro_astro_type_script_index_0_lang.BABeZZ6C.js            21.75 kB │ gzip:  8.36 kB
+01:41:00 [vite] dist/_astro/AvlLab.astro_astro_type_script_index_0_lang.BgVzB2EL.js                      22.21 kB │ gzip:  7.40 kB
+01:41:00 [vite] dist/_astro/SystemsOrganizationLab.astro_astro_type_script_index_0_lang.Clp6nfdh.js      22.30 kB │ gzip:  8.72 kB
+01:41:00 [vite] dist/_astro/model.9K7pZm3b.js                                                            24.01 kB │ gzip:  8.93 kB
+01:41:00 [vite] dist/_astro/GraphComplexity.astro_astro_type_script_index_0_lang.Bias0mf_.js             25.78 kB │ gzip:  9.59 kB
+01:41:00 [vite] dist/_astro/StructurePreview.astro_astro_type_script_index_0_lang.iJYcL6mE.js            33.06 kB │ gzip: 11.76 kB
+01:41:00 [vite] dist/_astro/TechniqueLab.astro_astro_type_script_index_0_lang.CTd2PeCI.js                37.33 kB │ gzip: 13.36 kB
+01:41:00 [vite] dist/_astro/SpatialExplorer.astro_astro_type_script_index_0_lang.DNUgeeB0.js             50.19 kB │ gzip: 18.69 kB
+01:41:00 [vite] ✓ built in 479ms
+
+ generating static routes
+01:41:00 ▶ src/pages/chapters/00-cpp-foundations.astro
+01:41:00   └─ /chapters/00-cpp-foundations/index.html (+479ms)
+01:41:01 ▶ src/pages/chapters/01-singly-linked-list.astro
+01:41:01   └─ /chapters/01-singly-linked-list/index.html (+49ms)
+01:41:01 ▶ src/pages/chapters/02-stack.astro
+01:41:01   └─ /chapters/02-stack/index.html (+32ms)
+01:41:01 ▶ src/pages/chapters/03-doubly-linked-list.astro
+01:41:01   └─ /chapters/03-doubly-linked-list/index.html (+30ms)
+01:41:01 ▶ src/pages/chapters/04-memory-pool.astro
+01:41:01   └─ /chapters/04-memory-pool/index.html (+65ms)
+01:41:01 ▶ src/pages/chapters/05-intrusive-list.astro
+01:41:01   └─ /chapters/05-intrusive-list/index.html (+57ms)
+01:41:01 ▶ src/pages/chapters/06-queue-deque.astro
+01:41:01   └─ /chapters/06-queue-deque/index.html (+27ms)
+01:41:01 ▶ src/pages/chapters/07-circular-buffer.astro
+01:41:01   └─ /chapters/07-circular-buffer/index.html (+32ms)
+01:41:01 ▶ src/pages/chapters/08-priority-queue.astro
+01:41:01   └─ /chapters/08-priority-queue/index.html (+25ms)
+01:41:01 ▶ src/pages/chapters/09-binary-heap.astro
+01:41:01   └─ /chapters/09-binary-heap/index.html (+28ms)
+01:41:01 ▶ src/pages/chapters/10-binary-trees.astro
+01:41:01   └─ /chapters/10-binary-trees/index.html (+20ms)
+01:41:01 ▶ src/pages/chapters/11-binary-search-trees.astro
+01:41:01   └─ /chapters/11-binary-search-trees/index.html (+35ms)
+01:41:01 ▶ src/pages/chapters/12-tree-traversal.astro
+01:41:01   └─ /chapters/12-tree-traversal/index.html (+21ms)
+01:41:01 ▶ src/pages/chapters/13-tree-mutation.astro
+01:41:01   └─ /chapters/13-tree-mutation/index.html (+29ms)
+01:41:01 ▶ src/pages/chapters/14-avl-trees.astro
+01:41:01   └─ /chapters/14-avl-trees/index.html (+34ms)
+01:41:01 ▶ src/pages/chapters/15-red-black-trees.astro
+01:41:01   └─ /chapters/15-red-black-trees/index.html (+35ms)
+01:41:01 ▶ src/pages/chapters/16-b-trees.astro
+01:41:01   └─ /chapters/16-b-trees/index.html (+82ms)
+01:41:01 ▶ src/pages/chapters/17-tries.astro
+01:41:01   └─ /chapters/17-tries/index.html (+33ms)
+01:41:01 ▶ src/pages/chapters/18-hashing-fundamentals.astro
+01:41:01   └─ /chapters/18-hashing-fundamentals/index.html (+14ms)
+01:41:01 ▶ src/pages/chapters/19-hash-tables.astro
+01:41:01   └─ /chapters/19-hash-tables/index.html (+18ms)
+01:41:02 ▶ src/pages/chapters/20-separate-chaining.astro
+01:41:02   └─ /chapters/20-separate-chaining/index.html (+35ms)
+01:41:02 ▶ src/pages/chapters/21-open-addressing.astro
+01:41:02   └─ /chapters/21-open-addressing/index.html (+38ms)
+01:41:02 ▶ src/pages/chapters/22-robin-hood-hashing.astro
+01:41:02   └─ /chapters/22-robin-hood-hashing/index.html (+41ms)
+01:41:02 ▶ src/pages/chapters/23-unordered-map.astro
+01:41:02   └─ /chapters/23-unordered-map/index.html (+54ms)
+01:41:02 ▶ src/pages/chapters/24-graph-fundamentals.astro
+01:41:02   └─ /chapters/24-graph-fundamentals/index.html (+30ms)
+01:41:02 ▶ src/pages/chapters/25-adjacency-list-matrix.astro
+01:41:02   └─ /chapters/25-adjacency-list-matrix/index.html (+23ms)
+01:41:02 ▶ src/pages/chapters/26-breadth-first-search.astro
+01:41:02   └─ /chapters/26-breadth-first-search/index.html (+23ms)
+01:41:02 ▶ src/pages/chapters/27-depth-first-search.astro
+01:41:02   └─ /chapters/27-depth-first-search/index.html (+26ms)
+01:41:02 ▶ src/pages/chapters/28-directed-graphs.astro
+01:41:02   └─ /chapters/28-directed-graphs/index.html (+28ms)
+01:41:02 ▶ src/pages/chapters/29-dags.astro
+01:41:02   └─ /chapters/29-dags/index.html (+26ms)
+01:41:02 ▶ src/pages/chapters/30-topological-sort.astro
+01:41:02   └─ /chapters/30-topological-sort/index.html (+25ms)
+01:41:02 ▶ src/pages/chapters/31-connected-components.astro
+01:41:02   └─ /chapters/31-connected-components/index.html (+24ms)
+01:41:02 ▶ src/pages/chapters/32-cycle-detection.astro
+01:41:02   └─ /chapters/32-cycle-detection/index.html (+27ms)
+01:41:02 ▶ src/pages/chapters/33-dijkstra.astro
+01:41:02   └─ /chapters/33-dijkstra/index.html (+52ms)
+01:41:02 ▶ src/pages/chapters/34-bellman-ford.astro
+01:41:02   └─ /chapters/34-bellman-ford/index.html (+34ms)
+01:41:02 ▶ src/pages/chapters/35-minimum-spanning-trees.astro
+01:41:02   └─ /chapters/35-minimum-spanning-trees/index.html (+34ms)
+01:41:02 ▶ src/pages/chapters/36-union-find.astro
+01:41:02   └─ /chapters/36-union-find/index.html (+84ms)
+01:41:02 ▶ src/pages/chapters/37-linear-search.astro
+01:41:02   └─ /chapters/37-linear-search/index.html (+15ms)
+01:41:02 ▶ src/pages/chapters/38-binary-search.astro
+01:41:02   └─ /chapters/38-binary-search/index.html (+29ms)
+01:41:02 ▶ src/pages/chapters/39-sorting-fundamentals.astro
+01:41:02   └─ /chapters/39-sorting-fundamentals/index.html (+18ms)
+01:41:02 ▶ src/pages/chapters/40-elementary-sorts.astro
+01:41:02   └─ /chapters/40-elementary-sorts/index.html (+60ms)
+01:41:02 ▶ src/pages/chapters/41-merge-sort.astro
+01:41:02   └─ /chapters/41-merge-sort/index.html (+33ms)
+01:41:02 ▶ src/pages/chapters/42-quick-sort.astro
+01:41:02   └─ /chapters/42-quick-sort/index.html (+33ms)
+01:41:02 ▶ src/pages/chapters/43-heap-sort.astro
+01:41:02   └─ /chapters/43-heap-sort/index.html (+31ms)
+01:41:02 ▶ src/pages/chapters/44-counting-radix-sort.astro
+01:41:02   └─ /chapters/44-counting-radix-sort/index.html (+45ms)
+01:41:02 ▶ src/pages/chapters/45-recursion.astro
+01:41:02   └─ /chapters/45-recursion/index.html (+22ms)
+01:41:02 ▶ src/pages/chapters/46-backtracking.astro
+01:41:02   └─ /chapters/46-backtracking/index.html (+25ms)
+01:41:02 ▶ src/pages/chapters/47-divide-and-conquer.astro
+01:41:02   └─ /chapters/47-divide-and-conquer/index.html (+29ms)
+01:41:02 ▶ src/pages/chapters/48-greedy-algorithms.astro
+01:41:02   └─ /chapters/48-greedy-algorithms/index.html (+31ms)
+01:41:03 ▶ src/pages/chapters/49-dynamic-programming.astro
+01:41:03   └─ /chapters/49-dynamic-programming/index.html (+40ms)
+01:41:03 ▶ src/pages/chapters/50-memoization-tabulation.astro
+01:41:03   └─ /chapters/50-memoization-tabulation/index.html (+37ms)
+01:41:03 ▶ src/pages/chapters/51-free-lists.astro
+01:41:03   └─ /chapters/51-free-lists/index.html (+45ms)
+01:41:03 ▶ src/pages/chapters/52-arena-allocators.astro
+01:41:03   └─ /chapters/52-arena-allocators/index.html (+33ms)
+01:41:03 ▶ src/pages/chapters/53-object-pools.astro
+01:41:03   └─ /chapters/53-object-pools/index.html (+72ms)
+01:41:03 ▶ src/pages/chapters/54-sparse-sets.astro
+01:41:03   └─ /chapters/54-sparse-sets/index.html (+30ms)
+01:41:03 ▶ src/pages/chapters/55-generational-handles.astro
+01:41:03   └─ /chapters/55-generational-handles/index.html (+42ms)
+01:41:03 ▶ src/pages/chapters/56-ecs-storage.astro
+01:41:03   └─ /chapters/56-ecs-storage/index.html (+42ms)
+01:41:03 ▶ src/pages/chapters/57-dirty-work-lists.astro
+01:41:03   └─ /chapters/57-dirty-work-lists/index.html (+30ms)
+01:41:03 ▶ src/pages/chapters/58-command-buffers.astro
+01:41:03   └─ /chapters/58-command-buffers/index.html (+40ms)
+01:41:03 ▶ src/pages/chapters/59-lock-free-introduction.astro
+01:41:03   └─ /chapters/59-lock-free-introduction/index.html (+25ms)
+01:41:03 ▶ src/pages/chapters/60-spatial-hashing.astro
+01:41:03   └─ /chapters/60-spatial-hashing/index.html (+60ms)
+01:41:03 ▶ src/pages/chapters/61-quadtrees.astro
+01:41:03   └─ /chapters/61-quadtrees/index.html (+56ms)
+01:41:03 ▶ src/pages/chapters/62-octrees.astro
+01:41:03   └─ /chapters/62-octrees/index.html (+57ms)
+01:41:03 ▶ src/pages/chapters/63-kd-trees.astro
+01:41:03   └─ /chapters/63-kd-trees/index.html (+56ms)
+01:41:03 ▶ src/pages/chapters/64-r-trees.astro
+01:41:03   └─ /chapters/64-r-trees/index.html (+60ms)
+01:41:03 ▶ src/pages/chapters/65-bounding-volume-hierarchies.astro
+01:41:03   └─ /chapters/65-bounding-volume-hierarchies/index.html (+53ms)
+01:41:03 ▶ src/pages/chapters/66-broad-phase-spatial-indexing.astro
+01:41:03   └─ /chapters/66-broad-phase-spatial-indexing/index.html (+38ms)
+01:41:03 ▶ src/pages/contents.astro
+01:41:03   └─ /contents/index.html (+6ms)
+01:41:03 ▶ src/pages/index.astro
+01:41:03   └─ /index.html (+7ms)
+01:41:03 λ src/pages/source/SinglyLinkedList.hpp.ts
+01:41:03   └─ /source/SinglyLinkedList.hpp (+1ms)
+01:41:03 λ src/pages/source/[...path].ts
+01:41:03   ├─ /source/chapter-00/CppFoundations.hpp (+1ms)
+01:41:03   ├─ /source/chapter-00/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-02/Stack.hpp (+0ms)
+01:41:03   ├─ /source/chapter-02/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-03/DoublyLinkedList.hpp (+0ms)
+01:41:03   ├─ /source/chapter-03/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-04/Pool.hpp (+0ms)
+01:41:03   ├─ /source/chapter-04/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-05/IntrusiveList.hpp (+0ms)
+01:41:03   ├─ /source/chapter-05/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-06/QueueDeque.hpp (+0ms)
+01:41:03   ├─ /source/chapter-06/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-07/RingBuffer.hpp (+0ms)
+01:41:03   ├─ /source/chapter-07/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-08/PriorityQueue.hpp (+0ms)
+01:41:03   ├─ /source/chapter-08/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-09/BinaryHeap.hpp (+0ms)
+01:41:03   ├─ /source/chapter-09/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-10/BinaryTree.hpp (+0ms)
+01:41:03   ├─ /source/chapter-10/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-11/BinarySearchTree.hpp (+0ms)
+01:41:03   ├─ /source/chapter-11/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-12/Traversal.hpp (+0ms)
+01:41:03   ├─ /source/chapter-12/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-13/Mutation.hpp (+0ms)
+01:41:03   ├─ /source/chapter-13/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-14/AvlTree.hpp (+0ms)
+01:41:03   ├─ /source/chapter-14/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-15/RedBlackTree.hpp (+0ms)
+01:41:03   ├─ /source/chapter-15/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-16/BPlusTree.hpp (+0ms)
+01:41:03   ├─ /source/chapter-16/BTree.hpp (+0ms)
+01:41:03   ├─ /source/chapter-16/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-17/Trie.hpp (+0ms)
+01:41:03   ├─ /source/chapter-17/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-18/TeachingHash.hpp (+0ms)
+01:41:03   ├─ /source/chapter-18/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-19/HashTable.hpp (+0ms)
+01:41:03   ├─ /source/chapter-19/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-20/ChainedMap.hpp (+0ms)
+01:41:03   ├─ /source/chapter-20/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-21/OpenAddressing.hpp (+0ms)
+01:41:03   ├─ /source/chapter-21/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-22/RobinHood.hpp (+0ms)
+01:41:03   ├─ /source/chapter-22/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-23/UnorderedMap.hpp (+0ms)
+01:41:03   ├─ /source/chapter-23/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-24/Graph.hpp (+0ms)
+01:41:03   ├─ /source/chapter-24/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-25/Representations.hpp (+0ms)
+01:41:03   ├─ /source/chapter-25/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-26/BFS.hpp (+0ms)
+01:41:03   ├─ /source/chapter-26/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-27/DFS.hpp (+0ms)
+01:41:03   ├─ /source/chapter-27/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-28/Directed.hpp (+0ms)
+01:41:03   ├─ /source/chapter-28/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-29/Dag.hpp (+0ms)
+01:41:03   ├─ /source/chapter-29/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-30/Kahn.hpp (+0ms)
+01:41:03   ├─ /source/chapter-30/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-31/Components.hpp (+0ms)
+01:41:03   ├─ /source/chapter-31/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-32/Cycles.hpp (+0ms)
+01:41:03   ├─ /source/chapter-32/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-33/Dijkstra.hpp (+0ms)
+01:41:03   ├─ /source/chapter-33/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-34/BellmanFord.hpp (+0ms)
+01:41:03   ├─ /source/chapter-34/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-35/Kruskal.hpp (+0ms)
+01:41:03   ├─ /source/chapter-35/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-36/UnionFind.hpp (+0ms)
+01:41:03   ├─ /source/chapter-36/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-37/LinearSearch.hpp (+0ms)
+01:41:03   ├─ /source/chapter-37/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-38/BinarySearch.hpp (+0ms)
+01:41:03   ├─ /source/chapter-38/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-39/Fundamentals.hpp (+0ms)
+01:41:03   ├─ /source/chapter-39/SortState.hpp (+0ms)
+01:41:03   ├─ /source/chapter-39/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-40/ElementarySorts.hpp (+0ms)
+01:41:03   ├─ /source/chapter-40/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-41/MergeSort.hpp (+0ms)
+01:41:03   ├─ /source/chapter-41/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-42/QuickSort.hpp (+0ms)
+01:41:03   ├─ /source/chapter-42/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-43/HeapSort.hpp (+0ms)
+01:41:03   ├─ /source/chapter-43/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-44/CountingRadix.hpp (+0ms)
+01:41:03   ├─ /source/chapter-44/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-45/Recursion.hpp (+0ms)
+01:41:03   ├─ /source/chapter-45/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-46/Backtracking.hpp (+0ms)
+01:41:03   ├─ /source/chapter-46/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-47/DivideConquer.hpp (+0ms)
+01:41:03   ├─ /source/chapter-47/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-48/Greedy.hpp (+0ms)
+01:41:03   ├─ /source/chapter-48/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-49/DynamicProgramming.hpp (+0ms)
+01:41:03   ├─ /source/chapter-49/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-50/MemoTabulation.hpp (+0ms)
+01:41:03   ├─ /source/chapter-50/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-51/FreeListStorage.hpp (+0ms)
+01:41:03   ├─ /source/chapter-51/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-52/ByteArena.hpp (+0ms)
+01:41:03   ├─ /source/chapter-52/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-53/ObjectPool.hpp (+0ms)
+01:41:03   ├─ /source/chapter-53/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-54/SparseSet.hpp (+0ms)
+01:41:03   ├─ /source/chapter-54/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-55/HandleRegistry.hpp (+0ms)
+01:41:03   ├─ /source/chapter-55/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-56/ECSStorage.hpp (+0ms)
+01:41:03   ├─ /source/chapter-56/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-57/DirtyWorkList.hpp (+0ms)
+01:41:03   ├─ /source/chapter-57/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-58/CommandBuffer.hpp (+0ms)
+01:41:03   ├─ /source/chapter-58/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-59/SpscRing.hpp (+0ms)
+01:41:03   ├─ /source/chapter-59/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-60/SpatialHash.hpp (+0ms)
+01:41:03   ├─ /source/chapter-60/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-61/Quadtree.hpp (+0ms)
+01:41:03   ├─ /source/chapter-61/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-62/Octree.hpp (+0ms)
+01:41:03   ├─ /source/chapter-62/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-63/KDTree.hpp (+0ms)
+01:41:03   ├─ /source/chapter-63/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-64/RTree.hpp (+0ms)
+01:41:03   ├─ /source/chapter-64/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-65/BVH.hpp (+0ms)
+01:41:03   ├─ /source/chapter-65/main.cpp (+0ms)
+01:41:03   ├─ /source/chapter-66/BroadPhase.hpp (+0ms)
+01:41:03   └─ /source/chapter-66/main.cpp (+0ms)
+01:41:03 λ src/pages/source/main.cpp.ts
+01:41:03   └─ /source/main.cpp (+0ms)
+01:41:03 ✓ Completed in 3.09s.
+
+01:41:03 [build] 69 page(s) built in 6.46s
+01:41:03 [build] Complete!
+	Command being timed: "env ASTRO_TELEMETRY_DISABLED=1 npm run build"
+	User time (seconds): 10.39
+	System time (seconds): 0.61
+	Percent of CPU this job got: 157%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:06.99
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 807236
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 296046
+	Voluntary context switches: 18679
+	Involuntary context switches: 92
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 125256
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

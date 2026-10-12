@@ -1,0 +1,18 @@
+
+> interactive-cpp-book@0.1.0 test
+> vitest run --maxWorkers=2 tests/unit/parts.test.ts tests/unit/pwa-shell.test.ts tests/unit/foundations.test.ts tests/unit/engine.test.ts tests/unit/doubly.test.ts tests/unit/intrusive.test.ts
+
+
+ RUN  v3.2.7 /work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book
+
+ ✓ tests/unit/engine.test.ts (31 tests) 28ms
+ ✓ tests/unit/intrusive.test.ts (43 tests) 43ms
+ ✓ tests/unit/parts.test.ts (3 tests) 18ms
+ ✓ tests/unit/doubly.test.ts (43 tests) 12ms
+ ✓ tests/unit/foundations.test.ts (11 tests) 7ms
+ ✓ tests/unit/pwa-shell.test.ts (2 tests) 11ms
+
+ Test Files  6 passed (6)
+      Tests  133 passed (133)
+   Start at  01:33:46
+   Duration  518ms (transform 126ms, setup 0ms, collect 199ms, tests 120ms, environment 1ms, prepare 213ms)

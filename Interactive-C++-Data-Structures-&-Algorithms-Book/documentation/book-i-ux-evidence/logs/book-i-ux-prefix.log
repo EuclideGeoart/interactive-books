@@ -1,0 +1,83 @@
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme1n1p3  190G  161G   20G  90% /
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme1n1p3  190G  161G   20G  90% /
+
+> interactive-cpp-book@0.1.0 test:e2e
+> playwright test tests/e2e/part-first.spec.ts tests/e2e/pwa.spec.ts --workers=3 --reporter=list,html,json
+
+[WebServer] (node:648248) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 27 tests using 3 workers
+
+(node:648262) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:648261) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:648263) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › tests/e2e/part-first.spec.ts:72:1 › shared search and theme work on home and contents without progress writes (1.6s)
+  ✓   4 [desktop] › tests/e2e/part-first.spec.ts:105:1 › current-Part dialog identifies the chapter and supports keyboard focus and section jumps (1.4s)
+  ✓   3 [desktop] › tests/e2e/part-first.spec.ts:43:1 › contents preserves every chapter URL, title, section and adjacent link (4.2s)
+  ✓   5 [desktop] › tests/e2e/part-first.spec.ts:142:1 › chapter progress keeps stored identities through the homepage, contents and reset (1.8s)
+  ✓   2 [desktop] › tests/e2e/part-first.spec.ts:10:1 › homepage offers ten Parts, Foundations and the full map without chapter initialization (5.0s)
+  ✓   8 [desktop] › tests/e2e/pwa.spec.ts:3:1 › production PWA scopes to its base and serves visited pages offline (2.5s)
+  ✓   9 [desktop] › tests/e2e/pwa.spec.ts:112:1 › navigation release replaces the old homepage cache (882ms)
+(node:649349) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   6 [desktop] › tests/e2e/part-first.spec.ts:169:1 › homepage, contents and a large Part are accessible in both themes and responsive (5.6s)
+(node:649488) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  10 [tablet] › tests/e2e/part-first.spec.ts:10:1 › homepage offers ten Parts, Foundations and the full map without chapter initialization (4.6s)
+  ✓  11 [tablet] › tests/e2e/part-first.spec.ts:43:1 › contents preserves every chapter URL, title, section and adjacent link (3.8s)
+  ✓  12 [tablet] › tests/e2e/part-first.spec.ts:72:1 › shared search and theme work on home and contents without progress writes (1.4s)
+  ✓  13 [tablet] › tests/e2e/part-first.spec.ts:105:1 › current-Part dialog identifies the chapter and supports keyboard focus and section jumps (1.6s)
+  ✓  14 [tablet] › tests/e2e/part-first.spec.ts:142:1 › chapter progress keeps stored identities through the homepage, contents and reset (2.0s)
+  ✓   7 [desktop] › tests/e2e/part-first.spec.ts:185:1 › chapter shell screenshots preserve Foundations and interactive chapter layouts (15.4s)
+(node:650155) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  15 [tablet] › tests/e2e/part-first.spec.ts:169:1 › homepage, contents and a large Part are accessible in both themes and responsive (5.5s)
+  ✓  18 [tablet] › tests/e2e/pwa.spec.ts:112:1 › navigation release replaces the old homepage cache (943ms)
+(node:650478) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  17 [tablet] › tests/e2e/pwa.spec.ts:3:1 › production PWA scopes to its base and serves visited pages offline (2.6s)
+(node:650582) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  19 [mobile] › tests/e2e/part-first.spec.ts:10:1 › homepage offers ten Parts, Foundations and the full map without chapter initialization (4.6s)
+  ✓  20 [mobile] › tests/e2e/part-first.spec.ts:43:1 › contents preserves every chapter URL, title, section and adjacent link (3.8s)
+  ✓  21 [mobile] › tests/e2e/part-first.spec.ts:72:1 › shared search and theme work on home and contents without progress writes (1.3s)
+  ✓  22 [mobile] › tests/e2e/part-first.spec.ts:105:1 › current-Part dialog identifies the chapter and supports keyboard focus and section jumps (1.4s)
+  ✓  16 [tablet] › tests/e2e/part-first.spec.ts:185:1 › chapter shell screenshots preserve Foundations and interactive chapter layouts (13.5s)
+  ✓  23 [mobile] › tests/e2e/part-first.spec.ts:142:1 › chapter progress keeps stored identities through the homepage, contents and reset (1.7s)
+(node:651072) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  25 [mobile] › tests/e2e/pwa.spec.ts:3:1 › production PWA scopes to its base and serves visited pages offline (2.3s)
+  ✓  27 [mobile] › tests/e2e/pwa.spec.ts:112:1 › navigation release replaces the old homepage cache (885ms)
+  ✓  24 [mobile] › tests/e2e/part-first.spec.ts:169:1 › homepage, contents and a large Part are accessible in both themes and responsive (4.7s)
+  ✓  26 [mobile] › tests/e2e/part-first.spec.ts:185:1 › chapter shell screenshots preserve Foundations and interactive chapter layouts (9.7s)
+
+  27 passed (41.9s)
+	Command being timed: "env BOOK_BASE=/books/cpp/ BOOK_TEST_BASE=/books/cpp/ BOOK_TEST_PORT=4380 BOOK_TEST_DIST=/tmp/book-i-ux-prefixed-dist ASTRO_TELEMETRY_DISABLED=1 PLAYWRIGHT_JSON_OUTPUT_NAME=/tmp/book-i-ux-prefix.json PLAYWRIGHT_HTML_OPEN=never npm run test:e2e -- tests/e2e/part-first.spec.ts tests/e2e/pwa.spec.ts --workers=3 --reporter=list,html,json"
+	User time (seconds): 50.51
+	System time (seconds): 12.15
+	Percent of CPU this job got: 147%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:42.36
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 575208
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 3403
+	Minor (reclaiming a frame) page faults: 3949518
+	Voluntary context switches: 357929
+	Involuntary context switches: 30207
+	Swaps: 0
+	File system inputs: 16
+	File system outputs: 1866072
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

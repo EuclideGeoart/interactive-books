@@ -1,0 +1,452 @@
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme1n1p3  190G  161G   20G  90% /
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme1n1p3  190G  161G   20G  90% /
+
+> interactive-cpp-book@0.1.0 test:e2e
+> playwright test tests/e2e/book.spec.ts tests/e2e/bundle-visual.spec.ts --grep chapter entry visual regression|visual regression: chapter entry$ --workers=3 --update-snapshots --reporter=list,html,json
+
+[WebServer] (node:651835) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 198 tests using 3 workers
+
+(node:651847) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:651848) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:651849) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/02-stack-overview-desktop-linux.png is re-generated, writing actual.
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/03-doubly-linked-list-overview-desktop-linux.png is re-generated, writing actual.
+  ✓    2 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 03: chapter entry visual regression (1.3s)
+  ✓    1 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 02: chapter entry visual regression (1.3s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/book.spec.ts-snapshots/chapter-overview-desktop-linux.png is re-generated, writing actual.
+  ✓    3 [desktop] › tests/e2e/book.spec.ts:225:1 › visual regression: chapter entry (1.5s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/04-memory-pool-overview-desktop-linux.png is re-generated, writing actual.
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/05-intrusive-list-overview-desktop-linux.png is re-generated, writing actual.
+  ✓    4 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 04: chapter entry visual regression (1.1s)
+  ✓    5 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 05: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/06-queue-deque-overview-desktop-linux.png is re-generated, writing actual.
+  ✓    6 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 06: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/08-priority-queue-overview-desktop-linux.png is re-generated, writing actual.
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/07-circular-buffer-overview-desktop-linux.png is re-generated, writing actual.
+  ✓    8 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 08: chapter entry visual regression (1.0s)
+  ✓    7 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 07: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/09-binary-heap-overview-desktop-linux.png is re-generated, writing actual.
+  ✓    9 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 09: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/10-binary-trees-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   10 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 10: chapter entry visual regression (1.0s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/11-binary-search-trees-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   11 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 11: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/12-tree-traversal-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   12 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 12: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/13-tree-mutation-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   13 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 13: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/14-avl-trees-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   14 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 14: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/15-red-black-trees-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   15 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 15: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/17-tries-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   17 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 17: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/16-b-trees-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   16 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 16: chapter entry visual regression (1.3s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/18-hashing-fundamentals-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   18 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 18: chapter entry visual regression (1.0s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/19-hash-tables-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   19 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 19: chapter entry visual regression (1.0s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/20-separate-chaining-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   20 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 20: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/21-open-addressing-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   21 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 21: chapter entry visual regression (1.0s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/22-robin-hood-hashing-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   22 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 22: chapter entry visual regression (1.0s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/23-unordered-map-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   23 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 23: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/24-graph-fundamentals-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   24 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 24: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/25-adjacency-list-matrix-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   25 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 25: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/26-breadth-first-search-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   26 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 26: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/27-depth-first-search-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   27 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 27: chapter entry visual regression (1.2s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/28-directed-graphs-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   28 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 28: chapter entry visual regression (1.2s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/29-dags-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   29 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 29: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/30-topological-sort-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   30 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 30: chapter entry visual regression (1.2s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/31-connected-components-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   31 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 31: chapter entry visual regression (980ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/32-cycle-detection-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   32 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 32: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/33-dijkstra-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   33 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 33: chapter entry visual regression (1.2s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/34-bellman-ford-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   34 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 34: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/35-minimum-spanning-trees-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   35 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 35: chapter entry visual regression (1.0s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/36-union-find-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   36 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 36: chapter entry visual regression (1.2s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/37-linear-search-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   37 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 37: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/38-binary-search-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   38 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 38: chapter entry visual regression (1.3s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/39-sorting-fundamentals-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   39 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 39: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/40-elementary-sorts-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   40 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 40: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/41-merge-sort-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   41 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 41: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/43-heap-sort-overview-desktop-linux.png is re-generated, writing actual.
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/42-quick-sort-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   43 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 43: chapter entry visual regression (1.1s)
+  ✓   42 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 42: chapter entry visual regression (1.3s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/44-counting-radix-sort-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   44 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 44: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/45-recursion-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   45 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 45: chapter entry visual regression (1.0s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/46-backtracking-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   46 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 46: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/47-divide-and-conquer-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   47 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 47: chapter entry visual regression (1.0s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/48-greedy-algorithms-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   48 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 48: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/49-dynamic-programming-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   49 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 49: chapter entry visual regression (1.2s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/50-memoization-tabulation-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   50 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 50: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/51-free-lists-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   51 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 51: chapter entry visual regression (1.0s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/52-arena-allocators-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   52 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 52: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/53-object-pools-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   53 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 53: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/54-sparse-sets-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   54 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 54: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/55-generational-handles-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   55 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 55: chapter entry visual regression (1.3s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/56-ecs-storage-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   56 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 56: chapter entry visual regression (1.2s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/57-dirty-work-lists-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   57 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 57: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/58-command-buffers-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   58 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 58: chapter entry visual regression (1.0s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/59-lock-free-introduction-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   59 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 59: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/60-spatial-hashing-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   60 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 60: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/61-quadtrees-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   61 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 61: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/62-octrees-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   62 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 62: chapter entry visual regression (1.0s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/63-kd-trees-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   63 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 63: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/64-r-trees-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   64 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 64: chapter entry visual regression (1.2s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/65-bounding-volume-hierarchies-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   65 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 65: chapter entry visual regression (1.1s)
+(node:654301) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:654310) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/66-broad-phase-spatial-indexing-overview-desktop-linux.png is re-generated, writing actual.
+  ✓   66 [desktop] › tests/e2e/bundle-visual.spec.ts:4:3 › 66: chapter entry visual regression (1.0s)
+(node:654443) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/book.spec.ts-snapshots/chapter-overview-tablet-linux.png is re-generated, writing actual.
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/02-stack-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   67 [tablet] › tests/e2e/book.spec.ts:225:1 › visual regression: chapter entry (1.2s)
+  ✓   68 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 02: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/03-doubly-linked-list-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   69 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 03: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/05-intrusive-list-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   71 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 05: chapter entry visual regression (898ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/04-memory-pool-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   70 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 04: chapter entry visual regression (981ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/06-queue-deque-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   72 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 06: chapter entry visual regression (886ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/07-circular-buffer-overview-tablet-linux.png is re-generated, writing actual.
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/08-priority-queue-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   73 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 07: chapter entry visual regression (885ms)
+  ✓   74 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 08: chapter entry visual regression (859ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/09-binary-heap-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   75 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 09: chapter entry visual regression (963ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/10-binary-trees-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   76 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 10: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/11-binary-search-trees-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   77 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 11: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/12-tree-traversal-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   78 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 12: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/13-tree-mutation-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   79 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 13: chapter entry visual regression (999ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/14-avl-trees-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   80 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 14: chapter entry visual regression (1.0s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/15-red-black-trees-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   81 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 15: chapter entry visual regression (1.0s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/16-b-trees-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   82 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 16: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/17-tries-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   83 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 17: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/18-hashing-fundamentals-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   84 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 18: chapter entry visual regression (971ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/19-hash-tables-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   85 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 19: chapter entry visual regression (835ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/20-separate-chaining-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   86 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 20: chapter entry visual regression (843ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/21-open-addressing-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   87 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 21: chapter entry visual regression (903ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/22-robin-hood-hashing-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   88 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 22: chapter entry visual regression (885ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/23-unordered-map-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   89 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 23: chapter entry visual regression (874ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/24-graph-fundamentals-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   90 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 24: chapter entry visual regression (890ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/25-adjacency-list-matrix-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   91 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 25: chapter entry visual regression (870ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/26-breadth-first-search-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   92 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 26: chapter entry visual regression (977ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/27-depth-first-search-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   93 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 27: chapter entry visual regression (894ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/28-directed-graphs-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   94 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 28: chapter entry visual regression (921ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/29-dags-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   95 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 29: chapter entry visual regression (821ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/30-topological-sort-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   96 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 30: chapter entry visual regression (866ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/31-connected-components-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   97 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 31: chapter entry visual regression (806ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/32-cycle-detection-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   98 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 32: chapter entry visual regression (913ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/33-dijkstra-overview-tablet-linux.png is re-generated, writing actual.
+  ✓   99 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 33: chapter entry visual regression (880ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/34-bellman-ford-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  100 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 34: chapter entry visual regression (878ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/35-minimum-spanning-trees-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  101 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 35: chapter entry visual regression (935ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/36-union-find-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  102 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 36: chapter entry visual regression (1.0s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/37-linear-search-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  103 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 37: chapter entry visual regression (939ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/38-binary-search-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  104 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 38: chapter entry visual regression (1.1s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/39-sorting-fundamentals-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  105 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 39: chapter entry visual regression (866ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/40-elementary-sorts-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  106 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 40: chapter entry visual regression (956ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/41-merge-sort-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  107 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 41: chapter entry visual regression (857ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/42-quick-sort-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  108 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 42: chapter entry visual regression (883ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/43-heap-sort-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  109 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 43: chapter entry visual regression (901ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/44-counting-radix-sort-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  110 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 44: chapter entry visual regression (940ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/45-recursion-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  111 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 45: chapter entry visual regression (859ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/46-backtracking-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  112 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 46: chapter entry visual regression (885ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/47-divide-and-conquer-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  113 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 47: chapter entry visual regression (849ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/48-greedy-algorithms-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  114 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 48: chapter entry visual regression (964ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/49-dynamic-programming-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  115 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 49: chapter entry visual regression (850ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/50-memoization-tabulation-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  116 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 50: chapter entry visual regression (851ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/51-free-lists-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  117 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 51: chapter entry visual regression (877ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/52-arena-allocators-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  118 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 52: chapter entry visual regression (925ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/53-object-pools-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  119 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 53: chapter entry visual regression (1.0s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/54-sparse-sets-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  120 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 54: chapter entry visual regression (918ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/55-generational-handles-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  121 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 55: chapter entry visual regression (911ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/56-ecs-storage-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  122 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 56: chapter entry visual regression (941ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/57-dirty-work-lists-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  123 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 57: chapter entry visual regression (883ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/58-command-buffers-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  124 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 58: chapter entry visual regression (905ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/59-lock-free-introduction-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  125 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 59: chapter entry visual regression (851ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/60-spatial-hashing-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  126 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 60: chapter entry visual regression (964ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/61-quadtrees-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  127 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 61: chapter entry visual regression (892ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/62-octrees-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  128 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 62: chapter entry visual regression (943ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/63-kd-trees-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  129 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 63: chapter entry visual regression (906ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/64-r-trees-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  130 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 64: chapter entry visual regression (864ms)
+(node:656514) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/65-bounding-volume-hierarchies-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  131 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 65: chapter entry visual regression (925ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/66-broad-phase-spatial-indexing-overview-tablet-linux.png is re-generated, writing actual.
+  ✓  132 [tablet] › tests/e2e/bundle-visual.spec.ts:4:3 › 66: chapter entry visual regression (821ms)
+(node:656598) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:656612) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/book.spec.ts-snapshots/chapter-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  133 [mobile] › tests/e2e/book.spec.ts:225:1 › visual regression: chapter entry (1.0s)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/02-stack-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  134 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 02: chapter entry visual regression (793ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/03-doubly-linked-list-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  135 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 03: chapter entry visual regression (855ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/04-memory-pool-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  136 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 04: chapter entry visual regression (675ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/05-intrusive-list-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  137 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 05: chapter entry visual regression (725ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/06-queue-deque-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  138 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 06: chapter entry visual regression (679ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/07-circular-buffer-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  139 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 07: chapter entry visual regression (738ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/08-priority-queue-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  140 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 08: chapter entry visual regression (596ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/09-binary-heap-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  141 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 09: chapter entry visual regression (608ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/10-binary-trees-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  142 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 10: chapter entry visual regression (673ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/11-binary-search-trees-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  143 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 11: chapter entry visual regression (653ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/12-tree-traversal-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  144 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 12: chapter entry visual regression (655ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/13-tree-mutation-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  145 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 13: chapter entry visual regression (767ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/14-avl-trees-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  146 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 14: chapter entry visual regression (747ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/15-red-black-trees-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  147 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 15: chapter entry visual regression (766ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/16-b-trees-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  148 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 16: chapter entry visual regression (827ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/17-tries-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  149 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 17: chapter entry visual regression (693ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/18-hashing-fundamentals-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  150 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 18: chapter entry visual regression (669ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/19-hash-tables-overview-mobile-linux.png is re-generated, writing actual.
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/20-separate-chaining-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  151 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 19: chapter entry visual regression (771ms)
+  ✓  152 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 20: chapter entry visual regression (740ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/21-open-addressing-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  153 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 21: chapter entry visual regression (776ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/23-unordered-map-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  155 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 23: chapter entry visual regression (651ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/22-robin-hood-hashing-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  154 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 22: chapter entry visual regression (706ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/24-graph-fundamentals-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  156 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 24: chapter entry visual regression (810ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/25-adjacency-list-matrix-overview-mobile-linux.png is re-generated, writing actual.
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/26-breadth-first-search-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  157 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 25: chapter entry visual regression (696ms)
+  ✓  158 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 26: chapter entry visual regression (676ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/27-depth-first-search-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  159 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 27: chapter entry visual regression (659ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/29-dags-overview-mobile-linux.png is re-generated, writing actual.
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/28-directed-graphs-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  161 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 29: chapter entry visual regression (586ms)
+  ✓  160 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 28: chapter entry visual regression (620ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/30-topological-sort-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  162 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 30: chapter entry visual regression (619ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/31-connected-components-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  163 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 31: chapter entry visual regression (602ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/32-cycle-detection-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  164 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 32: chapter entry visual regression (660ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/33-dijkstra-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  165 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 33: chapter entry visual regression (664ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/34-bellman-ford-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  166 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 34: chapter entry visual regression (632ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/35-minimum-spanning-trees-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  167 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 35: chapter entry visual regression (660ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/36-union-find-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  168 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 36: chapter entry visual regression (727ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/37-linear-search-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  169 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 37: chapter entry visual regression (587ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/38-binary-search-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  170 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 38: chapter entry visual regression (645ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/39-sorting-fundamentals-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  171 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 39: chapter entry visual regression (601ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/40-elementary-sorts-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  172 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 40: chapter entry visual regression (658ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/41-merge-sort-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  173 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 41: chapter entry visual regression (645ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/42-quick-sort-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  174 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 42: chapter entry visual regression (683ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/43-heap-sort-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  175 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 43: chapter entry visual regression (652ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/44-counting-radix-sort-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  176 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 44: chapter entry visual regression (698ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/45-recursion-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  177 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 45: chapter entry visual regression (649ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/46-backtracking-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  178 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 46: chapter entry visual regression (754ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/47-divide-and-conquer-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  179 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 47: chapter entry visual regression (706ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/48-greedy-algorithms-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  180 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 48: chapter entry visual regression (692ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/49-dynamic-programming-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  181 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 49: chapter entry visual regression (711ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/50-memoization-tabulation-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  182 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 50: chapter entry visual regression (706ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/51-free-lists-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  183 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 51: chapter entry visual regression (675ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/52-arena-allocators-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  184 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 52: chapter entry visual regression (620ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/53-object-pools-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  185 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 53: chapter entry visual regression (607ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/54-sparse-sets-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  186 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 54: chapter entry visual regression (613ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/55-generational-handles-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  187 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 55: chapter entry visual regression (628ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/56-ecs-storage-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  188 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 56: chapter entry visual regression (638ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/57-dirty-work-lists-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  189 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 57: chapter entry visual regression (674ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/58-command-buffers-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  190 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 58: chapter entry visual regression (609ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/59-lock-free-introduction-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  191 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 59: chapter entry visual regression (601ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/60-spatial-hashing-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  192 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 60: chapter entry visual regression (711ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/61-quadtrees-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  193 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 61: chapter entry visual regression (664ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/62-octrees-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  194 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 62: chapter entry visual regression (674ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/63-kd-trees-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  195 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 63: chapter entry visual regression (698ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/64-r-trees-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  196 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 64: chapter entry visual regression (653ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/65-bounding-volume-hierarchies-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  197 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 65: chapter entry visual regression (644ms)
+/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/tests/e2e/bundle-visual.spec.ts-snapshots/66-broad-phase-spatial-indexing-overview-mobile-linux.png is re-generated, writing actual.
+  ✓  198 [mobile] › tests/e2e/bundle-visual.spec.ts:4:3 › 66: chapter entry visual regression (601ms)
+
+  198 passed (1.1m)
+	Command being timed: "env BOOK_TEST_PORT=4378 BOOK_TEST_DIST=/work/interactive-books-book-i-ux/Interactive-C++-Data-Structures-&-Algorithms-Book/dist ASTRO_TELEMETRY_DISABLED=1 PLAYWRIGHT_JSON_OUTPUT_NAME=/tmp/book-i-ux-shell-baselines.json PLAYWRIGHT_HTML_OPEN=never npm run test:e2e -- tests/e2e/book.spec.ts tests/e2e/bundle-visual.spec.ts --grep chapter entry visual regression|visual regression: chapter entry$ --workers=3 --update-snapshots --reporter=list,html,json"
+	User time (seconds): 163.92
+	System time (seconds): 25.28
+	Percent of CPU this job got: 297%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:03.66
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 399600
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 13992
+	Minor (reclaiming a frame) page faults: 5940574
+	Voluntary context switches: 677245
+	Involuntary context switches: 139629
+	Swaps: 0
+	File system inputs: 184
+	File system outputs: 3531120
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
