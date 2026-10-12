@@ -543,5 +543,304 @@
       ],
       "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
     }
+  ],
+  "blockC": [
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-reproducibility-random-seeds-loose.png",
+      "sha256": "f0d397463d4278b9dee736c2bcd3f42036f218f9dfc8c411af30c54eea8da141",
+      "size": [
+        836,
+        2125
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-reproducibility-random-seeds-resume.png",
+      "sha256": "6600019719e9ba7a4421f3a0a965be3391cba4a9efc3fbe68798ab9108910419",
+      "size": [
+        836,
+        2063
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-reproducibility-random-seeds.png",
+      "sha256": "ef318c01e9fae97152b1d6eb242b820c9ab91060e6ce50ad1fc245f786f39f08",
+      "size": [
+        836,
+        2125
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-sparse-matrices-structure-duplicates.png",
+      "sha256": "fc62b68b92225c0fc7ff9743b3d1b1647ffa26e7195374b8ebca860627cb01ae",
+      "size": [
+        836,
+        2411
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-sparse-matrices-structure-empty-row.png",
+      "sha256": "4db8d6aac22903418e96475ddd6e32579cacfb4fa4bf1183bad48d94e19a75b1",
+      "size": [
+        836,
+        2413
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-sparse-matrices-structure-near-zero.png",
+      "sha256": "4902ccd3788bae3284521b63fb5ca5fdbb87e44c0c67aee2900f0d92d3681ed0",
+      "size": [
+        836,
+        2437
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-sparse-matrices-structure.png",
+      "sha256": "95b71e4b17b802ebf3c55478164ecf2c32576fbcf1eee4a2abec9ea5da2b07ff",
+      "size": [
+        836,
+        2507
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-vectorized-computation-batched.png",
+      "sha256": "91fd83d7bde70a81353b5b1aa232e8da3b899971efcbff046cdc3d06497de7b0",
+      "size": [
+        836,
+        2487
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-vectorized-computation-empty-axis.png",
+      "sha256": "ff39da0c3b776d2427ac2bfdc23f8e6e64cd44cafc871debd27539dbbaea1332",
+      "size": [
+        836,
+        2014
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-vectorized-computation-incompatible.png",
+      "sha256": "610c7c687e709fd7b25b536a1abfb757527b9350f3d1d348077f01e7455fcf7d",
+      "size": [
+        836,
+        1849
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-vectorized-computation.png",
+      "sha256": "5b493220f738ca4e23898186080ce656bbcb4cb9f9c60bfa9ccfebc176fdbfe9",
+      "size": [
+        836,
+        2167
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-reproducibility-random-seeds-loose.png",
+      "sha256": "2af17e976b9287b1e29ec50931b3af84a857ff608bd1e4835213f79c1ab3c5a7",
+      "size": [
+        356,
+        3295
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-reproducibility-random-seeds-resume.png",
+      "sha256": "3ebd2ef38863c3a5e0dd54075ffcb2b16a2b38171aa50517121cb69e0bde9057",
+      "size": [
+        356,
+        3318
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-reproducibility-random-seeds.png",
+      "sha256": "29c94f75996c219313f5680fa3f0e47f37480fad22c9365a875997b251165878",
+      "size": [
+        356,
+        3295
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-sparse-matrices-structure-duplicates.png",
+      "sha256": "ae9229d470b0533f9cc8343fc9cd73395cfb58af45ab77c39cef68750ec361cd",
+      "size": [
+        356,
+        3377
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-sparse-matrices-structure-empty-row.png",
+      "sha256": "b9dbe564475b1251baa4ff12ad3d5ef754b32dc12a8d4fed5359137700e485da",
+      "size": [
+        356,
+        3379
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-sparse-matrices-structure-near-zero.png",
+      "sha256": "5fd0c5b054ed9f106cc59ecceeafeed7cc91ee5c4fd950ba7fdecd00a6c7a3d3",
+      "size": [
+        356,
+        3463
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-sparse-matrices-structure.png",
+      "sha256": "30840e38985ac9d992c88cc154a04e018078f1313519997af41656a6d9e368be",
+      "size": [
+        356,
+        3472
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-vectorized-computation-batched.png",
+      "sha256": "9311dc559311ba3d4b70bcd92144b5c1eb44496c288953b40f8fcb884c034e8d",
+      "size": [
+        356,
+        3412
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-vectorized-computation-empty-axis.png",
+      "sha256": "546dc0a8891eb5706b95498e5981fa7e393c50bbd9711e8dc584b84779c3d369",
+      "size": [
+        356,
+        2894
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-vectorized-computation-incompatible.png",
+      "sha256": "5f77e226f7d5f82371d052ce0514b607b3e9cb093741eea6ec6ee4bfae38e050",
+      "size": [
+        356,
+        2749
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-vectorized-computation.png",
+      "sha256": "3a98a3d8c89ce3ec3f94e926f10f9259264367233af9f19a0ce6325494107b77",
+      "size": [
+        356,
+        3046
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-reproducibility-random-seeds-loose.png",
+      "sha256": "7bf4caa6fd11f747b4accba3af60e78800be8557477f74f2302ecb1ae2d000c2",
+      "size": [
+        748,
+        2349
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-reproducibility-random-seeds-resume.png",
+      "sha256": "e0ccd86698256bc11be42a17d589278f4927daa82f3a831c5d3379d1e229d8bf",
+      "size": [
+        748,
+        2288
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-reproducibility-random-seeds.png",
+      "sha256": "3b5fcb8ee6c8e59685e159197bf4588d2cf8903ee519f65d0b6288dca88ff733",
+      "size": [
+        748,
+        2349
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-sparse-matrices-structure-duplicates.png",
+      "sha256": "042e2c71ce9892ed46579154bdd2c0c6398c811ef5b6dbff3ef44326a24ae049",
+      "size": [
+        748,
+        2464
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-sparse-matrices-structure-empty-row.png",
+      "sha256": "eca0e0d1516cdad10bde583c07405dbc77248c215fb5697f2dd1c45941cfea3d",
+      "size": [
+        748,
+        2466
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-sparse-matrices-structure-near-zero.png",
+      "sha256": "dd247903d15d8471d767e66895690d3365693bae1340e31e37e33829b36495ff",
+      "size": [
+        748,
+        2466
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-sparse-matrices-structure.png",
+      "sha256": "67e61ab98f99e946356bedae916a0e9d0e992876c8d2b789fb68cefde39794e9",
+      "size": [
+        748,
+        2559
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-vectorized-computation-batched.png",
+      "sha256": "e71799084ad481ac8d7f81f03e0ca9c6d739bdcb79dc91fcf838b69483f2b754",
+      "size": [
+        748,
+        2569
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-vectorized-computation-empty-axis.png",
+      "sha256": "61b2ac0885c3492ce5b2dab268ca502c5b63a605e7fd14caca8b5c09f66ab31c",
+      "size": [
+        748,
+        2021
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-vectorized-computation-incompatible.png",
+      "sha256": "3d99608b61797c773bccb5b5a839a956028edffde052cc8ec6fab00cd4ea3b3e",
+      "size": [
+        748,
+        1856
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-vectorized-computation.png",
+      "sha256": "94b1d534483ac56293dea32d705cfa06fcef20b4d661fa1c946eb5f47758dc52",
+      "size": [
+        748,
+        2173
+      ],
+      "review": "Individually inspected by Agent B: indexed sparse cells, duplicate/zero policies, actual broadcasting tables and replay values agree; no overlap; narrow formulas/tables use labelled keyboard-scrollable regions."
+    }
   ]
 }

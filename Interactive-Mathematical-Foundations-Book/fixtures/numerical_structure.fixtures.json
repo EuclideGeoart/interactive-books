@@ -1,0 +1,3546 @@
+{
+  "policy": {
+    "method": "Exact coordinate dictionaries, Cartesian products, arbitrary-precision modular integers; optional NumPy is cross-check only.",
+    "exact": "Structure, shapes, indices, counts, RNG states, all rationals and specified native binary64 association results.",
+    "bounds": "Matrices 1..3 each axis; \u226418 COO inputs; tensors \u22644 axes of size0..4 with \u226464 elements; streams \u226416 draws."
+  },
+  "sparse": [
+    {
+      "input": {
+        "rows": 3,
+        "cols": 3,
+        "entries": "0,0,2;1,1,3;2,2,4",
+        "vector": "1,2,3",
+        "threshold": "1e-6"
+      },
+      "expected": {
+        "dense": [
+          [
+            "2",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "3",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "4"
+          ]
+        ],
+        "data": [
+          "2",
+          "3",
+          "4"
+        ],
+        "indices": [
+          0,
+          1,
+          2
+        ],
+        "indptr": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "result": [
+          "2",
+          "6",
+          "12"
+        ],
+        "nnz": 3,
+        "duplicates": 0,
+        "explicitZeros": 0,
+        "nearZero": 0,
+        "costs": [
+          72,
+          48,
+          52
+        ]
+      }
+    },
+    {
+      "input": {
+        "rows": 3,
+        "cols": 3,
+        "entries": "0,0,2;0,0,-2;1,2,3;2,2,0",
+        "vector": "1,2,3",
+        "threshold": "1e-6"
+      },
+      "expected": {
+        "dense": [
+          [
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "3"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "data": [
+          "3"
+        ],
+        "indices": [
+          2
+        ],
+        "indptr": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "result": [
+          "0",
+          "9",
+          "0"
+        ],
+        "nnz": 1,
+        "duplicates": 1,
+        "explicitZeros": 1,
+        "nearZero": 0,
+        "costs": [
+          72,
+          16,
+          28
+        ]
+      }
+    },
+    {
+      "input": {
+        "rows": 3,
+        "cols": 3,
+        "entries": "0,0,2;2,2,4",
+        "vector": "1,2,3",
+        "threshold": "1e-6"
+      },
+      "expected": {
+        "dense": [
+          [
+            "2",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "4"
+          ]
+        ],
+        "data": [
+          "2",
+          "4"
+        ],
+        "indices": [
+          0,
+          2
+        ],
+        "indptr": [
+          0,
+          1,
+          1,
+          2
+        ],
+        "result": [
+          "2",
+          "0",
+          "12"
+        ],
+        "nnz": 2,
+        "duplicates": 0,
+        "explicitZeros": 0,
+        "nearZero": 0,
+        "costs": [
+          72,
+          32,
+          40
+        ]
+      }
+    },
+    {
+      "input": {
+        "rows": 3,
+        "cols": 3,
+        "entries": "",
+        "vector": "1,2,3",
+        "threshold": "1e-6"
+      },
+      "expected": {
+        "dense": [
+          [
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "data": [],
+        "indices": [],
+        "indptr": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "result": [
+          "0",
+          "0",
+          "0"
+        ],
+        "nnz": 0,
+        "duplicates": 0,
+        "explicitZeros": 0,
+        "nearZero": 0,
+        "costs": [
+          72,
+          0,
+          16
+        ]
+      }
+    },
+    {
+      "input": {
+        "rows": 3,
+        "cols": 3,
+        "entries": "0,0,1e-8;1,1,3",
+        "vector": "1,2,3",
+        "threshold": "1e-6"
+      },
+      "expected": {
+        "dense": [
+          [
+            "1/100000000",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "3",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "data": [
+          "1/100000000",
+          "3"
+        ],
+        "indices": [
+          0,
+          1
+        ],
+        "indptr": [
+          0,
+          1,
+          2,
+          2
+        ],
+        "result": [
+          "1/100000000",
+          "6",
+          "0"
+        ],
+        "nnz": 2,
+        "duplicates": 0,
+        "explicitZeros": 0,
+        "nearZero": 1,
+        "costs": [
+          72,
+          32,
+          40
+        ]
+      }
+    },
+    {
+      "input": {
+        "rows": 2,
+        "cols": 3,
+        "entries": "0,2,2;1,0,-1",
+        "vector": "1,2,3",
+        "threshold": "1e-6"
+      },
+      "expected": {
+        "dense": [
+          [
+            "0",
+            "0",
+            "2"
+          ],
+          [
+            "-1",
+            "0",
+            "0"
+          ]
+        ],
+        "data": [
+          "2",
+          "-1"
+        ],
+        "indices": [
+          2,
+          0
+        ],
+        "indptr": [
+          0,
+          1,
+          2
+        ],
+        "result": [
+          "6",
+          "-1"
+        ],
+        "nnz": 2,
+        "duplicates": 0,
+        "explicitZeros": 0,
+        "nearZero": 0,
+        "costs": [
+          48,
+          32,
+          36
+        ]
+      }
+    },
+    {
+      "input": {
+        "rows": 1,
+        "cols": 1,
+        "entries": "0,0,0.1;0,0,0.2",
+        "vector": "0.5",
+        "threshold": "1e-6"
+      },
+      "expected": {
+        "dense": [
+          [
+            "3/10"
+          ]
+        ],
+        "data": [
+          "3/10"
+        ],
+        "indices": [
+          0
+        ],
+        "indptr": [
+          0,
+          1
+        ],
+        "result": [
+          "3/20"
+        ],
+        "nnz": 1,
+        "duplicates": 1,
+        "explicitZeros": 0,
+        "nearZero": 0,
+        "costs": [
+          8,
+          16,
+          20
+        ]
+      }
+    },
+    {
+      "input": {
+        "rows": 3,
+        "cols": 3,
+        "entries": "0,0,1;0,1,1;0,2,1;1,0,1;1,1,1;1,2,1;2,0,1;2,1,1;2,2,1",
+        "vector": "1,2,3",
+        "threshold": "1e-6"
+      },
+      "expected": {
+        "dense": [
+          [
+            "1",
+            "1",
+            "1"
+          ],
+          [
+            "1",
+            "1",
+            "1"
+          ],
+          [
+            "1",
+            "1",
+            "1"
+          ]
+        ],
+        "data": [
+          "1",
+          "1",
+          "1",
+          "1",
+          "1",
+          "1",
+          "1",
+          "1",
+          "1"
+        ],
+        "indices": [
+          0,
+          1,
+          2,
+          0,
+          1,
+          2,
+          0,
+          1,
+          2
+        ],
+        "indptr": [
+          0,
+          3,
+          6,
+          9
+        ],
+        "result": [
+          "6",
+          "6",
+          "6"
+        ],
+        "nnz": 9,
+        "duplicates": 0,
+        "explicitZeros": 0,
+        "nearZero": 0,
+        "costs": [
+          72,
+          144,
+          124
+        ]
+      }
+    }
+  ],
+  "tensors": [
+    {
+      "input": {
+        "left": "(2,3)",
+        "right": "(3,)",
+        "axis": "1",
+        "operation": "add",
+        "aStart": 1,
+        "bStart": 10
+      },
+      "expected": {
+        "kind": "valid",
+        "outShape": [
+          2,
+          3
+        ],
+        "values": [
+          "11",
+          "13",
+          "15",
+          "14",
+          "16",
+          "18"
+        ],
+        "mappings": [
+          {
+            "index": [
+              0,
+              0
+            ],
+            "aIndex": [
+              0,
+              0
+            ],
+            "bIndex": [
+              0
+            ],
+            "a": "1",
+            "b": "10",
+            "value": "11"
+          },
+          {
+            "index": [
+              0,
+              1
+            ],
+            "aIndex": [
+              0,
+              1
+            ],
+            "bIndex": [
+              1
+            ],
+            "a": "2",
+            "b": "11",
+            "value": "13"
+          },
+          {
+            "index": [
+              0,
+              2
+            ],
+            "aIndex": [
+              0,
+              2
+            ],
+            "bIndex": [
+              2
+            ],
+            "a": "3",
+            "b": "12",
+            "value": "15"
+          },
+          {
+            "index": [
+              1,
+              0
+            ],
+            "aIndex": [
+              1,
+              0
+            ],
+            "bIndex": [
+              0
+            ],
+            "a": "4",
+            "b": "10",
+            "value": "14"
+          },
+          {
+            "index": [
+              1,
+              1
+            ],
+            "aIndex": [
+              1,
+              1
+            ],
+            "bIndex": [
+              1
+            ],
+            "a": "5",
+            "b": "11",
+            "value": "16"
+          },
+          {
+            "index": [
+              1,
+              2
+            ],
+            "aIndex": [
+              1,
+              2
+            ],
+            "bIndex": [
+              2
+            ],
+            "a": "6",
+            "b": "12",
+            "value": "18"
+          }
+        ],
+        "reduction": {
+          "kind": "valid",
+          "shape": [
+            2
+          ],
+          "values": [
+            "39",
+            "48"
+          ]
+        }
+      }
+    },
+    {
+      "input": {
+        "left": "(2,3)",
+        "right": "(3,)",
+        "axis": "1",
+        "operation": "multiply",
+        "aStart": 1,
+        "bStart": 10
+      },
+      "expected": {
+        "kind": "valid",
+        "outShape": [
+          2,
+          3
+        ],
+        "values": [
+          "10",
+          "22",
+          "36",
+          "40",
+          "55",
+          "72"
+        ],
+        "mappings": [
+          {
+            "index": [
+              0,
+              0
+            ],
+            "aIndex": [
+              0,
+              0
+            ],
+            "bIndex": [
+              0
+            ],
+            "a": "1",
+            "b": "10",
+            "value": "10"
+          },
+          {
+            "index": [
+              0,
+              1
+            ],
+            "aIndex": [
+              0,
+              1
+            ],
+            "bIndex": [
+              1
+            ],
+            "a": "2",
+            "b": "11",
+            "value": "22"
+          },
+          {
+            "index": [
+              0,
+              2
+            ],
+            "aIndex": [
+              0,
+              2
+            ],
+            "bIndex": [
+              2
+            ],
+            "a": "3",
+            "b": "12",
+            "value": "36"
+          },
+          {
+            "index": [
+              1,
+              0
+            ],
+            "aIndex": [
+              1,
+              0
+            ],
+            "bIndex": [
+              0
+            ],
+            "a": "4",
+            "b": "10",
+            "value": "40"
+          },
+          {
+            "index": [
+              1,
+              1
+            ],
+            "aIndex": [
+              1,
+              1
+            ],
+            "bIndex": [
+              1
+            ],
+            "a": "5",
+            "b": "11",
+            "value": "55"
+          },
+          {
+            "index": [
+              1,
+              2
+            ],
+            "aIndex": [
+              1,
+              2
+            ],
+            "bIndex": [
+              2
+            ],
+            "a": "6",
+            "b": "12",
+            "value": "72"
+          }
+        ],
+        "reduction": {
+          "kind": "valid",
+          "shape": [
+            2
+          ],
+          "values": [
+            "68",
+            "167"
+          ]
+        }
+      }
+    },
+    {
+      "input": {
+        "left": "(2,3)",
+        "right": "(3,)",
+        "axis": "0",
+        "operation": "add",
+        "aStart": 1,
+        "bStart": 10
+      },
+      "expected": {
+        "kind": "valid",
+        "outShape": [
+          2,
+          3
+        ],
+        "values": [
+          "11",
+          "13",
+          "15",
+          "14",
+          "16",
+          "18"
+        ],
+        "mappings": [
+          {
+            "index": [
+              0,
+              0
+            ],
+            "aIndex": [
+              0,
+              0
+            ],
+            "bIndex": [
+              0
+            ],
+            "a": "1",
+            "b": "10",
+            "value": "11"
+          },
+          {
+            "index": [
+              0,
+              1
+            ],
+            "aIndex": [
+              0,
+              1
+            ],
+            "bIndex": [
+              1
+            ],
+            "a": "2",
+            "b": "11",
+            "value": "13"
+          },
+          {
+            "index": [
+              0,
+              2
+            ],
+            "aIndex": [
+              0,
+              2
+            ],
+            "bIndex": [
+              2
+            ],
+            "a": "3",
+            "b": "12",
+            "value": "15"
+          },
+          {
+            "index": [
+              1,
+              0
+            ],
+            "aIndex": [
+              1,
+              0
+            ],
+            "bIndex": [
+              0
+            ],
+            "a": "4",
+            "b": "10",
+            "value": "14"
+          },
+          {
+            "index": [
+              1,
+              1
+            ],
+            "aIndex": [
+              1,
+              1
+            ],
+            "bIndex": [
+              1
+            ],
+            "a": "5",
+            "b": "11",
+            "value": "16"
+          },
+          {
+            "index": [
+              1,
+              2
+            ],
+            "aIndex": [
+              1,
+              2
+            ],
+            "bIndex": [
+              2
+            ],
+            "a": "6",
+            "b": "12",
+            "value": "18"
+          }
+        ],
+        "reduction": {
+          "kind": "valid",
+          "shape": [
+            3
+          ],
+          "values": [
+            "25",
+            "29",
+            "33"
+          ]
+        }
+      }
+    },
+    {
+      "input": {
+        "left": "(2,3)",
+        "right": "(3,)",
+        "axis": "0",
+        "operation": "multiply",
+        "aStart": 1,
+        "bStart": 10
+      },
+      "expected": {
+        "kind": "valid",
+        "outShape": [
+          2,
+          3
+        ],
+        "values": [
+          "10",
+          "22",
+          "36",
+          "40",
+          "55",
+          "72"
+        ],
+        "mappings": [
+          {
+            "index": [
+              0,
+              0
+            ],
+            "aIndex": [
+              0,
+              0
+            ],
+            "bIndex": [
+              0
+            ],
+            "a": "1",
+            "b": "10",
+            "value": "10"
+          },
+          {
+            "index": [
+              0,
+              1
+            ],
+            "aIndex": [
+              0,
+              1
+            ],
+            "bIndex": [
+              1
+            ],
+            "a": "2",
+            "b": "11",
+            "value": "22"
+          },
+          {
+            "index": [
+              0,
+              2
+            ],
+            "aIndex": [
+              0,
+              2
+            ],
+            "bIndex": [
+              2
+            ],
+            "a": "3",
+            "b": "12",
+            "value": "36"
+          },
+          {
+            "index": [
+              1,
+              0
+            ],
+            "aIndex": [
+              1,
+              0
+            ],
+            "bIndex": [
+              0
+            ],
+            "a": "4",
+            "b": "10",
+            "value": "40"
+          },
+          {
+            "index": [
+              1,
+              1
+            ],
+            "aIndex": [
+              1,
+              1
+            ],
+            "bIndex": [
+              1
+            ],
+            "a": "5",
+            "b": "11",
+            "value": "55"
+          },
+          {
+            "index": [
+              1,
+              2
+            ],
+            "aIndex": [
+              1,
+              2
+            ],
+            "bIndex": [
+              2
+            ],
+            "a": "6",
+            "b": "12",
+            "value": "72"
+          }
+        ],
+        "reduction": {
+          "kind": "valid",
+          "shape": [
+            3
+          ],
+          "values": [
+            "50",
+            "77",
+            "108"
+          ]
+        }
+      }
+    },
+    {
+      "input": {
+        "left": "(2,3)",
+        "right": "(2,)",
+        "axis": "1",
+        "operation": "add",
+        "aStart": 1,
+        "bStart": 10
+      },
+      "expected": {
+        "kind": "incompatible",
+        "outShape": null,
+        "values": [],
+        "mappings": [],
+        "reduction": null
+      }
+    },
+    {
+      "input": {
+        "left": "(2,3)",
+        "right": "(2,)",
+        "axis": "1",
+        "operation": "multiply",
+        "aStart": 1,
+        "bStart": 10
+      },
+      "expected": {
+        "kind": "incompatible",
+        "outShape": null,
+        "values": [],
+        "mappings": [],
+        "reduction": null
+      }
+    },
+    {
+      "input": {
+        "left": "()",
+        "right": "(3,)",
+        "axis": "all",
+        "operation": "add",
+        "aStart": 1,
+        "bStart": 10
+      },
+      "expected": {
+        "kind": "valid",
+        "outShape": [
+          3
+        ],
+        "values": [
+          "11",
+          "12",
+          "13"
+        ],
+        "mappings": [
+          {
+            "index": [
+              0
+            ],
+            "aIndex": [],
+            "bIndex": [
+              0
+            ],
+            "a": "1",
+            "b": "10",
+            "value": "11"
+          },
+          {
+            "index": [
+              1
+            ],
+            "aIndex": [],
+            "bIndex": [
+              1
+            ],
+            "a": "1",
+            "b": "11",
+            "value": "12"
+          },
+          {
+            "index": [
+              2
+            ],
+            "aIndex": [],
+            "bIndex": [
+              2
+            ],
+            "a": "1",
+            "b": "12",
+            "value": "13"
+          }
+        ],
+        "reduction": {
+          "kind": "valid",
+          "shape": [],
+          "values": [
+            "36"
+          ]
+        }
+      }
+    },
+    {
+      "input": {
+        "left": "()",
+        "right": "(3,)",
+        "axis": "all",
+        "operation": "multiply",
+        "aStart": 1,
+        "bStart": 10
+      },
+      "expected": {
+        "kind": "valid",
+        "outShape": [
+          3
+        ],
+        "values": [
+          "10",
+          "11",
+          "12"
+        ],
+        "mappings": [
+          {
+            "index": [
+              0
+            ],
+            "aIndex": [],
+            "bIndex": [
+              0
+            ],
+            "a": "1",
+            "b": "10",
+            "value": "10"
+          },
+          {
+            "index": [
+              1
+            ],
+            "aIndex": [],
+            "bIndex": [
+              1
+            ],
+            "a": "1",
+            "b": "11",
+            "value": "11"
+          },
+          {
+            "index": [
+              2
+            ],
+            "aIndex": [],
+            "bIndex": [
+              2
+            ],
+            "a": "1",
+            "b": "12",
+            "value": "12"
+          }
+        ],
+        "reduction": {
+          "kind": "valid",
+          "shape": [],
+          "values": [
+            "33"
+          ]
+        }
+      }
+    },
+    {
+      "input": {
+        "left": "(2,1,3)",
+        "right": "(1,4,1)",
+        "axis": "-1",
+        "operation": "add",
+        "aStart": 1,
+        "bStart": 10
+      },
+      "expected": {
+        "kind": "valid",
+        "outShape": [
+          2,
+          4,
+          3
+        ],
+        "values": [
+          "11",
+          "12",
+          "13",
+          "12",
+          "13",
+          "14",
+          "13",
+          "14",
+          "15",
+          "14",
+          "15",
+          "16",
+          "14",
+          "15",
+          "16",
+          "15",
+          "16",
+          "17",
+          "16",
+          "17",
+          "18",
+          "17",
+          "18",
+          "19"
+        ],
+        "mappings": [
+          {
+            "index": [
+              0,
+              0,
+              0
+            ],
+            "aIndex": [
+              0,
+              0,
+              0
+            ],
+            "bIndex": [
+              0,
+              0,
+              0
+            ],
+            "a": "1",
+            "b": "10",
+            "value": "11"
+          },
+          {
+            "index": [
+              0,
+              0,
+              1
+            ],
+            "aIndex": [
+              0,
+              0,
+              1
+            ],
+            "bIndex": [
+              0,
+              0,
+              0
+            ],
+            "a": "2",
+            "b": "10",
+            "value": "12"
+          },
+          {
+            "index": [
+              0,
+              0,
+              2
+            ],
+            "aIndex": [
+              0,
+              0,
+              2
+            ],
+            "bIndex": [
+              0,
+              0,
+              0
+            ],
+            "a": "3",
+            "b": "10",
+            "value": "13"
+          },
+          {
+            "index": [
+              0,
+              1,
+              0
+            ],
+            "aIndex": [
+              0,
+              0,
+              0
+            ],
+            "bIndex": [
+              0,
+              1,
+              0
+            ],
+            "a": "1",
+            "b": "11",
+            "value": "12"
+          },
+          {
+            "index": [
+              0,
+              1,
+              1
+            ],
+            "aIndex": [
+              0,
+              0,
+              1
+            ],
+            "bIndex": [
+              0,
+              1,
+              0
+            ],
+            "a": "2",
+            "b": "11",
+            "value": "13"
+          },
+          {
+            "index": [
+              0,
+              1,
+              2
+            ],
+            "aIndex": [
+              0,
+              0,
+              2
+            ],
+            "bIndex": [
+              0,
+              1,
+              0
+            ],
+            "a": "3",
+            "b": "11",
+            "value": "14"
+          },
+          {
+            "index": [
+              0,
+              2,
+              0
+            ],
+            "aIndex": [
+              0,
+              0,
+              0
+            ],
+            "bIndex": [
+              0,
+              2,
+              0
+            ],
+            "a": "1",
+            "b": "12",
+            "value": "13"
+          },
+          {
+            "index": [
+              0,
+              2,
+              1
+            ],
+            "aIndex": [
+              0,
+              0,
+              1
+            ],
+            "bIndex": [
+              0,
+              2,
+              0
+            ],
+            "a": "2",
+            "b": "12",
+            "value": "14"
+          },
+          {
+            "index": [
+              0,
+              2,
+              2
+            ],
+            "aIndex": [
+              0,
+              0,
+              2
+            ],
+            "bIndex": [
+              0,
+              2,
+              0
+            ],
+            "a": "3",
+            "b": "12",
+            "value": "15"
+          },
+          {
+            "index": [
+              0,
+              3,
+              0
+            ],
+            "aIndex": [
+              0,
+              0,
+              0
+            ],
+            "bIndex": [
+              0,
+              3,
+              0
+            ],
+            "a": "1",
+            "b": "13",
+            "value": "14"
+          },
+          {
+            "index": [
+              0,
+              3,
+              1
+            ],
+            "aIndex": [
+              0,
+              0,
+              1
+            ],
+            "bIndex": [
+              0,
+              3,
+              0
+            ],
+            "a": "2",
+            "b": "13",
+            "value": "15"
+          },
+          {
+            "index": [
+              0,
+              3,
+              2
+            ],
+            "aIndex": [
+              0,
+              0,
+              2
+            ],
+            "bIndex": [
+              0,
+              3,
+              0
+            ],
+            "a": "3",
+            "b": "13",
+            "value": "16"
+          },
+          {
+            "index": [
+              1,
+              0,
+              0
+            ],
+            "aIndex": [
+              1,
+              0,
+              0
+            ],
+            "bIndex": [
+              0,
+              0,
+              0
+            ],
+            "a": "4",
+            "b": "10",
+            "value": "14"
+          },
+          {
+            "index": [
+              1,
+              0,
+              1
+            ],
+            "aIndex": [
+              1,
+              0,
+              1
+            ],
+            "bIndex": [
+              0,
+              0,
+              0
+            ],
+            "a": "5",
+            "b": "10",
+            "value": "15"
+          },
+          {
+            "index": [
+              1,
+              0,
+              2
+            ],
+            "aIndex": [
+              1,
+              0,
+              2
+            ],
+            "bIndex": [
+              0,
+              0,
+              0
+            ],
+            "a": "6",
+            "b": "10",
+            "value": "16"
+          },
+          {
+            "index": [
+              1,
+              1,
+              0
+            ],
+            "aIndex": [
+              1,
+              0,
+              0
+            ],
+            "bIndex": [
+              0,
+              1,
+              0
+            ],
+            "a": "4",
+            "b": "11",
+            "value": "15"
+          },
+          {
+            "index": [
+              1,
+              1,
+              1
+            ],
+            "aIndex": [
+              1,
+              0,
+              1
+            ],
+            "bIndex": [
+              0,
+              1,
+              0
+            ],
+            "a": "5",
+            "b": "11",
+            "value": "16"
+          },
+          {
+            "index": [
+              1,
+              1,
+              2
+            ],
+            "aIndex": [
+              1,
+              0,
+              2
+            ],
+            "bIndex": [
+              0,
+              1,
+              0
+            ],
+            "a": "6",
+            "b": "11",
+            "value": "17"
+          },
+          {
+            "index": [
+              1,
+              2,
+              0
+            ],
+            "aIndex": [
+              1,
+              0,
+              0
+            ],
+            "bIndex": [
+              0,
+              2,
+              0
+            ],
+            "a": "4",
+            "b": "12",
+            "value": "16"
+          },
+          {
+            "index": [
+              1,
+              2,
+              1
+            ],
+            "aIndex": [
+              1,
+              0,
+              1
+            ],
+            "bIndex": [
+              0,
+              2,
+              0
+            ],
+            "a": "5",
+            "b": "12",
+            "value": "17"
+          },
+          {
+            "index": [
+              1,
+              2,
+              2
+            ],
+            "aIndex": [
+              1,
+              0,
+              2
+            ],
+            "bIndex": [
+              0,
+              2,
+              0
+            ],
+            "a": "6",
+            "b": "12",
+            "value": "18"
+          },
+          {
+            "index": [
+              1,
+              3,
+              0
+            ],
+            "aIndex": [
+              1,
+              0,
+              0
+            ],
+            "bIndex": [
+              0,
+              3,
+              0
+            ],
+            "a": "4",
+            "b": "13",
+            "value": "17"
+          },
+          {
+            "index": [
+              1,
+              3,
+              1
+            ],
+            "aIndex": [
+              1,
+              0,
+              1
+            ],
+            "bIndex": [
+              0,
+              3,
+              0
+            ],
+            "a": "5",
+            "b": "13",
+            "value": "18"
+          },
+          {
+            "index": [
+              1,
+              3,
+              2
+            ],
+            "aIndex": [
+              1,
+              0,
+              2
+            ],
+            "bIndex": [
+              0,
+              3,
+              0
+            ],
+            "a": "6",
+            "b": "13",
+            "value": "19"
+          }
+        ],
+        "reduction": {
+          "kind": "valid",
+          "shape": [
+            2,
+            4
+          ],
+          "values": [
+            "36",
+            "39",
+            "42",
+            "45",
+            "45",
+            "48",
+            "51",
+            "54"
+          ]
+        }
+      }
+    },
+    {
+      "input": {
+        "left": "(2,1,3)",
+        "right": "(1,4,1)",
+        "axis": "-1",
+        "operation": "multiply",
+        "aStart": 1,
+        "bStart": 10
+      },
+      "expected": {
+        "kind": "valid",
+        "outShape": [
+          2,
+          4,
+          3
+        ],
+        "values": [
+          "10",
+          "20",
+          "30",
+          "11",
+          "22",
+          "33",
+          "12",
+          "24",
+          "36",
+          "13",
+          "26",
+          "39",
+          "40",
+          "50",
+          "60",
+          "44",
+          "55",
+          "66",
+          "48",
+          "60",
+          "72",
+          "52",
+          "65",
+          "78"
+        ],
+        "mappings": [
+          {
+            "index": [
+              0,
+              0,
+              0
+            ],
+            "aIndex": [
+              0,
+              0,
+              0
+            ],
+            "bIndex": [
+              0,
+              0,
+              0
+            ],
+            "a": "1",
+            "b": "10",
+            "value": "10"
+          },
+          {
+            "index": [
+              0,
+              0,
+              1
+            ],
+            "aIndex": [
+              0,
+              0,
+              1
+            ],
+            "bIndex": [
+              0,
+              0,
+              0
+            ],
+            "a": "2",
+            "b": "10",
+            "value": "20"
+          },
+          {
+            "index": [
+              0,
+              0,
+              2
+            ],
+            "aIndex": [
+              0,
+              0,
+              2
+            ],
+            "bIndex": [
+              0,
+              0,
+              0
+            ],
+            "a": "3",
+            "b": "10",
+            "value": "30"
+          },
+          {
+            "index": [
+              0,
+              1,
+              0
+            ],
+            "aIndex": [
+              0,
+              0,
+              0
+            ],
+            "bIndex": [
+              0,
+              1,
+              0
+            ],
+            "a": "1",
+            "b": "11",
+            "value": "11"
+          },
+          {
+            "index": [
+              0,
+              1,
+              1
+            ],
+            "aIndex": [
+              0,
+              0,
+              1
+            ],
+            "bIndex": [
+              0,
+              1,
+              0
+            ],
+            "a": "2",
+            "b": "11",
+            "value": "22"
+          },
+          {
+            "index": [
+              0,
+              1,
+              2
+            ],
+            "aIndex": [
+              0,
+              0,
+              2
+            ],
+            "bIndex": [
+              0,
+              1,
+              0
+            ],
+            "a": "3",
+            "b": "11",
+            "value": "33"
+          },
+          {
+            "index": [
+              0,
+              2,
+              0
+            ],
+            "aIndex": [
+              0,
+              0,
+              0
+            ],
+            "bIndex": [
+              0,
+              2,
+              0
+            ],
+            "a": "1",
+            "b": "12",
+            "value": "12"
+          },
+          {
+            "index": [
+              0,
+              2,
+              1
+            ],
+            "aIndex": [
+              0,
+              0,
+              1
+            ],
+            "bIndex": [
+              0,
+              2,
+              0
+            ],
+            "a": "2",
+            "b": "12",
+            "value": "24"
+          },
+          {
+            "index": [
+              0,
+              2,
+              2
+            ],
+            "aIndex": [
+              0,
+              0,
+              2
+            ],
+            "bIndex": [
+              0,
+              2,
+              0
+            ],
+            "a": "3",
+            "b": "12",
+            "value": "36"
+          },
+          {
+            "index": [
+              0,
+              3,
+              0
+            ],
+            "aIndex": [
+              0,
+              0,
+              0
+            ],
+            "bIndex": [
+              0,
+              3,
+              0
+            ],
+            "a": "1",
+            "b": "13",
+            "value": "13"
+          },
+          {
+            "index": [
+              0,
+              3,
+              1
+            ],
+            "aIndex": [
+              0,
+              0,
+              1
+            ],
+            "bIndex": [
+              0,
+              3,
+              0
+            ],
+            "a": "2",
+            "b": "13",
+            "value": "26"
+          },
+          {
+            "index": [
+              0,
+              3,
+              2
+            ],
+            "aIndex": [
+              0,
+              0,
+              2
+            ],
+            "bIndex": [
+              0,
+              3,
+              0
+            ],
+            "a": "3",
+            "b": "13",
+            "value": "39"
+          },
+          {
+            "index": [
+              1,
+              0,
+              0
+            ],
+            "aIndex": [
+              1,
+              0,
+              0
+            ],
+            "bIndex": [
+              0,
+              0,
+              0
+            ],
+            "a": "4",
+            "b": "10",
+            "value": "40"
+          },
+          {
+            "index": [
+              1,
+              0,
+              1
+            ],
+            "aIndex": [
+              1,
+              0,
+              1
+            ],
+            "bIndex": [
+              0,
+              0,
+              0
+            ],
+            "a": "5",
+            "b": "10",
+            "value": "50"
+          },
+          {
+            "index": [
+              1,
+              0,
+              2
+            ],
+            "aIndex": [
+              1,
+              0,
+              2
+            ],
+            "bIndex": [
+              0,
+              0,
+              0
+            ],
+            "a": "6",
+            "b": "10",
+            "value": "60"
+          },
+          {
+            "index": [
+              1,
+              1,
+              0
+            ],
+            "aIndex": [
+              1,
+              0,
+              0
+            ],
+            "bIndex": [
+              0,
+              1,
+              0
+            ],
+            "a": "4",
+            "b": "11",
+            "value": "44"
+          },
+          {
+            "index": [
+              1,
+              1,
+              1
+            ],
+            "aIndex": [
+              1,
+              0,
+              1
+            ],
+            "bIndex": [
+              0,
+              1,
+              0
+            ],
+            "a": "5",
+            "b": "11",
+            "value": "55"
+          },
+          {
+            "index": [
+              1,
+              1,
+              2
+            ],
+            "aIndex": [
+              1,
+              0,
+              2
+            ],
+            "bIndex": [
+              0,
+              1,
+              0
+            ],
+            "a": "6",
+            "b": "11",
+            "value": "66"
+          },
+          {
+            "index": [
+              1,
+              2,
+              0
+            ],
+            "aIndex": [
+              1,
+              0,
+              0
+            ],
+            "bIndex": [
+              0,
+              2,
+              0
+            ],
+            "a": "4",
+            "b": "12",
+            "value": "48"
+          },
+          {
+            "index": [
+              1,
+              2,
+              1
+            ],
+            "aIndex": [
+              1,
+              0,
+              1
+            ],
+            "bIndex": [
+              0,
+              2,
+              0
+            ],
+            "a": "5",
+            "b": "12",
+            "value": "60"
+          },
+          {
+            "index": [
+              1,
+              2,
+              2
+            ],
+            "aIndex": [
+              1,
+              0,
+              2
+            ],
+            "bIndex": [
+              0,
+              2,
+              0
+            ],
+            "a": "6",
+            "b": "12",
+            "value": "72"
+          },
+          {
+            "index": [
+              1,
+              3,
+              0
+            ],
+            "aIndex": [
+              1,
+              0,
+              0
+            ],
+            "bIndex": [
+              0,
+              3,
+              0
+            ],
+            "a": "4",
+            "b": "13",
+            "value": "52"
+          },
+          {
+            "index": [
+              1,
+              3,
+              1
+            ],
+            "aIndex": [
+              1,
+              0,
+              1
+            ],
+            "bIndex": [
+              0,
+              3,
+              0
+            ],
+            "a": "5",
+            "b": "13",
+            "value": "65"
+          },
+          {
+            "index": [
+              1,
+              3,
+              2
+            ],
+            "aIndex": [
+              1,
+              0,
+              2
+            ],
+            "bIndex": [
+              0,
+              3,
+              0
+            ],
+            "a": "6",
+            "b": "13",
+            "value": "78"
+          }
+        ],
+        "reduction": {
+          "kind": "valid",
+          "shape": [
+            2,
+            4
+          ],
+          "values": [
+            "60",
+            "66",
+            "72",
+            "78",
+            "150",
+            "165",
+            "180",
+            "195"
+          ]
+        }
+      }
+    },
+    {
+      "input": {
+        "left": "(0,3)",
+        "right": "(1,3)",
+        "axis": "0",
+        "operation": "add",
+        "aStart": 1,
+        "bStart": 10
+      },
+      "expected": {
+        "kind": "valid",
+        "outShape": [
+          0,
+          3
+        ],
+        "values": [],
+        "mappings": [],
+        "reduction": {
+          "kind": "valid",
+          "shape": [
+            3
+          ],
+          "values": [
+            "0",
+            "0",
+            "0"
+          ]
+        }
+      }
+    },
+    {
+      "input": {
+        "left": "(0,3)",
+        "right": "(1,3)",
+        "axis": "0",
+        "operation": "multiply",
+        "aStart": 1,
+        "bStart": 10
+      },
+      "expected": {
+        "kind": "valid",
+        "outShape": [
+          0,
+          3
+        ],
+        "values": [],
+        "mappings": [],
+        "reduction": {
+          "kind": "valid",
+          "shape": [
+            3
+          ],
+          "values": [
+            "0",
+            "0",
+            "0"
+          ]
+        }
+      }
+    },
+    {
+      "input": {
+        "left": "(0,3)",
+        "right": "(1,3)",
+        "axis": "1",
+        "operation": "add",
+        "aStart": 1,
+        "bStart": 10
+      },
+      "expected": {
+        "kind": "valid",
+        "outShape": [
+          0,
+          3
+        ],
+        "values": [],
+        "mappings": [],
+        "reduction": {
+          "kind": "valid",
+          "shape": [
+            0
+          ],
+          "values": []
+        }
+      }
+    },
+    {
+      "input": {
+        "left": "(0,3)",
+        "right": "(1,3)",
+        "axis": "1",
+        "operation": "multiply",
+        "aStart": 1,
+        "bStart": 10
+      },
+      "expected": {
+        "kind": "valid",
+        "outShape": [
+          0,
+          3
+        ],
+        "values": [],
+        "mappings": [],
+        "reduction": {
+          "kind": "valid",
+          "shape": [
+            0
+          ],
+          "values": []
+        }
+      }
+    },
+    {
+      "input": {
+        "left": "()",
+        "right": "()",
+        "axis": "all",
+        "operation": "add",
+        "aStart": 1,
+        "bStart": 10
+      },
+      "expected": {
+        "kind": "valid",
+        "outShape": [],
+        "values": [
+          "11"
+        ],
+        "mappings": [
+          {
+            "index": [],
+            "aIndex": [],
+            "bIndex": [],
+            "a": "1",
+            "b": "10",
+            "value": "11"
+          }
+        ],
+        "reduction": {
+          "kind": "valid",
+          "shape": [],
+          "values": [
+            "11"
+          ]
+        }
+      }
+    },
+    {
+      "input": {
+        "left": "()",
+        "right": "()",
+        "axis": "all",
+        "operation": "multiply",
+        "aStart": 1,
+        "bStart": 10
+      },
+      "expected": {
+        "kind": "valid",
+        "outShape": [],
+        "values": [
+          "10"
+        ],
+        "mappings": [
+          {
+            "index": [],
+            "aIndex": [],
+            "bIndex": [],
+            "a": "1",
+            "b": "10",
+            "value": "10"
+          }
+        ],
+        "reduction": {
+          "kind": "valid",
+          "shape": [],
+          "values": [
+            "10"
+          ]
+        }
+      }
+    },
+    {
+      "input": {
+        "left": "()",
+        "right": "()",
+        "axis": "0",
+        "operation": "add",
+        "aStart": 1,
+        "bStart": 10
+      },
+      "expected": {
+        "kind": "valid",
+        "outShape": [],
+        "values": [
+          "11"
+        ],
+        "mappings": [
+          {
+            "index": [],
+            "aIndex": [],
+            "bIndex": [],
+            "a": "1",
+            "b": "10",
+            "value": "11"
+          }
+        ],
+        "reduction": {
+          "kind": "invalid"
+        }
+      }
+    },
+    {
+      "input": {
+        "left": "()",
+        "right": "()",
+        "axis": "0",
+        "operation": "multiply",
+        "aStart": 1,
+        "bStart": 10
+      },
+      "expected": {
+        "kind": "valid",
+        "outShape": [],
+        "values": [
+          "10"
+        ],
+        "mappings": [
+          {
+            "index": [],
+            "aIndex": [],
+            "bIndex": [],
+            "a": "1",
+            "b": "10",
+            "value": "10"
+          }
+        ],
+        "reduction": {
+          "kind": "invalid"
+        }
+      }
+    },
+    {
+      "input": {
+        "left": "(4,1,4,1)",
+        "right": "(1,4,1,4)",
+        "axis": "all",
+        "operation": "add",
+        "aStart": 1,
+        "bStart": 10
+      },
+      "expected": {
+        "kind": "bounded-out",
+        "outShape": [
+          4,
+          4,
+          4,
+          4
+        ],
+        "values": [],
+        "mappings": [],
+        "reduction": null
+      }
+    },
+    {
+      "input": {
+        "left": "(4,1,4,1)",
+        "right": "(1,4,1,4)",
+        "axis": "all",
+        "operation": "multiply",
+        "aStart": 1,
+        "bStart": 10
+      },
+      "expected": {
+        "kind": "bounded-out",
+        "outShape": [
+          4,
+          4,
+          4,
+          4
+        ],
+        "values": [],
+        "mappings": [],
+        "reduction": null
+      }
+    },
+    {
+      "input": {
+        "left": "(2,2,2,2)",
+        "right": "()",
+        "axis": "-2",
+        "operation": "add",
+        "aStart": 1,
+        "bStart": 10
+      },
+      "expected": {
+        "kind": "valid",
+        "outShape": [
+          2,
+          2,
+          2,
+          2
+        ],
+        "values": [
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22",
+          "23",
+          "24",
+          "25",
+          "26"
+        ],
+        "mappings": [
+          {
+            "index": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "aIndex": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "bIndex": [],
+            "a": "1",
+            "b": "10",
+            "value": "11"
+          },
+          {
+            "index": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "aIndex": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "bIndex": [],
+            "a": "2",
+            "b": "10",
+            "value": "12"
+          },
+          {
+            "index": [
+              0,
+              0,
+              1,
+              0
+            ],
+            "aIndex": [
+              0,
+              0,
+              1,
+              0
+            ],
+            "bIndex": [],
+            "a": "3",
+            "b": "10",
+            "value": "13"
+          },
+          {
+            "index": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "aIndex": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "bIndex": [],
+            "a": "4",
+            "b": "10",
+            "value": "14"
+          },
+          {
+            "index": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "aIndex": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "bIndex": [],
+            "a": "5",
+            "b": "10",
+            "value": "15"
+          },
+          {
+            "index": [
+              0,
+              1,
+              0,
+              1
+            ],
+            "aIndex": [
+              0,
+              1,
+              0,
+              1
+            ],
+            "bIndex": [],
+            "a": "6",
+            "b": "10",
+            "value": "16"
+          },
+          {
+            "index": [
+              0,
+              1,
+              1,
+              0
+            ],
+            "aIndex": [
+              0,
+              1,
+              1,
+              0
+            ],
+            "bIndex": [],
+            "a": "7",
+            "b": "10",
+            "value": "17"
+          },
+          {
+            "index": [
+              0,
+              1,
+              1,
+              1
+            ],
+            "aIndex": [
+              0,
+              1,
+              1,
+              1
+            ],
+            "bIndex": [],
+            "a": "8",
+            "b": "10",
+            "value": "18"
+          },
+          {
+            "index": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "aIndex": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "bIndex": [],
+            "a": "9",
+            "b": "10",
+            "value": "19"
+          },
+          {
+            "index": [
+              1,
+              0,
+              0,
+              1
+            ],
+            "aIndex": [
+              1,
+              0,
+              0,
+              1
+            ],
+            "bIndex": [],
+            "a": "10",
+            "b": "10",
+            "value": "20"
+          },
+          {
+            "index": [
+              1,
+              0,
+              1,
+              0
+            ],
+            "aIndex": [
+              1,
+              0,
+              1,
+              0
+            ],
+            "bIndex": [],
+            "a": "11",
+            "b": "10",
+            "value": "21"
+          },
+          {
+            "index": [
+              1,
+              0,
+              1,
+              1
+            ],
+            "aIndex": [
+              1,
+              0,
+              1,
+              1
+            ],
+            "bIndex": [],
+            "a": "12",
+            "b": "10",
+            "value": "22"
+          },
+          {
+            "index": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "aIndex": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "bIndex": [],
+            "a": "13",
+            "b": "10",
+            "value": "23"
+          },
+          {
+            "index": [
+              1,
+              1,
+              0,
+              1
+            ],
+            "aIndex": [
+              1,
+              1,
+              0,
+              1
+            ],
+            "bIndex": [],
+            "a": "14",
+            "b": "10",
+            "value": "24"
+          },
+          {
+            "index": [
+              1,
+              1,
+              1,
+              0
+            ],
+            "aIndex": [
+              1,
+              1,
+              1,
+              0
+            ],
+            "bIndex": [],
+            "a": "15",
+            "b": "10",
+            "value": "25"
+          },
+          {
+            "index": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "aIndex": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "bIndex": [],
+            "a": "16",
+            "b": "10",
+            "value": "26"
+          }
+        ],
+        "reduction": {
+          "kind": "valid",
+          "shape": [
+            2,
+            2,
+            2
+          ],
+          "values": [
+            "24",
+            "26",
+            "32",
+            "34",
+            "40",
+            "42",
+            "48",
+            "50"
+          ]
+        }
+      }
+    },
+    {
+      "input": {
+        "left": "(2,2,2,2)",
+        "right": "()",
+        "axis": "-2",
+        "operation": "multiply",
+        "aStart": 1,
+        "bStart": 10
+      },
+      "expected": {
+        "kind": "valid",
+        "outShape": [
+          2,
+          2,
+          2,
+          2
+        ],
+        "values": [
+          "10",
+          "20",
+          "30",
+          "40",
+          "50",
+          "60",
+          "70",
+          "80",
+          "90",
+          "100",
+          "110",
+          "120",
+          "130",
+          "140",
+          "150",
+          "160"
+        ],
+        "mappings": [
+          {
+            "index": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "aIndex": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "bIndex": [],
+            "a": "1",
+            "b": "10",
+            "value": "10"
+          },
+          {
+            "index": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "aIndex": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "bIndex": [],
+            "a": "2",
+            "b": "10",
+            "value": "20"
+          },
+          {
+            "index": [
+              0,
+              0,
+              1,
+              0
+            ],
+            "aIndex": [
+              0,
+              0,
+              1,
+              0
+            ],
+            "bIndex": [],
+            "a": "3",
+            "b": "10",
+            "value": "30"
+          },
+          {
+            "index": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "aIndex": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "bIndex": [],
+            "a": "4",
+            "b": "10",
+            "value": "40"
+          },
+          {
+            "index": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "aIndex": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "bIndex": [],
+            "a": "5",
+            "b": "10",
+            "value": "50"
+          },
+          {
+            "index": [
+              0,
+              1,
+              0,
+              1
+            ],
+            "aIndex": [
+              0,
+              1,
+              0,
+              1
+            ],
+            "bIndex": [],
+            "a": "6",
+            "b": "10",
+            "value": "60"
+          },
+          {
+            "index": [
+              0,
+              1,
+              1,
+              0
+            ],
+            "aIndex": [
+              0,
+              1,
+              1,
+              0
+            ],
+            "bIndex": [],
+            "a": "7",
+            "b": "10",
+            "value": "70"
+          },
+          {
+            "index": [
+              0,
+              1,
+              1,
+              1
+            ],
+            "aIndex": [
+              0,
+              1,
+              1,
+              1
+            ],
+            "bIndex": [],
+            "a": "8",
+            "b": "10",
+            "value": "80"
+          },
+          {
+            "index": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "aIndex": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "bIndex": [],
+            "a": "9",
+            "b": "10",
+            "value": "90"
+          },
+          {
+            "index": [
+              1,
+              0,
+              0,
+              1
+            ],
+            "aIndex": [
+              1,
+              0,
+              0,
+              1
+            ],
+            "bIndex": [],
+            "a": "10",
+            "b": "10",
+            "value": "100"
+          },
+          {
+            "index": [
+              1,
+              0,
+              1,
+              0
+            ],
+            "aIndex": [
+              1,
+              0,
+              1,
+              0
+            ],
+            "bIndex": [],
+            "a": "11",
+            "b": "10",
+            "value": "110"
+          },
+          {
+            "index": [
+              1,
+              0,
+              1,
+              1
+            ],
+            "aIndex": [
+              1,
+              0,
+              1,
+              1
+            ],
+            "bIndex": [],
+            "a": "12",
+            "b": "10",
+            "value": "120"
+          },
+          {
+            "index": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "aIndex": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "bIndex": [],
+            "a": "13",
+            "b": "10",
+            "value": "130"
+          },
+          {
+            "index": [
+              1,
+              1,
+              0,
+              1
+            ],
+            "aIndex": [
+              1,
+              1,
+              0,
+              1
+            ],
+            "bIndex": [],
+            "a": "14",
+            "b": "10",
+            "value": "140"
+          },
+          {
+            "index": [
+              1,
+              1,
+              1,
+              0
+            ],
+            "aIndex": [
+              1,
+              1,
+              1,
+              0
+            ],
+            "bIndex": [],
+            "a": "15",
+            "b": "10",
+            "value": "150"
+          },
+          {
+            "index": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "aIndex": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "bIndex": [],
+            "a": "16",
+            "b": "10",
+            "value": "160"
+          }
+        ],
+        "reduction": {
+          "kind": "valid",
+          "shape": [
+            2,
+            2,
+            2
+          ],
+          "values": [
+            "40",
+            "60",
+            "120",
+            "140",
+            "200",
+            "220",
+            "280",
+            "300"
+          ]
+        }
+      }
+    }
+  ],
+  "replays": [
+    {
+      "input": {
+        "seed": 42,
+        "count": 6,
+        "values": "1e16,-1e16,1",
+        "absoluteTolerance": "1e-12",
+        "relativeTolerance": "1e-12"
+      },
+      "expected": {
+        "records": [
+          {
+            "index": 0,
+            "before": 42,
+            "after": 1083814273,
+            "exact": "1083814273/4294967296"
+          },
+          {
+            "index": 1,
+            "before": 1083814273,
+            "after": 378494188,
+            "exact": "94623547/1073741824"
+          },
+          {
+            "index": 2,
+            "before": 378494188,
+            "after": 2479403867,
+            "exact": "2479403867/4294967296"
+          },
+          {
+            "index": 3,
+            "before": 2479403867,
+            "after": 955863294,
+            "exact": "477931647/2147483648"
+          },
+          {
+            "index": 4,
+            "before": 955863294,
+            "after": 1613448261,
+            "exact": "1613448261/4294967296"
+          },
+          {
+            "index": 5,
+            "before": 1613448261,
+            "after": 110225632,
+            "exact": "3444551/134217728"
+          }
+        ],
+        "left": 1.0,
+        "right": 0.0,
+        "reference": "1",
+        "withinBudget": false,
+        "difference": 1.0,
+        "budget": 2e-12,
+        "leftError": "0",
+        "rightError": "-1"
+      }
+    },
+    {
+      "input": {
+        "seed": 7,
+        "count": 6,
+        "values": "1e16,-1e16,1",
+        "absoluteTolerance": "0",
+        "relativeTolerance": "0"
+      },
+      "expected": {
+        "records": [
+          {
+            "index": 0,
+            "before": 7,
+            "after": 1025555898,
+            "exact": "512777949/2147483648"
+          },
+          {
+            "index": 1,
+            "before": 1025555898,
+            "after": 3923423697,
+            "exact": "3923423697/4294967296"
+          },
+          {
+            "index": 2,
+            "before": 3923423697,
+            "after": 2630631676,
+            "exact": "657657919/1073741824"
+          },
+          {
+            "index": 3,
+            "before": 2630631676,
+            "after": 3981355051,
+            "exact": "3981355051/4294967296"
+          },
+          {
+            "index": 4,
+            "before": 3981355051,
+            "after": 211918734,
+            "exact": "105959367/2147483648"
+          },
+          {
+            "index": 5,
+            "before": 211918734,
+            "after": 3675562389,
+            "exact": "3675562389/4294967296"
+          }
+        ],
+        "left": 1.0,
+        "right": 0.0,
+        "reference": "1",
+        "withinBudget": false,
+        "difference": 1.0,
+        "budget": 0.0,
+        "leftError": "0",
+        "rightError": "-1"
+      }
+    },
+    {
+      "input": {
+        "seed": 0,
+        "count": 16,
+        "values": "1,2,3",
+        "absoluteTolerance": "0",
+        "relativeTolerance": "0"
+      },
+      "expected": {
+        "records": [
+          {
+            "index": 0,
+            "before": 0,
+            "after": 1013904223,
+            "exact": "1013904223/4294967296"
+          },
+          {
+            "index": 1,
+            "before": 1013904223,
+            "after": 1196435762,
+            "exact": "598217881/2147483648"
+          },
+          {
+            "index": 2,
+            "before": 1196435762,
+            "after": 3519870697,
+            "exact": "3519870697/4294967296"
+          },
+          {
+            "index": 3,
+            "before": 3519870697,
+            "after": 2868466484,
+            "exact": "717116621/1073741824"
+          },
+          {
+            "index": 4,
+            "before": 2868466484,
+            "after": 1649599747,
+            "exact": "1649599747/4294967296"
+          },
+          {
+            "index": 5,
+            "before": 1649599747,
+            "after": 2670642822,
+            "exact": "1335321411/2147483648"
+          },
+          {
+            "index": 6,
+            "before": 2670642822,
+            "after": 1476291629,
+            "exact": "1476291629/4294967296"
+          },
+          {
+            "index": 7,
+            "before": 1476291629,
+            "after": 2748932008,
+            "exact": "343616501/536870912"
+          },
+          {
+            "index": 8,
+            "before": 2748932008,
+            "after": 2180890343,
+            "exact": "2180890343/4294967296"
+          },
+          {
+            "index": 9,
+            "before": 2180890343,
+            "after": 2498801434,
+            "exact": "1249400717/2147483648"
+          },
+          {
+            "index": 10,
+            "before": 2498801434,
+            "after": 3421909937,
+            "exact": "3421909937/4294967296"
+          },
+          {
+            "index": 11,
+            "before": 3421909937,
+            "after": 3167820124,
+            "exact": "791955031/1073741824"
+          },
+          {
+            "index": 12,
+            "before": 3167820124,
+            "after": 2636375307,
+            "exact": "2636375307/4294967296"
+          },
+          {
+            "index": 13,
+            "before": 2636375307,
+            "after": 3801544430,
+            "exact": "1900772215/2147483648"
+          },
+          {
+            "index": 14,
+            "before": 3801544430,
+            "after": 28987765,
+            "exact": "28987765/4294967296"
+          },
+          {
+            "index": 15,
+            "before": 28987765,
+            "after": 2210837584,
+            "exact": "138177349/268435456"
+          }
+        ],
+        "left": 6.0,
+        "right": 6.0,
+        "reference": "6",
+        "withinBudget": true,
+        "difference": 0.0,
+        "budget": 0.0,
+        "leftError": "0",
+        "rightError": "0"
+      }
+    },
+    {
+      "input": {
+        "seed": 4294967295,
+        "count": 1,
+        "values": "1,-1,0",
+        "absoluteTolerance": "1e-12",
+        "relativeTolerance": "1e-12"
+      },
+      "expected": {
+        "records": [
+          {
+            "index": 0,
+            "before": 4294967295,
+            "after": 1012239698,
+            "exact": "506119849/2147483648"
+          }
+        ],
+        "left": 0.0,
+        "right": 0.0,
+        "reference": "0",
+        "withinBudget": true,
+        "difference": 0.0,
+        "budget": 1e-12,
+        "leftError": "0",
+        "rightError": "0"
+      }
+    },
+    {
+      "input": {
+        "seed": 378494188,
+        "count": 4,
+        "values": "1e16,-1e16,1",
+        "absoluteTolerance": "1",
+        "relativeTolerance": "0"
+      },
+      "expected": {
+        "records": [
+          {
+            "index": 0,
+            "before": 378494188,
+            "after": 2479403867,
+            "exact": "2479403867/4294967296"
+          },
+          {
+            "index": 1,
+            "before": 2479403867,
+            "after": 955863294,
+            "exact": "477931647/2147483648"
+          },
+          {
+            "index": 2,
+            "before": 955863294,
+            "after": 1613448261,
+            "exact": "1613448261/4294967296"
+          },
+          {
+            "index": 3,
+            "before": 1613448261,
+            "after": 110225632,
+            "exact": "3444551/134217728"
+          }
+        ],
+        "left": 1.0,
+        "right": 0.0,
+        "reference": "1",
+        "withinBudget": true,
+        "difference": 1.0,
+        "budget": 1.0,
+        "leftError": "0",
+        "rightError": "-1"
+      }
+    },
+    {
+      "input": {
+        "seed": 42,
+        "count": 3,
+        "values": "0.1,0.2,0.3",
+        "absoluteTolerance": "1e-12",
+        "relativeTolerance": "1e-12"
+      },
+      "expected": {
+        "records": [
+          {
+            "index": 0,
+            "before": 42,
+            "after": 1083814273,
+            "exact": "1083814273/4294967296"
+          },
+          {
+            "index": 1,
+            "before": 1083814273,
+            "after": 378494188,
+            "exact": "94623547/1073741824"
+          },
+          {
+            "index": 2,
+            "before": 378494188,
+            "after": 2479403867,
+            "exact": "2479403867/4294967296"
+          }
+        ],
+        "left": 0.6000000000000001,
+        "right": 0.6,
+        "reference": "3/5",
+        "withinBudget": true,
+        "difference": 1.1102230246251565e-16,
+        "budget": 1.6e-12,
+        "leftError": "1/11258999068426240",
+        "rightError": "-1/45035996273704960"
+      }
+    }
+  ]
+}

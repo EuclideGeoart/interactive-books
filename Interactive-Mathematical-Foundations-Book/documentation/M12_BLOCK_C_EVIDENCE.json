@@ -1,0 +1,83 @@
+{
+  "baseline": "5c97622e5ef16b0f2a1d83d8adb906db7df04bbd",
+  "blockB": "ef8c26a4dcc01d30c1ace3f6e2ff64bbc72cc9f5",
+  "scope": "Focused Block C implementation checks, not final milestone/exhaustive acceptance",
+  "published": 89,
+  "planned": 8,
+  "chapters": [
+    "VIII.8",
+    "VIII.9",
+    "VIII.10"
+  ],
+  "newExercises": 15,
+  "newReferences": 6,
+  "focusedUnits": 283,
+  "unitFiles": 8,
+  "finalPlannerChecks": 3,
+  "pythonSelfTests": 5,
+  "fixtureCases": 36,
+  "fixtureBreakdown": {
+    "sparse": 8,
+    "broadcasting": 22,
+    "reproducibility": 6
+  },
+  "exactPolicy": "Structures, shapes, indices, RNG states, counts, rational values and the specified binary64 associations compare exactly; no tolerance increase.",
+  "browser": {
+    "selected": 39,
+    "passed": 37,
+    "skipped": 2,
+    "reason": "Touch-only test skips desktop/tablet; mobile uses real touch events.",
+    "durationSeconds": 32.7,
+    "coverage": "All three new chapters: input rejection, actual values/index/state mapping, immutable main/worked replay, both themes axe, all 15 exercises and feedback, sparse touch."
+  },
+  "reviewedNewLinuxImages": 33,
+  "totalNumericalImages": 93,
+  "history": [
+    "All initial Block C numerical/oracle/lesson/exercise checks passed.",
+    "One added planner assertion assumed numeric chapter order while catalog uses filename order. Corrected test compares sorted coverage sets; original 1-failure log retained, final three ownership checks pass.",
+    "No browser failures or visual changes after individual review."
+  ],
+  "typeCheck": {
+    "errors": 0,
+    "warnings": 0,
+    "existingHints": 5,
+    "files": 581
+  },
+  "rootBuild": {
+    "pages": 93,
+    "durationSeconds": 19.14
+  },
+  "diskFreeGiB": 20,
+  "limits": [
+    "Sparse byte costs describe packed Float64/int32 arrays, not exact-rational object storage or performance guarantees.",
+    "Matrices at most 3x3; 18 raw COO entries; exact zero aggregation, diagnostic near-zero retention.",
+    "Tensor inputs/output at most 64 elements, four axes of size 0..4. Oversized-compatible and incompatible shapes differ.",
+    "Fixed educational LCG32 stream at most 16 draws; replay does not imply arbitrary cross-RNG/platform determinism.",
+    "Combined 97-chapter acceptance deferred to integration."
+  ],
+  "sourceHashes": {
+    "fixtures/numerical_structure.fixtures.json": "78eb6c8604cd60d48f908adf73d89926eb6ea4b12b337e2357a63b51e426e3d3",
+    "oracle/numerical_structure_oracle.py": "470d893ba30c57d950a0ffc229dc7c925812f4c9365df4345f05de5b64885e9f",
+    "src/content/chapters/reproducibility-random-seeds.mdx": "689b21bd13ca956f01357999a03ff733c6cfdbf9742b14927da7012d8ec0f3f1",
+    "src/content/chapters/sparse-matrices-structure.mdx": "3046181b5468edcb5cffe63ee8f458b8553fe9bec2bae88c36814f74f64e18ca",
+    "src/content/chapters/vectorized-computation.mdx": "929bfd57d40f48c1d1a16fff89d849db54c4681926d2b96f1e2897a3597ba497",
+    "src/lessons/numerical-computing/AlgorithmsStage.tsx": "c44ef56fb8727fe7aae8dbef6099e9ce7cab1209b5994cc8ebf87e52ae01d772",
+    "src/lessons/numerical-computing/NumbersStage.tsx": "458065448eea44d2e4e85801abc83f0e600905a900618110aa2efca9364692e5",
+    "src/lessons/numerical-computing/NumericalExercise.tsx": "40463b64a12d27caa66a46b32e8ce5b4128eb6a3495ea16ce5dd26a63a3d3251",
+    "src/lessons/numerical-computing/NumericalStage.tsx": "d4aa0f4fe5e322c0827ddd8814b00288b9aeaca1b8cc5553c16c6b4c774ecc1d",
+    "src/lessons/numerical-computing/StructureStage.tsx": "2b7d70d464457260e54b5482fe752da29233813b15d228fbbe8c4ffbea16ca4f",
+    "src/lessons/numerical-computing/algorithms-lesson.ts": "b578e2049b309872843fd052e804904a248eec1ea73c541f2b80ad15d917f33e",
+    "src/lessons/numerical-computing/exercises.ts": "427c0bf68500d139edfd81f3ed708e87b6c30632762b8fd6a82b220058e9daef",
+    "src/lessons/numerical-computing/numbers-lesson.ts": "18cdf2b70e3529716e2d3a735b79473841e0ee5fd8f87d9f7d788a3d402b5412",
+    "src/lessons/numerical-computing/numerical.css": "e2cddde5b2deace431493682b3a4e24871e787e3dca726f7a38c0a016b82c445",
+    "src/lessons/numerical-computing/structure-lesson.ts": "4c3edc2c52d40249ca8d1586604962b2eace2245c336bdc17da6a7957b6b7d58",
+    "src/lessons/numerical-computing/view.ts": "0090c99fdb283aa9c4ee75a4d2e0b850514bac12825b7c929c5d11bce7750836",
+    "src/math/numerical-computing/algorithms.ts": "381767a6b980a625570978e0eed35e070fe82717a6da94d047c6bfe4db5bad77",
+    "src/math/numerical-computing/error.ts": "7a292a669a1206ef4ec12fa9ab7fd984f73354c52030fc0c731b9de250614427",
+    "src/math/numerical-computing/floating.ts": "f7474c0a34bc02ec02ebd8f7b10189815b914c4c6e6096b2fcf2c3ec1dc875b8",
+    "src/math/numerical-computing/reproducibility.ts": "051acb34f9a20014eac47f7c88f7cf0b3c1ff71b17909f523b3ae26225c5c3fb",
+    "src/math/numerical-computing/solver.ts": "d90cd7ae6d9f7bec71eb35a6dae26d124c0b9d95a2f7e82e54919300cc76a529",
+    "src/math/numerical-computing/sparse.ts": "2e60dd167dc2199de9e7d5254589ed5544ab09de0f7c8110dcefd95fa5b8830e",
+    "src/math/numerical-computing/tensors.ts": "7d102bdc97166851a48a5954b2db23d88441cf0fc532192ecf735558ab5571c2"
+  }
+}

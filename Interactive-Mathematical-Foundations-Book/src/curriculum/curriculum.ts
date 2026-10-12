@@ -224,9 +224,9 @@ export const parts: readonly Part[] = [
       available(5, "Overflow and underflow", "overflow-underflow"),
       available(6, "Stable algorithms", "stable-algorithms"),
       available(7, "Numerical linear algebra realities", "numerical-linear-algebra"),
-      planned(8, "Sparse matrices and sparse structure"),
-      planned(9, "Vectorized computation"),
-      planned(10, "Reproducibility, random seeds, and nondeterminism"),
+      available(8, "Sparse matrices and sparse structure", "sparse-matrices-structure"),
+      available(9, "Vectorized computation", "vectorized-computation"),
+      available(10, "Reproducibility, random seeds, and nondeterminism", "reproducibility-random-seeds"),
     ],
   },
 ];

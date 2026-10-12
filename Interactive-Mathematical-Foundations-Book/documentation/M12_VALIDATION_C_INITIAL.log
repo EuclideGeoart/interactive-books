@@ -1,0 +1,35 @@
+
+ RUN  v3.2.7 /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book
+
+ ❯ tests/unit/numerical-validation.test.ts (3 tests | 1 failed) 262ms
+   ✓ Numerical stages and actual transitive dependencies retain chapter, oracle, unit, browser and screenshot ownership 176ms
+   ✓ shared Python reference and oracle imports reach all actual consumers 55ms
+   × structure families retain actual sparse/tensor/replay consumers and all new screenshot owners 30ms
+     → src/math/numerical-computing/sparse.ts: expected [ 'VIII.10', 'VIII.8', 'VIII.9' ] to deeply equal [ 'VIII.8', 'VIII.9', 'VIII.10' ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/numerical-validation.test.ts > structure families retain actual sparse/tensor/replay consumers and all new screenshot owners
+AssertionError: src/math/numerical-computing/sparse.ts: expected [ 'VIII.10', 'VIII.8', 'VIII.9' ] to deeply equal [ 'VIII.8', 'VIII.9', 'VIII.10' ]
+
+- Expected
++ Received
+
+  [
++   "VIII.10",
+    "VIII.8",
+    "VIII.9",
+-   "VIII.10",
+  ]
+
+ ❯ tests/unit/numerical-validation.test.ts:14:109
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  19:27:12
+   Duration  464ms (transform 34ms, setup 0ms, collect 33ms, tests 262ms, environment 0ms, prepare 50ms)
+

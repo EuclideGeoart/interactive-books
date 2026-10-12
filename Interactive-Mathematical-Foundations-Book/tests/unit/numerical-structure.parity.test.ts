@@ -1,0 +1,10 @@
+import {readFileSync} from 'node:fs';
+import {it,expect} from 'vitest';
+import {sparseMatrix} from '../../src/math/numerical-computing/sparse';
+import {broadcasting} from '../../src/math/numerical-computing/tensors';
+import {reproducibility} from '../../src/math/numerical-computing/reproducibility';
+import {fractionText} from '../../src/math/numerical-computing/floating';
+const f=JSON.parse(readFileSync('fixtures/numerical_structure.fixtures.json','utf8'));
+for(const [i,c]of f.sparse.entries())it(`independent coordinate-dictionary sparse ${i}`,()=>{const m=sparseMatrix(c.input);expect({dense:m.dense.map(r=>r.map(fractionText)),data:m.data.map(fractionText),indices:m.indices,indptr:m.indptr,result:m.result.map(fractionText),nnz:m.nnz,duplicates:m.duplicates,explicitZeros:m.explicitZeros,nearZero:m.nearZero,costs:[m.denseBytes,m.cooBytes,m.csrBytes]}).toEqual(c.expected);expect(m.result).toEqual(m.denseResult);expect(m.terms).toHaveLength(m.nnz);});
+for(const [i,c]of f.tensors.entries())it(`independent Cartesian broadcasting ${i}`,()=>{const m=broadcasting(c.input),reduction=m.reduction===null?null:m.reduction.kind==='invalid'?{kind:'invalid'}:{kind:'valid',shape:m.reduction.shape,values:m.reduction.values.map(fractionText)};expect({kind:m.kind,outShape:m.outShape,values:m.mappings.map(c=>fractionText(c.value)),mappings:m.mappings.map(c=>({...c,a:fractionText(c.a),b:fractionText(c.b),value:fractionText(c.value)})),reduction}).toEqual(c.expected);});
+for(const [i,c]of f.replays.entries())it(`independent integer RNG and association ${i}`,()=>{const m=reproducibility(c.input);expect({records:m.records.map(r=>({index:r.index,before:r.before,after:r.after,exact:fractionText(r.exact)})),left:m.left,right:m.right,reference:fractionText(m.reference),withinBudget:m.comparison.equal,difference:m.comparison.difference,budget:m.comparison.budget,leftError:fractionText(m.leftError.signed),rightError:fractionText(m.rightError.signed)}).toEqual(c.expected);expect(m.exactReplay).toBe(true);});

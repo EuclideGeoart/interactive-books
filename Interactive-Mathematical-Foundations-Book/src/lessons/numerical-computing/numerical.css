@@ -24,3 +24,4 @@
 .numerical-stage .calc-table td{white-space:normal;overflow-wrap:anywhere;min-width:8ch;}
 .numerical-stage .inspector-row dd{max-width:100%;}
 .numerical-stage .inspector-row .line{white-space:normal;overflow-wrap:anywhere;}
+.numerical-stage .sparse-grid strong{overflow-wrap:anywhere;min-width:0;font-family:var(--font-mono);}

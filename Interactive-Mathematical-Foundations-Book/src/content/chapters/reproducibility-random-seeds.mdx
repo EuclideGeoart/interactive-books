@@ -1,0 +1,131 @@
+---
+kind: chapter
+curriculumId: VIII.10
+title: "Reproducibility, random seeds, and nondeterminism"
+hero: "What must you record to reproduce an *experiment*?"
+lede: Replay an explicit fixed pseudorandom stream from its seed or recorded state. Contrast exact discrete replay with a controlled floating-point association change and a stated numerical comparison budget.
+description: "Replay an explicit fixed pseudorandom stream from its seed or recorded state. Contrast exact discrete replay with a controlled floating-point association change and a stated numerical comparison budget."
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import Xref from '../../shell/Xref.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import StructureStage from '../../lessons/numerical-computing/StructureStage';
+import Exercise from '../../lessons/numerical-computing/NumericalExercise';
+import reference from '../../../code/python/reproducibility_seeds.py?raw';
+import practical from '../../../code/python/reproducibility_seeds_numpy.py?raw';
+
+<Stage caption="Replay a fixed seeded uint32 stream and a controlled binary64 association change. Exact state checks and budgeted numerical comparisons remain separate."><StructureStage chapter="reproducibility" client:load /></Stage>
+
+## Intuition: a reproducible computation has a specification
+
+A seed names a starting point only after the pseudorandom generator and its state interpretation are specified. An operation sequence, input values and comparison policy are likewise part of a numerical experiment. Two runs can share a seed yet use different random algorithms or arithmetic orders.
+
+The explorer uses one explicit uint32 generator, records every before/after state and exposes the actual uniform fractions. It independently replays the same specified stream and checks discrete states exactly. Rendering never draws from a global or unseeded random source.
+
+The contrasting arithmetic experiment is also deterministic. It evaluates the same three represented operands with two association orders, producing a controlled numerical variation. This demonstrates a reason parallel or changed reductions can differ; it does not pretend that this sequential simulator is itself nondeterministic hardware.
+
+## Definition: seed, state and numeric agreement
+
+The fixed generator is a 32-bit linear congruential generator:
+
+$$s_{k+1}=(1664525s_k+1013904223)\bmod2^{32},$$
+$$u_k=s_{k+1}/2^{32}.$$
+
+Seed and state lie in 0 through $2^{32}-1$. The uniform values are exact dyadic fractions in [0,1); this simple educational stream is not a cryptographic generator or a general randomness-quality recommendation.
+
+For finite numerical results x,y, the chosen comparison accepts
+
+$$|x-y|\le a_{\mathrm{tol}}+r_{\mathrm{tol}}\max(|x|,|y|).$$
+
+Absolute tolerance carries the result's units; relative tolerance scales with magnitude. Exact discrete outcomes such as generator states, shape dimensions and sample counts are compared exactly. Non-finite arithmetic requires its own explicit policy and is not silently accepted by this finite-value comparator.
+
+## Mechanics: record what actually happened
+
+Each sample record contains index, prior uint32 state, next uint32 state, actual uniform value and its exact fraction. The replay column records the same algorithm run again from the recorded initial state. The semantic trace is immutable: stepping backward selects a recorded event rather than trying to reverse an RNG mutation.
+
+The association experiment records stored a,b,c, the first sum a+b, the first sum b+c, both final answers, an exact intended-decimal reference and signed/absolute/relative errors. The tolerance comparison between the two computed answers is separate from either answer's error to the mathematical reference.
+
+Changing the seed or a numeric operand changes canonical state and recomputes the experiment. A rejected seed, count, non-finite operand or invalid tolerance never becomes part of mathematical rendering.
+
+## Derivation: state recurrence and nonassociativity
+
+The recurrence advances exactly one specified uint32 state per sample. Since the modulus is a power of two, its recorded state identifies the next experiment step unambiguously for this algorithm. Resuming from a saved state reproduces a suffix of its stream when the same operations are used.
+
+Real addition is associative, but a floating-point addition generally rounds after each operation. Thus
+
+$$\operatorname{fl}(\operatorname{fl}(a+b)+c)$$
+
+can differ from
+
+$$\operatorname{fl}(a+\operatorname{fl}(b+c)).$$
+
+Changing grouping changes which small terms may be lost before later cancellation. A compiler, library, vectorized reduction or parallel execution can choose a different sequence. Identical mathematical notation does not fully specify that numerical sequence.
+
+A numerical budget should come from input uncertainty, algorithm error and required output accuracy. Making a budget large enough to hide a difference is a demonstration of acceptance under that budget, not a justification for choosing it.
+
+## Worked examples: replay and a changed association
+
+Starting from state 42, the first two next states are exactly 1083814273 and 378494188. Their uniforms are those integers divided by $2^{32}$. The next states are 2479403867, 955863294, 1613448261 and 110225632. These are the actual committed sample sequence, not decorative histogram bins.
+
+The resume preset starts at recorded state 378494188 and requests four samples. It reproduces the final four states of the six-sample experiment. Record the algorithm and the state, not just a statement that “seed 42 was used.”
+
+For represented a=1e16, b=−1e16 and c=1, the exact mathematical sum is one. Left association first forms a+b=0 and returns one. Right association forms b+c=−1e16 because the one is rounded away, then returns zero. The absolute answer errors are zero and one respectively.
+
+With both default tolerances 1e-12, the measured difference one exceeds the comparison budget. The loose-budget preset instead uses absolute tolerance one and relative tolerance zero, so the comparison accepts. The right answer still has exact error one; the acceptance flag did not change the mathematical reference.
+
+<Stage caption="Select the recorded intermediate values. Previous, next and direct replay navigation preserve immutable numerical history."><StructureStage chapter="reproducibility" worked client:load /></Stage>
+
+## Executable reference code
+
+The standard-library program uses independent Python integer modular arithmetic to replay LCG states and explicit floating additions to preserve each association. It does not use Python's built-in sum as a substitute for a specified left fold: implementations such as Python 3.12 can use improved summation.
+
+The NumPy reference records an actual generator's algorithm name, NumPy version and state, then restores that state into the same generator implementation for replay. It demonstrates a separately seeded NumPy stream alongside the specified educational LCG; the same seed does not make those two streams identical. Every sample is explicitly seeded or restored before it is generated.
+
+<CodeFile source={reference} file="code/python/reproducibility_seeds.py" />
+<CodeFile source={practical} file="code/python/reproducibility_seeds_numpy.py" />
+
+## Explore: separate exact replay from approximate comparisons
+
+Compare seeds 42 and 7, then resume from the recorded second state. Predict which exact discrete samples match. Change the sample count: the prefix of the same fixed stream remains unchanged, while the number of recorded draws changes.
+
+Compare order variation with the exactly representable sum [1,2,3]. In the latter both associations return six. Try the zero-reference preset: its sum is zero, so the usual relative answer error is undefined even though absolute error and the finite comparison remain available.
+
+Change absolute and relative tolerance independently. Explain the budget's scale and why accepting two close numerical answers does not prove either one is close to the specified reference. Invalid or enormous input text is rejected before computation; experiment size is bounded to 16 stream samples and three operands.
+
+## Common mistakes and counterexamples
+
+A seed alone does not identify arbitrary RNG implementations, initial state layouts or sample-consumption patterns. A fixed algorithm can also produce a different later draw if a previous code path consumed extra samples. Record version, algorithm, state and draw order when those matter.
+
+Floating-point equality is suitable for exact discrete states and prescribed bit-level fixtures. It is not a substitute for a budgeted approximation check on a computed transcendental answer. Conversely, a tolerance should never permit an incorrect index, sample count or RNG state to pass as “close enough.”
+
+## Numerical considerations
+
+The LCG recurrence uses the accepted explicit uint32 seeded utility; Python independently computes the same modular integers without copying its floating implementation. Its uniforms fit exactly in binary64 because their denominator is $2^{32}$. The actual stream is deterministic under that specified contract.
+
+The arithmetic-order comparison uses actual JavaScript binary64 operations at fixed represented inputs. Its exact intended reference remains rational. Across environments, elementary functions, fused operations, accumulation precision, subnormal handling and reduction order can still differ. A platform or library upgrade needs source-matched deterministic fixtures and appropriate approximate checks, not a broad promise that one seed settles every difference.
+
+Routine mathematical rendering contains no unseeded randomness. User-started trace playback changes only which immutable frame is selected; elapsed time does not generate a new numerical sample.
+
+## Engineering and ML connections
+
+A useful experiment record includes code/source revision, inputs and their storage dtypes, random algorithm and seed/state, sample order, numerical algorithm, environment/library versions and comparison budgets. This supports reproducible diagnostics without pretending all hardware runs must be bit-identical.
+
+In training, data order, stochastic sampling, parallel reductions and mixed precision can interact. Decide which outcomes must match exactly and which require a justified approximate allowance. Preserve evidence for both successful and failed checks so a corrected run remains independently reviewable.
+
+<Xref to="chapters/floating-point-representation/">Inspect the corresponding representation and error policy</Xref> before interpreting a computed value.
+
+## Exercises
+
+Predict first, then calculate or test the stated claim. Every answer includes corrective feedback and a worked solution.
+
+<Exercise id="numerical-reproducibility-1" client:load />
+<Exercise id="numerical-reproducibility-2" client:load />
+<Exercise id="numerical-reproducibility-3" client:load />
+<Exercise id="numerical-reproducibility-4" client:load />
+<Exercise id="numerical-reproducibility-5" client:load />
+
+## Summary and checkpoints
+
+Replay the literal six-state stream and resume its suffix from the saved second state. Reproduce the left/right association difference, distinguish comparison acceptance from answer accuracy, and identify why RNG implementation, versions, draw order and arithmetic execution belong in a reproducibility record. This completes the book's progression from mathematical definitions to numerically honest computation.
+

@@ -1,0 +1,12 @@
+oracle interpreter: .venv/bin/python
+test_broadcast_literals (test_numerical_structure_oracle.StructureTests.test_broadcast_literals) ... ok
+test_numpy_crosscheck (test_numerical_structure_oracle.StructureTests.test_numpy_crosscheck) ... ok
+test_rng_literals_and_suffix (test_numerical_structure_oracle.StructureTests.test_rng_literals_and_suffix) ... ok
+test_six_executed_references (test_numerical_structure_oracle.StructureTests.test_six_executed_references) ... ok
+test_sparse_literals (test_numerical_structure_oracle.StructureTests.test_sparse_literals) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.453s
+
+OK
+numerical structure fixtures fresh

@@ -1,0 +1,120 @@
+---
+kind: chapter
+curriculumId: VIII.9
+title: "Vectorized computation"
+hero: "Which element does an array shape tell you to *use*?"
+lede: Align trailing dimensions and inspect every output element’s source indices. Compare scalars, vectors, matrices, batched arrays and empty axes, then reduce an explicitly chosen output axis.
+description: "Align trailing dimensions and inspect every output element\u2019s source indices. Compare scalars, vectors, matrices, batched arrays and empty axes, then reduce an explicitly chosen output axis."
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import Xref from '../../shell/Xref.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import StructureStage from '../../lessons/numerical-computing/StructureStage';
+import Exercise from '../../lessons/numerical-computing/NumericalExercise';
+import reference from '../../../code/python/vectorized_computation.py?raw';
+import practical from '../../../code/python/vectorized_computation_numpy.py?raw';
+
+<Stage caption="Edit bounded shapes and inspect actual source/output index mappings, elementwise values and axis reductions; invalid pairs have explicit reasons."><StructureStage chapter="broadcasting" client:load /></Stage>
+
+## Intuition: shape describes a collection of positions
+
+An array shape says how many positions exist along each axis. A scalar has shape (), a vector-shaped array has one axis, a matrix has two, and a batched array adds leading axes. The shape participates in the operation; it is not merely a label attached afterward.
+
+Computational vectorization expresses a collection of operations through array primitives. It does not mean that every array represents a directed displacement in a geometric space. This explorer focuses on index correspondence: for each output position, identify exactly which positions of the two inputs supplied its values.
+
+Values are bounded consecutive integers in row-major order, beginning at the two selected starts. This keeps the hand calculations exact while exposing shape mechanics. Later real floating-point arrays retain their numerical issues even when the shape operation is valid.
+
+## Definition: trailing-axis broadcasting
+
+Align shapes from the last axis. Missing leading axes behave as length one. At each aligned axis, the sizes must be equal, or one must be one. A size-one input axis reuses index zero at every output position on that axis.
+
+The output size at an aligned axis is the shared size when equal, or the other size when one side is one. This distinction matters for empty dimensions: zero with one produces zero length, not length one. Zero with a different nonunit size is incompatible.
+
+This bounded explorer supports at most four axes, sizes 0–4, and at most 64 elements in each input and output. A compatible output beyond that limit is labelled as mathematically compatible but outside the demonstration bound. It is distinct from an incompatible pair.
+
+## Mechanics: indices, operations and reductions
+
+The source-index table shows each output index, its left input index, its right input index, both values and the exact elementwise result. Addition and multiplication operate on those selected elements. They are not matrix multiplication, contraction or dot product.
+
+Reduce a zero-based output axis by summing its actual values and removing that axis from the shape. Negative axis indices count from the end; all reduces every axis to a scalar. An empty sum is zero. Invalid axes remain explicit: a scalar has no explicit axis in this teaching contract, although all can reduce it to itself.
+
+Shape syntax and allocation bounds are validated before any output construction. Valid inputs with incompatible shapes remain available to inspect; the operation has no output values, rather than a silently repaired shape.
+
+## Derivation: the index projection
+
+Let the output multi-index be $\mathbf i$. For each input, define a projection that drops missing leading axes and replaces every size-one axis index by zero. The elementwise addition is then
+
+$$C_{\mathbf i}=A_{\pi_A(\mathbf i)}+B_{\pi_B(\mathbf i)}.$$
+
+For shapes (2,3) and (3,), the right shape behaves like (1,3), giving
+
+$$C_{ij}=A_{ij}+B_j,\qquad i=0,1;\ j=0,1,2.$$
+
+The right vector is reused across rows. In (2,3)+(2,), the final sizes are 3 and 2: neither is one, so no such output correspondence exists.
+
+Reducing axis one of a 2×3 output yields
+
+$$R_i=\sum_{j=0}^{2}C_{ij}.$$
+
+The result has shape (2,), not (2,1); this chapter does not keep a removed dimension as an extra size-one axis.
+
+## Worked examples: actual values and batched reuse
+
+The canonical left matrix is [[1,2,3],[4,5,6]], while the right vector is [10,11,12]. Broadcasting produces [[11,13,15],[14,16,18]]. At output [1,1], left [1,1] contributes 5 and right [1] contributes 11, so the result is exactly 16.
+
+Reducing axis one produces [39,48]. Reducing axis zero instead produces [25,29,33]. The shape identifies which positions are combined; summing all positions would instead produce the scalar 87.
+
+In the batched preset, (2,1,3)+(1,4,1) produces (2,4,3). The left input is reused along the middle axis; the right is reused along batch and final axes. Reducing the final axis produces shape (2,4) and values [[36,39,42,45],[45,48,51,54]].
+
+For (0,3)+(1,3), the output has shape (0,3) and contains no elements. Reducing axis zero yields three exact zeros, one empty sum per remaining column. Empty arrays are valid shapes under this bounded policy, not fabricated data.
+
+<Stage caption="Select the recorded intermediate values. Previous, next and direct replay navigation preserve immutable numerical history."><StructureStage chapter="broadcasting" worked client:load /></Stage>
+
+## Executable reference code
+
+The pedagogical program uses Cartesian products and indexed dictionaries to select elements under the broadcasting rule. The NumPy version uses actual array broadcasting and axis sums and checks their literal values and shapes. Independent fixtures use a separate Cartesian construction and optionally cross-check NumPy; their committed bytes do not depend on having NumPy installed.
+
+<CodeFile source={reference} file="code/python/vectorized_computation.py" />
+<CodeFile source={practical} file="code/python/vectorized_computation_numpy.py" />
+
+## Explore: find the correspondence before computing
+
+Compare (2,3)+(3,) with (2,3)+(2,). Predict the output shape or failing trailing axis first. Then inspect the selected source indices for a few elements instead of accepting a diagram by appearance.
+
+Choose scalar broadcast, batched arrays and empty axis. Change the reduction axis, including −1 or all, and verify which axis disappears. Change a starting integer or the elementwise operation and explain which values change without changing shape.
+
+The compatible-but-too-large preset would have shape (4,4,4,4), but the explorer refuses to allocate its 256 output elements. Its valid mathematical broadcasting rule and its resource limit are reported separately. Huge dimensions, invalid syntax and ranks beyond four are rejected at entry.
+
+## Common mistakes and counterexamples
+
+Broadcasting aligns trailing dimensions, not the first dimension that happens to have an equal size. A shape-(2,) vector does not automatically mean “one value per row” of a 2×3 matrix; use a size-one trailing dimension when that is the intended operation.
+
+Elementwise multiplication and matrix multiplication use different rules. A reduction removes the selected axis here, while broadcasting can introduce or reuse an axis. Do not call every array a geometric vector or assume vectorization changes the underlying mathematical operation into a dot product.
+
+## Numerical considerations
+
+The explorer uses small consecutive integers and exact rational operations, so its shape/value checks are exact. Real numerical libraries may use floating dtypes, different accumulation precisions and different reduction orders; valid shapes do not ensure numerical reliability.
+
+The elementwise operation count equals the number of allocated output elements. Index mapping, memory access, temporary arrays and reduction work add costs. A vectorized expression can reduce interpreter overhead, but this lesson does not infer wall-clock speedups without a meaningful workload measurement.
+
+## Engineering and ML connections
+
+Tensor shapes appear in feature matrices, batches, channels, logits, targets and loss reductions. Explicit axes prevent an operation from accidentally combining samples when it should combine features or vocabulary positions. Inspect shapes and representative indices before optimizing a computation; a fast operation on the wrong correspondence is still wrong.
+
+<Xref to="chapters/floating-point-representation/">Inspect the corresponding representation and error policy</Xref> before interpreting a computed value.
+
+## Exercises
+
+Predict first, then calculate or test the stated claim. Every answer includes corrective feedback and a worked solution.
+
+<Exercise id="numerical-broadcasting-1" client:load />
+<Exercise id="numerical-broadcasting-2" client:load />
+<Exercise id="numerical-broadcasting-3" client:load />
+<Exercise id="numerical-broadcasting-4" client:load />
+<Exercise id="numerical-broadcasting-5" client:load />
+
+## Summary and checkpoints
+
+Predict a broadcast shape, explain an incompatible trailing axis and map a concrete output element to both source indices. Reproduce the canonical and batched reductions, handle an empty axis, and distinguish mathematical compatibility from the bounded allocation policy and from actual performance.
+

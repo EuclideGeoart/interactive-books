@@ -3,6 +3,7 @@ import { join, posix, relative, resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
 
 export const families = {
+  numerical_structure: { lesson: 'numerical-computing', stage: 'StructureStage', kinds: ['sparse','broadcasting','reproducibility'], units: /^numerical-(structure|lesson|exercises|validation)/, oracles: ['numerical_structure'], browser: 'numerical-computing' },
   numerical_algorithms: { lesson: 'numerical-computing', stage: 'AlgorithmsStage', kinds: ['stable','solver'], units: /^numerical-(algorithms|lesson|exercises|validation)/, oracles: ['numerical_algorithms'], browser: 'numerical-computing' },
   numerical_floating: { lesson: 'numerical-computing', stage: 'NumbersStage', kinds: ['representation','rounding','conditioning','cancellation','range'], units: /^numerical-(floating|lesson|exercises|validation)/, oracles: ['numerical_floating'], browser: 'numerical-computing' },
   statistics_likelihood: { lesson: 'statistics', stage: 'LikelihoodStage', units: /^statistics-likelihood/, oracles: ['statistics_likelihood'], browser: 'statistics-likelihood' },

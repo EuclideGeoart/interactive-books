@@ -1,0 +1,334 @@
+
+> interactive-mathematical-foundations@0.1.0 build
+> astro build && node scripts/production-state.mjs dist
+
+19:28:12 [content] Syncing content
+19:28:12 [content] Synced content
+19:28:12 [types] Generated 304ms
+19:28:12 [build] output: "static"
+19:28:12 [build] mode: "static"
+19:28:12 [build] directory: /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/dist/
+19:28:12 [build] Collecting build info...
+19:28:12 [build] ✓ Completed in 320ms.
+19:28:12 [build] Building static entrypoints...
+19:28:25 [vite] ✓ built in 12.64s
+19:28:25 [build] ✓ Completed in 12.66s.
+
+ building client (vite) 
+19:28:25 [vite] transforming...
+19:28:28 [vite] ✓ 381 modules transformed.
+19:28:28 [vite] rendering chunks...
+19:28:28 [vite] computing gzip size...
+19:28:28 [vite] dist/_astro/shared.DDse-ZA1.js                                             0.04 kB │ gzip:  0.06 kB
+19:28:28 [vite] dist/_astro/coords.BgUzLicE.js                                             0.22 kB │ gzip:  0.19 kB
+19:28:28 [vite] dist/_astro/percent.B08tuneg.js                                            0.24 kB │ gzip:  0.21 kB
+19:28:28 [vite] dist/_astro/Exercise.-F-xG-mT.js                                           0.24 kB │ gzip:  0.19 kB
+19:28:28 [vite] dist/_astro/useLesson.Cg3VmfV7.js                                          0.25 kB │ gzip:  0.21 kB
+19:28:28 [vite] dist/_astro/contour-view.BDBOryjD.js                                       0.25 kB │ gzip:  0.21 kB
+19:28:28 [vite] dist/_astro/MathScroll.Be-vXIZy.js                                         0.30 kB │ gzip:  0.23 kB
+19:28:28 [vite] dist/_astro/format.CFK7hGC_.js                                             0.32 kB │ gzip:  0.25 kB
+19:28:28 [vite] dist/_astro/seeded.Y6m5FZkt.js                                             0.35 kB │ gzip:  0.25 kB
+19:28:28 [vite] dist/_astro/SegmentedControl.BigyZlpf.js                                   0.39 kB │ gzip:  0.26 kB
+19:28:28 [vite] dist/_astro/fallacy.x3LkaVfV.js                                            0.41 kB │ gzip:  0.32 kB
+19:28:28 [vite] dist/_astro/numberline.mAoSy-Uh.js                                         0.41 kB │ gzip:  0.29 kB
+19:28:28 [vite] dist/_astro/exercise.D6JDGOir.js                                           0.57 kB │ gzip:  0.36 kB
+19:28:28 [vite] dist/_astro/view.oL93lWpU.js                                               0.60 kB │ gzip:  0.32 kB
+19:28:28 [vite] dist/_astro/ids.BoMwEP0T.js                                                0.64 kB │ gzip:  0.42 kB
+19:28:28 [vite] dist/_astro/segment.BEqtrJpu.js                                            0.64 kB │ gzip:  0.43 kB
+19:28:28 [vite] dist/_astro/point.B4JMj3sK.js                                              0.65 kB │ gzip:  0.39 kB
+19:28:28 [vite] dist/_astro/curve.CQ7MXGzU.js                                              0.71 kB │ gzip:  0.48 kB
+19:28:28 [vite] dist/_astro/FormulaScroll._IOzi_Hk.js                                      0.72 kB │ gzip:  0.46 kB
+19:28:28 [vite] dist/_astro/Curve.DI3dm2zF.js                                              0.72 kB │ gzip:  0.43 kB
+19:28:28 [vite] dist/_astro/expression.B99Lfvws.js                                         0.75 kB │ gzip:  0.45 kB
+19:28:28 [vite] dist/_astro/overflow.BV3bnfNa.js                                           0.77 kB │ gzip:  0.42 kB
+19:28:28 [vite] dist/_astro/gradient.1mtIRKUq.js                                           0.83 kB │ gzip:  0.56 kB
+19:28:28 [vite] dist/_astro/pixel.SmdGsefX.js                                              0.89 kB │ gzip:  0.51 kB
+19:28:28 [vite] dist/_astro/Inspector.D6WSHMMl.js                                          0.94 kB │ gzip:  0.44 kB
+19:28:28 [vite] dist/_astro/direction.M8tZ3It3.js                                          0.97 kB │ gzip:  0.51 kB
+19:28:28 [vite] dist/_astro/counting.DyJKixNn.js                                           1.02 kB │ gzip:  0.65 kB
+19:28:28 [vite] dist/_astro/limits.D5ScRMpU.js                                             1.04 kB │ gzip:  0.52 kB
+19:28:28 [vite] dist/_astro/Pipeline.SR4tC78S.js                                           1.09 kB │ gzip:  0.56 kB
+19:28:28 [vite] dist/_astro/trace.LPxR8n_U.js                                              1.10 kB │ gzip:  0.60 kB
+19:28:28 [vite] dist/_astro/exactform.BoSLVXyf.js                                          1.17 kB │ gzip:  0.64 kB
+19:28:28 [vite] dist/_astro/view.DG9-_mK6.js                                               1.25 kB │ gzip:  0.67 kB
+19:28:28 [vite] dist/_astro/WorkedStage.DlsPZgDM.js                                        1.41 kB │ gzip:  0.75 kB
+19:28:28 [vite] dist/_astro/quantity.dI-BkyuJ.js                                           1.43 kB │ gzip:  0.58 kB
+19:28:28 [vite] dist/_astro/finite.CqbyIOOE.js                                             1.44 kB │ gzip:  0.82 kB
+19:28:28 [vite] dist/_astro/MatrixWorkedStage.DsfAJYhf.js                                  1.45 kB │ gzip:  0.77 kB
+19:28:28 [vite] dist/_astro/values.hsN4Xjv1.js                                             1.47 kB │ gzip:  0.79 kB
+19:28:28 [vite] dist/_astro/moments.CZepZBeJ.js                                            1.54 kB │ gzip:  0.83 kB
+19:28:28 [vite] dist/_astro/format.DY_x126s.js                                             1.56 kB │ gzip:  0.75 kB
+19:28:28 [vite] dist/_astro/compose.BYlHA9m3.js                                            1.57 kB │ gzip:  0.72 kB
+19:28:28 [vite] dist/_astro/WorkedExampleStage.CjrVGilB.js                                 1.71 kB │ gzip:  0.89 kB
+19:28:28 [vite] dist/_astro/difference.CO_YMxY4.js                                         1.72 kB │ gzip:  0.84 kB
+19:28:28 [vite] dist/_astro/WorkedExampleStage.BVGWcyi2.js                                 1.73 kB │ gzip:  0.89 kB
+19:28:28 [vite] dist/_astro/extraneous.BHe7ohwu.js                                         1.80 kB │ gzip:  0.99 kB
+19:28:28 [vite] dist/_astro/view.Cu-TDP-m.js                                               1.83 kB │ gzip:  0.86 kB
+19:28:28 [vite] dist/_astro/surfaces.D97SCQJ9.js                                           1.84 kB │ gzip:  0.74 kB
+19:28:28 [vite] dist/_astro/TraceStepper.BjWfjq8k.js                                       1.88 kB │ gzip:  0.89 kB
+19:28:28 [vite] dist/_astro/finite.BTyz1OcS.js                                             1.96 kB │ gzip:  0.95 kB
+19:28:28 [vite] dist/_astro/NumberLine.Dqhh1Km4.js                                         1.99 kB │ gzip:  1.00 kB
+19:28:28 [vite] dist/_astro/catalog.DMwskhqu.js                                            2.05 kB │ gzip:  1.00 kB
+19:28:28 [vite] dist/_astro/rational.Dg8QuiBJ.js                                           2.10 kB │ gzip:  1.00 kB
+19:28:28 [vite] dist/_astro/StageFrame.DDhuFArB.js                                         2.11 kB │ gzip:  1.02 kB
+19:28:28 [vite] dist/_astro/client.CGMsMmoA.js                                             2.29 kB │ gzip:  1.24 kB
+19:28:28 [vite] dist/_astro/relations.CNSaMN4a.js                                          2.33 kB │ gzip:  1.14 kB
+19:28:28 [vite] dist/_astro/BaseLayout.astro_astro_type_script_index_0_lang.2GitS_qB.js    2.35 kB │ gzip:  1.08 kB
+19:28:28 [vite] dist/_astro/view.C0JyzbAD.js                                               2.37 kB │ gzip:  1.06 kB
+19:28:28 [vite] dist/_astro/DragPoint.CG1ddpVr.js                                          2.37 kB │ gzip:  1.17 kB
+19:28:28 [vite] dist/_astro/plot.UnrcffKd.js                                               2.44 kB │ gzip:  1.16 kB
+19:28:28 [vite] dist/_astro/nested.2h73HnqJ.js                                             2.48 kB │ gzip:  1.21 kB
+19:28:28 [vite] dist/_astro/eigenvalues.CBNopp7V.js                                        2.51 kB │ gzip:  1.40 kB
+19:28:28 [vite] dist/_astro/distributions.CA0-qEXp.js                                      2.61 kB │ gzip:  1.31 kB
+19:28:28 [vite] dist/_astro/StageFrame.BP7Q2jvh.js                                         2.62 kB │ gzip:  1.18 kB
+19:28:28 [vite] dist/_astro/CoordinatePlane.D_wCymQm.js                                    2.72 kB │ gzip:  1.19 kB
+19:28:28 [vite] dist/_astro/growth.DqFCBTa8.js                                             2.79 kB │ gzip:  1.26 kB
+19:28:28 [vite] dist/_astro/ExerciseForm.Ds1atGJI.js                                       2.95 kB │ gzip:  1.39 kB
+19:28:28 [vite] dist/_astro/hooks.module.C1GxTNnt.js                                       3.03 kB │ gzip:  1.33 kB
+19:28:28 [vite] dist/_astro/ParameterInput.1y8TOFQZ.js                                     3.07 kB │ gzip:  1.42 kB
+19:28:28 [vite] dist/_astro/matrices.BKPlYA9S.js                                           3.23 kB │ gzip:  1.45 kB
+19:28:28 [vite] dist/_astro/bivariate.DrVPyOgv.js                                          3.26 kB │ gzip:  1.70 kB
+19:28:28 [vite] dist/_astro/FallacyStage.GXzBh0Wu.js                                       3.49 kB │ gzip:  1.67 kB
+19:28:28 [vite] dist/_astro/vectors.Bkv7Cbvu.js                                            3.60 kB │ gzip:  1.72 kB
+19:28:28 [vite] dist/_astro/polynomial.tHzOdwmd.js                                         3.64 kB │ gzip:  1.71 kB
+19:28:28 [vite] dist/_astro/ExtraneousStage.BcvGUxf-.js                                    3.67 kB │ gzip:  1.75 kB
+19:28:28 [vite] dist/_astro/integration.x9MSLOEz.js                                        3.71 kB │ gzip:  1.77 kB
+19:28:28 [vite] dist/_astro/format.CNhtk3kR.js                                             3.75 kB │ gzip:  1.48 kB
+19:28:28 [vite] dist/_astro/balance.C4-QpcUw.js                                            3.75 kB │ gzip:  1.70 kB
+19:28:28 [vite] dist/_astro/WorkedExampleStage.CFAvr432.js                                 3.79 kB │ gzip:  1.83 kB
+19:28:28 [vite] dist/_astro/shared.BTyfYh49.js                                             3.92 kB │ gzip:  1.61 kB
+19:28:28 [vite] dist/_astro/worked-lesson.DwnfsCYx.js                                      3.99 kB │ gzip:  1.97 kB
+19:28:28 [vite] dist/_astro/DirectionStage.BJ1W6maU.js                                     4.00 kB │ gzip:  1.90 kB
+19:28:28 [vite] dist/_astro/dimension.Bg2FvgJ5.js                                          4.40 kB │ gzip:  1.95 kB
+19:28:28 [vite] dist/_astro/RandomVariableStage.KsKJ9JbY.js                                4.44 kB │ gzip:  2.06 kB
+19:28:28 [vite] dist/_astro/root.CKNlRMLx.js                                               4.46 kB │ gzip:  2.05 kB
+19:28:28 [vite] dist/_astro/primitives.C-OpeUYy.js                                         4.51 kB │ gzip:  1.97 kB
+19:28:28 [vite] dist/_astro/families.Cq5JTbQk.js                                           4.57 kB │ gzip:  1.80 kB
+19:28:28 [vite] dist/_astro/CountingStage.DHkXhiIG.js                                      4.66 kB │ gzip:  2.03 kB
+19:28:28 [vite] dist/_astro/elimination.BARUHkFd.js                                        4.70 kB │ gzip:  2.13 kB
+19:28:28 [vite] dist/_astro/shapes.BbxtD0sa.js                                             4.79 kB │ gzip:  1.94 kB
+19:28:28 [vite] dist/_astro/MatrixStage.B90XsCPB.js                                        4.86 kB │ gzip:  2.25 kB
+19:28:28 [vite] dist/_astro/fallacy-lesson.COZGChnA.js                                     4.92 kB │ gzip:  1.96 kB
+19:28:28 [vite] dist/_astro/intervals.DMb7UeoC.js                                          4.96 kB │ gzip:  1.82 kB
+19:28:28 [vite] dist/_astro/LinearStage.DT0LQm5S.js                                        5.02 kB │ gzip:  2.36 kB
+19:28:28 [vite] dist/_astro/EigenStage.gKBRc09L.js                                         5.29 kB │ gzip:  2.51 kB
+19:28:28 [vite] dist/_astro/PythagorasStage.DM0JNDAd.js                                    5.33 kB │ gzip:  2.48 kB
+19:28:28 [vite] dist/_astro/vector-lesson.DhT4F8rU.js                                      5.43 kB │ gzip:  2.17 kB
+19:28:28 [vite] dist/_astro/composition-lesson.DcKbmcZ4.js                                 5.51 kB │ gzip:  2.27 kB
+19:28:28 [vite] dist/_astro/FunctionStage.DnM3YFFz.js                                      5.52 kB │ gzip:  2.45 kB
+19:28:28 [vite] dist/_astro/PartialStage.BmuB90vQ.js                                       5.62 kB │ gzip:  2.62 kB
+19:28:28 [vite] dist/_astro/algorithms.C_hsUwlz.js                                         5.62 kB │ gzip:  2.66 kB
+19:28:28 [vite] dist/_astro/circle.c8zcCcro.js                                             5.86 kB │ gzip:  2.01 kB
+19:28:28 [vite] dist/_astro/VectorStage.MPdszvJh.js                                        5.87 kB │ gzip:  2.74 kB
+19:28:28 [vite] dist/_astro/WorkedStage.BJMuDzu3.js                                        6.23 kB │ gzip:  2.88 kB
+19:28:28 [vite] dist/_astro/balance-lesson.DFTk-p_R.js                                     6.29 kB │ gzip:  2.56 kB
+19:28:28 [vite] dist/_astro/BayesStage.Dc8SA2Uf.js                                         6.36 kB │ gzip:  2.60 kB
+19:28:28 [vite] dist/_astro/extraneous-lesson.DHoVKOzY.js                                  6.62 kB │ gzip:  2.75 kB
+19:28:28 [vite] dist/_astro/CompletionStage.BOYO7seD.js                                    6.67 kB │ gzip:  2.97 kB
+19:28:28 [vite] dist/_astro/LikelihoodExercise.Cb3QfFpy.js                                 6.81 kB │ gzip:  2.82 kB
+19:28:28 [vite] dist/_astro/LimitStage.DiXoCnor.js                                         6.82 kB │ gzip:  3.09 kB
+19:28:28 [vite] dist/_astro/WorkedStage.CvtAsfSn.js                                        6.91 kB │ gzip:  2.89 kB
+19:28:28 [vite] dist/_astro/UncertaintyExercise.DvlG3Ezt.js                                6.97 kB │ gzip:  3.01 kB
+19:28:28 [vite] dist/_astro/PlacementStage.I_gMPj6O.js                                     6.98 kB │ gzip:  2.96 kB
+19:28:28 [vite] dist/_astro/MomentsStage.BkxcVY3w.js                                       7.02 kB │ gzip:  3.00 kB
+19:28:28 [vite] dist/_astro/CompositionStage.CdqaJBpd.js                                   7.09 kB │ gzip:  2.99 kB
+19:28:28 [vite] dist/_astro/ContinuityStage.DEnKUh7F.js                                    7.09 kB │ gzip:  3.19 kB
+19:28:28 [vite] dist/_astro/WorkedExampleStage.CMLfLSBv.js                                 7.14 kB │ gzip:  3.03 kB
+19:28:28 [vite] dist/_astro/roundtrip.Bb3BJffJ.js                                          7.25 kB │ gzip:  2.61 kB
+19:28:28 [vite] dist/_astro/DataExercise.6xSdVHd7.js                                       7.26 kB │ gzip:  2.71 kB
+19:28:28 [vite] dist/_astro/RiemannStage.CB2T6iQh.js                                       7.28 kB │ gzip:  3.32 kB
+19:28:28 [vite] dist/_astro/LoopStage.DwvHawY1.js                                          7.35 kB │ gzip:  3.10 kB
+19:28:28 [vite] dist/_astro/ProductStage.BAW32863.js                                       7.42 kB │ gzip:  3.07 kB
+19:28:28 [vite] dist/_astro/AccumulationStage.peIRLmBm.js                                  7.45 kB │ gzip:  3.38 kB
+19:28:28 [vite] dist/_astro/FiniteDifferenceStage.B9oT_WNd.js                              7.57 kB │ gzip:  3.45 kB
+19:28:28 [vite] dist/_astro/HessianStage.ChU2lLx_.js                                       7.61 kB │ gzip:  3.37 kB
+19:28:28 [vite] dist/_astro/univariate.CxUainGz.js                                         7.71 kB │ gzip:  2.76 kB
+19:28:28 [vite] dist/_astro/GradientStage.CjO23S1a.js                                      7.86 kB │ gzip:  3.55 kB
+19:28:28 [vite] dist/_astro/QuadratureStage.3Pd--UJH.js                                    7.90 kB │ gzip:  3.73 kB
+19:28:28 [vite] dist/_astro/signals.module.C4An8D1c.js                                     7.92 kB │ gzip:  3.08 kB
+19:28:28 [vite] dist/_astro/direction-lesson.BnRlaow2.js                                   7.93 kB │ gzip:  2.82 kB
+19:28:28 [vite] dist/_astro/LineStage.q2IcBg6v.js                                          7.97 kB │ gzip:  3.27 kB
+19:28:28 [vite] dist/_astro/IntervalStage.BjB8dd6F.js                                      7.98 kB │ gzip:  3.60 kB
+19:28:28 [vite] dist/_astro/BalanceStage.kBhA43ue.js                                       8.10 kB │ gzip:  3.37 kB
+19:28:28 [vite] dist/_astro/EliminationStage.DGjBu9H2.js                                   8.32 kB │ gzip:  3.76 kB
+19:28:28 [vite] dist/_astro/ArgminStage.Ct4WKEaQ.js                                        8.45 kB │ gzip:  3.46 kB
+19:28:28 [vite] dist/_astro/WorkedExampleStage.B-dDqjeM.js                                 8.46 kB │ gzip:  3.52 kB
+19:28:28 [vite] dist/_astro/LeastSquaresStage.DICRyGMO.js                                  8.50 kB │ gzip:  3.86 kB
+19:28:28 [vite] dist/_astro/AlgebraStage.DWzptckE.js                                       8.52 kB │ gzip:  3.21 kB
+19:28:28 [vite] dist/_astro/WorkedStage.SLhv72oC.js                                        8.54 kB │ gzip:  3.67 kB
+19:28:28 [vite] dist/_astro/GradientStage.BkLmCuGx.js                                      8.59 kB │ gzip:  3.52 kB
+19:28:28 [vite] dist/_astro/LinearModelStage.Bs4qFfJI.js                                   8.67 kB │ gzip:  3.81 kB
+19:28:28 [vite] dist/_astro/rule.CBeSTsuQ.js                                               8.75 kB │ gzip:  3.00 kB
+19:28:28 [vite] dist/_astro/PixelStage.VGfl2U9s.js                                         8.78 kB │ gzip:  3.57 kB
+19:28:28 [vite] dist/_astro/IdentityStage.O2L6lWVh.js                                      8.93 kB │ gzip:  3.53 kB
+19:28:28 [vite] dist/_astro/PowersStage.CrokvWuK.js                                        8.94 kB │ gzip:  3.69 kB
+19:28:28 [vite] dist/_astro/ChainStage.CouLeQPI.js                                         8.98 kB │ gzip:  3.74 kB
+19:28:28 [vite] dist/_astro/ExpressionStage.DsukMgWk.js                                    9.09 kB │ gzip:  3.57 kB
+19:28:28 [vite] dist/_astro/UnitsStage.e25vfSoG.js                                         9.11 kB │ gzip:  3.50 kB
+19:28:28 [vite] dist/_astro/JacobianStage.DTmXpP6Y.js                                      9.15 kB │ gzip:  4.20 kB
+19:28:28 [vite] dist/_astro/ExpectStage.BX9HTupQ.js                                        9.18 kB │ gzip:  3.73 kB
+19:28:28 [vite] dist/_astro/RulesStage.DOeBW5yu.js                                         9.34 kB │ gzip:  4.18 kB
+19:28:28 [vite] dist/_astro/sum.BTKKPrHG.js                                                9.35 kB │ gzip:  3.86 kB
+19:28:28 [vite] dist/_astro/FiniteStage.CdOhS9I0.js                                        9.48 kB │ gzip:  3.84 kB
+19:28:28 [vite] dist/_astro/PointStage.1-4aS5wJ.js                                         9.57 kB │ gzip:  3.90 kB
+19:28:28 [vite] dist/_astro/NormStage.D7kjmNTj.js                                          9.59 kB │ gzip:  4.13 kB
+19:28:28 [vite] dist/_astro/SecantStage.Bz0dchNU.js                                        9.60 kB │ gzip:  3.98 kB
+19:28:28 [vite] dist/_astro/calculus-view.BXUOZ5X7.js                                      9.73 kB │ gzip:  4.22 kB
+19:28:28 [vite] dist/_astro/MatrixExercise.BhyrN781.js                                     9.80 kB │ gzip:  3.89 kB
+19:28:28 [vite] dist/_astro/RelationStage.Cjwa-ffL.js                                     10.14 kB │ gzip:  3.67 kB
+19:28:28 [vite] dist/_astro/RootsStage.CwgishcU.js                                        10.29 kB │ gzip:  4.17 kB
+19:28:28 [vite] dist/_astro/NestedStage.B8axyQkw.js                                       10.29 kB │ gzip:  3.99 kB
+19:28:28 [vite] dist/_astro/ReversalStage.CfflKcge.js                                     10.43 kB │ gzip:  4.00 kB
+19:28:28 [vite] dist/_astro/SVDStage.B1yHwKd4.js                                          10.43 kB │ gzip:  4.66 kB
+19:28:28 [vite] dist/_astro/UndoStage.-lNfvX3i.js                                         10.57 kB │ gzip:  4.23 kB
+19:28:28 [vite] dist/_astro/JointStage.i0Wyjr2Z.js                                        10.81 kB │ gzip:  4.50 kB
+19:28:28 [vite] dist/_astro/Exercise.Bdc-LHfw.js                                          11.12 kB │ gzip:  4.53 kB
+19:28:28 [vite] dist/_astro/preact.module.B5aEZR5Y.js                                     11.12 kB │ gzip:  4.67 kB
+19:28:28 [vite] dist/_astro/DistributionStage.BZQz7OXj.js                                 11.25 kB │ gzip:  4.53 kB
+19:28:28 [vite] dist/_astro/SegmentStage.BDb3HP1n.js                                      11.59 kB │ gzip:  4.59 kB
+19:28:28 [vite] dist/_astro/ScatterStage.D4JjGEnh.js                                      11.65 kB │ gzip:  4.90 kB
+19:28:28 [vite] dist/_astro/CompletionExercise.tSj9yPnN.js                                11.76 kB │ gzip:  4.96 kB
+19:28:28 [vite] dist/_astro/SetsStage.Bnx_IaD8.js                                         11.77 kB │ gzip:  4.29 kB
+19:28:28 [vite] dist/_astro/HeightStage.DBiSXAFB.js                                       11.87 kB │ gzip:  4.65 kB
+19:28:28 [vite] dist/_astro/ShapeStage.CG0EnO9g.js                                        12.08 kB │ gzip:  4.64 kB
+19:28:28 [vite] dist/_astro/function-lesson.Du7vPeLG.js                                   12.12 kB │ gzip:  4.40 kB
+19:28:28 [vite] dist/_astro/Exercise.BK_BccGc.js                                          12.15 kB │ gzip:  4.87 kB
+19:28:28 [vite] dist/_astro/InverseStage.wsv4osdS.js                                      12.17 kB │ gzip:  4.62 kB
+19:28:28 [vite] dist/_astro/DataStage.DR5cB6sR.js                                         12.34 kB │ gzip:  5.15 kB
+19:28:28 [vite] dist/_astro/exercises.D_1ktq5m.js                                         12.68 kB │ gzip:  5.06 kB
+19:28:28 [vite] dist/_astro/AlgorithmsStage.Bi2_fSlr.js                                   12.69 kB │ gzip:  5.19 kB
+19:28:28 [vite] dist/_astro/CompareStage.CyK3Yz7F.js                                      12.74 kB │ gzip:  5.16 kB
+19:28:28 [vite] dist/_astro/Exercise.CzbL1mhM.js                                          12.89 kB │ gzip:  4.90 kB
+19:28:28 [vite] dist/_astro/Exercise.CliEvgTR.js                                          12.93 kB │ gzip:  4.53 kB
+19:28:28 [vite] dist/_astro/view.DwZQKdxT.js                                              13.01 kB │ gzip:  5.42 kB
+19:28:28 [vite] dist/_astro/LikelihoodStage.BN5PQMpb.js                                   13.14 kB │ gzip:  5.03 kB
+19:28:28 [vite] dist/_astro/SumStage.Be46DNQT.js                                          13.71 kB │ gzip:  5.41 kB
+19:28:28 [vite] dist/_astro/NumbersStage.DiAhNL6M.js                                      13.91 kB │ gzip:  5.26 kB
+19:28:28 [vite] dist/_astro/Exercise.y26DgKM6.js                                          13.95 kB │ gzip:  5.12 kB
+19:28:28 [vite] dist/_astro/SquareStage.g89a9OB-.js                                       13.99 kB │ gzip:  5.17 kB
+19:28:28 [vite] dist/_astro/NotationTable.C8uj8iz8.js                                     14.58 kB │ gzip:  5.35 kB
+19:28:28 [vite] dist/_astro/BlockCExercise.zZhWNH7P.js                                    14.59 kB │ gzip:  5.84 kB
+19:28:28 [vite] dist/_astro/BaseStage.N2nZ-BO3.js                                         14.77 kB │ gzip:  5.64 kB
+19:28:28 [vite] dist/_astro/Exercise.j2ghc9b0.js                                          14.82 kB │ gzip:  5.74 kB
+19:28:28 [vite] dist/_astro/Exercise.diRVigCQ.js                                          14.96 kB │ gzip:  5.65 kB
+19:28:28 [vite] dist/_astro/IntervalStage.BVZ5mn5V.js                                     14.99 kB │ gzip:  5.66 kB
+19:28:28 [vite] dist/_astro/CircleStage.DbG_CrtN.js                                       15.39 kB │ gzip:  6.03 kB
+19:28:28 [vite] dist/_astro/Exercise.B2bInYXr.js                                          15.63 kB │ gzip:  5.66 kB
+19:28:28 [vite] dist/_astro/chapter-lesson.BL8GyHht.js                                    15.71 kB │ gzip:  5.93 kB
+19:28:28 [vite] dist/_astro/SamplingStage.DOkiNJ7B.js                                     16.09 kB │ gzip:  6.35 kB
+19:28:28 [vite] dist/_astro/Exercise.BRVDeW0u.js                                          16.35 kB │ gzip:  5.82 kB
+19:28:28 [vite] dist/_astro/BlockAExercise.BFZcHE6X.js                                    16.90 kB │ gzip:  6.39 kB
+19:28:28 [vite] dist/_astro/BlockBExercise.BpdulBIU.js                                    17.43 kB │ gzip:  6.71 kB
+19:28:28 [vite] dist/_astro/NumericalExercise.BDMkx2x-.js                                 18.58 kB │ gzip:  7.43 kB
+19:28:28 [vite] dist/_astro/matrix-lesson.BF9EDN9z.js                                     20.27 kB │ gzip:  7.32 kB
+19:28:28 [vite] dist/_astro/StructureStage.BflufHom.js                                    22.66 kB │ gzip:  8.92 kB
+19:28:28 [vite] dist/_astro/AutodiffStage.FmJ-gI6F.js                                     23.22 kB │ gzip:  8.77 kB
+19:28:28 [vite] dist/_astro/CalculusExercise.B0GA-yUd.js                                  29.32 kB │ gzip: 11.45 kB
+19:28:28 [vite] dist/_astro/OptimizationStage.DdjHBQBk.js                                 40.60 kB │ gzip: 14.57 kB
+19:28:28 [vite] dist/_astro/OptimizationExercise.HGD0vQue.js                              43.67 kB │ gzip: 14.92 kB
+19:28:28 [vite] dist/_astro/Formula.DMwqx4J9.js                                          261.78 kB │ gzip: 77.86 kB
+19:28:28 [vite] ✓ built in 3.17s
+
+ generating static routes 
+19:28:28 ▶ src/pages/404.astro
+19:28:28   └─ /404.html (+9ms) 
+19:28:28 ▶ src/pages/chapters/[slug].astro
+19:28:28   ├─ /chapters/adam/index.html (+130ms) 
+19:28:28   ├─ /chapters/algebra/index.html (+92ms) 
+19:28:28   ├─ /chapters/automatic-differentiation/index.html (+31ms) 
+19:28:28   ├─ /chapters/bayes-theorem/index.html (+30ms) 
+19:28:28   ├─ /chapters/bernoulli-binomial/index.html (+38ms) 
+19:28:29   ├─ /chapters/central-limit-theorem/index.html (+49ms) 
+19:28:29   ├─ /chapters/chain-rule/index.html (+31ms) 
+19:28:29   ├─ /chapters/conditional-probability/index.html (+32ms) 
+19:28:29   ├─ /chapters/confidence-intervals/index.html (+17ms) 
+19:28:29   ├─ /chapters/constraints-regularization/index.html (+80ms) 
+19:28:29   ├─ /chapters/continuity/index.html (+19ms) 
+19:28:29   ├─ /chapters/convexity/index.html (+33ms) 
+19:28:29   ├─ /chapters/coordinates/index.html (+63ms) 
+19:28:29   ├─ /chapters/counting-probability/index.html (+25ms) 
+19:28:29   ├─ /chapters/covariance-correlation/index.html (+42ms) 
+19:28:29   ├─ /chapters/covariance-matrices/index.html (+17ms) 
+19:28:29   ├─ /chapters/data-spread/index.html (+16ms) 
+19:28:29   ├─ /chapters/data-summaries/index.html (+12ms) 
+19:28:29   ├─ /chapters/derivative-rate-linear-model/index.html (+33ms) 
+19:28:29   ├─ /chapters/derivative-rules/index.html (+27ms) 
+19:28:29   ├─ /chapters/derivative-secant-tangent/index.html (+24ms) 
+19:28:29   ├─ /chapters/eigenvalues-eigenvectors/index.html (+22ms) 
+19:28:29   ├─ /chapters/estimators-estimation/index.html (+17ms) 
+19:28:29   ├─ /chapters/events-probability/index.html (+23ms) 
+19:28:29   ├─ /chapters/expectation/index.html (+25ms) 
+19:28:29   ├─ /chapters/function-families/index.html (+67ms) 
+19:28:29   ├─ /chapters/fundamental-theorem/index.html (+25ms) 
+19:28:29   ├─ /chapters/functions/index.html (+76ms) 
+19:28:29   ├─ /chapters/gaussian-elimination/index.html (+19ms) 
+19:28:29   ├─ /chapters/gradient-descent/index.html (+40ms) 
+19:28:29   ├─ /chapters/hessian-curvature/index.html (+47ms) 
+19:28:29   ├─ /chapters/gradient-directional-derivatives/index.html (+25ms) 
+19:28:29   ├─ /chapters/independence/index.html (+26ms) 
+19:28:29   ├─ /chapters/integrals-accumulation/index.html (+28ms) 
+19:28:29   ├─ /chapters/inverse-matrices/index.html (+18ms) 
+19:28:29   ├─ /chapters/jacobian/index.html (+29ms) 
+19:28:30   ├─ /chapters/joint-distributions/index.html (+25ms) 
+19:28:30   ├─ /chapters/law-of-large-numbers/index.html (+31ms) 
+19:28:30   ├─ /chapters/learning-rate-convergence/index.html (+40ms) 
+19:28:30   ├─ /chapters/likelihood/index.html (+16ms) 
+19:28:30   ├─ /chapters/limits/index.html (+22ms) 
+19:28:30   ├─ /chapters/linear-systems/index.html (+21ms) 
+19:28:30   ├─ /chapters/local-global-optima/index.html (+32ms) 
+19:28:30   ├─ /chapters/matrix-composition/index.html (+20ms) 
+19:28:30   ├─ /chapters/matrix-determinant/index.html (+12ms) 
+19:28:30   ├─ /chapters/matrix-transformations/index.html (+16ms) 
+19:28:30   ├─ /chapters/matrix-transpose-orthogonality/index.html (+18ms) 
+19:28:30   ├─ /chapters/matrix-vector/index.html (+23ms) 
+19:28:30   ├─ /chapters/maximum-a-posteriori/index.html (+17ms) 
+19:28:30   ├─ /chapters/maximum-likelihood/index.html (+13ms) 
+19:28:30   ├─ /chapters/momentum/index.html (+39ms) 
+19:28:30   ├─ /chapters/notation-map/index.html (+69ms) 
+19:28:30   ├─ /chapters/numerical-differentiation/index.html (+25ms) 
+19:28:30   ├─ /chapters/numerical-integration/index.html (+87ms) 
+19:28:30   ├─ /chapters/objective-landscapes/index.html (+31ms) 
+19:28:30   ├─ /chapters/optimization-diagnostics/index.html (+66ms) 
+19:28:30   ├─ /chapters/orthogonal-least-squares/index.html (+22ms) 
+19:28:30   ├─ /chapters/partial-derivatives/index.html (+34ms) 
+19:28:30   ├─ /chapters/pmf-pdf-cdf/index.html (+21ms) 
+19:28:30   ├─ /chapters/population-sampling/index.html (+14ms) 
+19:28:30   ├─ /chapters/quantities/index.html (+57ms) 
+19:28:30   ├─ /chapters/random-experiments/index.html (+20ms) 
+19:28:30   ├─ /chapters/random-variables/index.html (+23ms) 
+19:28:30   ├─ /chapters/rank-invertibility/index.html (+13ms) 
+19:28:30   ├─ /chapters/regression-fundamentals/index.html (+15ms) 
+19:28:30   ├─ /chapters/stochastic-mini-batch-descent/index.html (+57ms) 
+19:28:30   ├─ /chapters/sets-and-relations/index.html (+53ms) 
+19:28:30   ├─ /chapters/singular-value-decomposition/index.html (+44ms) 
+19:28:31   ├─ /chapters/summation/index.html (+45ms) 
+19:28:31   ├─ /chapters/uniform-gaussian/index.html (+37ms) 
+19:28:31   ├─ /chapters/variance-standard-deviation/index.html (+26ms) 
+19:28:31   ├─ /chapters/vector-basis/index.html (+19ms) 
+19:28:31   ├─ /chapters/vector-addition/index.html (+14ms) 
+19:28:31   ├─ /chapters/vector-dot-product/index.html (+23ms) 
+19:28:31   ├─ /chapters/vector-norms/index.html (+17ms) 
+19:28:31   ├─ /chapters/vector-projection/index.html (+15ms) 
+19:28:31   ├─ /chapters/vector-scaling/index.html (+13ms) 
+19:28:31   ├─ /chapters/vector-span/index.html (+13ms) 
+19:28:31   ├─ /chapters/vectors/index.html (+41ms) 
+19:28:31   ├─ /chapters/catastrophic-cancellation/index.html (+16ms) 
+19:28:31   ├─ /chapters/error-propagation-conditioning/index.html (+12ms) 
+19:28:31   ├─ /chapters/floating-point-representation/index.html (+15ms) 
+19:28:31   ├─ /chapters/rounding-representation-error/index.html (+12ms) 
+19:28:31   ├─ /chapters/numerical-linear-algebra/index.html (+25ms) 
+19:28:31   ├─ /chapters/overflow-underflow/index.html (+11ms) 
+19:28:31   ├─ /chapters/stable-algorithms/index.html (+16ms) 
+19:28:31   ├─ /chapters/reproducibility-random-seeds/index.html (+15ms) 
+19:28:31   ├─ /chapters/sparse-matrices-structure/index.html (+13ms) 
+19:28:31   └─ /chapters/vectorized-computation/index.html (+14ms) 
+19:28:31 ▶ src/pages/contents.astro
+19:28:31   └─ /contents/index.html (+3ms) 
+19:28:31 ▶ src/pages/foundation.astro
+19:28:31   └─ /foundation/index.html (+15ms) 
+19:28:31 ▶ src/pages/index.astro
+19:28:31   └─ /index.html (+4ms) 
+19:28:31 ✓ Completed in 2.79s.
+
+19:28:31 [build] 93 page(s) built in 19.14s
+19:28:31 [build] Complete!

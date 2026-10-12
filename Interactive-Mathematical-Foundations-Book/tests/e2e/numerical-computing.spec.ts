@@ -37,3 +37,32 @@ for(const [id,slug,chapter,preset]of blockB){
  test(`${id}: both-theme exceptional-state accessibility`,async({page})=>{for(const scheme of ['light','dark'] as const){await page.emulateMedia({colorScheme:scheme});await page.goto(`chapters/${slug}/`);const s=page.locator(`[data-stage="numerical-${chapter}"]`);await expect(s).toHaveAttribute('data-hydrated','true');await s.locator(`[data-preset="${preset}"]`).click();await scanStage(page);}});
  test(`${id}: five graded exercises and worked feedback`,async({page})=>{await page.goto(`chapters/${slug}/`);await exercises(page,{'numerical-range-1':['1/16384'],'numerical-range-2':['1/16777216'],'numerical-range-3':['0'],'numerical-stable-1':['3/4','5'],'numerical-stable-2':['0','1'],'numerical-stable-3':['1/4096'],'numerical-solver-1':['1','1'],'numerical-solver-2':['1/10000'],'numerical-solver-3':['16/5']},`numerical-${chapter}-`);});
 }
+const blockC=[['VIII.8','sparse-matrices-structure','sparse','duplicates'],['VIII.9','vectorized-computation','broadcasting','incompatible'],['VIII.10','reproducibility-random-seeds','reproducibility','zero-reference']] as const;
+for(const [id,slug,chapter,preset]of blockC){
+ test(`${id}: actual values, index/state correspondence, keyboard inputs and immutable replay`,async({page})=>{
+  await page.goto(`chapters/${slug}/`);const s=page.locator(`[data-stage="numerical-${chapter}"]`);await expect(s).toHaveAttribute('data-hydrated','true');const original=await metrics(s);
+  await s.getByRole('button',{name:/^Next/}).click();await expect(s.locator('[data-trace-index]')).toHaveAttribute('data-trace-index','1');await s.getByRole('button',{name:/Previous/}).click();expect(await metrics(s)).toEqual(original);
+  const w=page.locator(`[data-stage="numerical-worked-${chapter}"]`);await expect(w).toHaveAttribute('data-hydrated','true');const worked=await metrics(w);await w.getByRole('slider').press('ArrowRight');await expect(w.locator('[data-trace-index]')).toHaveAttribute('data-trace-index','1');expect(await metrics(w)).toEqual(worked);
+  if(chapter==='sparse'){
+   expect(original).toMatchObject({nnz:3,indptr:[0,1,2,3],result:['2','6','12'],costs:[72,48,52]});await s.locator('[data-cell="0,0"]').focus();await s.locator('[data-cell="0,0"]').press('Enter');expect((await metrics(s)).nnz).toBe(2);
+   await s.locator('[data-preset="duplicates"]').click();expect(await metrics(s)).toMatchObject({nnz:1,duplicates:1,indptr:[0,0,1,1],result:['0','9','0']});await s.locator('[data-preset="near-zero"]').click();expect(await metrics(s)).toMatchObject({nnz:2,nearZero:1});await entry(s,'threshold','0');expect((await metrics(s)).nnz).toBe(2);expect((await metrics(s)).nearZero).toBe(0);
+   const bad=await entry(s,'entries','3,0,1');await expect(bad).toHaveAttribute('aria-invalid','true');expect((await state(s)).entries).toBe('0,0,1e-8;1,1,3');
+  }
+  if(chapter==='broadcasting'){
+   expect(original.outShape).toEqual([2,3]);expect(original.mappings[4]).toMatchObject({index:[1,1],aIndex:[1,1],bIndex:[1],a:'5',b:'11',value:'16'});expect(original.reduction).toEqual({kind:'valid',shape:[2],values:['39','48']});await expect(s.locator('tbody').nth(1).locator('tr').nth(4)).toContainText('16');
+   await entry(s,'axis','-1');expect((await metrics(s)).reduction.values).toEqual(['39','48']);await entry(s,'axis','2');expect((await metrics(s)).reduction.kind).toBe('invalid');await s.locator('[data-preset="empty-axis"]').click();expect(await metrics(s)).toMatchObject({outShape:[0,3],operations:0,reduction:{kind:'valid',shape:[3],values:['0','0','0']}});
+   const bad=await entry(s,'right','(2,3,4,4)');await expect(bad).toHaveAttribute('aria-invalid','true');expect((await state(s)).right).toBe('(1,3)');
+  }
+  if(chapter==='reproducibility'){
+   expect(original).toMatchObject({seed:42,exactReplay:true,left:1,right:0,reference:'1',withinBudget:false});expect(original.records.slice(0,2).map((r:{after:number})=>r.after)).toEqual([1083814273,378494188]);
+   await s.locator('[data-preset="resume"]').click();expect((await metrics(s)).records.map((r:{after:number})=>r.after)).toEqual(original.records.slice(2).map((r:{after:number})=>r.after));await entry(s,'seed','7');expect((await state(s)).seed).toBe(7);expect((await metrics(s)).records[0].after).toBe(1025555898);
+   const bad=await entry(s,'seed','4294967296');await expect(bad).toHaveAttribute('aria-invalid','true');expect((await state(s)).seed).toBe(7);await s.locator('[data-preset="loose"]').click();expect((await metrics(s)).withinBudget).toBe(true);expect((await metrics(s)).left).toBe(1);expect((await metrics(s)).right).toBe(0);
+  }
+  await s.locator(`[data-preset="${preset}"]`).click();await expect(s.locator('[data-verdict]')).not.toBeEmpty();await s.locator('[data-action="reset"]').click();expect(await metrics(s)).toEqual(original);await expect(s.locator('[data-announcement]')).not.toBeEmpty();
+ });
+ test(`${id}: both-theme boundary-state accessibility`,async({page})=>{for(const scheme of ['light','dark'] as const){await page.emulateMedia({colorScheme:scheme});await page.goto(`chapters/${slug}/`);const s=page.locator(`[data-stage="numerical-${chapter}"]`);await expect(s).toHaveAttribute('data-hydrated','true');await s.locator(`[data-preset="${preset}"]`).click();await scanStage(page);}});
+ test(`${id}: five exercises with corrective feedback and worked solutions`,async({page})=>{await page.goto(`chapters/${slug}/`);await exercises(page,{'numerical-sparse-1':['2','6','12'],'numerical-sparse-2':['0','0'],'numerical-sparse-3':['72','48','52'],'numerical-broadcasting-1':['2','3'],'numerical-broadcasting-2':['16'],'numerical-broadcasting-3':['39','48'],'numerical-reproducibility-1':['1','0'],'numerical-reproducibility-2':['10501/5000000'],'numerical-reproducibility-3':['1083814273/4294967296']},`numerical-${chapter}-`);});
+}
+test('VIII.8: touch toggles exact sparse cells with accessible target dimensions',async({page},info)=>{
+ test.skip(info.project.name!=='mobile','Touch emulation is provided by the mobile project.');await page.goto('chapters/sparse-matrices-structure/');const s=page.locator('[data-stage="numerical-sparse"]');await expect(s).toHaveAttribute('data-hydrated','true');const cell=s.locator('[data-cell="0,1"]');const box=(await cell.boundingBox())!;expect(box.width).toBeGreaterThanOrEqual(44);expect(box.height).toBeGreaterThanOrEqual(44);await cell.tap();expect((await metrics(s)).nnz).toBe(4);expect((await metrics(s)).result).toEqual(['4','6','12']);await cell.tap();expect((await metrics(s)).nnz).toBe(3);
+});

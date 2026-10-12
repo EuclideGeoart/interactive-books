@@ -1,0 +1,34 @@
+19:27:14 [content] Syncing content
+19:27:14 [content] Synced content
+19:27:14 [types] Generated 283ms
+19:27:14 [check] Getting diagnostics for Astro files in /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book...
+[96msrc/lessons/probability/variables-lesson.ts[0m:[93m4[0m:[93m59[0m - [93mwarning[0m[90m ts(6133): [0m'tex' is declared but its value is never read.
+
+[7m4[0m import { exactRow, exactText, massItem, parameter, steps, tex, type ProbabilityView } from './view';
+[7m [0m [93m                                                          ~~~[0m
+
+[96msrc/lessons/quantities/square-lesson.ts[0m:[93m128[0m:[93m49[0m - [93mwarning[0m[90m ts(6133): [0m'state' is declared but its value is never read.
+
+[7m128[0m export function squareVerdict(d: SquareDerived, state: SquareState): string {
+[7m   [0m [93m                                                ~~~~~[0m
+
+[96msrc/math/notation/norms.ts[0m:[93m53[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'MINUS' is declared but its value is never read.
+
+[7m53[0m const MINUS = '−';
+[7m  [0m [93m      ~~~~~[0m
+
+[96mtests/e2e/coordinates.spec.ts[0m:[93m23[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'norm' is declared but its value is never read.
+
+[7m23[0m const norm = (s: string) => s.replace(/\u2212/g, '-').replace(/\s+/g, ' ').trim();
+[7m  [0m [93m      ~~~~[0m
+
+[96mtests/unit/notation-lesson.test.ts[0m:[93m21[0m:[93m8[0m - [93mwarning[0m[90m ts(6133): [0m'NormLessonState' is declared but its value is never read.
+
+[7m21[0m   type NormLessonState,
+[7m  [0m [93m       ~~~~~~~~~~~~~~~[0m
+
+Result (581 files): 
+- 0 errors
+- 0 warnings
+- 5 hints
+

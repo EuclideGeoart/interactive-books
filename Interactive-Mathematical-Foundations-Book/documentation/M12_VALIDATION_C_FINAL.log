@@ -1,0 +1,11 @@
+
+ RUN  v3.2.7 /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book
+
+ ✓ tests/unit/numerical-validation.test.ts (3 tests) 554ms
+   ✓ structure families retain actual sparse/tensor/replay consumers and all new screenshot owners  322ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  19:27:49
+   Duration  767ms (transform 36ms, setup 0ms, collect 34ms, tests 554ms, environment 0ms, prepare 45ms)
+

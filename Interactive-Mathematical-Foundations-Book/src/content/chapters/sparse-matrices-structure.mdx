@@ -1,0 +1,117 @@
+---
+kind: chapter
+curriculumId: VIII.8
+title: "Sparse matrices and sparse structure"
+hero: "When does storing fewer *entries* actually help?"
+lede: Edit a small matrix, inspect exact zero structure and compare dense storage with canonical COO and CSR. Follow sparse multiplication through its real column indices, products and row accumulators.
+description: "Edit a small matrix, inspect exact zero structure and compare dense storage with canonical COO and CSR. Follow sparse multiplication through its real column indices, products and row accumulators."
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import Xref from '../../shell/Xref.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import StructureStage from '../../lessons/numerical-computing/StructureStage';
+import Exercise from '../../lessons/numerical-computing/NumericalExercise';
+import reference from '../../../code/python/sparse_matrices.py?raw';
+import practical from '../../../code/python/sparse_matrices_numpy.py?raw';
+
+<Stage caption="Toggle matrix entries or edit raw COO triples. Exact duplicate aggregation, CSR indices and actual sparse multiplication produce every displayed value."><StructureStage chapter="sparse" client:load /></Stage>
+
+## Intuition: zeros can carry structure
+
+A diagonal matrix has many zeros, yet only its diagonal values contribute products to a matrix-vector multiplication. A sparse representation records where the contributing values are rather than reserving a value slot for every coordinate. This can save space and arithmetic work when zeros are common.
+
+The grid shows the aggregated dense matrix, with explicit zero-based [row,column] labels. Click or tap a cell to toggle its aggregate between structural zero and one. To enter another exact value, edit the COO triples. The same canonical state controls the grid, storage arrays, inspector and multiplication trace; there is no separate decorative matrix.
+
+Sparse overhead matters. A nearly full 3×3 matrix can consume more ideal packed storage in COO or CSR than in dense form. Those representations also have different access patterns. Fewer stored values is not a universal wall-clock speed guarantee.
+
+## Definition: bounded dense, COO and CSR data
+
+This explorer uses m rows and n columns, each from one through three. A dense representation has mn value slots. COO, coordinate storage, records triples (row,column,value). CSR, compressed sparse row storage, uses a value array, a parallel column-index array and a row-pointer array of length m+1.
+
+For row i, CSR entries run from indptr[i] up to, but excluding, indptr[i+1]. Equal consecutive pointers describe an empty row. Indices are zero-based in these programs and views; in one-based mathematical notation they would be shifted by one.
+
+Raw COO may contain duplicates and explicit zeros. This chapter's canonical policy sums duplicates exactly, sorts by row then column, and removes only exact aggregated zeros. A near-zero diagnostic never alters the structure. Shape, coordinates, finite values and vector length are validated before deriving storage or products.
+
+## Mechanics: one matrix, two actual multiplication paths
+
+The canonical state holds the declared shape, raw COO text, vector and diagnostic threshold. The model derives the dense exact rational matrix and canonical COO/CSR arrays. It computes the sparse result by actually traversing CSR nonzeros, and independently computes a dense result through the accepted exact matrix API.
+
+Each sparse product record contains its row, column, coefficient, x[column], product, accumulator before and accumulator after. The column index selects a vector component; the row pointer selects where the output sum belongs. Swapping those meanings would give the wrong operation even if a storage diagram looked plausible.
+
+For a grid toggle, all raw duplicates at the selected coordinate are replaced together. Removing a currently nonzero aggregate removes that coordinate; toggling an exact aggregate zero adds one. Other raw entries retain their exact decimal values. Empty COO text explicitly represents an all-zero matrix.
+
+## Derivation: sparse multiplication and ideal packed costs
+
+The mathematical product is
+
+$$(Ax)_i=\sum_{j=0}^{n-1}A_{ij}x_j.$$
+
+For a canonical sparse matrix, exact zero terms contribute nothing. CSR evaluates only the stored coefficients between the two row pointers, accumulating each result into that row. Its coefficient multiplications number nnz rather than mn; this counts a specific arithmetic operation, not all indexing, allocation or traversal overhead.
+
+Assume numerical values occupy eight bytes and indices occupy four bytes. Ignoring container, alignment and shape metadata,
+
+$$B_d=8mn,\qquad B_{\mathrm{COO}}=16\operatorname{nnz},$$
+$$B_{\mathrm{CSR}}=12\operatorname{nnz}+4(m+1).$$
+
+These are ideal Float64/int32 packed-array costs. The explorer computes exact rational references; its BigInt objects do not occupy eight bytes each. Converting those values to actual numerical storage can introduce the representation effects from earlier chapters.
+
+## Worked examples: a diagonal and an empty row
+
+For A=diag(2,3,4) and x=(1,2,3), the exact output is (2,6,12). Canonical COO contains (0,0,2), (1,1,3), (2,2,4). CSR data=[2,3,4], column indices=[0,1,2], and indptr=[0,1,2,3]. There are three stored coefficient products rather than nine dense coefficient products.
+
+The ideal costs are 72 dense bytes, 48 COO bytes and 52 CSR bytes. CSR pays four row pointers; that overhead is significant for a tiny matrix. A full 3×3 matrix with nine nonzeros instead costs 144 COO bytes or 124 CSR bytes, compared with 72 dense bytes.
+
+Remove the middle diagonal entry. The middle output becomes zero and CSR indptr becomes [0,1,1,2]. The repeated one correctly describes row 1 as empty. It does not mean column 1 is absent from every other row.
+
+The duplicate-cancellation preset has raw (0,0,2), (0,0,−2), (1,2,3) and an explicit zero. The first pair sums to exact zero. Only coordinate (1,2) survives, giving result (0,9,0) and row pointers [0,0,1,1].
+
+<Stage caption="Select the recorded intermediate values. Previous, next and direct replay navigation preserve immutable numerical history."><StructureStage chapter="sparse" worked client:load /></Stage>
+
+## Executable reference code
+
+The pedagogical program aggregates raw coordinates with a Fraction dictionary, constructs CSR, and evaluates products through its pointers. The NumPy version builds an actual dense array with additive coordinate insertion and independently evaluates the product. No SciPy, sparse native backend or new package is needed. Independent oracle fixtures own exact structure, costs and products and do not read the browser model.
+
+<CodeFile source={reference} file="code/python/sparse_matrices.py" />
+<CodeFile source={practical} file="code/python/sparse_matrices_numpy.py" />
+
+## Explore: structure is an equality, not a tolerance
+
+Select small but nonzero: 1e-8 lies below the default diagnostic threshold 1e-6, yet its coordinate stays in canonical storage and contributes to the exact product. Increasing the diagnostic threshold can change the near-zero count without changing nnz, CSR pointers or the mathematical product.
+
+Compare diagonal, empty middle row, duplicate cancellation, full and all-zero examples. Predict the pointers and byte counts before reading them. An all-zero matrix still needs m+1 CSR pointers in this cost model.
+
+Edit a coordinate outside the declared shape or supply a vector of the wrong length. The state is rejected with a message rather than silently resizing or truncating. To change a dimension, first make the entries and vector compatible with the new shape; the explorer does not discard data to repair an edit.
+
+## Common mistakes and counterexamples
+
+A duplicate coordinate does not necessarily overwrite a previous one. This chapter explicitly sums duplicates; another API must state its own policy. An explicit stored zero can consume space even though it contributes no mathematical product; canonicalization removes it here.
+
+A value close to zero is not a structural zero. Thresholding it would change the matrix and its product, and should be a separate, justified approximation. CSR pointers are exclusive row boundaries, while column indices select input components. Confusing those two arrays breaks multiplication.
+
+## Numerical considerations
+
+The small teaching model uses exact rational intended entries and products. It is suited to checking coordinate meaning and zero structure without accidental cancellation in a numerical accumulator. Actual Float64 sparse arrays would additionally require conversion and accumulation error analysis.
+
+Storage costs explicitly describe hypothetical packed numerical arrays. They exclude exact-reference object memory, raw duplicate storage, allocator overhead and runtime bookkeeping. Sparse access can also have worse locality or indexing costs than a dense operation. Operations saved do not establish a performance improvement on an unspecified workload.
+
+## Engineering and ML connections
+
+Sparse structure appears in graph adjacency, discretized differential equations, sparse features and selected model architectures. A format choice should follow the pattern of nonzeros, repeated operations and access needs. Preserve shape and index conventions across data loading and multiplication; numerical thresholding must be recorded as a changed mathematical object.
+
+<Xref to="chapters/floating-point-representation/">Inspect the corresponding representation and error policy</Xref> before interpreting a computed value.
+
+## Exercises
+
+Predict first, then calculate or test the stated claim. Every answer includes corrective feedback and a worked solution.
+
+<Exercise id="numerical-sparse-1" client:load />
+<Exercise id="numerical-sparse-2" client:load />
+<Exercise id="numerical-sparse-3" client:load />
+<Exercise id="numerical-sparse-4" client:load />
+<Exercise id="numerical-sparse-5" client:load />
+
+## Summary and checkpoints
+
+Construct COO and CSR from a small dense matrix, identify an empty row from repeated pointers, combine duplicates under the stated exact policy and replay real sparse products. Explain the packed byte assumptions and why a small nonzero or fewer multiplications does not imply a free accuracy or speed guarantee.
+
