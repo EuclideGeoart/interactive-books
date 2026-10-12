@@ -1,0 +1,76 @@
+---
+kind: chapter
+curriculumId: V.7
+title: "Regression fundamentals"
+hero: "Where do the residuals go when a line *fits*?"
+lede: Move actual observations, derive the least-squares line from their centered sums, and inspect predictions, signed residuals, RSS and nonidentifiable coefficients.
+description: Move actual observations, derive the least-squares line from their centered sums, and inspect predictions, signed residuals, RSS and nonidentifiable coefficients.
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import ScatterStage from '../../lessons/statistics/ScatterStage';
+import Exercise from '../../lessons/statistics/UncertaintyExercise';
+import reference from '../../../code/python/statistics_regression.py?raw';
+import practical from '../../../code/python/statistics_regression_numpy.py?raw';
+
+<Stage caption="Move actual observations, derive the least-squares line from their centered sums, and inspect predictions, signed residuals, RSS and nonidentifiable coefficients."><ScatterStage chapter="regression" client:load /></Stage>
+
+## Intuition
+
+The observed y values need not lie on a line. A fitted prediction lives on the line at each observed x; the vertical gap is a signed residual. Least squares chooses a line that minimizes the total squared vertical gaps, not orthogonal distances to the line.
+
+## Definition
+
+For $\hat y_i=a+bx_i$, residuals are $r_i=y_i-\hat y_i$ and $\operatorname{RSS}(a,b)=\sum_i r_i^2$. Simple regression here includes an intercept and uses equal observation weights. If $S_{xx}=\sum_i(x_i-\bar x)^2>0$, coefficients are unique. Correlation summarizes standardized linear association; RSS is an unstandardized fit criterion.
+
+## Mechanics
+
+Select and move any observation using the same input paths. The plot shows the actual pairs, derived line and residual segments; the table lists exact predictions and signed residuals. Compare the canonical noisy dataset with a noiseless line, an outlier and a dataset with identical x coordinates.
+
+## Derivation
+
+Setting the RSS derivatives to zero gives $\sum_i r_i=0$ and $\sum_i x_i r_i=0$. Solve them to obtain $b=S_{xy}/S_{xx}$ and $a=\bar y-b\bar x$. In the earlier projection language, the design matrix has columns of ones and observed x values; fitted y is the projection onto their span, and residuals are orthogonal to both columns.
+
+## Worked examples
+
+For x=[−3,−1,0,1,3], y=[−1,0,1,2,3], means are (0,1), $S_{xx}=20$ and $S_{xy}=14$. Thus $b=7/10$ and $a=1$. Residuals are $[1/10,-3/10,0,3/10,-1/10]$, with $\operatorname{RSS}=1/5$. At x=3, prediction is 31/10 and the observed residual is −1/10.
+
+<Stage caption="Inspect the actual mathematical steps and replay their immutable states."><ScatterStage chapter="regression" worked client:load /></Stage>
+
+## Executable reference code
+
+Run the exact mechanics and the NumPy companion. Both use literal assertions on the worked examples; simulations are never conditioned on a favorable coverage or fit outcome.
+
+<CodeFile source={reference} file="code/python/statistics_regression.py" />
+<CodeFile source={practical} file="code/python/statistics_regression_numpy.py" />
+
+## Explore
+
+Move the outlier and watch it influence slope, intercept and RSS. In the noiseless preset, RSS is zero. In the equal-x preset, determine which combination of a and b the data constrain. Reset and verify that residuals still sum to zero even though individual residuals do not.
+
+## Common mistakes and counterexamples
+
+When all x values equal x₀, only a+b x₀ equals the mean y; slope and intercept are not individually identified. Fitted values at observed x and RSS remain meaningful, but a unique extrapolation line must not be invented. Low training RSS does not establish causation or guarantee reliable future predictions. Zero y variance makes correlation undefined even when a horizontal regression line is uniquely fitted.
+
+## Numerical considerations
+
+Supported coordinates are bounded decimals represented exactly, so coefficients, predictions and residual identities use fractions. Drawing positions convert to binary64. Exact zero Sxx determines identifiability. Normal equations explain the geometry, but floating numerical software should normally use QR or SVD rather than explicitly invert the Gram matrix; the NumPy reference uses lstsq and exposes rank.
+
+## Engineering and ML connections
+
+Least squares connects a statistical fit with the projection material from linear algebra. Prediction uncertainty requires assumptions about future noise and coefficient estimation; this descriptive fit does not manufacture a predictive interval. A useful model also needs validation beyond the training observations and a justified scope for extrapolation.
+
+## Exercises
+
+Calculate from observed data and state the assumptions before interpreting a result. Corrective feedback identifies the corresponding misconception.
+
+<Exercise id="statistics-regression-1" client:load />
+<Exercise id="statistics-regression-2" client:load />
+<Exercise id="statistics-regression-3" client:load />
+<Exercise id="statistics-regression-4" client:load />
+<Exercise id="statistics-regression-5" client:load />
+
+## Summary and checkpoints
+
+Calculate coefficients from actual centered sums, inspect residuals and RSS, verify normal-equation identities and handle rank deficiency. Separate correlation, in-sample fit, prediction uncertainty and causal interpretation.
+

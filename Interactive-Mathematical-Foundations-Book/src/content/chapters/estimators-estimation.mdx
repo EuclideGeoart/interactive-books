@@ -1,0 +1,77 @@
+---
+kind: chapter
+curriculumId: V.4
+title: "Estimators and estimation"
+hero: "How does an estimator behave across *samples*?"
+lede: Apply a fixed estimator to real seeded samples and separate theoretical bias and variance from the exact decomposition observed in one finite run.
+description: Apply a fixed estimator to real seeded samples and separate theoretical bias and variance from the exact decomposition observed in one finite run.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import DataStage from '../../lessons/statistics/DataStage';
+import Exercise from '../../lessons/statistics/DataExercise';
+import reference from '../../../code/python/statistics_estimators.py?raw';
+import practical from '../../../code/python/statistics_estimators_numpy.py?raw';
+
+<Stage caption="Apply a fixed estimator to real seeded samples and separate theoretical bias and variance from the exact decomposition observed in one finite run."><DataStage chapter="estimators" client:load /></Stage>
+
+## Intuition
+
+An estimator is a rule that accepts data; an estimate is the output after one sample is observed. Repeating the data-generating experiment produces a distribution of outputs. Its center and spread describe the rule, while one run only reveals a finite collection of estimates.
+
+## Definition
+
+The explorer uses $T=\bar X+c$ for a chosen shift $c$. Relative to fixed target $\mu$, theoretical bias is $b=E[T]-\mu$, sampling variance is $\operatorname{Var}(T)$, and mean squared error is $E[(T-\mu)^2]$. These quantities average over the specified sampling law, not over a selected favorable simulation.
+
+## Mechanics
+
+Change the shift, sampling rule, seed, sample size and repetition count. Inspect each complete sample, its mean and resulting estimate. The empirical inspector uses all displayed estimates with denominator R. Its exact finite-run values are kept separate from independently calculated theoretical properties.
+
+## Derivation
+
+Write $T-\mu=(T-E[T])+b$. Expanding and using $E[T-E[T]]=0$ gives $\operatorname{MSE}(T)=\operatorname{Var}(T)+b^2$. The analogous finite-list identity holds around its empirical mean when variance divides by R. Using R−1 would require a corresponding correction and would not give this displayed identity.
+
+## Worked examples
+
+Uniform sampling at $n=4$ with shift $c=1$ gives theoretical bias 1 and variance $41/16$, so MSE is $57/16$. For the actual first sample $[2,0,6,1]$, the estimate is $13/4$. For hand estimates $[0,2]$ targeting 1, empirical bias is 0, variance is 1 and MSE is 1.
+
+<Stage caption="Replay the worked mathematical steps using the same canonical state and actual derived quantities."><DataStage chapter="estimators" worked client:load /></Stage>
+
+## Executable reference code
+
+Run both files. The pedagogical program exposes the arithmetic; the NumPy companion uses array operations. Literal assertions check the worked example rather than testing a simulation against a desired statistical outcome.
+
+<CodeFile source={reference} file="code/python/statistics_estimators.py" />
+<CodeFile source={practical} file="code/python/statistics_estimators_numpy.py" />
+
+## Explore
+
+Compare unbiased mean, shifted mean and biased selection. Keep the target fixed. Find a seed whose empirical signed bias disagrees with theoretical bias, then explain why this does not invalidate the theoretical formula. Increasing R refines a simulation; increasing n changes the estimator distribution.
+
+## Common mistakes and counterexamples
+
+Finite-run agreement with a target does not prove unbiasedness. A theoretical unbiased estimator can have large sampling variance, and a biased estimator can have smaller MSE for a particular problem. Do not edit samples to make their empirical average equal the claimed expectation.
+
+## Numerical considerations
+
+The population and selected-source moments are computed directly with rational arithmetic. Actual sample estimates and finite-run MSE identities remain exact. Theoretical standard errors are binary64 square roots. At R=1 empirical variance is zero even if theoretical sampling variance is positive; one realization cannot describe its full variability.
+
+## Engineering and ML connections
+
+Validation scores, Monte Carlo estimates and sensor calibration are outputs of procedures. Compare error across repeated samples and distinguish systematic offset from random spread. Later regularization can trade bias against variance, but the tradeoff must be measured under a stated target and sampling law.
+
+## Exercises
+
+Predict, calculate and explain before checking the corrective feedback. Each solution states the relevant rule and its conditions.
+
+<Exercise id="statistics-estimators-1" client:load />
+<Exercise id="statistics-estimators-2" client:load />
+<Exercise id="statistics-estimators-3" client:load />
+<Exercise id="statistics-estimators-4" client:load />
+<Exercise id="statistics-estimators-5" client:load />
+
+## Summary and checkpoints
+
+Distinguish rule from result, target from estimate, and theory from finite simulation. Derive MSE decomposition and explain why both squared bias and sampling variance matter.
+

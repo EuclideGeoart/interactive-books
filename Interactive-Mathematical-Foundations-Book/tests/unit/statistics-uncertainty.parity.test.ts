@@ -1,0 +1,9 @@
+import {readFileSync} from 'node:fs';
+import {expect,it} from 'vitest';
+import {intervals} from '../../src/math/statistics/intervals';
+import {scatter,regression} from '../../src/math/statistics/scatter';
+const data=JSON.parse(readFileSync('fixtures/statistics_uncertainty.fixtures.json','utf8'));
+const f=(x:{num:bigint;den:bigint}|null)=>x===null?null:`${x.num}/${x.den}`;
+let worst=0;const near=(a:number,b:number,tolerance=2e-12)=>{worst=Math.max(worst,Math.abs(a-b)/Math.max(1,Math.abs(b)));expect(Math.abs(a-b)).toBeLessThanOrEqual(tolerance*Math.max(1,Math.abs(b)));};
+it('NormalDist critical values, actual samples, intervals and analytic coverage: independent parity',()=>{for(const c of data.intervals){const d=intervals(c.input),e=c.expected;for(const k of ['critical','standardError','width'] as const)near(d[k],e[k]);near(d.analyticCoverage,e.analyticCoverage,2e-9);expect(d.covered).toBe(e.covered);for(const [i,r]of d.runs.entries()){const expected=e.runs[i];for(const k of ['mean','lower','upper'] as const)near(r[k],expected[k]);expect(r.contains).toBe(expected.contains);r.sample.forEach((x,j)=>near(x,expected.sample[j]));}}console.info('Statistics uncertainty worst scaled binary64 error:',worst);});
+it('pairwise covariance and independently solved normal equations: exact parity including rank deficiency',()=>{for(const c of data.scatter){const d=scatter(c.input),e=c.expected;expect({meanX:f(d.mx.mean),meanY:f(d.my.mean),varX:f(d.mx.variance),varY:f(d.my.variance),covariance:f(d.covariance),determinant:f(d.determinant),rank:d.rank,repeated:d.repeated}).toEqual(Object.fromEntries(Object.entries(e).filter(([k])=>k!=='eigenvalues')));d.spectral.pairs.forEach((p,i)=>near(p.value,e.eigenvalues[i]));const r=regression(c.input);expect({slope:f(r.slope),intercept:f(r.intercept),predicted:r.predicted.map(f),residuals:r.residuals.map(f),rss:f(r.rss),residualSum:f(r.residualSum),orthogonality:f(r.orthogonality)}).toEqual(c.regression);}});

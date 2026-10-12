@@ -176,3 +176,9 @@ test.describe('chapter shell', () => {
     if (narrow) expect(focusable).toBeGreaterThan(0); // the long softmax equation must overflow on a phone
   });
 });
+
+
+test('M9+M10: IV.16 → V.1, V.10 → VI.1 and VI.10 → planned VII.1 boundaries',async({page})=>{
+ for(const [slug,nextId,nextSlug] of [['central-limit-theorem','V.1','data-summaries'],['maximum-a-posteriori','VI.1','objective-landscapes']] as const){await page.goto(`chapters/${slug}/`);const next=page.locator('.chapter-pager .pager-next');await expect(next).toContainText(nextId+' ·');await expect(next).toHaveAttribute('href',new RegExp(`chapters/${nextSlug}/$`));await next.click();await expect(page).toHaveURL(new RegExp(`chapters/${nextSlug}/$`));await expect(page.locator('h1')).toHaveCount(1);}
+ await page.goto('chapters/optimization-diagnostics/');const planned=page.locator('.chapter-pager .pager-next');await expect(planned).toContainText('VII.1 ·');await expect(planned).toContainText('planned');expect(await planned.getAttribute('href')).toBeNull();
+});

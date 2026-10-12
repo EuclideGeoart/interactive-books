@@ -1,0 +1,77 @@
+---
+kind: chapter
+curriculumId: V.3
+title: "Population, sample, and sampling variability"
+hero: "Does a larger sample repair *selection*?"
+lede: Draw repeatable samples from a known finite population and compare uniform selection with a rule that excludes its lower half.
+description: Draw repeatable samples from a known finite population and compare uniform selection with a rule that excludes its lower half.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import DataStage from '../../lessons/statistics/DataStage';
+import Exercise from '../../lessons/statistics/DataExercise';
+import reference from '../../../code/python/statistics_sampling.py?raw';
+import practical from '../../../code/python/statistics_sampling_numpy.py?raw';
+
+<Stage caption="Draw repeatable samples from a known finite population and compare uniform selection with a rule that excludes its lower half."><DataStage chapter="sampling" client:load /></Stage>
+
+## Intuition
+
+A statistic changes when a new sample arrives even though the population stays fixed. Random variation concerns which eligible members happen to be selected. Selection bias changes eligibility itself. Repeating a biased procedure can make its wrong center increasingly stable.
+
+## Definition
+
+The population is the fixed multiset $[0,1,2,3,6,7,8,9]$, with mean $\mu=9/2$ and variance $41/4$. Uniform sampling here means iid draws with replacement, each member having probability $1/8$. The biased rule draws uniformly only from $[6,7,8,9]$, whose mean is $15/2$.
+
+## Mechanics
+
+Choose the selection rule, sample size, repetition count and uint32 seed. Every table row shows the actual drawn observations and their computed mean. The frequency plot counts those actual estimates, while its target marker is derived independently from all eight population values. Replay regenerates exactly the same run.
+
+## Derivation
+
+Under uniform iid selection, $E[\bar X]=\mu$ and $\operatorname{Var}(\bar X)=\sigma^2/n=41/(4n)$. Under the biased rule, $E[\bar X]=15/2$, so bias relative to the population mean is 3 at every sample size. Its selected-source variance is $5/4$, giving mean variance $5/(4n)$.
+
+## Worked examples
+
+Seed 42 with four uniform draws produces $[2,0,6,1]$, whose mean is $9/4$. This estimate differs from the true finite-population mean $9/2$ without implying selection bias. A sample consisting only of upper-half values instead comes from a procedure with theoretical center $15/2$.
+
+<Stage caption="Replay the worked mathematical steps using the same canonical state and actual derived quantities."><DataStage chapter="sampling" worked client:load /></Stage>
+
+## Executable reference code
+
+Run both files. The pedagogical program exposes the arithmetic; the NumPy companion uses array operations. Literal assertions check the worked example rather than testing a simulation against a desired statistical outcome.
+
+<CodeFile source={reference} file="code/python/statistics_sampling.py" />
+<CodeFile source={practical} file="code/python/statistics_sampling_numpy.py" />
+
+## Explore
+
+Replay a seed, change it and compare the actual rows. Hold a seed while increasing repetitions: earlier rows remain a shared prefix. Increase sample size under each selection rule and explain the difference between tighter concentration and a better target.
+
+## Common mistakes and counterexamples
+
+An unlucky representative procedure can produce an unrepresentative realized sample. A very large biased sample can still miss a whole subgroup. Sample size alone does not repair exclusion, missingness or dependence. Sampling without replacement has a finite-population correction; this iid explorer does not silently apply that different model.
+
+## Numerical considerations
+
+The bounded LCG uses exact uint32 transitions; integer indexing selects population members without floating accumulation. Sizes are 1–32 and repetitions 1–64. Sample means and empirical summaries are exact fractions. Seeded pseudo-randomness supports reproducibility; it is not evidence that a real collection procedure meets iid assumptions.
+
+## Engineering and ML connections
+
+A monitoring dashboard that records only successful requests misses failures; collecting more successes cannot repair that exclusion. A training dataset assembled from one customer segment can concentrate around a segment-specific distribution. Evaluate the sampling frame as carefully as the number of rows.
+
+## Exercises
+
+Predict, calculate and explain before checking the corrective feedback. Each solution states the relevant rule and its conditions.
+
+<Exercise id="statistics-sampling-1" client:load />
+<Exercise id="statistics-sampling-2" client:load />
+<Exercise id="statistics-sampling-3" client:load />
+<Exercise id="statistics-sampling-4" client:load />
+<Exercise id="statistics-sampling-5" client:load />
+
+## Summary and checkpoints
+
+Separate the known target, actual sample and sampling rule. Explain random variation, calculate an actual mean, and identify why the upper-half rule remains biased as sample size grows.
+

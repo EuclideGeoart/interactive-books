@@ -78,7 +78,7 @@ describe('curriculum structure', () => {
   });
 });
 
-/** M7+M8 integrated publication: exactly Parts I–IV are available, preserving the master 97-chapter curriculum. */
+/** M9 Statistics publication: exactly Parts I–V  are available, preserving the master 97-chapter curriculum. */
 const PART_III_PUBLISHED = Array.from({ length: 15 }, (_, k) => `III.${k + 1}`);
 const PART_IV_PUBLISHED = Array.from({ length: 16 }, (_, k) => `IV.${k + 1}`);
 describe('publication scope guard', () => {
@@ -89,22 +89,28 @@ describe('publication scope guard', () => {
     expect(i3.chapter.role).toBe('reference');
     expect(findChapter('VI.4')!.chapter.role).toBe('flagship');
   });
-  it('M10 Blocks A–B add 8 Optimization chapters to the 59-chapter baseline', () => {
+  it('M9+M10 publish 79 chapters and leave 18 planned', () => {
     const published = allChapters.filter(r => r.chapter.status === 'available');
     expect(published.filter(r => r.part.numeral === 'I')).toHaveLength(9);
     expect(published.filter(r => r.part.numeral === 'II')).toHaveLength(19);
     expect(published.filter(r => r.part.numeral === 'III').map(r => r.id)).toEqual(PART_III_PUBLISHED);
     expect(published.filter(r => r.part.numeral === 'IV').map(r => r.id)).toEqual(PART_IV_PUBLISHED);
-    expect(published.every(r => ['I', 'II', 'III', 'IV', 'VI'].includes(r.part.numeral))).toBe(true);
-    expect(published).toHaveLength(69);
-    expect(allChapters.filter(r => r.chapter.status === 'planned')).toHaveLength(28);
-    expect(published.map(r => r.id)).toEqual([...allChapters.slice(0, 59), ...allChapters.filter(r => r.part.numeral === 'VI' && r.chapter.n <= 10)].map(r => r.id));
-    expect(allChapters.filter(r => r.part.numeral === 'V').every(r => r.chapter.status === 'planned')).toBe(true);
+    expect(published.filter(r => r.part.numeral === 'V')).toHaveLength(10);
+    expect(published.filter(r => r.part.numeral === 'VI')).toHaveLength(10);
+    expect(published.every(r => ['I', 'II', 'III', 'IV', 'V', 'VI'].includes(r.part.numeral))).toBe(true);
+    expect(published).toHaveLength(79);
+    expect(allChapters.filter(r => r.chapter.status === 'planned')).toHaveLength(18);
+    expect(published.map(r => r.id)).toEqual(allChapters.slice(0, 79).map(r => r.id));
   });
-  it('navigates II.19 → III.1 → III.15 → IV.1 → IV.16 → V.1', () => {
+  it('navigates II.19 → III.1 → III.15 → IV.1 → IV.16 → V.1 → V.10 → VI.1 → VI.10 → VII.1', () => {
     expect(neighbours(findChapter('II.19')!).next?.id).toBe('III.1');
     expect(neighbours(findChapter('III.15')!).next?.id).toBe('IV.1');
     expect(neighbours(findChapter('IV.1')!).previous?.id).toBe('III.15');
     expect(neighbours(findChapter('IV.16')!).next?.id).toBe('V.1');
+    expect(neighbours(findChapter('V.1')!).previous?.id).toBe('IV.16');
+    expect(neighbours(findChapter('V.10')!).next?.id).toBe('VI.1');
+    expect(neighbours(findChapter('VI.1')!).previous?.id).toBe('V.10');
+    expect(neighbours(findChapter('VI.10')!).next?.id).toBe('VII.1');
+    expect(findChapter('VII.1')!.chapter.status).toBe('planned');
   });
 });
