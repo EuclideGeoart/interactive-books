@@ -8,8 +8,9 @@ import { useScopedId } from '../../ui/ids';
 import type { ProbabilityView, TableView, BarView } from './view';
 import '../probability/probability.css';
 import './information-theory.css';
-export function Table({view}:{view:TableView}) {
-  return <div class="prob-table-wrap" role="region" aria-label={view.caption} tabIndex={0}><table class="prob-table info-table"><caption>{view.caption}</caption><thead><tr>{view.columns.map(c=><th scope="col" key={c}>{c}</th>)}</tr></thead><tbody>{view.rows.map((row,i)=><tr key={i} data-pipeline-row={i}>{row.map((v,j)=>j===0?<th scope="row" key={j}>{v}</th>:<td key={j}>{v}</td>)}</tr>)}</tbody></table></div>;
+export function Table({view,worked=false}:{view:TableView;worked?:boolean}) {
+  const caption=`${worked?'Worked example: ':'Explorer: '}${view.caption}`;
+  return <div class="prob-table-wrap" role="region" aria-label={caption} tabIndex={0}><table class="prob-table info-table"><caption>{caption}</caption><thead><tr>{view.columns.map(c=><th scope="col" key={c}>{c}</th>)}</tr></thead><tbody>{view.rows.map((row,i)=><tr key={i} data-pipeline-row={i}>{row.map((v,j)=>j===0?<th scope="row" key={j}>{v}</th>:<td key={j}>{v}</td>)}</tr>)}</tbody></table></div>;
 }
 export function Bars({items,label}:{items:readonly BarView[];label:string}) {
   return <figure class="info-bars"><figcaption>{label}</figcaption><ol>{items.map((item,i)=><li key={i}><span>{item.label}: <strong>{item.text}</strong></span><div class="prob-track" aria-hidden="true"><span data-contribution={i} data-value={item.value} style={{width:`${item.width}%`}} /></div></li>)}</ol><p class="prob-axis-caption">Bar length = absolute contribution on a shared scale; sign and infinities appear in the labels.</p></figure>;

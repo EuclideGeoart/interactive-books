@@ -5,10 +5,11 @@ export { parameter, exactRow, exactText, tex, steps, massItem } from '../probabi
 export type { ProbabilityView } from '../probability/view';
 export const numberText = (x:number|null):string => x === null ? 'undefined' : x === Infinity ? '+∞' : x === -Infinity ? '−∞' : Number.isNaN(x) ? 'undefined (NaN)' : `≈ ${approx(x)}`;
 /** Extended values must never be sent to the finite numeric formatter. */
-export function valueRow(id:string,symbolTex:string,name:string,value:number|null,reason='No mathematical value is defined.') : InspectorRowData {
-  if (value === null || Number.isNaN(value)) return numericRow(id,symbolTex,name,null,reason);
+export function valueRow(id:string,symbolTex:string,name:string,value:number|null,reason?:string) : InspectorRowData {
+  if (value === null || Number.isNaN(value)) return numericRow(id,symbolTex,name,null,reason??'No mathematical value is defined.');
   if (Number.isFinite(value)) return numericRow(id,symbolTex,name,value);
-  const description:ValueDescription = {status:'exact',lines:[{relation:'=',text:value>0?'+∞':'−∞',tex:value>0?'\\infty':'-\\infty'}],spoken:`${name}: ${value>0?'positive':'negative'} infinity. ${reason}`,note:reason};
+  const note=reason??'Mathematical infinity from support mismatch; no finite substitute is used.';
+  const description:ValueDescription = {status:'exact',lines:[{relation:'=',text:value>0?'+∞':'−∞',tex:value>0?'\\infty':'-\\infty'}],spoken:`${name}: ${value>0?'positive':'negative'} infinity. ${note}`,note};
   return {id,symbolTex,name,role:'caution',description};
 }
 export interface TableView { readonly caption:string; readonly columns:readonly string[]; readonly rows:readonly (readonly string[])[] }

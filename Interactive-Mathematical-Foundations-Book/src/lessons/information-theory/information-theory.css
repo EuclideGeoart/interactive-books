@@ -15,3 +15,5 @@
 .info-position [aria-pressed=true] { outline:2px solid var(--c-primary); }
 .info-mask { display:flex; align-items:center; gap:.5rem; min-height:44px; }
 .info-mask input { width:24px; height:24px; }
+
+.information-stage .prob-chart text[text-anchor="end"] { text-anchor:start; transform:translate(8px,-6px); }
