@@ -1,0 +1,76 @@
+---
+kind: chapter
+curriculumId: V.8
+title: "Likelihood"
+hero: "What does fixed data say about a candidate *parameter*?"
+lede: Keep an actual Bernoulli sequence fixed while changing its candidate success probability. Compare probability over observations with likelihood over parameters and stable log-likelihood.
+description: Keep an actual Bernoulli sequence fixed while changing its candidate success probability. Compare probability over observations with likelihood over parameters and stable log-likelihood.
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import LikelihoodStage from '../../lessons/statistics/LikelihoodStage';
+import Exercise from '../../lessons/statistics/LikelihoodExercise';
+import reference from '../../../code/python/statistics_likelihood.py?raw';
+import practical from '../../../code/python/statistics_likelihood_numpy.py?raw';
+
+<Stage caption="Keep an actual Bernoulli sequence fixed while changing its candidate success probability. Compare probability over observations with likelihood over parameters and stable log-likelihood."><LikelihoodStage chapter="likelihood" client:load /></Stage>
+
+## Intuition
+
+At a fixed model parameter, probability tells us how plausible different observations are. After a sequence is observed, likelihood asks how plausible that same fixed sequence is under different candidate parameters. The formula is shared; the variable being explored changes.
+
+## Definition
+
+For observed binary data $D=(x_1,\ldots,x_n)$, with k successes, the iid Bernoulli model assigns $P_\theta(D)=\prod_i\theta^{x_i}(1-\theta)^{1-x_i}$. Viewed as a function of $\theta\in[0,1]$, this is $L(\theta;D)=\theta^k(1-\theta)^{n-k}$. The natural log-likelihood is $\ell(\theta)=k\log\theta+(n-k)\log(1-\theta)$ wherever the factors are positive.
+
+## Mechanics
+
+The numbered buttons display actual observations; activating one changes that datum explicitly. Adding successes or failures changes the dataset. Moving candidate θ only reevaluates the fixed data: it never resamples them. Probability bars show the two possible next observations at that θ; the curve instead plots candidate parameters on its horizontal axis.
+
+## Derivation
+
+Independence multiplies one probability factor for each observed datum. Collect the k success factors and n−k failure factors to obtain the power form. Taking logs turns a product into a sum. An empty product equals 1 and its log equals 0; a factor appearing zero times contributes no logarithm, even at θ=0 or θ=1.
+
+## Worked examples
+
+For fixed data [1,0,1,1,0] and $\theta=3/5$, $L=(3/5)^3(2/5)^2=108/3125$. For one success, $L(\theta)=\theta$ and $\int_0^1L(\theta)\,d\theta=1/2$, showing that likelihood need not normalize over the parameter. For an ordered sequence [1,0,1] at θ=1/2, likelihood is 1/8; the count event of exactly two successes has probability 3/8.
+
+<Stage caption="Replay the observed data, log evaluation and valid optimizing or mode rule."><LikelihoodStage chapter="likelihood" worked client:load /></Stage>
+
+## Executable reference code
+
+Run both standalone files. The pedagogical version exposes exact mechanics and valid mode cases; the NumPy companion makes array operations explicit. Assertions use literal hand-worked outputs and do not tune data to a preferred estimate.
+
+<CodeFile source={reference} file="code/python/statistics_likelihood.py" />
+<CodeFile source={practical} file="code/python/statistics_likelihood_numpy.py" />
+
+## Explore
+
+Move θ to 0 and 1 while retaining mixed observations. Explain each zero likelihood. Try an all-success sequence and an empty sequence. Keep the actual data text fixed while varying a candidate, then deliberately flip one observation and identify what changes in the curve.
+
+## Common mistakes and counterexamples
+
+Likelihood is not generally a posterior density and need not integrate to one over θ. Model probabilities normalize over possible data at fixed θ. A binomial coefficient appears for an observed success-count event, but not for one fixed ordered sequence. Impossible observations cannot be deleted to rescue a candidate.
+
+## Numerical considerations
+
+Observed data have length 0–32 and contain only 0 or 1. Candidate probabilities have two decimal places and lie in [0,1]. Products are exact fractions; natural logs use binary64 log and log1p with absent factors skipped. A zero likelihood has extended log −∞, which is displayed explicitly rather than sent into a finite numeric renderer. This bounded explorer does not underflow its supported positive products; larger applications still need log-space arithmetic.
+
+## Engineering and ML connections
+
+Probabilistic classifiers assign model probabilities to labeled observations. Combining independent examples produces a likelihood; minimizing negative log-likelihood turns their joint assessment into an additive objective. Dependence or model misspecification changes what that objective means. The later optimization course examines how to search parameter space.
+
+## Exercises
+
+Work from fixed observed data, distinguish statistical objects, and check corrective feedback with a worked solution.
+
+<Exercise id="statistics-likelihood-1" client:load />
+<Exercise id="statistics-likelihood-2" client:load />
+<Exercise id="statistics-likelihood-3" client:load />
+<Exercise id="statistics-likelihood-4" client:load />
+<Exercise id="statistics-likelihood-5" client:load />
+
+## Summary and checkpoints
+
+Identify which variable changes, calculate an observed product, distinguish sequence from count, explain non-normalization over parameters and handle zero or empty likelihoods without changing the data.
+

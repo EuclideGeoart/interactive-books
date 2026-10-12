@@ -3,6 +3,7 @@ import { join, posix, relative, resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
 
 export const families = {
+  statistics_likelihood: { lesson: 'statistics', stage: 'LikelihoodStage', units: /^statistics-likelihood/, oracles: ['statistics_likelihood'], browser: 'statistics-likelihood' },
   statistics_intervals: { lesson: 'statistics', stage: 'IntervalStage', units: /^statistics-(uncertainty|intervals)/, oracles: ['statistics_uncertainty'], browser: 'statistics-uncertainty' },
   statistics_scatter: { lesson: 'statistics', stage: 'ScatterStage', units: /^statistics-(uncertainty|scatter)/, oracles: ['statistics_uncertainty'], browser: 'statistics-uncertainty' },
   statistics_data: { lesson: 'statistics', stage: 'DataStage', units: /^statistics-data/, oracles: ['statistics_data'], browser: 'statistics-data' },
@@ -66,7 +67,7 @@ export function chapterCatalog() {
       : Object.keys(families).find(name => families[name].lesson === lesson);
     const slug = posix.basename(path, '.mdx');
     const kind = calculus ? calculus.kind
-      : (/<(?:MatrixStage|LinearStage|EliminationStage|FiniteStage|DistributionStage|MomentsStage|JointStage|SamplingStage|DataStage|ScatterStage) chapter="([^"]+)"/.exec(source)?.[1]
+      : (/<(?:MatrixStage|LinearStage|EliminationStage|FiniteStage|DistributionStage|MomentsStage|JointStage|SamplingStage|DataStage|ScatterStage|LikelihoodStage) chapter="([^"]+)"/.exec(source)?.[1]
         ?? (family === 'statistics_intervals' ? 'intervals' : family === 'eigenvalues' ? 'eigenvalues' : family === 'least_squares' ? 'least-squares' : family === 'svd' ? 'svd' : lesson === 'probability' ? slug : undefined));
     return [{ id, slug, path, family, kind }];
   });
@@ -130,7 +131,7 @@ function familyOfFile(path) {
     return /^(matri|Matri)/.test(base) ? 'matrices' : 'linear_algebra';
   }
   if (/^src\/(lessons|math)\/statistics\//.test(path)) {
-    return /^(data|Data)/.test(base) ? 'statistics_data' : /^(intervals|Interval)/.test(base) ? 'statistics_intervals' : /^(scatter|Scatter)/.test(base) ? 'statistics_scatter' : null;
+    return /^(data|Data)/.test(base) ? 'statistics_data' : /^(intervals|Interval)/.test(base) ? 'statistics_intervals' : /^(scatter|Scatter)/.test(base) ? 'statistics_scatter' : /^(likelihood|Likelihood)/.test(base) ? 'statistics_likelihood' : null;
   }
   if (/^src\/(lessons|math)\/probability\//.test(path)) {
     if (/^(finite|Finite)/.test(base)) return 'probability_finite';
@@ -187,6 +188,11 @@ export function makePlan({ mode = 'focused', files = [], chapters = [], only, pr
         reasons.push(`${file}: affected platform-specific visual cases`);
         continue;
       }
+    }
+    if (file === 'tests/e2e/visual-statistics.spec.ts' && existsSync(file)) {
+      for (const chapter of catalog.filter(c => c.family?.startsWith('statistics_'))) { selected.add(chapter.id); groups.add(chapter.family); }
+      reasons.push(`${file}: shared Statistics visual support; Part V only`);
+      continue;
     }
     if ((/^tests\/unit\/calculus-[\w-]+\.test\.ts$/.test(file) || file === 'tests/e2e/calculus-helpers.ts') && existsSync(file)) {
       if (file.startsWith('tests/unit/')) units.add(file);

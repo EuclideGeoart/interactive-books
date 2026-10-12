@@ -1,0 +1,76 @@
+---
+kind: chapter
+curriculumId: V.9
+title: "Maximum Likelihood Estimation"
+hero: "Which parameter gives the observed data their greatest *likelihood*?"
+lede: Compare a learner-selected Bernoulli parameter with the optimizer derived from the actual success count, including all-success, all-failure and empty-data cases.
+description: Compare a learner-selected Bernoulli parameter with the optimizer derived from the actual success count, including all-success, all-failure and empty-data cases.
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import LikelihoodStage from '../../lessons/statistics/LikelihoodStage';
+import Exercise from '../../lessons/statistics/LikelihoodExercise';
+import reference from '../../../code/python/statistics_mle.py?raw';
+import practical from '../../../code/python/statistics_mle_numpy.py?raw';
+
+<Stage caption="Compare a learner-selected Bernoulli parameter with the optimizer derived from the actual success count, including all-success, all-failure and empty-data cases."><LikelihoodStage chapter="mle" client:load /></Stage>
+
+## Intuition
+
+A candidate parameter can agree more or less well with the fixed observations. MLE selects the candidate that assigns those observations the greatest likelihood. It is an estimator defined by a rule; its result changes when different data are observed.
+
+## Definition
+
+For a closed candidate domain $[0,1]$, define $\operatorname{argmax}_{\theta\in[0,1]}L(\theta;D)$. For nonempty Bernoulli data the unique maximizing estimate is $\hat\theta=k/n$, including 0 and 1 when failures or successes are complete. For empty data, every candidate ties because $L=1$.
+
+## Mechanics
+
+Move candidate θ and inspect its exact likelihood, natural log-likelihood and gap from the maximum. The dashed marker and inspector show the data-derived optimizer independently of the candidate control. The optimum may be an exact fraction that cannot be entered with the control’s two-decimal precision; its marker and reported value retain that exact mathematical estimate.
+
+## Derivation
+
+For $0<k<n$, $\ell\prime(\theta)=k/\theta-(n-k)/(1-\theta)=0$ gives $\theta=k/n$. The second derivative $\ell\prime\prime(\theta)=-k/\theta^2-(n-k)/(1-\theta)^2<0$ proves a unique interior maximum. For k=n, likelihood increases to 1; for k=0, it decreases from 0. These cases use boundary monotonicity rather than an invalid interior derivative equation.
+
+## Worked examples
+
+The canonical sequence has 3 successes out of 5, so MLE is 3/5. A candidate 2/5 gives likelihood 2/3 of the maximum, and the log-likelihood gap is $\log(3/2)\approx0.405465$. All successes give MLE 1; all failures give MLE 0. No observations give no unique optimizer, not a default estimate of 1/2.
+
+<Stage caption="Replay the observed data, log evaluation and valid optimizing or mode rule."><LikelihoodStage chapter="mle" worked client:load /></Stage>
+
+## Executable reference code
+
+Run both standalone files. The pedagogical version exposes exact mechanics and valid mode cases; the NumPy companion makes array operations explicit. Assertions use literal hand-worked outputs and do not tune data to a preferred estimate.
+
+<CodeFile source={reference} file="code/python/statistics_mle.py" />
+<CodeFile source={practical} file="code/python/statistics_mle_numpy.py" />
+
+## Explore
+
+Flip one actual observation and predict how k/n changes. Add a success or a failure and compare the candidate with the new exact optimum. Try boundary presets and the empty sequence. Explain why a sharply peaked likelihood still does not become a normalized probability distribution over θ by itself.
+
+## Common mistakes and counterexamples
+
+Do not maximize over hypothetical data at a fixed parameter; that asks for a most probable outcome. MLE maximizes over parameters with the observed data fixed. MLE does not automatically provide a confidence interval, a posterior probability or a causal interpretation. Boundary estimates can be correct optimizers even when they are fragile predictions for new observations.
+
+## Numerical considerations
+
+The MLE k/n, exact candidate likelihood and maximum likelihood remain rational. Floating log-likelihood comparisons use natural logs and stable log1p. At a zero-likelihood candidate the gap is +∞; both non-finite values receive explicit messages. Derived maximizing fractions are never rounded back into the two-decimal input state. No general optimizer or expression evaluator is needed for this analytic model.
+
+## Engineering and ML connections
+
+Bernoulli MLE is the empirical success rate. More complex probabilistic models may require numerical optimization, but the statistical objective and the search algorithm remain distinct. Training likelihood assesses observed data; useful deployment predictions also require validation, uncertainty analysis and model checking.
+
+## Exercises
+
+Work from fixed observed data, distinguish statistical objects, and check corrective feedback with a worked solution.
+
+<Exercise id="statistics-mle-1" client:load />
+<Exercise id="statistics-mle-2" client:load />
+<Exercise id="statistics-mle-3" client:load />
+<Exercise id="statistics-mle-4" client:load />
+<Exercise id="statistics-mle-5" client:load />
+
+## Summary and checkpoints
+
+Derive the interior estimator, prove its maximum, handle both boundaries and empty data, and compare an actual candidate with the analytic optimizer. Keep the estimated parameter separate from a density maximum over possible observations.
+

@@ -1,6 +1,6 @@
 import { scatter,regression,type ScatterInput } from '../../math/statistics/scatter';
 import { toNumber } from '../../math/quantity/rational';
-import { approx,exactRow,exactText,numericRow,parameter,steps,tex,type ProbabilityView } from '../probability/view';
+import { exactRow,exactText,numericRow,parameter,steps,tex,type ProbabilityView } from '../probability/view';
 export type ScatterChapter='covariance'|'regression';
 export interface ScatterState extends ScatterInput {selected:number}
 export const SCATTER_CANONICAL:ScatterState={xs:[-3,-1,0,1,3],ys:[-1,0,1,2,3],weights:[1,1,1,1,1],selected:4};

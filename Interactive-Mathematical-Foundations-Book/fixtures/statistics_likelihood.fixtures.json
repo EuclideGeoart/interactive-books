@@ -1,0 +1,1240 @@
+{
+  "policy": "Exact observed-sequence product; independent log(product) versus TS sum(log factors); beta normalization from math.lgamma versus TS half-integer recurrence. Numerical relative/absolute tolerance 2e-12; explicit signed infinities, no NaN JSON. Endpoint MAP denotes density limits, not atoms.",
+  "cases": [
+    {
+      "input": {
+        "data": [
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "theta": 0,
+        "alpha": 2,
+        "beta": 2
+      },
+      "expected": {
+        "n": 5,
+        "k": 3,
+        "likelihood": "0/1",
+        "logLikelihood": "-Infinity",
+        "mle": "3/5",
+        "maxLikelihood": "108/3125",
+        "maxLogLikelihood": -3.365058335046282,
+        "logGap": "Infinity",
+        "a": 5,
+        "b": 4,
+        "mode": {
+          "kind": "interior",
+          "modes": [
+            "4/7"
+          ]
+        },
+        "prior": {
+          "kind": "zero",
+          "value": 0,
+          "log": "-Infinity"
+        },
+        "posterior": {
+          "kind": "zero",
+          "value": 0,
+          "log": "-Infinity"
+        },
+        "unnormalized": {
+          "kind": "zero",
+          "value": 0,
+          "log": "-Infinity"
+        },
+        "evidence": 0.021428571428571446,
+        "posteriorMean": "5/9"
+      }
+    },
+    {
+      "input": {
+        "data": [
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "theta": 0.01,
+        "alpha": 2,
+        "beta": 2
+      },
+      "expected": {
+        "n": 5,
+        "k": 3,
+        "likelihood": "9801/10000000000",
+        "logLikelihood": -13.835611229671278,
+        "mle": "3/5",
+        "maxLikelihood": "108/3125",
+        "maxLogLikelihood": -3.365058335046282,
+        "logGap": 10.470552894624996,
+        "a": 5,
+        "b": 4,
+        "mode": {
+          "kind": "interior",
+          "modes": [
+            "4/7"
+          ]
+        },
+        "prior": {
+          "kind": "finite",
+          "value": 0.05940000000000007,
+          "log": -2.8234610526135366
+        },
+        "posterior": {
+          "kind": "finite",
+          "value": 2.716837200000002e-06,
+          "log": -12.81604214834362
+        },
+        "unnormalized": {
+          "kind": "finite",
+          "value": 5.8217940000000026e-08,
+          "log": -16.659072282284814
+        },
+        "evidence": 0.021428571428571446,
+        "posteriorMean": "5/9"
+      }
+    },
+    {
+      "input": {
+        "data": [
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "theta": 0.4,
+        "alpha": 2,
+        "beta": 2
+      },
+      "expected": {
+        "n": 5,
+        "k": 3,
+        "likelihood": "72/3125",
+        "logLikelihood": -3.7705234431544463,
+        "mle": "3/5",
+        "maxLikelihood": "108/3125",
+        "maxLogLikelihood": -3.365058335046282,
+        "logGap": 0.40546510810816416,
+        "a": 5,
+        "b": 4,
+        "mode": {
+          "kind": "interior",
+          "modes": [
+            "4/7"
+          ]
+        },
+        "prior": {
+          "kind": "finite",
+          "value": 1.4400000000000008,
+          "log": 0.3646431135879098
+        },
+        "posterior": {
+          "kind": "finite",
+          "value": 1.548288,
+          "log": 0.43714980437465734
+        },
+        "unnormalized": {
+          "kind": "finite",
+          "value": 0.03317760000000003,
+          "log": -3.4058803295665365
+        },
+        "evidence": 0.021428571428571446,
+        "posteriorMean": "5/9"
+      }
+    },
+    {
+      "input": {
+        "data": [
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "theta": 0.5,
+        "alpha": 2,
+        "beta": 2
+      },
+      "expected": {
+        "n": 5,
+        "k": 3,
+        "likelihood": "1/32",
+        "logLikelihood": -3.4657359027997265,
+        "mle": "3/5",
+        "maxLikelihood": "108/3125",
+        "maxLogLikelihood": -3.365058335046282,
+        "logGap": 0.10067756775344439,
+        "a": 5,
+        "b": 4,
+        "mode": {
+          "kind": "interior",
+          "modes": [
+            "4/7"
+          ]
+        },
+        "prior": {
+          "kind": "finite",
+          "value": 1.5000000000000007,
+          "log": 0.40546510810816483
+        },
+        "posterior": {
+          "kind": "finite",
+          "value": 2.1875,
+          "log": 0.7827593392496324
+        },
+        "unnormalized": {
+          "kind": "finite",
+          "value": 0.046875000000000035,
+          "log": -3.0602707946915615
+        },
+        "evidence": 0.021428571428571446,
+        "posteriorMean": "5/9"
+      }
+    },
+    {
+      "input": {
+        "data": [
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "theta": 0.6,
+        "alpha": 2,
+        "beta": 2
+      },
+      "expected": {
+        "n": 5,
+        "k": 3,
+        "likelihood": "108/3125",
+        "logLikelihood": -3.365058335046282,
+        "mle": "3/5",
+        "maxLikelihood": "108/3125",
+        "maxLogLikelihood": -3.365058335046282,
+        "logGap": 0.0,
+        "a": 5,
+        "b": 4,
+        "mode": {
+          "kind": "interior",
+          "modes": [
+            "4/7"
+          ]
+        },
+        "prior": {
+          "kind": "finite",
+          "value": 1.4400000000000008,
+          "log": 0.3646431135879098
+        },
+        "posterior": {
+          "kind": "finite",
+          "value": 2.3224319999999987,
+          "log": 0.842614912482821
+        },
+        "unnormalized": {
+          "kind": "finite",
+          "value": 0.04976640000000001,
+          "log": -3.000415221458373
+        },
+        "evidence": 0.021428571428571446,
+        "posteriorMean": "5/9"
+      }
+    },
+    {
+      "input": {
+        "data": [
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "theta": 0.99,
+        "alpha": 2,
+        "beta": 2
+      },
+      "expected": {
+        "n": 5,
+        "k": 3,
+        "likelihood": "970299/10000000000",
+        "logLikelihood": -9.240491379536687,
+        "mle": "3/5",
+        "maxLikelihood": "108/3125",
+        "maxLogLikelihood": -3.365058335046282,
+        "logGap": 5.875433044490405,
+        "a": 5,
+        "b": 4,
+        "mode": {
+          "kind": "interior",
+          "modes": [
+            "4/7"
+          ]
+        },
+        "prior": {
+          "kind": "finite",
+          "value": 0.05940000000000012,
+          "log": -2.8234610526135357
+        },
+        "posterior": {
+          "kind": "finite",
+          "value": 0.00026896688280000084,
+          "log": -8.220922298209027
+        },
+        "unnormalized": {
+          "kind": "finite",
+          "value": 5.763576060000028e-06,
+          "log": -12.06395243215022
+        },
+        "evidence": 0.021428571428571446,
+        "posteriorMean": "5/9"
+      }
+    },
+    {
+      "input": {
+        "data": [
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "theta": 1,
+        "alpha": 2,
+        "beta": 2
+      },
+      "expected": {
+        "n": 5,
+        "k": 3,
+        "likelihood": "0/1",
+        "logLikelihood": "-Infinity",
+        "mle": "3/5",
+        "maxLikelihood": "108/3125",
+        "maxLogLikelihood": -3.365058335046282,
+        "logGap": "Infinity",
+        "a": 5,
+        "b": 4,
+        "mode": {
+          "kind": "interior",
+          "modes": [
+            "4/7"
+          ]
+        },
+        "prior": {
+          "kind": "zero",
+          "value": 0,
+          "log": "-Infinity"
+        },
+        "posterior": {
+          "kind": "zero",
+          "value": 0,
+          "log": "-Infinity"
+        },
+        "unnormalized": {
+          "kind": "zero",
+          "value": 0,
+          "log": "-Infinity"
+        },
+        "evidence": 0.021428571428571446,
+        "posteriorMean": "5/9"
+      }
+    },
+    {
+      "input": {
+        "data": [],
+        "theta": 0,
+        "alpha": 1,
+        "beta": 1
+      },
+      "expected": {
+        "n": 0,
+        "k": 0,
+        "likelihood": "1/1",
+        "logLikelihood": 0.0,
+        "mle": null,
+        "maxLikelihood": "1/1",
+        "maxLogLikelihood": 0.0,
+        "logGap": 0.0,
+        "a": 1,
+        "b": 1,
+        "mode": {
+          "kind": "uniform",
+          "modes": []
+        },
+        "prior": {
+          "kind": "finite",
+          "value": 1.0,
+          "log": -0.0
+        },
+        "posterior": {
+          "kind": "finite",
+          "value": 1.0,
+          "log": -0.0
+        },
+        "unnormalized": {
+          "kind": "finite",
+          "value": 1.0,
+          "log": -0.0
+        },
+        "evidence": 1.0,
+        "posteriorMean": "1/2"
+      }
+    },
+    {
+      "input": {
+        "data": [],
+        "theta": 1,
+        "alpha": 0.5,
+        "beta": 0.5
+      },
+      "expected": {
+        "n": 0,
+        "k": 0,
+        "likelihood": "1/1",
+        "logLikelihood": 0.0,
+        "mle": null,
+        "maxLikelihood": "1/1",
+        "maxLogLikelihood": 0.0,
+        "logGap": 0.0,
+        "a": 0.5,
+        "b": 0.5,
+        "mode": {
+          "kind": "two-boundary-limits",
+          "modes": [
+            "0/1",
+            "1/1"
+          ]
+        },
+        "prior": {
+          "kind": "divergent",
+          "value": null,
+          "log": "Infinity"
+        },
+        "posterior": {
+          "kind": "divergent",
+          "value": null,
+          "log": "Infinity"
+        },
+        "unnormalized": {
+          "kind": "divergent",
+          "value": null,
+          "log": "Infinity"
+        },
+        "evidence": 1.0,
+        "posteriorMean": "1/2"
+      }
+    },
+    {
+      "input": {
+        "data": [],
+        "theta": 0,
+        "alpha": 0.5,
+        "beta": 0.5
+      },
+      "expected": {
+        "n": 0,
+        "k": 0,
+        "likelihood": "1/1",
+        "logLikelihood": 0.0,
+        "mle": null,
+        "maxLikelihood": "1/1",
+        "maxLogLikelihood": 0.0,
+        "logGap": 0.0,
+        "a": 0.5,
+        "b": 0.5,
+        "mode": {
+          "kind": "two-boundary-limits",
+          "modes": [
+            "0/1",
+            "1/1"
+          ]
+        },
+        "prior": {
+          "kind": "divergent",
+          "value": null,
+          "log": "Infinity"
+        },
+        "posterior": {
+          "kind": "divergent",
+          "value": null,
+          "log": "Infinity"
+        },
+        "unnormalized": {
+          "kind": "divergent",
+          "value": null,
+          "log": "Infinity"
+        },
+        "evidence": 1.0,
+        "posteriorMean": "1/2"
+      }
+    },
+    {
+      "input": {
+        "data": [],
+        "theta": 0,
+        "alpha": 1,
+        "beta": 2
+      },
+      "expected": {
+        "n": 0,
+        "k": 0,
+        "likelihood": "1/1",
+        "logLikelihood": 0.0,
+        "mle": null,
+        "maxLikelihood": "1/1",
+        "maxLogLikelihood": 0.0,
+        "logGap": 0.0,
+        "a": 1,
+        "b": 2,
+        "mode": {
+          "kind": "boundary",
+          "modes": [
+            "0/1"
+          ]
+        },
+        "prior": {
+          "kind": "finite",
+          "value": 1.9999999999999993,
+          "log": 0.693147180559945
+        },
+        "posterior": {
+          "kind": "finite",
+          "value": 1.9999999999999993,
+          "log": 0.693147180559945
+        },
+        "unnormalized": {
+          "kind": "finite",
+          "value": 1.9999999999999993,
+          "log": 0.693147180559945
+        },
+        "evidence": 1.0,
+        "posteriorMean": "1/3"
+      }
+    },
+    {
+      "input": {
+        "data": [],
+        "theta": 1,
+        "alpha": 2,
+        "beta": 1
+      },
+      "expected": {
+        "n": 0,
+        "k": 0,
+        "likelihood": "1/1",
+        "logLikelihood": 0.0,
+        "mle": null,
+        "maxLikelihood": "1/1",
+        "maxLogLikelihood": 0.0,
+        "logGap": 0.0,
+        "a": 2,
+        "b": 1,
+        "mode": {
+          "kind": "boundary",
+          "modes": [
+            "1/1"
+          ]
+        },
+        "prior": {
+          "kind": "finite",
+          "value": 1.9999999999999993,
+          "log": 0.693147180559945
+        },
+        "posterior": {
+          "kind": "finite",
+          "value": 1.9999999999999993,
+          "log": 0.693147180559945
+        },
+        "unnormalized": {
+          "kind": "finite",
+          "value": 1.9999999999999993,
+          "log": 0.693147180559945
+        },
+        "evidence": 1.0,
+        "posteriorMean": "2/3"
+      }
+    },
+    {
+      "input": {
+        "data": [],
+        "theta": 0,
+        "alpha": 0.5,
+        "beta": 2
+      },
+      "expected": {
+        "n": 0,
+        "k": 0,
+        "likelihood": "1/1",
+        "logLikelihood": 0.0,
+        "mle": null,
+        "maxLikelihood": "1/1",
+        "maxLogLikelihood": 0.0,
+        "logGap": 0.0,
+        "a": 0.5,
+        "b": 2,
+        "mode": {
+          "kind": "boundary-limit",
+          "modes": [
+            "0/1"
+          ]
+        },
+        "prior": {
+          "kind": "divergent",
+          "value": null,
+          "log": "Infinity"
+        },
+        "posterior": {
+          "kind": "divergent",
+          "value": null,
+          "log": "Infinity"
+        },
+        "unnormalized": {
+          "kind": "divergent",
+          "value": null,
+          "log": "Infinity"
+        },
+        "evidence": 1.0,
+        "posteriorMean": "1/5"
+      }
+    },
+    {
+      "input": {
+        "data": [],
+        "theta": 1,
+        "alpha": 2,
+        "beta": 0.5
+      },
+      "expected": {
+        "n": 0,
+        "k": 0,
+        "likelihood": "1/1",
+        "logLikelihood": 0.0,
+        "mle": null,
+        "maxLikelihood": "1/1",
+        "maxLogLikelihood": 0.0,
+        "logGap": 0.0,
+        "a": 2,
+        "b": 0.5,
+        "mode": {
+          "kind": "boundary-limit",
+          "modes": [
+            "1/1"
+          ]
+        },
+        "prior": {
+          "kind": "divergent",
+          "value": null,
+          "log": "Infinity"
+        },
+        "posterior": {
+          "kind": "divergent",
+          "value": null,
+          "log": "Infinity"
+        },
+        "unnormalized": {
+          "kind": "divergent",
+          "value": null,
+          "log": "Infinity"
+        },
+        "evidence": 1.0,
+        "posteriorMean": "4/5"
+      }
+    },
+    {
+      "input": {
+        "data": [
+          1
+        ],
+        "theta": 0,
+        "alpha": 0.5,
+        "beta": 0.5
+      },
+      "expected": {
+        "n": 1,
+        "k": 1,
+        "likelihood": "0/1",
+        "logLikelihood": "-Infinity",
+        "mle": "1/1",
+        "maxLikelihood": "1/1",
+        "maxLogLikelihood": 0.0,
+        "logGap": "Infinity",
+        "a": 1.5,
+        "b": 0.5,
+        "mode": {
+          "kind": "boundary-limit",
+          "modes": [
+            "1/1"
+          ]
+        },
+        "prior": {
+          "kind": "divergent",
+          "value": null,
+          "log": "Infinity"
+        },
+        "posterior": {
+          "kind": "zero",
+          "value": 0,
+          "log": "-Infinity"
+        },
+        "unnormalized": {
+          "kind": "zero",
+          "value": 0,
+          "log": "-Infinity"
+        },
+        "evidence": 0.4999999999999997,
+        "posteriorMean": "3/4"
+      }
+    },
+    {
+      "input": {
+        "data": [
+          0
+        ],
+        "theta": 1,
+        "alpha": 0.5,
+        "beta": 0.5
+      },
+      "expected": {
+        "n": 1,
+        "k": 0,
+        "likelihood": "0/1",
+        "logLikelihood": "-Infinity",
+        "mle": "0/1",
+        "maxLikelihood": "1/1",
+        "maxLogLikelihood": 0.0,
+        "logGap": "Infinity",
+        "a": 0.5,
+        "b": 1.5,
+        "mode": {
+          "kind": "boundary-limit",
+          "modes": [
+            "0/1"
+          ]
+        },
+        "prior": {
+          "kind": "divergent",
+          "value": null,
+          "log": "Infinity"
+        },
+        "posterior": {
+          "kind": "zero",
+          "value": 0,
+          "log": "-Infinity"
+        },
+        "unnormalized": {
+          "kind": "zero",
+          "value": 0,
+          "log": "-Infinity"
+        },
+        "evidence": 0.4999999999999997,
+        "posteriorMean": "1/4"
+      }
+    },
+    {
+      "input": {
+        "data": [
+          1,
+          1,
+          1
+        ],
+        "theta": 1,
+        "alpha": 1,
+        "beta": 1
+      },
+      "expected": {
+        "n": 3,
+        "k": 3,
+        "likelihood": "1/1",
+        "logLikelihood": 0.0,
+        "mle": "1/1",
+        "maxLikelihood": "1/1",
+        "maxLogLikelihood": 0.0,
+        "logGap": 0.0,
+        "a": 4,
+        "b": 1,
+        "mode": {
+          "kind": "boundary",
+          "modes": [
+            "1/1"
+          ]
+        },
+        "prior": {
+          "kind": "finite",
+          "value": 1.0,
+          "log": -0.0
+        },
+        "posterior": {
+          "kind": "finite",
+          "value": 3.9999999999999956,
+          "log": 1.3862943611198895
+        },
+        "unnormalized": {
+          "kind": "finite",
+          "value": 1.0,
+          "log": -0.0
+        },
+        "evidence": 0.2500000000000003,
+        "posteriorMean": "4/5"
+      }
+    },
+    {
+      "input": {
+        "data": [
+          0,
+          0,
+          0
+        ],
+        "theta": 0,
+        "alpha": 1,
+        "beta": 1
+      },
+      "expected": {
+        "n": 3,
+        "k": 0,
+        "likelihood": "1/1",
+        "logLikelihood": 0.0,
+        "mle": "0/1",
+        "maxLikelihood": "1/1",
+        "maxLogLikelihood": 0.0,
+        "logGap": 0.0,
+        "a": 1,
+        "b": 4,
+        "mode": {
+          "kind": "boundary",
+          "modes": [
+            "0/1"
+          ]
+        },
+        "prior": {
+          "kind": "finite",
+          "value": 1.0,
+          "log": -0.0
+        },
+        "posterior": {
+          "kind": "finite",
+          "value": 3.9999999999999956,
+          "log": 1.3862943611198895
+        },
+        "unnormalized": {
+          "kind": "finite",
+          "value": 1.0,
+          "log": -0.0
+        },
+        "evidence": 0.2500000000000003,
+        "posteriorMean": "1/5"
+      }
+    },
+    {
+      "input": {
+        "data": [
+          1,
+          0
+        ],
+        "theta": 0.5,
+        "alpha": 1,
+        "beta": 1
+      },
+      "expected": {
+        "n": 2,
+        "k": 1,
+        "likelihood": "1/4",
+        "logLikelihood": -1.3862943611198906,
+        "mle": "1/2",
+        "maxLikelihood": "1/4",
+        "maxLogLikelihood": -1.3862943611198906,
+        "logGap": 0.0,
+        "a": 2,
+        "b": 2,
+        "mode": {
+          "kind": "interior",
+          "modes": [
+            "1/2"
+          ]
+        },
+        "prior": {
+          "kind": "finite",
+          "value": 1.0,
+          "log": -0.0
+        },
+        "posterior": {
+          "kind": "finite",
+          "value": 1.5000000000000007,
+          "log": 0.40546510810816483
+        },
+        "unnormalized": {
+          "kind": "finite",
+          "value": 0.25,
+          "log": -1.3862943611198906
+        },
+        "evidence": 0.1666666666666666,
+        "posteriorMean": "1/2"
+      }
+    },
+    {
+      "input": {
+        "data": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "theta": 0.99,
+        "alpha": 5,
+        "beta": 0.5
+      },
+      "expected": {
+        "n": 32,
+        "k": 32,
+        "likelihood": "7249803359578536423176877919796123149018480047318581831044956801/10000000000000000000000000000000000000000000000000000000000000000",
+        "logLikelihood": -0.32161074731204614,
+        "mle": "1/1",
+        "maxLikelihood": "1/1",
+        "maxLogLikelihood": 0.0,
+        "logGap": 0.32161074731204614,
+        "a": 37,
+        "b": 0.5,
+        "mode": {
+          "kind": "boundary-limit",
+          "modes": [
+            "1/1"
+          ]
+        },
+        "prior": {
+          "kind": "finite",
+          "value": 11.819833716796873,
+          "log": 2.4697789439261104
+        },
+        "posterior": {
+          "kind": "finite",
+          "value": 23.819122872307688,
+          "log": 3.1704887400882784
+        },
+        "unnormalized": {
+          "kind": "finite",
+          "value": 8.569147018969359,
+          "log": 2.1481681966140638
+        },
+        "evidence": 0.35975913407508076,
+        "posteriorMean": "74/75"
+      }
+    },
+    {
+      "input": {
+        "data": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "theta": 0.01,
+        "alpha": 0.5,
+        "beta": 5
+      },
+      "expected": {
+        "n": 32,
+        "k": 0,
+        "likelihood": "7249803359578536423176877919796123149018480047318581831044956801/10000000000000000000000000000000000000000000000000000000000000000",
+        "logLikelihood": -0.32161074731204614,
+        "mle": "0/1",
+        "maxLikelihood": "1/1",
+        "maxLogLikelihood": 0.0,
+        "logGap": 0.32161074731204614,
+        "a": 0.5,
+        "b": 37,
+        "mode": {
+          "kind": "boundary-limit",
+          "modes": [
+            "0/1"
+          ]
+        },
+        "prior": {
+          "kind": "finite",
+          "value": 11.819833716796879,
+          "log": 2.469778943926111
+        },
+        "posterior": {
+          "kind": "finite",
+          "value": 23.819122872307698,
+          "log": 3.170488740088279
+        },
+        "unnormalized": {
+          "kind": "finite",
+          "value": 8.569147018969367,
+          "log": 2.1481681966140647
+        },
+        "evidence": 0.35975913407508076,
+        "posteriorMean": "1/75"
+      }
+    },
+    {
+      "input": {
+        "data": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "theta": 0.03,
+        "alpha": 3.5,
+        "beta": 2.5
+      },
+      "expected": {
+        "n": 32,
+        "k": 1,
+        "likelihood": "116693056946058920884754979969078112095131070840203200758533859/10000000000000000000000000000000000000000000000000000000000000000",
+        "logLikelihood": -4.450793329345947,
+        "mle": "1/32",
+        "maxLikelihood": "17069174130723235958610643029059314756044734431/1461501637330902918203684832716283019655932542976",
+        "maxLogLikelihood": -4.449945550551716,
+        "logGap": 0.0008477787942311465,
+        "a": 4.5,
+        "b": 33.5,
+        "mode": {
+          "kind": "interior",
+          "modes": [
+            "7/72"
+          ]
+        },
+        "prior": {
+          "kind": "finite",
+          "value": 0.0040451029219120355,
+          "log": -5.510248284564964
+        },
+        "posterior": {
+          "kind": "finite",
+          "value": 1.3655721483584073,
+          "log": 0.3115734971219837
+        },
+        "unnormalized": {
+          "kind": "finite",
+          "value": 4.720354256193511e-05,
+          "log": -9.96104161391091
+        },
+        "evidence": 3.456686094446187e-05,
+        "posteriorMean": "9/76"
+      }
+    },
+    {
+      "input": {
+        "data": [
+          0
+        ],
+        "theta": 0.2,
+        "alpha": 1,
+        "beta": 1
+      },
+      "expected": {
+        "n": 1,
+        "k": 0,
+        "likelihood": "4/5",
+        "logLikelihood": -0.2231435513142097,
+        "mle": "0/1",
+        "maxLikelihood": "1/1",
+        "maxLogLikelihood": 0.0,
+        "logGap": 0.2231435513142097,
+        "a": 1,
+        "b": 2,
+        "mode": {
+          "kind": "boundary",
+          "modes": [
+            "0/1"
+          ]
+        },
+        "prior": {
+          "kind": "finite",
+          "value": 1.0,
+          "log": -0.0
+        },
+        "posterior": {
+          "kind": "finite",
+          "value": 1.5999999999999994,
+          "log": 0.4700036292457352
+        },
+        "unnormalized": {
+          "kind": "finite",
+          "value": 0.8,
+          "log": -0.22314355131420976
+        },
+        "evidence": 0.5000000000000002,
+        "posteriorMean": "1/3"
+      }
+    },
+    {
+      "input": {
+        "data": [
+          1
+        ],
+        "theta": 0.8,
+        "alpha": 1,
+        "beta": 1
+      },
+      "expected": {
+        "n": 1,
+        "k": 1,
+        "likelihood": "4/5",
+        "logLikelihood": -0.2231435513142097,
+        "mle": "1/1",
+        "maxLikelihood": "1/1",
+        "maxLogLikelihood": 0.0,
+        "logGap": 0.2231435513142097,
+        "a": 2,
+        "b": 1,
+        "mode": {
+          "kind": "boundary",
+          "modes": [
+            "1/1"
+          ]
+        },
+        "prior": {
+          "kind": "finite",
+          "value": 1.0,
+          "log": -0.0
+        },
+        "posterior": {
+          "kind": "finite",
+          "value": 1.5999999999999994,
+          "log": 0.47000362924573524
+        },
+        "unnormalized": {
+          "kind": "finite",
+          "value": 0.8,
+          "log": -0.2231435513142097
+        },
+        "evidence": 0.5000000000000002,
+        "posteriorMean": "2/3"
+      }
+    },
+    {
+      "input": {
+        "data": [],
+        "theta": 0,
+        "alpha": 2,
+        "beta": 2
+      },
+      "expected": {
+        "n": 0,
+        "k": 0,
+        "likelihood": "1/1",
+        "logLikelihood": 0.0,
+        "mle": null,
+        "maxLikelihood": "1/1",
+        "maxLogLikelihood": 0.0,
+        "logGap": 0.0,
+        "a": 2,
+        "b": 2,
+        "mode": {
+          "kind": "interior",
+          "modes": [
+            "1/2"
+          ]
+        },
+        "prior": {
+          "kind": "zero",
+          "value": 0,
+          "log": "-Infinity"
+        },
+        "posterior": {
+          "kind": "zero",
+          "value": 0,
+          "log": "-Infinity"
+        },
+        "unnormalized": {
+          "kind": "zero",
+          "value": 0,
+          "log": "-Infinity"
+        },
+        "evidence": 1.0,
+        "posteriorMean": "1/2"
+      }
+    }
+  ]
+}

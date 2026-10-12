@@ -163,9 +163,9 @@ export const parts: readonly Part[] = [
       available(5, "Confidence intervals through repeated sampling", "confidence-intervals"),
       available(6, "Covariance matrices and multivariate spread", "covariance-matrices"),
       available(7, "Regression fundamentals", "regression-fundamentals"),
-      planned(8, "Likelihood"),
-      planned(9, "Maximum Likelihood Estimation"),
-      planned(10, "Maximum A Posteriori estimation"),
+      available(8, "Likelihood", "likelihood"),
+      available(9, "Maximum Likelihood Estimation", "maximum-likelihood"),
+      available(10, "Maximum A Posteriori estimation", "maximum-a-posteriori"),
     ],
   },
   {

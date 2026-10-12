@@ -1,0 +1,76 @@
+---
+kind: chapter
+curriculumId: V.10
+title: "Maximum A Posteriori estimation"
+hero: "How does a prior move the posterior *mode*?"
+lede: Combine a transparent Beta prior with actual Bernoulli data, normalize the posterior analytically, and compare MAP with MLE while exposing every boundary and nonunique mode.
+description: Combine a transparent Beta prior with actual Bernoulli data, normalize the posterior analytically, and compare MAP with MLE while exposing every boundary and nonunique mode.
+---
+import Stage from '../../shell/Stage.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import LikelihoodStage from '../../lessons/statistics/LikelihoodStage';
+import Exercise from '../../lessons/statistics/LikelihoodExercise';
+import reference from '../../../code/python/statistics_map.py?raw';
+import practical from '../../../code/python/statistics_map_numpy.py?raw';
+
+<Stage caption="Combine a transparent Beta prior with actual Bernoulli data, normalize the posterior analytically, and compare MAP with MLE while exposing every boundary and nonunique mode."><LikelihoodStage chapter="map" client:load /></Stage>
+
+## Intuition
+
+The data likelihood describes how candidate parameters explain observations. A prior density weights candidates before these observations. Their product gives an unnormalized posterior; a separate normalizing integral gives the posterior distribution. MAP chooses a posterior density mode, while MLE chooses a likelihood maximum.
+
+## Definition
+
+A proper Beta prior has shapes $\alpha,\beta>0$ and density $p(\theta)=\theta^{\alpha-1}(1-\theta)^{\beta-1}/B(\alpha,\beta)$ on (0,1). Observed k successes and n−k failures give posterior $\operatorname{Beta}(a,b)$ with $a=\alpha+k$ and $b=\beta+n-k$. Evidence is $P(D)=B(a,b)/B(\alpha,\beta)$ for the fixed ordered sequence.
+
+## Mechanics
+
+Edit the actual sequence, candidate θ and prior shapes. The stage displays probability over observations, likelihood over candidates, prior, unnormalized posterior and normalized posterior. The inspector separates posterior mode, posterior mean, MLE and normalization factor. A prior changes the Bayesian result while leaving the data likelihood itself unchanged.
+
+## Derivation
+
+Adding exponents gives $p(\theta)L(\theta)\propto\theta^{a-1}(1-\theta)^{b-1}$. The Beta integral normalizes this expression. Only when a>1 and b>1 is the unique mode $(a-1)/(a+b-2)$ interior. Differentiating the log density proves this formula under those conditions; other shapes require their own boundary analysis.
+
+## Worked examples
+
+Prior Beta(2,2) and data [1,0,1,1,0] give Beta(5,4). MAP is 4/7, MLE is 3/5, and posterior mean is 5/9. Since $B(5,4)=1/280$ and $B(2,2)=1/6$, evidence is 3/140. At θ=1/2 the normalized posterior density is 35/16, which can exceed 1 because it is a density, not point probability.
+
+<Stage caption="Replay the observed data, log evaluation and valid optimizing or mode rule."><LikelihoodStage chapter="map" worked client:load /></Stage>
+
+## Executable reference code
+
+Run both standalone files. The pedagogical version exposes exact mechanics and valid mode cases; the NumPy companion makes array operations explicit. Assertions use literal hand-worked outputs and do not tune data to a preferred estimate.
+
+<CodeFile source={reference} file="code/python/statistics_map.py" />
+<CodeFile source={practical} file="code/python/statistics_map_numpy.py" />
+
+## Explore
+
+Use a uniform prior, an informative prior and the empty-data presets. Under a uniform prior and mixed nonempty data, MAP equals MLE; empty data leave the posterior equal to the prior. Inspect all-success data with uniform prior to see a boundary MAP. The two-boundary preset exposes divergent limits at both endpoints.
+
+## Common mistakes and counterexamples
+
+For a=b=1 the posterior is uniform and every parameter is a mode. If a≤1 and b≥1 with unequal shapes, the limiting mode is at 0; the symmetric case is at 1. If both shapes are below 1, both endpoint density limits diverge and no unique finite maximum is attained on (0,1). We explicitly use a limiting boundary-mode convention. A divergent density does not assign positive probability to a single endpoint. MAP is also sensitive to parameterization because density transforms with a Jacobian; it is not a coordinate-free summary.
+
+## Numerical considerations
+
+Prior shapes are restricted to half-integers from 0.5 to 5; observations are bounded at 32. This admits all taught mode cases while allowing log Gamma evaluation by Γ(1)=1, Γ(1/2)=√π and recurrence. Python independently uses math.lgamma; relative/absolute tolerance is 2e−12. Products combine exponents before endpoint evaluation, so a zero likelihood times a divergent prior never produces NaN. A finite plotting grid omits divergent endpoint values and reports their limits explicitly; it does not renormalize the sampled curve.
+
+## Engineering and ML connections
+
+Maximizing the log posterior is equivalent to minimizing negative log-likelihood minus log prior, up to a parameter-independent constant. This gives a statistical interpretation of some regularization penalties. The next optimization material concerns how an objective is searched; it does not supply or justify the prior. MAP, MLE and posterior mean remain distinct inferential choices.
+
+## Exercises
+
+Work from fixed observed data, distinguish statistical objects, and check corrective feedback with a worked solution.
+
+<Exercise id="statistics-map-1" client:load />
+<Exercise id="statistics-map-2" client:load />
+<Exercise id="statistics-map-3" client:load />
+<Exercise id="statistics-map-4" client:load />
+<Exercise id="statistics-map-5" client:load />
+
+## Summary and checkpoints
+
+Perform the Beta–Bernoulli update, calculate evidence, compare three parameter summaries and apply the interior formula only in its valid domain. Explain boundary limits, uniform nonuniqueness and the difference between density and probability.
+
