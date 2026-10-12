@@ -1,0 +1,47 @@
+[WebServer] (node:124850) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 12 tests using 3 workers
+
+(node:124862) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:124863) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:124864) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-overflow-underflow.png is re-generated, writing actual.
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-overflow-underflow-zero.png is re-generated, writing actual.
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-overflow-underflow-overflow.png is re-generated, writing actual.
+  ✓   1 [desktop] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.5: opening and important numerical failure states (3.7s)
+  ✓   2 [desktop] › tests/e2e/numerical-computing.spec.ts:37:2 › VIII.5: both-theme exceptional-state accessibility (4.9s)
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-stable-algorithms-tail.png is re-generated, writing actual.
+  ✓   3 [desktop] › tests/e2e/numerical-computing.spec.ts:37:2 › VIII.6: both-theme exceptional-state accessibility (5.2s)
+(node:125459) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   4 [desktop] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.6: opening and important numerical failure states (1.8s)
+(node:125468) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:125607) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-overflow-underflow-zero.png is re-generated, writing actual.
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-overflow-underflow-overflow.png is re-generated, writing actual.
+  ✓   7 [tablet] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.5: opening and important numerical failure states (2.8s)
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-stable-algorithms-tail.png is re-generated, writing actual.
+  ✓   5 [tablet] › tests/e2e/numerical-computing.spec.ts:37:2 › VIII.5: both-theme exceptional-state accessibility (4.8s)
+  ✓   8 [tablet] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.6: opening and important numerical failure states (1.6s)
+(node:126035) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:126044) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   6 [tablet] › tests/e2e/numerical-computing.spec.ts:37:2 › VIII.6: both-theme exceptional-state accessibility (5.0s)
+(node:126172) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-overflow-underflow-zero.png is re-generated, writing actual.
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-overflow-underflow-overflow.png is re-generated, writing actual.
+  ✓  11 [mobile] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.5: opening and important numerical failure states (2.4s)
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-stable-algorithms-tail.png is re-generated, writing actual.
+  ✓  12 [mobile] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.6: opening and important numerical failure states (1.6s)
+  ✓   9 [mobile] › tests/e2e/numerical-computing.spec.ts:37:2 › VIII.5: both-theme exceptional-state accessibility (4.7s)
+  ✓  10 [mobile] › tests/e2e/numerical-computing.spec.ts:37:2 › VIII.6: both-theme exceptional-state accessibility (4.8s)
+
+  12 passed (16.3s)

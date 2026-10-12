@@ -1,0 +1,14 @@
+oracle interpreter: .venv/bin/python
+test_matrix_literals (test_numerical_algorithms_oracle.AlgorithmTests.test_matrix_literals) ... ok
+test_norm_literals (test_numerical_algorithms_oracle.AlgorithmTests.test_norm_literals) ... ok
+test_scaling_bounds (test_numerical_algorithms_oracle.AlgorithmTests.test_scaling_bounds) ... ok
+test_six_runnable_references (test_numerical_algorithms_oracle.AlgorithmTests.test_six_runnable_references) ... ok
+test_small_change (test_numerical_algorithms_oracle.AlgorithmTests.test_small_change) ... ok
+test_softmax_shift (test_numerical_algorithms_oracle.AlgorithmTests.test_softmax_shift) ... ok
+test_sum_literal (test_numerical_algorithms_oracle.AlgorithmTests.test_sum_literal) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.382s
+
+OK
+numerical algorithms fixtures fresh

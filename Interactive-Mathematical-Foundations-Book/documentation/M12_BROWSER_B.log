@@ -1,0 +1,91 @@
+[WebServer] (node:114332) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 36 tests using 3 workers
+
+(node:114345) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:114346) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:114344) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   2 [desktop] › tests/e2e/numerical-computing.spec.ts:29:2 › VIII.5: actual arithmetic, failure policies, exact input and immutable replay (866ms)
+  ✓   1 [desktop] › tests/e2e/numerical-computing.spec.ts:38:2 › VIII.5: five graded exercises and worked feedback (1.6s)
+  ✓   4 [desktop] › tests/e2e/numerical-computing.spec.ts:29:2 › VIII.6: actual arithmetic, failure policies, exact input and immutable replay (749ms)
+  ✓   6 [desktop] › tests/e2e/numerical-computing.spec.ts:38:2 › VIII.6: five graded exercises and worked feedback (1.3s)
+  ✓   7 [desktop] › tests/e2e/numerical-computing.spec.ts:29:2 › VIII.7: actual arithmetic, failure policies, exact input and immutable replay (803ms)
+  ✓   3 [desktop] › tests/e2e/numerical-computing.spec.ts:37:2 › VIII.5: both-theme exceptional-state accessibility (5.5s)
+  ✓   9 [desktop] › tests/e2e/numerical-computing.spec.ts:38:2 › VIII.7: five graded exercises and worked feedback (1.4s)
+  ✓   5 [desktop] › tests/e2e/numerical-computing.spec.ts:37:2 › VIII.6: both-theme exceptional-state accessibility (5.6s)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-overflow-underflow.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-stable-algorithms.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-overflow-underflow-zero.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-stable-algorithms-tail.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-overflow-underflow-overflow.png, writing actual.
+  ✓  10 [desktop] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.5: opening and important numerical failure states (2.2s)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-stable-algorithms-scaling-overflow.png, writing actual.
+  ✓  11 [desktop] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.6: opening and important numerical failure states (2.0s)
+(node:115335) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   8 [desktop] › tests/e2e/numerical-computing.spec.ts:37:2 › VIII.7: both-theme exceptional-state accessibility (6.2s)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-numerical-linear-algebra.png, writing actual.
+(node:115496) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  13 [tablet] › tests/e2e/numerical-computing.spec.ts:29:2 › VIII.5: actual arithmetic, failure policies, exact input and immutable replay (760ms)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-numerical-linear-algebra-ill.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-numerical-linear-algebra-rounded-singular.png, writing actual.
+  ✓  15 [tablet] › tests/e2e/numerical-computing.spec.ts:38:2 › VIII.5: five graded exercises and worked feedback (1.4s)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-numerical-linear-algebra-singular.png, writing actual.
+  ✓  12 [desktop] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.7: opening and important numerical failure states (3.0s)
+(node:115973) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  16 [tablet] › tests/e2e/numerical-computing.spec.ts:29:2 › VIII.6: actual arithmetic, failure policies, exact input and immutable replay (898ms)
+  ✓  18 [tablet] › tests/e2e/numerical-computing.spec.ts:38:2 › VIII.6: five graded exercises and worked feedback (1.4s)
+  ✓  19 [tablet] › tests/e2e/numerical-computing.spec.ts:29:2 › VIII.7: actual arithmetic, failure policies, exact input and immutable replay (694ms)
+  ✓  14 [tablet] › tests/e2e/numerical-computing.spec.ts:37:2 › VIII.5: both-theme exceptional-state accessibility (5.8s)
+  ✓  21 [tablet] › tests/e2e/numerical-computing.spec.ts:38:2 › VIII.7: five graded exercises and worked feedback (1.3s)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-overflow-underflow.png, writing actual.
+  ✓  17 [tablet] › tests/e2e/numerical-computing.spec.ts:37:2 › VIII.6: both-theme exceptional-state accessibility (6.2s)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-overflow-underflow-zero.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-stable-algorithms.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-overflow-underflow-overflow.png, writing actual.
+  ✓  22 [tablet] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.5: opening and important numerical failure states (2.2s)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-stable-algorithms-tail.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-stable-algorithms-scaling-overflow.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-numerical-linear-algebra.png, writing actual.
+  ✓  23 [tablet] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.6: opening and important numerical failure states (1.9s)
+(node:116603) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  20 [tablet] › tests/e2e/numerical-computing.spec.ts:37:2 › VIII.7: both-theme exceptional-state accessibility (6.4s)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-numerical-linear-algebra-ill.png, writing actual.
+(node:116753) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-numerical-linear-algebra-rounded-singular.png, writing actual.
+  ✓  25 [mobile] › tests/e2e/numerical-computing.spec.ts:29:2 › VIII.5: actual arithmetic, failure policies, exact input and immutable replay (808ms)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-numerical-linear-algebra-singular.png, writing actual.
+  ✓  24 [tablet] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.7: opening and important numerical failure states (2.8s)
+(node:116949) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  27 [mobile] › tests/e2e/numerical-computing.spec.ts:38:2 › VIII.5: five graded exercises and worked feedback (1.4s)
+  ✓  28 [mobile] › tests/e2e/numerical-computing.spec.ts:29:2 › VIII.6: actual arithmetic, failure policies, exact input and immutable replay (948ms)
+  ✓  30 [mobile] › tests/e2e/numerical-computing.spec.ts:38:2 › VIII.6: five graded exercises and worked feedback (1.3s)
+  ✓  31 [mobile] › tests/e2e/numerical-computing.spec.ts:29:2 › VIII.7: actual arithmetic, failure policies, exact input and immutable replay (722ms)
+  ✓  26 [mobile] › tests/e2e/numerical-computing.spec.ts:37:2 › VIII.5: both-theme exceptional-state accessibility (5.1s)
+  ✓  33 [mobile] › tests/e2e/numerical-computing.spec.ts:38:2 › VIII.7: five graded exercises and worked feedback (1.4s)
+  ✓  29 [mobile] › tests/e2e/numerical-computing.spec.ts:37:2 › VIII.6: both-theme exceptional-state accessibility (5.1s)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-overflow-underflow.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-stable-algorithms.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-overflow-underflow-zero.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-stable-algorithms-tail.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-overflow-underflow-overflow.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-stable-algorithms-scaling-overflow.png, writing actual.
+  ✓  34 [mobile] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.5: opening and important numerical failure states (2.1s)
+  ✓  35 [mobile] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.6: opening and important numerical failure states (1.9s)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-numerical-linear-algebra.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-numerical-linear-algebra-ill.png, writing actual.
+  ✓  32 [mobile] › tests/e2e/numerical-computing.spec.ts:37:2 › VIII.7: both-theme exceptional-state accessibility (5.7s)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-numerical-linear-algebra-rounded-singular.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-numerical-linear-algebra-singular.png, writing actual.
+  ✓  36 [mobile] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.7: opening and important numerical failure states (2.4s)
+
+  36 passed (33.7s)

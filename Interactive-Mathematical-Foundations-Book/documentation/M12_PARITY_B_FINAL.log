@@ -1,0 +1,13 @@
+
+ RUN  v3.2.7 /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book
+
+stdout | tests/unit/numerical-algorithms.parity.test.ts > reports the unmodified actual-value four-ULP budget
+Numerical algorithms: worst 2 actual-value ulps / 4.
+
+ ✓ tests/unit/numerical-algorithms.parity.test.ts (47 tests) 61ms
+
+ Test Files  1 passed (1)
+      Tests  47 passed (47)
+   Start at  18:47:27
+   Duration  311ms (transform 59ms, setup 0ms, collect 64ms, tests 61ms, environment 0ms, prepare 41ms)
+

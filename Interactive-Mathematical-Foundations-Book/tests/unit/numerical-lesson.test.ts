@@ -17,3 +17,7 @@ describe('numerical lesson identity and immutable replay',()=>{
 });
 
 it('manual bit edits are explicitly distinguished from direct decimal rounding',()=>{const state={...INITIAL.representation,bits:'1010101101100110'};const v=deriveNumbers(state,'representation');expect(v.description).toContain('Manually edited bits');expect(v.metrics.bits).toBe(state.bits);});
+
+import {STABLE_PRESETS,SOLVER_PRESETS,deriveStable,deriveSolver} from '../../src/lessons/numerical-computing/algorithms-lesson';
+for(const [name,presets,derive]of [['stable',STABLE_PRESETS,deriveStable],['solver',SOLVER_PRESETS,deriveSolver]] as const)for(const p of presets)it(`${name} ${p.id}: exact records feed all views and every formula renders`,()=>{const v=(derive as any)(p.state);expect(v.frames.length).toBeGreaterThanOrEqual(2);for(const tex of [...v.formulas,...v.rows.map((r:any)=>r.symbolTex)])expect(()=>katex.renderToString(tex,{throwOnError:true,strict:'error',macros:katexMacros()})).not.toThrow();expect(Object.isFrozen(v.frames[0].state.semantic)).toBe(true);});
+it('a missing independent live softmax reference is never called undefined mathematics',()=>{const v=deriveStable(STABLE_PRESETS.find(p=>p.id==='tail')!.state);expect(v.rows.some(r=>r.id==='reference'&&r.description.status==='undefined')).toBe(false);expect(v.description).toContain('defined and finite');});

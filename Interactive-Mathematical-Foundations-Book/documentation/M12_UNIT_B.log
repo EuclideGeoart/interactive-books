@@ -1,0 +1,111 @@
+
+ RUN  v3.2.7 /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book
+
+ ✓ tests/unit/curriculum.test.ts (12 tests) 9ms
+ ✓ tests/unit/numerical-exercises.test.ts (7 tests) 6ms
+ ✓ tests/unit/numerical-algorithms.test.ts (9 tests) 54ms
+stdout | tests/unit/numerical-algorithms.parity.test.ts > reports the unmodified actual-value four-ULP budget
+Numerical algorithms: worst 4503599627370496 actual-value ulps / 4.
+
+ ❯ tests/unit/numerical-algorithms.parity.test.ts (45 tests | 9 failed) 113ms
+   ✓ independent Decimal/Fraction algorithm 0 hypot 3ms
+   ✓ independent Decimal/Fraction algorithm 1 hypot 1ms
+   ✓ independent Decimal/Fraction algorithm 2 hypot 1ms
+   ✓ independent Decimal/Fraction algorithm 3 hypot 0ms
+   ✓ independent Decimal/Fraction algorithm 4 hypot 1ms
+   ✓ independent Decimal/Fraction algorithm 5 hypot 1ms
+   ✓ independent Decimal/Fraction algorithm 6 hypot 1ms
+   ✓ independent Decimal/Fraction algorithm 7 hypot 2ms
+   ✓ independent Decimal/Fraction algorithm 8 log1p 1ms
+   × independent Decimal/Fraction algorithm 9 log1p 28ms
+     → expected 1 to be less than or equal to 0
+   × independent Decimal/Fraction algorithm 10 log1p 12ms
+     → expected 1 to be less than or equal to 0
+   ✓ independent Decimal/Fraction algorithm 11 log1p 1ms
+   ✓ independent Decimal/Fraction algorithm 12 log1p 1ms
+   × independent Decimal/Fraction algorithm 13 log1p 7ms
+     → expected -1 to be greater than or equal to 0
+   ✓ independent Decimal/Fraction algorithm 14 expm1 0ms
+   × independent Decimal/Fraction algorithm 15 expm1 15ms
+     → expected -1 to be greater than or equal to 0
+   × independent Decimal/Fraction algorithm 16 expm1 16ms
+     → expected 1 to be less than or equal to 0
+   ✓ independent Decimal/Fraction algorithm 17 expm1 1ms
+   ✓ independent Decimal/Fraction algorithm 18 expm1 1ms
+   × independent Decimal/Fraction algorithm 19 expm1 6ms
+     → expected 1 to be less than or equal to 0
+   × independent Decimal/Fraction algorithm 20 sum 1ms
+     → expected 4503599627370496 to be less than or equal to 4
+   × independent Decimal/Fraction algorithm 21 sum 1ms
+     → expected 4503599627370496 to be less than or equal to 4
+   ✓ independent Decimal/Fraction algorithm 22 sum 0ms
+   ✓ independent Decimal/Fraction algorithm 23 sum 0ms
+   ✓ independent Decimal/Fraction algorithm 24 sum 1ms
+   ✓ independent Decimal/Fraction algorithm 25 softmax 1ms
+   ✓ independent Decimal/Fraction algorithm 26 softmax 0ms
+   ✓ independent Decimal/Fraction algorithm 27 softmax 0ms
+   ✓ independent Decimal/Fraction algorithm 28 softmax 0ms
+   ✓ independent Decimal/Fraction algorithm 29 softmax 0ms
+   ✓ independent Decimal/Fraction algorithm 30 softmax 0ms
+   ✓ independent Decimal/Fraction algorithm 31 scaling 0ms
+   ✓ independent Decimal/Fraction algorithm 32 scaling 0ms
+   ✓ independent Decimal/Fraction algorithm 33 scaling 0ms
+   ✓ independent Decimal/Fraction algorithm 34 scaling 0ms
+   ✓ independent Decimal/Fraction algorithm 35 scaling 0ms
+   ✓ independent exact row reduction 0 2ms
+   ✓ independent exact row reduction 1 0ms
+   ✓ independent exact row reduction 2 0ms
+   ✓ independent exact row reduction 3 0ms
+   ✓ independent exact row reduction 4 0ms
+   ✓ independent exact row reduction 5 0ms
+   ✓ independent exact row reduction 6 0ms
+   ✓ independent exact row reduction 7 0ms
+   × reports the unmodified actual-value four-ULP budget 1ms
+     → expected 4503599627370496 to be less than or equal to 4
+ ✓ tests/unit/numerical-validation.test.ts (1 test) 211ms
+ ✓ tests/unit/numerical-lesson.test.ts (42 tests) 134ms
+ ✓ tests/unit/content.test.ts (99 tests) 483ms
+ ✓ tests/unit/validation-plan.test.ts (49 tests) 2272ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/numerical-algorithms.parity.test.ts > independent Decimal/Fraction algorithm 9 log1p
+ FAIL  tests/unit/numerical-algorithms.parity.test.ts > independent Decimal/Fraction algorithm 10 log1p
+ FAIL  tests/unit/numerical-algorithms.parity.test.ts > independent Decimal/Fraction algorithm 16 expm1
+ FAIL  tests/unit/numerical-algorithms.parity.test.ts > independent Decimal/Fraction algorithm 19 expm1
+AssertionError: expected 1 to be less than or equal to 0
+ ❯ tests/unit/numerical-algorithms.parity.test.ts:9:376
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  tests/unit/numerical-algorithms.parity.test.ts > independent Decimal/Fraction algorithm 13 log1p
+ FAIL  tests/unit/numerical-algorithms.parity.test.ts > independent Decimal/Fraction algorithm 15 expm1
+AssertionError: expected -1 to be greater than or equal to 0
+ ❯ tests/unit/numerical-algorithms.parity.test.ts:9:422
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  tests/unit/numerical-algorithms.parity.test.ts > independent Decimal/Fraction algorithm 20 sum
+ FAIL  tests/unit/numerical-algorithms.parity.test.ts > independent Decimal/Fraction algorithm 21 sum
+AssertionError: expected 4503599627370496 to be less than or equal to 4
+ ❯ near tests/unit/numerical-algorithms.parity.test.ts:8:417
+
+ ❯ tests/unit/numerical-algorithms.parity.test.ts:9:162
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  tests/unit/numerical-algorithms.parity.test.ts > reports the unmodified actual-value four-ULP budget
+AssertionError: expected 4503599627370496 to be less than or equal to 4
+ ❯ tests/unit/numerical-algorithms.parity.test.ts:11:168
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+
+ Test Files  1 failed | 7 passed (8)
+      Tests  9 failed | 255 passed (264)
+   Start at  18:38:56
+   Duration  2.57s (transform 444ms, setup 0ms, collect 884ms, tests 3.28s, environment 1ms, prepare 486ms)
+

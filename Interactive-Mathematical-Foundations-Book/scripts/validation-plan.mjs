@@ -3,6 +3,7 @@ import { join, posix, relative, resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
 
 export const families = {
+  numerical_algorithms: { lesson: 'numerical-computing', stage: 'AlgorithmsStage', kinds: ['stable','solver'], units: /^numerical-(algorithms|lesson|exercises|validation)/, oracles: ['numerical_algorithms'], browser: 'numerical-computing' },
   numerical_floating: { lesson: 'numerical-computing', stage: 'NumbersStage', kinds: ['representation','rounding','conditioning','cancellation','range'], units: /^numerical-(floating|lesson|exercises|validation)/, oracles: ['numerical_floating'], browser: 'numerical-computing' },
   statistics_likelihood: { lesson: 'statistics', stage: 'LikelihoodStage', units: /^statistics-likelihood/, oracles: ['statistics_likelihood'], browser: 'statistics-likelihood' },
   statistics_intervals: { lesson: 'statistics', stage: 'IntervalStage', units: /^statistics-(uncertainty|intervals)/, oracles: ['statistics_uncertainty'], browser: 'statistics-uncertainty' },
@@ -99,16 +100,20 @@ export function changedFiles(base = 'HEAD') {
 
 // Follow literal local imports, including ?raw samples. Unrecognised inputs expand to all coverage below.
 function dependencies() {
-  const files = new Set([...walk('src'), ...walk('tests/unit'), ...walk('code'), ...walk('fixtures')]);
+  const files = new Set([...walk('src'), ...walk('tests/unit'), ...walk('code'), ...walk('fixtures'), ...walk('oracle')]);
   const imports = new Map();
   for (const file of files) {
-    if (!/\.(ts|tsx|mjs|astro|mdx|css)$/.test(file)) continue;
+    if (!/\.(ts|tsx|mjs|astro|mdx|css|py)$/.test(file)) continue;
     const targets = [];
     for (const match of text(file).matchAll(/(?:\bfrom\s*|\bimport\s*\(?\s*|@import\s*)['"]([^'"]+)['"]/g)) {
       if (!match[1].startsWith('.')) continue;
       const stem = posix.normalize(posix.join(posix.dirname(file), match[1].split('?')[0]));
       const target = [stem, ...['.ts', '.tsx', '.mjs', '.astro', '.mdx', '.css', '/index.ts', '/index.tsx'].map(ext => stem + ext)].find(path => files.has(path));
       if (target) targets.push(target);
+    }
+    if (file.endsWith('.py')) for (const match of text(file).matchAll(/^\s*(?:from|import)\s+([A-Za-z_]\w*)/gm)) {
+      const sibling = posix.join(posix.dirname(file), match[1] + '.py');
+      if (files.has(sibling)) targets.push(sibling);
     }
     imports.set(file, targets);
   }
@@ -238,7 +243,7 @@ export function makePlan({ mode = 'focused', files = [], chapters = [], only, pr
     for (const chapter of matches) { selected.add(chapter.id); if (chapter.family) groups.add(chapter.family); else broad = true; }
     for (const unit of unitFiles) if (closure(unit).has(file)) units.add(unit);
     const own = familyOfFile(file);
-    const owners = /^tests\/unit\/statistics-/.test(file) ? Object.keys(families).filter(name => name.startsWith('statistics_') && families[name].units.test(posix.basename(file))) : /^(oracle|fixtures)\//.test(file) ? Object.keys(families).filter(name => families[name].oracles.some(oracle => posix.basename(file).startsWith(oracle + '.') || posix.basename(file) === oracle + '_oracle.py' || posix.basename(file) === 'test_' + oracle + '_oracle.py'))
+    const owners = /^tests\/unit\/numerical-/.test(file) ? Object.keys(families).filter(name => name.startsWith('numerical_') && families[name].units.test(posix.basename(file))) : /^tests\/unit\/statistics-/.test(file) ? Object.keys(families).filter(name => name.startsWith('statistics_') && families[name].units.test(posix.basename(file))) : /^(oracle|fixtures)\//.test(file) ? Object.keys(families).filter(name => families[name].oracles.some(oracle => posix.basename(file).startsWith(oracle + '.') || posix.basename(file) === oracle + '_oracle.py' || posix.basename(file) === 'test_' + oracle + '_oracle.py' || closure('oracle/' + oracle + '_oracle.py').has(file) || closure('oracle/test_' + oracle + '_oracle.py').has(file)))
       : file.startsWith('tests/e2e/') ? Object.keys(families).filter(name => posix.basename(file) === families[name].browser + '.spec.ts') : own ? [own] : [];
     for (const owner of owners) groups.add(owner);
     if (matches.length === 0 && owners.length) for (const chapter of catalog.filter(item => owners.includes(item.family))) selected.add(chapter.id);

@@ -1,0 +1,38 @@
+oracle interpreter: .venv/bin/python
+test_matrix_literals (test_numerical_algorithms_oracle.AlgorithmTests.test_matrix_literals) ... ok
+test_norm_literals (test_numerical_algorithms_oracle.AlgorithmTests.test_norm_literals) ... ok
+test_scaling_bounds (test_numerical_algorithms_oracle.AlgorithmTests.test_scaling_bounds) ... ok
+test_six_runnable_references (test_numerical_algorithms_oracle.AlgorithmTests.test_six_runnable_references) ... Traceback (most recent call last):
+  File "/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/code/python/stable_algorithms.py", line 11, in <module>
+    assert sum(values)==0 and fsum(values)==1
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+  test_six_runnable_references (test_numerical_algorithms_oracle.AlgorithmTests.test_six_runnable_references) (reference='stable_algorithms.py') ... ERROR
+test_small_change (test_numerical_algorithms_oracle.AlgorithmTests.test_small_change) ... ok
+test_softmax_shift (test_numerical_algorithms_oracle.AlgorithmTests.test_softmax_shift) ... ok
+test_sum_literal (test_numerical_algorithms_oracle.AlgorithmTests.test_sum_literal) ... FAIL
+
+======================================================================
+ERROR: test_six_runnable_references (test_numerical_algorithms_oracle.AlgorithmTests.test_six_runnable_references) (reference='stable_algorithms.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/oracle/test_numerical_algorithms_oracle.py", line 35, in test_six_runnable_references
+    with self.subTest(reference=name):subprocess.run([sys.executable,str(ROOT/'code/python'/name)],check=True,stdout=subprocess.DEVNULL)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/.venv/bin/python', '/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/code/python/stable_algorithms.py']' returned non-zero exit status 1.
+
+======================================================================
+FAIL: test_sum_literal (test_numerical_algorithms_oracle.AlgorithmTests.test_sum_literal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/oracle/test_numerical_algorithms_oracle.py", line 19, in test_sum_literal
+    self.assertEqual(algorithm('1e16,1,-1e16','sum')['naive'],0)
+AssertionError: 1.0 != 0
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.266s
+
+FAILED (failures=1, errors=1)

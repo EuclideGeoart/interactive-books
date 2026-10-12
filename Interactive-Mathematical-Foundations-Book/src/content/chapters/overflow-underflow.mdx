@@ -1,0 +1,111 @@
+---
+kind: chapter
+curriculumId: VIII.5
+title: "Overflow and underflow"
+hero: "When does a finite value leave a format\u2019s *range*?"
+lede: Follow one exact value through four explicitly emulated formats. Separate normal values, subnormals, numerical zero and overflow infinity from their mathematical origins.
+description: "Follow one exact value through four explicitly emulated formats. Separate normal values, subnormals, numerical zero and overflow infinity from their mathematical origins."
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import Xref from '../../shell/Xref.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import NumbersStage from '../../lessons/numerical-computing/NumbersStage';
+import Exercise from '../../lessons/numerical-computing/NumericalExercise';
+import reference from '../../../code/python/overflow_underflow.py?raw';
+import practical from '../../../code/python/overflow_underflow_numpy.py?raw';
+
+<Stage caption="Edit the exact decimal exponent and inspect classifications and actual stored values across all four software-emulated layouts."><NumbersStage chapter="range" client:load /></Stage>
+
+## Intuition: a ruler has endpoints
+
+Precision describes spacing; range describes which scales remain representable. A format can have adequate precision near one but no representable normal value at the scale a calculation needs. Move the exact decimal exponent in the input and compare all four results in the same table.
+
+The first range transition near zero is usually from normal to subnormal. Subnormals retain a constant absolute spacing rather than a full normal significand. A smaller magnitude eventually rounds to zero. At the other end, nearest/ties-even rounding eventually selects infinity instead of a finite representable value. Those are computational outcomes for an intended value, not changes to the intended mathematics.
+
+## Definition: three finite scales
+
+With exponent bias b and p fraction bits, the smallest positive normal value, smallest positive subnormal value and largest finite value are
+
+$$x_{\min,\mathrm{normal}}=2^{1-b},\qquad x_{\min,\mathrm{sub}}=2^{1-b-p},$$
+$$x_{\max}=(2-2^{-p})2^b.$$
+
+These formulas apply to the four binary interchange layouts in this explorer. Nearest rounding gives zero at exactly half the least positive subnormal, because zero is the even endpoint. The midpoint above the largest finite significand is the overflow threshold:
+
+$$x_{\mathrm{overflow\ tie}}=2^{b+1}-2^{b-p-1}.$$
+
+At that tie, the carry selects infinity. Below it, some exact values larger than the largest finite value still round to that largest finite value. Merely exceeding the maximum is therefore not a complete nearest-rounding overflow rule.
+
+## Mechanics: gradual underflow and explicit origins
+
+The exact decimal enters as a rational and is rounded separately to every format. The table includes precision, normal exponent range, classification, formatted stored value and both minimum scales. The selected format also exposes its fields and actual neighbors.
+
+A finite nonzero intended input that rounds to zero is labelled as numerical underflow to zero. Intended zero is labelled as mathematical zero. An entered infinity and a finite input that overflows have different origins. NaN remains an exceptional encoding with no real value. Error measurements are undefined for non-finite results instead of silently becoming a finite-looking number.
+
+Here, “underflow” describes tiny-value representation and possible loss. The explorer does not simulate an IEEE exception flag: such a flag can depend on tininess detection and inexactness, and an exactly represented subnormal need not raise it.
+
+## Derivation: why precision fades among subnormals
+
+Normal spacing follows the binade. Subnormal spacing remains
+
+$$\Delta=2^{1-b-p}.$$
+
+At a tiny nonzero value kΔ, half a spacing is a relative scale of roughly 1/(2k). As k becomes small, the available relative accuracy deteriorates even though the absolute grid spacing stays fixed. This is gradual underflow: the values fade through a smaller effective significand rather than immediately jumping from the least normal number to zero.
+
+FP16 has least normal $2^{-14}$ and least subnormal $2^{-24}$. BF16 shares binary32's normal lower exponent −126, but its least subnormal is $2^{-133}$ rather than binary32's $2^{-149}$. Sharing exponent bits does not make these ranges identical.
+
+## Worked example: one decimal, four classifications
+
+For exact 1e-7, FP16 stores a subnormal near $2^{-23}$; BF16, binary32 and binary64 store normal values. For 1e-50, both 16-bit formats and binary32 round to zero, while binary64 remains normal. Intended zero would instead be exactly zero in every format.
+
+For 1e40, FP16, BF16 and binary32 overflow to infinity while binary64 remains finite. The all-overflow preset uses 1e400: its intended rational is finite, but every displayed interchange format overflows. Calling that input a mathematical infinity would be incorrect.
+
+FP16's midpoint above its maximum finite value is 65520. Under the specified rounding policy it overflows. The exact midpoint below its least subnormal is $2^{-25}$ and rounds to zero. A negative tiny input retains a negative-zero encoding when its magnitude rounds away.
+
+<Stage caption="Select the recorded intermediate values. Previous, next and direct replay navigation preserve immutable numerical history."><NumbersStage chapter="range" worked client:load /></Stage>
+
+## Executable reference code
+
+The standard-library example uses the direct exact converter from the representation chapter, classifies all four emulated results and checks literal boundary values. NumPy demonstrates real dtype conversions on bounded ordinary range probes with expected warnings handled locally. BF16 remains software emulation because this environment's core NumPy dtype set does not supply native BF16.
+
+<CodeFile source={reference} file="code/python/overflow_underflow.py" />
+<CodeFile source={practical} file="code/python/overflow_underflow_numpy.py" />
+
+## Explore: distinguish a zero from a lost value
+
+Compare the underflowed-zeros and mathematical-zero presets before reading their explanation. The bit pattern alone can be the same, yet the intended input differs. Use the exact input record to determine which origin applies.
+
+Edit a decimal exponent one step at a time near a range transition. Then select the FP16 subnormal preset in the representation chapter and inspect adjacent spacing. Enter NaN and Infinity here to compare safe exceptional-value handling with a finite input that overflows. Domain-valid real mathematics and finite computer storage are different requirements.
+
+## Common mistakes and counterexamples
+
+A zero probability can be a model's exact zero mass, a tiny positive probability rounded to zero, or an undefined computation mistakenly propagated. These meanings must not share one silent repair. A logarithm of a mathematically zero probability has an extended-value meaning that differs from taking log after a positive probability underflows.
+
+A subnormal is nonzero and finite. Overflow infinity is not evidence that the true finite mathematical value is unbounded. NaN should not be sorted as a large value or allowed to silently bypass a numerical diagnostic.
+
+## Numerical considerations
+
+The conversion model implements gradual underflow and nearest/ties-even for every supported layout. FP16 and BF16 are explicitly emulated, and actual hardware may flush subnormals or select a different rounding mode. No hardware exception flags or performance claims are simulated.
+
+Direct rational conversion avoids unintended double rounding. Independent fixtures test half-subnormal ties, the normal/subnormal carry, signed zero, maximum finite values and overflow ties. Subsequent algorithms still need guards for exceptional intermediates: a finite input can yield an infinite product long before its final mathematical expression would overflow.
+
+## Engineering and ML connections
+
+Range failures motivate rescaling, logarithmic representations and carefully bounded loss scaling. A small gradient can be scaled before low-precision storage, while a large scaled gradient may overflow instead. The next chapter shows the actual intermediates and limitations; scaling is a numerical trade-off whose valid operating range must be recorded.
+
+<Xref to="chapters/floating-point-representation/">Inspect the corresponding representation and error policy</Xref> before interpreting a computed value.
+
+## Exercises
+
+Predict first, then calculate or test the stated claim. Every answer includes corrective feedback and a worked solution.
+
+<Exercise id="numerical-range-1" client:load />
+<Exercise id="numerical-range-2" client:load />
+<Exercise id="numerical-range-3" client:load />
+<Exercise id="numerical-range-4" client:load />
+<Exercise id="numerical-range-5" client:load />
+
+## Summary and checkpoints
+
+State the three finite range formulas and the nearest-rounding boundary rules. Explain gradual underflow, distinguish intended zero from numerical zero and finite-input overflow from entered infinity, and compare FP16, BF16 and binary32 without assuming identical ranges.
+

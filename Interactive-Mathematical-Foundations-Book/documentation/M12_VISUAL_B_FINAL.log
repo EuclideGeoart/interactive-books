@@ -1,0 +1,29 @@
+[WebServer] (node:132215) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 6 tests using 3 workers
+
+(node:132229) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:132227) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:132228) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-overflow-underflow.png is re-generated, writing actual.
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-overflow-underflow.png is re-generated, writing actual.
+  ✓  2 [desktop] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.6: opening and important numerical failure states (2.2s)
+  ✓  1 [desktop] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.5: opening and important numerical failure states (2.3s)
+  ✓  3 [tablet] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.5: opening and important numerical failure states (2.3s)
+(node:132887) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:132898) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:132905) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-overflow-underflow.png is re-generated, writing actual.
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-overflow-underflow.png is re-generated, writing actual.
+  ✓  4 [tablet] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.6: opening and important numerical failure states (2.0s)
+  ✓  6 [mobile] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.6: opening and important numerical failure states (2.0s)
+  ✓  5 [mobile] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.5: opening and important numerical failure states (2.1s)
+
+  6 passed (5.4s)

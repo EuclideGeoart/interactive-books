@@ -1,0 +1,41 @@
+{
+  "baseline": "5c97622e5ef16b0f2a1d83d8adb906db7df04bbd",
+  "blockA": "3b2d0917723d3b953f3c42207c8e582d08015192",
+  "scope": "Focused Block B only; no branch-local milestone/exhaustive run",
+  "published": 86,
+  "chapters": [
+    "VIII.5",
+    "VIII.6",
+    "VIII.7"
+  ],
+  "newExercises": 15,
+  "newReferences": 6,
+  "focusedUnits": 279,
+  "unitFiles": 9,
+  "pythonSelfTests": 7,
+  "fixtureCases": 46,
+  "worstActualValueUlps": 2,
+  "unchangedBudgetUlps": 4,
+  "browser": "36 passed initially; 12 changed chapter accessibility/visual checks passed after range/reference presentation fixes; six forced fresh visual captures passed, 30 new images individually reviewed. Solver successes were not repeated.",
+  "oracleCorrectionHistory": [
+    "Initial naive-sum reference incorrectly used Python 3.12 builtin sum; corrected to an explicit left fold without changing browser arithmetic.",
+    "Initial Decimal160 reference was coarser than the tiny 48-term series remainder; raised independent precision to 1000 for small inputs, 200 otherwise.",
+    "Exact-special parity now checks signed zero, NaN and signed infinities strictly. Negative gradient fixtures added."
+  ],
+  "mathematicalPolicy": [
+    "Direct rational conversion, nearest/ties-even and gradual underflow retained",
+    "Exact intended and represented 2x2 systems use accepted matrix API, separately classified",
+    "Residual to intended system evaluated exactly at represented solution; diagnostic tolerance never redefines rank",
+    "Live norm/small-function references use rational enclosures; arbitrary softmax has no fabricated independent live reference; deterministic committed cases use Decimal checks",
+    "Loss scaling explicitly emulates FP16/BF16 storage and binary64 unscale, with an overflow counterexample"
+  ],
+  "planner": "Literal sibling Python imports now participate in dependency closure, including oracle helper ownership; source-specific ownership tests pass. Unknown/deleted inputs remain conservative.",
+  "reviewedNewLinuxImages": 30,
+  "diskFreeGiB": 20,
+  "limits": [
+    "Fixed 2x2 solver, no general numerical backend",
+    "Elementary primitive internals are platform-dependent and not animated as invented steps",
+    "Byte memory/performance/hardware guarantees not asserted",
+    "Whole-book combined acceptance deferred to integration"
+  ]
+}

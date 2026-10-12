@@ -1,0 +1,112 @@
+---
+kind: chapter
+curriculumId: VIII.6
+title: "Stable algorithms"
+hero: "Which evaluation keeps the information you *need*?"
+lede: Compare selected naive and stable numerical methods through their actual intermediate arithmetic. Explore scaled norms, small-input functions, compensated sums, shifted softmax and bounded loss scaling.
+description: "Compare selected naive and stable numerical methods through their actual intermediate arithmetic. Explore scaled norms, small-input functions, compensated sums, shifted softmax and bounded loss scaling."
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import Xref from '../../shell/Xref.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import AlgorithmsStage from '../../lessons/numerical-computing/AlgorithmsStage';
+import Exercise from '../../lessons/numerical-computing/NumericalExercise';
+import reference from '../../../code/python/stable_algorithms.py?raw';
+import practical from '../../../code/python/stable_algorithms_numpy.py?raw';
+
+<Stage caption="Choose a bounded method and replay the naive and stable arithmetic. FP16/BF16 storage and loss scaling are explicitly software emulations."><AlgorithmsStage chapter="stable" client:load /></Stage>
+
+## Intuition: order the arithmetic around its range
+
+A correct real formula can ask a computer to form an unnecessary enormous or tiny intermediate. Squaring two large components can overflow even when their norm is representable. Adding a tiny x to one can erase x before a logarithm sees it. A sum can discard a small term before a later large cancellation makes that term important.
+
+The stable method changes the sequence of operations so the needed information has a better chance of surviving. It still uses finite arithmetic. Compare the actual intermediate values, the intended mathematical reference where available and the remaining error; “stable” is not a promise of exactness.
+
+## Definition: the supported comparisons
+
+The explorer deliberately supports a small collection: a two-component norm, log1p(x), expm1(x), Neumaier compensated summation, shifted softmax/log-sum-exp, and a software loss-scaling storage simulation. Lists contain at most 12 entries, softmax at most six logits within ±2000, small-input functions require |x|≤0.1, and magnitude bounds prevent unrestricted numerical workloads.
+
+For a norm, let m=max(|x|,|y|). If m=0, return zero explicitly; otherwise compute
+
+$$\sqrt{x^2+y^2}=m\sqrt{(x/m)^2+(y/m)^2}.$$
+
+The scaled ratios are bounded by one. Specialized log1p and expm1 primitives evaluate $\log(1+x)$ and $e^x-1$ without first exposing their small difference to the naive one-plus-x or exp-minus-one sequence.
+
+## Mechanics: observable values and honest references
+
+The norm replay exposes both raw squares and the scaled ratios, scaled square sum, root and restored result. The summation replay records each input, previous accumulator, tentative sum, correction and running compensation. These are actual binary64 operations, not an ideal arithmetic animation.
+
+For log1p/expm1, the replay shows the naive observable intermediate and the specialized primitive's input/result. The runtime's internal implementation is platform-dependent; the lesson does not invent internal operations for it. Independent mathematical references use exact rational series bounds, checked by high-precision Python logarithms and exponentials.
+
+Softmax shows shifted logits, weights, their common sum, probabilities and log probabilities. It connects conceptually to Part VII without importing its independently developed code.
+
+## Derivation: retain corrections and shift a common scale
+
+For Neumaier summation with accumulator s and next input x, form t=s+x. If |s|≥|x|, add $(s-t)+x$ to the correction; otherwise add $(x-t)+s$. Replace s by t and finally return s+c. The two branches choose the larger-magnitude operand when recovering the local rounding loss. The compensation itself still rounds.
+
+For logits z and m=max z,
+
+$$\operatorname{LSE}(z)=m+\log\sum_i e^{z_i-m},\qquad p_i=\frac{e^{z_i-m}}{\sum_j e^{z_j-m}}.$$
+
+The shifted exponents are nonpositive, so their weights do not overflow. Compute log probabilities as $(z_i-m)-\log\sum_j e^{z_j-m}$ directly. A tiny positive weight can still underflow; its finite log probability need not be lost with the probability display.
+
+For the small-input functions, 48 exact series terms and a documented remainder bound enclose the real result. The log series remainder is bounded by the next absolute term divided by 1−|x|. For expm1, twice the next absolute term bounds the remaining tail on |x|≤0.1. These reference calculations are not the production runtime implementation.
+
+## Worked examples: three recovered signals
+
+With components 3e200 and 4e200, naive squares overflow, but scaling by 4e200 produces ratios 0.75 and 1. Their square sum is 1.5625, its root is 1.25, and the restored norm is near 5e200. A similarly scaled construction checks the very small case 3e-200, 4e-200, where naive squares underflow.
+
+For the represented sequence [1e16,1,−1e16], ordinary left-to-right summation returns zero. The compensation retains the lost one and returns one. The exact sum of represented operands is one; exact intended-decimal sums are shown separately when conversion itself introduces a difference.
+
+For logits [1000,1001,999], unshifted exponentials overflow. Shift by 1001 to get [−1,0,−2], bounded weights and a finite log-sum-exp. For [0,−1000], the tail probability may underflow to zero while its direct log probability stays near −1000. That numerical zero is not a mathematically zero probability.
+
+<Stage caption="Select the recorded intermediate values. Previous, next and direct replay navigation preserve immutable numerical history."><AlgorithmsStage chapter="stable" worked client:load /></Stage>
+
+## Executable reference code
+
+The pedagogical program cross-checks scaled norms, math.fsum, specialized elementary functions and shifted probabilities using Decimal and exact Fraction values. The NumPy version performs actual array operations and shows their numerical outcomes. Neither file promises identical elementary-function bits on arbitrary platforms. The browser's independent fixture comparisons use small actual-value ULP budgets and exact checks for classifications and rational quantities.
+
+<CodeFile source={reference} file="code/python/stable_algorithms.py" />
+<CodeFile source={practical} file="code/python/stable_algorithms_numpy.py" />
+
+## Explore: mixed precision and a scaling boundary
+
+Try the large and tiny norm presets, both small-input functions, the cancellation-prone sum and the overflowing softmax. Predict which naive intermediate fails before opening replay. Alter the comma-separated inputs while respecting each example's stated bounds.
+
+In loss-scaling mode, store the exact intended gradient directly in emulated FP16, then multiply it by $2^k$ before that storage and unscale the stored result in binary64. A gradient 1e-8 rounds to FP16 zero directly but can survive with k=16. A gradient 10000 with the same scale overflows instead. Change k and inspect both stored encodings.
+
+This bounded simulation represents one storage conversion and one unscale. In real mixed-precision training, scaling a loss also scales its gradient by the chain rule, but intermediate gradient operations and accumulation choices matter. The simulation does not establish that an arbitrary training computation is correct.
+
+## Common mistakes and counterexamples
+
+Compensation cannot restore an operand rounded away before the sum, and it cannot repair an accumulator already overflowed to infinity. Rescaling a norm avoids unnecessary square overflow here but cannot represent a true result beyond the output format's range. Specialized log1p still requires its mathematical domain x>−1; this lesson uses a smaller bounded domain for its independent series reference.
+
+A softmax probability displayed as zero can conceal a finite log probability. Taking log of the rounded probability would discard that information. A common seed, an algorithm name or the word “stable” does not supply a universal numerical proof.
+
+## Numerical considerations
+
+Exact intended inputs and exact represented operands are distinct references. Irrational norm values and elementary functions use enclosures or independent high-precision checks; compensated sums have exact rational references. The observable runtime elementary results may differ by a few ULPs across environments.
+
+The emulated FP16/BF16 scaling experiment uses direct nearest/ties-even conversion with subnormals. It is not actual low-precision hardware arithmetic. Scaling helps only if it keeps useful intermediates away from both ends of the range, and unscaling has its own final rounding. Validation retains overflowing and underflowing failure probes without widening budgets.
+
+## Engineering and ML connections
+
+Norms, log probabilities, reductions and mixed-precision gradients recur throughout learning systems. Choose algorithms from the required input range and accuracy, record their conversion/accumulation points and check a meaningful mathematical reference. A performance claim requires an actual workload measurement; these bounded explorer calculations teach numerical mechanisms, not a timing contest.
+
+<Xref to="chapters/floating-point-representation/">Inspect the corresponding representation and error policy</Xref> before interpreting a computed value.
+
+## Exercises
+
+Predict first, then calculate or test the stated claim. Every answer includes corrective feedback and a worked solution.
+
+<Exercise id="numerical-stable-1" client:load />
+<Exercise id="numerical-stable-2" client:load />
+<Exercise id="numerical-stable-3" client:load />
+<Exercise id="numerical-stable-4" client:load />
+<Exercise id="numerical-stable-5" client:load />
+
+## Summary and checkpoints
+
+Replay a scaled norm, one compensated addition and one shifted softmax. Explain why log1p/expm1 preserve small changes, distinguish true from underflowed zero probabilities, and identify both a loss-scaling success and its overflow counterexample. Each improvement has a domain, range and remaining rounding policy.
+

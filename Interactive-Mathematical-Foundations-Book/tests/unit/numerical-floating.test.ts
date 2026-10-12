@@ -36,3 +36,4 @@ it('all FP16/BF16 finite encodings round-trip exactly, including signed zeros',(
   const v=decode(bits,id);if(v.exact!==null){const roundtrip=encode({kind:'finite',value:v.exact,negativeZero:v.kind==='zero'&&v.sign===1},id);if(roundtrip!==bits)throw new Error(`${id} ${bits}: ${roundtrip}`);}
  }
 });
+it('range metadata gives exact compact exponents rather than an unreadable denominator expansion',()=>{expect(representation('1','fp16')).toMatchObject({precision:11,normalMinExponent:-14,normalMaxExponent:15,subnormalExponent:-24});expect(representation('1','bf16')).toMatchObject({precision:8,normalMinExponent:-126,normalMaxExponent:127,subnormalExponent:-133});});

@@ -89,7 +89,7 @@ describe('publication scope guard', () => {
     expect(i3.chapter.role).toBe('reference');
     expect(findChapter('VI.4')!.chapter.role).toBe('flagship');
   });
-  it('M12 Block A publishes 83 chapters and leaves 14 planned', () => {
+  it('M12 Block B publishes 86 chapters and leaves 11 planned', () => {
     const published = allChapters.filter(r => r.chapter.status === 'available');
     expect(published.filter(r => r.part.numeral === 'I')).toHaveLength(9);
     expect(published.filter(r => r.part.numeral === 'II')).toHaveLength(19);
@@ -98,10 +98,10 @@ describe('publication scope guard', () => {
     expect(published.filter(r => r.part.numeral === 'V')).toHaveLength(10);
     expect(published.filter(r => r.part.numeral === 'VI')).toHaveLength(10);
     expect(published.every(r => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VIII'].includes(r.part.numeral))).toBe(true);
-    expect(published).toHaveLength(83);
-    expect(published.filter(r=>r.part.numeral==='VIII')).toHaveLength(4);
-    expect(allChapters.filter(r => r.chapter.status === 'planned')).toHaveLength(14);
-    expect(published.map(r => r.id)).toEqual(allChapters.filter(r=>r.part.numeral!=='VII' && (r.part.numeral!=='VIII'||r.chapter.n<=4)).map(r=>r.id));
+    expect(published).toHaveLength(86);
+    expect(published.filter(r=>r.part.numeral==='VIII')).toHaveLength(7);
+    expect(allChapters.filter(r => r.chapter.status === 'planned')).toHaveLength(11);
+    expect(published.map(r => r.id)).toEqual(allChapters.filter(r=>r.part.numeral!=='VII' && (r.part.numeral!=='VIII'||r.chapter.n<=7)).map(r=>r.id));
   });
   it('navigates II.19 → III.1 → III.15 → IV.1 → IV.16 → V.1 → V.10 → VI.1 → VI.10 → VII.1', () => {
     expect(neighbours(findChapter('II.19')!).next?.id).toBe('III.1');

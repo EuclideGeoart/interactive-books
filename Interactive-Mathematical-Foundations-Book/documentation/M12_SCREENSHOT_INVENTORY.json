@@ -271,5 +271,277 @@
       ],
       "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
     }
+  ],
+  "blockB": [
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-numerical-linear-algebra-ill.png",
+      "sha256": "e4c9ddf414c54c502895de66f75df36f3f11dd0b15f0e646472d958bb5330bf4",
+      "size": [
+        836,
+        1925
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-numerical-linear-algebra-rounded-singular.png",
+      "sha256": "0768f092aa6cda738d5e0d94e996860957763940ac8d330a4379e0793e77f908",
+      "size": [
+        836,
+        2047
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-numerical-linear-algebra-singular.png",
+      "sha256": "ce22b2c9455ac516fa146e57cafeb985b0de3c0f71ddd134220671aeddd68102",
+      "size": [
+        836,
+        2026
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-numerical-linear-algebra.png",
+      "sha256": "94ac79ee027be5c0e1afdd8ef04921cad299ee7e45ef3cf08d3e6ff452ee9272",
+      "size": [
+        836,
+        1892
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-overflow-underflow-overflow.png",
+      "sha256": "5302a6a57701abec24b68266197fb882f8c3e9e4db873eff19c95ac1fbf63dcc",
+      "size": [
+        836,
+        2228
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-overflow-underflow-zero.png",
+      "sha256": "68be557b71888c44ddfd0c8fe3d70203d3e2fe703c6141a6d2f0c8a655a13191",
+      "size": [
+        836,
+        2190
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-overflow-underflow.png",
+      "sha256": "b4007a5ada7284050e6106da54e4c4267f2684c149107cd7ef002dbde621c353",
+      "size": [
+        836,
+        2280
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-stable-algorithms-scaling-overflow.png",
+      "sha256": "9b51d991522cd6bf0da3dc2f09ce19f7005f73fdb1cc973f6ae11faf93343f2e",
+      "size": [
+        836,
+        1601
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-stable-algorithms-tail.png",
+      "sha256": "e7b0a1fd3f6607fabc18f47b324d21b2b558ed6df5adcd56ce969fdaba3d3b42",
+      "size": [
+        836,
+        1679
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-stable-algorithms.png",
+      "sha256": "7883723cdde1df2eae5c356c67df5397cd63d13899f6ba9022f8e1d3be127d99",
+      "size": [
+        836,
+        2030
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-numerical-linear-algebra-ill.png",
+      "sha256": "ea30b4f4c16380b55b6f7d126947b987bc2a90d747236f65f8a57aa313378d50",
+      "size": [
+        356,
+        3080
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-numerical-linear-algebra-rounded-singular.png",
+      "sha256": "58c00dd017ffd14d5a0b703b85d0772ecb6705a341947fcb212632d05af9bd84",
+      "size": [
+        356,
+        3200
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-numerical-linear-algebra-singular.png",
+      "sha256": "21f922d1eaedcfba1762f1d1e9b3ec7d3ca25f42fec9af3c526f6cd65c9e2777",
+      "size": [
+        356,
+        3192
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-numerical-linear-algebra.png",
+      "sha256": "5195aad1a9dc3f4df508a88c5779e5c4199c1d396e00df0072062be564c33580",
+      "size": [
+        356,
+        2970
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-overflow-underflow-overflow.png",
+      "sha256": "581ef90d1c3974c54af823337c40ecc38ae7110741991c2aaddcc3a1e1786eb4",
+      "size": [
+        356,
+        3219
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-overflow-underflow-zero.png",
+      "sha256": "9498df663d39c94df2ae2574048262ef26f78e46800fe449d59e9fa64584b4ef",
+      "size": [
+        356,
+        3178
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-overflow-underflow.png",
+      "sha256": "8e4c332a29d26dff5b85dbe29872f3a6c6d0f91cbec09a79ce3778644cfc9935",
+      "size": [
+        356,
+        3284
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-stable-algorithms-scaling-overflow.png",
+      "sha256": "5c7bc79473f65a7d8b68a52577efe063051d78c6f764625924d9da4a5198b8b1",
+      "size": [
+        356,
+        2301
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-stable-algorithms-tail.png",
+      "sha256": "845163df725343ae712d910f7c89e1a81236754c6d1078aad2adc5e76c073ddc",
+      "size": [
+        356,
+        2404
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-stable-algorithms.png",
+      "sha256": "1ca6eb941829d554e5fc688ac126c1b8030ec7c7af561c230dc62cd2f28e9786",
+      "size": [
+        356,
+        2926
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-numerical-linear-algebra-ill.png",
+      "sha256": "a8a5251305bfd31bbc7f36b4b46cfb5e9534da84adff0969f7f9cf7fedd40bb8",
+      "size": [
+        748,
+        2050
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-numerical-linear-algebra-rounded-singular.png",
+      "sha256": "23ec03c1537d54ebd3faf40a2944af6db79e0d85af484642352c8b8341d10e79",
+      "size": [
+        748,
+        2145
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-numerical-linear-algebra-singular.png",
+      "sha256": "7728a821e82de5239fc48ac150ec075bd203cc58b409481be323eda41979e432",
+      "size": [
+        748,
+        2154
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-numerical-linear-algebra.png",
+      "sha256": "c6f63d015f29e3f74361c9d4a83c1e7d215a760666d58867d0ea501cd6150505",
+      "size": [
+        748,
+        2018
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-overflow-underflow-overflow.png",
+      "sha256": "ba5e358fb977c9ba5ec232c5ca70060bdbf8736486995157fcec16beb8e7fc96",
+      "size": [
+        748,
+        2309
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-overflow-underflow-zero.png",
+      "sha256": "e2f1dc120e01de4274422cad7d673d20a7b988fb779cb6ed60a66e87e44595cd",
+      "size": [
+        748,
+        2218
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-overflow-underflow.png",
+      "sha256": "b1520e07379a41ebe16d5ed5d3d7a1592f7a91e7ac809330dc2b9c7ca40b4322",
+      "size": [
+        748,
+        2344
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-stable-algorithms-scaling-overflow.png",
+      "sha256": "f632ba16e099bf96b335d73d12e6a05c5763be1fc8314f75b1c80b5f9a5a7d58",
+      "size": [
+        748,
+        1592
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-stable-algorithms-tail.png",
+      "sha256": "90f00e80be9d179d8e88567b70804ee0a8c036b93dcefe8464a8fea2058b59c7",
+      "size": [
+        748,
+        1692
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-stable-algorithms.png",
+      "sha256": "692d37f6f38f199e875cd0106f687497551bd2eed55640ae57d74eaac4bc8745",
+      "size": [
+        748,
+        2039
+      ],
+      "review": "Individually inspected by Agent B: normal/subnormal/zero/overflow, underflowed probability with finite log, scaling overflow, exact residual versus forward error, intended/represented rank differences. Named local tables are keyboard-scrollable."
+    }
   ]
 }

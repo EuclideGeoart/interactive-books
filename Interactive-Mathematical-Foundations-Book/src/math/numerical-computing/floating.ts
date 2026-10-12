@@ -78,7 +78,7 @@ export function representation(text:string,id:FormatId,bits?:string) {
   const stored=decode(bits===undefined?encode(input,id):BigInt('0b'+bits),id),previous=neighbor(stored.bits,id,-1),next=neighbor(stored.bits,id,1);
   const error=input.kind==='finite'&&stored.exact!==null?sub(stored.exact,input.value):null;
   return {input,stored,previous,next,error,absoluteError:error===null?null:abs(error),relativeError:error===null||input.kind!=='finite'||input.value.num===0n?null:div(abs(error),abs(input.value)),format:id,
-    minimumNormal:pow2(1-f.bias),minimumSubnormal:pow2(1-f.bias-f.fraction),maximum:mul(int((1n<<BigInt(f.fraction+1))-1n),pow2(f.bias-f.fraction)),overflowThreshold:sub(pow2(f.bias+1),pow2(f.bias-f.fraction-1))};
+    minimumNormal:pow2(1-f.bias),minimumSubnormal:pow2(1-f.bias-f.fraction),maximum:mul(int((1n<<BigInt(f.fraction+1))-1n),pow2(f.bias-f.fraction)),overflowThreshold:sub(pow2(f.bias+1),pow2(f.bias-f.fraction-1)),normalMinExponent:1-f.bias,normalMaxExponent:f.bias,subnormalExponent:1-f.bias-f.fraction,precision:f.fraction+1};
 }
 export function exactBinary64(value:number):Rational {
   if(!Number.isFinite(value))throw new RangeError('Non-finite result has no rational value.');

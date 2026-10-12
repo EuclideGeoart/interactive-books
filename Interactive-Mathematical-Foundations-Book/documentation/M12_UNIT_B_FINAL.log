@@ -1,0 +1,22 @@
+
+ RUN  v3.2.7 /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book
+
+ ✓ tests/unit/curriculum.test.ts (12 tests) 9ms
+ ✓ tests/unit/numerical-exercises.test.ts (7 tests) 5ms
+ ✓ tests/unit/numerical-algorithms.test.ts (9 tests) 58ms
+stdout | tests/unit/numerical-algorithms.parity.test.ts > reports the unmodified actual-value four-ULP budget
+Numerical algorithms: worst 2 actual-value ulps / 4.
+
+ ✓ tests/unit/numerical-algorithms.parity.test.ts (47 tests) 118ms
+ ✓ tests/unit/numerical-lesson.test.ts (43 tests) 176ms
+ ✓ tests/unit/numerical-validation.test.ts (2 tests) 352ms
+ ✓ tests/unit/numerical-floating.test.ts (11 tests) 317ms
+   ✓ all FP16/BF16 finite encodings round-trip exactly, including signed zeros  301ms
+ ✓ tests/unit/content.test.ts (99 tests) 530ms
+ ✓ tests/unit/validation-plan.test.ts (49 tests) 2815ms
+
+ Test Files  9 passed (9)
+      Tests  279 passed (279)
+   Start at  18:50:22
+   Duration  3.16s (transform 536ms, setup 0ms, collect 1.18s, tests 4.38s, environment 1ms, prepare 613ms)
+

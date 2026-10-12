@@ -1,0 +1,120 @@
+---
+kind: chapter
+curriculumId: VIII.7
+title: "Numerical linear algebra realities"
+hero: "Can a tiny residual hide a wrong *solution*?"
+lede: Solve a bounded 2×2 system with partial pivoting and compare explicit inversion. Use independent exact rational solutions to separate residual, forward error, conditioning and rank.
+description: "Solve a bounded 2\u00d72 system with partial pivoting and compare explicit inversion. Use independent exact rational solutions to separate residual, forward error, conditioning and rank."
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import Xref from '../../shell/Xref.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import AlgorithmsStage from '../../lessons/numerical-computing/AlgorithmsStage';
+import Exercise from '../../lessons/numerical-computing/NumericalExercise';
+import reference from '../../../code/python/numerical_linear_algebra.py?raw';
+import practical from '../../../code/python/numerical_linear_algebra_numpy.py?raw';
+
+<Stage caption="Edit a bounded 2\u00d72 system; compare partial pivoting and explicit inversion against an exact rational solution and independent Python references."><AlgorithmsStage chapter="solver" client:load /></Stage>
+
+## Intuition: satisfying equations is a different measurement
+
+A residual asks how well a candidate solution satisfies the equations. Forward error asks how far that candidate is from the specified solution. In a sensitive system, a tiny equation discrepancy can correspond to a much larger solution change. Read both quantities before deciding whether a numerical answer is useful.
+
+The explorer keeps intended exact-decimal matrix entries and right-hand sides, their binary64 representations, an exact reference solution, and both computed methods. It can therefore reveal input-conversion error as well as evaluation error. A zero binary64 residual is not a certificate that the intended exact system was solved accurately.
+
+## Definition: residual, forward error and conditioning
+
+For intended A and b and computed vector $\widehat x$, the exact residual to that intended problem is
+
+$$r=A\widehat x-b.$$
+
+If the intended matrix is nonsingular, let $x_*=A^{-1}b$ denote its exact solution. Forward error is $\|\widehat x-x_*\|_\infty$, and relative forward error divides by $\|x_*\|_\infty$ when that scale is nonzero. The condition number displayed here is the exact rational infinity-norm quantity
+
+$$\kappa_\infty(A)=\|A\|_\infty\|A^{-1}\|_\infty.$$
+
+An infinity matrix norm is the largest absolute row sum. The solution reference is computed independently from the browser's numerical elimination using the accepted exact 2×2 matrix API and Python Fraction row reduction. Singular systems receive a rank/consistency classification rather than a fabricated unique reference.
+
+## Mechanics: solve first, compare inverse second
+
+The numerical solver selects the larger-magnitude first-column pivot, swaps the entire augmented rows if needed, eliminates below it and back-substitutes. Every multiplier, second pivot and transformed right-hand side is retained. The inverse comparison explicitly forms a numerical determinant and four inverse entries, then multiplies by b.
+
+The inspector distinguishes the stored-system numerical residual from an exactly evaluated rational residual using the intended A and b. Forward error likewise refers to the intended exact solution. The exact solution of the represented input system is also retained, making representation changes visible.
+
+The relative pivot tolerance is a diagnostic warning, not a rank definition. A small nonzero pivot may trigger a near-singular warning while the selected computation proceeds. A zero numerical pivot produces no unique numerical solve. Exact rank remains determined by the rational problem, independently of a tolerance.
+
+## Derivation: a small residual is amplified by an inverse
+
+For nonsingular A and an exactly evaluated residual,
+
+$$A(\widehat x-x_*)=r,\qquad\widehat x-x_*=A^{-1}r.$$
+
+Thus
+
+$$\|\widehat x-x_*\|_\infty\le\|A^{-1}\|_\infty\|r\|_\infty.$$
+
+A large inverse norm can amplify a tiny residual. Appropriate relative forms involve the condition number and scales of A, b and the reference solution. This is a mathematical sensitivity statement; whether the computed residual itself is reliable is a separate numerical question.
+
+Elimination avoids explicitly forming every inverse entry when only one right-hand side is needed. It often reduces avoidable work and error, but a tiny system does not prove that inversion always produces a worse result. The explorer reports the actual outcome instead of enforcing that slogan.
+
+## Worked examples: ordinary, ill-conditioned and singular
+
+For
+
+$$A=\begin{bmatrix}3&1\\1&2\end{bmatrix},\qquad b=\begin{bmatrix}4\\3\end{bmatrix},$$
+
+the exact solution is (1,1). Its determinant is 5 and infinity condition number is 16/5. Partial pivoting records a first pivot 3, multiplier 1/3 and second pivot near 5/3. Back substitution and inverse multiplication are both compared with the exact solution.
+
+For the ill-conditioned preset, intended rows are [1,1] and [1,1.000000000001], with b=[2,2.0000000000010001]. The exact solution is (0.9999,1.0001). Binary64 rounds the slightly changed right-hand side to the same value as a different intended system and the computed solution is (1,1). Its stored-system numerical residual is zero; its intended-system exact residual norm is 1e-16, while its absolute forward error is 1e-4. The condition number is approximately 4e12, so the sensitivity is consistent with that discrepancy.
+
+The singular preset has rows [1,2] and [2,4], with b=[3,6]. These are the same constraint and admit infinitely many solutions. The inconsistent preset changes the second right-hand side to 7 and admits no solution. Neither gets an inverse or a unique numerical answer.
+
+<Stage caption="Select the recorded intermediate values. Previous, next and direct replay navigation preserve immutable numerical history."><AlgorithmsStage chapter="solver" worked client:load /></Stage>
+
+## Executable reference code
+
+The pedagogical reference independently solves the intended system with Fraction row reduction, then performs numerical partial pivoting. NumPy uses actual solve and inverse operations and reports residuals and forward differences against the exact intended-decimal reference. A NumPy condition estimate concerns its stored array, which can differ from the intended rational matrix. Literal checks include a required pivot swap and both singular classifications.
+
+<CodeFile source={reference} file="code/python/numerical_linear_algebra.py" />
+<CodeFile source={practical} file="code/python/numerical_linear_algebra_numpy.py" />
+
+## Explore: change the sensitivity or diagnostic
+
+Compare the well-conditioned and ill-conditioned presets. Predict which measurement stays small and explain its scale. Select a required-pivot example with a zero first diagonal coefficient; the row swap supplies a valid pivot rather than dividing by zero.
+
+Edit the four row-major matrix entries and the two right-hand sides. The dimensions remain bounded at 2×2, entries lie within ±10, and invalid shape or non-finite input is rejected. Change the relative pivot diagnostic tolerance without changing the intended matrix. The exact rank and reference must remain unchanged even when a warning changes.
+
+Choose the rounded-singular preset: an exact intended difference of 1e-16 in a coefficient can disappear during binary64 conversion. The intended system and represented system then have different rank. The model preserves both classifications.
+
+## Common mistakes and counterexamples
+
+A small numerical residual need not imply a small exact residual, and even a small exact residual can coexist with a substantial forward error when the matrix is ill-conditioned. A finite determinant alone does not establish a well-conditioned problem. A tolerance should express a scale and purpose, not redefine real equality.
+
+Explicit inversion is not a general shortcut to numerical reliability. Pivoting reduces a selected elimination failure but does not recover input digits already discarded, cure all ill-conditioning or make every matrix invertible. This bounded example is not a replacement for a tested numerical linear algebra library.
+
+## Numerical considerations
+
+The accepted exact rational matrix model classifies the intended problem and supplies a 2×2 solution when unique. Actual binary64 operations own the computed methods. Residual evaluation against the intended problem reads computed solution components back as exact represented rationals, so it does not lose a small discrepancy in a second floating subtraction.
+
+The pivot warning compares the second pivot magnitude with a chosen fraction of the matrix infinity norm. Zero disables the nonzero-pivot warning but never disables rank or finite-value guards. Non-finite computed solutions remain unavailable. Near-singular fixtures measure the error they actually have; tests do not relax accuracy claims to hide sensitivity.
+
+## Engineering and ML connections
+
+Regression, least squares, covariance analysis and optimization all produce linear systems. Choose a solver and decomposition appropriate to the matrix structure, inspect conditioning and residual scales, and retain a known or independently solved reference where feasible. Large libraries add richer rank and error estimates; the same distinction between problem sensitivity and algorithm behavior remains essential.
+
+<Xref to="chapters/floating-point-representation/">Inspect the corresponding representation and error policy</Xref> before interpreting a computed value.
+
+## Exercises
+
+Predict first, then calculate or test the stated claim. Every answer includes corrective feedback and a worked solution.
+
+<Exercise id="numerical-solver-1" client:load />
+<Exercise id="numerical-solver-2" client:load />
+<Exercise id="numerical-solver-3" client:load />
+<Exercise id="numerical-solver-4" client:load />
+<Exercise id="numerical-solver-5" client:load />
+
+## Summary and checkpoints
+
+Distinguish intended and represented systems, numerical and exact residuals, and residual versus forward error. Reproduce the 1e-16 residual/1e-4 forward-error counterexample, interpret the pivot swap and warning tolerance, and identify infinite-solution, inconsistent and rounded-singular cases without inventing inverses.
+
