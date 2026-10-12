@@ -1,0 +1,116 @@
+---
+kind: chapter
+curriculumId: VIII.2
+title: "Rounding and representation error"
+hero: "Why can displayed *decimals* hide a different sum?"
+lede: Compare exact intended decimal values with exact stored binary rationals. Split the error of addition into operand representation and the arithmetic rounding that follows.
+description: "Compare exact intended decimal values with exact stored binary rationals. Split the error of addition into operand representation and the arithmetic rounding that follows."
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import Xref from '../../shell/Xref.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import NumbersStage from '../../lessons/numerical-computing/NumbersStage';
+import Exercise from '../../lessons/numerical-computing/NumericalExercise';
+import reference from '../../../code/python/rounding_representation_error.py?raw';
+import practical from '../../../code/python/rounding_representation_error_numpy.py?raw';
+
+<Stage caption="Replay two exact decimal conversions and their rounded addition; compare representation, evaluation and total answer error."><NumbersStage chapter="rounding" client:load /></Stage>
+
+## Intuition: two opportunities to round
+
+Typing 0.1 asks a binary format to represent an intended real value. Addition then operates on the represented operands, and its exact result may need another rounding. These are separate events. The explorer begins with 0.1+0.2 and retains both in its replay.
+
+Decimal formatting is a third, presentation-only step. A formatter may print a short decimal that round-trips to the stored number, or a fixed number of digits that conceals a difference. Changing display precision does not change the bits. Inspect the exact rational and bit fields when two displays look equal.
+
+## Definition: signed, absolute and relative error
+
+For intended x and finite computed $\widehat x$, signed error is $\widehat x-x$, absolute error is $|\widehat x-x|$, and relative error is
+
+$$\frac{|\widehat x-x|}{|x|},\qquad x\ne0.$$
+
+Relative error is undefined at intended zero. ULP error uses a specified representable spacing and differs from relative error; spacing can change at a binade boundary. Infinity and NaN have no finite rational error here. They remain explicit exceptional results.
+
+For addition let a and b be the intended rational decimals, $\widehat a$ and $\widehat b$ the rounded operands, and $\widehat s$ the rounded operation result. The model retains the exact sum of stored operands before rounding it.
+
+## Mechanics: three exact differences
+
+Choose single-decimal mode to inspect one conversion, or sum mode to inspect two independent conversions and one operation. In sum mode the inspector reports:
+
+$$E_{\mathrm{repr}}=(\widehat a+\widehat b)-(a+b),$$
+$$E_{\mathrm{eval}}=\widehat s-(\widehat a+\widehat b),$$
+$$E_{\mathrm{total}}=\widehat s-(a+b).$$
+
+The bit board displays the actual stored result. Formats are software-emulated with the same direct nearest/ties-even conversion policy as the representation chapter. Every basic arithmetic operation is not exact merely because these particular operands are representable.
+
+## Derivation: how the contributions add
+
+Add and subtract the exact stored-operand sum:
+
+$$\widehat s-(a+b)=\bigl[\widehat s-(\widehat a+\widehat b)\bigr]+\bigl[(\widehat a+\widehat b)-(a+b)\bigr].$$
+
+This identity is exact in rational arithmetic and does not assume the operation was exact. Correct rounding bounds the local operation error by half a local lattice gap in ordinary finite cases; it does not bound every longer calculation by the same single error. Overflow and representability boundaries need their own interpretation.
+
+A decimal terminates in binary precisely when its reduced denominator is a power of two. The rational 1/10 has a factor of five in its denominator, so its binary expansion does not terminate. Finite binary storage must select an approximation.
+
+## Worked example: 0.1 plus 0.2
+
+The stored binary64 values are
+
+$$\widehat a=\frac{3602879701896397}{36028797018963968},\qquad\widehat b=\frac{3602879701896397}{18014398509481984}.$$
+
+The intended sum is $3/10$. The exact stored-operand sum lies halfway between two binary64 values at that scale, and ties-to-even selects the upper one:
+
+$$\widehat s=\frac{1351079888211149}{4503599627370496}.$$
+
+Its common short decimal display is 0.30000000000000004. The representation contribution is $3/180143985094819840$, the evaluation contribution is $1/36028797018963968$, and their sum is $1/22517998136852480$. Replay inspects those three exact quantities instead of inferring error from rounded text.
+
+Single-decimal mode also shows 9007199254740993, which rounds to 9007199254740992 in binary64. Large integers eventually exceed the consecutive-integer precision range; being an integer does not guarantee representability.
+
+<Stage caption="Select the recorded intermediate values. Previous, next and direct replay navigation preserve immutable numerical history."><NumbersStage chapter="rounding" worked client:load /></Stage>
+
+## Executable reference code
+
+Fraction exposes the exact represented operands and answer, and verifies the decomposition independently. The NumPy example repeats the operation in three concrete dtypes. Its printed result, exact rational and error are distinct outputs; the low-precision arrays are real NumPy dtypes while this browser explorer performs explicitly emulated rounding.
+
+<CodeFile source={reference} file="code/python/rounding_representation_error.py" />
+<CodeFile source={practical} file="code/python/rounding_representation_error_numpy.py" />
+
+## Explore: predictions near a boundary
+
+Compare 0.1 alone, its sum with 0.2, and the large-integer preset. Predict whether the error is conversion error, operation error, or both before opening the replay. Switch the sum between formats and compare exact stored sums rather than assuming more range implies more precision.
+
+Use FP16 at the halfway preset, then just above halfway. Change only the last decimal digits and observe the stored bit change. Try zero as the intended input: absolute error still has a meaning, but relative error cannot divide by zero.
+
+## Common mistakes and counterexamples
+
+A stored decimal display and the intended decimal are different mathematical objects. Two computations can share a rounded display but differ in bits; the same bits can be formatted in many ways. Adding finite stored operands can round even when each conversion has already completed.
+
+Subtracting displayed decimal strings is not a trustworthy measurement of representation error. The exact rational difference is the measurement in this explorer. Likewise, ordinary equality is appropriate for exact bits and discrete counts, while approximate-answer tests need a justified tolerance.
+
+## Numerical considerations
+
+The sum model performs exact rational addition of encoded operands, then one direct rounding to the chosen format. Binary64 parity checks include the actual JavaScript 0.1+0.2 result. Inputs that already round to infinity cannot enter the finite-operand sum experiment; the range explorer explains that failure separately.
+
+The direct conversion avoids an intermediate binary format. Its halfway tests cover more than ordinary small decimals: subnormal carries, signed zero, large integers and overflow thresholds are committed independent fixtures. Error budgets apply to particular numerical evaluations, never to bit or rational comparisons.
+
+## Engineering and ML connections
+
+Dataset decimals, text-based parameters and binary tensor entries can refer to different values. An error record should state the intended input, its storage conversion and the operation sequence. This is especially useful when low-precision storage feeds higher-precision accumulation: a more accurate accumulator cannot reconstruct operand digits already discarded by conversion.
+
+<Xref to="chapters/floating-point-representation/">Inspect the corresponding representation and error policy</Xref> before interpreting a computed value.
+
+## Exercises
+
+Predict first, then calculate or test the stated claim. Every answer includes corrective feedback and a worked solution.
+
+<Exercise id="numerical-rounding-1" client:load />
+<Exercise id="numerical-rounding-2" client:load />
+<Exercise id="numerical-rounding-3" client:load />
+<Exercise id="numerical-rounding-4" client:load />
+<Exercise id="numerical-rounding-5" client:load />
+
+## Summary and checkpoints
+
+Separate intended decimals, stored bits and formatted displays. Reproduce the exact error decomposition for 0.1+0.2, explain undefined relative error at zero, and identify a large integer that cannot be stored exactly. A basic operation can contribute additional rounding after representation.
+

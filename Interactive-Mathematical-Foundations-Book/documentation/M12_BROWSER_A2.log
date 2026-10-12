@@ -1,0 +1,37 @@
+[WebServer] (node:61497) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 12 tests using 3 workers
+
+(node:61509) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:61510) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:61511) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   3 [desktop] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.3: exact input, numerical identity, immutable replay, keyboard and reset (739ms)
+  ✓   2 [desktop] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.2: exact input, numerical identity, immutable replay, keyboard and reset (774ms)
+  ✓   1 [desktop] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.1: exact input, numerical identity, immutable replay, keyboard and reset (861ms)
+(node:61989) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:62007) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   4 [desktop] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.4: exact input, numerical identity, immutable replay, keyboard and reset (568ms)
+(node:62251) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   6 [tablet] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.2: exact input, numerical identity, immutable replay, keyboard and reset (717ms)
+  ✓   5 [tablet] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.1: exact input, numerical identity, immutable replay, keyboard and reset (853ms)
+(node:62489) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   7 [tablet] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.3: exact input, numerical identity, immutable replay, keyboard and reset (653ms)
+  ✓   8 [tablet] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.4: exact input, numerical identity, immutable replay, keyboard and reset (604ms)
+(node:62579) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:62651) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   9 [mobile] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.1: exact input, numerical identity, immutable replay, keyboard and reset (845ms)
+  ✓  11 [mobile] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.3: exact input, numerical identity, immutable replay, keyboard and reset (652ms)
+  ✓  12 [mobile] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.4: exact input, numerical identity, immutable replay, keyboard and reset (518ms)
+  ✓  10 [mobile] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.2: exact input, numerical identity, immutable replay, keyboard and reset (1.5s)
+
+  12 passed (5.3s)

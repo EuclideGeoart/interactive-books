@@ -1,0 +1,116 @@
+---
+kind: chapter
+curriculumId: VIII.3
+title: "Error propagation and conditioning"
+hero: "When does a tiny input change cause a large *output* change?"
+lede: Perturb a known function and inspect its exact response. Keep problem conditioning, algorithm stability, floating-point roundoff and the error of one answer as separate questions.
+description: "Perturb a known function and inspect its exact response. Keep problem conditioning, algorithm stability, floating-point roundoff and the error of one answer as separate questions."
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import Xref from '../../shell/Xref.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import NumbersStage from '../../lessons/numerical-computing/NumbersStage';
+import Exercise from '../../lessons/numerical-computing/NumericalExercise';
+import reference from '../../../code/python/error_conditioning.py?raw';
+import practical from '../../../code/python/error_conditioning_numpy.py?raw';
+
+<Stage caption="Change the exact input and perturbation; compare the mathematical response with input representation, actual evaluation roundoff and total answer error."><NumbersStage chapter="conditioning" client:load /></Stage>
+
+## Intuition: sensitivity belongs to a question
+
+A measurement can be almost unchanged while the mathematical answer changes substantially. That sensitivity exists before selecting any computer algorithm. The reciprocal example asks for $1/(x-1)$ close to x=1; a tiny change in the denominator can halve or double the answer.
+
+The square example at x=2 provides a well-conditioned contrast. The relative size of a small output perturbation is approximately twice the relative size of the input perturbation. A large absolute output alone is not a condition number: units and scales matter.
+
+## Definition: local relative conditioning
+
+For a differentiable scalar function with nonzero x and nonzero f(x), a local relative condition number is
+
+$$\kappa_f(x)=\left|\frac{x f'(x)}{f(x)}\right|.$$
+
+It comes from the first-order response $\Delta f\approx f'(x)\Delta x$, and therefore describes infinitesimal perturbations at a valid point. It is not an unconditional bound for arbitrary finite changes. At zero output this relative definition is undefined; absolute sensitivity $|f'(x)|$ can still be meaningful.
+
+For $f(x)=x^2$, the nonzero-input relative condition number is 2. For $f(x)=1/(x-1)$ with x≠1, it is $|x/(x-1)|$. At x=0 the reciprocal value is nonzero but the usual relative-input interpretation degenerates; the displayed analytic formula evaluates to zero, and should not be read as a guarantee for relative perturbations of zero.
+
+## Mechanics: four distinct quantities
+
+**Conditioning** describes how the mathematical problem responds to input changes. **Stability** describes how an algorithm's errors relate to nearby valid problems or to a suitable error bound. **Roundoff** describes the actual error introduced by finite arithmetic. **Answer error** compares one computed answer with the specified mathematical answer.
+
+The explorer keeps exact decimal x and delta, exact f(x) and f(x+delta), the binary64 stored input, and the computed answer. It splits answer error into input representation effect and arithmetic evaluation roundoff. This split uses exact rational values for the two supported functions; it does not classify an algorithm as stable merely because one displayed error is small.
+
+## Derivation: perturbation and representation
+
+For the square,
+
+$$f(x+\delta)-f(x)=2x\delta+\delta^2.$$
+
+For the reciprocal, provided neither endpoint equals the pole,
+
+$$\frac1{x+\delta-1}-\frac1{x-1}=\frac{-\delta}{(x-1)(x+\delta-1)}.$$
+
+The second denominator reveals why a small delta near the pole can have a large effect. If the perturbation touches or crosses x=1, the continuous path contains an undefined input even when both endpoints are finite. The explorer explicitly warns that a local condition estimate cannot describe the whole path.
+
+For stored input $\widehat x$ and computed $\widehat f$, the total signed answer error is exactly
+
+$$\widehat f-f(x)=\bigl[f(\widehat x)-f(x)\bigr]+\bigl[\widehat f-f(\widehat x)\bigr].$$
+
+This keeps input representation separate from evaluating the function at that represented input.
+
+## Worked example: a million becomes half a million
+
+At x=2 and delta=0.01, exact square values are 4 and 4.0401. The exact output change is 0.0401; the first-order estimate is 0.04, with the remaining 0.0001 supplied by the quadratic term.
+
+At x=1.000001 and delta=0.000001, the reciprocal values are exactly 1000000 and 500000. The input changed by one millionth, yet the answer halved. The local relative condition number at the starting point is 1000001. This finite perturbation equals the starting distance to the pole, so blindly applying a first-order approximation would be inappropriate.
+
+Binary64 cannot store the intended decimal x exactly. The computed reciprocal is compared first with the exact mathematical function at the stored x, then with the intended-decimal answer. The difference between those comparisons is the effect of input representation. The independently checked Fraction reference supplies both intended mathematical values.
+
+<Stage caption="Select the recorded intermediate values. Previous, next and direct replay navigation preserve immutable numerical history."><NumbersStage chapter="conditioning" worked client:load /></Stage>
+
+## Executable reference code
+
+The standard-library reference forms both mathematical answers with Fraction, reads the stored input with Fraction.from_float, and verifies the exact error decomposition. NumPy evaluates an actual array of inputs and contrasts the numerical changes with the exact intended-decimal counterexample. Neither reference uses the browser model to generate its expectation.
+
+<CodeFile source={reference} file="code/python/error_conditioning.py" />
+<CodeFile source={practical} file="code/python/error_conditioning_numpy.py" />
+
+## Explore: keep the question fixed
+
+Begin with the square, change delta and compare the exact change with its linear prediction. Switch to the reciprocal and decrease the distance from x to one. Explain why a fixed input perturbation now matters more.
+
+Select the pole to see undefined real mathematics and a computational infinity together. They are not a valid finite answer. Select cross-pole to see finite endpoint answers alongside the path warning. The warning concerns the mathematical domain, not a plotting limitation.
+
+Use zero in the square example. Its exact value exists, but the relative condition number is undefined because the reference output is zero. Choose an absolute error measure rather than repairing the denominator with an arbitrary epsilon.
+
+## Common mistakes and counterexamples
+
+An ill-conditioned problem is not automatically an unstable implementation, and a stable method does not remove intrinsic sensitivity. A tiny observed error for one input does not certify stability for all inputs. Conversely, a large answer error can arise mainly from a sensitive response to unavoidable input conversion.
+
+Rationalizing an expression changes evaluation behavior; it does not change the mathematical function's conditioning. The next chapter uses that distinction directly. A tolerance is a comparison policy, not a theorem that every error below it is mathematically zero.
+
+## Numerical considerations
+
+Inputs are bounded by |x|≤100 and |delta|≤1, with exact decimal parsing. Exact rational references identify poles without a floating epsilon. Computed subtraction and reciprocal are evaluated in actual JavaScript binary64 and their represented outputs are read back exactly before measuring errors.
+
+At x=1 the real reciprocal is undefined. If a nearby intended input rounds to one, the numerical denominator can also become zero, even though the intended mathematical question was finite. The record retains that distinction and does not fabricate a finite error for infinity. No general stability theorem is claimed for these two local demonstrations.
+
+## Engineering and ML connections
+
+Sensor uncertainty, finite dataset precision and rounded parameter storage all perturb inputs. A condition estimate helps identify which questions amplify those perturbations. Algorithm design then controls avoidable evaluation errors. In a training diagnostic or linear solve, report the problem, the algorithm and the actual error measure separately so a numerical symptom does not get mistaken for a mathematical guarantee.
+
+<Xref to="chapters/floating-point-representation/">Inspect the corresponding representation and error policy</Xref> before interpreting a computed value.
+
+## Exercises
+
+Predict first, then calculate or test the stated claim. Every answer includes corrective feedback and a worked solution.
+
+<Exercise id="numerical-conditioning-1" client:load />
+<Exercise id="numerical-conditioning-2" client:load />
+<Exercise id="numerical-conditioning-3" client:load />
+<Exercise id="numerical-conditioning-4" client:load />
+<Exercise id="numerical-conditioning-5" client:load />
+
+## Summary and checkpoints
+
+Reproduce both exact perturbation examples. Identify the assumptions behind a relative condition number, detect a pole or a zero-output exception, and split one answer's error into input effect and roundoff. Explain why problem conditioning and algorithm stability are different properties.
+

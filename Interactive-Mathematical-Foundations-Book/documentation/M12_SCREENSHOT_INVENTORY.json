@@ -1,0 +1,275 @@
+{
+  "platform": "Linux system Chrome",
+  "blockA": [
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-catastrophic-cancellation-large.png",
+      "sha256": "75d95a7002fd878f0869da030511df1acaa959552c8deb56b8c18947593d1e03",
+      "size": [
+        836,
+        1564
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-catastrophic-cancellation.png",
+      "sha256": "8d4e6dd4ffd6f875353eb89af00b1b19c9f7a6564b2e4d3644df6e9b888f5d1d",
+      "size": [
+        836,
+        1519
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-error-propagation-conditioning-pole.png",
+      "sha256": "88a664e0b3bba1f3af93fea50ff1bbcdd5896ccd5a0f337c995454bc375535f7",
+      "size": [
+        836,
+        1651
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-error-propagation-conditioning.png",
+      "sha256": "53588969e5f2abbde8d9e1071936bd4e55957b61c0ae795e519e7baee3eb6afe",
+      "size": [
+        836,
+        1435
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-floating-point-representation-nan.png",
+      "sha256": "cd1f80e6a8faf7acec3a0501453eff12bd81a2728841b931bc8e543578494810",
+      "size": [
+        836,
+        1934
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-floating-point-representation-negative-zero.png",
+      "sha256": "44a00026e047e264c7ea324eb2d27c8c61afa6255840dd9a2e0c095f309a00d8",
+      "size": [
+        836,
+        1826
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-floating-point-representation-subnormal.png",
+      "sha256": "ba3a2904ef5e6fea47f19395d6acf53c674d1afb8325ec1afa31a47310b481cb",
+      "size": [
+        836,
+        1852
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-floating-point-representation.png",
+      "sha256": "8df247cebe185a561b6a4ee529206a910d0cb9b4e99dc4703720b047fe298ffe",
+      "size": [
+        836,
+        1875
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-rounding-representation-error-above-tie.png",
+      "sha256": "b1f67debf7352ef0ddb85abf63b14b2ed253aa46494bfe683bd60cf4b8fbdace",
+      "size": [
+        836,
+        2002
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-rounding-representation-error.png",
+      "sha256": "c0f2a1f94ad313defdb4569f286817029f2c210219b48881ee00c7ca64755e4d",
+      "size": [
+        836,
+        2086
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-catastrophic-cancellation-large.png",
+      "sha256": "6550d4f44fa44a50ca567fbb676f7f97d7cf9fa196313c5ce9d20babdff037b6",
+      "size": [
+        356,
+        2087
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-catastrophic-cancellation.png",
+      "sha256": "cbb2825b2c2006d1a51f7ce0fbc8a9505efd99a8dab2f5d584f5ec556eb6d602",
+      "size": [
+        356,
+        2086
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-error-propagation-conditioning-pole.png",
+      "sha256": "36345982009aae796e84f2c3a0f63610e52d50828249f48f125468d5fcdef58d",
+      "size": [
+        356,
+        2346
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-error-propagation-conditioning.png",
+      "sha256": "4b031b01ce806dfb489e4fc31685e6f0ff50cee28e019ac9c7fe115be40a87e4",
+      "size": [
+        356,
+        2017
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-floating-point-representation-nan.png",
+      "sha256": "54c0fbd582f22ecbbf73665ced16a3326fd52c5923817f5139444c55ee59a00e",
+      "size": [
+        356,
+        2710
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-floating-point-representation-negative-zero.png",
+      "sha256": "ede3ab64785630b907a5d770801e85ac30e920ab513db710b9a8b4e97a4e80f7",
+      "size": [
+        356,
+        2613
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-floating-point-representation-subnormal.png",
+      "sha256": "3fa4e57fca401bdf10d969bdaf4bd6bd67cdd05a90fbcc0b1572a7510e5dfa6e",
+      "size": [
+        356,
+        2617
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-floating-point-representation.png",
+      "sha256": "8f32d18391a72a35478822b55ff45f11891029c2c6ad82e105253954852af09f",
+      "size": [
+        356,
+        2622
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-rounding-representation-error-above-tie.png",
+      "sha256": "74b63f13b854424e0ef071371cf9e4ebfbf74e254415cbab73b7a9875c9e9f29",
+      "size": [
+        356,
+        2827
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-rounding-representation-error.png",
+      "sha256": "dee44edd802cdd7db1fdd342cd6e6c121b4850092397f3cc86dd98469e8f239a",
+      "size": [
+        356,
+        3172
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-catastrophic-cancellation-large.png",
+      "sha256": "ca2ba2a91255a5d8226b4a8a201438c44513fbaa1909c30558ff5c8f5cf6e188",
+      "size": [
+        748,
+        1572
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-catastrophic-cancellation.png",
+      "sha256": "59f444e3ebbb4d1b50db11e96eaea94756044ac577056ba61bb9964901e1cdf3",
+      "size": [
+        748,
+        1549
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-error-propagation-conditioning-pole.png",
+      "sha256": "1beffe479f5840318b3c3e98fa9a6531cd51e1814e24c4d73d2b8cd97aba4b4c",
+      "size": [
+        748,
+        1665
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-error-propagation-conditioning.png",
+      "sha256": "e2c708c0339839dc25a689f7d9f549d71210ad3cd22e5f85ff7def2c85838a28",
+      "size": [
+        748,
+        1450
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-floating-point-representation-nan.png",
+      "sha256": "715460455d5c237f9d00fa994a1c5f5bd07a4e09279870b0d7a9738872a07517",
+      "size": [
+        748,
+        1942
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-floating-point-representation-negative-zero.png",
+      "sha256": "93971d7e8a49ef79e6aaf6ea00882da53be0470e948c2569b8d61d6fde974bd4",
+      "size": [
+        748,
+        1879
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-floating-point-representation-subnormal.png",
+      "sha256": "2df24c02e93bbe8955960f276e6de0dd12ec6a60b738c33182544a26291a7db4",
+      "size": [
+        748,
+        1883
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-floating-point-representation.png",
+      "sha256": "46b1f4c858324ef77702a237b074bac1b865c7e6d22faf4ecb357946cf73fb1b",
+      "size": [
+        748,
+        1883
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-rounding-representation-error-above-tie.png",
+      "sha256": "d946810ad4bf3fd46fdfd3884eee56fb657730172361af5e3147f16f05c9ef8e",
+      "size": [
+        748,
+        2085
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    },
+    {
+      "path": "tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-rounding-representation-error.png",
+      "sha256": "27e31350e12d6915a5811bf33cdecaa5b5a8dd9918016004540251ffb130f8c5",
+      "size": [
+        748,
+        2152
+      ],
+      "review": "Individually inspected by Agent B after final wrapping fixes; correct bits, values, exception labels, no row overlap, complete mobile format selector; exact tables have labelled keyboard-scrollable regions."
+    }
+  ]
+}

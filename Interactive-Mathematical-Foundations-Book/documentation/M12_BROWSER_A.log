@@ -1,0 +1,239 @@
+[WebServer] (node:55067) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 48 tests using 3 workers
+
+(node:55082) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:55080) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:55081) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.1: exact input, numerical identity, immutable replay, keyboard and reset (861ms)
+  ✓   4 [desktop] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.2: exact input, numerical identity, immutable replay, keyboard and reset (555ms)
+  ✓   2 [desktop] › tests/e2e/numerical-computing.spec.ts:15:2 › VIII.1: five exercise answers, feedback and worked solutions (1.5s)
+  ✓   6 [desktop] › tests/e2e/numerical-computing.spec.ts:15:2 › VIII.2: five exercise answers, feedback and worked solutions (1.4s)
+  ✓   7 [desktop] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.3: exact input, numerical identity, immutable replay, keyboard and reset (581ms)
+  ✓   3 [desktop] › tests/e2e/numerical-computing.spec.ts:14:2 › VIII.1: both-theme exceptional-state accessibility (5.9s)
+  ✓   5 [desktop] › tests/e2e/numerical-computing.spec.ts:14:2 › VIII.2: both-theme exceptional-state accessibility (4.8s)
+  ✓   9 [desktop] › tests/e2e/numerical-computing.spec.ts:15:2 › VIII.3: five exercise answers, feedback and worked solutions (1.3s)
+  ✓   8 [desktop] › tests/e2e/numerical-computing.spec.ts:14:2 › VIII.3: both-theme exceptional-state accessibility (4.3s)
+  ✓  12 [desktop] › tests/e2e/numerical-computing.spec.ts:15:2 › VIII.4: five exercise answers, feedback and worked solutions (1.2s)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-floating-point-representation.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-floating-point-representation-negative-zero.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-floating-point-representation-subnormal.png, writing actual.
+  ✓  11 [desktop] › tests/e2e/numerical-computing.spec.ts:14:2 › VIII.4: both-theme exceptional-state accessibility (3.7s)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-floating-point-representation-nan.png, writing actual.
+  ✓  13 [desktop] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.1: opening and important numerical failure states (2.4s)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-rounding-representation-error.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-error-propagation-conditioning.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-rounding-representation-error-above-tie.png, writing actual.
+  ✓  14 [desktop] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.2: opening and important numerical failure states (1.3s)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-error-propagation-conditioning-pole.png, writing actual.
+  ✓  15 [desktop] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.3: opening and important numerical failure states (1.2s)
+(node:56310) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-catastrophic-cancellation.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-catastrophic-cancellation-large.png, writing actual.
+  ✓  16 [desktop] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.4: opening and important numerical failure states (1.3s)
+  ✓  17 [tablet] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.1: exact input, numerical identity, immutable replay, keyboard and reset (606ms)
+  ✘  10 [desktop] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.4: exact input, numerical identity, immutable replay, keyboard and reset (7.4s)
+(node:56456) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56509) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  20 [tablet] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.2: exact input, numerical identity, immutable replay, keyboard and reset (641ms)
+  ✓  18 [tablet] › tests/e2e/numerical-computing.spec.ts:15:2 › VIII.1: five exercise answers, feedback and worked solutions (1.3s)
+  ✓  22 [tablet] › tests/e2e/numerical-computing.spec.ts:15:2 › VIII.2: five exercise answers, feedback and worked solutions (1.3s)
+  ✓  23 [tablet] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.3: exact input, numerical identity, immutable replay, keyboard and reset (583ms)
+  ✓  21 [tablet] › tests/e2e/numerical-computing.spec.ts:14:2 › VIII.2: both-theme exceptional-state accessibility (5.2s)
+  ✓  19 [tablet] › tests/e2e/numerical-computing.spec.ts:14:2 › VIII.1: both-theme exceptional-state accessibility (6.2s)
+  ✓  26 [tablet] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.4: exact input, numerical identity, immutable replay, keyboard and reset (682ms)
+  ✓  25 [tablet] › tests/e2e/numerical-computing.spec.ts:15:2 › VIII.3: five exercise answers, feedback and worked solutions (1.4s)
+  ✓  24 [tablet] › tests/e2e/numerical-computing.spec.ts:14:2 › VIII.3: both-theme exceptional-state accessibility (4.7s)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-floating-point-representation.png, writing actual.
+  ✓  28 [tablet] › tests/e2e/numerical-computing.spec.ts:15:2 › VIII.4: five exercise answers, feedback and worked solutions (1.3s)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-floating-point-representation-negative-zero.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-floating-point-representation-subnormal.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-rounding-representation-error.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-floating-point-representation-nan.png, writing actual.
+  ✓  29 [tablet] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.1: opening and important numerical failure states (2.7s)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-rounding-representation-error-above-tie.png, writing actual.
+  ✓  30 [tablet] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.2: opening and important numerical failure states (1.6s)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-error-propagation-conditioning.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-catastrophic-cancellation.png, writing actual.
+  ✓  27 [tablet] › tests/e2e/numerical-computing.spec.ts:14:2 › VIII.4: both-theme exceptional-state accessibility (4.4s)
+(node:57719) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-error-propagation-conditioning-pole.png, writing actual.
+  ✓  31 [tablet] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.3: opening and important numerical failure states (1.4s)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-catastrophic-cancellation-large.png, writing actual.
+  ✓  32 [tablet] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.4: opening and important numerical failure states (1.5s)
+(node:57820) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:57886) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  33 [mobile] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.1: exact input, numerical identity, immutable replay, keyboard and reset (942ms)
+  ✓  35 [mobile] › tests/e2e/numerical-computing.spec.ts:15:2 › VIII.1: five exercise answers, feedback and worked solutions (1.8s)
+  ✓  34 [mobile] › tests/e2e/numerical-computing.spec.ts:14:2 › VIII.1: both-theme exceptional-state accessibility (4.9s)
+  ✓  37 [mobile] › tests/e2e/numerical-computing.spec.ts:14:2 › VIII.2: both-theme exceptional-state accessibility (4.1s)
+  ✓  38 [mobile] › tests/e2e/numerical-computing.spec.ts:15:2 › VIII.2: five exercise answers, feedback and worked solutions (1.6s)
+  ✘  36 [mobile] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.2: exact input, numerical identity, immutable replay, keyboard and reset (8.4s)
+(node:58774) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  40 [mobile] › tests/e2e/numerical-computing.spec.ts:14:2 › VIII.3: both-theme exceptional-state accessibility (3.8s)
+  ✓  41 [mobile] › tests/e2e/numerical-computing.spec.ts:15:2 › VIII.3: five exercise answers, feedback and worked solutions (1.3s)
+  ✘  39 [mobile] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.3: exact input, numerical identity, immutable replay, keyboard and reset (7.4s)
+(node:59101) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  43 [mobile] › tests/e2e/numerical-computing.spec.ts:14:2 › VIII.4: both-theme exceptional-state accessibility (3.4s)
+  ✓  44 [mobile] › tests/e2e/numerical-computing.spec.ts:15:2 › VIII.4: five exercise answers, feedback and worked solutions (1.3s)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-floating-point-representation.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-rounding-representation-error.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-floating-point-representation-negative-zero.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-rounding-representation-error-above-tie.png, writing actual.
+  ✓  46 [mobile] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.2: opening and important numerical failure states (2.2s)
+  ✘  42 [mobile] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.4: exact input, numerical identity, immutable replay, keyboard and reset (7.4s)
+(node:59399) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-error-propagation-conditioning.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-error-propagation-conditioning-pole.png, writing actual.
+  ✓  47 [mobile] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.3: opening and important numerical failure states (1.3s)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-floating-point-representation-subnormal.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-catastrophic-cancellation.png, writing actual.
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-catastrophic-cancellation-large.png, writing actual.
+  ✓  48 [mobile] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.4: opening and important numerical failure states (1.3s)
+A snapshot doesn't exist at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-floating-point-representation-nan.png, writing actual.
+  ✓  45 [mobile] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.1: opening and important numerical failure states (6.5s)
+
+
+  1) [desktop] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.4: exact input, numerical identity, immutable replay, keyboard and reset 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('[data-stage="numerical-cancellation"]').locator('[data-param="text"] input')
+    Expected: "true"
+    Received: ""
+    Timeout:  7000ms
+
+    Call log:
+      - Expect "toHaveAttribute" locator('[data-stage="numerical-cancellation"]').locator('[data-param="text"] input') with timeout 7000ms
+      - waiting for locator('[data-stage="numerical-cancellation"]').locator('[data-param="text"] input')
+        18 × locator resolved to <input type="text" value="1e16" autocomplete="off" spellcheck="false" id="numerical-cancellation-P0-2" aria-describedby="numerical-cancellation-P0-2-hint"/>
+           - unexpected value "null"
+
+
+       7 |   const original=await metrics(s);await s.getByRole('button',{name:/^Next/}).click();await expect(s.locator('[data-trace-index]')).toHaveAttribute('data-trace-index','1');await s.getByRole('button',{name:/Previous/}).click();expect(await metrics(s)).toEqual(original);
+       8 |   await entry(s,'text',chapter==='conditioning'?'3':'1');expect((await state(s)).text).toBe(chapter==='conditioning'?'3':'1');
+    >  9 |   const bad=await entry(s,'text','1e9999');await expect(bad).toHaveAttribute('aria-invalid','true');expect((await state(s)).text).toBe(chapter==='conditioning'?'3':'1');
+         |                                                              ^
+      10 |   await s.locator(`[data-preset="${preset}"]`).click();await expect(s.locator('[data-verdict]')).not.toBeEmpty();await s.locator('[data-action="reset"]').click();expect(await metrics(s)).toEqual(original);await expect(s.locator('[data-announcement]')).not.toBeEmpty();
+      11 |   if(chapter==='representation'){const bits=(await metrics(s)).bits;await s.locator('[data-bit="0"]').focus();await s.locator('[data-bit="0"]').press('Enter');expect((await metrics(s)).bits[0]).not.toBe(bits[0]);await expect(s.locator('[data-quantity="sign"]')).toContainText('1');await s.getByLabel('binary64',{exact:true}).check();expect((await metrics(s)).bits).toHaveLength(64);}
+      12 |   if(chapter==='rounding')expect(original.exact).toBe('1351079888211149/4503599627370496');if(chapter==='cancellation'){expect(original.naive).toBe(0);expect(original.stable).toBeGreaterThan(0);}
+        at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/numerical-computing.spec.ts:9:62
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/numerical-computing-VIII-4-b3e40-e-replay-keyboard-and-reset-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/numerical-computing-VIII-4-b3e40-e-replay-keyboard-and-reset-desktop/error-context.md
+
+  2) [mobile] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.2: exact input, numerical identity, immutable replay, keyboard and reset 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('[data-stage="numerical-rounding"]').locator('[data-param="text"] input')
+    Expected: "true"
+    Received: ""
+    Timeout:  7000ms
+
+    Call log:
+      - Expect "toHaveAttribute" locator('[data-stage="numerical-rounding"]').locator('[data-param="text"] input') with timeout 7000ms
+      - waiting for locator('[data-stage="numerical-rounding"]').locator('[data-param="text"] input')
+        18 × locator resolved to <input type="text" value="0.1" autocomplete="off" spellcheck="false" id="numerical-rounding-P0-2" aria-describedby="numerical-rounding-P0-2-hint"/>
+           - unexpected value "null"
+
+
+       7 |   const original=await metrics(s);await s.getByRole('button',{name:/^Next/}).click();await expect(s.locator('[data-trace-index]')).toHaveAttribute('data-trace-index','1');await s.getByRole('button',{name:/Previous/}).click();expect(await metrics(s)).toEqual(original);
+       8 |   await entry(s,'text',chapter==='conditioning'?'3':'1');expect((await state(s)).text).toBe(chapter==='conditioning'?'3':'1');
+    >  9 |   const bad=await entry(s,'text','1e9999');await expect(bad).toHaveAttribute('aria-invalid','true');expect((await state(s)).text).toBe(chapter==='conditioning'?'3':'1');
+         |                                                              ^
+      10 |   await s.locator(`[data-preset="${preset}"]`).click();await expect(s.locator('[data-verdict]')).not.toBeEmpty();await s.locator('[data-action="reset"]').click();expect(await metrics(s)).toEqual(original);await expect(s.locator('[data-announcement]')).not.toBeEmpty();
+      11 |   if(chapter==='representation'){const bits=(await metrics(s)).bits;await s.locator('[data-bit="0"]').focus();await s.locator('[data-bit="0"]').press('Enter');expect((await metrics(s)).bits[0]).not.toBe(bits[0]);await expect(s.locator('[data-quantity="sign"]')).toContainText('1');await s.getByLabel('binary64',{exact:true}).check();expect((await metrics(s)).bits).toHaveLength(64);}
+      12 |   if(chapter==='rounding')expect(original.exact).toBe('1351079888211149/4503599627370496');if(chapter==='cancellation'){expect(original.naive).toBe(0);expect(original.stable).toBeGreaterThan(0);}
+        at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/numerical-computing.spec.ts:9:62
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/numerical-computing-VIII-2-10aba-e-replay-keyboard-and-reset-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/numerical-computing-VIII-2-10aba-e-replay-keyboard-and-reset-mobile/error-context.md
+
+  3) [mobile] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.3: exact input, numerical identity, immutable replay, keyboard and reset 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('[data-stage="numerical-conditioning"]').locator('[data-param="text"] input')
+    Expected: "true"
+    Received: ""
+    Timeout:  7000ms
+
+    Call log:
+      - Expect "toHaveAttribute" locator('[data-stage="numerical-conditioning"]').locator('[data-param="text"] input') with timeout 7000ms
+      - waiting for locator('[data-stage="numerical-conditioning"]').locator('[data-param="text"] input')
+        18 × locator resolved to <input value="2" type="text" autocomplete="off" spellcheck="false" id="numerical-conditioning-P0-2" aria-describedby="numerical-conditioning-P0-2-hint"/>
+           - unexpected value "null"
+
+
+       7 |   const original=await metrics(s);await s.getByRole('button',{name:/^Next/}).click();await expect(s.locator('[data-trace-index]')).toHaveAttribute('data-trace-index','1');await s.getByRole('button',{name:/Previous/}).click();expect(await metrics(s)).toEqual(original);
+       8 |   await entry(s,'text',chapter==='conditioning'?'3':'1');expect((await state(s)).text).toBe(chapter==='conditioning'?'3':'1');
+    >  9 |   const bad=await entry(s,'text','1e9999');await expect(bad).toHaveAttribute('aria-invalid','true');expect((await state(s)).text).toBe(chapter==='conditioning'?'3':'1');
+         |                                                              ^
+      10 |   await s.locator(`[data-preset="${preset}"]`).click();await expect(s.locator('[data-verdict]')).not.toBeEmpty();await s.locator('[data-action="reset"]').click();expect(await metrics(s)).toEqual(original);await expect(s.locator('[data-announcement]')).not.toBeEmpty();
+      11 |   if(chapter==='representation'){const bits=(await metrics(s)).bits;await s.locator('[data-bit="0"]').focus();await s.locator('[data-bit="0"]').press('Enter');expect((await metrics(s)).bits[0]).not.toBe(bits[0]);await expect(s.locator('[data-quantity="sign"]')).toContainText('1');await s.getByLabel('binary64',{exact:true}).check();expect((await metrics(s)).bits).toHaveLength(64);}
+      12 |   if(chapter==='rounding')expect(original.exact).toBe('1351079888211149/4503599627370496');if(chapter==='cancellation'){expect(original.naive).toBe(0);expect(original.stable).toBeGreaterThan(0);}
+        at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/numerical-computing.spec.ts:9:62
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/numerical-computing-VIII-3-2f6a5-e-replay-keyboard-and-reset-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/numerical-computing-VIII-3-2f6a5-e-replay-keyboard-and-reset-mobile/error-context.md
+
+  4) [mobile] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.4: exact input, numerical identity, immutable replay, keyboard and reset 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('[data-stage="numerical-cancellation"]').locator('[data-param="text"] input')
+    Expected: "true"
+    Received: ""
+    Timeout:  7000ms
+
+    Call log:
+      - Expect "toHaveAttribute" locator('[data-stage="numerical-cancellation"]').locator('[data-param="text"] input') with timeout 7000ms
+      - waiting for locator('[data-stage="numerical-cancellation"]').locator('[data-param="text"] input')
+        18 × locator resolved to <input type="text" value="1e16" autocomplete="off" spellcheck="false" id="numerical-cancellation-P0-2" aria-describedby="numerical-cancellation-P0-2-hint"/>
+           - unexpected value "null"
+
+
+       7 |   const original=await metrics(s);await s.getByRole('button',{name:/^Next/}).click();await expect(s.locator('[data-trace-index]')).toHaveAttribute('data-trace-index','1');await s.getByRole('button',{name:/Previous/}).click();expect(await metrics(s)).toEqual(original);
+       8 |   await entry(s,'text',chapter==='conditioning'?'3':'1');expect((await state(s)).text).toBe(chapter==='conditioning'?'3':'1');
+    >  9 |   const bad=await entry(s,'text','1e9999');await expect(bad).toHaveAttribute('aria-invalid','true');expect((await state(s)).text).toBe(chapter==='conditioning'?'3':'1');
+         |                                                              ^
+      10 |   await s.locator(`[data-preset="${preset}"]`).click();await expect(s.locator('[data-verdict]')).not.toBeEmpty();await s.locator('[data-action="reset"]').click();expect(await metrics(s)).toEqual(original);await expect(s.locator('[data-announcement]')).not.toBeEmpty();
+      11 |   if(chapter==='representation'){const bits=(await metrics(s)).bits;await s.locator('[data-bit="0"]').focus();await s.locator('[data-bit="0"]').press('Enter');expect((await metrics(s)).bits[0]).not.toBe(bits[0]);await expect(s.locator('[data-quantity="sign"]')).toContainText('1');await s.getByLabel('binary64',{exact:true}).check();expect((await metrics(s)).bits).toHaveLength(64);}
+      12 |   if(chapter==='rounding')expect(original.exact).toBe('1351079888211149/4503599627370496');if(chapter==='cancellation'){expect(original.naive).toBe(0);expect(original.stable).toBeGreaterThan(0);}
+        at /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/numerical-computing.spec.ts:9:62
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/numerical-computing-VIII-4-b3e40-e-replay-keyboard-and-reset-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/numerical-computing-VIII-4-b3e40-e-replay-keyboard-and-reset-mobile/error-context.md
+
+  4 failed
+    [desktop] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.4: exact input, numerical identity, immutable replay, keyboard and reset 
+    [mobile] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.2: exact input, numerical identity, immutable replay, keyboard and reset 
+    [mobile] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.3: exact input, numerical identity, immutable replay, keyboard and reset 
+    [mobile] › tests/e2e/numerical-computing.spec.ts:5:2 › VIII.4: exact input, numerical identity, immutable replay, keyboard and reset 
+  44 passed (47.7s)

@@ -1,0 +1,17 @@
+
+ RUN  v3.2.7 /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book
+
+ ✓ tests/unit/numerical-exercises.test.ts (4 tests) 5ms
+ ✓ tests/unit/curriculum.test.ts (12 tests) 11ms
+ ✓ tests/unit/numerical-floating.parity.test.ts (245 tests) 34ms
+ ✓ tests/unit/numerical-lesson.test.ts (25 tests) 90ms
+ ✓ tests/unit/numerical-validation.test.ts (1 test) 203ms
+ ✓ tests/unit/numerical-floating.test.ts (10 tests) 259ms
+ ✓ tests/unit/content.test.ts (96 tests) 485ms
+ ✓ tests/unit/validation-plan.test.ts (49 tests) 2706ms
+
+ Test Files  8 passed (8)
+      Tests  442 passed (442)
+   Start at  18:19:49
+   Duration  3.01s (transform 384ms, setup 0ms, collect 815ms, tests 3.79s, environment 1ms, prepare 472ms)
+

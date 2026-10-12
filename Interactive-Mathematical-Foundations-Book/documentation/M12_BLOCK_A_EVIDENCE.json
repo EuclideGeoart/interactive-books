@@ -1,0 +1,40 @@
+{
+  "baseline": "5c97622e5ef16b0f2a1d83d8adb906db7df04bbd",
+  "scope": "Focused Block A implementation only; no standalone milestone/exhaustive acceptance",
+  "published": 83,
+  "chapters": [
+    "VIII.1",
+    "VIII.2",
+    "VIII.3",
+    "VIII.4"
+  ],
+  "exercises": 20,
+  "references": 8,
+  "tests": {
+    "focusedUnits": 442,
+    "unitFiles": 8,
+    "additionalManualBitLessonCheck": 26,
+    "pythonSelfTests": 5,
+    "fixtures": 245,
+    "allFiniteFP16BF16Encodings": "Exhaustively round-tripped; bits, zero signs exact",
+    "browserHistory": "Initial 44 passes / 4 failed input timing cases; shared synchronous-draft fix reran all 12 affected exact-entry cases, passed. Two-theme axe/exercise checks passed. Explicit mobile touch passed, with two viewport-only skips. Visual source defects corrected before review; 30 new images regenerated and individually inspected, final 12 visual tests passed."
+  },
+  "budgets": "All bits/classes/rational quantities exact; cancellation Decimal450 lies inside live rational enclosures; actual-value binary64 reference allowance four ULPs. No prior numerical/accessibility/visual budget changed.",
+  "diskFreeGiB": 21,
+  "limitations": [
+    "software format emulation, no hardware performance claims",
+    "bounded exact decimal inputs and cancellation domain 0..1e300",
+    "Windows/physical devices/human screen reader/exhaustive acceptance deferred"
+  ],
+  "sourceSha256": {
+    "src/math/numerical-computing/floating.ts": "47fe4457e7ad066f8f72801a162d4f705e13b75874c0f29d673834c32e61ef1e",
+    "src/math/numerical-computing/error.ts": "7a292a669a1206ef4ec12fa9ab7fd984f73354c52030fc0c731b9de250614427",
+    "src/lessons/numerical-computing/numerical.css": "8d43e63954ad5f2fb319611e1c371e0439c76a967891bc16d87de87967dd7e90",
+    "src/lessons/numerical-computing/NumericalStage.tsx": "11d652d559bb7a584185d75d319bca63520e53e2c6c0846fd6135ab1bfe5bbdf",
+    "src/lessons/numerical-computing/exercises.ts": "177379d4270009b7a6752a6b3642e91eba5f642e5709ddebb93f8c4efc0043ea",
+    "src/lessons/numerical-computing/numbers-lesson.ts": "59fb114ed2440eb398147c0eb3b6bc6174b081a6e7c64b7f399694120b1ab088",
+    "src/lessons/numerical-computing/NumericalExercise.tsx": "d25b6560bc46d533d8d617826bb1684a07ac8b1fe039e8fa77afa271ff39bf7a",
+    "src/lessons/numerical-computing/NumbersStage.tsx": "458065448eea44d2e4e85801abc83f0e600905a900618110aa2efca9364692e5",
+    "src/lessons/numerical-computing/view.ts": "54125ce2857afc837875ee519aa2ed99ea860e915c8e1a37afcd02b56aa2f2a9"
+  }
+}

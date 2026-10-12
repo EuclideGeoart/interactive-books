@@ -1,0 +1,119 @@
+---
+kind: chapter
+curriculumId: VIII.1
+title: "Floating-point representation"
+hero: "Which *bits* determine a machine number?"
+lede: Edit a sign, exponent or fraction bit and inspect the value it creates. Compare four binary formats through exact stored rationals, neighbors and spacing before using their rounded displays.
+description: "Edit a sign, exponent or fraction bit and inspect the value it creates. Compare four binary formats through exact stored rationals, neighbors and spacing before using their rounded displays."
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import Xref from '../../shell/Xref.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import NumbersStage from '../../lessons/numerical-computing/NumbersStage';
+import Exercise from '../../lessons/numerical-computing/NumericalExercise';
+import reference from '../../../code/python/floating_point_representation.py?raw';
+import practical from '../../../code/python/floating_point_representation_numpy.py?raw';
+
+<Stage caption="Edit bits, select an exact decimal and compare four software-emulated formats. The neighbors and errors decode the same stored state."><NumbersStage chapter="representation" client:load /></Stage>
+
+## Intuition: a movable binary ruler
+
+A floating-point format is a finite set of points on the real number line, together with encodings for exceptional values. Around one, a format with more fraction bits offers more points. Far from zero, its ruler stretches: the gap between adjacent normal values grows with the exponent. The ruler is therefore not a uniform decimal grid.
+
+Start with FP16 and 0.1. Change the final fraction bit, then the first exponent bit. Both actions change the same stored bit pattern displayed in the inspector. The first usually makes a local precision change; the second can change the scale dramatically. The intended decimal remains visible as the comparison target. Reset returns to direct rounding of that target.
+
+A sign bit distinguishes positive and negative values. Zero has two encodings, +0 and −0. They compare equal numerically in ordinary arithmetic, but operations such as a reciprocal can observe their sign. The chapter deliberately retains −0, even though the book normally suppresses it in ordinary rounded readouts.
+
+## Definition: fields and their interpretation
+
+Let e be the number of exponent bits, p the number of stored fraction bits, b the exponent bias, s the sign bit, E the unsigned exponent field and F the unsigned fraction field. For a normal finite value,
+
+$$x=(-1)^s(1+F2^{-p})2^{E-b},\qquad 0<E<2^e-1.$$
+
+The leading one is implicit, so normal precision is p+1 binary digits. With E=0 the implicit leading digit is zero:
+
+$$x=(-1)^sF2^{1-b-p}.$$
+
+Nonzero values in this second case are subnormal. F=0 produces signed zero. When E is all ones, F=0 encodes signed infinity and F≠0 encodes NaN. A NaN has no ordered real value and no real-number representation error. This explorer uses one canonical quiet NaN for direct decimal input; editing bits can reveal other payloads without claiming that their payload semantics are portable.
+
+## Mechanics: compare range and precision
+
+All four formats here use a sign bit, but their budgets differ.
+
+| Format | Exponent bits | Fraction bits | Normal precision | Normal exponent range |
+| --- | ---: | ---: | ---: | --- |
+| binary64 | 11 | 52 | 53 | −1022 to 1023 |
+| binary32 | 8 | 23 | 24 | −126 to 127 |
+| FP16 / binary16 | 5 | 10 | 11 | −14 to 15 |
+| BF16 / bfloat16 | 8 | 7 | 8 | −126 to 127 |
+
+BF16 spends more of its 16 bits on exponent range; FP16 spends more on local precision. BF16 and binary32 share exponent field sizes but do not share identical maximum finite values, minimum subnormals or accuracy. Neither 16-bit format is a smaller binary32 with unchanged numerical behavior.
+
+The bit explorer emulates all format conversions in software. JavaScript evaluates the later arithmetic examples in binary64. A selected FP16 or BF16 conversion is **software emulation**, not evidence about the physical CPU, GPU, accelerator, runtime, or its handling of subnormals.
+
+## Derivation: spacing and one rounding decision
+
+Incrementing F within one normal binade increases x by
+
+$$\operatorname{ulp}(x)=2^{E-b-p}.$$
+
+At an exact power of two, the previous binade has half the forward spacing. The neighbor table therefore shows the actual neighbors rather than assuming symmetric gaps. All subnormals have constant spacing $2^{1-b-p}$. Their relative precision declines as they approach zero.
+
+Direct conversion first represents the intended decimal as a rational, locates the binary scale, then rounds its scaled significand to the nearest integer. If the exact value is halfway, choose the even integer. A carry can reach the next binade, turn the largest subnormal into the smallest normal, or overflow the finite range. No binary64 or binary32 intermediate is used to decide a low-precision conversion.
+
+## Worked example: a halfway decision
+
+Near one, FP16 spacing is $2^{-10}=1/1024$. The decimal 1.00048828125 is exactly $1+2^{-11}$, halfway between 1 and 1.0009765625. The first has an even trailing significand bit, so ties-to-even chooses 1.
+
+The decimal 1.000488281250000000000000000001 lies strictly above that midpoint. Direct FP16 rounding chooses 1.0009765625. Converting this text to binary64 first can erase the tiny excess, after which a second rounding incorrectly chooses 1 for a claimed direct conversion. The above-halfway preset and committed independent fixture expose that double-rounding trap.
+
+For 0.1, the intended exact value is $1/10$. Its binary64 encoding instead stores $3602879701896397/36028797018963968$. The neighboring values, its encoded fields and its exact error all come from that same bit pattern.
+
+<Stage caption="Select the recorded intermediate values. Previous, next and direct replay navigation preserve immutable numerical history."><NumbersStage chapter="representation" worked client:load /></Stage>
+
+## Executable reference code
+
+The pedagogical program reads decimal strings through Fraction and rounds only once to the requested format. The NumPy program inspects the actual array bits of ordinary binary64, binary32 and binary16 inputs; it explicitly keeps BF16 emulated. NumPy's dtype conversion is a cross-check for these ordinary inputs, not the oracle for the direct-decimal halfway counterexample. These examples run from the repository; later references import the first program from the same directory.
+
+<CodeFile source={reference} file="code/python/floating_point_representation.py" />
+<CodeFile source={practical} file="code/python/floating_point_representation_numpy.py" />
+
+## Explore: find the edges of a format
+
+Select subnormal, negative zero, infinity and NaN. Explain which exponent/fraction patterns distinguish them. Change the format before changing the decimal: the same exact decimal can become normal, subnormal or zero. For a normal value at one, flip a low fraction bit and inspect the neighbor spacing.
+
+Type the halfway and just-above-halfway values yourself. The entry is exact decimal text, with a bounded optional decimal exponent, so the input widget does not round away your evidence. Invalid syntax or oversized input is rejected with a message. Bit edits intentionally alter the encoding; applying new decimal text returns to direct conversion.
+
+## Common mistakes and counterexamples
+
+A display reading 0.1 does not certify that the stored rational is 1/10. More exponent bits expand scale coverage; they do not supply more fraction precision. A subnormal is a finite nonzero value, not a NaN and not automatically zero.
+
+Infinity can encode an explicitly entered infinity or a finite input that overflowed. Those origins have different mathematical meanings. A NaN is not a very large number: real ordering, ordinary real error and a real neighbor are undefined.
+
+## Numerical considerations
+
+This model implements nearest, ties-to-even with gradual underflow. Hardware can use different modes or flush subnormals; that would be a different numerical policy. The emulation is not a timing benchmark and does not assert physical hardware support.
+
+Exact bits and rational errors are compared exactly in tests. Independent Python fixtures locate nearest representable values by ordered-bit search, a different algorithm from the browser's scaled-significand rounding. Literal checks include ties, signs, subnormal boundaries, overflow and special values. A displayed decimal is rounded only for reading; it never drives the bit model.
+
+## Engineering and ML connections
+
+Tensor storage formats trade range, precision and memory. Activations with a broad scale distribution can demand exponent range, while closely spaced parameter values demand significand precision. Mixed precision adds decisions about accumulation and conversion points. First identify which values are stored and which operations run in which format; the format name alone does not describe an entire training algorithm.
+
+<Xref to="chapters/rounding-representation-error/">Inspect the corresponding representation and error policy</Xref> before interpreting a computed value.
+
+## Exercises
+
+Predict first, then calculate or test the stated claim. Every answer includes corrective feedback and a worked solution.
+
+<Exercise id="numerical-representation-1" client:load />
+<Exercise id="numerical-representation-2" client:load />
+<Exercise id="numerical-representation-3" client:load />
+<Exercise id="numerical-representation-4" client:load />
+<Exercise id="numerical-representation-5" client:load />
+
+## Summary and checkpoints
+
+Read sign, exponent and fraction as one encoding. Explain normal versus subnormal spacing, preserve signed-zero and exceptional-value meanings, and compare FP16's local precision with BF16's scale range. Reproduce the halfway decision and identify why a binary64 intermediate can invalidate a direct-conversion claim.
+

@@ -1,0 +1,12 @@
+oracle interpreter: .venv/bin/python
+test_decimal_references (test_numerical_floating_oracle.FloatingOracleTests.test_decimal_references) ... ok
+test_direct_double_rounding_counterexample (test_numerical_floating_oracle.FloatingOracleTests.test_direct_double_rounding_counterexample) ... ok
+test_executed_references (test_numerical_floating_oracle.FloatingOracleTests.test_executed_references) ... ok
+test_literals (test_numerical_floating_oracle.FloatingOracleTests.test_literals) ... ok
+test_struct_crosscheck (test_numerical_floating_oracle.FloatingOracleTests.test_struct_crosscheck) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.546s
+
+OK
+numerical floating fixtures fresh

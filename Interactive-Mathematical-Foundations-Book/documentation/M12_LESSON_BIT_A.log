@@ -1,0 +1,10 @@
+
+ RUN  v3.2.7 /work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book
+
+ ✓ tests/unit/numerical-lesson.test.ts (26 tests) 62ms
+
+ Test Files  1 passed (1)
+      Tests  26 passed (26)
+   Start at  18:26:51
+   Duration  346ms (transform 75ms, setup 0ms, collect 99ms, tests 62ms, environment 0ms, prepare 50ms)
+

@@ -1,0 +1,83 @@
+[WebServer] (node:65702) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 27 tests using 3 workers
+
+(node:65717) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:65718) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:65716) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   2 [desktop] › tests/e2e/numerical-computing.spec.ts:14:2 › VIII.3: both-theme exceptional-state accessibility (4.5s)
+  ✓   1 [desktop] › tests/e2e/numerical-computing.spec.ts:14:2 › VIII.2: both-theme exceptional-state accessibility (5.0s)
+  -   5 [desktop] › tests/e2e/numerical-computing.spec.ts:21:1 › VIII.1: physical touch events select a stored bit and all four format labels fit
+  ✓   3 [desktop] › tests/e2e/numerical-computing.spec.ts:14:2 › VIII.1: both-theme exceptional-state accessibility (6.0s)
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-floating-point-representation.png is re-generated, writing actual.
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-rounding-representation-error.png is re-generated, writing actual.
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-floating-point-representation-negative-zero.png is re-generated, writing actual.
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-rounding-representation-error-above-tie.png is re-generated, writing actual.
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-floating-point-representation-subnormal.png is re-generated, writing actual.
+  ✓   7 [desktop] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.2: opening and important numerical failure states (2.2s)
+  ✓   4 [desktop] › tests/e2e/numerical-computing.spec.ts:14:2 › VIII.4: both-theme exceptional-state accessibility (4.1s)
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-floating-point-representation-nan.png is re-generated, writing actual.
+  ✓   6 [desktop] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.1: opening and important numerical failure states (4.1s)
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-error-propagation-conditioning.png is re-generated, writing actual.
+(node:66824) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-catastrophic-cancellation.png is re-generated, writing actual.
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-error-propagation-conditioning-pole.png is re-generated, writing actual.
+  ✓   8 [desktop] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.3: opening and important numerical failure states (1.9s)
+(node:66971) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/desktop-viii-catastrophic-cancellation-large.png is re-generated, writing actual.
+  ✓   9 [desktop] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.4: opening and important numerical failure states (2.1s)
+(node:67109) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  10 [tablet] › tests/e2e/numerical-computing.spec.ts:14:2 › VIII.1: both-theme exceptional-state accessibility (5.8s)
+  ✓  11 [tablet] › tests/e2e/numerical-computing.spec.ts:14:2 › VIII.2: both-theme exceptional-state accessibility (5.0s)
+  ✓  12 [tablet] › tests/e2e/numerical-computing.spec.ts:14:2 › VIII.3: both-theme exceptional-state accessibility (4.5s)
+  -  14 [tablet] › tests/e2e/numerical-computing.spec.ts:21:1 › VIII.1: physical touch events select a stored bit and all four format labels fit
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-floating-point-representation.png is re-generated, writing actual.
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-rounding-representation-error.png is re-generated, writing actual.
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-floating-point-representation-negative-zero.png is re-generated, writing actual.
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-rounding-representation-error-above-tie.png is re-generated, writing actual.
+  ✓  16 [tablet] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.2: opening and important numerical failure states (2.4s)
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-floating-point-representation-subnormal.png is re-generated, writing actual.
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-error-propagation-conditioning.png is re-generated, writing actual.
+  ✓  13 [tablet] › tests/e2e/numerical-computing.spec.ts:14:2 › VIII.4: both-theme exceptional-state accessibility (4.1s)
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-floating-point-representation-nan.png is re-generated, writing actual.
+  ✓  15 [tablet] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.1: opening and important numerical failure states (4.1s)
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-error-propagation-conditioning-pole.png is re-generated, writing actual.
+  ✓  17 [tablet] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.3: opening and important numerical failure states (1.9s)
+(node:68160) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:68170) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-catastrophic-cancellation.png is re-generated, writing actual.
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/tablet-viii-catastrophic-cancellation-large.png is re-generated, writing actual.
+  ✓  18 [tablet] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.4: opening and important numerical failure states (1.9s)
+(node:68480) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  20 [mobile] › tests/e2e/numerical-computing.spec.ts:14:2 › VIII.2: both-theme exceptional-state accessibility (4.5s)
+  ✓  19 [mobile] › tests/e2e/numerical-computing.spec.ts:14:2 › VIII.1: both-theme exceptional-state accessibility (5.4s)
+  ✓  21 [mobile] › tests/e2e/numerical-computing.spec.ts:14:2 › VIII.3: both-theme exceptional-state accessibility (4.1s)
+  ✓  23 [mobile] › tests/e2e/numerical-computing.spec.ts:21:1 › VIII.1: physical touch events select a stored bit and all four format labels fit (548ms)
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-floating-point-representation.png is re-generated, writing actual.
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-rounding-representation-error.png is re-generated, writing actual.
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-floating-point-representation-negative-zero.png is re-generated, writing actual.
+  ✓  22 [mobile] › tests/e2e/numerical-computing.spec.ts:14:2 › VIII.4: both-theme exceptional-state accessibility (3.6s)
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-floating-point-representation-subnormal.png is re-generated, writing actual.
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-rounding-representation-error-above-tie.png is re-generated, writing actual.
+  ✓  25 [mobile] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.2: opening and important numerical failure states (2.6s)
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-floating-point-representation-nan.png is re-generated, writing actual.
+  ✓  24 [mobile] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.1: opening and important numerical failure states (3.5s)
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-error-propagation-conditioning.png is re-generated, writing actual.
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-catastrophic-cancellation.png is re-generated, writing actual.
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-catastrophic-cancellation-large.png is re-generated, writing actual.
+/work/interactive-books-part-viii/Interactive-Mathematical-Foundations-Book/tests/e2e/__screenshots__/visual-numerical-computing.spec.ts/mobile-viii-error-propagation-conditioning-pole.png is re-generated, writing actual.
+  ✓  26 [mobile] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.3: opening and important numerical failure states (1.7s)
+  ✓  27 [mobile] › tests/e2e/visual-numerical-computing.spec.ts:3:45 › VIII.4: opening and important numerical failure states (1.6s)
+
+  2 skipped
+  25 passed (31.2s)

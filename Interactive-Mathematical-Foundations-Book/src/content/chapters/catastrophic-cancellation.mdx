@@ -1,0 +1,114 @@
+---
+kind: chapter
+curriculumId: VIII.4
+title: "Catastrophic cancellation"
+hero: "Where did the meaningful *digits* go?"
+lede: Subtract nearby square roots, then evaluate the same mathematical result through rationalization. Inspect actual binary64 intermediates and a live rational enclosure of the true real answer.
+description: "Subtract nearby square roots, then evaluate the same mathematical result through rationalization. Inspect actual binary64 intermediates and a live rational enclosure of the true real answer."
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import Xref from '../../shell/Xref.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import NumbersStage from '../../lessons/numerical-computing/NumbersStage';
+import Exercise from '../../lessons/numerical-computing/NumericalExercise';
+import reference from '../../../code/python/catastrophic_cancellation.py?raw';
+import practical from '../../../code/python/catastrophic_cancellation_numpy.py?raw';
+
+<Stage caption="Replay the actual roots and subtraction, then the reciprocal of their sum. Rational intervals bound the true result and both signed errors."><NumbersStage chapter="cancellation" client:load /></Stage>
+
+## Intuition: a difference smaller than the operands
+
+When two large nearby values are rounded independently, their small difference can depend on digits that storage already discarded. Subtraction removes their shared leading digits and exposes the uncertainty in the remaining ones. The result can be zero even when the mathematical difference is positive.
+
+Start at x=1e16. Both computed square roots coincide, so naive subtraction gives zero. The algebraically equivalent reciprocal of their sum remains positive. Replay the addition before the roots: at this scale, even x+1 can equal stored x in binary64.
+
+## Definition: the mathematical result and two algorithms
+
+For x≥0 define
+
+$$f(x)=\sqrt{x+1}-\sqrt x.$$
+
+Both square roots are real, the first is strictly larger, and f(x)>0 for finite x. The naive algorithm adds one, takes two rounded roots and subtracts them. The rationalized algorithm adds those positive roots, then reciprocates:
+
+$$f(x)=\frac1{\sqrt{x+1}+\sqrt x}.$$
+
+These identities concern exact real arithmetic. Their floating-point implementations retain different sequences of rounding. The explorer distinguishes the exact expression, its reference enclosure, each computed answer and each computed-minus-real error interval.
+
+## Mechanics: inspect the actual operands
+
+The stage records the intended exact decimal x, its binary64 representation, computed x+1, both square roots, naive subtraction, the stable denominator and its reciprocal. The same records feed every table and replay frame.
+
+The real reference is not the naive result recomputed in a second language. The browser builds rational lower and upper bounds for each exact square root using an integer-square-root construction with 220 fractional binary bits. Reciprocating the bounded positive sum gives a containing interval for the mathematical result. Python independently checks that interval using 450-digit Decimal square roots. The reference display is the rounded midpoint, explicitly an approximation.
+
+## Derivation: multiply by the conjugate
+
+Multiply numerator and denominator by the positive conjugate:
+
+$$\sqrt{x+1}-\sqrt x=\frac{(x+1)-x}{\sqrt{x+1}+\sqrt x}=\frac1{\sqrt{x+1}+\sqrt x}.$$
+
+The exact numerator is one. The stable implementation uses that exact identity instead of forming a difference of rounded roots. It does not recover a lost input increment; it evaluates the mathematical identity by a route that does not require that increment to survive subtraction.
+
+If $a_l\le\sqrt{x+1}\le a_u$ and $b_l\le\sqrt x\le b_u$, positivity reverses the reciprocal bounds:
+
+$$\frac1{a_u+b_u}\le f(x)\le\frac1{a_l+b_l}.$$
+
+For a computed rational q, subtract the upper and lower reference endpoints to get a signed error enclosure. This makes the measurement honest even though f(x) is generally irrational.
+
+## Worked example: x = 10000000000000000
+
+The true difference is approximately $5\times10^{-9}$. Its exact value is positive; no finite decimal display is presented as an exact radical answer. Binary64 rounds x+1 back to x at this scale. Both roots then evaluate to 100000000, and the naive subtraction evaluates to zero.
+
+The rationalized denominator evaluates to 200000000. Its reciprocal is approximately $5\times10^{-9}$ and has a small, independently checked error interval. The naive error is approximately the negative of the whole real result, corresponding to complete relative loss.
+
+At x=0 the exact result is one; both methods return one. At x=1 the result is $\sqrt2-1$, and neither method has a general exact-binary guarantee. Compare the error enclosures rather than inferring exactness from a short display. At x=1e300 the stable result is near $5\times10^{-151}$; it remains finite in the bounded experiment.
+
+<Stage caption="Select the recorded intermediate values. Previous, next and direct replay navigation preserve immutable numerical history."><NumbersStage chapter="cancellation" worked client:load /></Stage>
+
+## Executable reference code
+
+The pedagogical program computes actual binary64 intermediates and a Decimal450 reference through the rationalized mathematical identity. The NumPy version applies both algorithms to arrays and checks the stable answers against independent high-precision values at the actual stored inputs. The browser oracle separately checks the intended exact-decimal inputs; intended and stored-input references should not be conflated.
+
+<CodeFile source={reference} file="code/python/catastrophic_cancellation.py" />
+<CodeFile source={practical} file="code/python/catastrophic_cancellation_numpy.py" />
+
+## Explore: predict the first lost operation
+
+Start with small x, then the lost-subtraction preset. Predict whether x+1 itself changes before inspecting either square root. Increase x and compare the true-reference interval with both computed answers. Observe that cancellation can appear before every later range limit is reached.
+
+Try an invalid negative x: the model rejects the experiment because the specified real function uses sqrt(x). Reset restores the canonical exact input and immutable trace. Keyboard entry and pointer presets reach the same state; the replay selects recorded intermediates rather than recomputing an alternative path.
+
+## Common mistakes and counterexamples
+
+Subtraction is not universally inaccurate. For represented floating operands, subtraction can even be exact under appropriate conditions; the issue here is the information already lost while forming the operands. A small difference is also not itself proof that the mathematical problem is ill-conditioned.
+
+An algebraic rearrangement can improve this evaluation without improving the conditioning of a different question. It is not a universal repair for arbitrary cancellation, undefined domains or overflow. In a quadratic-root implementation, rationalization likewise requires care about root signs, zero denominators, scale and the representability of intermediates; this chapter does not implement a general quadratic solver.
+
+## Numerical considerations
+
+The supported range is the intended exact interval 0≤x≤1e300. It keeps the square-root sum finite and its reciprocal representable in binary64. Extending the implementation to arbitrary finite or infinite x would require additional range and exceptional-value policies, not simply reusing the current formula.
+
+For each current input, exact rational endpoints bound the true result and the signed error of each numerical answer. Decimal450 fixtures check literal hand cases and widely separated scales; platform square-root comparisons use a small actual-value ULP allowance. No tolerance can turn the naive zero into the positive mathematical answer.
+
+Rationalization still uses rounded input, addition, roots, denominator and division. It reduces the cancellation mechanism but does not promise an exactly rounded answer for all inputs. The error intervals preserve that remaining limitation.
+
+## Engineering and ML connections
+
+Difference formulas appear in finite differences, norms, loss changes and probability tails. A small difference between large rounded values deserves an error analysis before interpreting it as a reliable signal. Search for a mathematically justified alternative, check its domain and range, then compare against an independent reference on the inputs you actually support.
+
+<Xref to="chapters/floating-point-representation/">Inspect the corresponding representation and error policy</Xref> before interpreting a computed value.
+
+## Exercises
+
+Predict first, then calculate or test the stated claim. Every answer includes corrective feedback and a worked solution.
+
+<Exercise id="numerical-cancellation-1" client:load />
+<Exercise id="numerical-cancellation-2" client:load />
+<Exercise id="numerical-cancellation-3" client:load />
+<Exercise id="numerical-cancellation-4" client:load />
+<Exercise id="numerical-cancellation-5" client:load />
+
+## Summary and checkpoints
+
+Derive the conjugate identity, reproduce the lost increment and zero subtraction at 1e16, and interpret signed error enclosures. Explain why the stable alternative helps this evaluation, why it still rounds, and why the stated domain/range remains part of its contract.
+

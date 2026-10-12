@@ -1,0 +1,8 @@
+import {test,expect} from '@playwright/test';
+const cases=[['VIII.1','floating-point-representation','representation',['negative-zero','subnormal','nan']],['VIII.2','rounding-representation-error','rounding',['above-tie']],['VIII.3','error-propagation-conditioning','conditioning',['pole']],['VIII.4','catastrophic-cancellation','cancellation',['large']]] as const;
+for(const [id,slug,chapter,presets]of cases)test(`${id}: opening and important numerical failure states`,async({page})=>{
+ await page.goto(`chapters/${slug}/`);const s=page.locator(`[data-stage="numerical-${chapter}"]`);await expect(s).toHaveAttribute('data-hydrated','true');await page.evaluate(()=>document.fonts.ready);
+ await page.addStyleTag({content:'html{scroll-padding:0!important}.topbar{position:static!important;backdrop-filter:none!important}.skip-link{visibility:hidden!important}*{caret-color:transparent!important}'});
+ const capture=async(suffix:string)=>{await page.evaluate(()=>(document.activeElement as HTMLElement|null)?.blur());await page.mouse.move(0,0);await s.evaluate(e=>e.scrollIntoView({block:'start',behavior:'instant'}));await expect(s).toHaveScreenshot(`viii-${slug}${suffix}.png`);};
+ await capture('');for(const preset of presets){await s.locator(`[data-preset="${preset}"]`).click();await capture(`-${preset}`);}
+});

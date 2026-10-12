@@ -1,0 +1,26 @@
+/* Bits, indexed values and arithmetic records use the existing book typography and role colors. */
+.numerical-stage .inspector{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 1.5rem;}
+.numerical-stage .inspector-row,.numerical-stage .val,.numerical-stage .verdict{min-width:0;overflow-wrap:anywhere;}
+.numerical-stage .calc-table{max-height:20rem;}
+.numerical-stage .exact-entry{display:flex;gap:.5rem;min-width:0;}
+.numerical-stage .exact-entry input{min-width:0;flex:1;min-height:44px;background:var(--paper);color:var(--ink);border:1px solid var(--rule);border-radius:4px;padding:.5rem;font:inherit;}
+.numerical-stage .exact-entry button{min-height:44px;}
+.numerical-stage .bit-board{display:grid;gap:1rem;margin:1.25rem 0;}
+.numerical-stage .bit-group h3{margin:0 0 .5rem;font:inherit;font-weight:600;}
+.numerical-stage .bit-digits{display:flex;flex-wrap:wrap;gap:.25rem;}
+.numerical-stage .bit-digits button,.numerical-stage .bit-digits span{display:grid;place-items:center;min-width:44px;min-height:44px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);font-family:var(--font-mono);}
+.numerical-stage .bit-sign{border-left:3px solid var(--c-primary);padding-left:.5rem;}
+.numerical-stage .bit-exponent{border-left:3px solid var(--c-x);padding-left:.5rem;}
+.numerical-stage .bit-significand{border-left:3px solid var(--c-derived);padding-left:.5rem;}
+.numerical-stage .sparse-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem;margin:1rem 0;}
+.numerical-stage .sparse-grid button{min-height:64px;min-width:0;color:var(--ink);background:var(--paper);border:1px solid var(--rule);display:grid;gap:.25rem;}
+.numerical-stage .sparse-grid button[data-nonzero="true"]{border:2px solid var(--c-primary);}
+.numerical-stage .sparse-grid button:disabled{opacity:1;}
+@media(max-width:40rem){.numerical-stage .inspector{grid-template-columns:1fr;}}
+.numerical-stage.stage-full .formula-panel{grid-template-columns:minmax(0,1fr);}
+.numerical-stage .segments{display:flex;flex-wrap:wrap;max-width:100%;}
+.numerical-stage .segment{flex:1 1 8rem;min-width:0;}
+.numerical-stage .segment span{height:auto;min-height:44px;min-width:0;text-align:center;white-space:normal;}
+.numerical-stage .calc-table td{white-space:normal;overflow-wrap:anywhere;min-width:8ch;}
+.numerical-stage .inspector-row dd{max-width:100%;}
+.numerical-stage .inspector-row .line{white-space:normal;overflow-wrap:anywhere;}
