@@ -185,7 +185,7 @@ describe('Part III calculus registration', () => {
   });
   it('the bivariate engine selects III.7, III.8, III.9 and III.11; the graph engine selects only III.10', () => {
     const b = makePlan({ files: ['src/math/calculus/bivariate.ts'], catalog: withProbability() });
-    expect(b.conservativeExpansion).toBe(false); expect(b.chapters.slice().sort()).toEqual(['III.11', 'III.7', 'III.8', 'III.9', ...chapterCatalog().filter(c => c.id.startsWith('VI.')).map(c => c.id)].sort()); expect(b.oracles).toEqual(['multivariable','optimization_dynamics','optimization_landscapes']);
+    expect(b.conservativeExpansion).toBe(false); expect(b.chapters.slice().sort()).toEqual(['III.11', 'III.7', 'III.8', 'III.9', ...chapterCatalog().filter(c => c.id.startsWith('VI.')).map(c => c.id)].sort()); expect(b.oracles).toEqual(['multivariable','optimization_constraints','optimization_dynamics','optimization_landscapes']);
     const a = makePlan({ files: ['src/math/calculus/autodiff.ts'], catalog: withProbability() });
     expect(a.chapters).toEqual(['III.10']); expect(a.oracles).toEqual(['autodiff']);
     expect(a.units).toEqual(expect.arrayContaining(['tests/unit/autodiff.test.ts', 'tests/unit/autodiff.parity.test.ts', 'tests/unit/autodiff-lesson.test.ts']));

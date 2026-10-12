@@ -143,6 +143,8 @@ for (const ref of published) {
             if (await solution.count()) await solution.click();
           }
         });
+        // Audit from the top, as for the initial state, clear of sticky-header occlusion.
+        await page.evaluate(() => window.scrollTo(0, 0));
         await axe(page, `${ref.id} exercise feedback (${scheme})`);
       });
     }

@@ -1,0 +1,131 @@
+{
+  "phase": "M10 Block C, VI.9\u2013VI.10; focused checks only",
+  "baseline": "cdf2ebd5428d80999dcf52f93a8e3c0eee0ac167",
+  "blockB": "4cb4500369e24d26107bb5842654477d50139022",
+  "publication": {
+    "available": 69,
+    "total": 97,
+    "statistics": "planned"
+  },
+  "exercisesTotal": 50,
+  "pythonReferencesTotal": 20,
+  "checks": {
+    "unchangedEarlierModelsViews": {
+      "passed": 252,
+      "files": 8,
+      "log": "validation-results/m10-block-c-regression-unit.log"
+    },
+    "constraintsParityLiteralAndAllExerciseGraders": {
+      "passed": 147,
+      "files": 3,
+      "log": "validation-results/m10-block-c-final-unit.log",
+      "evaluationMaxScaledUlps": 1,
+      "evaluationAllowance": 8,
+      "trajectoryMaxScaledUlps": 3,
+      "trajectoryAllowance": 128
+    },
+    "contentCurriculumOwnership": {
+      "passed": 133,
+      "files": 3,
+      "log": "validation-results/m10-block-c-content-ownership.log"
+    },
+    "oracle": {
+      "selfTests": 29,
+      "fixtures": 77,
+      "referencesExecuted": 4,
+      "fresh": true,
+      "log": "validation-results/m10-block-c-oracle.log"
+    },
+    "type": {
+      "errors": 0,
+      "warnings": 0,
+      "existingHints": 5,
+      "log": "validation-results/m10-block-c-final-check.log"
+    },
+    "desktopMobileContractsAxeInteractionsExercises": {
+      "passedInitially": 38,
+      "failedInitially": 2,
+      "correctedAuditCasesPassed": 2,
+      "logs": [
+        "validation-results/m10-block-c-browser.log",
+        "validation-results/m10-block-c-browser-continuation.log"
+      ]
+    },
+    "visual": {
+      "imagesAdded": 15,
+      "casesPassed": 6,
+      "allImagesIndividuallyReviewed": true,
+      "inventory": [
+        "desktop-vi-constraints-regularization-disk.png",
+        "desktop-vi-constraints-regularization.png",
+        "desktop-vi-optimization-diagnostics-clipped.png",
+        "desktop-vi-optimization-diagnostics-nonfinite.png",
+        "desktop-vi-optimization-diagnostics.png",
+        "mobile-vi-constraints-regularization-disk.png",
+        "mobile-vi-constraints-regularization.png",
+        "mobile-vi-optimization-diagnostics-clipped.png",
+        "mobile-vi-optimization-diagnostics-nonfinite.png",
+        "mobile-vi-optimization-diagnostics.png",
+        "tablet-vi-constraints-regularization-disk.png",
+        "tablet-vi-constraints-regularization.png",
+        "tablet-vi-optimization-diagnostics-clipped.png",
+        "tablet-vi-optimization-diagnostics-nonfinite.png",
+        "tablet-vi-optimization-diagnostics.png"
+      ],
+      "log": "validation-results/m10-block-c-visual-comparison.log"
+    }
+  },
+  "performance": {
+    "runtime": "v24.18.0",
+    "scope": "Pure trace + adapter, warmed fixed landscape caches; excludes browser layout/paint",
+    "samples": 200,
+    "budget": 40,
+    "chapters": {
+      "descent": {
+        "medianMs": 0.49919999999997344,
+        "p95Ms": 1.130217000000016,
+        "maxMs": 2.65022399999998
+      },
+      "momentum": {
+        "medianMs": 0.6602249999999685,
+        "p95Ms": 1.102751000000012,
+        "maxMs": 1.6139100000000326
+      },
+      "stochastic": {
+        "medianMs": 0.6729010000000244,
+        "p95Ms": 0.8936639999999443,
+        "maxMs": 1.3334230000000389
+      },
+      "adam": {
+        "medianMs": 0.8613970000001245,
+        "p95Ms": 1.2346670000001723,
+        "maxMs": 1.6492179999997916
+      },
+      "constraints": {
+        "medianMs": 0.6034329999999954,
+        "p95Ms": 0.8521940000000541,
+        "maxMs": 1.1656009999999242
+      },
+      "diagnostics": {
+        "medianMs": 0.14798399999995127,
+        "p95Ms": 0.21174700000005942,
+        "maxMs": 0.3221459999999752
+      }
+    }
+  },
+  "corrected": [
+    "A feedback accessibility audit started below the sticky header and partially occluded two otherwise 44px inputs. The audit now resets scroll to the top, consistent with its initial-state audit and existing stage helper. All axe rules and target assertions are unchanged.",
+    "Tuple-index typing in the new parity test."
+  ],
+  "failedEvidenceRetained": [
+    "validation-results/m10-block-c-core-check.log",
+    "validation-results/m10-block-c-browser.log",
+    "validation-results/m10-block-c-browser"
+  ],
+  "heavyLock": "/tmp/imf-heavy.lock",
+  "limitations": [
+    "No isolated final M10 milestone/exhaustive gate",
+    "Root focused checks only; subpath belongs to combined acceptance",
+    "No Windows, physical device or manual screen-reader certification"
+  ]
+}

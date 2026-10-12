@@ -1,0 +1,207 @@
+---
+kind: chapter
+curriculumId: VI.9
+title: "Constraints and projected/penalized intuition"
+hero: "Do we restrict the allowed *points* or change their cost?"
+lede: Keep an unconstrained gradient proposal visible before projecting it into a feasible region. Then compare that hard geometric rule with an L2 penalty that changes the objective, its gradient, and its preferred parameters.
+description: Box and unit-disk projection, explicit feasible initialization, proposal versus correction and displacement, L2 objective and curvature changes, independent Python and NumPy checks, and five graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import OptimizationStage from '../../lessons/optimization/OptimizationStage';
+import Exercise from '../../lessons/optimization/OptimizationExercise';
+import reference from '../../../code/python/optimization_constraints.py?raw';
+import practical from '../../../code/python/optimization_constraints_numpy.py?raw';
+
+<Stage caption="Inspect the requested and feasible starts, then distinguish each unconstrained proposal, projected point, projection correction, and actual displacement. Switch between the fixed box and unit disk."><OptimizationStage chapter="constraints" client:load /></Stage>
+
+At the canonical start $(0,1)$, the gradient is $(-2,4)$ and the rate is 1. The unconstrained proposal is $(2,-3)$. Predict where the box rule sends it before advancing: the optimizer reaches $(1,-1)$, not the proposal. Now switch to the disk and predict which direction radial projection preserves.
+
+## Intuition: a boundary and a preference are different rules
+
+A hard constraint declares some parameter points inadmissible. Projection repairs an update by choosing the nearest admissible point to its proposal. The proposal remains part of the explanation even when it is never used as the next optimizer state.
+
+A penalty instead changes how expensive parameter points are. An L2 penalty makes large distance from the origin more costly, balancing that preference against the base objective. It does not reject a point merely because it lies outside a box or disk. A finite penalized minimum can remain outside either region.
+
+Feasibility and progress are also different. Repeated projection can keep every point allowed while the trajectory oscillates. The canonical box example deliberately shows this: a boundary is a geometric rule, not an automatic convergence mechanism.
+
+## Definition: the feasible set and the changed objective
+
+Write $\theta=(x,y)$ and use the bounded quadratic family
+
+$$
+L(\theta)=\frac a2(x-c)^2+2y^2,\qquad
+\nabla L=(a(x-c),4y),\qquad
+H_L=\begin{bmatrix}a&0\\0&4\end{bmatrix}.
+$$
+
+The explorer has $1/4\leq a\leq4$ and $-2\leq c\leq2$. Its hard-region choices are no constraint, the fixed box $C=[-1,1]^2$, and the unit disk $C=\{\theta:\norm{\theta}_2\leq1\}$. For a closed convex region, Euclidean projection is
+
+$$
+P_C(z)=\argmin_{u\in C}\frac12\norm{u-z}_2^2.
+$$
+
+The separate penalty mechanism uses $0\leq\lambda\leq4$:
+
+$$
+J(\theta)=L(\theta)+\lambda(x^2+y^2),\qquad
+\nabla J=\nabla L+2\lambda\theta,\qquad
+H_J=H_L+2\lambda I.
+$$
+
+At $\lambda=0$, J equals L. When a penalty is active, its gradient supplies the proposal and both the base loss and penalized objective remain meaningful quantities to inspect. Choosing a hard region independently applies its projection to that proposal.
+
+## Mechanics: record initialization and both parts of a step
+
+For a requested initial point $\theta_{\mathrm{requested}}$, the feasible initial state is explicitly
+
+$$
+\theta_0=P_C(\theta_{\mathrm{requested}}),\qquad
+r_0=\theta_0-\theta_{\mathrm{requested}}.
+$$
+
+Record the request, feasible start, and initialization correction before evaluating the first gradient. With no constraint, projection is the identity. With a box request $(2,-3)$, the feasible start is $(1,-1)$ and its correction is $(-1,2)$. This adjustment is initialization, not iteration 0's gradient step.
+
+For each iteration, let g be the gradient of the selected objective and retain
+
+$$
+z_k=\theta_k-\eta g_k,\qquad
+\theta_{k+1}=P_C(z_k),\qquad
+q_k=\theta_{k+1}-z_k,\qquad
+d_k=\theta_{k+1}-\theta_k.
+$$
+
+Here $q_k$ is the projection correction; $d_k$ is the actual parameter displacement. They satisfy $d_k=-\eta g_k+q_k$. Drawing the proposal vector as the actual displacement would hide the constraint's effect.
+
+Reset restores $a=1,c=2$, requested start $(0,1)$, $\eta=1$, $K=12$, $\lambda=0$, and the box. Replay selects stored updates. Compare the unconstrained preset at $\eta=0.1$, the disk at the canonical rate, and the no-constraint penalty presets at $\lambda=1$ and $\lambda=3$, both with rate $0.1$.
+
+## Derivation: nearest points and the penalized minimum
+
+The box distance objective separates into two coordinate squares. Each coordinate's nearest allowed value is its clamp:
+
+$$
+P_{\mathrm{box}}(z)=
+\bigl(\min(1,\max(-1,z_x)),\min(1,\max(-1,z_y))\bigr).
+$$
+
+For the disk, an interior point already has zero projection distance. If $\norm z_2>1$, the triangle inequality gives $\norm{z-u}_2\geq\norm z_2-1$ for every feasible u. Equality holds at $u=z/\norm z_2$, so
+
+$$
+P_{\mathrm{disk}}(z)=\frac{z}{\max(1,\norm z_2)}.
+$$
+
+This also has a direct KKT check. Use Lagrangian $\frac12\norm{u-z}_2^2+\frac\mu2(\norm u_2^2-1)$. For an exterior z, choose $u=z/\norm z_2$ and $\mu=\norm z_2-1$. Then
+
+$$
+u-z+\mu u=0,\qquad \norm u_2^2=1,\qquad
+\mu\geq0,\qquad \mu(\norm u_2^2-1)=0.
+$$
+
+Feasibility, stationarity, and complementarity identify the unique nearest point for this convex projection problem. They concern distance to z, not minimizing L in one operation.
+
+On the whole plane, the penalized quadratic has gradient $((a+2\lambda)x-ac,(4+2\lambda)y)$. Its positive-definite Hessian gives the unique minimum
+
+$$
+\theta_J^*=\left(\frac{ac}{a+2\lambda},0\right),\qquad
+J_{\min}=\frac{a\lambda c^2}{a+2\lambda}.
+$$
+
+For no hard constraint, errors around this changed target multiply by $1-\eta(a+2\lambda)$ and $1-\eta(4+2\lambda)$. Increasing the penalty increases curvature as well as changing the target; it need not rescue an excessive rate.
+
+## Worked examples: box repair, radial repair, and a soft preference
+
+At $(0,1)$ with $a=1,c=2$, the base loss is 4. The first box step is
+
+$$
+g_0=(-2,4),\qquad z_0=(2,-3),\qquad
+\theta_1=(1,-1),\qquad L_1=5/2.
+$$
+
+Its correction and actual displacement are different:
+
+$$
+q_0=(1,-1)-(2,-3)=(-1,2),\qquad
+d_0=(1,-1)-(0,1)=(1,-2).
+$$
+
+<Stage caption="Replay the canonical box step: loss 4, gradient (−2,4), proposal (2,−3), projected point (1,−1), correction (−1,2), displacement (1,−2), and next base loss 5/2."><OptimizationStage chapter="constraints" worked client:load /></Stage>
+
+The next gradient is $(-1,-4)$, proposal $(2,3)$, and projected point $(1,1)$. Subsequent y values alternate between $-1$ and 1 at this rate, with loss $5/2$. The constrained minimizer is $(1,0)$ with loss $1/2$. Every iterate is feasible, yet this run does not approach that minimum. At the minimizer the raw gradient is $(-1,0)$, while projection makes the actual displacement zero.
+
+With the same first proposal and the disk instead of the box,
+
+$$
+\theta_1=\frac{(2,-3)}{\sqrt{13}},\qquad
+q_0=\left(\frac2{\sqrt{13}}-2,-\frac3{\sqrt{13}}+3\right),\qquad
+d_0=\left(\frac2{\sqrt{13}},-\frac3{\sqrt{13}}-1\right).
+$$
+
+Its norm is 1, with projection multiplier $\sqrt{13}-1$. Its next base loss is $46/13-4/\sqrt{13}\approx2.42906$. Coordinate clamping to $(1,-1)$ would leave the disk.
+
+For the penalty preset, use no hard constraint, $\lambda=1$, and $\eta=1/10$. At the same start, $J_0=5$ and $\nabla J=(-2,6)$, giving
+
+$$
+\theta_1=(1/5,2/5),\qquad
+L_1=97/50,\qquad
+J_1=107/50=2.14.
+$$
+
+Here $\theta_J^*=(2/3,0)$, $J_{\min}=4/3$, and $H_J=\operatorname{diag}(3,6)$. The stronger penalty $\lambda=3$ starts at $J_0=7$, uses gradient $(-2,10)$, and reaches $(1/5,0)$ with $J_1=87/50$. Its preferred x coordinate is $2/7$. These are changes to the optimization problem, not projections onto a hard region.
+
+## Executable reference code
+
+The standalone standard-library reference uses 80-digit Decimal arithmetic for the bounded two-coordinate recurrence and disk square roots. It records the requested start, feasible start, initialization correction, and each step's base and penalized evaluations, proposal, projection, correction, and displacement. Literal assertions check the complete box step, disk feasibility and KKT equations, and the penalty's first loss and minimum.
+
+For unconstrained penalty runs it independently compares the computed path with powers of the two error factors around the changed minimizer. The NumPy reference advances actual two-component arrays, then compares every finite recorded value against a separate scalar high-precision recurrence, including both projection mechanisms. Its absolute tolerance is $10^{-12}$ on the bounded checked runs.
+
+<CodeFile source={reference} file="code/python/optimization_constraints.py" />
+<CodeFile source={practical} file="code/python/optimization_constraints_numpy.py" />
+
+## Explore: predict the correction before comparing paths
+
+Request a start outside the box and locate the initialization correction before reading iteration 0. Repeat with the disk: an exterior request preserves its direction under radial scaling. An interior request needs no correction. Switching to no constraint preserves the original request.
+
+For the canonical first proposal, compare box and disk endpoints without changing the current gradient. Identify which correction component comes from a coordinate boundary and which comes from radial scaling. Next reduce the box rate and compare feasible progress with the canonical alternating run.
+
+Remove the hard constraint and compare penalties 0, 1, and 3 at rate $0.1$. Track J and L separately, and predict each preferred x coordinate from $ac/(a+2\lambda)$. As a counterexample to guaranteed hard feasibility, set $a=4,c=2,\lambda=1$: the penalized minimizer is $(4/3,0)$, outside both fixed regions.
+
+## Common mistakes and counterexamples
+
+Projection acts on the proposal, not the gradient coordinates or the original requested start forever. The box clamp is not the disk rule. Projection minimizes Euclidean distance to its input; it does not solve the constrained loss problem in a single update.
+
+The penalty contributes $2\lambda\theta$ to the gradient and $2\lambda I$ to the Hessian. Adding it only to a displayed loss would leave the wrong optimizer recurrence. Likewise, calling J the base loss would conceal the preference being traded against data fit.
+
+<Callout kind="misconception" title="A finite penalty does not enforce a hard boundary">
+For a=4, c=2, and λ=1, the whole-plane penalized minimum is (4/3,0). It lies outside the unit disk and the box. Projection enforces those regions; a finite L2 penalty changes the objective.
+</Callout>
+
+A feasible path can oscillate, and a constrained minimum can have nonzero raw gradient. At $(1,0)$ in this example, the negative gradient points beyond the allowed region and projection returns the same point. An unconstrained raw-gradient stopping rule would miss that constrained minimum.
+
+## Numerical considerations
+
+The stage and NumPy path use binary64 approximations. Disk normalization generally involves an irrational norm, so displayed coordinates use approximation signs. A computed boundary norm can differ slightly from 1 through rounding; the references check feasibility and KKT residuals with stated numerical tolerances.
+
+Retain the proposed and projected values even when rounded labels appear identical. A small projection correction or small actual displacement can disappear at display precision. A large raw gradient at a boundary need not imply a large feasible displacement.
+
+The high-precision reference supplies an independent numerical check, not symbolic exactness for every square root. Its positive curvature, nonnegative penalty, finite inputs, and bounded iteration count are validated. Comparing J between different penalty settings also changes the quantity being compared.
+
+## Engineering and ML connections
+
+Hard parameter limits can encode an admissible physical range or a norm budget. L2 regularization instead adds a cost for parameter size, changing the balance of the modeled objective. The coefficient and parameter units matter; the same numeric penalty after rescaling parameters describes a different preference.
+
+[Learning-rate behavior](../learning-rate-convergence/) explains how the added curvature affects a plain update. [Least squares](../orthogonal-least-squares/) separates fit from residual geometry, while [convexity](../convexity/) supplies the structure behind this toy problem's unique minima. [Numerical diagnostics](../optimization-diagnostics/) monitor a run's arithmetic and stopping reasons; regularizing a model and protecting a numerical update are separate decisions.
+
+## Exercises
+
+Keep the requested start, feasible state, unconstrained proposal, projection correction, and actual displacement distinct. Use exact fractions for rational hand examples and the radial expression for the disk.
+
+<Exercise id="optimization-constraints-1" client:load />
+<Exercise id="optimization-constraints-2" client:load />
+<Exercise id="optimization-constraints-3" client:load />
+<Exercise id="optimization-constraints-4" client:load />
+<Exercise id="optimization-constraints-5" client:load />
+
+## Summary and checkpoints
+
+Projection enforces an allowed region by finding the nearest feasible point to each proposal. A penalty changes the objective, its gradient, its curvature, and its minimizer. Check that you can reconstruct the canonical box step, justify radial disk projection, record an infeasible requested start honestly, and recover J's minimum $4/3$ at $(2/3,0)$. Neither feasible iterates nor a finite penalty alone establish convergence.

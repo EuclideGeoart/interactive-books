@@ -1,0 +1,205 @@
+---
+kind: chapter
+curriculumId: VI.10
+title: "Numerical stopping and optimization diagnostics"
+hero: "What does an optimizer's stopping *reason* actually establish?"
+lede: Read raw gradients, optional clipped gradients, finite updates, loss changes, and budgets in their actual evaluation order. Each reason explains why computation stopped; its meaning depends on the objective and the evidence retained.
+description: Ordered plain-descent diagnostics, raw-gradient and absolute loss-change tolerances, explicit zero gradients, clipping effects, budgets and finite guards, Python and NumPy checks, and five graded exercises.
+---
+import Stage from '../../shell/Stage.astro';
+import Callout from '../../shell/Callout.astro';
+import CodeFile from '../../shell/CodeFile.astro';
+import OptimizationStage from '../../lessons/optimization/OptimizationStage';
+import Exercise from '../../lessons/optimization/OptimizationExercise';
+import reference from '../../../code/python/optimization_diagnostics.py?raw';
+import practical from '../../../code/python/optimization_diagnostics_numpy.py?raw';
+
+<Stage caption="Inspect the raw gradient and its norm before an update, then compare unclipped and applied displacements. Replay finite loss changes and read the precise stopping reason with its configured thresholds."><OptimizationStage chapter="diagnostics" client:load /></Stage>
+
+Reset starts at $(2,1)$ on $L=x^2/2+2y^2$, with $\eta=1/4$, $K=12$, raw-gradient tolerance $0.1$, loss-change tolerance 0, clipping threshold 0, and divergence norm bound $10^6$. Predict whether the first move or the first gradient check ends the run. Then compare the small-loss preset, which stops after two finite updates while its gradient is still far from zero.
+
+## Intuition: a diagnostic is evidence about a computation
+
+An optimizer may stop because its measured slope is small, its objective changes little, its work budget is used, or its arithmetic becomes unsafe. These are distinct observations. The reason should name the event and show the values used to make the decision.
+
+A small gradient describes local first-order behavior. A tiny loss change may result from a tiny learning rate, rounding, or motion along an almost flat direction. A finite budget says how much work was allowed. None of those observations, by itself, proves a global optimum.
+
+Gradient clipping changes a numerical update while retaining the raw gradient for diagnosis. It can limit one step's magnitude, but it does not turn an invalid objective into a valid one or establish that repeated steps converge.
+
+## Definition: two optional thresholds and one update intervention
+
+This chapter uses **plain gradient descent**, with no momentum, Adam history, stochastic sampling, projection, or penalty. For the quadratic family $L=a(x-c)^2/2+2y^2$, the raw gradient is $g=(a(x-c),4y)$.
+
+A positive raw-gradient tolerance $\tau_g$ stops before an update when
+
+$$
+\norm{g_k}_2\leq\tau_g.
+$$
+
+A positive absolute loss-change tolerance $\tau_L$ stops after a finite update when
+
+$$
+\abs{L(\theta_{k+1})-L(\theta_k)}\leq\tau_L.
+$$
+
+Zero disables the corresponding tolerance test. It does not turn exact zero into an enabled threshold or disable finite-value checks. An exactly zero raw gradient has its own explicit stop when the gradient-tolerance test is disabled.
+
+For clipping threshold $C>0$ and nonzero raw g, define
+
+$$
+s=\min\left(1,\frac C{\norm g_2}\right),\qquad
+g_{\mathrm{applied}}=sg,\qquad
+\Delta_{\mathrm{unclipped}}=-\eta g,\qquad
+\Delta_{\mathrm{applied}}=-\eta sg.
+$$
+
+At $C=0$, clipping is disabled and $s=1$. A zero raw gradient stops before the quotient is formed. The positive divergence bound B triggers when the next finite point has $\norm{\theta_{k+1}}_2>B$.
+
+## Mechanics: the policy order is part of the meaning
+
+At each permitted plain-descent iteration, apply these checks in order:
+
+1. Evaluate the current objective on its domain and its raw gradient. Stop if the objective or required gradient is undefined or non-finite.
+2. If $\tau_g>0$, compare the **raw** gradient norm with $\tau_g$ before any update.
+3. If the raw gradient is exactly zero, stop explicitly. This reason carries no automatic optimum claim.
+4. Form the applied gradient, displacement, and next point. Guard the actual transition for finite values.
+5. Evaluate the next objective and required gradient. A non-finite next evaluation stops before a loss difference is used.
+6. Check the next finite point against the configured divergence norm bound.
+7. If $\tau_L>0$, compare the finite endpoint losses using their absolute difference.
+8. If K updates have been completed, stop for the iteration budget.
+
+The first applicable reason wins. A positive gradient tolerance also catches exact zero before the separate zero-gradient rule. Divergence takes precedence over a small loss change on the same finite transition. Loss-change stopping takes precedence over budget exhaustion on the last allowed update.
+
+Keep raw g, its norm, the clipping scale, applied g, and both displacement vectors in the record. The raw-gradient test must not use the capped applied norm: otherwise lowering the clipping threshold could manufacture a misleading tolerance stop.
+
+Replay selects these recorded evaluations and interventions. A failed candidate remains an attempted transition with its failure reason; it must not be presented as a successful finite loss evaluation.
+
+## Derivation: interpret each measured quantity separately
+
+For the default quadratic and rate $1/4$, the error factors are $(3/4,0)$. After the first update,
+
+$$
+x_k=2(3/4)^k,\qquad y_k=0,\qquad
+L_k=2(3/4)^{2k},\qquad k\geq1.
+$$
+
+The gradient norm is then $\abs{x_k}$. The loss changes with a different scale:
+
+$$
+L_k-L_{k+1}=\left(1-\frac9{16}\right)L_k
+=\frac7{16}L_k.
+$$
+
+Thus a loss-change threshold and gradient threshold generally stop at different states. Rescaling the objective scales both gradients and loss differences; changing parameter units also changes Euclidean gradient norms. Tolerances need a stated scale and purpose.
+
+Clipping preserves the direction of a nonzero raw gradient and yields
+
+$$
+\norm{g_{\mathrm{applied}}}_2=\min(\norm g_2,C),\qquad
+\norm{\Delta_{\mathrm{applied}}}_2
+=\eta\min(\norm g_2,C).
+$$
+
+It limits displacement at that iteration. It is not a coordinate clamp, a projection onto a parameter region, or a change to the objective. A very large finite gradient can still reveal trouble even when its applied update is small.
+
+The absolute loss-change rule does not require a decrease. A small increase also satisfies the tolerance. A divergence bound is likewise a configured stop for excessive parameter norm, not a proof that the exact sequence tends to infinity.
+
+## Worked examples: one path, different stopping reasons
+
+The canonical first gradient and update are
+
+$$
+g_0=(2,4),\quad \norm{g_0}_2=\sqrt{20}>0.1,\quad
+\Delta_0=(-1/2,-1),\quad \theta_1=(3/2,0),\quad L_1=9/8.
+$$
+
+The next point is $(9/8,0)$ with loss $81/128$. For the canonical raw-gradient tolerance, after ten updates the norm is $2(3/4)^{10}\approx0.112627>0.1$. After eleven it is
+
+$$
+2(3/4)^{11}=\frac{177147}{2097152}\approx0.0844703.
+$$
+
+The next pre-update check stops at that state. Eleven updates were completed; a twelfth update is not taken. The positive final loss means the exact zero-loss minimizer has not been reached.
+
+<Stage caption="Replay canonical plain descent: (2,1) to (3/2,0) to (9/8,0). The positive raw-gradient tolerance ends the run before a twelfth update, after eleven completed updates."><OptimizationStage chapter="diagnostics" worked client:load /></Stage>
+
+The small-loss preset disables gradient stopping and sets $\tau_L=1/2$. The first loss change is $4-9/8=23/8$, above the threshold. The second is
+
+$$
+9/8-81/128=63/128<1/2.
+$$
+
+It stops after two updates at $(9/8,0)$, where the raw gradient norm is still $9/8$. The budget preset uses the same path with both tolerances disabled and $K=2$; it ends at the same point for the different reason of iteration budget.
+
+For the clipping preset, retain start $(2,1)$ and rate $1/4$, disable gradient stopping, and set $C=1$. At the first step,
+
+$$
+s=\frac1{\sqrt{20}},\qquad
+g_{\mathrm{applied}}=\frac{(2,4)}{\sqrt{20}},\qquad
+\Delta_{\mathrm{applied}}=\frac{(-1/2,-1)}{\sqrt{20}}.
+$$
+
+The next point is $(2-1/(2\sqrt{20}),1-1/\sqrt{20})$, and the displacement norm is $1/4$. The unclipped vector remains $(-1/2,-1)$ in the record, and the raw norm remains $\sqrt{20}$.
+
+The divergent preset uses the quadratic, $\eta=2$, $K=12$, both tolerances 0, no clipping, and bound $10^6$. Its factors are $(-1,-7)$: x alternates between $\pm2$, while $\abs{y_k}=7^k$. The eighth next point is $(2,5764801)$, exceeding the bound, so the run stops after eight finite updates.
+
+The non-finite preset instead uses $L=x^4+y^4$, start $(3,1)$, $\eta=2$, $K=12$, both tolerances 0, no clipping, and the explicitly configured bound $10^{300}$. Its recurrence is $x_{k+1}=x_k-8x_k^3$, likewise for y. The first two next points are $(-213,-7)$ and $(77308563,2737)$. The fifth proposed point is finite in binary64, but its quartic objective overflows. The next-evaluation guard wins before divergence or a loss comparison; the failed loss is not replaced by zero.
+
+## Executable reference code
+
+The standalone standard-library program records the actual binary64 plain-descent recurrence and its ordered reasons. Independent Fraction calculations check the canonical path, raw-gradient stopping count, two-step loss-change values, and budget endpoint. An 80-digit Decimal calculation checks the clipped first step independently.
+
+Literal assertions also cover an explicit zero gradient at a saddle, loss-change precedence on the last budgeted step, divergence before loss-change stopping, a non-finite transition, and a non-finite next objective with finite candidate coordinates. The NumPy reference computes actual two-component array gradients and updates, then compares valid recorded values with a separate high-precision scalar recurrence. Its checked binary64 tolerance is relative and absolute $10^{-12}$; stop reasons and counts must match exactly.
+
+<CodeFile source={reference} file="code/python/optimization_diagnostics.py" />
+<CodeFile source={practical} file="code/python/optimization_diagnostics_numpy.py" />
+
+## Explore: change a rule and explain the resulting stop
+
+Compare reset, small-loss, and budget presets. Predict the stopping state and reason before reading the final row. The last two share a point, yet only one tested a small loss difference. Disable both thresholds and observe that finite checks, divergence, and the explicit zero-gradient reason remain active.
+
+Choose clipping and compare both arrows at the same raw gradient. Lower C, keeping the start and rate fixed, and predict the new displacement norm. Ask whether the raw norm changed; clipping occurs after the raw evaluation and must not rewrite it.
+
+Choose divergence, then the quartic non-finite preset. Read the displayed norm bound each time: $10^6$ and $10^{300}$ serve different diagnostic demonstrations. Leaving the plotting window is not itself a stopping policy. The table retains large finite states and the failed attempt's reason.
+
+For a local stationary counterexample, choose the saddle $L=x^2-y^2$ at $(0,0)$ with gradient tolerance disabled. The explicit zero-gradient stop is correct. Along $(0,t)$ the loss is $-t^2<0$, so declaring a minimum would be incorrect.
+
+## Common mistakes and counterexamples
+
+Do not confuse the current gradient norm with the norm of an applied clipped gradient. If a raw norm is 100 and clipping sets it to 1 for the update, a raw-gradient tolerance of 2 has not been met.
+
+A tiny loss change can reflect an excessively small step or a rounded-away update, rather than a small gradient. A small gradient can occur at a saddle or maximum. In this chapter's saddle, the Hessian has one positive and one negative direction, so local stationarity supplies no minimum certificate.
+
+<Callout kind="misconception" title="Stopping does not establish a global optimum">
+Raw-gradient tolerance, absolute loss change, clipping, and a finite work budget describe a numerical run. A global minimum needs additional mathematical structure and evidence. The zero-gradient saddle already disproves an unrestricted inference from stationarity.
+</Callout>
+
+Domain validity comes first. For $-\log x+y^2$, a point with $x\leq0$ is outside the real objective's domain. For $\abs x+y^2$ at $x=0$, the classical gradient is undefined. A tolerance cannot make either required evaluation valid, and silently substituting a subgradient would introduce a different algorithm.
+
+## Numerical considerations
+
+Finite coordinates do not guarantee a finite loss or gradient. Quartic powers can overflow while the proposed point is still representable. Check the next evaluation before subtracting losses; subtracting infinities can produce a NaN that makes a threshold comparison silently false.
+
+Use a scaled norm calculation such as hypot rather than first squaring very large components. Retain a finite-value guard even when clipping is enabled. Clipping is defined from a valid raw gradient; it cannot recover a direction already lost to overflow or an undefined derivative.
+
+Near a tolerance boundary, binary64 rounding can decide which side of the comparison a value occupies. The policy uses the evaluated unrounded values and inclusive thresholds. The independent reference checks a bounded collection of examples; its numerical tolerance is a verification allowance, not an extra stopping threshold.
+
+## Engineering and ML connections
+
+A useful training record includes the objective definition, parameter scale, rate, raw and applied gradients, clipping settings, tolerances, budget, and final reason. Without those, identical-looking endpoints can conceal different stopping events or interventions.
+
+[Learning rates](../learning-rate-convergence/) affect both progress and measured loss change. [Constraints and penalties](../constraints-regularization/) change feasibility or the objective; clipping instead changes an update. The explicit zero-gradient rule here belongs to plain descent: [momentum](../momentum/) or [Adam](../adam/) can retain nonzero optimizer history even when the current raw gradient vanishes.
+
+## Exercises
+
+State whether a test runs before or after an update. Preserve raw values when clipping is enabled, and separate a computational reason from a mathematical optimum claim.
+
+<Exercise id="optimization-diagnostics-1" client:load />
+<Exercise id="optimization-diagnostics-2" client:load />
+<Exercise id="optimization-diagnostics-3" client:load />
+<Exercise id="optimization-diagnostics-4" client:load />
+<Exercise id="optimization-diagnostics-5" client:load />
+
+## Summary and checkpoints
+
+Ordered diagnostics explain why plain descent stopped and what evidence remains valid. Check that you can distinguish a pre-update raw-gradient stop from a post-update loss-change stop, reproduce the clipped displacement without erasing the raw gradient, and explain why the two-step budget endpoint proves no optimum. Finite guards, divergence bounds, tolerances, and budgets each answer a specific numerical question.

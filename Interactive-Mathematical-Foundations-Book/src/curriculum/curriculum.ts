@@ -185,8 +185,8 @@ export const parts: readonly Part[] = [
       available(6, "Momentum", "momentum"),
       available(7, "Stochastic and mini-batch gradient descent", "stochastic-mini-batch-descent"),
       available(8, "Adam intuition", "adam"),
-      planned(9, "Constraints and projected/penalized intuition"),
-      planned(10, "Numerical stopping and optimization diagnostics"),
+      available(9, "Constraints and projected/penalized intuition", "constraints-regularization"),
+      available(10, "Numerical stopping and optimization diagnostics", "optimization-diagnostics"),
     ],
   },
   {
