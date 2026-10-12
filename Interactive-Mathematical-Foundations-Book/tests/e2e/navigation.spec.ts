@@ -182,3 +182,11 @@ test('M9+M10: IV.16 → V.1, V.10 → VI.1 and VI.10 → planned VII.1 boundarie
  for(const [slug,nextId,nextSlug] of [['central-limit-theorem','V.1','data-summaries'],['maximum-a-posteriori','VI.1','objective-landscapes']] as const){await page.goto(`chapters/${slug}/`);const next=page.locator('.chapter-pager .pager-next');await expect(next).toContainText(nextId+' ·');await expect(next).toHaveAttribute('href',new RegExp(`chapters/${nextSlug}/$`));await next.click();await expect(page).toHaveURL(new RegExp(`chapters/${nextSlug}/$`));await expect(page.locator('h1')).toHaveCount(1);}
  await page.goto('chapters/optimization-diagnostics/');const planned=page.locator('.chapter-pager .pager-next');await expect(planned).toContainText('VII.1 ·');await expect(planned).toContainText('planned');expect(await planned.getAttribute('href')).toBeNull();
 });
+
+
+test('M9+M10: sampling tables support keyboard scrolling in explorer and worked examples',async({page})=>{
+ for(const [slug,chapter] of [['population-sampling','sampling'],['estimators-estimation','estimators']] as const){
+  await page.goto(`chapters/${slug}/`);
+  for(const worked of [false,true]){const stage=page.locator(`[data-stage="statistics-${chapter}${worked?'-worked':''}"]`);await expect(stage).toHaveAttribute('data-hydrated','true');const table=stage.getByRole('region',{name:`${worked?'Worked example':'Explorer'}: ${chapter} actual sample table`});await expect(table).toHaveAttribute('tabindex','0');await table.focus();await expect(table).toBeFocused();await table.press('ArrowDown');await expect.poll(()=>table.evaluate(e=>e.scrollTop)).toBeGreaterThan(0);}
+ }
+});

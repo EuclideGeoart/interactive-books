@@ -24,7 +24,7 @@ export default function StageFrame({ name, view, controls, board, reset, isCanon
     <p class="prob-verdict" data-verdict>{view.verdict}</p>
     <div class="prob-formulas">{view.formulas.map((tex,i) => <FormulaScroll key={i} tex={tex} label={`${title}: equation ${i+1}`} />)}</div>
     <TraceStepper label={`${title}: mathematical replay`} frames={view.trace} cursor={cursorAt(view.trace.length,cursor.index)} onCursor={setCursor} autoplay describeFrame={f => f.state.title}
-      renderFrame={f => <><p class="trace-label">{f.state.title}</p><p data-trace-detail>{f.state.detail}</p><FormulaScroll tex={f.state.formula} label="Replay equation" /></>} />
+      renderFrame={f => <><p class="trace-label">{f.state.title}</p><p data-trace-detail>{f.state.detail}</p><FormulaScroll tex={f.state.formula} label={`${title}: selected replay equation`} /></>} />
     <p class="sr-only" role="status" aria-live="polite" aria-atomic="true" data-announcement>{announcement}</p>
   </section>;
 }
