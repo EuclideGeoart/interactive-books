@@ -1,6 +1,6 @@
 # P02 III-08–16 source handoff
 
-2026-10-13 · Agent 2 · recommendation **ACCEPT WITH LIMITATIONS for source handoff**. Publication acceptance and freeze remain the independent integrator's decision. All nine assigned chapters are authored and committed. The first integrator focused run passed type/content, unit, oracle, root/subpath production and audit gates, then failed browser collection before any case ran. The Part-owned JSON import and recurring-test ownership corrections are committed for an independent rerun; browser/visual acceptance remains pending.
+2026-10-13 · Agent 2 · status **CORRECTION REQUIRED pending post-fix runtime and visual verification**. Publication acceptance and freeze remain the independent integrator's decision. All nine assigned chapters are authored and committed. The integrator focused rerun at `2cff99bd` passed all nine gates, but independent DPR1 captures exposed an overflowing III-10 fieldset and overlapping III-09 point labels. Part-owned layout, marker/legend and physical-viewport test corrections are committed for another independent rerun; no post-fix browser or visual pass is claimed.
 
 ## Integrator focused result and collection correction
 
@@ -17,6 +17,29 @@ Independent reviewer Avicenna identified a P1 integration blocker in `tests/unit
 The correction removes only that unscoped history/untracked assertion and its now-unused `execFileSync` import. The recurring tests retain all 13 frozen source hashes, p02 manifest/reference registrations, required oracle entries and every numerical/MDX/SSR assertion. The previously accepted JSON import attribute from `c51809ffc5f39bb978e9094453672a217f00e51e` remains unchanged. No model, fixture, reference or shared file changed.
 
 Actual lightweight validation after this correction: `node node_modules/vitest/vitest.mjs run tests/unit/p02/remainder-lessons.test.ts --maxWorkers=1` passed **24 tests in one file**. No author heavy job ran; the integrator focused rerun and browser results remain pending. The correction source SHA is returned in the accompanying handoff.
+
+## Runtime pass at 2cff99bd and independent visual corrections
+
+The inspected integrator manifest `validation-results/focused-2026-10-13T15-50-46-652Z/manifest.json` is complete: all nine gates passed with unchanged input signature `ffa46822448050bf3a0e68429320f69bfff5a53286cdb7b194fdfa3488dc56b3`. Results include 128 units in nine files, five oracle commands, both 22-page production mounts/audits, and **114 root + 114 subpath browser cases**, with zero unexpected/skipped/flaky cases in the browser JSON. These results are for `2cff99bd`, before the current visual corrections.
+
+The integration owner then captured at DPR1. `overflow-failure.json` records III-10 at a configured width of 390 with document scroll width 524: its fieldset expanded to 500 pixels and legend to approximately 386 pixels. The desktop-dark controls also extended beyond their own root. The previous browser guard compared document width against `innerWidth`, which mobile layout could inflate to the same overflowing width, falsely passing. The supplied descent replay-frame image also shows current/next/optimum text colliding.
+
+Corrections are confined to five owned paths: `src/parts/p02/remainder.css`, `src/parts/p02/FitStage.tsx`, `tests/e2e/p02/remainder.spec.ts`, `tests/unit/p02/remainder-lessons.test.ts` and this report.
+
+- Controls fieldsets get `min-inline-size:0`; legends get bounded wrapping. The existing minimum-width tables and bounded `.table-scroll` wrappers remain intact, including their local horizontal scrolling. No page/body overflow hiding is introduced.
+- Floating parameter labels move into a wrapping coordinate legend below the SVG. Current is a filled data-blue circle, next a filled update-green square, and optimum a hollow prediction-rust circle. Next's rectangle is centered at the exact same numerical point as before; matching legend glyphs and SVG description identify every role. Coincident values remain overlapped and are explicitly explained. The original SVG accessible name remains intact.
+- Both-theme nine-chapter width checks use `testInfo.project.use.viewport.width` as the bound for document scroll width **and** `innerWidth`, retaining only the existing one-pixel rounding allowance. III-10 additionally checks fieldset/legend/wrapper bounds and actual internal table scrolling. Descent replay checks every coordinate legend and actual glyph center, including rectangle x/y plus half width/height.
+
+Actual light check after the final distinct-glyph patch: `node node_modules/vitest/vitest.mjs run tests/unit/p02/remainder-lessons.test.ts --maxWorkers=1` passed **25 tests in one file**, including the new SSR marker/legend/center regression and all previous assertions. Mathematical models, adapters, canonical Python, fixtures, oracles, shared platform and frozen reference files were not changed. No author build, browser, capture or heavy job ran for these corrections. Post-fix physical bounds, both-theme layouts, actual replay glyph checks and visual acceptance await the owner rerun.
+
+The integration owner separately reported the shared physical-viewport publication guard accepted at source `743cc26` / delivery `67514fe`, with all nine foundation gates and 48+48 browsers passing. This agent did not edit or merge that shared work; the Part ownership comparison base remains `8157b7af` as instructed.
+
+Three supplied PNGs were inspected (mobile failure, desktop-dark multiple regression, desktop-light descent replay), together with the overflow JSON. They are pre-fix failure evidence, not post-fix images. Their unchanged SHA256 values are recorded below; no other capture is claimed as manually checked:
+
+- `artifacts/integrator-visual-p02-2cff99bd/overflow-failure.json` — `b99f1843c6cfaf8e5ea880bf354274ffcd5f1b81cef98068f9df25187db6cedd`
+- `artifacts/integrator-visual-p02-2cff99bd/overflow-failure.png` — `615ddf904bebe1945d6aadd7fc75ac9f1a810d56ff730b9a62bf62ecba011340`
+- `artifacts/integrator-visual-p02-2cff99bd/multiple-linear-regression-desktop-dark-canonical.png` — `41e50228fb4241f667c310464c1f8a36a320b46fdee4600de0996e6fa7340e2b`
+- `artifacts/integrator-visual-p02-2cff99bd/regression-gradient-descent-desktop-light-replay-frame-1.png` — `6b4d74c472ab2cfca1cf23701e975785e5cc5cebfe2ba3047e976874b512e88c`
 
 ## Identity and ownership
 
@@ -90,9 +113,9 @@ The integration owner also reported 19 isolated mathematical challenges passing.
 
 `tests/e2e/p02/remainder.spec.ts` authors **13 tests**, selected by the existing three projects (39 cases per mount). The same relative routes work for root and `/machine-learning/`. Cases cover all nine current numerical mechanisms in both themes, physical equal-scale projections/readable plot text, exact inputs and approximate outputs, invalid entry/reset, editable rank-aware design, polynomial held-out integrity, L1/L2/intercept/objective numbers, selected-frame replay edits, real logistic/softmax gradients, extreme logits, tie/undefined ROC, numeric/range keyboard plus native pointer/touch operation, sentinel score-1 consistency and shifted softmax equation/logit/invariance consistency.
 
-The shared publication suite already discovers all new routes and adds hydration, five-exercise, imported-code, ID, both-theme axe and overflow checks. The existing viewports remain 1440×900, 820×1180 and 390×844. New plot text sizes derive from measured width for at least 14 rendered pixels. These are implementation and authored checks, not completed visual verification.
+The shared publication suite already discovers all new routes and adds hydration, five-exercise, imported-code, ID, both-theme axe and overflow checks. The existing viewports remain 1440×900, 820×1180 and 390×844. New plot text sizes derive from measured width for at least 14 rendered pixels. The strengthened physical-viewport and legend/glyph checks are authored but have not been executed in a browser on this corrected source.
 
-**Pending after the JSON-import correction:** integrator focused rerun, actual Part and shared browser tests, rendered captures/manual visual review and independent acceptance. The first run already passed type/content and both production/offline/path audit gates on its unchanged pre-correction input signature; no browser case ran. No new images or image hashes were captured/verified; no screenshots or baselines were updated. All 13 frozen source hashes were verified. Native Windows, physical touch hardware and human screen-reader checks remain unperformed.
+**Pending after the visual corrections:** integrator focused rerun with the strengthened viewport/glyph checks, new DPR1 rendered captures/manual visual review and independent acceptance. All nine gates passed at the earlier `2cff99bd` source; independent captures then exposed the defects recorded above. Three supplied pre-fix PNGs and the overflow JSON were inspected/hashed; no new capture or baseline was created or updated by this agent. All 13 frozen source hashes remain verified. Native Windows, physical touch hardware and human screen-reader checks remain unperformed.
 
 The integrator can allocate the existing focused runner, from the book root:
 
@@ -106,7 +129,7 @@ It keeps global type/production/platform checks while selecting p02 numerical an
 
 Interactive fixtures are deliberately small: scalar observations, a fixed four-row/two-feature multivariate editor, polynomial degrees 1–5, scalar-feature regularization, binary toy batches and a three-row/three-class softmax editor. The pure kernels validate broader documented small-matrix shapes. This is not an arbitrary-size fitting service. SVD rank decisions near the cutoff and slow L1 convergence are explicit limitations; there are no ill-conditioned-data guarantees beyond supported checks.
 
-No essential shared API change is requested, so no shared implementation or `INTEGRATION_REQUESTS.md` was needed. Both manifests only append p02 chapters/oracles and preserve III-07. The most material remaining risk is unexecuted browser/render validation after the collection correction; the integrator owns the focused rerun and acceptance.
+No essential shared API change is requested, so no shared implementation or `INTEGRATION_REQUESTS.md` was needed. Both manifests only append p02 chapters/oracles and preserve III-07. The most material remaining risk is post-fix browser/render validation of physical bounds and parameter-marker legibility; the integrator owns the focused rerun and acceptance.
 
 ## Exact changed paths from synchronized base
 

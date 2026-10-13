@@ -59,8 +59,9 @@ async function logisticParity(root: Locator) {
   return { b, w, loss, db, dw };
 }
 
-for (const theme of ['light', 'dark'] as const) test(`all nine mechanisms preserve active numbers and readable geometry in ${theme}`, async ({ page }) => {
+for (const theme of ['light', 'dark'] as const) test(`all nine mechanisms preserve active numbers and readable geometry in ${theme}`, async ({ page }, testInfo) => {
   test.slow();
+  const viewportWidth = testInfo.project.use.viewport!.width;
   await page.emulateMedia({ colorScheme: theme });
   for (const [slug, mode] of [['least-squares', 'least-squares'], ['regression-gradient-descent', 'descent'], ['multiple-linear-regression', 'multiple'], ['polynomial-features', 'polynomial'], ['regularization', 'regularization']]) {
     const root = await open(page, slug!, `[data-fit-lab="${mode}"]`); await fitParity(root);
@@ -69,14 +70,38 @@ for (const theme of ['light', 'dark'] as const) test(`all nine mechanisms preser
       return parseFloat(getComputedStyle(text).fontSize) * width / 560;
     })).toBeGreaterThanOrEqual(13.9);
     expect(await root.locator('[data-fit-plot]').evaluate(svg => Math.abs(svg.getBoundingClientRect().width - svg.getBoundingClientRect().height))).toBeLessThan(.1);
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+    const widths = await page.evaluate(() => ({ document: document.documentElement.scrollWidth, inner: innerWidth }));
+    expect(widths.document).toBeLessThanOrEqual(viewportWidth + 1);
+    expect(widths.inner).toBeLessThanOrEqual(viewportWidth + 1);
+    if (mode === 'multiple') {
+      const sizes = await root.evaluate(el => {
+        const controls = el.querySelector('.p02-controls')!.getBoundingClientRect();
+        const fieldset = el.querySelector('.p02-controls fieldset')!.getBoundingClientRect();
+        const legend = el.querySelector('.p02-controls legend')!.getBoundingClientRect();
+        const wrapper = el.querySelector('.p02-controls .table-scroll')!.getBoundingClientRect();
+        return { controls: controls.width, fieldset: fieldset.width, legend: legend.width, legendRight: legend.right, controlsRight: controls.right, wrapper: wrapper.width };
+      });
+      expect(sizes.fieldset).toBeLessThanOrEqual(sizes.controls + 1);
+      expect(sizes.legend).toBeLessThanOrEqual(sizes.controls + 1);
+      expect(sizes.legendRight).toBeLessThanOrEqual(sizes.controlsRight + 1);
+      expect(sizes.wrapper).toBeLessThanOrEqual(sizes.controls + 1);
+      const wrapper = root.locator('.p02-controls .table-scroll');
+      expect(await wrapper.evaluate(el => getComputedStyle(el).overflowX)).toBe('auto');
+      if (await wrapper.evaluate(el => el.scrollWidth > el.clientWidth + 1)) {
+        await wrapper.evaluate(el => { el.scrollLeft = el.scrollWidth; });
+        expect(await wrapper.evaluate(el => el.scrollLeft)).toBeGreaterThan(0);
+        await wrapper.evaluate(el => { el.scrollLeft = 0; });
+      }
+    }
   }
   for (const [slug, mode] of [['logistic-regression', 'logistic'], ['thresholds-confusion', 'threshold'], ['precision-recall-roc', 'metrics'], ['softmax-regression', 'softmax']]) {
     const root = await open(page, slug!, `[data-classification-lab="${mode}"]`);
     if (mode === 'logistic') await logisticParity(root);
     else if (mode !== 'softmax') await countParity(root);
     else await scalar(root, 'loss', fixture.multi[0]!.expected.loss);
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+    const widths = await page.evaluate(() => ({ document: document.documentElement.scrollWidth, inner: innerWidth }));
+    expect(widths.document).toBeLessThanOrEqual(viewportWidth + 1);
+    expect(widths.inner).toBeLessThanOrEqual(viewportWidth + 1);
   }
 });
 
@@ -107,6 +132,27 @@ test('descent uses every selected immutable frame and demonstrates oscillation a
   for (let i = 0; i < 5; i++) {
     const active = await fitParity(root); expect(active.coefficients[0]).toBeCloseTo(b, 11); expect(active.coefficients[1]).toBeCloseTo(w, 11);
     await expect(root).toHaveAttribute('data-frame-index', String(i));
+    const scale = Number(await root.locator('[data-loss-surface]').getAttribute('data-scale'));
+    const coordinates = [
+      { id: 'current', w, b },
+      { id: 'next', w: w - .1 * 4 * (w - 1.8), b: b - .1 * 2 * (b - .8) },
+      { id: 'optimum', w: 1.8, b: .8 },
+    ];
+    for (const p of coordinates) {
+      const point = root.locator(`[data-parameter-point="${p.id}"]`), legend = root.locator(`[data-parameter-legend="${p.id}"]`);
+      await expect(point.locator('text')).toHaveCount(0);
+      await expect(legend).toBeVisible();
+      expect(Number(await legend.getAttribute('data-weight'))).toBeCloseTo(p.w, 11);
+      expect(Number(await legend.getAttribute('data-bias'))).toBeCloseTo(p.b, 11);
+      await expect(legend).toContainText(`w ${shown(p.w)}, b ${shown(p.b)}`);
+      const glyph = point.locator(p.id === 'next' ? 'rect' : 'circle');
+      const cx = p.id === 'next' ? Number(await glyph.getAttribute('x')) + Number(await glyph.getAttribute('width')) / 2 : Number(await glyph.getAttribute('cx'));
+      const cy = p.id === 'next' ? Number(await glyph.getAttribute('y')) + Number(await glyph.getAttribute('height')) / 2 : Number(await glyph.getAttribute('cy'));
+      expect(cx).toBeCloseTo(280 + scale * p.w, 11);
+      expect(cy).toBeCloseTo(280 - scale * p.b, 11);
+      await expect(glyph).toHaveClass(p.id === 'next' ? 'p02-next' : p.id === 'optimum' ? 'p02-prediction' : 'p02-observation');
+      await expect(legend.locator(p.id === 'next' ? 'rect' : 'circle')).toHaveClass(p.id === 'next' ? 'p02-next' : p.id === 'optimum' ? 'p02-prediction' : 'p02-observation');
+    }
     if (i < 4) { w -= .1 * 4 * (w - 1.8); b -= .1 * 2 * (b - .8); await nav.getByRole('button', { name: 'Next', exact: true }).click(); }
   }
   await nav.getByRole('button', { name: 'First' }).click(); await nav.getByRole('button', { name: 'Next', exact: true }).click();

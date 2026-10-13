@@ -51,6 +51,30 @@ describe('one authoritative state and numerical projections', () => {
     }
     if (a.multi) { expect(a.inspector[1]!.value).toBe('2 × 3'); a.probabilitySums.forEach(sum => expect(sum).toBeCloseTo(1, 14)); }
   });
+  it('names loss-surface points outside the SVG with distinct role glyphs at unchanged centers', () => {
+    const a = deriveFitLesson(initialFit('descent'), 'descent');
+    const html = render(h(FitStage, { scope: 'surface-legend', mode: 'descent' }));
+    const surface = html.match(/<svg[^>]*data-loss-surface[^>]*>([\s\S]*?)<\/svg>/)![1]!;
+    const legend = html.match(/<ul[^>]*class="p02-parameter-legend"[^>]*>([\s\S]*?)<\/ul>/)![1]!;
+    expect(surface).toContain('MSE contours at optimum plus 0.2, 1 and 4; current and next weight and bias.');
+    for (const p of a.surface!.points) {
+      const point = surface.match(new RegExp(`<g data-parameter-point="${p.id}"[^>]*>([\\s\\S]*?)</g>`))![1]!;
+      expect(point).not.toContain('<text');
+      expect(point).toContain(`<title>${p.id}: weight`);
+      if (p.id === 'next') {
+        expect(point).toContain(`class="p02-next" x="${p.cx - 7}" y="${p.cy - 7}" width="14" height="14"`);
+        expect(point).not.toContain('<circle');
+        expect(legend).toContain('class="p02-next" x="3" y="3" width="14" height="14"');
+      } else {
+        expect(point).toContain(`cx="${p.cx}" cy="${p.cy}" r="7"`);
+        expect(point).toContain(`class="${p.id === 'optimum' ? 'p02-prediction' : 'p02-observation'}"`);
+      }
+      expect(legend).toContain(`data-parameter-legend="${p.id}" data-weight="${p.x}" data-bias="${p.y}"`);
+    }
+    expect(legend).toContain('Current'); expect(legend).toContain('Next'); expect(legend).toContain('Optimum');
+    expect(surface).toContain('filled green square');
+    expect(html).toContain('Points at identical coordinates overlap.');
+  });
   it('shifted softmax equation, rows, probabilities and gradient agree with active shift', () => {
     const base = initialClassification(), zero = deriveClassificationLesson(base, 'softmax'), shifted = deriveClassificationLesson({ ...base, shift: 1000 }, 'softmax');
     expect(shifted.formulas[0]!.tex).toContain('Z=XW+c'); expect(shifted.formulas[0]!.tex).toContain('c\\approx1000');

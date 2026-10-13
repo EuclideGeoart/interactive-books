@@ -52,14 +52,18 @@ function FitExperiment({ mode }: { mode: FitMode }) {
         </g>)}
       </svg>
       <p class="p02-help">● Training observation · ◇ Prediction · dashed residual{a.poly ? ' · □ Held-out observation' : ''}. Axis domain adjusts to the data; x/y units share one scale.</p>
-      {a.surface && <><h3>Active loss surface in parameter space</h3><svg class="p02-plot" style={{ '--p02-plot-font': `${a.fontSize}px` }} viewBox="0 0 560 560" role="img" aria-labelledby={`${uid}-surface-title`} data-loss-surface data-scale={a.surface.scale}>
+      {a.surface && <><h3>Active loss surface in parameter space</h3><svg class="p02-plot" style={{ '--p02-plot-font': `${a.fontSize}px` }} viewBox="0 0 560 560" role="img" aria-labelledby={`${uid}-surface-title`} aria-describedby={`${uid}-surface-desc`} data-loss-surface data-scale={a.surface.scale}>
         <title id={`${uid}-surface-title`}>MSE contours at optimum plus 0.2, 1 and 4; current and next weight and bias.</title>
+        <desc id={`${uid}-surface-desc`}>A filled blue circle marks current parameters, a filled green square marks the prospective next parameters, and a hollow rust circle marks the optimum. The update segment joins current to next. Names and weight/bias coordinates are listed below the plot; points at identical coordinates overlap.</desc>
         <g class="p02-axes"><line x1="60" x2="500" y1="280" y2="280" /><line x1="280" x2="280" y1="60" y2="500" /><text x="490" y="270">w</text><text x="290" y="45">b</text>
           {a.surface.ticks.map(t => <text x={t.x} y="310" text-anchor="middle">{t.text}</text>)}</g>
         {a.surface.contours.map(d => <path class="p02-contour" d={d} />)}
         <line class="p02-update" x1={a.surface.points[0]!.cx} y1={a.surface.points[0]!.cy} x2={a.surface.points[1]!.cx} y2={a.surface.points[1]!.cy} />
-        {a.surface.points.map(p => <g data-parameter-point={p.id} data-weight={p.x} data-bias={p.y}><circle class={p.id === 'optimum' ? 'p02-prediction' : 'p02-observation'} cx={p.cx} cy={p.cy} r="7" /><text class="p02-label" x={p.cx + 9} y={p.cy - 9}>{p.id}</text></g>)}
-      </svg></>}
+        {a.surface.points.map(p => <g data-parameter-point={p.id} data-weight={p.x} data-bias={p.y}><title>{p.id}: weight {approx(p.x)}, bias {approx(p.y)}</title>{p.id === 'next' ? <rect class="p02-next" x={p.cx - 7} y={p.cy - 7} width="14" height="14" /> : <circle class={p.id === 'optimum' ? 'p02-prediction' : 'p02-observation'} cx={p.cx} cy={p.cy} r="7" />}</g>)}
+      </svg><ul class="p02-parameter-legend" aria-label="Loss-surface parameter coordinates">{a.surface.points.map(p => <li data-parameter-legend={p.id} data-weight={p.x} data-bias={p.y}>
+        <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">{p.id === 'next' ? <rect class="p02-next" x="3" y="3" width="14" height="14" /> : <circle class={p.id === 'optimum' ? 'p02-prediction' : 'p02-observation'} cx="10" cy="10" r="7" />}</svg>
+        <span><strong>{p.id === 'current' ? 'Current' : p.id === 'next' ? 'Next' : 'Optimum'}</strong> · w {approx(p.x)}, b {approx(p.y)}</span>
+      </li>)}</ul><p class="p02-help">Points at identical coordinates overlap.</p></>}
       {a.gd && <p data-behavior>{a.gd.behavior}; λmax {approx(a.gd.lambdaMax)}, stable rate strictly below {approx(a.gd.criticalRate)}. This describes excited curvature modes; an exact optimum stays fixed.</p>}
     </div><div class="p02-controls">
       <fieldset><legend>Change the active {mode === 'multiple' ? 'design and coefficient column' : 'experiment'}</legend>
