@@ -1,0 +1,1598 @@
+P01 Avicenna boundary regressions before source fixes; HEAD c588aa2bd939f37a2cd8cb8fe0bbd36b768a55d3
+
+Command: node node_modules/vitest/vitest.mjs run tests/unit/p01 --maxWorkers=1
+Exit: 1
+
+ RUN  v3.2.7 /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book
+
+ ✓ tests/unit/p01/lesson.test.ts (13 tests) 1272ms
+   ✓ six chapter source contracts and renderable controls > compiles all six local MDX chapters with strict math  984ms
+ ❯ tests/unit/p01/foundations.test.ts (24 tests | 1 failed) 467ms
+   ✓ pipeline, features and semantic tasks > uses the frozen predictor and independently checked canonical loss/update 13ms
+   ✓ pipeline, features and semantic tasks > inference produces no observed error or optimizer update 11ms
+   ✓ pipeline, features and semantic tasks > detaches immutable full states and validates unsupported updates 8ms
+   ✓ pipeline, features and semantic tasks > inspects every supported rectangular shape and absent target schema 17ms
+   ✓ pipeline, features and semantic tasks > rejects fractional count, duplicate ID, nonfinite and shape/type mismatch 1ms
+   ✓ pipeline, features and semantic tasks > decides task from semantics, including 0/1 category and continuous proportion 5ms
+   ✓ partitions and independent leakage counterexamples > is reproducible across seed boundaries and input ordering 52ms
+   ✓ partitions and independent leakage counterexamples > moves all group members atomically, exposes intentional duplicate leakage 2ms
+   ✓ partitions and independent leakage counterexamples > retains special property IDs through the accepted shared immutable snapshot 6ms
+   ✓ partitions and independent leakage counterexamples > shows empty-set reasons and deliberately out-of-range held-out IDs 1ms
+   ✓ partitions and independent leakage counterexamples > rejects malformed memberships and invalid seeds instead of deleting samples 1ms
+   ✓ partitions and independent leakage counterexamples > independently confirms leakage direction, target leakage and training-only counterfactual 1ms
+   ✓ partitions and independent leakage counterexamples > maps pointer destinations with a keyboard-compatible partition representation 0ms
+   ✓ same-row polynomial capacity and baseline > matches Fraction/SVD-confirmed goldens, including manual and seeded memberships 286ms
+   ✓ same-row polynomial capacity and baseline > recomputes fit and baseline from actual moved training IDs 2ms
+   ✓ same-row polynomial capacity and baseline > repartitioning preserves observed x/y/noise and uses a separate split seed 2ms
+   ✓ same-row polynomial capacity and baseline > renders no fabricated loss for empty training/validation or deficient rank 9ms
+   ✓ same-row polynomial capacity and baseline > rejects the supplied near-rank fixture with identical exact reason 1ms
+   ✓ same-row polynomial capacity and baseline > distinguishes constant/one-sample fits from unique higher degree coefficients 0ms
+   ✓ same-row polynomial capacity and baseline > uses validation-only selection with the simplest tie and exact noiseless quadratic 26ms
+   ✓ same-row polynomial capacity and baseline > keeps split/noise data immutable through selected capacity history 4ms
+   × reviewed JSON type and duplicate boundaries > rejects category arrays/objects instead of silently adding a target dimension 8ms
+     → expected function to throw an error, but it didn't
+   ✓ reviewed JSON type and duplicate boundaries > rejects JSON booleans/nonnumbers across numeric APIs and keeps ordinary numbers valid 3ms
+   ✓ reviewed JSON type and duplicate boundaries > treats integer/float spellings as identical values across partitions 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/p01/foundations.test.ts > reviewed JSON type and duplicate boundaries > rejects category arrays/objects instead of silently adding a target dimension
+AssertionError: expected function to throw an error, but it didn't
+ ❯ tests/unit/p01/foundations.test.ts:203:71
+    201|     for(const target of [['ready'],{value:'ready'},null,true,1]){
+    202|       const payload={...state,samples:state.samples.map((row,i)=>i===0…
+    203|       expect(()=>deriveFeatures(JSON.parse(JSON.stringify(payload)))).…
+       |                                                                       ^
+    204|     }
+    205|     expect(deriveFeatures(state).y!.every(row=>row.length===1&&typeof …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 36 passed (37)
+   Start at  18:18:18
+   Duration  3.93s (transform 896ms, setup 0ms, collect 1.53s, tests 1.74s, environment 0ms, prepare 209ms)
+
+
+Command: .venv/bin/python -B oracle/p01/test_foundations.py FoundationTests.test_category_requires_primitive_string FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric FoundationTests.test_numeric_duplicate_equality_and_canonical_display
+Exit: 1
+.FFFFFFFFFFFFFFFFFFFFFFFFFFFFEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEF
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='pipeline query', value='None')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 144, in <lambda>
+    'pipeline query':lambda v:p.derive_pipeline({**p.PIPELINE_CANONICAL,'mode':'inference','query':v}),
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/pipeline.py", line 16, in derive_pipeline
+    if state['mode'] not in ('training', 'inference') or not math.isfinite(state['query']) or abs(state['query']) > 5:
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not NoneType
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='pipeline trace query', value='None')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 145, in <lambda>
+    'pipeline trace query':lambda v:p.pipeline_trace({**p.PIPELINE_CANONICAL,'query':v}),
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/pipeline.py", line 44, in pipeline_trace
+    derive_pipeline(state)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/pipeline.py", line 16, in derive_pipeline
+    if state['mode'] not in ('training', 'inference') or not math.isfinite(state['query']) or abs(state['query']) > 5:
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not NoneType
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='pipeline update query', value='None')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 146, in <lambda>
+    'pipeline update query':lambda v:p.pipeline_update({**p.PIPELINE_CANONICAL,'query':v}),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/pipeline.py", line 40, in pipeline_update
+    derive_pipeline(result)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/pipeline.py", line 16, in derive_pipeline
+    if state['mode'] not in ('training', 'inference') or not math.isfinite(state['query']) or abs(state['query']) > 5:
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not NoneType
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity observations noise', value='None')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 147, in <lambda>
+    'capacity observations noise':lambda v:c.observations({**c.CAPACITY_CANONICAL,'noise':v}),
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 14, in observations
+    if type(state['degree']) is not int or not 0 <= state['degree'] <= 8 or not math.isfinite(state['noise']) or not 0 <= state['noise'] <= 2:
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not NoneType
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity data noise', value='None')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 148, in <lambda>
+    'capacity data noise':lambda v:c.capacity_data({**c.CAPACITY_CANONICAL,'noise':v}),
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 37, in capacity_data
+    split = capacity_split(state)
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 26, in capacity_split
+    samples = observations(state)
+              ^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 14, in observations
+    if type(state['degree']) is not int or not 0 <= state['degree'] <= 8 or not math.isfinite(state['noise']) or not 0 <= state['noise'] <= 2:
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not NoneType
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity candidates noise', value='None')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 149, in <lambda>
+    'capacity candidates noise':lambda v:c.capacity_candidates({**c.CAPACITY_CANONICAL,'noise':v}),
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 135, in capacity_candidates
+    result = derive_capacity({**deepcopy(state),'degree':degree})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 108, in derive_capacity
+    samples = capacity_data(state)
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 37, in capacity_data
+    split = capacity_split(state)
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 26, in capacity_split
+    samples = observations(state)
+              ^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 14, in observations
+    if type(state['degree']) is not int or not 0 <= state['degree'] <= 8 or not math.isfinite(state['noise']) or not 0 <= state['noise'] <= 2:
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not NoneType
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity trace noise', value='None')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 150, in <lambda>
+    'capacity trace noise':lambda v:c.capacity_trace({**c.CAPACITY_CANONICAL,'noise':v}),
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 146, in capacity_trace
+    active = derive_capacity(state)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 108, in derive_capacity
+    samples = capacity_data(state)
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 37, in capacity_data
+    split = capacity_split(state)
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 26, in capacity_split
+    samples = observations(state)
+              ^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 14, in observations
+    if type(state['degree']) is not int or not 0 <= state['degree'] <= 8 or not math.isfinite(state['noise']) or not 0 <= state['noise'] <= 2:
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not NoneType
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='fit x', value='None')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 151, in <lambda>
+    'fit x':lambda v:c.fit_capacity([dict(id='a',x=v,y=1)],0),
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 69, in fit_capacity
+    if type(degree) is not int or not 0 <= degree <= 8 or len(samples) > 64 or any(not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 1 or abs(row['y']) > 10 for row in samples):
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 69, in <genexpr>
+    if type(degree) is not int or not 0 <= degree <= 8 or len(samples) > 64 or any(not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 1 or abs(row['y']) > 10 for row in samples):
+                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not NoneType
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='fit y', value='None')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 152, in <lambda>
+    'fit y':lambda v:c.fit_capacity([dict(id='a',x=0,y=v)],0),
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 69, in fit_capacity
+    if type(degree) is not int or not 0 <= degree <= 8 or len(samples) > 64 or any(not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 1 or abs(row['y']) > 10 for row in samples):
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 69, in <genexpr>
+    if type(degree) is not int or not 0 <= degree <= 8 or len(samples) > 64 or any(not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 1 or abs(row['y']) > 10 for row in samples):
+                                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not NoneType
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='prediction x', value='None')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 153, in <lambda>
+    'prediction x':lambda v:c.polynomial_prediction(v,[1,2]),
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 59, in polynomial_prediction
+    if not coefficients or len(coefficients) > 9 or not math.isfinite(x) or not all(math.isfinite(value) for value in coefficients):
+                                                        ^^^^^^^^^^^^^^^^
+TypeError: must be real number, not NoneType
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='prediction coefficient', value='None')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 154, in <lambda>
+    'prediction coefficient':lambda v:c.polynomial_prediction(1,[1,v]),
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 59, in polynomial_prediction
+    if not coefficients or len(coefficients) > 9 or not math.isfinite(x) or not all(math.isfinite(value) for value in coefficients):
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 59, in <genexpr>
+    if not coefficients or len(coefficients) > 9 or not math.isfinite(x) or not all(math.isfinite(value) for value in coefficients):
+                                                                                    ^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not NoneType
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='split x', value='None')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 155, in <lambda>
+    'split x':lambda v:s.seed_split(split_rows('x',v),42,True),
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 21, in seed_split
+    samples_valid(samples)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 16, in samples_valid
+    if not isinstance(row['id'], str) or not row['id'].strip() or row['id'] in ids or not isinstance(row['group'], str) or not row['group'].strip() or not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 20 or abs(row['y']) > 50:
+                                                                                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not NoneType
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='split y', value='None')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 156, in <lambda>
+    'split y':lambda v:s.seed_split(split_rows('y',v),42,True),
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 21, in seed_split
+    samples_valid(samples)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 16, in samples_valid
+    if not isinstance(row['id'], str) or not row['id'].strip() or row['id'] in ids or not isinstance(row['group'], str) or not row['group'].strip() or not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 20 or abs(row['y']) > 50:
+                                                                                                                                                                                          ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not NoneType
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='derive split x', value='None')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 157, in <lambda>
+    'derive split x':lambda v:s.derive_split({**s.SPLIT_CANONICAL,'samples':split_rows('x',v)}),
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 42, in derive_split
+    samples_valid(state['samples'])
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 16, in samples_valid
+    if not isinstance(row['id'], str) or not row['id'].strip() or row['id'] in ids or not isinstance(row['group'], str) or not row['group'].strip() or not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 20 or abs(row['y']) > 50:
+                                                                                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not NoneType
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='centering distance', value='None')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 158, in <lambda>
+    'centering distance':lambda v:s.leakage_example(42,v),
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 82, in leakage_example
+    if not math.isfinite(distance) or not 6 <= distance <= 20:
+           ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not NoneType
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='pipeline query', value="'1'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 144, in <lambda>
+    'pipeline query':lambda v:p.derive_pipeline({**p.PIPELINE_CANONICAL,'mode':'inference','query':v}),
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/pipeline.py", line 16, in derive_pipeline
+    if state['mode'] not in ('training', 'inference') or not math.isfinite(state['query']) or abs(state['query']) > 5:
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not str
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='pipeline trace query', value="'1'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 145, in <lambda>
+    'pipeline trace query':lambda v:p.pipeline_trace({**p.PIPELINE_CANONICAL,'query':v}),
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/pipeline.py", line 44, in pipeline_trace
+    derive_pipeline(state)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/pipeline.py", line 16, in derive_pipeline
+    if state['mode'] not in ('training', 'inference') or not math.isfinite(state['query']) or abs(state['query']) > 5:
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not str
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='pipeline update query', value="'1'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 146, in <lambda>
+    'pipeline update query':lambda v:p.pipeline_update({**p.PIPELINE_CANONICAL,'query':v}),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/pipeline.py", line 40, in pipeline_update
+    derive_pipeline(result)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/pipeline.py", line 16, in derive_pipeline
+    if state['mode'] not in ('training', 'inference') or not math.isfinite(state['query']) or abs(state['query']) > 5:
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not str
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity observations noise', value="'1'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 147, in <lambda>
+    'capacity observations noise':lambda v:c.observations({**c.CAPACITY_CANONICAL,'noise':v}),
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 14, in observations
+    if type(state['degree']) is not int or not 0 <= state['degree'] <= 8 or not math.isfinite(state['noise']) or not 0 <= state['noise'] <= 2:
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not str
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity data noise', value="'1'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 148, in <lambda>
+    'capacity data noise':lambda v:c.capacity_data({**c.CAPACITY_CANONICAL,'noise':v}),
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 37, in capacity_data
+    split = capacity_split(state)
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 26, in capacity_split
+    samples = observations(state)
+              ^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 14, in observations
+    if type(state['degree']) is not int or not 0 <= state['degree'] <= 8 or not math.isfinite(state['noise']) or not 0 <= state['noise'] <= 2:
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not str
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity candidates noise', value="'1'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 149, in <lambda>
+    'capacity candidates noise':lambda v:c.capacity_candidates({**c.CAPACITY_CANONICAL,'noise':v}),
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 135, in capacity_candidates
+    result = derive_capacity({**deepcopy(state),'degree':degree})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 108, in derive_capacity
+    samples = capacity_data(state)
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 37, in capacity_data
+    split = capacity_split(state)
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 26, in capacity_split
+    samples = observations(state)
+              ^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 14, in observations
+    if type(state['degree']) is not int or not 0 <= state['degree'] <= 8 or not math.isfinite(state['noise']) or not 0 <= state['noise'] <= 2:
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not str
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity trace noise', value="'1'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 150, in <lambda>
+    'capacity trace noise':lambda v:c.capacity_trace({**c.CAPACITY_CANONICAL,'noise':v}),
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 146, in capacity_trace
+    active = derive_capacity(state)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 108, in derive_capacity
+    samples = capacity_data(state)
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 37, in capacity_data
+    split = capacity_split(state)
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 26, in capacity_split
+    samples = observations(state)
+              ^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 14, in observations
+    if type(state['degree']) is not int or not 0 <= state['degree'] <= 8 or not math.isfinite(state['noise']) or not 0 <= state['noise'] <= 2:
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not str
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='fit x', value="'1'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 151, in <lambda>
+    'fit x':lambda v:c.fit_capacity([dict(id='a',x=v,y=1)],0),
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 69, in fit_capacity
+    if type(degree) is not int or not 0 <= degree <= 8 or len(samples) > 64 or any(not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 1 or abs(row['y']) > 10 for row in samples):
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 69, in <genexpr>
+    if type(degree) is not int or not 0 <= degree <= 8 or len(samples) > 64 or any(not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 1 or abs(row['y']) > 10 for row in samples):
+                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not str
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='fit y', value="'1'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 152, in <lambda>
+    'fit y':lambda v:c.fit_capacity([dict(id='a',x=0,y=v)],0),
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 69, in fit_capacity
+    if type(degree) is not int or not 0 <= degree <= 8 or len(samples) > 64 or any(not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 1 or abs(row['y']) > 10 for row in samples):
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 69, in <genexpr>
+    if type(degree) is not int or not 0 <= degree <= 8 or len(samples) > 64 or any(not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 1 or abs(row['y']) > 10 for row in samples):
+                                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not str
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='prediction x', value="'1'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 153, in <lambda>
+    'prediction x':lambda v:c.polynomial_prediction(v,[1,2]),
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 59, in polynomial_prediction
+    if not coefficients or len(coefficients) > 9 or not math.isfinite(x) or not all(math.isfinite(value) for value in coefficients):
+                                                        ^^^^^^^^^^^^^^^^
+TypeError: must be real number, not str
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='prediction coefficient', value="'1'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 154, in <lambda>
+    'prediction coefficient':lambda v:c.polynomial_prediction(1,[1,v]),
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 59, in polynomial_prediction
+    if not coefficients or len(coefficients) > 9 or not math.isfinite(x) or not all(math.isfinite(value) for value in coefficients):
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 59, in <genexpr>
+    if not coefficients or len(coefficients) > 9 or not math.isfinite(x) or not all(math.isfinite(value) for value in coefficients):
+                                                                                    ^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not str
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='split x', value="'1'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 155, in <lambda>
+    'split x':lambda v:s.seed_split(split_rows('x',v),42,True),
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 21, in seed_split
+    samples_valid(samples)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 16, in samples_valid
+    if not isinstance(row['id'], str) or not row['id'].strip() or row['id'] in ids or not isinstance(row['group'], str) or not row['group'].strip() or not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 20 or abs(row['y']) > 50:
+                                                                                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not str
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='split y', value="'1'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 156, in <lambda>
+    'split y':lambda v:s.seed_split(split_rows('y',v),42,True),
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 21, in seed_split
+    samples_valid(samples)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 16, in samples_valid
+    if not isinstance(row['id'], str) or not row['id'].strip() or row['id'] in ids or not isinstance(row['group'], str) or not row['group'].strip() or not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 20 or abs(row['y']) > 50:
+                                                                                                                                                                                          ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not str
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='derive split x', value="'1'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 157, in <lambda>
+    'derive split x':lambda v:s.derive_split({**s.SPLIT_CANONICAL,'samples':split_rows('x',v)}),
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 42, in derive_split
+    samples_valid(state['samples'])
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 16, in samples_valid
+    if not isinstance(row['id'], str) or not row['id'].strip() or row['id'] in ids or not isinstance(row['group'], str) or not row['group'].strip() or not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 20 or abs(row['y']) > 50:
+                                                                                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not str
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='centering distance', value="'1'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 158, in <lambda>
+    'centering distance':lambda v:s.leakage_example(42,v),
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 82, in leakage_example
+    if not math.isfinite(distance) or not 6 <= distance <= 20:
+           ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not str
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='pipeline query', value='[]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 144, in <lambda>
+    'pipeline query':lambda v:p.derive_pipeline({**p.PIPELINE_CANONICAL,'mode':'inference','query':v}),
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/pipeline.py", line 16, in derive_pipeline
+    if state['mode'] not in ('training', 'inference') or not math.isfinite(state['query']) or abs(state['query']) > 5:
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not list
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='pipeline trace query', value='[]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 145, in <lambda>
+    'pipeline trace query':lambda v:p.pipeline_trace({**p.PIPELINE_CANONICAL,'query':v}),
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/pipeline.py", line 44, in pipeline_trace
+    derive_pipeline(state)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/pipeline.py", line 16, in derive_pipeline
+    if state['mode'] not in ('training', 'inference') or not math.isfinite(state['query']) or abs(state['query']) > 5:
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not list
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='pipeline update query', value='[]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 146, in <lambda>
+    'pipeline update query':lambda v:p.pipeline_update({**p.PIPELINE_CANONICAL,'query':v}),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/pipeline.py", line 40, in pipeline_update
+    derive_pipeline(result)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/pipeline.py", line 16, in derive_pipeline
+    if state['mode'] not in ('training', 'inference') or not math.isfinite(state['query']) or abs(state['query']) > 5:
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not list
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity observations noise', value='[]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 147, in <lambda>
+    'capacity observations noise':lambda v:c.observations({**c.CAPACITY_CANONICAL,'noise':v}),
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 14, in observations
+    if type(state['degree']) is not int or not 0 <= state['degree'] <= 8 or not math.isfinite(state['noise']) or not 0 <= state['noise'] <= 2:
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not list
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity data noise', value='[]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 148, in <lambda>
+    'capacity data noise':lambda v:c.capacity_data({**c.CAPACITY_CANONICAL,'noise':v}),
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 37, in capacity_data
+    split = capacity_split(state)
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 26, in capacity_split
+    samples = observations(state)
+              ^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 14, in observations
+    if type(state['degree']) is not int or not 0 <= state['degree'] <= 8 or not math.isfinite(state['noise']) or not 0 <= state['noise'] <= 2:
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not list
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity candidates noise', value='[]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 149, in <lambda>
+    'capacity candidates noise':lambda v:c.capacity_candidates({**c.CAPACITY_CANONICAL,'noise':v}),
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 135, in capacity_candidates
+    result = derive_capacity({**deepcopy(state),'degree':degree})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 108, in derive_capacity
+    samples = capacity_data(state)
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 37, in capacity_data
+    split = capacity_split(state)
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 26, in capacity_split
+    samples = observations(state)
+              ^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 14, in observations
+    if type(state['degree']) is not int or not 0 <= state['degree'] <= 8 or not math.isfinite(state['noise']) or not 0 <= state['noise'] <= 2:
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not list
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity trace noise', value='[]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 150, in <lambda>
+    'capacity trace noise':lambda v:c.capacity_trace({**c.CAPACITY_CANONICAL,'noise':v}),
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 146, in capacity_trace
+    active = derive_capacity(state)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 108, in derive_capacity
+    samples = capacity_data(state)
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 37, in capacity_data
+    split = capacity_split(state)
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 26, in capacity_split
+    samples = observations(state)
+              ^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 14, in observations
+    if type(state['degree']) is not int or not 0 <= state['degree'] <= 8 or not math.isfinite(state['noise']) or not 0 <= state['noise'] <= 2:
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not list
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='fit x', value='[]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 151, in <lambda>
+    'fit x':lambda v:c.fit_capacity([dict(id='a',x=v,y=1)],0),
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 69, in fit_capacity
+    if type(degree) is not int or not 0 <= degree <= 8 or len(samples) > 64 or any(not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 1 or abs(row['y']) > 10 for row in samples):
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 69, in <genexpr>
+    if type(degree) is not int or not 0 <= degree <= 8 or len(samples) > 64 or any(not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 1 or abs(row['y']) > 10 for row in samples):
+                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not list
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='fit y', value='[]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 152, in <lambda>
+    'fit y':lambda v:c.fit_capacity([dict(id='a',x=0,y=v)],0),
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 69, in fit_capacity
+    if type(degree) is not int or not 0 <= degree <= 8 or len(samples) > 64 or any(not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 1 or abs(row['y']) > 10 for row in samples):
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 69, in <genexpr>
+    if type(degree) is not int or not 0 <= degree <= 8 or len(samples) > 64 or any(not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 1 or abs(row['y']) > 10 for row in samples):
+                                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not list
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='prediction x', value='[]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 153, in <lambda>
+    'prediction x':lambda v:c.polynomial_prediction(v,[1,2]),
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 59, in polynomial_prediction
+    if not coefficients or len(coefficients) > 9 or not math.isfinite(x) or not all(math.isfinite(value) for value in coefficients):
+                                                        ^^^^^^^^^^^^^^^^
+TypeError: must be real number, not list
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='prediction coefficient', value='[]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 154, in <lambda>
+    'prediction coefficient':lambda v:c.polynomial_prediction(1,[1,v]),
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 59, in polynomial_prediction
+    if not coefficients or len(coefficients) > 9 or not math.isfinite(x) or not all(math.isfinite(value) for value in coefficients):
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 59, in <genexpr>
+    if not coefficients or len(coefficients) > 9 or not math.isfinite(x) or not all(math.isfinite(value) for value in coefficients):
+                                                                                    ^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not list
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='split x', value='[]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 155, in <lambda>
+    'split x':lambda v:s.seed_split(split_rows('x',v),42,True),
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 21, in seed_split
+    samples_valid(samples)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 16, in samples_valid
+    if not isinstance(row['id'], str) or not row['id'].strip() or row['id'] in ids or not isinstance(row['group'], str) or not row['group'].strip() or not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 20 or abs(row['y']) > 50:
+                                                                                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not list
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='split y', value='[]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 156, in <lambda>
+    'split y':lambda v:s.seed_split(split_rows('y',v),42,True),
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 21, in seed_split
+    samples_valid(samples)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 16, in samples_valid
+    if not isinstance(row['id'], str) or not row['id'].strip() or row['id'] in ids or not isinstance(row['group'], str) or not row['group'].strip() or not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 20 or abs(row['y']) > 50:
+                                                                                                                                                                                          ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not list
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='derive split x', value='[]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 157, in <lambda>
+    'derive split x':lambda v:s.derive_split({**s.SPLIT_CANONICAL,'samples':split_rows('x',v)}),
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 42, in derive_split
+    samples_valid(state['samples'])
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 16, in samples_valid
+    if not isinstance(row['id'], str) or not row['id'].strip() or row['id'] in ids or not isinstance(row['group'], str) or not row['group'].strip() or not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 20 or abs(row['y']) > 50:
+                                                                                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not list
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='centering distance', value='[]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 158, in <lambda>
+    'centering distance':lambda v:s.leakage_example(42,v),
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 82, in leakage_example
+    if not math.isfinite(distance) or not 6 <= distance <= 20:
+           ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not list
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='pipeline query', value='{}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 144, in <lambda>
+    'pipeline query':lambda v:p.derive_pipeline({**p.PIPELINE_CANONICAL,'mode':'inference','query':v}),
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/pipeline.py", line 16, in derive_pipeline
+    if state['mode'] not in ('training', 'inference') or not math.isfinite(state['query']) or abs(state['query']) > 5:
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not dict
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='pipeline trace query', value='{}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 145, in <lambda>
+    'pipeline trace query':lambda v:p.pipeline_trace({**p.PIPELINE_CANONICAL,'query':v}),
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/pipeline.py", line 44, in pipeline_trace
+    derive_pipeline(state)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/pipeline.py", line 16, in derive_pipeline
+    if state['mode'] not in ('training', 'inference') or not math.isfinite(state['query']) or abs(state['query']) > 5:
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not dict
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='pipeline update query', value='{}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 146, in <lambda>
+    'pipeline update query':lambda v:p.pipeline_update({**p.PIPELINE_CANONICAL,'query':v}),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/pipeline.py", line 40, in pipeline_update
+    derive_pipeline(result)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/pipeline.py", line 16, in derive_pipeline
+    if state['mode'] not in ('training', 'inference') or not math.isfinite(state['query']) or abs(state['query']) > 5:
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not dict
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity observations noise', value='{}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 147, in <lambda>
+    'capacity observations noise':lambda v:c.observations({**c.CAPACITY_CANONICAL,'noise':v}),
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 14, in observations
+    if type(state['degree']) is not int or not 0 <= state['degree'] <= 8 or not math.isfinite(state['noise']) or not 0 <= state['noise'] <= 2:
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not dict
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity data noise', value='{}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 148, in <lambda>
+    'capacity data noise':lambda v:c.capacity_data({**c.CAPACITY_CANONICAL,'noise':v}),
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 37, in capacity_data
+    split = capacity_split(state)
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 26, in capacity_split
+    samples = observations(state)
+              ^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 14, in observations
+    if type(state['degree']) is not int or not 0 <= state['degree'] <= 8 or not math.isfinite(state['noise']) or not 0 <= state['noise'] <= 2:
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not dict
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity candidates noise', value='{}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 149, in <lambda>
+    'capacity candidates noise':lambda v:c.capacity_candidates({**c.CAPACITY_CANONICAL,'noise':v}),
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 135, in capacity_candidates
+    result = derive_capacity({**deepcopy(state),'degree':degree})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 108, in derive_capacity
+    samples = capacity_data(state)
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 37, in capacity_data
+    split = capacity_split(state)
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 26, in capacity_split
+    samples = observations(state)
+              ^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 14, in observations
+    if type(state['degree']) is not int or not 0 <= state['degree'] <= 8 or not math.isfinite(state['noise']) or not 0 <= state['noise'] <= 2:
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not dict
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity trace noise', value='{}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 150, in <lambda>
+    'capacity trace noise':lambda v:c.capacity_trace({**c.CAPACITY_CANONICAL,'noise':v}),
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 146, in capacity_trace
+    active = derive_capacity(state)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 108, in derive_capacity
+    samples = capacity_data(state)
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 37, in capacity_data
+    split = capacity_split(state)
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 26, in capacity_split
+    samples = observations(state)
+              ^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 14, in observations
+    if type(state['degree']) is not int or not 0 <= state['degree'] <= 8 or not math.isfinite(state['noise']) or not 0 <= state['noise'] <= 2:
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not dict
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='fit x', value='{}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 151, in <lambda>
+    'fit x':lambda v:c.fit_capacity([dict(id='a',x=v,y=1)],0),
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 69, in fit_capacity
+    if type(degree) is not int or not 0 <= degree <= 8 or len(samples) > 64 or any(not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 1 or abs(row['y']) > 10 for row in samples):
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 69, in <genexpr>
+    if type(degree) is not int or not 0 <= degree <= 8 or len(samples) > 64 or any(not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 1 or abs(row['y']) > 10 for row in samples):
+                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not dict
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='fit y', value='{}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 152, in <lambda>
+    'fit y':lambda v:c.fit_capacity([dict(id='a',x=0,y=v)],0),
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 69, in fit_capacity
+    if type(degree) is not int or not 0 <= degree <= 8 or len(samples) > 64 or any(not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 1 or abs(row['y']) > 10 for row in samples):
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 69, in <genexpr>
+    if type(degree) is not int or not 0 <= degree <= 8 or len(samples) > 64 or any(not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 1 or abs(row['y']) > 10 for row in samples):
+                                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not dict
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='prediction x', value='{}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 153, in <lambda>
+    'prediction x':lambda v:c.polynomial_prediction(v,[1,2]),
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 59, in polynomial_prediction
+    if not coefficients or len(coefficients) > 9 or not math.isfinite(x) or not all(math.isfinite(value) for value in coefficients):
+                                                        ^^^^^^^^^^^^^^^^
+TypeError: must be real number, not dict
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='prediction coefficient', value='{}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 154, in <lambda>
+    'prediction coefficient':lambda v:c.polynomial_prediction(1,[1,v]),
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 59, in polynomial_prediction
+    if not coefficients or len(coefficients) > 9 or not math.isfinite(x) or not all(math.isfinite(value) for value in coefficients):
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 59, in <genexpr>
+    if not coefficients or len(coefficients) > 9 or not math.isfinite(x) or not all(math.isfinite(value) for value in coefficients):
+                                                                                    ^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not dict
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='split x', value='{}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 155, in <lambda>
+    'split x':lambda v:s.seed_split(split_rows('x',v),42,True),
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 21, in seed_split
+    samples_valid(samples)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 16, in samples_valid
+    if not isinstance(row['id'], str) or not row['id'].strip() or row['id'] in ids or not isinstance(row['group'], str) or not row['group'].strip() or not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 20 or abs(row['y']) > 50:
+                                                                                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not dict
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='split y', value='{}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 156, in <lambda>
+    'split y':lambda v:s.seed_split(split_rows('y',v),42,True),
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 21, in seed_split
+    samples_valid(samples)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 16, in samples_valid
+    if not isinstance(row['id'], str) or not row['id'].strip() or row['id'] in ids or not isinstance(row['group'], str) or not row['group'].strip() or not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 20 or abs(row['y']) > 50:
+                                                                                                                                                                                          ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not dict
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='derive split x', value='{}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 157, in <lambda>
+    'derive split x':lambda v:s.derive_split({**s.SPLIT_CANONICAL,'samples':split_rows('x',v)}),
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 42, in derive_split
+    samples_valid(state['samples'])
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 16, in samples_valid
+    if not isinstance(row['id'], str) or not row['id'].strip() or row['id'] in ids or not isinstance(row['group'], str) or not row['group'].strip() or not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 20 or abs(row['y']) > 50:
+                                                                                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not dict
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='centering distance', value='{}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 158, in <lambda>
+    'centering distance':lambda v:s.leakage_example(42,v),
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 82, in leakage_example
+    if not math.isfinite(distance) or not 6 <= distance <= 20:
+           ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: must be real number, not dict
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='pipeline query', value='10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 144, in <lambda>
+    'pipeline query':lambda v:p.derive_pipeline({**p.PIPELINE_CANONICAL,'mode':'inference','query':v}),
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/pipeline.py", line 16, in derive_pipeline
+    if state['mode'] not in ('training', 'inference') or not math.isfinite(state['query']) or abs(state['query']) > 5:
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OverflowError: int too large to convert to float
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='pipeline trace query', value='10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 145, in <lambda>
+    'pipeline trace query':lambda v:p.pipeline_trace({**p.PIPELINE_CANONICAL,'query':v}),
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/pipeline.py", line 44, in pipeline_trace
+    derive_pipeline(state)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/pipeline.py", line 16, in derive_pipeline
+    if state['mode'] not in ('training', 'inference') or not math.isfinite(state['query']) or abs(state['query']) > 5:
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OverflowError: int too large to convert to float
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='pipeline update query', value='10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 146, in <lambda>
+    'pipeline update query':lambda v:p.pipeline_update({**p.PIPELINE_CANONICAL,'query':v}),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/pipeline.py", line 40, in pipeline_update
+    derive_pipeline(result)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/pipeline.py", line 16, in derive_pipeline
+    if state['mode'] not in ('training', 'inference') or not math.isfinite(state['query']) or abs(state['query']) > 5:
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OverflowError: int too large to convert to float
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity observations noise', value='10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 147, in <lambda>
+    'capacity observations noise':lambda v:c.observations({**c.CAPACITY_CANONICAL,'noise':v}),
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 14, in observations
+    if type(state['degree']) is not int or not 0 <= state['degree'] <= 8 or not math.isfinite(state['noise']) or not 0 <= state['noise'] <= 2:
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OverflowError: int too large to convert to float
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity data noise', value='10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 148, in <lambda>
+    'capacity data noise':lambda v:c.capacity_data({**c.CAPACITY_CANONICAL,'noise':v}),
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 37, in capacity_data
+    split = capacity_split(state)
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 26, in capacity_split
+    samples = observations(state)
+              ^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 14, in observations
+    if type(state['degree']) is not int or not 0 <= state['degree'] <= 8 or not math.isfinite(state['noise']) or not 0 <= state['noise'] <= 2:
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OverflowError: int too large to convert to float
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity candidates noise', value='10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 149, in <lambda>
+    'capacity candidates noise':lambda v:c.capacity_candidates({**c.CAPACITY_CANONICAL,'noise':v}),
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 135, in capacity_candidates
+    result = derive_capacity({**deepcopy(state),'degree':degree})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 108, in derive_capacity
+    samples = capacity_data(state)
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 37, in capacity_data
+    split = capacity_split(state)
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 26, in capacity_split
+    samples = observations(state)
+              ^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 14, in observations
+    if type(state['degree']) is not int or not 0 <= state['degree'] <= 8 or not math.isfinite(state['noise']) or not 0 <= state['noise'] <= 2:
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OverflowError: int too large to convert to float
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity trace noise', value='10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 150, in <lambda>
+    'capacity trace noise':lambda v:c.capacity_trace({**c.CAPACITY_CANONICAL,'noise':v}),
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 146, in capacity_trace
+    active = derive_capacity(state)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 108, in derive_capacity
+    samples = capacity_data(state)
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 37, in capacity_data
+    split = capacity_split(state)
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 26, in capacity_split
+    samples = observations(state)
+              ^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 14, in observations
+    if type(state['degree']) is not int or not 0 <= state['degree'] <= 8 or not math.isfinite(state['noise']) or not 0 <= state['noise'] <= 2:
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OverflowError: int too large to convert to float
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='fit x', value='10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 151, in <lambda>
+    'fit x':lambda v:c.fit_capacity([dict(id='a',x=v,y=1)],0),
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 69, in fit_capacity
+    if type(degree) is not int or not 0 <= degree <= 8 or len(samples) > 64 or any(not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 1 or abs(row['y']) > 10 for row in samples):
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 69, in <genexpr>
+    if type(degree) is not int or not 0 <= degree <= 8 or len(samples) > 64 or any(not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 1 or abs(row['y']) > 10 for row in samples):
+                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+OverflowError: int too large to convert to float
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='fit y', value='10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 152, in <lambda>
+    'fit y':lambda v:c.fit_capacity([dict(id='a',x=0,y=v)],0),
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 69, in fit_capacity
+    if type(degree) is not int or not 0 <= degree <= 8 or len(samples) > 64 or any(not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 1 or abs(row['y']) > 10 for row in samples):
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 69, in <genexpr>
+    if type(degree) is not int or not 0 <= degree <= 8 or len(samples) > 64 or any(not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 1 or abs(row['y']) > 10 for row in samples):
+                                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^
+OverflowError: int too large to convert to float
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='prediction x', value='10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 153, in <lambda>
+    'prediction x':lambda v:c.polynomial_prediction(v,[1,2]),
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 59, in polynomial_prediction
+    if not coefficients or len(coefficients) > 9 or not math.isfinite(x) or not all(math.isfinite(value) for value in coefficients):
+                                                        ^^^^^^^^^^^^^^^^
+OverflowError: int too large to convert to float
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='prediction coefficient', value='10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 154, in <lambda>
+    'prediction coefficient':lambda v:c.polynomial_prediction(1,[1,v]),
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 59, in polynomial_prediction
+    if not coefficients or len(coefficients) > 9 or not math.isfinite(x) or not all(math.isfinite(value) for value in coefficients):
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/capacity_baselines.py", line 59, in <genexpr>
+    if not coefficients or len(coefficients) > 9 or not math.isfinite(x) or not all(math.isfinite(value) for value in coefficients):
+                                                                                    ^^^^^^^^^^^^^^^^^^^^
+OverflowError: int too large to convert to float
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='split x', value='10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 155, in <lambda>
+    'split x':lambda v:s.seed_split(split_rows('x',v),42,True),
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 21, in seed_split
+    samples_valid(samples)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 16, in samples_valid
+    if not isinstance(row['id'], str) or not row['id'].strip() or row['id'] in ids or not isinstance(row['group'], str) or not row['group'].strip() or not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 20 or abs(row['y']) > 50:
+                                                                                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^
+OverflowError: int too large to convert to float
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='split y', value='10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 156, in <lambda>
+    'split y':lambda v:s.seed_split(split_rows('y',v),42,True),
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 21, in seed_split
+    samples_valid(samples)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 16, in samples_valid
+    if not isinstance(row['id'], str) or not row['id'].strip() or row['id'] in ids or not isinstance(row['group'], str) or not row['group'].strip() or not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 20 or abs(row['y']) > 50:
+                                                                                                                                                                                          ^^^^^^^^^^^^^^^^^^^^^^^
+OverflowError: int too large to convert to float
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='derive split x', value='10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 157, in <lambda>
+    'derive split x':lambda v:s.derive_split({**s.SPLIT_CANONICAL,'samples':split_rows('x',v)}),
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 42, in derive_split
+    samples_valid(state['samples'])
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 16, in samples_valid
+    if not isinstance(row['id'], str) or not row['id'].strip() or row['id'] in ids or not isinstance(row['group'], str) or not row['group'].strip() or not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 20 or abs(row['y']) > 50:
+                                                                                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^
+OverflowError: int too large to convert to float
+
+======================================================================
+ERROR: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='centering distance', value='10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 163, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    call(value)
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 158, in <lambda>
+    'centering distance':lambda v:s.leakage_example(42,v),
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/code/python/p01/split_generalization.py", line 82, in leakage_example
+    if not math.isfinite(distance) or not 6 <= distance <= 20:
+           ^^^^^^^^^^^^^^^^^^^^^^^
+OverflowError: int too large to convert to float
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='pipeline query', value='True')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='pipeline trace query', value='True')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='pipeline update query', value='True')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity observations noise', value='True')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity data noise', value='True')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity candidates noise', value='True')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity trace noise', value='True')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='fit x', value='True')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='fit y', value='True')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='prediction x', value='True')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='prediction coefficient', value='True')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='split x', value='True')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='split y', value='True')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='derive split x', value='True')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='pipeline query', value='False')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='pipeline trace query', value='False')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='pipeline update query', value='False')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity observations noise', value='False')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity data noise', value='False')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity candidates noise', value='False')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='capacity trace noise', value='False')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='fit x', value='False')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='fit y', value='False')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='prediction x', value='False')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='prediction coefficient', value='False')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='split x', value='False')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='split y', value='False')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_boundaries_reject_bool_and_nonnumeric (__main__.FoundationTests.test_numeric_boundaries_reject_bool_and_nonnumeric) (surface='derive split x', value='False')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 162, in test_numeric_boundaries_reject_bool_and_nonnumeric
+    with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_numeric_duplicate_equality_and_canonical_display (__main__.FoundationTests.test_numeric_duplicate_equality_and_canonical_display)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/oracle/p01/test_foundations.py", line 175, in test_numeric_duplicate_equality_and_canonical_display
+    self.assertEqual(result['duplicateLeaks'],['1|2'])
+AssertionError: Lists differ: [] != ['1|2']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'1|2'
+
+- []
++ ['1|2']
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.241s
+
+FAILED (failures=29, errors=75)

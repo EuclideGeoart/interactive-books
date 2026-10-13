@@ -194,3 +194,43 @@ describe('same-row polynomial capacity and baseline', () => {
     expect(trace[1]!.state.assignments).toBeUndefined();
   });
 });
+
+describe('reviewed JSON type and duplicate boundaries',()=>{
+  it('rejects category arrays/objects instead of silently adding a target dimension',()=>{
+    const state=featureTargetKind(FEATURE_CANONICAL,'category');
+    for(const target of [['ready'],{value:'ready'},null,true,1]){
+      const payload={...state,samples:state.samples.map((row,i)=>i===0?{...row,target}:row)};
+      expect(()=>deriveFeatures(JSON.parse(JSON.stringify(payload)))).toThrow(RangeError);
+    }
+    expect(deriveFeatures(state).y!.every(row=>row.length===1&&typeof row[0]==='string')).toBe(true);
+  });
+  it('rejects JSON booleans/nonnumbers across numeric APIs and keeps ordinary numbers valid',()=>{
+    for(const value of [true,false,null,'1',[],{}]){
+      expect(()=>derivePipeline(JSON.parse(JSON.stringify({...PIPELINE_CANONICAL,mode:'inference',query:value})))).toThrow(RangeError);
+      expect(()=>capacityData(JSON.parse(JSON.stringify({...CAPACITY_CANONICAL,noise:value})))).toThrow(RangeError);
+      expect(()=>capacityCandidates(JSON.parse(JSON.stringify({...CAPACITY_CANONICAL,noise:value})))).toThrow(RangeError);
+      expect(()=>capacityTrace(JSON.parse(JSON.stringify({...CAPACITY_CANONICAL,noise:value})))).toThrow(RangeError);
+      for(const key of ['x','y']){
+        expect(()=>fitCapacity(JSON.parse(JSON.stringify([{id:'a',x:0,y:1,[key]:value}])),0)).toThrow(RangeError);
+        const samples=SPLIT_SAMPLES.map((row,i)=>i===0?{...row,[key]:value}:row);
+        expect(()=>seedSplit(JSON.parse(JSON.stringify(samples)),42,true)).toThrow(RangeError);
+      }
+      expect(()=>polynomialPrediction(JSON.parse(JSON.stringify(value)),[1,2])).toThrow(RangeError);
+      expect(()=>polynomialPrediction(1,JSON.parse(JSON.stringify([1,value])))).toThrow(RangeError);
+      expect(()=>leakageExample(42,JSON.parse(JSON.stringify(value)))).toThrow(RangeError);
+    }
+    expect(derivePipeline({...PIPELINE_CANONICAL,mode:'inference',query:1.0}).prediction).toBe(.5);
+    expect(fitCapacity([{id:'a',x:0,y:1.0}],0).coefficients).toEqual([1]);
+    expect(polynomialPrediction(1.0,[1,2.0])).toBe(3);
+  });
+  it('treats integer/float spellings as identical values across partitions',()=>{
+    const state:SplitState={samples:[{id:'integer',group:'a',x:1,y:2},{id:'float',group:'b',x:1.0,y:2.0},{id:'other',group:'c',x:3,y:4}],
+      seed:42,keepGroups:false,source:'manual',assignments:{integer:'train',float:'validation',other:'test'}};
+    expect(deriveSplit(state).duplicateLeaks).toEqual(['1|2']);
+    expect(deriveSplit(state).subsets.map(row=>row.mse)).toEqual([0,0,4]);
+    for(const [value,text] of [[-0,'0'],[1e-7,'1e-7'],[1e-6,'0.000001']] as const){
+      const samples=state.samples.map(row=>row.id==='other'?row:{...row,x:value,y:2.0});
+      expect(deriveSplit({...state,samples}).duplicateLeaks).toEqual([text+'|2']);
+    }
+  });
+});

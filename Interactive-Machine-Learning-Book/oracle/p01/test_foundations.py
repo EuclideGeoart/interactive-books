@@ -127,5 +127,57 @@ class FoundationTests(unittest.TestCase):
             path.write_text(g.serialized())
             g.check(path)
 
+
+    def test_category_requires_primitive_string(self):
+        state = f.feature_target_kind(f.FEATURE_CANONICAL, 'category')
+        for target in (['ready'], {'value':'ready'}, None, True, 1):
+            bad = deepcopy(state)
+            bad['samples'][0]['target'] = target
+            with self.subTest(target=target), self.assertRaises(ValueError):
+                f.derive_features(bad)
+        self.assertTrue(all(type(row[0]) is str for row in f.derive_features(state)['y']))
+
+    def test_numeric_boundaries_reject_bool_and_nonnumeric(self):
+        def split_rows(key,value):
+            return [{**row,key:value} if i==0 else row.copy() for i,row in enumerate(s.SPLIT_SAMPLES)]
+        calls = {
+            'pipeline query':lambda v:p.derive_pipeline({**p.PIPELINE_CANONICAL,'mode':'inference','query':v}),
+            'pipeline trace query':lambda v:p.pipeline_trace({**p.PIPELINE_CANONICAL,'query':v}),
+            'pipeline update query':lambda v:p.pipeline_update({**p.PIPELINE_CANONICAL,'query':v}),
+            'capacity observations noise':lambda v:c.observations({**c.CAPACITY_CANONICAL,'noise':v}),
+            'capacity data noise':lambda v:c.capacity_data({**c.CAPACITY_CANONICAL,'noise':v}),
+            'capacity candidates noise':lambda v:c.capacity_candidates({**c.CAPACITY_CANONICAL,'noise':v}),
+            'capacity trace noise':lambda v:c.capacity_trace({**c.CAPACITY_CANONICAL,'noise':v}),
+            'fit x':lambda v:c.fit_capacity([dict(id='a',x=v,y=1)],0),
+            'fit y':lambda v:c.fit_capacity([dict(id='a',x=0,y=v)],0),
+            'prediction x':lambda v:c.polynomial_prediction(v,[1,2]),
+            'prediction coefficient':lambda v:c.polynomial_prediction(1,[1,v]),
+            'split x':lambda v:s.seed_split(split_rows('x',v),42,True),
+            'split y':lambda v:s.seed_split(split_rows('y',v),42,True),
+            'derive split x':lambda v:s.derive_split({**s.SPLIT_CANONICAL,'samples':split_rows('x',v)}),
+            'centering distance':lambda v:s.leakage_example(42,v),
+        }
+        for value in (True,False,None,'1',[],{},float('nan'),float('inf'),10**400):
+            for name,call in calls.items():
+                with self.subTest(surface=name,value=repr(value)), self.assertRaises(ValueError):
+                    call(value)
+        for value in (1,1.0):
+            self.assertEqual(p.derive_pipeline({**p.PIPELINE_CANONICAL,'mode':'inference','query':value})['prediction'],.5)
+            self.assertEqual(c.fit_capacity([dict(id='a',x=0,y=value)],0)['coefficients'],[1])
+            self.assertEqual(c.polynomial_prediction(value,[1,2]),3)
+            self.assertEqual(len(c.observations({**c.CAPACITY_CANONICAL,'noise':value})),17)
+            self.assertEqual(len(s.seed_split(split_rows('x',value),42,True)['samples']),12)
+
+    def test_numeric_duplicate_equality_and_canonical_display(self):
+        rows = [dict(id='integer',group='a',x=1,y=2),dict(id='float',group='b',x=1.0,y=2.0),dict(id='other',group='c',x=3,y=4)]
+        state = dict(samples=rows,seed=42,keepGroups=False,source='manual',assignments=dict(integer='train',float='validation',other='test'))
+        result = s.derive_split(state)
+        self.assertEqual(result['duplicateLeaks'],['1|2'])
+        self.assertEqual([subset['mse'] for subset in result['subsets']],[0,0,4])
+        self.assertEqual(s.derive_split({**state,'samples':list(reversed(rows))})['duplicateLeaks'],['1|2'])
+        for value,text in [(0.0,'0'),(-0.0,'0'),(1e-7,'1e-7'),(1e-6,'0.000001')]:
+            changed = [{**row,'x':value,'y':2.0} if row['id']!='other' else row for row in rows]
+            self.assertEqual(s.derive_split({**state,'samples':changed})['duplicateLeaks'],[text+'|2'])
+
 if __name__ == '__main__':
     unittest.main()

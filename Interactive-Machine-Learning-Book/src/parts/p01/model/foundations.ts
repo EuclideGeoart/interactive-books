@@ -69,7 +69,7 @@ export function deriveFeatures(state: FeatureState) {
       if (!Number.isFinite(value) || value < 0 || value > column.max || (column.integer && !Number.isInteger(value))) throw new RangeError(`${column.name} must be a finite ${column.integer ? 'integer ' : ''}value between 0 and ${column.max}.`);
     });
     if (state.targetKind === 'quantity' && (typeof row.target !== 'number' || !Number.isFinite(row.target) || row.target < 0 || row.target > 20)) throw new RangeError('Quantity targets must be finite scores between 0 and 20.');
-    if (state.targetKind === 'category' && !['ready', 'practice'].includes(String(row.target))) throw new RangeError('Choose ready or practice as the category label.');
+    if (state.targetKind === 'category' && (typeof row.target !== 'string' || !['ready', 'practice'].includes(row.target))) throw new RangeError('Choose ready or practice as the category label.');
     if (state.targetKind === 'none' && row.target !== null) throw new RangeError('An unlabelled schema has no target values.');
   }
   const rows = samples.slice(0, state.sampleCount);

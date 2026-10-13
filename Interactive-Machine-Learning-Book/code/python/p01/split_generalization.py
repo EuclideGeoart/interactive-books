@@ -1,11 +1,27 @@
 """III-04: seeded group partitions, honest baseline evaluation and preprocessing leakage."""
 from copy import deepcopy
 import json
-import math
+from decimal import Decimal
 import numpy as np
 from seed import lcg
+from numeric import is_finite_number
 
 PARTITIONS = ('train', 'validation', 'test')
+
+def _number_text(value):
+    # Presentation only: duplicate identity is numeric-pair equality, never decimal spelling.
+    value = float(value)
+    if value == 0:
+        return '0'
+    text = repr(value)
+    if 'e' not in text:
+        return text.removesuffix('.0')
+    mantissa, exponent = text.split('e')
+    exponent = int(exponent)
+    if -6 <= exponent < 21:
+        return format(Decimal(text),'f')
+    return f"{mantissa.removesuffix('.0')}e{exponent:+d}"
+
 SPLIT_SAMPLES = [dict(id=f'g{i+1}-{copy}', group=f'g{i+1}', x=x, y=2*x+1) for i, x in enumerate([0,1,2,3,4,10]) for copy in ('a','b')]
 
 def samples_valid(samples):
@@ -13,7 +29,7 @@ def samples_valid(samples):
         raise ValueError('Require 3–64 split samples')
     ids = set()
     for row in samples:
-        if not isinstance(row['id'], str) or not row['id'].strip() or row['id'] in ids or not isinstance(row['group'], str) or not row['group'].strip() or not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 20 or abs(row['y']) > 50:
+        if not isinstance(row['id'], str) or not row['id'].strip() or row['id'] in ids or not isinstance(row['group'], str) or not row['group'].strip() or not is_finite_number(row['x']) or not is_finite_number(row['y']) or abs(row['x']) > 20 or abs(row['y']) > 50:
             raise ValueError('Invalid sample ID, group, finite value or range')
         ids.add(row['id'])
 
@@ -49,8 +65,10 @@ def derive_split(state):
     rows = [dict(**row, partition=state['assignments'][row['id']]) for row in state['samples']]
     training = [row for row in rows if row['partition'] == 'train']
     mean = float(np.mean([row['y'] for row in training])) if training else None
-    signatures = list(dict.fromkeys(f"{row['x']}|{row['y']}" for row in rows))
-    duplicates = [signature for signature in signatures if len({row['partition'] for row in rows if f"{row['x']}|{row['y']}" == signature}) > 1]
+    pair_partitions = {}
+    for row in rows:
+        pair_partitions.setdefault((row['x'],row['y']),set()).add(row['partition'])
+    duplicates = [f'{_number_text(x)}|{_number_text(y)}' for (x,y),partitions in pair_partitions.items() if len(partitions)>1]
     subsets = []
     for partition in PARTITIONS:
         data = [row for row in rows if row['partition'] == partition]
@@ -79,7 +97,7 @@ def split_trace(state):
                  explanation='Starting assignments; no sample data changes.' if i==0 else f"Repartition with unsigned seed {(state['seed']+i)&0xffffffff}; preserve all sample IDs and data.") for i in range(4)]
 
 def leakage_example(seed, distance=10):
-    if not math.isfinite(distance) or not 6 <= distance <= 20:
+    if not is_finite_number(distance) or not 6 <= distance <= 20:
         raise ValueError('Held-out distance must be finite and 6–20')
     offset = int(next(lcg(seed))*4)
     X_train = np.array([[offset],[offset+2]], dtype=np.float64)

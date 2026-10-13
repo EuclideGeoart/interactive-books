@@ -1,8 +1,8 @@
 """III-02: sample rows, feature columns and semantically typed target columns."""
 from copy import deepcopy
 import json
-import math
 import numpy as np
+from numeric import is_finite_number
 
 FEATURE_COLUMNS = [dict(name='Study time', unit='hours', integer=False, max=12), dict(name='Practice tasks', unit='count', integer=True, max=20), dict(name='Sleep time', unit='hours', integer=False, max=12)]
 FEATURE_CANONICAL = dict(samples=[dict(id=f'r{i+1}', values=values, target=target) for i, (values, target) in enumerate([([0,0,6],1), ([1,2,8],3), ([2,3,7],5), ([3,4,8],7), ([4,5,6],9), ([5,8,7],11)])], sampleCount=4, featureCount=2, targetKind='quantity')
@@ -17,12 +17,12 @@ def derive_features(state):
             raise ValueError('Unique nonempty IDs and rectangular feature rows are required')
         ids.add(row['id'])
         for value, column in zip(row['values'], FEATURE_COLUMNS):
-            if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or not 0 <= value <= column['max'] or (column['integer'] and value != int(value)):
+            if not is_finite_number(value) or not 0 <= value <= column['max'] or (column['integer'] and value != int(value)):
                 raise ValueError('Feature type, finite value or unit range is invalid')
         kind, target = state['targetKind'], row['target']
-        if kind == 'quantity' and (isinstance(target, bool) or not isinstance(target, (int, float)) or not math.isfinite(target) or not 0 <= target <= 20):
+        if kind == 'quantity' and (not is_finite_number(target) or not 0 <= target <= 20):
             raise ValueError('Quantity target must be a finite score from 0 to 20')
-        if kind == 'category' and target not in ('ready', 'practice'):
+        if kind == 'category' and (not isinstance(target, str) or target not in ('ready', 'practice')):
             raise ValueError('Category target must be ready or practice')
         if kind == 'none' and target is not None:
             raise ValueError('Unlabelled schema has no target')

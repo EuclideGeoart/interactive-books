@@ -1,10 +1,10 @@
 """III-01: observed targets train parameters; an unlabelled query only predicts."""
 from copy import deepcopy
 import json
-import math
 from pathlib import Path
 import sys
 import numpy as np
+from numeric import is_finite_number
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / 'code/python/p02'))
@@ -13,7 +13,7 @@ import linear_regression as reference
 PIPELINE_CANONICAL = dict(regression=deepcopy(reference.CANONICAL_REGRESSION), mode='training', sampleId='s3', query=1.5)
 
 def derive_pipeline(state):
-    if state['mode'] not in ('training', 'inference') or not math.isfinite(state['query']) or abs(state['query']) > 5:
+    if state['mode'] not in ('training', 'inference') or not is_finite_number(state['query']) or abs(state['query']) > 5:
         raise ValueError('Choose training/inference and a finite query between -5 and 5')
     numerical = reference.derive_regression(state['regression'])
     r = state['regression']

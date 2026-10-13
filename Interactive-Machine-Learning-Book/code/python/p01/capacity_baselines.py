@@ -4,6 +4,7 @@ import json
 import math
 import numpy as np
 from seed import lcg
+from numeric import is_finite_number
 from split_generalization import assign_split, derive_split, seed_split, PARTITIONS
 
 CAPACITY_CANONICAL = dict(seed=42, degree=2, noise=.5, splitSeed=42, source='interleaved')
@@ -11,7 +12,7 @@ RANK_THRESHOLD = 1e-12
 RANK_REASON = 'The polynomial design is numerically rank deficient: a reorthogonalized QR column norm is ≤ 1e−12 times the design Frobenius norm.'
 
 def observations(state):
-    if type(state['degree']) is not int or not 0 <= state['degree'] <= 8 or not math.isfinite(state['noise']) or not 0 <= state['noise'] <= 2:
+    if type(state['degree']) is not int or not 0 <= state['degree'] <= 8 or not is_finite_number(state['noise']) or not 0 <= state['noise'] <= 2:
         raise ValueError('Integer degree 0–8 and finite noise 0–2 are required')
     random = lcg(state['seed'])
     rows = []
@@ -56,7 +57,7 @@ def preset_capacity_split(state, source, split_seed=None):
     return result
 
 def polynomial_prediction(x, coefficients):
-    if not coefficients or len(coefficients) > 9 or not math.isfinite(x) or not all(math.isfinite(value) for value in coefficients):
+    if not coefficients or len(coefficients) > 9 or not is_finite_number(x) or not all(is_finite_number(value) for value in coefficients):
         raise ValueError('Finite input and 1–9 coefficients required')
     value = 0.0
     for coefficient in reversed(coefficients):
@@ -66,7 +67,7 @@ def polynomial_prediction(x, coefficients):
     return value
 
 def fit_capacity(samples, degree):
-    if type(degree) is not int or not 0 <= degree <= 8 or len(samples) > 64 or any(not math.isfinite(row['x']) or not math.isfinite(row['y']) or abs(row['x']) > 1 or abs(row['y']) > 10 for row in samples):
+    if type(degree) is not int or not 0 <= degree <= 8 or len(samples) > 64 or any(not is_finite_number(row['x']) or not is_finite_number(row['y']) or abs(row['x']) > 1 or abs(row['y']) > 10 for row in samples):
         raise ValueError('Invalid bounded polynomial data or degree')
     if len({row['id'] for row in samples}) != len(samples) or any(not isinstance(row['id'],str) or not row['id'].strip() for row in samples):
         raise ValueError('Unique nonempty sample IDs required')

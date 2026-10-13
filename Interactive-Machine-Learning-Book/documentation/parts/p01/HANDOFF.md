@@ -73,6 +73,7 @@ Only the following owned files are delivered:
 - src/parts/p01/chapters/parameters-loss-optimization.mdx
 - src/parts/p01/chapters/underfitting-overfitting-baselines.mdx
 - code/python/p01/seed.py
+- code/python/p01/numeric.py
 - code/python/p01/pipeline.py
 - code/python/p01/samples_features.py
 - code/python/p01/learning_problems.py
@@ -91,6 +92,7 @@ Only the following owned files are delivered:
 - documentation/parts/p01/NUMERICS.md
 - documentation/parts/p01/INTEGRATION_REQUESTS.md
 - documentation/parts/p01/HANDOFF.md
+- documentation/parts/p01/validation/boundaries-before-c588aa2-fix.log
 
 No data files or asset downloads were needed: the explicit toy rows and seeded-generation rules reside in their executable references.
 
@@ -108,3 +110,19 @@ The correction commit changes only four P01-owned files:
 Verification for this correction: node node_modules/vitest/vitest.mjs run tests/unit/p01 --maxWorkers=1 — **34 tests passed in two files**, duration1.03s (2026-10-13, start18:09:58); git diff --check passed. Existing fixture parity is unchanged. Canonical Python and goldens were not modified, so their prior checks were not repeated.
 
 Full type/content, build and browser gates have NOT been rerun by this agent; the revised physical-width assertion remains unexecuted. No shared/platform/reference/config or failed-evidence file is edited. The exact correction SHA is returned in chat so the integration owner can synchronize the independent reviewer working at 59de0fa. Hold for owner allocation and independent review; no acceptance or freeze is claimed.
+
+## Avicenna boundary/parity corrections after c588aa2
+
+The independent source review at 59de0fa identified three P2 defects. The owned corrections are:
+
+1. TypeScript categorical targets require typeof target === string before membership testing. Arrays such as ["ready"] and objects cannot become a nested cell disguised by the n×1 target shape. Python uses the same explicit string boundary.
+2. A small Part-local Python numeric.py predicate rejects bool/nonnumeric inputs before isfinite, comparisons or NumPy conversion. It is applied to pipeline queries, capacity noise, fit x/y, polynomial inputs and coefficients, split x/y and the preprocessing distance, and reused by the feature inspector. Ordinary int/float quantities remain valid; huge-int conversion overflow yields rejection. Frozen III-07 numeric/trace validation continues to supply its existing strict parameter/sample/step checks without changes.
+3. Python duplicate detection groups numeric (x,y) pairs, independently of textual spelling. Thus training (1,2) and validation (1.0,2.0) report ['1|2']. Display formatting is a separate bounded number formatter; signed zero, 1e−7 and 1e−6 presentation also have matching regressions.
+
+Matching regressions were added to tests/unit/p01/foundations.test.ts and oracle/p01/test_foundations.py. Three new TypeScript tests cover category array/object inputs, numeric JSON rejection and int/float duplicate identity. Three new Python methods cover the same boundaries, including 135 invalid-input subcases across 15 entry/helper paths and positive ordinary-number cases.
+
+Before fixing source, the focused TypeScript run failed the categorical-array regression. The focused three-method Python run reproduced the bool/coercion/overflow and duplicate defects (29 failed subcases and 75 errored subcases). Complete original output is preserved at documentation/parts/p01/validation/boundaries-before-c588aa2-fix.log; no prior integrator evidence was overwritten.
+
+After correction, node node_modules/vitest/vitest.mjs run tests/unit/p01 --maxWorkers=1 passed **37 tests in two files** (24 kernel/boundary/parity,13 lesson/source/render; duration3.24s, start18:20:01). .venv/bin/python -B oracle/p01/test_foundations.py passed **17 tests** in3.853s. .venv/bin/python -B oracle/p01/generate_fixtures.py --check passed; normal golden outputs are unchanged. git diff --check passed.
+
+This follow-up changes only the owned feature model, four canonical Python references plus numeric.py, the two focused regression files, NUMERICS.md/HANDOFF.md and the new owned failing-evidence log. No frozen/shared/config/other-Part source or golden file is changed. Full type/content, production and browser acceptance remains pending; no heavy job was run. The correction SHA is reported in chat for integrator/reviewer synchronization.

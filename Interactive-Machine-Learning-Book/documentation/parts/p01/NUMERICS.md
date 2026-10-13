@@ -9,6 +9,7 @@ Agent B3-P01. Scope III-01–III-06. Handoff base: 8157b7af7e209d94fffdf79001134
 - model/capacity.ts: CapacityState, capacitySplit/capacityData/assignCapacity/presetCapacitySplit, fitCapacity/polynomialPrediction/deriveCapacity/capacityCandidates/capacityTrace.
 - lesson.ts projects the authoritative numerical objects into formulas, inspectors, speech and SVG geometry. Capacity label size receives the measured SVG width.
 - Canonical Python files mirror those mechanisms in code/python/p01. pipeline.py and optimization_loop.py import the accepted p02 affine reference; no competing affine optimizer exists.
+- numeric.py supplies one Part-local finite primitive-number predicate to the Python references: ordinary int/float quantities are valid; bool, strings, containers, nonfinite values and integers beyond finite binary64 range are rejected. Integer-only dimensions/seeds keep their existing integer contract.
 - Python seed.py and shared platform/seed.ts reproduce the same unsigned 32-bit LCG. Noise and membership seeds are independent choices.
 
 CapacityState retains compatibility with {seed, degree, noise}; absent memberships mean the documented interleaved grid. Optional assignments map every ID to train/validation/test; splitSeed defaults to 42; source records interleaved/seeded/manual/distribution-shift. UI mutations use assignCapacity/presetCapacitySplit, which reuse Part-local assignSplit/seedSplit and preserve IDs and observations.
@@ -23,7 +24,7 @@ The pipeline's five observations are the accepted hand-authored toy batch. The f
 
 The capacity experiment's seventeen dyadic grid inputs and signal 1+2x−x² are hand-authored. Bounded synthetic noise is generated from the displayed noise seed, with amplitude times one of −1, −.5, 0, .5, 1. Default even zero-based grid indices train (IDs p1,p3,…); odd indices validate (p2,p4,…). Seeded partitioning uses a separate split seed. No seed is claimed for original observed values in the group experiment.
 
-Seeded split units are sorted by UTF-16 code-unit order, shuffled with descending Fisher–Yates, and assigned floor(.6m) training and floor(.2m) validation units, each at least one, with remaining units testing. At least three units are required. Returned samples and assignment keys have deterministic sorted ID order. Group-preserving moves are atomic. Every ID belongs to exactly one partition; duplicate-value and group leakage are reported separately.
+Seeded split units are sorted by UTF-16 code-unit order, shuffled with descending Fisher–Yates, and assigned floor(.6m) training and floor(.2m) validation units, each at least one, with remaining units testing. At least three units are required. Returned samples and assignment keys have deterministic sorted ID order. Duplicate identity uses numeric (x,y) pair equality in Python, so (1,2) and (1.0,2.0) are the same observation values. Warning text is formatted separately (including signed zero and small exponent notation) to match the browser’s bounded numeric presentation. Group-preserving moves are atomic. Every ID belongs to exactly one partition; duplicate-value and group leakage are reported separately.
 
 ## Mathematics and independence
 
