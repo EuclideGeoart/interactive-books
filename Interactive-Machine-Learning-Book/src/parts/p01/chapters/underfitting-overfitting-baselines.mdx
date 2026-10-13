@@ -1,0 +1,131 @@
+---
+chapterId: III-06
+title: Underfitting, Overfitting, Bias, Variance and Baselines
+hero: A better fit to known rows can be a worse predictor
+lede: Change memberships, polynomial capacity and seeded noise in one experiment. Compare the same training-only fit with an honest baseline.
+description: Couple editable train/validation/test assignments to polynomial degree and noise, inspecting residuals, baselines, rank failures and leakage.
+prerequisites: ["II.15", "II.18", "V.1", "V.3", "IV.12"]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import CapacityStage from '../CapacityStage';
+import FoundationExercises from '../FoundationExercises';
+import reference from '../../../../code/python/p01/capacity_baselines.py?raw';
+import { href } from '../../../shell/href';
+
+<Stage caption="This is one active experiment. Moving a row changes the IDs that fit the polynomial and baseline; changing degree uses those same memberships. Numeric, keyboard and pointer assignment paths preserve observations.">
+  <CapacityStage client:load scope="p01-capacity-experiment" />
+</Stage>
+
+## Capacity is a family of possible rules
+
+A constant cannot bend or slope. A line can slope but cannot curve. A quadratic can express this toy signal, while a degree-eight polynomial can interpolate nine distinct training inputs. Increasing capacity expands the available rules; it does not certify that the selected rule will predict new observations well.
+
+Underfitting occurs when a fitted family fails to express useful structure under the chosen representation and fitting procedure. Overfitting occurs when fitting details of the training sample, including noise, harms performance on relevant new data. Small training loss is evidence of fit, not by itself evidence against overfitting.
+
+The hand-authored grid has seventeen inputs $x_i=-1+i/8$, for zero-based indices $i=0,\ldots,16$. A known quadratic signal generates its targets:
+
+$
+f_*(x)=1+2x-x^2,\qquad y_i=f_*(x_i)+\epsilon_i.
+$
+
+The noise seed drives the shared LCG. Each perturbation is the displayed amplitude times one of $-1,-0.5,0,0.5,1$, chosen from five equally sized integer bins of the RNG output up to discrete rounding. These are synthetic illustrative observations, not measurements of a real population.
+
+Reset trains on even grid indices: IDs p1, p3, …, p17. Odd grid indices validate. There are initially nine training rows, eight validation rows and no test rows. An empty test MSE is undefined. Seeded memberships create ten, three and four rows; the separate split seed changes assignments without regenerating noise.
+
+## Fit only the active training IDs
+
+A degree-$d$ polynomial uses the coefficient column $\theta=[\theta_0,\ldots,\theta_d]^{\mathsf T}$:
+
+$
+\hat y(x)=\sum_{j=0}^{d}\theta_jx^j,\qquad
+X_{ij}=x_i^{j-1}.
+$
+
+Here $X$ has a first column of ones. For $n_T$ training observations, shapes are $X:n_T\times(d+1)$, $\theta:(d+1)\times1$, and $y_T:n_T\times1$. Unlike the earlier affine sheet, this design includes the intercept in its coefficient column. Mathematical vectors remain columns; observations occupy matrix rows.
+
+The least-squares objective is
+
+$
+L_T(\theta)=\frac1{n_T}\lVert X_T\theta-y_T\rVert_2^2.
+$
+
+Both runtimes use a two-pass modified Gram–Schmidt QR solve for this bounded experiment. Writing $X_T=QR$, orthogonal projection gives $R\theta=Q^{\mathsf T}y_T$, solved by back substitution. It fits the selected family directly, so a poor fit here is not explained by too few gradient-descent steps. This is a Part-owned capacity mechanism, not another shared affine optimizer.
+
+Every membership move rebuilds $X_T$ and $y_T$ from the actual displayed training IDs. Validation and test labels do not enter the coefficient solve.
+
+## Derive the honest constant baseline
+
+A baseline asks whether the proposed model improves on a simple declared procedure. Under squared error, the best training-fitted constant solves
+
+$
+L_T(c)=\frac1{n_T}\sum_{i\in T}(c-y_i)^2,\qquad
+\frac{dL_T}{dc}=\frac2{n_T}\sum_{i\in T}(c-y_i)=0.
+$
+
+Therefore $c=\bar y_T$. A model’s losses and its baseline losses must be evaluated on the same held-out rows. Degree zero yields the same constant fit up to numerical rounding.
+
+At reset, $\bar y_T=11/18\approx0.6111$. Degree-zero training MSE is approximately $2.1422$, and validation MSE is approximately $2.0472$. Degree two has coefficients approximately $[1.3128,2.0333,-1.6840]$, training MSE $0.0404$ and validation MSE $0.2068$. These are rounded displays of the actual golden fit, not exact equations using rounded coefficients.
+
+Move p1 from training to validation. Eight rows now fit the model. Their baseline mean is $31/32=0.96875$; the new degree-two coefficients are approximately $[1.3542,2.1548,-1.9048]$. Both model and baseline changed because the fitting sample changed, while p1’s identity and target stayed fixed.
+
+## A concrete overfitting counterexample
+
+Keep interleaved memberships and noise amplitude $0.5$, but enter noise seed $0$. Degree two has training MSE approximately $0.0968$ and validation MSE $0.0678125$. Degree eight nearly interpolates the nine training targets, with training error close to binary64 zero, but validation MSE approximately $0.3030743$.
+
+The higher-degree fit improves the training objective while worsening held-out error. Reset seed $42$ gives another outcome: degree eight’s validation MSE is approximately $0.1473$, better than degree two’s $0.2068$ on this particular small split. Do not replace the experiment with a slogan that high degree always loses.
+
+Set noise to zero. Degree two recovers coefficients $[1,2,-1]$ within rounding and predicts the noiseless validation rows almost exactly. In nested least-squares families, optimal training error cannot increase with degree in exact arithmetic; held-out error has no corresponding monotonic guarantee.
+
+## Bias and variance describe repeated experiments
+
+Bias describes systematic discrepancy between the average fitted prediction and the true signal. Variance describes how fitted predictions change across different training samples. At a fixed input, under zero-mean observation noise independent of fitting and with variance $\sigma^2$, the expected squared prediction error decomposes as
+
+$
+\mathbb E[(\hat f(x)-Y)^2]
+=(\mathbb E[\hat f(x)]-f_*(x))^2
++\operatorname{Var}(\hat f(x))+\sigma^2.
+$
+
+This identity follows by adding and subtracting $\mathbb E[\hat f(x)]$ and using the zero-mean cross terms. It requires the stated stochastic assumptions. One displayed training/validation gap does not numerically estimate all three terms.
+
+In this lab, changing the noise seed produces another deterministic synthetic realization; changing the split alters the observed fitting sample. Compare how coefficients and curves move at low and high degree while keeping the other choices fixed. This supports qualitative bias/variance reasoning without claiming a population estimate from seventeen rows.
+
+## Selection, leakage and honest test use
+
+“Choose degree by validation” evaluates degrees $0$ through $8$ on the same active memberships and chooses the smallest degree whose validation loss improves by more than $10^{-12}$. Undefined candidates are excluded. No defined validation loss means no selected degree. Test loss never participates in selection.
+
+Test targets and residuals stay hidden until reveal. Repeatedly revealing, editing and choosing would turn that set into another validation set; the UI cannot make a repeatedly inspected test untouched again. Use the reveal as a final educational evaluation.
+
+The optional whole-target baseline is deliberately invalid. It averages all seventeen labels, including validation and test, instead of the training labels. Its changing score is displayed as a leakage comparison, never as the honest baseline or a selection criterion. The earlier <a href={href('/chapters/training-validation-testing/')}>preprocessing counterexample</a> separately shows whole-dataset feature centering leakage.
+
+## Execute the actual NumPy reference
+
+The imported source implements seeded observations, shared Part-local split operations, explicit QR fitting, polynomial evaluation and training-only means. It uses NumPy for arrays rather than an ML estimator wrapper. Run <code>.venv/bin/python -B code/python/p01/capacity_baselines.py</code>.
+
+<CodeFile source={reference} file="code/python/p01/capacity_baselines.py" />
+
+An independent Fraction oracle solves exact moment equations by elimination. NumPy’s SVD least-squares solve is another check for well-conditioned fixture cases. Ordinary arithmetic uses $10^{-11}$ tolerance; capacity goldens use $10^{-8}(1+|v|)$ to account for monomial conditioning and shifted-grid extrapolation. Neither tolerance changes the rank decision.
+
+## Numerical limits and undefined states
+
+The solver supports degrees $0$–$8$, at most $64$ observations, $|x|\le1$, $|y|\le10$, and unique nonempty IDs. The lab’s amplitude is $0$–$2$. No training observations means no coefficients or training mean. Fewer than $d+1$ distinct inputs means no unique coefficient vector.
+
+Both runtimes reject a design when a reorthogonalized column norm is at most $10^{-12}\lVert X_T\rVert_F$. This is the specified QR policy, not a claim that every SVD implementation uses the same criterion. For the nearly coincident inputs $0.5-1.3\times10^{-12},0.5,0.5+1.3\times10^{-12}$ at degree one, both return an explicit rank reason. Exact arithmetic can still identify a line, but this bounded binary64 solver declines that unstable fit.
+
+<Callout title="Undefined is visible" kind="numerical">
+Move all rows out of training, or leave only one row at degree two. The sheet keeps the observations, reports the fit reason and displays undefined losses. A degree-zero fit to one row remains valid. Empty evaluation partitions have undefined MSE, never an invented zero.
+</Callout>
+
+Replay compares degrees $0,2,8$ while preserving observations and memberships. Every control, coefficient, residual, curve and inspector changes to the selected full state; an edit begins there. Numeric entries reject invalid values. Given coordinates stay exact text; computed values are marked approximate. Plot axes use explicitly different scales, and off-plane predictions are clipped visually while their numeric residuals remain in the table.
+
+Feature scaling can improve numerical conditioning, but it changes the representation and must be fitted on training only when learned from data. This lab bounds $x$ to a normalized toy grid; it is not a general-purpose high-degree fitting tool. Detailed cross-validation and calibration belong to Part VIII.
+
+## Check your understanding
+
+<FoundationExercises client:load chapter="III-06" />
+
+## Checkpoints
+
+You can change memberships and capacity in one authoritative experiment, compare individual residuals and honest baselines, distinguish a training fit from held-out evidence, and recognize nonidentifiability and numerical rank failures. Model capacity, data availability and evaluation design jointly determine what a reported score can mean.

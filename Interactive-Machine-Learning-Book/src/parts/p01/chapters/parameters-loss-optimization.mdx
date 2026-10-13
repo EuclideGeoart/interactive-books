@@ -1,0 +1,112 @@
+---
+chapterId: III-05
+title: Parameters, Hyperparameters, Loss and Optimization
+hero: Inspect the decision that changes a parameter
+lede: Compute one complete loss and gradient from the old state, then apply both parameter changes simultaneously.
+description: Separate data, trainable parameters, chosen hyperparameters and loss using the accepted affine reference and exact before/after arithmetic.
+prerequisites: ["III.6", "III.7", "III.8", "VI.4", "VI.5"]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import RegressionStage from '../../p02/RegressionStage';
+import FoundationExercises from '../FoundationExercises';
+import reference from '../../../../code/python/p01/optimization_loop.py?raw';
+import affine from '../../../../code/python/p02/linear_regression.py?raw';
+import { href } from '../../../shell/href';
+
+<Stage caption="The accepted III-07 engine supplies this full loss/update loop. Edit parameters, learning rate or observations; numeric entry, keyboard handles and pointer dragging share the exact active state.">
+  <RegressionStage client:load scope="p01-optimization-reference" />
+</Stage>
+
+## Four kinds of quantities
+
+The observed inputs and targets are data. The weight $w$ and bias $b$ are trainable parameters: this algorithm changes them in response to data. The learning rate $\eta$ is an externally chosen hyperparameter controlling the update. The loss is a derived number measuring the current predictions against observed targets.
+
+A hyperparameter can be selected using validation evidence, but that is a different decision from this gradient update. This loop does not differentiate or learn $\eta$. Polynomial degree in the next chapter is another hyperparameter because it chooses the family of predictors.
+
+An objective is the function optimized during fitting. An evaluation metric assesses behavior on a specified set of observations. Here both use mean squared error, but a training loss and validation MSE still have different roles and denominators.
+
+## Define the objective before differentiating
+
+For the affine predictor and the residual convention used throughout Part I,
+
+$
+\hat y_i=wx_i+b,\qquad r_i=\hat y_i-y_i,\qquad
+L=\frac1n\sum_i r_i^2.
+$
+
+There is no one-half factor. Adding one would halve the gradients without changing the minimizer, and would require consistent learning-rate interpretation. Reversing the residual sign also requires changing the derivative expression consistently.
+
+The feature batch is $n\times1$, weight matrix $1\times1$ and target column $n\times1$. Bias broadcasts as a separate scalar. The two trainable numbers form $\theta=[w,b]^{\mathsf T}$; that parameter vector should not be confused with the $1\times1$ weight matrix in the affine prediction.
+
+## Derive the simultaneous update
+
+The chain rule gives $\partial r_i/\partial w=x_i$ and $\partial r_i/\partial b=1$. Differentiate each squared residual and then average:
+
+$
+\frac{\partial L}{\partial w}=\frac2n\sum_i r_ix_i,\qquad
+\frac{\partial L}{\partial b}=\frac2n\sum_i r_i.
+$
+
+The factor two comes from differentiating $r_i^2$. The factor $1/n$ comes from the average. Neither can be omitted without changing the objective.
+
+Gradient descent proposes
+
+$
+\theta_{\mathrm{next}}=\theta-\eta\nabla L(\theta).
+$
+
+Both entries of $\nabla L$ use the same old parameters. Computing $dw$, changing $w$, then recomputing $db$ would implement a different sequence. The sheet derives the whole active object once, then renders its prediction rows, loss, gradient and next parameters together.
+
+## Work before and after by hand
+
+The canonical toy batch has $x=[-2,-1,0,1,2]$ and $y=[-3,-1,1,3,4]$. At $w=0.5,b=0$, the residuals are $[2,0.5,-1,-2.5,-3]$ and squared errors are $[4,0.25,1,6.25,9]$.
+
+Their sum $20.5$ gives MSE $4.1$. Also $\sum r_ix_i=-13$ and $\sum r_i=-4$, so $dw=-5.2$ and $db=-1.6$. With $\eta=0.1$, the next weight is $1.02$ and next bias is $0.16$.
+
+The updated predictions are $[-1.88,-0.86,0.16,1.18,2.2]$. Residuals become $[1.12,0.14,-0.84,-1.82,-1.8]$. The squared errors sum to $8.532$, giving new MSE $1.7064$.
+
+A second step must use new gradients: $dw=-3.12$ and $db=-1.28$. The first gradient is not a permanent direction for the whole optimization process. Press one update or replay to inspect these actual returned states.
+
+## A permitted learning rate can overshoot
+
+Consider one observation $(x,y)=(2,1)$ at $w=b=0$. MSE is $1$, and gradients are $dw=-4$, $db=-2$. Choosing $\eta=1$ returns $(w,b)=(4,2)$, which predicts $10$. New MSE is $81$.
+
+A positive rate validates the direction’s sign, not the size of the finite step. Input scale and curvature influence useful rates. Small parameters are not automatically stable, and immutable traces do not change convergence.
+
+<Callout title="Rejected updates preserve the last valid state" kind="numerical">
+The reference sheet permits weights and biases from −4 to 4, sample coordinates from −5 to 5, and rates from 0.001 to 1. A proposed update outside these limits gives a visible reason rather than silently clipping the new parameters. Its numerical API also rejects nonfinite intermediate arithmetic.
+</Callout>
+
+## Execute the actual implementation
+
+The Part I wrapper records full states and calls the frozen affine reference. The second imported file exposes that actual NumPy prediction, residual, MSE and analytical-gradient implementation. No library estimator or second Part I regression engine is substituted. Run <code>.venv/bin/python -B code/python/p01/optimization_loop.py</code> for the initial state and three updates.
+
+<CodeFile source={reference} file="code/python/p01/optimization_loop.py" />
+
+<CodeFile source={affine} file="code/python/p02/linear_regression.py" />
+
+The independent arithmetic oracle confirms the decimal literals as exact Fractions. The accepted reference also checks analytical gradients using finite differences. Python/TypeScript arithmetic parity uses small stated tolerances rather than assuming independently rounded operations are bit-identical.
+
+## Explore exact state and immutable history
+
+Edit a weight with more than four decimal places. The symbolic identity remains $\hat y=wx+b$; any rounded parameter substitution is marked approximately. Given sample coordinates retain round-trip decimal text. A displayed approximate zero can still be a small nonzero value.
+
+Focus an observation and use arrows; Shift increases the step. Pointer dragging explicitly snaps to the stated coordinate lattice, while keyboard addition preserves the existing fine precision under ordinary binary64 rounding. Numeric entry rejects unsupported values without inventing a clamped observation.
+
+Replay stores the initial state and three updates. Selecting a historical frame changes every field, row, plot and equation to that state. Editing starts there and clears replay. Reset restores the original hand-authored batch, not the most recently visited frame.
+
+## Degenerate data and connections
+
+A perfect fit has zero residuals and gradients, so the update leaves both parameters unchanged. If every input is $2$, the data constrain $2w+b$, not a unique pair. One-sample and constant-input prediction remain valid; unique coefficient identification is a separate question.
+
+This chapter uses full-batch gradient descent. Mini-batches, momentum and adaptive optimizers change the update procedure, not the need to declare loss normalization and state. The next <a href={href('/chapters/underfitting-overfitting-baselines/')}>capacity experiment</a> uses a bounded least-squares solve to separate model-family effects from unfinished optimizer convergence.
+
+## Check your understanding
+
+<FoundationExercises client:load chapter="III-05" />
+
+## Checkpoints
+
+You can distinguish observations, parameters, hyperparameters and loss; derive both gradients; apply one old-state update; and explain overshoot and nonidentifiability. An inspectable optimization loop returns a new full state and makes its assumptions and failure reasons visible.

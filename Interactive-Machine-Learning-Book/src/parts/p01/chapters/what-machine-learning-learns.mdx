@@ -1,0 +1,109 @@
+---
+chapterId: III-01
+title: What Machine Learning Actually Learns
+hero: A learned rule is still a rule you can inspect
+lede: Follow one observation from input to prediction, then see exactly which numbers training changes.
+description: Inspect an affine predictor, observed errors and a complete parameter update, and distinguish training from inference on a new query.
+prerequisites: ["I.5", "II.9", "VI.4"]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import PipelineStage from '../PipelineStage';
+import FoundationExercises from '../FoundationExercises';
+import reference from '../../../../code/python/p01/pipeline.py?raw';
+import { href } from '../../../shell/href';
+
+<Stage caption="Select a training observation, edit the rule, then switch to an unlabelled inference query. Replay shows the complete pipeline and one simultaneous batch update.">
+  <PipelineStage client:load scope="p01-learning-pipeline" />
+</Stage>
+
+## What changed when the machine learned?
+
+Start with the selected observation at $x=0$, whose target is $y=1$. The initial rule predicts $0$. Change the bias to $1$: its prediction becomes $1$. Every other prediction shifts by the same amount. Change the weight instead: predictions change in proportion to their inputs. You are editing two numbers in a family of rules.
+
+A learning algorithm chooses those numbers using examples and a criterion. Here the family is the affine predictor
+
+$
+f_\theta(x)=wx+b,\qquad
+\theta=\begin{bmatrix}w\\b\end{bmatrix}.
+$
+
+The model is this parameterized mapping. Its parameters are $w$ and $b$. The data are observed input–target pairs $(x_i,y_i)$. The algorithm evaluates candidate parameters using a loss, then returns a new parameter vector. Learning need not discover a symbolic law or remember each example; in this experiment, five rows influence two shared coefficients.
+
+The input and target have different jobs. An input is information available when a prediction must be made. A target is the observed quantity the prediction is supposed to match. Targets must not quietly become input features when they would be unavailable at prediction time.
+
+## Trace the complete mechanism
+
+For a supervised training batch, the pipeline is:
+
+1. Observe inputs and targets with stable sample identities.
+2. Represent inputs as compatible numerical features.
+3. Apply the current predictor.
+4. Compare predictions with targets and aggregate the error.
+5. Use that error to choose changed parameters.
+
+The sheet stores scalar features in a batch $X$ of shape $5\times1$. Each sample occupies a row; a single sample's feature vector is a $1\times1$ column. The weight matrix is $1\times1$, the target column is $5\times1$, and bias broadcasts separately. A column convention does not mean that every batch must have only one row.
+
+Define $r_i=wx_i+b-y_i$ and the mean squared error
+
+$
+L(w,b)=\frac1n\sum_{i=1}^n r_i^2.
+$
+
+Differentiation gives $dw=(2/n)\sum_i r_ix_i$ and $db=(2/n)\sum_i r_i$. The weight gradient contains $x_i$ because the sensitivity of a prediction to $w$ is $x_i$. Both partial derivatives are calculated before either parameter changes. The algorithm then returns $w-\eta dw$ and $b-\eta db$, where the user chooses the positive learning rate $\eta$.
+
+The selected row is a microscope, not a switch to one-row training. The loss and update still use all five observations. A selected sample with $x=0$ contributes nothing directly to $dw$, although its target can change $db$.
+
+## Work through the first learned rule
+
+The five inputs are $[-2,-1,0,1,2]$ and targets are $[-3,-1,1,3,4]$. These are explicit hand-authored toy values, with no units or claim about a real population. At $w=0.5,b=0$, predictions are $[-1,-0.5,0,0.5,1]$ and residuals are $[2,0.5,-1,-2.5,-3]$.
+
+The squared errors sum to $20.5$, so $L=4.1$. The residual sum is $-4$ and the residual-times-input sum is $-13$. Consequently $dw=-5.2$ and $db=-1.6$. At $\eta=0.1$,
+
+$
+w_{\mathrm{next}}=0.5-0.1(-5.2)=1.02,\qquad
+b_{\mathrm{next}}=0-0.1(-1.6)=0.16.
+$
+
+The selected input $0$ now predicts $0.16$, with residual $-0.84$. Across the batch the new squared errors sum to $8.532$, giving MSE $1.7064$. The update improves this criterion on these observations. It does not establish performance on future data.
+
+## Inference uses the returned parameters
+
+Reset and choose inference. For query $x=1.5$, the original parameters predict $0.75$. There is no observed query target, so an observed residual and query loss are undefined. The sheet displays that reason and disables the supervised update.
+
+After training once, the same query predicts $1.02(1.5)+0.16=1.69$. No additional learning is required to evaluate the mapping. A later measured target could be used to evaluate it; deciding to retrain is a separate operation.
+
+<Callout title="A missing target is not a zero target" kind="misconception">
+Substituting zero would invent an observation and change the supervised problem. Inference can produce a prediction without claiming to know its error.
+</Callout>
+
+## Execute the actual Python
+
+The imported source uses NumPy column arrays for query prediction and calls the accepted affine reference for batch loss, gradient and update. There is one authoritative affine engine, rather than a second optimizer with a slightly different convention. From the book root, run <code>.venv/bin/python -B code/python/p01/pipeline.py</code>; the output contains training, inference and full-state trace frames.
+
+<CodeFile source={reference} file="code/python/p01/pipeline.py" />
+
+The committed golden before/after/trace is independently checked by exact Fraction arithmetic. Matching two implementations alone would not prove that either used the intended normalization or residual sign.
+
+## Explore, replay and diagnose
+
+Try changing the selected target while its input is zero. Then reset, change the selected input, and inspect both gradients through the later <a href={href('/chapters/parameters-loss-optimization/')}>optimization chapter</a>. Explain why a data edit and a parameter edit affect different parts of the pipeline.
+
+Replay records four explanatory frames at the old parameters, followed by one updated state. These are mathematical snapshots, not an animation that changes the model between frames. Selecting a frame changes every numeric control, equation and table to that frame. Editing begins from the displayed state and ends replay. Reset restores the original observations and parameters.
+
+## Limits and common mistakes
+
+This sheet supports weights and biases in $[-4,4]$, observations and queries in $[-5,5]$, and rates from $0.001$ to $1$. An unsupported update is rejected with the previous valid state retained. A permitted rate does not guarantee decreasing loss.
+
+Numbers use binary64 arithmetic. Given coordinates retain round-trip decimal text; computed results carry an approximation sign. Display rounding never feeds training. Constant inputs and one-sample data can support prediction without identifying a unique weight and bias. This example neither proves causation nor justifies extrapolation.
+
+Generalization needs an evaluation design, introduced in <a href={href('/chapters/training-validation-testing/')}>training, validation and testing</a>. More elaborate models change the feature representation or parameter family while preserving the distinction between observations, predictions, objectives and decisions.
+
+## Check your understanding
+
+<FoundationExercises client:load chapter="III-01" />
+
+## Checkpoints
+
+You can name the observed data, chosen family, learned parameters and update rule; follow the entire supervised pipeline; and apply a returned predictor to a query without inventing an error. Training chooses a mapping from examples. Inference evaluates that mapping with parameters held fixed.

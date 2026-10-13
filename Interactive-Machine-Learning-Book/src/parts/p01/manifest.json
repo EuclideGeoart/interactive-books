@@ -1,0 +1,29 @@
+{
+  "part": "p01",
+  "chapters": [
+    {
+      "id": "III-01",
+      "slug": "what-machine-learning-learns"
+    },
+    {
+      "id": "III-02",
+      "slug": "samples-features-labels-targets"
+    },
+    {
+      "id": "III-03",
+      "slug": "learning-problems"
+    },
+    {
+      "id": "III-04",
+      "slug": "training-validation-testing"
+    },
+    {
+      "id": "III-05",
+      "slug": "parameters-loss-optimization"
+    },
+    {
+      "id": "III-06",
+      "slug": "underfitting-overfitting-baselines"
+    }
+  ]
+}
