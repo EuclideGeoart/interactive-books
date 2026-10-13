@@ -14,7 +14,7 @@ test('Part-first navigation exposes exactly nine Parts and the correct publicati
   for (const part of curriculum.parts) {
     await page.goto(`parts/${part.slug}/`);
     await expect(page.locator('.chapter-list li')).toHaveCount(part.chapters.length);
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+    expect(await page.evaluate(width => document.documentElement.scrollWidth <= width + 1 && innerWidth <= width + 1, page.viewportSize()!.width)).toBe(true);
   }
 });
 
@@ -55,7 +55,7 @@ for (const chapter of curriculum.chapters.filter(c => c.slug)) {
     for (const theme of ['light', 'dark']) {
       await page.evaluate(theme => { document.documentElement.dataset.theme = theme; }, theme);
       expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
-      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+      expect(await page.evaluate(width => document.documentElement.scrollWidth <= width + 1 && innerWidth <= width + 1, page.viewportSize()!.width)).toBe(true);
     }
     expect(errors).toEqual([]);
   });
