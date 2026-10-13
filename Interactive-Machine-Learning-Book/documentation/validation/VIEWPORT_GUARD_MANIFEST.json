@@ -1,0 +1,107 @@
+{
+  "mode": "milestone",
+  "part": "all",
+  "sourceSignature": "9480ed591de7a9c9875051608d8372ebd201fe3540bb4da3df83564cc7e89cb9",
+  "chapters": [
+    "III-07"
+  ],
+  "started": "2026-10-13T16:06:56.438Z",
+  "finished": "2026-10-13T16:08:07.561Z",
+  "complete": true,
+  "results": [
+    {
+      "name": "Type/content check",
+      "argv": [
+        "node_modules/astro/astro.js",
+        "check"
+      ],
+      "exitCode": 0,
+      "seconds": 3.38,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Unit and parity tests",
+      "argv": [
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--maxWorkers=2"
+      ],
+      "exitCode": 0,
+      "seconds": 0.812,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Independent oracles and freshness",
+      "argv": [
+        "scripts/run-oracle.mjs"
+      ],
+      "exitCode": 0,
+      "seconds": 0.501,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Root production and offline bundle",
+      "argv": [
+        "scripts/build.mjs",
+        "/",
+        "dist"
+      ],
+      "exitCode": 0,
+      "seconds": 2.464,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Subpath production",
+      "argv": [
+        "scripts/build.mjs",
+        "/machine-learning/",
+        "dist-subpath"
+      ],
+      "exitCode": 0,
+      "seconds": 2.498,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Root production audit",
+      "argv": [
+        "scripts/check-dist.mjs",
+        "dist",
+        "/"
+      ],
+      "exitCode": 0,
+      "seconds": 0.098,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Subpath production audit",
+      "argv": [
+        "scripts/check-dist.mjs",
+        "dist-subpath",
+        "/machine-learning/"
+      ],
+      "exitCode": 0,
+      "seconds": 0.102,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Root browser validation",
+      "argv": [
+        "scripts/run-browser.mjs",
+        "playwright.config.ts"
+      ],
+      "exitCode": 0,
+      "seconds": 30.813,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Subpath browser validation",
+      "argv": [
+        "scripts/run-browser.mjs",
+        "playwright.subpath.config.ts"
+      ],
+      "exitCode": 0,
+      "seconds": 30.451,
+      "sourceUnchanged": true
+    }
+  ]
+}

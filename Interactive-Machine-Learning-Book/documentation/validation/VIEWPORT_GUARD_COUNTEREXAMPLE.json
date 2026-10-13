@@ -1,0 +1,411 @@
+{
+  "slug": "multiple-linear-regression",
+  "view": "mobile",
+  "theme": "light",
+  "overflow": {
+    "width": 390,
+    "scrollWidth": 524,
+    "offenders": [
+      {
+        "tag": "FIELDSET",
+        "cls": null,
+        "text": "Change the active design and coefficient columnThe intercept column is fixed at 1. All other design ",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "LEGEND",
+        "cls": null,
+        "text": "Change the active design and coefficient column",
+        "x": 24,
+        "right": 409.90625,
+        "width": 385.90625
+      },
+      {
+        "tag": "P",
+        "cls": "p02-help",
+        "text": "The intercept column is fixed at 1. All other design cells, targets and coefficients are editable.",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "DIV",
+        "cls": "table-scroll",
+        "text": "Four sample rows of X and target column yID / biasx₁x₂ys1 / 1X row 1 feature 1-1000000 to 1000000 · ",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "TABLE",
+        "cls": null,
+        "text": "Four sample rows of X and target column yID / biasx₁x₂ys1 / 1X row 1 feature 1-1000000 to 1000000 · ",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "CAPTION",
+        "cls": null,
+        "text": "Four sample rows of X and target column y",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "THEAD",
+        "cls": null,
+        "text": "ID / biasx₁x₂y",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "TR",
+        "cls": null,
+        "text": "ID / biasx₁x₂y",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "TH",
+        "cls": null,
+        "text": "y",
+        "x": 374.375,
+        "right": 524,
+        "width": 149.625
+      },
+      {
+        "tag": "TBODY",
+        "cls": null,
+        "text": "s1 / 1X row 1 feature 1-1000000 to 1000000 · Enter to applyX row 1 feature 2-1000000 to 1000000 · En",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "TR",
+        "cls": null,
+        "text": "s1 / 1X row 1 feature 1-1000000 to 1000000 · Enter to applyX row 1 feature 2-1000000 to 1000000 · En",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "TD",
+        "cls": null,
+        "text": "Target row 1-1000000 to 1000000 · Enter to apply",
+        "x": 374.375,
+        "right": 524,
+        "width": 149.625
+      },
+      {
+        "tag": "LABEL",
+        "cls": "number-field",
+        "text": "Target row 1-1000000 to 1000000 · Enter to apply",
+        "x": 382.375,
+        "right": 516,
+        "width": 133.625
+      },
+      {
+        "tag": "SPAN",
+        "cls": null,
+        "text": "Target row 1",
+        "x": 382.375,
+        "right": 516,
+        "width": 133.625
+      },
+      {
+        "tag": "INPUT",
+        "cls": null,
+        "text": "",
+        "x": 382.375,
+        "right": 516,
+        "width": 133.625
+      },
+      {
+        "tag": "SMALL",
+        "cls": null,
+        "text": "-1000000 to 1000000 · Enter to apply",
+        "x": 382.375,
+        "right": 516,
+        "width": 133.625
+      },
+      {
+        "tag": "TR",
+        "cls": null,
+        "text": "s2 / 1X row 2 feature 1-1000000 to 1000000 · Enter to applyX row 2 feature 2-1000000 to 1000000 · En",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "TD",
+        "cls": null,
+        "text": "Target row 2-1000000 to 1000000 · Enter to apply",
+        "x": 374.375,
+        "right": 524,
+        "width": 149.625
+      },
+      {
+        "tag": "LABEL",
+        "cls": "number-field",
+        "text": "Target row 2-1000000 to 1000000 · Enter to apply",
+        "x": 382.375,
+        "right": 516,
+        "width": 133.625
+      },
+      {
+        "tag": "SPAN",
+        "cls": null,
+        "text": "Target row 2",
+        "x": 382.375,
+        "right": 516,
+        "width": 133.625
+      },
+      {
+        "tag": "INPUT",
+        "cls": null,
+        "text": "",
+        "x": 382.375,
+        "right": 516,
+        "width": 133.625
+      },
+      {
+        "tag": "SMALL",
+        "cls": null,
+        "text": "-1000000 to 1000000 · Enter to apply",
+        "x": 382.375,
+        "right": 516,
+        "width": 133.625
+      },
+      {
+        "tag": "TR",
+        "cls": null,
+        "text": "s3 / 1X row 3 feature 1-1000000 to 1000000 · Enter to applyX row 3 feature 2-1000000 to 1000000 · En",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "TD",
+        "cls": null,
+        "text": "Target row 3-1000000 to 1000000 · Enter to apply",
+        "x": 374.375,
+        "right": 524,
+        "width": 149.625
+      },
+      {
+        "tag": "LABEL",
+        "cls": "number-field",
+        "text": "Target row 3-1000000 to 1000000 · Enter to apply",
+        "x": 382.375,
+        "right": 516,
+        "width": 133.625
+      },
+      {
+        "tag": "SPAN",
+        "cls": null,
+        "text": "Target row 3",
+        "x": 382.375,
+        "right": 516,
+        "width": 133.625
+      },
+      {
+        "tag": "INPUT",
+        "cls": null,
+        "text": "",
+        "x": 382.375,
+        "right": 516,
+        "width": 133.625
+      },
+      {
+        "tag": "SMALL",
+        "cls": null,
+        "text": "-1000000 to 1000000 · Enter to apply",
+        "x": 382.375,
+        "right": 516,
+        "width": 133.625
+      },
+      {
+        "tag": "TR",
+        "cls": null,
+        "text": "s4 / 1X row 4 feature 1-1000000 to 1000000 · Enter to applyX row 4 feature 2-1000000 to 1000000 · En",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "TD",
+        "cls": null,
+        "text": "Target row 4-1000000 to 1000000 · Enter to apply",
+        "x": 374.375,
+        "right": 524,
+        "width": 149.625
+      },
+      {
+        "tag": "LABEL",
+        "cls": "number-field",
+        "text": "Target row 4-1000000 to 1000000 · Enter to apply",
+        "x": 382.375,
+        "right": 516,
+        "width": 133.625
+      },
+      {
+        "tag": "SPAN",
+        "cls": null,
+        "text": "Target row 4",
+        "x": 382.375,
+        "right": 516,
+        "width": 133.625
+      },
+      {
+        "tag": "INPUT",
+        "cls": null,
+        "text": "",
+        "x": 382.375,
+        "right": 516,
+        "width": 133.625
+      },
+      {
+        "tag": "SMALL",
+        "cls": null,
+        "text": "-1000000 to 1000000 · Enter to apply",
+        "x": 382.375,
+        "right": 516,
+        "width": 133.625
+      },
+      {
+        "tag": "DIV",
+        "cls": "p02-fields",
+        "text": "Intercept w0-1000000 to 1000000 · Enter to applyCoefficient w1-1000000 to 1000000 · Enter to applyCo",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "LABEL",
+        "cls": "number-field",
+        "text": "Intercept w0-1000000 to 1000000 · Enter to apply",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "SPAN",
+        "cls": null,
+        "text": "Intercept w0",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "INPUT",
+        "cls": null,
+        "text": "",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "SMALL",
+        "cls": null,
+        "text": "-1000000 to 1000000 · Enter to apply",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "LABEL",
+        "cls": "number-field",
+        "text": "Coefficient w1-1000000 to 1000000 · Enter to apply",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "SPAN",
+        "cls": null,
+        "text": "Coefficient w1",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "INPUT",
+        "cls": null,
+        "text": "",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "SMALL",
+        "cls": null,
+        "text": "-1000000 to 1000000 · Enter to apply",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "LABEL",
+        "cls": "number-field",
+        "text": "Coefficient w2-1000000 to 1000000 · Enter to apply",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "SPAN",
+        "cls": null,
+        "text": "Coefficient w2",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "INPUT",
+        "cls": null,
+        "text": "",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "SMALL",
+        "cls": null,
+        "text": "-1000000 to 1000000 · Enter to apply",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "BUTTON",
+        "cls": null,
+        "text": "Duplicate feature column",
+        "x": 200.46875,
+        "right": 403.09375,
+        "width": 202.625
+      },
+      {
+        "tag": "P",
+        "cls": null,
+        "text": "Rank 3 / 3. All coefficient directions are identified.",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      },
+      {
+        "tag": "P",
+        "cls": null,
+        "text": "Singular values: ≈ 2.9032, ≈ 1.7093, ≈ 0.8061. Cutoff: ≈ 2.9032e−10.",
+        "x": 24,
+        "right": 524,
+        "width": 500
+      }
+    ]
+  }
+}
