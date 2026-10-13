@@ -1,0 +1,107 @@
+---
+chapterId: III-09
+title: Gradient Descent for Linear Regression
+hero: Make curvature visible in every step
+lede: Replay real gradient updates and compare convergent, oscillating and divergent rates on the same squared-error surface.
+description: Replay real gradient updates and compare convergent, oscillating and divergent rates on the same squared-error surface.
+prerequisites: [III.8, III.11, VI.4, VI.5]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import FitStage from '../FitStage';
+import reference from '../../../../code/python/p02/fit_reference.py?raw';
+
+<Stage caption="Change the controls first, then inspect the active equation, numeric rows and shapes. Exact inputs and approximate computed values are distinguished; Reset restores the hand-authored experiment."><FitStage scope="iii09-descent" mode="descent" client:load /></Stage>
+
+
+## Choose a rate before you trust a decrease
+
+Press **Replay 4 updates**, then use Next to inspect the displayed state after each update. Return to the first frame and edit the rate. The edit begins from that frame and ends replay. All numbers, contours, controls and predictions follow the selected snapshot.
+
+Use the rate presets $0.1$, $0.4$ and $0.75$. Each preset restores the canonical observations and coefficients so the comparison starts at the same point. The first approaches the best fit without fast-mode sign flips. The second crosses the optimum on the steep curvature mode while still converging. The third grows away from it. Reset restores the original observations and parameters. This sheet calls the frozen III-07 predictor, loss, gradients and simultaneous update; it does not substitute another regression engine.
+
+## Separate objective from solver
+
+The training objective remains
+
+$$
+L(w,b)=\frac1n\sum_i(wx_i+b-y_i)^2.
+$$
+
+The analytical gradients are $dw=(2/n)\sum_i r_ix_i$ and $db=(2/n)\sum_i r_i$. Gradient descent uses $w^+=w-\eta dw$, $b^+=b-\eta db$, with both derivatives evaluated at the old state. The learning rate is a solver setting. Changing it does not change the objective or its optimum.
+
+The gradient points toward the steepest local increase. Its negative gives a descent direction for a sufficiently small step. A finite step can overshoot. “The gradient is correct” and “this update is useful” are separate checks.
+
+## Derive the curvature test
+
+Write $\theta=[w,b]^\mathsf T$ and $A=[x,\mathbf1]$. The Hessian is constant:
+
+$$
+H=\frac2nA^\mathsf TA
+=2\begin{bmatrix}\overline{x^2}&\bar x\\\bar x&1\end{bmatrix}.
+$$
+
+For an identifiable optimum $\theta_*$, the error evolves as $e^+=(I-\eta H)e$. Along an eigenvector with eigenvalue $\lambda$, its scalar component is multiplied by $1-\eta\lambda$. Thus every positive-curvature component contracts when
+
+$$
+0<\eta<\frac2{\lambda_{\max}}.
+$$
+
+A negative multiplier gives alternating sides. Magnitude below one means damping; magnitude one gives persistent oscillation; magnitude above one diverges if that mode is excited. A component already exactly zero stays zero, even at an unstable rate. In a rank-deficient problem a zero-curvature direction retains its initial component, so prediction convergence does not identify a unique parameter column.
+
+## Work the canonical update and surface
+
+For the five observations, $\bar x=0$ and $\overline{x^2}=2$, so $H=\operatorname{diag}(4,2)$. The optimum is $(w_*,b_*)=(1.8,0.8)$ and
+
+$$
+L(w,b)=0.08+2(w-1.8)^2+(b-0.8)^2.
+$$
+
+The parameter plot draws actual MSE contours at $L_*+0.2$, $L_*+1$ and $L_*+4$, not decorative ellipses. It projects the current point, optimum and prospective next point from the same numerical state. Horizontal increments change $w$ and vertical increments change $b$; the parameter plane has equal coordinate scales. Its axis domain expands during divergence.
+
+At $w=0.5,b=0$, gradients are $(-5.2,-1.6)$ and MSE is $4.1$. Rate $0.1$ produces $(1.02,0.16)$ and MSE $1.7064$. Fast-mode error multiplies by $1-0.1(4)=0.6$; bias error multiplies by $0.8$. At rate $0.4$ the fast-mode multiplier is $-0.6$ and the bias multiplier is $0.2$. At $0.75$ they are $-2$ and $-0.5$: the slope error doubles in magnitude each step.
+
+The critical rate is $0.5$. Exactly at it the slope oscillation is undamped; a decreasing bias error does not make the whole parameter column converge. Observe loss and parameter behavior together.
+
+## Shapes and replay are mathematical state
+
+III-07 stores $X$ as $n\times1$, a $1\times1$ scalar weight and a separate scalar bias. This sheet reports the equivalent augmented design $n\times2$ with intercept-first coefficient column $[b,w]^\mathsf T$. The contour derivation uses $[w,b]^\mathsf T$ to match its labeled axes; it changes order explicitly, never silently.
+
+Four updates yield five detached immutable snapshots. First, Previous and Next select history. Numeric edits and Apply one update start from the displayed frame and leave replay. No autoplay or reverse mutation is involved. NumPy's `descent` and `regression_trace` import the accepted reference functions; independent centered finite differences check the gradient of the quadratic.
+
+## Mistakes, stopping and numerical limits
+
+Do not update the bias using a newly updated weight; that is a different algorithm. Do not drop the derivative's factor of two while retaining full MSE. Do not infer convergence from one lower loss or a positive bounded learning rate.
+
+Feature scale changes curvature. Doubling all inputs multiplies their squared contribution by four and usually requires a smaller rate. A slow mode can take many steps even while a fast mode is near its stability limit. In real fitting, inspect loss change, gradient norm, parameter change and an iteration budget; a display rounded to zero is not a convergence certificate.
+
+The pure reference accepts $0<\eta\le1$ and rejects arithmetic overflow. The interactive rate is $0.001\ldots1$ and displayed coefficients are bounded to ±1000000. A replay validates every prospective frame before installing any history. An unsupported step leaves the previous state visible with a reason; clipping a divergent weight would conceal the behavior being taught.
+
+## Connections and checkpoints
+
+The Hessian and eigenvectors come from Book II. III-08 provides the target optimum, and III-12 changes the objective through penalties. You should be able to calculate the first update, use curvature to distinguish damped oscillation from divergence, and edit a historical frame without corrupting its trace.
+
+## Execute the actual Python and NumPy
+
+The imported source below is the runnable file used in canonical comparisons. Read the named mechanism from this chapter; the other functions coordinate the same Part experiment. From the book root:
+
+```bash
+.venv/bin/python -B code/python/p02/fit_reference.py
+```
+
+<CodeFile source={reference} file="code/python/p02/fit_reference.py" />
+
+
+## Five graded investigations
+
+<ChoiceExercise id="iii09-1" client:load prompt={"At rate 0.1 with dw=−5.2, what does weight 0.5 become?"} choices={[{"label": "1.02", "correct": true, "feedback": "Subtract the negative old-state gradient: 0.5 + 0.52."}, {"label": "−0.02", "correct": false, "feedback": "That adds the gradient instead of subtracting it."}]} />
+
+<ChoiceExercise id="iii09-2" client:load prompt={"For curvature λ=4 and rate 0.4, what is the error multiplier?"} choices={[{"label": "−0.6: alternating but contracting.", "correct": true, "feedback": "1 − 0.4×4 = −0.6; magnitude below one gives damping."}, {"label": "−1.6: necessarily divergent.", "correct": false, "feedback": "Include the leading 1 in I − ηH."}]} />
+
+<ChoiceExercise id="iii09-3" client:load prompt={"What happens to an excited λ=4 mode at rate 0.5?"} choices={[{"label": "It oscillates without damping.", "correct": true, "feedback": "The multiplier is −1, so magnitude does not shrink."}, {"label": "It converges immediately.", "correct": false, "feedback": "An error component is killed at rate 1/λ=0.25, not 2/λ."}]} />
+
+<ChoiceExercise id="iii09-4" client:load prompt={"Does the permitted rate interval guarantee stability?"} choices={[{"label": "No; stability depends on input curvature.", "correct": true, "feedback": "Here 0.75 is permitted but exceeds the critical rate 0.5."}, {"label": "Yes; validation bounds certify convergence.", "correct": false, "feedback": "Bounds reject unsupported inputs; the Hessian determines dynamics."}]} />
+
+<ChoiceExercise id="iii09-5" client:load prompt={"After seeking replay frame 2 and editing w, where does the edit start?"} choices={[{"label": "From the parameters displayed in frame 2; replay ends.", "correct": true, "feedback": "Historical selection sets the authoritative state before the edit."}, {"label": "From the final frame while the plot still shows frame 2.", "correct": false, "feedback": "That would disconnect the controls and plots from the active mathematical state."}]} />

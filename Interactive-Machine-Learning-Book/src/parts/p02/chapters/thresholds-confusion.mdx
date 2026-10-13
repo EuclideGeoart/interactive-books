@@ -1,0 +1,107 @@
+---
+chapterId: III-14
+title: Decision Thresholds and Confusion Matrix
+hero: Make every label flip accountable
+lede: Move one decision threshold over fixed labeled scores, inspect each label flip, and count TP, FP, TN and FN from those exact rows.
+description: Move one decision threshold over fixed labeled scores, inspect each label flip, and count TP, FP, TN and FN from those exact rows.
+prerequisites: [IV.4, V.3]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import ClassificationStage from '../ClassificationStage';
+import reference from '../../../../code/python/p02/classification_reference.py?raw';
+
+<Stage caption="Change the controls first, then inspect the active equation, numeric rows and shapes. Exact inputs and approximate computed values are distinguished; Reset restores the hand-authored experiment."><ClassificationStage scope="iii14-threshold" mode="threshold" client:load /></Stage>
+
+
+## Move a policy over fixed scores
+
+Move the threshold slider from $0.5$ to $0.8$, then just above $0.8$. Two examples share score $0.8$ and flip together. One is an actual positive and the other an actual negative, so the flip changes both true-positive and false-positive counts. A changed count must be traceable to a changed row.
+
+Use **Replay threshold sweep** to step through all distinct scores from above every score down to the minimum. The above-all state is visibly $+\infty$, with finite threshold controls hidden. **Use finite threshold 0.5** returns to a numeric policy. A score of one remains negative in the above-all state; it becomes positive at finite threshold one. Reset restores all original scores and labels.
+
+## A decision rule is an explicit comparison
+
+Let $p_i\in[0,1]$ be the saved score for example $i$, and $y_i\in\{0,1\}$ its actual label. This chapter applies
+
+$$
+\hat y_i=\mathbf1[p_i\ge t].
+$$
+
+The equality convention matters at tied scores and at zero/one endpoints. Lowering $t$ can only add positive predictions when scores stay fixed. It cannot remove them. Changing the threshold does not change the scores, actual labels or any fitting objective.
+
+The illustrative scores were hand-authored; they are not claimed to be calibrated probabilities from a validated model. The exact same score and label columns are used in III-15. They have shape $5\times1$, with sample IDs independent of score values. No random seed or measured dataset is claimed.
+
+## Derive four counts from intersections
+
+Partition examples by actual and predicted label:
+
+$$
+TP=\sum_i\mathbf1[y_i=1,\hat y_i=1],\quad FP=\sum_i\mathbf1[y_i=0,\hat y_i=1],
+$$
+$$
+TN=\sum_i\mathbf1[y_i=0,\hat y_i=0],\quad FN=\sum_i\mathbf1[y_i=1,\hat y_i=0].
+$$
+
+Every row belongs to exactly one cell. Therefore $TP+FP+TN+FN=n$, $TP+FN$ is the fixed number of actual positives, and $FP+TN$ is the fixed number of actual negatives. These invariants are useful checks while the threshold moves.
+
+“Positive” names the selected class, not a value judgment. A false positive means a negative example was declared positive; a false negative means a positive example was missed. Which error matters more depends on the application, prevalence and cost, not on the matrix's visual layout.
+
+## Work the exact five-row table
+
+At $t=0.5$, use the hand-authored score fixture:
+
+| ID | Score | Actual | Predicted | Cell |
+| --- | ---: | ---: | ---: | --- |
+| s1 | 0.9 | 1 | 1 | TP |
+| s2 | 0.8 | 0 | 1 | FP |
+| s3 | 0.8 | 1 | 1 | TP |
+| s4 | 0.4 | 0 | 0 | TN |
+| s5 | 0.1 | 1 | 0 | FN |
+
+Thus $(TP,FP,TN,FN)=(2,1,1,1)$. At $t=0.8$, equality retains s2 and s3 as positives, so the same counts remain. At $t=0.81$, only s1 is positive: $(1,0,2,2)$. Lowering to $t=0.4$ adds s4 as a false positive: $(2,2,0,1)$. At $t=0.1$ all five are positive: $(3,2,0,0)$.
+
+A score-1 observation shows why “above all” cannot be represented by numeric threshold one under $\ge$. The explicit sentinel predicts no positives at any valid score, including one, and is stored as JSON `null` / Python `None`. It is a named decision state, not a missing value silently converted to one.
+
+## Inspect one example before counting
+
+Select s2 and change its actual label from zero to one. At threshold $0.8$, its positive prediction is unchanged, but its cell changes from FP to TP. Now select s3 and edit its score below the threshold. Its actual positive label is unchanged, but it moves from TP to FN.
+
+These are separate kinds of intervention: changing a score, changing a truth label, or changing a policy. The data provenance identifies this as an editable toy experiment. A real evaluation should not rewrite actual outcomes to improve a matrix.
+
+## Replay, accessibility and limits
+
+Replay contains detached immutable score/label/threshold states. First, Previous and Next select the active snapshot; editing its score, label or threshold begins from that frame and exits replay. Numeric fields and native sliders give keyboard and touch paths. Visible per-row cells, counts and a spoken summary use the same derived result, so color is never the only signal.
+
+Scores must be finite in $[0,1]$, actual labels exactly zero or one, and finite thresholds in $[0,1]$. The pure model accepts 1–64 examples. An invalid score or label gives a reason and preserves the current valid state. Ties are handled by exact comparisons of stored binary64 scores; a displayed rounded probability is not the comparison input. This fixture displays score inputs without rounding.
+
+## Mistakes and connections
+
+Do not swap FP and FN when transposing a matrix layout. Do not multiply scores by a threshold or retrain the model while evaluating a decision policy. Do not infer error costs from counts alone. The experiment reports the counts before deriving ratios, and III-15 makes their denominators explicit.
+
+Canonical Python `confusion` and the TypeScript kernel classify each row. An independent oracle intersects sets of actual-positive and predicted-positive IDs to count the four cells. You should be able to trace every cell to an example, account for equality/ties, and separate a label flip from a probability change.
+
+## Execute the actual Python and NumPy
+
+The imported source below is the runnable file used in canonical comparisons. Read the named mechanism from this chapter; the other functions coordinate the same Part experiment. From the book root:
+
+```bash
+.venv/bin/python -B code/python/p02/classification_reference.py
+```
+
+<CodeFile source={reference} file="code/python/p02/classification_reference.py" />
+
+
+## Five graded investigations
+
+<ChoiceExercise id="iii14-1" client:load prompt={"At score 0.8 and threshold 0.8, what is the predicted label here?"} choices={[{"label": "1", "correct": true, "feedback": "The rule uses greater than or equal, so equality is positive."}, {"label": "0", "correct": false, "feedback": "That would implement a strict greater-than rule instead."}]} />
+
+<ChoiceExercise id="iii14-2" client:load prompt={"An actual negative is predicted positive. Which cell contains it?"} choices={[{"label": "FP", "correct": true, "feedback": "It is positive by prediction and false relative to the actual label."}, {"label": "FN", "correct": false, "feedback": "FN is an actual positive predicted negative."}]} />
+
+<ChoiceExercise id="iii14-3" client:load prompt={"The canonical threshold 0.5 produces which TP/FP/TN/FN counts?"} choices={[{"label": "2 / 1 / 1 / 1", "correct": true, "feedback": "Trace s1,s3 to TP; s2 to FP; s4 to TN; s5 to FN."}, {"label": "3 / 0 / 1 / 1", "correct": false, "feedback": "The score-0.8 negative example is a false positive, not a true positive."}]} />
+
+<ChoiceExercise id="iii14-4" client:load prompt={"When lowering a threshold over fixed scores, can predicted positives disappear?"} choices={[{"label": "No; the positive set only grows.", "correct": true, "feedback": "Any score already ≥ the old threshold remains ≥ a lower one."}, {"label": "Yes; retraining replaces the score column.", "correct": false, "feedback": "This operation changes a decision policy and leaves the score column fixed."}]} />
+
+<ChoiceExercise id="iii14-5" client:load prompt={"Why is above-all a separate sentinel rather than numeric threshold 1?"} choices={[{"label": "A score equal to 1 is positive at finite threshold 1.", "correct": true, "feedback": "The sentinel is needed to express zero positive predictions under the ≥ convention."}, {"label": "Because probability scores can legitimately exceed 1.", "correct": false, "feedback": "The input contract restricts these scores to [0,1]."}]} />

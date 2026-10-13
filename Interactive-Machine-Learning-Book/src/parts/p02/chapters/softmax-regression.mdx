@@ -1,0 +1,132 @@
+---
+chapterId: III-16
+title: Multiclass Classification and Softmax Regression
+hero: Inspect a gradient with one column per class
+lede: Edit a multiclass weight matrix, normalize shifted logits, inspect cross entropy and gradient shapes, and replay real softmax updates.
+description: Edit a multiclass weight matrix, normalize shifted logits, inspect cross entropy and gradient shapes, and replay real softmax updates.
+prerequisites: [II.10, III.9, VII.6, VII.7]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import ClassificationStage from '../ClassificationStage';
+import reference from '../../../../code/python/p02/classification_reference.py?raw';
+
+<Stage caption="Change the controls first, then inspect the active equation, numeric rows and shapes. Exact inputs and approximate computed values are distinguished; Reset restores the hand-authored experiment."><ClassificationStage scope="iii16-softmax" mode="softmax" client:load /></Stage>
+
+
+## Change one class score and inspect all probabilities
+
+Edit a weight-matrix cell in the opening sheet. Each row of logits is normalized across classes, so increasing one class score changes every class probability in that sample. Press Apply one update and inspect the gradient and prospective next matrix before replaying three updates.
+
+Set **Common logit shift** to $1000$. The logits change, but the probabilities, cross entropy and gradient stay the same up to binary64 rounding. The mechanism subtracts a row maximum before exponentiating. Reset restores the original hand-authored three-class batch and weights.
+
+## Define class columns and one-hot targets
+
+With $n$ samples, $d$ augmented features and $k$ mutually exclusive classes,
+
+$$
+X\in\mathbb R^{n\times d},\quad W\in\mathbb R^{d\times k},\quad Z=XW\in\mathbb R^{n\times k}.
+$$
+
+Each column of $W$ is one class's coefficient column; the intercept is the first feature row. The integer label column has shape $n\times1$. Its one-hot encoding $Y$ has shape $n\times k$: row $i$ has a one at class index $y_i$ and zeros elsewhere.
+
+Softmax normalizes each logit row:
+
+$$
+P_{ic}=\frac{e^{Z_{ic}}}{\sum_j e^{Z_{ij}}},\qquad \sum_c P_{ic}=1.
+$$
+
+The class prediction is the largest probability, equivalently the largest logit. Here exact maximum ties choose the lowest class index, an explicit deterministic decision convention. These are mutually exclusive classes; independent binary sigmoids would answer a different multilabel problem.
+
+## Derive stable cross entropy
+
+For a row maximum $m_i=\max_c Z_{ic}$, factor out the common exponential:
+
+$$
+P_{ic}=\frac{e^{Z_{ic}-m_i}}{\sum_j e^{Z_{ij}-m_i}}.
+$$
+
+All shifted logits are nonpositive and at least one is zero, so the exponential sum lies between one and $k$. This avoids overflow. The class-index cross entropy can be calculated from shifted logits without taking a logarithm of a rounded probability:
+
+$$
+\ell_i=\log\sum_c e^{Z_{ic}-m_i}-(Z_{i,y_i}-m_i),\qquad L=\frac1n\sum_i\ell_i.
+$$
+
+Adding a common scalar to a logit row changes neither probabilities nor this loss. It does not make the score matrix uniquely identifiable; class probabilities depend on relative scores.
+
+## Derive the gradient matrix
+
+Differentiate the row log-sum-exp and subtract the selected class's logit. The result is
+
+$$
+\frac{\partial L}{\partial Z}=\frac1n(P-Y)\in\mathbb R^{n\times k},
+\qquad \nabla_WL=\frac1nX^\mathsf T(P-Y)\in\mathbb R^{d\times k}.
+$$
+
+There is no MSE factor of two. The $1/n$ belongs exactly once in this mean-loss gradient. Summing each row of $P-Y$ gives zero; each feature row of the weight gradient therefore sums to zero up to rounding. This checks class normalization and the one-hot target representation.
+
+Gradient descent updates the entire old-state matrix simultaneously: $W^+=W-\eta\nabla_WL$. The UI displays the gradient shape, each numeric row and the prospective next row. Replay frames contain actual detached weight matrices, not pictures of a changing bar chart.
+
+## Work the three-row batch
+
+The hand-authored batch has augmented rows $[1,-1]$, $[1,0]$, $[1,1]$, class labels $[2,1,0]^\mathsf T$ and
+
+$$
+W=\begin{bmatrix}0&0&0\\1&0&-1\end{bmatrix}.
+$$
+
+There is no random seed, downloaded dataset or measured-population claim. Logits are $[-1,0,1]$, $[0,0,0]$ and $[1,0,-1]$. Their probability rows are approximately
+
+$$
+[0.0900306,0.2447285,0.6652410],\quad [1/3,1/3,1/3],\quad
+[0.6652410,0.2447285,0.0900306].
+$$
+
+The per-row losses are approximately $0.407606$, $1.098612$ and $0.407606$, giving mean $0.6379414059$. The middle row predicts class zero by the tie convention although its actual label is one. A nonzero correct-class probability still yields a finite loss.
+
+The mean gradient is approximately
+
+$$
+\nabla_WL=\begin{bmatrix}0.029535&-0.059070&0.029535\\-0.141597&0&0.141597\end{bmatrix}.
+$$
+
+At rate $0.2$, the next first row is approximately $[-0.00590699,0.01181398,-0.00590699]$ and the next second row $[1.02831931,0,-1.02831931]$. Shapes are $X:3\times2$, $W:2\times3$, $Z,P,Y:3\times3$, and gradient $2\times3$.
+
+## Extreme logits and common mistakes
+
+For logits $[1000,0,-1000]$ and actual class two, probability for class two underflows to zero, yet stable cross entropy is approximately $2000$ and the logit gradient is approximately $[1,0,-1]$. Taking $-\log$ of a displayed zero probability would lose this finite logit-based calculation.
+
+Do not normalize down the sample axis. Each sample needs its own probability distribution across classes. Do not multiply $X^\mathsf T$ by an integer label column; the gradient subtracts the one-hot matrix. Do not average twice. Do not mistake a common row shift for increased confidence; confidence changes with score differences.
+
+## Numerical limits and connections
+
+The pure kernel supports 1–64 rows, 1–7 features and 2–6 classes with finite inputs and valid integer labels. The sheet fixes three classes and three samples, lets you edit the feature, label and six weights, and bounds weights/shift to ±1000. Nonfinite logit differences, losses or updates are rejected with a reason. Underflow follows binary64; a displayed approximate zero does not rewrite the stored value.
+
+Native controls support numeric, keyboard and touch edits; immutable replay follows the displayed weight matrix, and editing a historical frame ends replay. Independent 80-digit Decimal unshifted probabilities verify the stable results, and centered finite differences separately verify every gradient entry. The canonical Python `multiclass` uses explicit NumPy matrices and one-hot targets from scratch.
+
+Softmax generalizes logistic probability modeling and leads toward the neuron/matrix composition chapters. You should be able to state all shapes, derive $P-Y$ and $X^\mathsf T(P-Y)/n$, explain shift invariance and retain finite loss when a wrong class probability underflows.
+
+## Execute the actual Python and NumPy
+
+The imported source below is the runnable file used in canonical comparisons. Read the named mechanism from this chapter; the other functions coordinate the same Part experiment. From the book root:
+
+```bash
+.venv/bin/python -B code/python/p02/classification_reference.py
+```
+
+<CodeFile source={reference} file="code/python/p02/classification_reference.py" />
+
+
+## Five graded investigations
+
+<ChoiceExercise id="iii16-1" client:load prompt={"With X 3×2 and three classes, what are W and logits shapes?"} choices={[{"label": "W is 2×3 and logits are 3×3.", "correct": true, "feedback": "Each class gets one coefficient column and each sample one score row."}, {"label": "W is 3×2 and logits are 2×2.", "correct": false, "feedback": "That reverses features and classes and breaks XW."}]} />
+
+<ChoiceExercise id="iii16-2" client:load prompt={"What happens when 1000 is added to every logit in a row?"} choices={[{"label": "Probabilities and cross entropy remain unchanged up to rounding.", "correct": true, "feedback": "The common exponential factor cancels; stable loss uses logit differences."}, {"label": "Every class becomes more likely by the same amount.", "correct": false, "feedback": "Probabilities must sum to one; confidence depends on relative scores."}]} />
+
+<ChoiceExercise id="iii16-3" client:load prompt={"What is the mean softmax-regression weight gradient?"} choices={[{"label": "Xᵀ(P−Y)/n with one-hot Y.", "correct": true, "feedback": "Its d×k shape matches W and averages over samples once."}, {"label": "2Xᵀ(P−Y)/n.", "correct": false, "feedback": "That is the squared-error factor; the likelihood gradient has no two."}]} />
+
+<ChoiceExercise id="iii16-4" client:load prompt={"Three zero logits and actual class one give what cross entropy?"} choices={[{"label": "log(3), approximately 1.0986.", "correct": true, "feedback": "Each class has probability 1/3, so loss is −log(1/3)."}, {"label": "0 because all logits are zero.", "correct": false, "feedback": "Zero logits mean equal probabilities, not certain correct classification."}]} />
+
+<ChoiceExercise id="iii16-5" client:load prompt={"Logits [1000,0,−1000] with actual class two give which stable loss?"} choices={[{"label": "Approximately 2000, finite.", "correct": true, "feedback": "The correct-class shifted logit is −2000; the shifted log-sum term is near zero."}, {"label": "Infinity necessarily, because probability underflows.", "correct": false, "feedback": "Direct probability logs fail here; the finite logit difference preserves the loss."}]} />
