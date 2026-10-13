@@ -1,0 +1,122 @@
+{
+  "mode": "milestone",
+  "part": "all",
+  "sourceSignature": "b6fc0e6f158f23098aab9b500b257733e6b726e7e4f709770756710e94d48616",
+  "chapters": [
+    "III-01",
+    "III-02",
+    "III-03",
+    "III-04",
+    "III-05",
+    "III-06",
+    "III-07",
+    "III-08",
+    "III-09",
+    "III-10",
+    "III-11",
+    "III-12",
+    "III-13",
+    "III-14",
+    "III-15",
+    "III-16"
+  ],
+  "started": "2026-10-13T19:08:40.171Z",
+  "finished": "2026-10-13T19:22:17.064Z",
+  "complete": true,
+  "results": [
+    {
+      "name": "Type/content check",
+      "argv": [
+        "node_modules/astro/astro.js",
+        "check"
+      ],
+      "exitCode": 0,
+      "seconds": 19.181,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Unit and parity tests",
+      "argv": [
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--maxWorkers=2"
+      ],
+      "exitCode": 0,
+      "seconds": 6.502,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Independent oracles and freshness",
+      "argv": [
+        "scripts/run-oracle.mjs"
+      ],
+      "exitCode": 0,
+      "seconds": 6.632,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Root production and offline bundle",
+      "argv": [
+        "scripts/build.mjs",
+        "/",
+        "dist"
+      ],
+      "exitCode": 0,
+      "seconds": 20.645,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Subpath production",
+      "argv": [
+        "scripts/build.mjs",
+        "/machine-learning/",
+        "dist-subpath"
+      ],
+      "exitCode": 0,
+      "seconds": 19.152,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Root production audit",
+      "argv": [
+        "scripts/check-dist.mjs",
+        "dist",
+        "/"
+      ],
+      "exitCode": 0,
+      "seconds": 0.487,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Subpath production audit",
+      "argv": [
+        "scripts/check-dist.mjs",
+        "dist-subpath",
+        "/machine-learning/"
+      ],
+      "exitCode": 0,
+      "seconds": 0.394,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Root browser validation",
+      "argv": [
+        "scripts/run-browser.mjs",
+        "playwright.config.ts"
+      ],
+      "exitCode": 0,
+      "seconds": 512.82,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Subpath browser validation",
+      "argv": [
+        "scripts/run-browser.mjs",
+        "playwright.subpath.config.ts"
+      ],
+      "exitCode": 0,
+      "seconds": 231.072,
+      "sourceUnchanged": true
+    }
+  ]
+}
