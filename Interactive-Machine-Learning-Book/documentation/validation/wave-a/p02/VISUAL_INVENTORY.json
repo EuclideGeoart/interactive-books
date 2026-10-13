@@ -1,0 +1,1839 @@
+{
+  "part": "p02",
+  "sha": "d1f79eca80c50d27b73acdb1980c37e879366e9f",
+  "validationSignature": "1a73bbcb918f146443ece3855765100d3ebc80d630573d12a4f403c9a319d5b9",
+  "root": "/",
+  "dpr": 1,
+  "manifestIds": [
+    "III-07",
+    "III-08",
+    "III-09",
+    "III-10",
+    "III-11",
+    "III-12",
+    "III-13",
+    "III-14",
+    "III-15",
+    "III-16"
+  ],
+  "images": [
+    {
+      "file": "least-squares-desktop-light-canonical.png",
+      "sha256": "7721048c64422abd75bc59da04c87d14e8c648fc35dfcc06241595d413af3ab7",
+      "slug": "least-squares",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "least-squares",
+          "data-mse": "4.1",
+          "data-coefficients": "[0,0.5]",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1377.5625,
+        "heading": "Center \u2192 covariance \u2192 best line"
+      }
+    },
+    {
+      "file": "least-squares-desktop-light-canonical-opening.png",
+      "sha256": "2e1b3b536c6bc587d9d6084a39d1f3c9f0507915303eaae9906445d3345e2cdf",
+      "slug": "least-squares",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "least-squares",
+          "data-mse": "4.1",
+          "data-coefficients": "[0,0.5]",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1377.5625,
+        "heading": "Center \u2192 covariance \u2192 best line"
+      }
+    },
+    {
+      "file": "least-squares-desktop-light-constant-x-fit.png",
+      "sha256": "084818e4f41e4cef2990047f1bdafd58b881048cfe6cdb6e75122d42182cf2de",
+      "slug": "least-squares",
+      "view": "desktop",
+      "theme": "light",
+      "state": "constant-x-fit",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "least-squares",
+          "data-mse": "6.56",
+          "data-coefficients": "[0.8,0]",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1376.328125,
+        "heading": "Center \u2192 covariance \u2192 best line"
+      }
+    },
+    {
+      "file": "regression-gradient-descent-desktop-light-canonical.png",
+      "sha256": "aa040c9366d745c116853f9ac6b60aeb343a7871dde2cce18a0a7b41ee36fa91",
+      "slug": "regression-gradient-descent",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "descent",
+          "data-mse": "4.1",
+          "data-coefficients": "[0,0.5]",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 2072.59375,
+        "heading": "Curvature \u2192 gradient \u2192 next state"
+      }
+    },
+    {
+      "file": "regression-gradient-descent-desktop-light-canonical-opening.png",
+      "sha256": "c365b8e3258b5b86bc73577556725fa3619f6190b508634e96ca607a08bc0948",
+      "slug": "regression-gradient-descent",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "descent",
+          "data-mse": "4.1",
+          "data-coefficients": "[0,0.5]",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 2072.59375,
+        "heading": "Curvature \u2192 gradient \u2192 next state"
+      }
+    },
+    {
+      "file": "regression-gradient-descent-desktop-light-replay-frame-1.png",
+      "sha256": "fee7c77bef77fb65db688da3f2fbd85daf6f760bd12b53e088f2081b84c8cc44",
+      "slug": "regression-gradient-descent",
+      "view": "desktop",
+      "theme": "light",
+      "state": "replay-frame-1",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "descent",
+          "data-mse": "1.7064",
+          "data-coefficients": "[0.16000000000000003,1.02]",
+          "data-frame-index": "1"
+        },
+        "width": 1010,
+        "height": 2072.59375,
+        "heading": "Curvature \u2192 gradient \u2192 next state"
+      }
+    },
+    {
+      "file": "multiple-linear-regression-desktop-light-canonical.png",
+      "sha256": "06a43309bc68758f07c6cd02b0872d81918b856f37827d69bc5155f78ef42420",
+      "slug": "multiple-linear-regression",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "multiple",
+          "data-mse": "6.5",
+          "data-coefficients": "[0,0,0]",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1973.359375,
+        "heading": "Design rows \u2192 shared coefficients \u2192 predictions"
+      }
+    },
+    {
+      "file": "multiple-linear-regression-desktop-light-canonical-opening.png",
+      "sha256": "503901567162ea31b635cac72d54a89cca01a99f6fa87cda657f2dcd6b7edb13",
+      "slug": "multiple-linear-regression",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "multiple",
+          "data-mse": "6.5",
+          "data-coefficients": "[0,0,0]",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1973.359375,
+        "heading": "Design rows \u2192 shared coefficients \u2192 predictions"
+      }
+    },
+    {
+      "file": "multiple-linear-regression-desktop-light-duplicate-minimum-norm.png",
+      "sha256": "9eba0618505956a581d5b613c3004df736d4600575ee3e3c048de81c1fce5fa8",
+      "slug": "multiple-linear-regression",
+      "view": "desktop",
+      "theme": "light",
+      "state": "duplicate-minimum-norm",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "multiple",
+          "data-mse": "0.20000000000000004",
+          "data-coefficients": "[0.6,0.8999999999999996,0.8999999999999999]",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1994.421875,
+        "heading": "Design rows \u2192 shared coefficients \u2192 predictions"
+      }
+    },
+    {
+      "file": "polynomial-features-desktop-light-canonical.png",
+      "sha256": "1cefebbddc7ab2ef3d23389a2bb9ca5be448e3229bf1ea4f0f6c419326809b25",
+      "slug": "polynomial-features",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "polynomial",
+          "data-mse": "0.007550952380952376",
+          "data-coefficients": "[0.001875000000000071,0.004285714285714208,1.1316964285714288]",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1751.546875,
+        "heading": "Feature powers \u2192 capacity \u2192 held-out error"
+      }
+    },
+    {
+      "file": "polynomial-features-desktop-light-canonical-opening.png",
+      "sha256": "881c1bd00e0400b9e9aad9003e9dc9a811ba66d7e929d7f4bca577e08bf79103",
+      "slug": "polynomial-features",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "polynomial",
+          "data-mse": "0.007550952380952376",
+          "data-coefficients": "[0.001875000000000071,0.004285714285714208,1.1316964285714288]",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1751.546875,
+        "heading": "Feature powers \u2192 capacity \u2192 held-out error"
+      }
+    },
+    {
+      "file": "polynomial-features-desktop-light-degree-5.png",
+      "sha256": "f0a32255adf226849de5dac41ffef4407a787d87dc7df541ff94fac34b65fc5d",
+      "slug": "polynomial-features",
+      "view": "desktop",
+      "theme": "light",
+      "state": "degree-5",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "polynomial",
+          "data-mse": "8.582084284172873e-31",
+          "data-coefficients": "[0.0503906249999996,0.5024739583333336,0.7252604166666681,-2.6497395833333353,0.3743489583333318,2.197265625]",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1873.890625,
+        "heading": "Feature powers \u2192 capacity \u2192 held-out error"
+      }
+    },
+    {
+      "file": "regularization-desktop-light-canonical.png",
+      "sha256": "73cdcf824a1cb59022968f4b994e2b7f7f36d90b1819678843e042e5bab0cdd0",
+      "slug": "regularization",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "regularization",
+          "data-mse": "0.33919999999999967",
+          "data-coefficients": "[0.7999999999999999,1.4400000000000002]",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1589.53125,
+        "heading": "Fit error + penalty \u2192 shrinkage"
+      }
+    },
+    {
+      "file": "regularization-desktop-light-canonical-opening.png",
+      "sha256": "79a546cbc22a012acbe46c20d21cf854c17ff97a55e83e88ff6e8ca2c5285d94",
+      "slug": "regularization",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "regularization",
+          "data-mse": "0.33919999999999967",
+          "data-coefficients": "[0.7999999999999999,1.4400000000000002]",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1589.53125,
+        "heading": "Fit error + penalty \u2192 shrinkage"
+      }
+    },
+    {
+      "file": "regularization-desktop-light-lasso.png",
+      "sha256": "f4111b3c483dee070a84d932e6b468dc39302fdaa4f1f6d42a379bcdc11ed3f3",
+      "slug": "regularization",
+      "view": "desktop",
+      "theme": "light",
+      "state": "lasso",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "regularization",
+          "data-mse": "0.11125000000000011",
+          "data-coefficients": "[0.7999999999999998,1.6749999999999996]",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1589.53125,
+        "heading": "Fit error + penalty \u2192 shrinkage"
+      }
+    },
+    {
+      "file": "logistic-regression-desktop-light-canonical.png",
+      "sha256": "7f51ee8a3ca593a0f61b00e214997e5ff940865801d809be3438b94f2a871c71",
+      "slug": "logistic-regression",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "logistic",
+          "data-threshold": "0.5",
+          "data-loss": "0.5147053155364673",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1727.125,
+        "heading": "Logit \u2192 probability \u2192 likelihood update"
+      }
+    },
+    {
+      "file": "logistic-regression-desktop-light-canonical-opening.png",
+      "sha256": "a03514e1829b8852c2da0982b6a407f54fff34f493474c6078cfa885d2e8a383",
+      "slug": "logistic-regression",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "logistic",
+          "data-threshold": "0.5",
+          "data-loss": "0.5147053155364673",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1727.125,
+        "heading": "Logit \u2192 probability \u2192 likelihood update"
+      }
+    },
+    {
+      "file": "logistic-regression-desktop-light-after-update.png",
+      "sha256": "fedff53935348d89b7b7ee1326fa028e585f81c332deb581d0a563972f13fe63",
+      "slug": "logistic-regression",
+      "view": "desktop",
+      "theme": "light",
+      "state": "after-update",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "logistic",
+          "data-threshold": "0.5",
+          "data-loss": "0.5127377471908836",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1727.125,
+        "heading": "Logit \u2192 probability \u2192 likelihood update"
+      }
+    },
+    {
+      "file": "thresholds-confusion-desktop-light-canonical.png",
+      "sha256": "c8dc1148cafd5e37c5608969a1d22db919c14c753c3eacc31c994a02ee2dfe94",
+      "slug": "thresholds-confusion",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "threshold",
+          "data-threshold": "0.5",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1264.515625,
+        "heading": "One score column \u2192 one threshold \u2192 four counts"
+      }
+    },
+    {
+      "file": "thresholds-confusion-desktop-light-canonical-opening.png",
+      "sha256": "f26523b1cca0013e56373eaafd2c704fa81551c386756319af820f4e77d2b666",
+      "slug": "thresholds-confusion",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "threshold",
+          "data-threshold": "0.5",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1264.515625,
+        "heading": "One score column \u2192 one threshold \u2192 four counts"
+      }
+    },
+    {
+      "file": "thresholds-confusion-desktop-light-above-all-score-one.png",
+      "sha256": "a2c98dcb9ab035b26539f0904999f760bf091686a19c22617915a875fb620a55",
+      "slug": "thresholds-confusion",
+      "view": "desktop",
+      "theme": "light",
+      "state": "above-all-score-one",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "threshold",
+          "data-threshold": "above-all",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1178.609375,
+        "heading": "One score column \u2192 one threshold \u2192 four counts"
+      }
+    },
+    {
+      "file": "precision-recall-roc-desktop-light-canonical.png",
+      "sha256": "cbbf8d6f7e7cf3ac26963b873371f21db801c90382aacac0012c4c1f453228fc",
+      "slug": "precision-recall-roc",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "metrics",
+          "data-threshold": "0.5",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1966.71875,
+        "heading": "Count denominators \u2192 metrics \u2192 exact ROC sweep"
+      }
+    },
+    {
+      "file": "precision-recall-roc-desktop-light-canonical-opening.png",
+      "sha256": "1da567ed62d0cfe31e885f51a74526b4e05ab5d777d92e97f3873eed38c3a84f",
+      "slug": "precision-recall-roc",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "metrics",
+          "data-threshold": "0.5",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1966.71875,
+        "heading": "Count denominators \u2192 metrics \u2192 exact ROC sweep"
+      }
+    },
+    {
+      "file": "precision-recall-roc-desktop-light-undefined-positive-metrics.png",
+      "sha256": "3b715d36d08be548831fd0e09ba0a02c14fbccabe2f7cc1dd0a723eb7fada27d",
+      "slug": "precision-recall-roc",
+      "view": "desktop",
+      "theme": "light",
+      "state": "undefined-positive-metrics",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "metrics",
+          "data-threshold": "0.5",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1643.96875,
+        "heading": "Count denominators \u2192 metrics \u2192 exact ROC sweep"
+      }
+    },
+    {
+      "file": "softmax-regression-desktop-light-canonical.png",
+      "sha256": "7afce09b85448710a6ccb04bc8711b2dd7a456ffeb83ace8fb24a83b8f285dd5",
+      "slug": "softmax-regression",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "softmax",
+          "data-threshold": "0.5",
+          "data-loss": "0.6379414058522901",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1833.640625,
+        "heading": "Class logits \u2192 shifted probabilities \u2192 gradient matrix"
+      }
+    },
+    {
+      "file": "softmax-regression-desktop-light-canonical-opening.png",
+      "sha256": "83658c38beb5e0b6aeadf84418a48fa0f3a040ff49724478e4e9c02db0ea74f3",
+      "slug": "softmax-regression",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "softmax",
+          "data-threshold": "0.5",
+          "data-loss": "0.6379414058522901",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1833.640625,
+        "heading": "Class logits \u2192 shifted probabilities \u2192 gradient matrix"
+      }
+    },
+    {
+      "file": "softmax-regression-desktop-light-common-shift-1000.png",
+      "sha256": "95b4ac4ef5569c58b4a8c6826cafd6eee03b0d926efc2745763fe51318be8466",
+      "slug": "softmax-regression",
+      "view": "desktop",
+      "theme": "light",
+      "state": "common-shift-1000",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "softmax",
+          "data-threshold": "0.5",
+          "data-loss": "0.6379414058522901",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1833.640625,
+        "heading": "Class logits \u2192 shifted probabilities \u2192 gradient matrix"
+      }
+    },
+    {
+      "file": "least-squares-desktop-dark-canonical.png",
+      "sha256": "7658f271332d8fae04ebb55125abc7b48d022bd47f34070a3fae530253bbcfc3",
+      "slug": "least-squares",
+      "view": "desktop",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "least-squares",
+          "data-mse": "4.1",
+          "data-coefficients": "[0,0.5]",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1377.5625,
+        "heading": "Center \u2192 covariance \u2192 best line"
+      }
+    },
+    {
+      "file": "regression-gradient-descent-desktop-dark-canonical.png",
+      "sha256": "4eb2d40e1eef3aaa3f1a9d7a42277beb5e7adeab9e7fb5e04afcaaa82afbc5da",
+      "slug": "regression-gradient-descent",
+      "view": "desktop",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "descent",
+          "data-mse": "4.1",
+          "data-coefficients": "[0,0.5]",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 2072.59375,
+        "heading": "Curvature \u2192 gradient \u2192 next state"
+      }
+    },
+    {
+      "file": "multiple-linear-regression-desktop-dark-canonical.png",
+      "sha256": "da6d27d4c953d6d4ce5ee9083391fe5b96c33a3d21b2205dba9c4d70618e3b9f",
+      "slug": "multiple-linear-regression",
+      "view": "desktop",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "multiple",
+          "data-mse": "6.5",
+          "data-coefficients": "[0,0,0]",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1973.359375,
+        "heading": "Design rows \u2192 shared coefficients \u2192 predictions"
+      }
+    },
+    {
+      "file": "polynomial-features-desktop-dark-canonical.png",
+      "sha256": "5ad868d7fe3be8d19b5e79834e6b21337ef09c37359d54b8d51813240d56a7a5",
+      "slug": "polynomial-features",
+      "view": "desktop",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "polynomial",
+          "data-mse": "0.007550952380952376",
+          "data-coefficients": "[0.001875000000000071,0.004285714285714208,1.1316964285714288]",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1751.546875,
+        "heading": "Feature powers \u2192 capacity \u2192 held-out error"
+      }
+    },
+    {
+      "file": "regularization-desktop-dark-canonical.png",
+      "sha256": "7b77b32f42b37e3a5bffb6ee9a857fc56318eab7bd769d90e0084180b90b855b",
+      "slug": "regularization",
+      "view": "desktop",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "regularization",
+          "data-mse": "0.33919999999999967",
+          "data-coefficients": "[0.7999999999999999,1.4400000000000002]",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1589.53125,
+        "heading": "Fit error + penalty \u2192 shrinkage"
+      }
+    },
+    {
+      "file": "logistic-regression-desktop-dark-canonical.png",
+      "sha256": "f846b18dc5313431c2053caaaee72f17dc2ddfa824b74978797bf055accca504",
+      "slug": "logistic-regression",
+      "view": "desktop",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "logistic",
+          "data-threshold": "0.5",
+          "data-loss": "0.5147053155364673",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1727.125,
+        "heading": "Logit \u2192 probability \u2192 likelihood update"
+      }
+    },
+    {
+      "file": "thresholds-confusion-desktop-dark-canonical.png",
+      "sha256": "da07dad660258591a6633d24168fc27d8ef86272bcc2bcd9ba74e94da89b81ab",
+      "slug": "thresholds-confusion",
+      "view": "desktop",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "threshold",
+          "data-threshold": "0.5",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1264.515625,
+        "heading": "One score column \u2192 one threshold \u2192 four counts"
+      }
+    },
+    {
+      "file": "precision-recall-roc-desktop-dark-canonical.png",
+      "sha256": "518c1a8943e370b7f9aa78c38934dec59e129dc6229c46f3edee5ce4abf3e758",
+      "slug": "precision-recall-roc",
+      "view": "desktop",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "metrics",
+          "data-threshold": "0.5",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1966.71875,
+        "heading": "Count denominators \u2192 metrics \u2192 exact ROC sweep"
+      }
+    },
+    {
+      "file": "softmax-regression-desktop-dark-canonical.png",
+      "sha256": "d2dc5c7c5ef99bb6fd464b7432667658be595bc483063b4a5bbbe7c91b204fb6",
+      "slug": "softmax-regression",
+      "view": "desktop",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "softmax",
+          "data-threshold": "0.5",
+          "data-loss": "0.6379414058522901",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1833.640625,
+        "heading": "Class logits \u2192 shifted probabilities \u2192 gradient matrix"
+      }
+    },
+    {
+      "file": "least-squares-tablet-light-canonical.png",
+      "sha256": "0fc418e31bdefaf9c7787eddf578b5a109dbe25ba0d1a65389e9bb7865b3ebf4",
+      "slug": "least-squares",
+      "view": "tablet",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "least-squares",
+          "data-mse": "4.1",
+          "data-coefficients": "[0,0.5]",
+          "data-frame-index": "0"
+        },
+        "width": 708,
+        "height": 1991.671875,
+        "heading": "Center \u2192 covariance \u2192 best line"
+      }
+    },
+    {
+      "file": "regression-gradient-descent-tablet-light-canonical.png",
+      "sha256": "b82a03171e817d73a4a57681483484f7c09d3c5a65b3fa6b73bb4d5c96cfabf6",
+      "slug": "regression-gradient-descent",
+      "view": "tablet",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "descent",
+          "data-mse": "4.1",
+          "data-coefficients": "[0,0.5]",
+          "data-frame-index": "0"
+        },
+        "width": 708,
+        "height": 3000.96875,
+        "heading": "Curvature \u2192 gradient \u2192 next state"
+      }
+    },
+    {
+      "file": "multiple-linear-regression-tablet-light-canonical.png",
+      "sha256": "251c998e521175437a190acbd2679680669dae15161716e15c3b7c636a647f6f",
+      "slug": "multiple-linear-regression",
+      "view": "tablet",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "multiple",
+          "data-mse": "6.5",
+          "data-coefficients": "[0,0,0]",
+          "data-frame-index": "0"
+        },
+        "width": 708,
+        "height": 2559.65625,
+        "heading": "Design rows \u2192 shared coefficients \u2192 predictions"
+      }
+    },
+    {
+      "file": "polynomial-features-tablet-light-canonical.png",
+      "sha256": "da97840313a653dd2dbd0ec3baabd2035c9233c88c6fdda5f8bbace663175c49",
+      "slug": "polynomial-features",
+      "view": "tablet",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "polynomial",
+          "data-mse": "0.007550952380952376",
+          "data-coefficients": "[0.001875000000000071,0.004285714285714208,1.1316964285714288]",
+          "data-frame-index": "0"
+        },
+        "width": 708,
+        "height": 2405.90625,
+        "heading": "Feature powers \u2192 capacity \u2192 held-out error"
+      }
+    },
+    {
+      "file": "regularization-tablet-light-canonical.png",
+      "sha256": "50b59f67753f5d742578cbcc03cd6b7a0949ec4e1558e520edc10b17198b6d32",
+      "slug": "regularization",
+      "view": "tablet",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "regularization",
+          "data-mse": "0.33919999999999967",
+          "data-coefficients": "[0.7999999999999999,1.4400000000000002]",
+          "data-frame-index": "0"
+        },
+        "width": 708,
+        "height": 2224.703125,
+        "heading": "Fit error + penalty \u2192 shrinkage"
+      }
+    },
+    {
+      "file": "logistic-regression-tablet-light-canonical.png",
+      "sha256": "bd79319f1e5d3069569cba26243a43338f74e4d5bbc0a3808c52917dff716770",
+      "slug": "logistic-regression",
+      "view": "tablet",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "logistic",
+          "data-threshold": "0.5",
+          "data-loss": "0.5147053155364673",
+          "data-frame-index": "0"
+        },
+        "width": 708,
+        "height": 2729.96875,
+        "heading": "Logit \u2192 probability \u2192 likelihood update"
+      }
+    },
+    {
+      "file": "thresholds-confusion-tablet-light-canonical.png",
+      "sha256": "1af98884a685c917e8fadfdf803a1dc4d5894de44d441cec61ec0f42d3fa365d",
+      "slug": "thresholds-confusion",
+      "view": "tablet",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "threshold",
+          "data-threshold": "0.5",
+          "data-frame-index": "0"
+        },
+        "width": 708,
+        "height": 1729.890625,
+        "heading": "One score column \u2192 one threshold \u2192 four counts"
+      }
+    },
+    {
+      "file": "precision-recall-roc-tablet-light-canonical.png",
+      "sha256": "4b4630ea0f3d04f42be1f732380b2cdafce1ed216821e2bfee8de99cffaef4db",
+      "slug": "precision-recall-roc",
+      "view": "tablet",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "metrics",
+          "data-threshold": "0.5",
+          "data-frame-index": "0"
+        },
+        "width": 708,
+        "height": 2796.234375,
+        "heading": "Count denominators \u2192 metrics \u2192 exact ROC sweep"
+      }
+    },
+    {
+      "file": "softmax-regression-tablet-light-canonical.png",
+      "sha256": "7f4e69a55714a2d2a001ecc8e5d208507a495d1350c5e32d37d9af50bbe095bd",
+      "slug": "softmax-regression",
+      "view": "tablet",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "softmax",
+          "data-threshold": "0.5",
+          "data-loss": "0.6379414058522901",
+          "data-frame-index": "0"
+        },
+        "width": 708,
+        "height": 2491.5,
+        "heading": "Class logits \u2192 shifted probabilities \u2192 gradient matrix"
+      }
+    },
+    {
+      "file": "least-squares-tablet-dark-canonical.png",
+      "sha256": "466eb0c53d7da5d198c5062cf1583401e4c74ed305142365a8f26680bafd280a",
+      "slug": "least-squares",
+      "view": "tablet",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "least-squares",
+          "data-mse": "4.1",
+          "data-coefficients": "[0,0.5]",
+          "data-frame-index": "0"
+        },
+        "width": 708,
+        "height": 1991.671875,
+        "heading": "Center \u2192 covariance \u2192 best line"
+      }
+    },
+    {
+      "file": "regression-gradient-descent-tablet-dark-canonical.png",
+      "sha256": "a90fbb105c85f15fb9a1532a915f8f5e364614bd446f47678c168c5901450f0a",
+      "slug": "regression-gradient-descent",
+      "view": "tablet",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "descent",
+          "data-mse": "4.1",
+          "data-coefficients": "[0,0.5]",
+          "data-frame-index": "0"
+        },
+        "width": 708,
+        "height": 3000.96875,
+        "heading": "Curvature \u2192 gradient \u2192 next state"
+      }
+    },
+    {
+      "file": "multiple-linear-regression-tablet-dark-canonical.png",
+      "sha256": "a5b5dfbcd4f4dfb3ce14c75e586167a14f2a8f1d5ae8325f3e8c9168138913ba",
+      "slug": "multiple-linear-regression",
+      "view": "tablet",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "multiple",
+          "data-mse": "6.5",
+          "data-coefficients": "[0,0,0]",
+          "data-frame-index": "0"
+        },
+        "width": 708,
+        "height": 2559.65625,
+        "heading": "Design rows \u2192 shared coefficients \u2192 predictions"
+      }
+    },
+    {
+      "file": "polynomial-features-tablet-dark-canonical.png",
+      "sha256": "17b8238be1a9dbbb4e38f6b3ba604854f7249a32891d2073aaa5ded7565d35c0",
+      "slug": "polynomial-features",
+      "view": "tablet",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "polynomial",
+          "data-mse": "0.007550952380952376",
+          "data-coefficients": "[0.001875000000000071,0.004285714285714208,1.1316964285714288]",
+          "data-frame-index": "0"
+        },
+        "width": 708,
+        "height": 2405.90625,
+        "heading": "Feature powers \u2192 capacity \u2192 held-out error"
+      }
+    },
+    {
+      "file": "regularization-tablet-dark-canonical.png",
+      "sha256": "932c44e89abba9ccf721298be2dde5afbc6d7d559445f453945152ec13092fcf",
+      "slug": "regularization",
+      "view": "tablet",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "regularization",
+          "data-mse": "0.33919999999999967",
+          "data-coefficients": "[0.7999999999999999,1.4400000000000002]",
+          "data-frame-index": "0"
+        },
+        "width": 708,
+        "height": 2224.703125,
+        "heading": "Fit error + penalty \u2192 shrinkage"
+      }
+    },
+    {
+      "file": "logistic-regression-tablet-dark-canonical.png",
+      "sha256": "0b0590332f23b5b6375045574b765ec8f426916e394c2f91ac9c43332e58ca4f",
+      "slug": "logistic-regression",
+      "view": "tablet",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "logistic",
+          "data-threshold": "0.5",
+          "data-loss": "0.5147053155364673",
+          "data-frame-index": "0"
+        },
+        "width": 708,
+        "height": 2729.96875,
+        "heading": "Logit \u2192 probability \u2192 likelihood update"
+      }
+    },
+    {
+      "file": "thresholds-confusion-tablet-dark-canonical.png",
+      "sha256": "289bd445690a3b8d29ca8e62bade689e65dd9727ba19b2f7bccddcd81bbcd66b",
+      "slug": "thresholds-confusion",
+      "view": "tablet",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "threshold",
+          "data-threshold": "0.5",
+          "data-frame-index": "0"
+        },
+        "width": 708,
+        "height": 1729.890625,
+        "heading": "One score column \u2192 one threshold \u2192 four counts"
+      }
+    },
+    {
+      "file": "precision-recall-roc-tablet-dark-canonical.png",
+      "sha256": "d23d7c62305011bdfb60fdc8e99cb106116522552203ea9155e6aeba9b45aa56",
+      "slug": "precision-recall-roc",
+      "view": "tablet",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "metrics",
+          "data-threshold": "0.5",
+          "data-frame-index": "0"
+        },
+        "width": 708,
+        "height": 2796.234375,
+        "heading": "Count denominators \u2192 metrics \u2192 exact ROC sweep"
+      }
+    },
+    {
+      "file": "softmax-regression-tablet-dark-canonical.png",
+      "sha256": "135c5d0899cd778f167eeafcd6f6d10eca16055ff93f5e847cca0cc826a781b6",
+      "slug": "softmax-regression",
+      "view": "tablet",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "softmax",
+          "data-threshold": "0.5",
+          "data-loss": "0.6379414058522901",
+          "data-frame-index": "0"
+        },
+        "width": 708,
+        "height": 2491.5,
+        "heading": "Class logits \u2192 shifted probabilities \u2192 gradient matrix"
+      }
+    },
+    {
+      "file": "least-squares-mobile-light-canonical.png",
+      "sha256": "db00032ac7874f3bcac998abfc9e87879ab6619a12f71be1a15e6a239f456569",
+      "slug": "least-squares",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "least-squares",
+          "data-mse": "4.1",
+          "data-coefficients": "[0,0.5]",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2106.8125,
+        "heading": "Center \u2192 covariance \u2192 best line"
+      }
+    },
+    {
+      "file": "least-squares-mobile-light-canonical-opening.png",
+      "sha256": "a9ed91880e09e286d6b76d1d03e0dd06dd44b7e9acbdcf1c6d72a5f03ec640ab",
+      "slug": "least-squares",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "least-squares",
+          "data-mse": "4.1",
+          "data-coefficients": "[0,0.5]",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2106.8125,
+        "heading": "Center \u2192 covariance \u2192 best line"
+      }
+    },
+    {
+      "file": "regression-gradient-descent-mobile-light-canonical.png",
+      "sha256": "96a7c6e2e85d6de93005639e4006004d825f8fcc891fbd4675eeb4ac20e9618b",
+      "slug": "regression-gradient-descent",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "descent",
+          "data-mse": "4.1",
+          "data-coefficients": "[0,0.5]",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 3115.796875,
+        "heading": "Curvature \u2192 gradient \u2192 next state"
+      }
+    },
+    {
+      "file": "regression-gradient-descent-mobile-light-canonical-opening.png",
+      "sha256": "4026c6e02370ccb26a133ffa3237440246622601832ce3d1950d9d44da545cc6",
+      "slug": "regression-gradient-descent",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "descent",
+          "data-mse": "4.1",
+          "data-coefficients": "[0,0.5]",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 3115.796875,
+        "heading": "Curvature \u2192 gradient \u2192 next state"
+      }
+    },
+    {
+      "file": "multiple-linear-regression-mobile-light-canonical.png",
+      "sha256": "cd1754b4e742f021be58d0d6992544e5b7c0f0944469bda2871e4d642a1fefe1",
+      "slug": "multiple-linear-regression",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "multiple",
+          "data-mse": "6.5",
+          "data-coefficients": "[0,0,0]",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2737.796875,
+        "heading": "Design rows \u2192 shared coefficients \u2192 predictions"
+      }
+    },
+    {
+      "file": "multiple-linear-regression-mobile-light-canonical-opening.png",
+      "sha256": "615ddf904bebe1945d6aadd7fc75ac9f1a810d56ff730b9a62bf62ecba011340",
+      "slug": "multiple-linear-regression",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "multiple",
+          "data-mse": "6.5",
+          "data-coefficients": "[0,0,0]",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2737.796875,
+        "heading": "Design rows \u2192 shared coefficients \u2192 predictions"
+      }
+    },
+    {
+      "file": "polynomial-features-mobile-light-canonical.png",
+      "sha256": "08d8fd5976447a24d7a469f1c46b4b240bd374db8a292b0ba322b38e88de7553",
+      "slug": "polynomial-features",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "polynomial",
+          "data-mse": "0.007550952380952376",
+          "data-coefficients": "[0.001875000000000071,0.004285714285714208,1.1316964285714288]",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2627.125,
+        "heading": "Feature powers \u2192 capacity \u2192 held-out error"
+      }
+    },
+    {
+      "file": "polynomial-features-mobile-light-canonical-opening.png",
+      "sha256": "ba134325f2cbfd5c08c187e1ad1462e2101299cdf39adec27cfede4a1f5983f9",
+      "slug": "polynomial-features",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "polynomial",
+          "data-mse": "0.007550952380952376",
+          "data-coefficients": "[0.001875000000000071,0.004285714285714208,1.1316964285714288]",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2627.125,
+        "heading": "Feature powers \u2192 capacity \u2192 held-out error"
+      }
+    },
+    {
+      "file": "regularization-mobile-light-canonical.png",
+      "sha256": "99f19a47b9ab785be07343d63aee7d3ff057c923b59fbe617045d6a8ea132fe5",
+      "slug": "regularization",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "regularization",
+          "data-mse": "0.33919999999999967",
+          "data-coefficients": "[0.7999999999999999,1.4400000000000002]",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2255.96875,
+        "heading": "Fit error + penalty \u2192 shrinkage"
+      }
+    },
+    {
+      "file": "regularization-mobile-light-canonical-opening.png",
+      "sha256": "e27280d810e2ed475ef7dc955f688a53df728a21d3c9c79689d328162d696f8e",
+      "slug": "regularization",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "regularization",
+          "data-mse": "0.33919999999999967",
+          "data-coefficients": "[0.7999999999999999,1.4400000000000002]",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2255.96875,
+        "heading": "Fit error + penalty \u2192 shrinkage"
+      }
+    },
+    {
+      "file": "logistic-regression-mobile-light-canonical.png",
+      "sha256": "ad627bff70f6188db18838c60ddb3ae0d13241b1a0e46073c1ce51145214525d",
+      "slug": "logistic-regression",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "logistic",
+          "data-threshold": "0.5",
+          "data-loss": "0.5147053155364673",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2881.28125,
+        "heading": "Logit \u2192 probability \u2192 likelihood update"
+      }
+    },
+    {
+      "file": "logistic-regression-mobile-light-canonical-opening.png",
+      "sha256": "8910767e57b30e78a2abf17e3212c8511af6f4d9ca190673c6999bf37ee26751",
+      "slug": "logistic-regression",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "logistic",
+          "data-threshold": "0.5",
+          "data-loss": "0.5147053155364673",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2881.28125,
+        "heading": "Logit \u2192 probability \u2192 likelihood update"
+      }
+    },
+    {
+      "file": "thresholds-confusion-mobile-light-canonical.png",
+      "sha256": "48c130c720b6628396d0d4d9b51ee65a14c1a9e434ec037ecce1a54270e74f92",
+      "slug": "thresholds-confusion",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "threshold",
+          "data-threshold": "0.5",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 1927.65625,
+        "heading": "One score column \u2192 one threshold \u2192 four counts"
+      }
+    },
+    {
+      "file": "thresholds-confusion-mobile-light-canonical-opening.png",
+      "sha256": "d21a893199f96f90d781e65967a4dd8692370b889a72288beae2c22f51d96c13",
+      "slug": "thresholds-confusion",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "threshold",
+          "data-threshold": "0.5",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 1927.65625,
+        "heading": "One score column \u2192 one threshold \u2192 four counts"
+      }
+    },
+    {
+      "file": "precision-recall-roc-mobile-light-canonical.png",
+      "sha256": "da07fd68dc0b048000d8cf5032ad0d1dcaf42a0fed625eedb3b61305fd6af4d1",
+      "slug": "precision-recall-roc",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "metrics",
+          "data-threshold": "0.5",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2826.890625,
+        "heading": "Count denominators \u2192 metrics \u2192 exact ROC sweep"
+      }
+    },
+    {
+      "file": "precision-recall-roc-mobile-light-canonical-opening.png",
+      "sha256": "c894059f4e72c3f6859cba917f41e69120b6400d5a17de85e46f147b696527be",
+      "slug": "precision-recall-roc",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "metrics",
+          "data-threshold": "0.5",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2826.890625,
+        "heading": "Count denominators \u2192 metrics \u2192 exact ROC sweep"
+      }
+    },
+    {
+      "file": "softmax-regression-mobile-light-canonical.png",
+      "sha256": "09be9fb84f8a5cd0930f3465c4562e8d65437a37aa510bda25e9304d860ea9d7",
+      "slug": "softmax-regression",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "softmax",
+          "data-threshold": "0.5",
+          "data-loss": "0.6379414058522901",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 3165.328125,
+        "heading": "Class logits \u2192 shifted probabilities \u2192 gradient matrix"
+      }
+    },
+    {
+      "file": "softmax-regression-mobile-light-canonical-opening.png",
+      "sha256": "6c62eea21506146d41b25d258d3b175e2f35677a3ba291d77bc93c3788e70c34",
+      "slug": "softmax-regression",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "softmax",
+          "data-threshold": "0.5",
+          "data-loss": "0.6379414058522901",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 3165.328125,
+        "heading": "Class logits \u2192 shifted probabilities \u2192 gradient matrix"
+      }
+    },
+    {
+      "file": "least-squares-mobile-dark-canonical.png",
+      "sha256": "f057ce46fc1b8dc892100cf2169bf4f540a3ad89d87f62ec6b3e756ce90dd861",
+      "slug": "least-squares",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "least-squares",
+          "data-mse": "4.1",
+          "data-coefficients": "[0,0.5]",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2106.8125,
+        "heading": "Center \u2192 covariance \u2192 best line"
+      }
+    },
+    {
+      "file": "least-squares-mobile-dark-constant-x-fit.png",
+      "sha256": "3abbef2c884a9d6549d5f3e5bbdf4b1f8e37f8692349d0fb8b850e250f67c28f",
+      "slug": "least-squares",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "constant-x-fit",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "least-squares",
+          "data-mse": "6.56",
+          "data-coefficients": "[0.8,0]",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2126.640625,
+        "heading": "Center \u2192 covariance \u2192 best line"
+      }
+    },
+    {
+      "file": "regression-gradient-descent-mobile-dark-canonical.png",
+      "sha256": "861615e00d016a6297b712d8e80a62fbff0ce1f1930139fa546b4de4d2d63c0c",
+      "slug": "regression-gradient-descent",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "descent",
+          "data-mse": "4.1",
+          "data-coefficients": "[0,0.5]",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 3115.796875,
+        "heading": "Curvature \u2192 gradient \u2192 next state"
+      }
+    },
+    {
+      "file": "regression-gradient-descent-mobile-dark-replay-frame-1.png",
+      "sha256": "5ef4fb7ce374ac0be8833dd02c7b79316efa25bbc8da0430bb13e5ec4dc16210",
+      "slug": "regression-gradient-descent",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "replay-frame-1",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "descent",
+          "data-mse": "1.7064",
+          "data-coefficients": "[0.16000000000000003,1.02]",
+          "data-frame-index": "1"
+        },
+        "width": 342,
+        "height": 3231.78125,
+        "heading": "Curvature \u2192 gradient \u2192 next state"
+      }
+    },
+    {
+      "file": "multiple-linear-regression-mobile-dark-canonical.png",
+      "sha256": "aa35ca418fa844bad056b925fce3cf3e00b8a4dc417251141419c359c25336da",
+      "slug": "multiple-linear-regression",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "multiple",
+          "data-mse": "6.5",
+          "data-coefficients": "[0,0,0]",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2737.796875,
+        "heading": "Design rows \u2192 shared coefficients \u2192 predictions"
+      }
+    },
+    {
+      "file": "multiple-linear-regression-mobile-dark-duplicate-minimum-norm.png",
+      "sha256": "424b890438412018a665dabdf9640645c2ed9a675cc8851891df412ab44f735e",
+      "slug": "multiple-linear-regression",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "duplicate-minimum-norm",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "multiple",
+          "data-mse": "0.20000000000000004",
+          "data-coefficients": "[0.6,0.8999999999999996,0.8999999999999999]",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2758.859375,
+        "heading": "Design rows \u2192 shared coefficients \u2192 predictions"
+      }
+    },
+    {
+      "file": "polynomial-features-mobile-dark-canonical.png",
+      "sha256": "ed5d0b98fcb964c23c9ea9f33f0d7888a9350d3f41abaf2e8938ab42601ed30a",
+      "slug": "polynomial-features",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "polynomial",
+          "data-mse": "0.007550952380952376",
+          "data-coefficients": "[0.001875000000000071,0.004285714285714208,1.1316964285714288]",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2627.125,
+        "heading": "Feature powers \u2192 capacity \u2192 held-out error"
+      }
+    },
+    {
+      "file": "polynomial-features-mobile-dark-degree-5.png",
+      "sha256": "1478a9eb18705903a608ca48b2d293858b0dd2a62352ed7b4f5924b3a31ae144",
+      "slug": "polynomial-features",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "degree-5",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "polynomial",
+          "data-mse": "8.582084284172873e-31",
+          "data-coefficients": "[0.0503906249999996,0.5024739583333336,0.7252604166666681,-2.6497395833333353,0.3743489583333318,2.197265625]",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2872.484375,
+        "heading": "Feature powers \u2192 capacity \u2192 held-out error"
+      }
+    },
+    {
+      "file": "regularization-mobile-dark-canonical.png",
+      "sha256": "3c50cae24409f9a5473d7bd8078f4a5b0389558206af064ead044383616704d9",
+      "slug": "regularization",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "regularization",
+          "data-mse": "0.33919999999999967",
+          "data-coefficients": "[0.7999999999999999,1.4400000000000002]",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2255.96875,
+        "heading": "Fit error + penalty \u2192 shrinkage"
+      }
+    },
+    {
+      "file": "regularization-mobile-dark-lasso.png",
+      "sha256": "31d7eff0fc440b0f5f8b5b7b7bbc4e313f69bfef7f7f3fbba30fe8b78b485b77",
+      "slug": "regularization",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "lasso",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-fit-lab": "regularization",
+          "data-mse": "0.11125000000000011",
+          "data-coefficients": "[0.7999999999999998,1.6749999999999996]",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2255.96875,
+        "heading": "Fit error + penalty \u2192 shrinkage"
+      }
+    },
+    {
+      "file": "logistic-regression-mobile-dark-canonical.png",
+      "sha256": "5c2151538eec8736dd371f2e59ef19a4a17c75e6729003cb0228b45ea51fc6d4",
+      "slug": "logistic-regression",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "logistic",
+          "data-threshold": "0.5",
+          "data-loss": "0.5147053155364673",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2881.28125,
+        "heading": "Logit \u2192 probability \u2192 likelihood update"
+      }
+    },
+    {
+      "file": "logistic-regression-mobile-dark-after-update.png",
+      "sha256": "69cdfafe0d48148693942aa23d127b0ea781a8816cf06903515b72ab9b1abbfd",
+      "slug": "logistic-regression",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "after-update",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "logistic",
+          "data-threshold": "0.5",
+          "data-loss": "0.5127377471908836",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 3015.90625,
+        "heading": "Logit \u2192 probability \u2192 likelihood update"
+      }
+    },
+    {
+      "file": "thresholds-confusion-mobile-dark-canonical.png",
+      "sha256": "3cd04ea833c40ffd45eb77d0df71fb75250286ce45b8eed692ea6480a1dd7ad0",
+      "slug": "thresholds-confusion",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "threshold",
+          "data-threshold": "0.5",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 1927.65625,
+        "heading": "One score column \u2192 one threshold \u2192 four counts"
+      }
+    },
+    {
+      "file": "thresholds-confusion-mobile-dark-above-all-score-one.png",
+      "sha256": "f0597f09c0f1d22b414bc1feb66e6b3a18411a7351bf88956f9bc039f60970b1",
+      "slug": "thresholds-confusion",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "above-all-score-one",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "threshold",
+          "data-threshold": "above-all",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 1866.515625,
+        "heading": "One score column \u2192 one threshold \u2192 four counts"
+      }
+    },
+    {
+      "file": "precision-recall-roc-mobile-dark-canonical.png",
+      "sha256": "7d108899a794575e300a9df6a5e1005958270f4bb27209558964b4a699959f51",
+      "slug": "precision-recall-roc",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "metrics",
+          "data-threshold": "0.5",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2826.890625,
+        "heading": "Count denominators \u2192 metrics \u2192 exact ROC sweep"
+      }
+    },
+    {
+      "file": "precision-recall-roc-mobile-dark-undefined-positive-metrics.png",
+      "sha256": "e6044e27eca0ac60f31d9f9a3a6eae7fbe991fbc898fe5aca29b081bdba4f8a0",
+      "slug": "precision-recall-roc",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "undefined-positive-metrics",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "metrics",
+          "data-threshold": "0.5",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2841.03125,
+        "heading": "Count denominators \u2192 metrics \u2192 exact ROC sweep"
+      }
+    },
+    {
+      "file": "softmax-regression-mobile-dark-canonical.png",
+      "sha256": "10ff697dfb555efdfbdff4ec63f7e2cfd94006e3566423278d7b47d0ac1f039d",
+      "slug": "softmax-regression",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "softmax",
+          "data-threshold": "0.5",
+          "data-loss": "0.6379414058522901",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 3165.328125,
+        "heading": "Class logits \u2192 shifted probabilities \u2192 gradient matrix"
+      }
+    },
+    {
+      "file": "softmax-regression-mobile-dark-common-shift-1000.png",
+      "sha256": "03950587bd6c8fc7619f47a50bc3ca3e74131f8967622c33050583fec6b2b597",
+      "slug": "softmax-regression",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "common-shift-1000",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-classification-lab": "softmax",
+          "data-threshold": "0.5",
+          "data-loss": "0.6379414058522901",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 3165.328125,
+        "heading": "Class logits \u2192 shifted probabilities \u2192 gradient matrix"
+      }
+    }
+  ],
+  "manuallyInspected": {
+    "integrator": [
+      "multiple-linear-regression-mobile-light-canonical.png",
+      "regression-gradient-descent-mobile-dark-replay-frame-1.png",
+      "softmax-regression-mobile-dark-common-shift-1000.png",
+      "least-squares-desktop-light-constant-x-fit.png",
+      "polynomial-features-desktop-dark-canonical.png",
+      "regularization-mobile-dark-lasso.png",
+      "logistic-regression-desktop-light-after-update.png",
+      "thresholds-confusion-mobile-dark-above-all-score-one.png",
+      "precision-recall-roc-desktop-light-undefined-positive-metrics.png",
+      "regression-gradient-descent-desktop-light-canonical.png",
+      "polynomial-features-desktop-light-canonical.png"
+    ],
+    "independentReviewer": [
+      "least-squares-desktop-dark-canonical.png",
+      "least-squares-tablet-light-canonical.png",
+      "regression-gradient-descent-desktop-light-replay-frame-1.png",
+      "regression-gradient-descent-mobile-light-canonical.png",
+      "multiple-linear-regression-tablet-light-canonical.png",
+      "multiple-linear-regression-mobile-dark-duplicate-minimum-norm.png",
+      "polynomial-features-desktop-light-degree-5.png",
+      "polynomial-features-mobile-light-canonical.png",
+      "regularization-desktop-dark-canonical.png",
+      "regularization-mobile-dark-lasso.png",
+      "logistic-regression-tablet-dark-canonical.png",
+      "logistic-regression-mobile-light-canonical.png",
+      "thresholds-confusion-desktop-light-above-all-score-one.png",
+      "thresholds-confusion-mobile-light-canonical.png",
+      "precision-recall-roc-tablet-dark-canonical.png",
+      "precision-recall-roc-mobile-dark-undefined-positive-metrics.png",
+      "softmax-regression-desktop-dark-canonical.png",
+      "softmax-regression-mobile-dark-common-shift-1000.png",
+      "least-squares-desktop-light-constant-x-fit.png",
+      "least-squares-mobile-dark-constant-x-fit.png"
+    ],
+    "method": "Final pixels viewed directly or confirmed byte-identical to the actually inspected prior capture; all changed reviewed files re-viewed. Hash verification alone is not manual inspection."
+  }
+}
