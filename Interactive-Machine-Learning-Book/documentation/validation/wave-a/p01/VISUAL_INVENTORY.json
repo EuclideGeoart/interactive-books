@@ -1,0 +1,1413 @@
+{
+  "part": "p01",
+  "sha": "ca0894c307e6061ed66a07c9b9eab3c847d89df1",
+  "validationSignature": "dd831e1037bd1b2e5d2179fdf95fec77d0bf32d4cd7557f0d28ee5d6bda0b567",
+  "root": "/",
+  "dpr": 1,
+  "manifestIds": [
+    "III-01",
+    "III-02",
+    "III-03",
+    "III-04",
+    "III-05",
+    "III-06"
+  ],
+  "images": [
+    {
+      "file": "what-machine-learning-learns-desktop-light-canonical.png",
+      "sha256": "9c064270b0eb6aab3697d84a13c820c572f426f9fa824e9c9de403dd5893d6f6",
+      "slug": "what-machine-learning-learns",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-pipeline": "true",
+          "data-mode": "training",
+          "data-loss-scope": "training-batch",
+          "data-weight": "0.5",
+          "data-bias": "0",
+          "data-mse": "4.1",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1194.578125,
+        "heading": "Follow an observation through the predictor"
+      }
+    },
+    {
+      "file": "what-machine-learning-learns-desktop-light-canonical-opening.png",
+      "sha256": "814e2da998ee6c5abc81a5b85f2390683bcf73c9f435aef18fb916694ea1f26e",
+      "slug": "what-machine-learning-learns",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-pipeline": "true",
+          "data-mode": "training",
+          "data-loss-scope": "training-batch",
+          "data-weight": "0.5",
+          "data-bias": "0",
+          "data-mse": "4.1",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1194.578125,
+        "heading": "Follow an observation through the predictor"
+      }
+    },
+    {
+      "file": "what-machine-learning-learns-desktop-light-unobserved-query.png",
+      "sha256": "0eb8faa90cce0e9427ef35d162990d6f2b39888cb751345bc1b80f974d9c9578",
+      "slug": "what-machine-learning-learns",
+      "view": "desktop",
+      "theme": "light",
+      "state": "unobserved-query",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-pipeline": "true",
+          "data-mode": "inference",
+          "data-loss-scope": "inference-query",
+          "data-weight": "0.5",
+          "data-bias": "0",
+          "data-mse": "undefined",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1146.96875,
+        "heading": "Follow an observation through the predictor"
+      }
+    },
+    {
+      "file": "samples-features-labels-targets-desktop-light-canonical.png",
+      "sha256": "ec447f7d1d0db4d338a54d35acc2d129036e586541129f28df2dc686545c182a",
+      "slug": "samples-features-labels-targets",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-features": "true",
+          "data-n": "4",
+          "data-d": "2",
+          "data-target-kind": "quantity"
+        },
+        "width": 1010,
+        "height": 937.21875,
+        "heading": "Inspect the row and column contract"
+      }
+    },
+    {
+      "file": "samples-features-labels-targets-desktop-light-canonical-opening.png",
+      "sha256": "f9e32023b8d243b88339c848754083e86d580c4ad7e998516d9ecc5f68a60a96",
+      "slug": "samples-features-labels-targets",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-features": "true",
+          "data-n": "4",
+          "data-d": "2",
+          "data-target-kind": "quantity"
+        },
+        "width": 1010,
+        "height": 937.21875,
+        "heading": "Inspect the row and column contract"
+      }
+    },
+    {
+      "file": "samples-features-labels-targets-desktop-light-unlabelled-column.png",
+      "sha256": "141279f06b6427ef4d990e9759b9ca03426ae8c3fe63c947109c563a31deb704",
+      "slug": "samples-features-labels-targets",
+      "view": "desktop",
+      "theme": "light",
+      "state": "unlabelled-column",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-features": "true",
+          "data-n": "4",
+          "data-d": "2",
+          "data-target-kind": "none"
+        },
+        "width": 1010,
+        "height": 998.890625,
+        "heading": "Inspect the row and column contract"
+      }
+    },
+    {
+      "file": "learning-problems-desktop-light-canonical.png",
+      "sha256": "07d525f31d5c6547fb84761f958a200b83dcc8de94c94ff45ea6f78ccbb7555c",
+      "slug": "learning-problems",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-task": "true",
+          "data-scenario": "price",
+          "data-choice": "unsupervised",
+          "data-correct": "false"
+        },
+        "width": 1010,
+        "height": 675.34375,
+        "heading": "Decide what the target means"
+      }
+    },
+    {
+      "file": "learning-problems-desktop-light-canonical-opening.png",
+      "sha256": "bc66d42c2ede910062be2d63fc49742ca8b8049cd6ca74ee846f7d9401dadc86",
+      "slug": "learning-problems",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-task": "true",
+          "data-scenario": "price",
+          "data-choice": "unsupervised",
+          "data-correct": "false"
+        },
+        "width": 1010,
+        "height": 675.34375,
+        "heading": "Decide what the target means"
+      }
+    },
+    {
+      "file": "learning-problems-desktop-light-declared-task-feedback.png",
+      "sha256": "1a4894f3c3e0577ead5f9ad0a09b6b484014e5a95d7bdba015be447712b11e97",
+      "slug": "learning-problems",
+      "view": "desktop",
+      "theme": "light",
+      "state": "declared-task-feedback",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-task": "true",
+          "data-scenario": "price",
+          "data-choice": "classification",
+          "data-correct": "false"
+        },
+        "width": 1010,
+        "height": 675.34375,
+        "heading": "Decide what the target means"
+      }
+    },
+    {
+      "file": "training-validation-testing-desktop-light-canonical.png",
+      "sha256": "7c2f766e957b3ee53341da657c4d7251dee4f18314a82bde7502ee8503eebc2e",
+      "slug": "training-validation-testing",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-split": "true",
+          "data-seed": "42",
+          "data-source": "seeded",
+          "data-baseline": "12.333333333333334",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 2133.578125,
+        "heading": "Keep identities while changing assignments"
+      }
+    },
+    {
+      "file": "training-validation-testing-desktop-light-canonical-opening.png",
+      "sha256": "52007cf0bc5cb86fb4ae44bf51ffa6e9ca718ec7813e92e0493f12db711c6fc1",
+      "slug": "training-validation-testing",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-split": "true",
+          "data-seed": "42",
+          "data-source": "seeded",
+          "data-baseline": "12.333333333333334",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 2133.578125,
+        "heading": "Keep identities while changing assignments"
+      }
+    },
+    {
+      "file": "training-validation-testing-desktop-light-distribution-shift.png",
+      "sha256": "a2a5272066585f357289f56f2c3db907bb7ff79331ed36020ef19cd124ac048b",
+      "slug": "training-validation-testing",
+      "view": "desktop",
+      "theme": "light",
+      "state": "distribution-shift",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-split": "true",
+          "data-seed": "42",
+          "data-source": "distribution-shift",
+          "data-baseline": "4",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 2267.578125,
+        "heading": "Keep identities while changing assignments"
+      }
+    },
+    {
+      "file": "parameters-loss-optimization-desktop-light-canonical.png",
+      "sha256": "f91122d999bd29f8a2f8b0b360bc2d7a2c97a3531359a3bff2754770d69c70cf",
+      "slug": "parameters-loss-optimization",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-regression": "true",
+          "data-weight": "0.5",
+          "data-bias": "0",
+          "data-learning-rate": "0.1",
+          "data-mse": "4.1",
+          "data-frame-index": "0",
+          "data-updates": "0"
+        },
+        "width": 1010,
+        "height": 1463.203125,
+        "heading": "Observations \u2192 predictions \u2192 residuals"
+      }
+    },
+    {
+      "file": "parameters-loss-optimization-desktop-light-canonical-opening.png",
+      "sha256": "5a10ec5acb2a52e0ef2fbfb2bc11893fb7b803d7b8729e1ea332790c2c7aec0b",
+      "slug": "parameters-loss-optimization",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-regression": "true",
+          "data-weight": "0.5",
+          "data-bias": "0",
+          "data-learning-rate": "0.1",
+          "data-mse": "4.1",
+          "data-frame-index": "0",
+          "data-updates": "0"
+        },
+        "width": 1010,
+        "height": 1463.203125,
+        "heading": "Observations \u2192 predictions \u2192 residuals"
+      }
+    },
+    {
+      "file": "parameters-loss-optimization-desktop-light-after-update.png",
+      "sha256": "52c750b7c6c1bed3dbe13fe948092f0d9c3351d7ff5e2bddbbbedbdc90db665a",
+      "slug": "parameters-loss-optimization",
+      "view": "desktop",
+      "theme": "light",
+      "state": "after-update",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-regression": "true",
+          "data-weight": "1.02",
+          "data-bias": "0.16000000000000003",
+          "data-learning-rate": "0.1",
+          "data-mse": "1.7064",
+          "data-frame-index": "0",
+          "data-updates": "1"
+        },
+        "width": 1010,
+        "height": 1463.203125,
+        "heading": "Observations \u2192 predictions \u2192 residuals"
+      }
+    },
+    {
+      "file": "underfitting-overfitting-baselines-desktop-light-canonical.png",
+      "sha256": "27ac0861fbfe0b8a2181d3f3112ea6bf02596aa3078b575f8142fbf84995f330",
+      "slug": "underfitting-overfitting-baselines",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-capacity": "true",
+          "data-degree": "2",
+          "data-seed": "42",
+          "data-split-seed": "42",
+          "data-source": "interleaved",
+          "data-training-ids": "[\"p1\",\"p3\",\"p5\",\"p7\",\"p9\",\"p11\",\"p13\",\"p15\",\"p17\"]",
+          "data-coefficients": "[1.3127705627705628,2.033333333333333,-1.6839826839826841]",
+          "data-baseline": "0.6111111111111112",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 3358.15625,
+        "heading": "One experiment: memberships \u00d7 capacity \u00d7 noise"
+      }
+    },
+    {
+      "file": "underfitting-overfitting-baselines-desktop-light-canonical-opening.png",
+      "sha256": "bc32beaa77e2e8f81913a3d2b71053a81bba6ff217194e5aa3dac806ac6e52c2",
+      "slug": "underfitting-overfitting-baselines",
+      "view": "desktop",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-capacity": "true",
+          "data-degree": "2",
+          "data-seed": "42",
+          "data-split-seed": "42",
+          "data-source": "interleaved",
+          "data-training-ids": "[\"p1\",\"p3\",\"p5\",\"p7\",\"p9\",\"p11\",\"p13\",\"p15\",\"p17\"]",
+          "data-coefficients": "[1.3127705627705628,2.033333333333333,-1.6839826839826841]",
+          "data-baseline": "0.6111111111111112",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 3358.15625,
+        "heading": "One experiment: memberships \u00d7 capacity \u00d7 noise"
+      }
+    },
+    {
+      "file": "underfitting-overfitting-baselines-desktop-light-seeded-noise-0-degree-8-revealed.png",
+      "sha256": "65cc011dda4bcdf2ca45b7d3ca39bafc9cb938817c1e1cfc65ea18099ba0f5bd",
+      "slug": "underfitting-overfitting-baselines",
+      "view": "desktop",
+      "theme": "light",
+      "state": "seeded-noise-0-degree-8-revealed",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-capacity": "true",
+          "data-degree": "8",
+          "data-seed": "0",
+          "data-split-seed": "42",
+          "data-source": "seeded",
+          "data-training-ids": "[\"p2\",\"p3\",\"p4\",\"p6\",\"p7\",\"p8\",\"p11\",\"p14\",\"p15\",\"p16\"]",
+          "data-coefficients": "[1.0610377636778747,1.7350905992927035,0.2951607415570684,13.617301164446628,9.249119318544999,-48.22005355686181,-38.371773773448396,40.6458939623658,30.920649113419245]",
+          "data-baseline": "0.628125",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 3454.84375,
+        "heading": "One experiment: memberships \u00d7 capacity \u00d7 noise"
+      }
+    },
+    {
+      "file": "what-machine-learning-learns-desktop-dark-canonical.png",
+      "sha256": "1fd90db5a886a2d8b8ba910452f3b1ef77a65652aba88d40b4096812302b2a77",
+      "slug": "what-machine-learning-learns",
+      "view": "desktop",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-pipeline": "true",
+          "data-mode": "training",
+          "data-loss-scope": "training-batch",
+          "data-weight": "0.5",
+          "data-bias": "0",
+          "data-mse": "4.1",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 1194.578125,
+        "heading": "Follow an observation through the predictor"
+      }
+    },
+    {
+      "file": "samples-features-labels-targets-desktop-dark-canonical.png",
+      "sha256": "77c4de630389fe1bfd536b26ad684c74bfb6276ca57785c31857e7d599314fa6",
+      "slug": "samples-features-labels-targets",
+      "view": "desktop",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-features": "true",
+          "data-n": "4",
+          "data-d": "2",
+          "data-target-kind": "quantity"
+        },
+        "width": 1010,
+        "height": 937.21875,
+        "heading": "Inspect the row and column contract"
+      }
+    },
+    {
+      "file": "learning-problems-desktop-dark-canonical.png",
+      "sha256": "e0ea86c32de26b41f9f5fc16aa85b63ceacaff7deebbaf6ab0825bcef47542d1",
+      "slug": "learning-problems",
+      "view": "desktop",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-task": "true",
+          "data-scenario": "price",
+          "data-choice": "unsupervised",
+          "data-correct": "false"
+        },
+        "width": 1010,
+        "height": 675.34375,
+        "heading": "Decide what the target means"
+      }
+    },
+    {
+      "file": "training-validation-testing-desktop-dark-canonical.png",
+      "sha256": "ec2f1284da9956a4ec61ab6b21a2f4a9f18cedf93dd4bd660a07112222bf36ed",
+      "slug": "training-validation-testing",
+      "view": "desktop",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-split": "true",
+          "data-seed": "42",
+          "data-source": "seeded",
+          "data-baseline": "12.333333333333334",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 2133.578125,
+        "heading": "Keep identities while changing assignments"
+      }
+    },
+    {
+      "file": "parameters-loss-optimization-desktop-dark-canonical.png",
+      "sha256": "2856e4bd089982b0db94c700163c8fc10680929976e220bcdca0d2b7d96b0728",
+      "slug": "parameters-loss-optimization",
+      "view": "desktop",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-regression": "true",
+          "data-weight": "0.5",
+          "data-bias": "0",
+          "data-learning-rate": "0.1",
+          "data-mse": "4.1",
+          "data-frame-index": "0",
+          "data-updates": "0"
+        },
+        "width": 1010,
+        "height": 1463.203125,
+        "heading": "Observations \u2192 predictions \u2192 residuals"
+      }
+    },
+    {
+      "file": "underfitting-overfitting-baselines-desktop-dark-canonical.png",
+      "sha256": "edc80a528fd211f443577423e59a764c121e601c9e0e8402db73c45bad79e9de",
+      "slug": "underfitting-overfitting-baselines",
+      "view": "desktop",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-capacity": "true",
+          "data-degree": "2",
+          "data-seed": "42",
+          "data-split-seed": "42",
+          "data-source": "interleaved",
+          "data-training-ids": "[\"p1\",\"p3\",\"p5\",\"p7\",\"p9\",\"p11\",\"p13\",\"p15\",\"p17\"]",
+          "data-coefficients": "[1.3127705627705628,2.033333333333333,-1.6839826839826841]",
+          "data-baseline": "0.6111111111111112",
+          "data-frame-index": "0"
+        },
+        "width": 1010,
+        "height": 3358.15625,
+        "heading": "One experiment: memberships \u00d7 capacity \u00d7 noise"
+      }
+    },
+    {
+      "file": "what-machine-learning-learns-tablet-light-canonical.png",
+      "sha256": "8e9c6cf1d7bae506f0fc50f7f3be35664068bcc40bb33044b654a58a06abc57e",
+      "slug": "what-machine-learning-learns",
+      "view": "tablet",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-pipeline": "true",
+          "data-mode": "training",
+          "data-loss-scope": "training-batch",
+          "data-weight": "0.5",
+          "data-bias": "0",
+          "data-mse": "4.1",
+          "data-frame-index": "0"
+        },
+        "width": 708,
+        "height": 1341.75,
+        "heading": "Follow an observation through the predictor"
+      }
+    },
+    {
+      "file": "samples-features-labels-targets-tablet-light-canonical.png",
+      "sha256": "c7876117703b190876cc961db5d71ca42b3c3bcdd502c664e3f6000ced9dbfb7",
+      "slug": "samples-features-labels-targets",
+      "view": "tablet",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-features": "true",
+          "data-n": "4",
+          "data-d": "2",
+          "data-target-kind": "quantity"
+        },
+        "width": 708,
+        "height": 1054.703125,
+        "heading": "Inspect the row and column contract"
+      }
+    },
+    {
+      "file": "learning-problems-tablet-light-canonical.png",
+      "sha256": "01c5009855d9441e378088f0fc8ba2de1605d2b7de691d9783ef7828855ab775",
+      "slug": "learning-problems",
+      "view": "tablet",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-task": "true",
+          "data-scenario": "price",
+          "data-choice": "unsupervised",
+          "data-correct": "false"
+        },
+        "width": 708,
+        "height": 696.34375,
+        "heading": "Decide what the target means"
+      }
+    },
+    {
+      "file": "training-validation-testing-tablet-light-canonical.png",
+      "sha256": "5a3bb000bf7ab6e3a6ef8a00283dbfcae4dbc134fd5903474f4d4a95079cb5c1",
+      "slug": "training-validation-testing",
+      "view": "tablet",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-split": "true",
+          "data-seed": "42",
+          "data-source": "seeded",
+          "data-baseline": "12.333333333333334",
+          "data-frame-index": "0"
+        },
+        "width": 708,
+        "height": 2323.640625,
+        "heading": "Keep identities while changing assignments"
+      }
+    },
+    {
+      "file": "parameters-loss-optimization-tablet-light-canonical.png",
+      "sha256": "faccaf9885ea6367f2f8738a37edd7048479d499f967290a485646baeb5983ba",
+      "slug": "parameters-loss-optimization",
+      "view": "tablet",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-regression": "true",
+          "data-weight": "0.5",
+          "data-bias": "0",
+          "data-learning-rate": "0.1",
+          "data-mse": "4.1",
+          "data-frame-index": "0",
+          "data-updates": "0"
+        },
+        "width": 708,
+        "height": 2318.359375,
+        "heading": "Observations \u2192 predictions \u2192 residuals"
+      }
+    },
+    {
+      "file": "underfitting-overfitting-baselines-tablet-light-canonical.png",
+      "sha256": "4668c45dca646a9d3009c3f5448cdc88d62627dbc815d045334ecb9d366c3b49",
+      "slug": "underfitting-overfitting-baselines",
+      "view": "tablet",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-capacity": "true",
+          "data-degree": "2",
+          "data-seed": "42",
+          "data-split-seed": "42",
+          "data-source": "interleaved",
+          "data-training-ids": "[\"p1\",\"p3\",\"p5\",\"p7\",\"p9\",\"p11\",\"p13\",\"p15\",\"p17\"]",
+          "data-coefficients": "[1.3127705627705628,2.033333333333333,-1.6839826839826841]",
+          "data-baseline": "0.6111111111111112",
+          "data-frame-index": "0"
+        },
+        "width": 708,
+        "height": 3248.40625,
+        "heading": "One experiment: memberships \u00d7 capacity \u00d7 noise"
+      }
+    },
+    {
+      "file": "what-machine-learning-learns-tablet-dark-canonical.png",
+      "sha256": "ca4d738bcdc36b869a4b16ba323b56b12569a2228b14b359e1dbd2d8d2a7af03",
+      "slug": "what-machine-learning-learns",
+      "view": "tablet",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-pipeline": "true",
+          "data-mode": "training",
+          "data-loss-scope": "training-batch",
+          "data-weight": "0.5",
+          "data-bias": "0",
+          "data-mse": "4.1",
+          "data-frame-index": "0"
+        },
+        "width": 708,
+        "height": 1341.75,
+        "heading": "Follow an observation through the predictor"
+      }
+    },
+    {
+      "file": "samples-features-labels-targets-tablet-dark-canonical.png",
+      "sha256": "00641b6499a36d9a25df55c6ff6fe3b57045843c4826c3fa8cd0f76cfd4b8e8c",
+      "slug": "samples-features-labels-targets",
+      "view": "tablet",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-features": "true",
+          "data-n": "4",
+          "data-d": "2",
+          "data-target-kind": "quantity"
+        },
+        "width": 708,
+        "height": 1054.703125,
+        "heading": "Inspect the row and column contract"
+      }
+    },
+    {
+      "file": "learning-problems-tablet-dark-canonical.png",
+      "sha256": "f00f3923c06c6159d9b49d12b721954995a310d0231e11aedd5cebdff49484aa",
+      "slug": "learning-problems",
+      "view": "tablet",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-task": "true",
+          "data-scenario": "price",
+          "data-choice": "unsupervised",
+          "data-correct": "false"
+        },
+        "width": 708,
+        "height": 696.34375,
+        "heading": "Decide what the target means"
+      }
+    },
+    {
+      "file": "training-validation-testing-tablet-dark-canonical.png",
+      "sha256": "9af458c0c01ce98e64cfd51ee6f45d3988813c51f1ca356a66bdd5881896e452",
+      "slug": "training-validation-testing",
+      "view": "tablet",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-split": "true",
+          "data-seed": "42",
+          "data-source": "seeded",
+          "data-baseline": "12.333333333333334",
+          "data-frame-index": "0"
+        },
+        "width": 708,
+        "height": 2323.640625,
+        "heading": "Keep identities while changing assignments"
+      }
+    },
+    {
+      "file": "parameters-loss-optimization-tablet-dark-canonical.png",
+      "sha256": "36fe7bbd8f903106e9cf3d7c0c6f993c5806b02c2d35061b7b1cf43b9064ae25",
+      "slug": "parameters-loss-optimization",
+      "view": "tablet",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-regression": "true",
+          "data-weight": "0.5",
+          "data-bias": "0",
+          "data-learning-rate": "0.1",
+          "data-mse": "4.1",
+          "data-frame-index": "0",
+          "data-updates": "0"
+        },
+        "width": 708,
+        "height": 2318.359375,
+        "heading": "Observations \u2192 predictions \u2192 residuals"
+      }
+    },
+    {
+      "file": "underfitting-overfitting-baselines-tablet-dark-canonical.png",
+      "sha256": "398d05266b822bf196cc42eb101c331547bad3c3c5061ee111fa336dedf6708c",
+      "slug": "underfitting-overfitting-baselines",
+      "view": "tablet",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-capacity": "true",
+          "data-degree": "2",
+          "data-seed": "42",
+          "data-split-seed": "42",
+          "data-source": "interleaved",
+          "data-training-ids": "[\"p1\",\"p3\",\"p5\",\"p7\",\"p9\",\"p11\",\"p13\",\"p15\",\"p17\"]",
+          "data-coefficients": "[1.3127705627705628,2.033333333333333,-1.6839826839826841]",
+          "data-baseline": "0.6111111111111112",
+          "data-frame-index": "0"
+        },
+        "width": 708,
+        "height": 3248.40625,
+        "heading": "One experiment: memberships \u00d7 capacity \u00d7 noise"
+      }
+    },
+    {
+      "file": "what-machine-learning-learns-mobile-light-canonical.png",
+      "sha256": "ad0b8b3bc41db46cada473fa11d41f5f3eac0d3fb009384d078a354688946cb2",
+      "slug": "what-machine-learning-learns",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-pipeline": "true",
+          "data-mode": "training",
+          "data-loss-scope": "training-batch",
+          "data-weight": "0.5",
+          "data-bias": "0",
+          "data-mse": "4.1",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2185.625,
+        "heading": "Follow an observation through the predictor"
+      }
+    },
+    {
+      "file": "what-machine-learning-learns-mobile-light-canonical-opening.png",
+      "sha256": "47bc4d153da57aaf8847b7b83e9b9c1411ef0bbb9ec8bdaba45ce925d8870115",
+      "slug": "what-machine-learning-learns",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-pipeline": "true",
+          "data-mode": "training",
+          "data-loss-scope": "training-batch",
+          "data-weight": "0.5",
+          "data-bias": "0",
+          "data-mse": "4.1",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2185.625,
+        "heading": "Follow an observation through the predictor"
+      }
+    },
+    {
+      "file": "samples-features-labels-targets-mobile-light-canonical.png",
+      "sha256": "5c9b7de9f78cd37ead43da5773606cb82e78f0cec4dcad6cb9cc3ec2aa573e47",
+      "slug": "samples-features-labels-targets",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-features": "true",
+          "data-n": "4",
+          "data-d": "2",
+          "data-target-kind": "quantity"
+        },
+        "width": 342,
+        "height": 1588.34375,
+        "heading": "Inspect the row and column contract"
+      }
+    },
+    {
+      "file": "samples-features-labels-targets-mobile-light-canonical-opening.png",
+      "sha256": "77c1ff109638aefb5cd2f2fb10ce1ecda4f44373b03caa0889c2686d47c8456c",
+      "slug": "samples-features-labels-targets",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-features": "true",
+          "data-n": "4",
+          "data-d": "2",
+          "data-target-kind": "quantity"
+        },
+        "width": 342,
+        "height": 1588.34375,
+        "heading": "Inspect the row and column contract"
+      }
+    },
+    {
+      "file": "learning-problems-mobile-light-canonical.png",
+      "sha256": "e056203da44dea2b5f81751abc2c5a777275e106f9bc71ae86a7aa4c93eeb335",
+      "slug": "learning-problems",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-task": "true",
+          "data-scenario": "price",
+          "data-choice": "unsupervised",
+          "data-correct": "false"
+        },
+        "width": 342,
+        "height": 972.484375,
+        "heading": "Decide what the target means"
+      }
+    },
+    {
+      "file": "learning-problems-mobile-light-canonical-opening.png",
+      "sha256": "7756eeb48b9fa71e024729117ea60a623d48aabf4d98c63643f0c73fe8eaa8d8",
+      "slug": "learning-problems",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-task": "true",
+          "data-scenario": "price",
+          "data-choice": "unsupervised",
+          "data-correct": "false"
+        },
+        "width": 342,
+        "height": 972.484375,
+        "heading": "Decide what the target means"
+      }
+    },
+    {
+      "file": "training-validation-testing-mobile-light-canonical.png",
+      "sha256": "bb3cbf9c48ae8b4c979d1b9f12fe03c142e2240d7391e84ffb3a2f1ba0f2488a",
+      "slug": "training-validation-testing",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-split": "true",
+          "data-seed": "42",
+          "data-source": "seeded",
+          "data-baseline": "12.333333333333334",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 3724.296875,
+        "heading": "Keep identities while changing assignments"
+      }
+    },
+    {
+      "file": "training-validation-testing-mobile-light-canonical-opening.png",
+      "sha256": "66affd649f723206f33531394d799bc95a73dcd2d4c7b193a682792dffed53ef",
+      "slug": "training-validation-testing",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-split": "true",
+          "data-seed": "42",
+          "data-source": "seeded",
+          "data-baseline": "12.333333333333334",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 3724.296875,
+        "heading": "Keep identities while changing assignments"
+      }
+    },
+    {
+      "file": "parameters-loss-optimization-mobile-light-canonical.png",
+      "sha256": "6fecbfdcbb7507976ef8738925062bd6025e956f9a23803c8b262656521518c6",
+      "slug": "parameters-loss-optimization",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-regression": "true",
+          "data-weight": "0.5",
+          "data-bias": "0",
+          "data-learning-rate": "0.1",
+          "data-mse": "4.1",
+          "data-frame-index": "0",
+          "data-updates": "0"
+        },
+        "width": 342,
+        "height": 2312.078125,
+        "heading": "Observations \u2192 predictions \u2192 residuals"
+      }
+    },
+    {
+      "file": "parameters-loss-optimization-mobile-light-canonical-opening.png",
+      "sha256": "65d95a8cb70eb4956fda3d7f43063c60e8216405747d8c44aafc48ddd9bc5556",
+      "slug": "parameters-loss-optimization",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-regression": "true",
+          "data-weight": "0.5",
+          "data-bias": "0",
+          "data-learning-rate": "0.1",
+          "data-mse": "4.1",
+          "data-frame-index": "0",
+          "data-updates": "0"
+        },
+        "width": 342,
+        "height": 2312.078125,
+        "heading": "Observations \u2192 predictions \u2192 residuals"
+      }
+    },
+    {
+      "file": "underfitting-overfitting-baselines-mobile-light-canonical.png",
+      "sha256": "51002db8e749fbc301865abd1ccb5a6a71d08b8613cba3ccb68b126fd6db1b10",
+      "slug": "underfitting-overfitting-baselines",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-capacity": "true",
+          "data-degree": "2",
+          "data-seed": "42",
+          "data-split-seed": "42",
+          "data-source": "interleaved",
+          "data-training-ids": "[\"p1\",\"p3\",\"p5\",\"p7\",\"p9\",\"p11\",\"p13\",\"p15\",\"p17\"]",
+          "data-coefficients": "[1.3127705627705628,2.033333333333333,-1.6839826839826841]",
+          "data-baseline": "0.6111111111111112",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 4979.953125,
+        "heading": "One experiment: memberships \u00d7 capacity \u00d7 noise"
+      }
+    },
+    {
+      "file": "underfitting-overfitting-baselines-mobile-light-canonical-opening.png",
+      "sha256": "9b7230de1a321191c0217820cd6ef13c4fe9768beb5f44481242621ce4a29352",
+      "slug": "underfitting-overfitting-baselines",
+      "view": "mobile",
+      "theme": "light",
+      "state": "canonical",
+      "opening": true,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-capacity": "true",
+          "data-degree": "2",
+          "data-seed": "42",
+          "data-split-seed": "42",
+          "data-source": "interleaved",
+          "data-training-ids": "[\"p1\",\"p3\",\"p5\",\"p7\",\"p9\",\"p11\",\"p13\",\"p15\",\"p17\"]",
+          "data-coefficients": "[1.3127705627705628,2.033333333333333,-1.6839826839826841]",
+          "data-baseline": "0.6111111111111112",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 4979.953125,
+        "heading": "One experiment: memberships \u00d7 capacity \u00d7 noise"
+      }
+    },
+    {
+      "file": "what-machine-learning-learns-mobile-dark-canonical.png",
+      "sha256": "21e312d8d1f648a8dd3f316f04afb41ba347c83c969659a485fd89e0804b5928",
+      "slug": "what-machine-learning-learns",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-pipeline": "true",
+          "data-mode": "training",
+          "data-loss-scope": "training-batch",
+          "data-weight": "0.5",
+          "data-bias": "0",
+          "data-mse": "4.1",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2185.625,
+        "heading": "Follow an observation through the predictor"
+      }
+    },
+    {
+      "file": "what-machine-learning-learns-mobile-dark-unobserved-query.png",
+      "sha256": "eaa03e11b4b43435b7da46a3f57b4a2eb670c2ea819447aeebd5650716478989",
+      "slug": "what-machine-learning-learns",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "unobserved-query",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-pipeline": "true",
+          "data-mode": "inference",
+          "data-loss-scope": "inference-query",
+          "data-weight": "0.5",
+          "data-bias": "0",
+          "data-mse": "undefined",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 2130.1875,
+        "heading": "Follow an observation through the predictor"
+      }
+    },
+    {
+      "file": "samples-features-labels-targets-mobile-dark-canonical.png",
+      "sha256": "db02271fa7683a1804a3172aaf5244e073f23843bc38645ad2c20f008c5f855f",
+      "slug": "samples-features-labels-targets",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-features": "true",
+          "data-n": "4",
+          "data-d": "2",
+          "data-target-kind": "quantity"
+        },
+        "width": 342,
+        "height": 1588.34375,
+        "heading": "Inspect the row and column contract"
+      }
+    },
+    {
+      "file": "samples-features-labels-targets-mobile-dark-unlabelled-column.png",
+      "sha256": "eea8d5eaf0e588b4dc9246eeafb6f84535a41220936637366f006779e11a69a9",
+      "slug": "samples-features-labels-targets",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "unlabelled-column",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-features": "true",
+          "data-n": "4",
+          "data-d": "2",
+          "data-target-kind": "none"
+        },
+        "width": 342,
+        "height": 1624.09375,
+        "heading": "Inspect the row and column contract"
+      }
+    },
+    {
+      "file": "learning-problems-mobile-dark-canonical.png",
+      "sha256": "b337adb6d0228a58334faa231b1faadb2bad5e6efebcec2c78e7d763d75b0944",
+      "slug": "learning-problems",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-task": "true",
+          "data-scenario": "price",
+          "data-choice": "unsupervised",
+          "data-correct": "false"
+        },
+        "width": 342,
+        "height": 972.484375,
+        "heading": "Decide what the target means"
+      }
+    },
+    {
+      "file": "learning-problems-mobile-dark-declared-task-feedback.png",
+      "sha256": "bcae7108dc1e38134d724420b01cf006547da4ce874b348270b23bda32be83fd",
+      "slug": "learning-problems",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "declared-task-feedback",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-task": "true",
+          "data-scenario": "price",
+          "data-choice": "classification",
+          "data-correct": "false"
+        },
+        "width": 342,
+        "height": 972.484375,
+        "heading": "Decide what the target means"
+      }
+    },
+    {
+      "file": "training-validation-testing-mobile-dark-canonical.png",
+      "sha256": "dbe2729ceab8c164504b42580461ef3fdb7ed1089f0e804d8ae1fec243d078d7",
+      "slug": "training-validation-testing",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-split": "true",
+          "data-seed": "42",
+          "data-source": "seeded",
+          "data-baseline": "12.333333333333334",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 3724.296875,
+        "heading": "Keep identities while changing assignments"
+      }
+    },
+    {
+      "file": "training-validation-testing-mobile-dark-distribution-shift.png",
+      "sha256": "e333e5035010f9db6640e5da5b4827c0fec66a54ae04bc9b9018b44c6d01e519",
+      "slug": "training-validation-testing",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "distribution-shift",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-split": "true",
+          "data-seed": "42",
+          "data-source": "distribution-shift",
+          "data-baseline": "4",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 4025.515625,
+        "heading": "Keep identities while changing assignments"
+      }
+    },
+    {
+      "file": "parameters-loss-optimization-mobile-dark-canonical.png",
+      "sha256": "22e286da93f0edfce5ee98c96cff296a4fea1795d7e1b39a36fe65262ff4a3d8",
+      "slug": "parameters-loss-optimization",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-regression": "true",
+          "data-weight": "0.5",
+          "data-bias": "0",
+          "data-learning-rate": "0.1",
+          "data-mse": "4.1",
+          "data-frame-index": "0",
+          "data-updates": "0"
+        },
+        "width": 342,
+        "height": 2312.078125,
+        "heading": "Observations \u2192 predictions \u2192 residuals"
+      }
+    },
+    {
+      "file": "parameters-loss-optimization-mobile-dark-after-update.png",
+      "sha256": "38adf6b572ca5bd2e813151459aaac935f6f74817635566e6f8dfc51a828dc4a",
+      "slug": "parameters-loss-optimization",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "after-update",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-regression": "true",
+          "data-weight": "1.02",
+          "data-bias": "0.16000000000000003",
+          "data-learning-rate": "0.1",
+          "data-mse": "1.7064",
+          "data-frame-index": "0",
+          "data-updates": "1"
+        },
+        "width": 342,
+        "height": 2312.078125,
+        "heading": "Observations \u2192 predictions \u2192 residuals"
+      }
+    },
+    {
+      "file": "underfitting-overfitting-baselines-mobile-dark-canonical.png",
+      "sha256": "722b5e8edb07087c644ce7e3bec6ee519815e0e04eb20679e1cd01f70e9853cf",
+      "slug": "underfitting-overfitting-baselines",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "canonical",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-capacity": "true",
+          "data-degree": "2",
+          "data-seed": "42",
+          "data-split-seed": "42",
+          "data-source": "interleaved",
+          "data-training-ids": "[\"p1\",\"p3\",\"p5\",\"p7\",\"p9\",\"p11\",\"p13\",\"p15\",\"p17\"]",
+          "data-coefficients": "[1.3127705627705628,2.033333333333333,-1.6839826839826841]",
+          "data-baseline": "0.6111111111111112",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 4979.953125,
+        "heading": "One experiment: memberships \u00d7 capacity \u00d7 noise"
+      }
+    },
+    {
+      "file": "underfitting-overfitting-baselines-mobile-dark-seeded-noise-0-degree-8-revealed.png",
+      "sha256": "3adfc521e8266b096694be616b92573827565274a0358efb9073dc00517f6c66",
+      "slug": "underfitting-overfitting-baselines",
+      "view": "mobile",
+      "theme": "dark",
+      "state": "seeded-noise-0-degree-8-revealed",
+      "opening": false,
+      "live": {
+        "attributes": {
+          "data-p01": "true",
+          "data-capacity": "true",
+          "data-degree": "8",
+          "data-seed": "0",
+          "data-split-seed": "42",
+          "data-source": "seeded",
+          "data-training-ids": "[\"p2\",\"p3\",\"p4\",\"p6\",\"p7\",\"p8\",\"p11\",\"p14\",\"p15\",\"p16\"]",
+          "data-coefficients": "[1.0610377636778747,1.7350905992927035,0.2951607415570684,13.617301164446628,9.249119318544999,-48.22005355686181,-38.371773773448396,40.6458939623658,30.920649113419245]",
+          "data-baseline": "0.628125",
+          "data-frame-index": "0"
+        },
+        "width": 342,
+        "height": 5151.046875,
+        "heading": "One experiment: memberships \u00d7 capacity \u00d7 noise"
+      }
+    }
+  ],
+  "manuallyInspected": {
+    "integrator": [
+      "what-machine-learning-learns-mobile-dark-unobserved-query.png",
+      "samples-features-labels-targets-desktop-light-unlabelled-column.png",
+      "learning-problems-tablet-dark-canonical.png",
+      "training-validation-testing-desktop-light-distribution-shift.png",
+      "parameters-loss-optimization-tablet-dark-canonical.png",
+      "underfitting-overfitting-baselines-desktop-light-seeded-noise-0-degree-8-revealed.png"
+    ],
+    "independentReviewer": [
+      "what-machine-learning-learns-desktop-light-unobserved-query.png",
+      "what-machine-learning-learns-mobile-dark-canonical.png",
+      "what-machine-learning-learns-mobile-dark-unobserved-query.png",
+      "samples-features-labels-targets-tablet-light-canonical.png",
+      "samples-features-labels-targets-mobile-dark-unlabelled-column.png",
+      "learning-problems-desktop-dark-canonical.png",
+      "learning-problems-mobile-light-canonical.png",
+      "training-validation-testing-tablet-light-canonical.png",
+      "training-validation-testing-mobile-dark-distribution-shift.png",
+      "parameters-loss-optimization-desktop-light-after-update.png",
+      "parameters-loss-optimization-mobile-dark-canonical.png",
+      "underfitting-overfitting-baselines-tablet-light-canonical.png",
+      "underfitting-overfitting-baselines-mobile-dark-seeded-noise-0-degree-8-revealed.png"
+    ],
+    "method": "Actually viewed final original pixels; all60 hashes independently verified. Hash verification alone is not manual inspection."
+  }
+}
