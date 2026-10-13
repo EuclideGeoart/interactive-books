@@ -1,0 +1,23 @@
+{
+  "base": "911539e3d0b3600addfec6f78dcdda7c834ce7df",
+  "worktrees": [
+    {
+      "part": "p03",
+      "path": "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-iii-instance-probabilistic",
+      "branch": "feature/book-iii-part-iii-instance-probabilistic",
+      "head": "911539e3d0b3600addfec6f78dcdda7c834ce7df",
+      "common_git": "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books/.git",
+      "locked": true,
+      "clean": true
+    },
+    {
+      "part": "p04",
+      "path": "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-iv-trees-ensembles",
+      "branch": "feature/book-iii-part-iv-trees-ensembles",
+      "head": "911539e3d0b3600addfec6f78dcdda7c834ce7df",
+      "common_git": "/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books/.git",
+      "locked": true,
+      "clean": true
+    }
+  ]
+}

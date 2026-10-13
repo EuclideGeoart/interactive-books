@@ -1,0 +1,9 @@
+# Wave B dispatch
+
+Wave A delivery `911539e3d0b3600addfec6f78dcdda7c834ce7df`, tag `book-iii-wave-a-freeze-20261013`, is the approved base. Its independent focused and combined acceptance precedes all Part implementation in this wave. Original foundation/reference freeze remains `cca73bfbae363715a8ede64e349b726803f1f16f`.
+
+Agent 1 (Darwin) owns P03 / III-17–19 on `feature/book-iii-part-iii-instance-probabilistic`, worktree `book-iii-part-iii-instance-probabilistic`. Agent 2 (Hume) owns P04 / III-20–25 on `feature/book-iii-part-iv-trees-ensembles`, worktree `book-iii-part-iv-trees-ensembles`. Both reside under `/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/` (Windows D volume). Verified clean starting HEAD, branch, shared canonical `.git`, lock and dependency overlay are in `validation/wave-b/PROVISION.json`.
+
+The preserved `authority/B3_P03_instance-probabilistic.md` and `authority/B3_P04_trees-ensembles.md`, AGENTS and frozen contracts govern implementation. Each author owns only its eight Part-local prefixes; prior Parts and all shared architecture remain read-only. Independent reviewer Avicenna has no write ownership. The owner controls shared compatibility, final mathematical/state/pixel review, serialized focused gates, canonical merges, combined regression and freeze. Wave C remains closed.
+
+Linux expensive jobs use `flock /tmp/interactive-books-heavy-gate.lock`; no Windows jobs are allocated. Worktrees are Linux-only and locked: Windows must not prune them. Safe retirement requires clean committed handoff, owner approval, preserving branch and evidence, Linux removal/unlocking through the owner, then optional recreation from the accepted branch on the intended OS. Do not reuse Linux node_modules/.venv as a Windows runtime. Existing Book I/II audit worktrees and accepted trees/baselines remain untouched. No push/deploy is authorized.
