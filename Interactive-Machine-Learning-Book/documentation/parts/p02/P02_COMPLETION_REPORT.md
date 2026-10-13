@@ -2,6 +2,10 @@
 
 2026-10-13 · Agent 2 · recommendation **ACCEPT WITH LIMITATIONS for source handoff**. Publication acceptance and freeze remain the independent integrator's decision. All nine assigned chapters are authored and committed. Full type, production, browser and visual validation are pending; no unexecuted gate is described as passing.
 
+## Integrator validation in progress
+
+The integration owner verified clean source commit `98ab531d67e6937cee8fe5d7630d3eed6236150c`, exclusive p02 ownership, all 13 frozen hashes, and preserved III-07–16 registration/oracle entries. The owner has started `npm run validate:focused -- --part p02` under the shared Linux flock in the allocated book. Results remain pending. Source, tests and fixtures are held unchanged; this report-only update is excluded from `validationSignature()`. No author heavy job was started.
+
 ## Identity and ownership
 
 - Allocated locked D-volume worktree: `/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-ii-regression-classification`.
