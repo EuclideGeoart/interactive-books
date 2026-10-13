@@ -1,10 +1,14 @@
 # P02 III-08–16 source handoff
 
-2026-10-13 · Agent 2 · recommendation **ACCEPT WITH LIMITATIONS for source handoff**. Publication acceptance and freeze remain the independent integrator's decision. All nine assigned chapters are authored and committed. Full type, production, browser and visual validation are pending; no unexecuted gate is described as passing.
+2026-10-13 · Agent 2 · recommendation **ACCEPT WITH LIMITATIONS for source handoff**. Publication acceptance and freeze remain the independent integrator's decision. All nine assigned chapters are authored and committed. The first integrator focused run passed type/content, unit, oracle, root/subpath production and audit gates, then failed browser collection before any case ran. The Part-owned JSON import correction is committed for an independent rerun; browser/visual acceptance remains pending.
 
-## Integrator validation in progress
+## Integrator focused result and collection correction
 
-The integration owner verified clean source commit `98ab531d67e6937cee8fe5d7630d3eed6236150c`, exclusive p02 ownership, all 13 frozen hashes, and preserved III-07–16 registration/oracle entries. The owner has started `npm run validate:focused -- --part p02` under the shared Linux flock in the allocated book. Results remain pending. Source, tests and fixtures are held unchanged; this report-only update is excluded from `validationSignature()`. No author heavy job was started.
+The integration owner ran `npm run validate:focused -- --part p02` under the shared Linux flock. Manifest `validation-results/focused-2026-10-13T15-32-52-016Z/manifest.json` records seven passing gates with unchanged validation input signature `abbbe8a63d9361bc875db01ce37486e806b9909ca82834c4ed48054961688eb8`: type/content (56 files, zero errors/warnings/hints), 128 unit tests in nine files, five oracle commands, root and subpath production (22 pages each), and both production audits. These are integrator results for the pre-correction source, not author heavy runs.
+
+Root browser validation failed at module collection with **zero browser cases executed**: Node 24/Playwright ESM required `type: json` for the remainder fixture import. The ninth gate (subpath browser validation) was not reached. The failed raw log `artifacts/integrator-browser-collection-failure.log` and failed manifest are preserved unchanged.
+
+Correction: only `tests/e2e/p02/remainder.spec.ts` adds `with { type: 'json' }` to its fixture import. This report records the failure/correction; all mathematical source, fixtures, reference files and shared files remain untouched. A small native Node JSON-import smoke check passed; Playwright collection/browser execution and the complete focused rerun remain with the integrator. The correction commit SHA is returned in the accompanying handoff. No author heavy job was started.
 
 ## Identity and ownership
 
@@ -80,7 +84,7 @@ The integration owner also reported 19 isolated mathematical challenges passing.
 
 The shared publication suite already discovers all new routes and adds hydration, five-exercise, imported-code, ID, both-theme axe and overflow checks. The existing viewports remain 1440×900, 820×1180 and 390×844. New plot text sizes derive from measured width for at least 14 rendered pixels. These are implementation and authored checks, not completed visual verification.
 
-**Pending:** full Astro type/content check, root/subpath production/offline/path audits, actual Part and shared browser tests, rendered captures/manual visual review and independent acceptance. No new images or image hashes were captured/verified; no screenshots or baselines were updated. All 13 frozen source hashes were verified. Native Windows, physical touch hardware and human screen-reader checks remain unperformed.
+**Pending after the JSON-import correction:** integrator focused rerun, actual Part and shared browser tests, rendered captures/manual visual review and independent acceptance. The first run already passed type/content and both production/offline/path audit gates on its unchanged pre-correction input signature; no browser case ran. No new images or image hashes were captured/verified; no screenshots or baselines were updated. All 13 frozen source hashes were verified. Native Windows, physical touch hardware and human screen-reader checks remain unperformed.
 
 The integrator can allocate the existing focused runner, from the book root:
 
@@ -94,7 +98,7 @@ It keeps global type/production/platform checks while selecting p02 numerical an
 
 Interactive fixtures are deliberately small: scalar observations, a fixed four-row/two-feature multivariate editor, polynomial degrees 1–5, scalar-feature regularization, binary toy batches and a three-row/three-class softmax editor. The pure kernels validate broader documented small-matrix shapes. This is not an arbitrary-size fitting service. SVD rank decisions near the cutoff and slow L1 convergence are explicit limitations; there are no ill-conditioned-data guarantees beyond supported checks.
 
-No essential shared API change is requested, so no shared implementation or `INTEGRATION_REQUESTS.md` was needed. Both manifests only append p02 chapters/oracles and preserve III-07. The most material remaining risk is unexecuted type/render/browser validation, which the integrator owns and was expressly withheld from this agent.
+No essential shared API change is requested, so no shared implementation or `INTEGRATION_REQUESTS.md` was needed. Both manifests only append p02 chapters/oracles and preserve III-07. The most material remaining risk is unexecuted browser/render validation after the collection correction; the integrator owns the focused rerun and acceptance.
 
 ## Exact changed paths from synchronized base
 

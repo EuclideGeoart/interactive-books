@@ -1,5 +1,5 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
-import fixture from '../../../fixtures/p02/remainder.fixtures.json';
+import fixture from '../../../fixtures/p02/remainder.fixtures.json' with { type: 'json' };
 
 const shown = (v: number) => `≈ ${Math.abs(v) > 0 && (Math.abs(v) < .00005 || Math.abs(v) >= 1e6) ? v.toExponential(4).replace('-', '−') : String(Number(v.toFixed(4)) + 0).replace('-', '−')}`;
 const field = (root: Locator, label: string) => root.getByRole('textbox', { name: new RegExp(`^${label}(?:$|\\s)`) });
