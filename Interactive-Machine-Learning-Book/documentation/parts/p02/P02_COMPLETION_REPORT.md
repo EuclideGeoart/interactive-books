@@ -1,0 +1,129 @@
+# P02 III-08–16 source handoff
+
+2026-10-13 · Agent 2 · recommendation **ACCEPT WITH LIMITATIONS for source handoff**. Publication acceptance and freeze remain the independent integrator's decision. All nine assigned chapters are authored and committed. Full type, production, browser and visual validation are pending; no unexecuted gate is described as passing.
+
+## Identity and ownership
+
+- Allocated locked D-volume worktree: `/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-ii-regression-classification`.
+- Branch: `feature/book-iii-part-ii-regression-classification`.
+- Canonical common Git directory verified: `/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books/.git`.
+- Initial HEAD: `cca73bfbae363715a8ede64e349b726803f1f16f`; initial status clean. The rejected old `325f7bdf` was not used as an implementation base.
+- Integrator-synchronized Wave A base: `8157b7af7e209d94fffdf79001134b6e18744d34`, tag `book-iii-wave-a-trace-keys-20261013`. The integrator supplied the shared trace-key correction; this agent performed no merge or shared edit.
+- Completed implementation source commit: `98ab531d67e6937cee8fe5d7630d3eed6236150c` (28 files). This report is a subsequent documentation-only commit, whose SHA is returned in the final handoff.
+- All 13 frozen III-07 source hashes match `documentation/REFERENCE_FOOTPRINT.json`. Its manifest entry and all required oracle commands are preserved. Shared platform/shell/config/plan and protected Books I/II have no diff from the synchronized base.
+- No installs, clones, push, deployment, merge, history rewrite, cleaning, snapshot update or other Part edits. Ignored integrator challenge/config/log artifacts were not staged.
+
+## Chapter checklist
+
+Every row below has complete prose, intuition/definition, derivation, literal worked example, actual raw Python import, opening interaction, numerical/undefined policy, column/batch shapes, explicit hand-authored provenance, connections and exactly five graded exercises with corrective feedback. “Authored” browser checks are not executed browser evidence.
+
+| Chapter / route | Actual mechanism and edge cases | Independent check | Interactive checks |
+| --- | --- | --- | --- |
+| III-08 `least-squares` | Centered optimum, residual orthogonality, zero x-variance and one-sample ambiguity; horizontal representative is adopted only by Apply fit | Fraction pair-difference elimination | Current versus optimum, input precision/rejection, numeric/arrow controls and reset; authored browser case |
+| III-09 `regression-gradient-descent` | Frozen public III-07 kernel, simultaneous gradients/steps, Hessian/eigenmode multipliers, actual MSE contours; convergence, damped/undamped oscillation and divergence | Literal quadratic and centered regression finite differences | Four updates/five frames, seek/edit, canonical rate presets, numeric/native rate slider and reset; authored browser case |
+| III-10 `multiple-linear-regression` | Editable design, target and coefficient columns; rank-aware minimum norm one-sided Jacobi SVD, no inverse normal equations; wide/zero/duplicate/nearly dependent and scaled designs | Robust NumPy `lstsq` with explicit `rcond=1e-10` | Rowwise XW, singular values/cutoff/rank, explicit solve and duplicate-column challenge; authored browser case |
+| III-11 `polynomial-features` | Actual power features degree 1–5, training-only coefficient solve, independent held-out rows/error; interpolation and repeated-input rank concerns | NumPy Vandermonde plus `lstsq` | Degree numeric/native slider, editable training rows, held-out table and curve; authored browser case |
+| III-12 `regularization` | Full MSE plus explicit L2 or L1 penalty; intercept policy, Ridge augmentation, L1 soft-threshold coordinate solve/KKT; exact zero weights and lambda zero | Orthogonal analytic shrinkage, KKT and robust Ridge checks | Real predictions/objective/penalty comparison, intercept checkbox, lambda, convergence status; authored browser case |
+| III-13 `logistic-regression` | Stable sigmoid and logit BCE, likelihood derivation, analytical gradients and simultaneous update; ±1000 extremes, finite loss despite probability endpoints | 80-digit Decimal likelihood, centered differences and NumPy `logaddexp` | Editable model/features/labels, loss/gradient/next column, three updates/four frames, rejection/reset; authored browser case |
+| III-14 `thresholds-confusion` | Same saved scores as III-15, inclusive threshold, literal per-row TP/FP/TN/FN, ties and score endpoints; above-all null sentinel | Set-intersection confusion counts | Numeric/native threshold, score and label edits, five canonical sweep frames; +∞ hides finite controls and has explicit return action; authored score-1 sentinel/keyboard/touch cases |
+| III-15 `precision-recall-roc` | Explicit zero-denominator reasons, count-based F1, exact distinct-score ROC with joint ties and above-all endpoint; one-class/imbalanced cases, pairwise tie-aware AUC | Literal counts plus independently enumerated cross-class ranking pairs | Active counts/metrics/ROC point/table, no fabricated missing-class chart, same immutable sweep; authored browser case |
+| III-16 `softmax-regression` | Row-shifted normalization, stable CE, actual one-hot Y, d×k gradient and updates; extreme wrong-class CE, deterministic argmax ties and common-shift invariance | Unshifted 80-digit Decimal probabilities/likelihood and centered differences of every coefficient | W/features/labels, current shift in equation and logits, probability sums/gradient/next matrix, three updates/four frames; authored shifted-equation and extreme-loss browser case |
+
+There are 45 new graded exercises. III-07 and its six exercises remain unchanged.
+
+## Numerical methods, shapes and tolerances
+
+Two Part-owned experiments reuse `useLesson`, `IdScope`/`useScopedId`, `NumberField`, `Formula`, `Inspector`, `TraceStepper` and shared detached `traceFrom`. There is one active numerical state per island; pure adapters derive the rows, scalars, shapes, equations, geometry and speech. Fit SVGs use equal x/y scales, while logistic and ROC axes explicitly represent different quantities. Numeric sample fields provide keyboard/touch equivalents; new plots do not introduce custom draggable handles.
+
+Scalar descent imports `deriveRegression` and `regressionStep` from frozen `model/linear-regression.ts`; Python imports frozen `derive_regression`/`regression_trace`. No fork of the reference predictor, MSE, gradient or step exists. Augmented presentation uses intercept-first `[b,w]ᵀ`; the contour axes explicitly use `(w,b)`.
+
+Public designs are 1–64 rows × 1–7 columns, with rectangular finite values. Mathematical W/y vectors are columns. Binary W is d×1; multiclass W and gradient are d×k, and logits/P/one-hot Y are n×k for 2–6 classes. Invalid labels, nonfinite input/intermediates, wrong shapes and unsupported updates fail with reasons. UI bounds are narrower and documented in each chapter.
+
+The SVD scales the design, uses relative column-orthogonality tolerance `1e-14`, rejects nonconvergence after 100 sweeps, and retains singular values strictly above `1e-10 * largest`. Rank-deficient results select minimum norm in retained singular directions. Trusted Ridge rows may add up to seven rows after public original-input validation; the 64-original-row reproducer is a committed regression test (expected intercept 5, slope 2/3 at lambda 2).
+
+L1 coordinate descent allows 3000 sweeps and stops on coefficient change below `1e-12`; final maximum KKT violation independently decides convergence at `1e-8`. An iteration-limited approximate result remains explicitly labeled. Intercept defaults to excluded, with an actual objective-changing checkbox.
+
+`fixtures/p02/remainder.fixtures.json` has 34 deterministic cases: 4 scalar fits, 7 matrix solves, 3 polynomial fits, 6 penalties, 3 binary batches, 7 confusion/ROC fixtures and 4 multiclass batches. Binary and multiclass cases include every state of three-update traces. The generator checks actual canonical Python before serializing expectations established by independent methods. `--check` compares content and never rewrites.
+
+- Scalar Fraction and Decimal binary/multiclass parity: absolute plus relative `1e-12`.
+- Small-matrix SVD/polynomial/regularization parity: absolute plus relative `2e-9`, allowing different rotation/LAPACK rounding paths. Extreme scaling checks compare the meaningful coefficient/rank quantities; an absolute residual tolerance is not a certification of arbitrary huge ill-conditioned data.
+- Centered finite differences: step `1e-5`, absolute plus relative gradient tolerance `2e-7`, chosen above cancellation/truncation error for the moderate-logit fixtures.
+- Counts, IDs, shapes, labels, threshold ordering and trace identities are exact; rates/AUC are finite fractions or explicit null/reason objects.
+
+Lesson datasets/goldens are hand-authored with no seed. Only additional oracle challenge data use NumPy seed `20261013`; it is not mislabeled as the lesson-data seed. Display rounding never changes updates or ties. Tiny nonzero computed scalars use scientific notation; inputs retain round-trip numeric text.
+
+NumPy library semantics were checked against its primary documentation: [minimum norm and explicit lstsq cutoff](https://numpy.org/doc/stable/reference/generated/numpy.linalg.lstsq.html), [logaddexp](https://numpy.org/doc/stable/reference/generated/numpy.logaddexp.html). These are oracle comparisons, not runtime fitting wrappers in the lesson mechanisms.
+
+## Tests actually run
+
+Commands below ran from `Interactive-Machine-Learning-Book`, using the existing read-only Node/NumPy overlay and worktree-local cache. No full type/build/browser run was performed by this agent.
+
+| Executor / exact command | Actual result |
+| --- | --- |
+| Agent 2: `node node_modules/vitest/vitest.mjs run tests/unit/p02/fit.test.ts --maxWorkers=1` | 7 tests passed; included exact 64-row Ridge boundary |
+| Agent 2: `.venv/bin/python -B oracle/p02/generate_remainder_fixtures.py --write` | Generated 34 canonical-checked independent cases; no full oracle sweep |
+| Agent 2: `node node_modules/vitest/vitest.mjs run tests/unit/p02/fit.test.ts tests/unit/p02/remainder-parity.test.ts --maxWorkers=1` | 47 tests passed in 2 files |
+| Agent 2: `node node_modules/vitest/vitest.mjs run tests/unit/p02/remainder-lessons.test.ts --maxWorkers=1` | 24 tests passed; strict KaTeX, nine isolated MDX syntax/SSR renders, authoritative geometry and ownership/reference hashes |
+| Agent 2 final light suite: `node node_modules/vitest/vitest.mjs run tests/unit/p02 --maxWorkers=1` | **111 tests passed in 5 files**: frozen 31+9, new 7+40+24; 1.29s total, 401ms test bodies in this run |
+| Integration owner, allocated Linux flock: `node scripts/run-oracle.mjs p02` | **5 commands passed**: frozen rational literals, 15 reference NumPy tests, 9 remainder tests including real canonical subprocess execution, 7 fresh reference fixtures and 34 fresh remainder fixtures; raw ignored evidence `artifacts/integrator-oracle-review.log` inspected |
+| Agent 2: `git diff --cached --check` before source commit | Passed after removing extra EOF blank lines from nine owned chapters |
+
+The integration owner also reported 19 isolated mathematical challenges passing. That report is supplemental evidence; those ignored challenge/config files are not committed as authored Part tests. The synchronized platform's reported 57 units/96 browsers concern the shared patch, not these new chapters. Their results are not relabeled as Part browser acceptance.
+
+## UI/browser inventory and pending heavy validation
+
+`tests/e2e/p02/remainder.spec.ts` authors **13 tests**, selected by the existing three projects (39 cases per mount). The same relative routes work for root and `/machine-learning/`. Cases cover all nine current numerical mechanisms in both themes, physical equal-scale projections/readable plot text, exact inputs and approximate outputs, invalid entry/reset, editable rank-aware design, polynomial held-out integrity, L1/L2/intercept/objective numbers, selected-frame replay edits, real logistic/softmax gradients, extreme logits, tie/undefined ROC, numeric/range keyboard plus native pointer/touch operation, sentinel score-1 consistency and shifted softmax equation/logit/invariance consistency.
+
+The shared publication suite already discovers all new routes and adds hydration, five-exercise, imported-code, ID, both-theme axe and overflow checks. The existing viewports remain 1440×900, 820×1180 and 390×844. New plot text sizes derive from measured width for at least 14 rendered pixels. These are implementation and authored checks, not completed visual verification.
+
+**Pending:** full Astro type/content check, root/subpath production/offline/path audits, actual Part and shared browser tests, rendered captures/manual visual review and independent acceptance. No new images or image hashes were captured/verified; no screenshots or baselines were updated. All 13 frozen source hashes were verified. Native Windows, physical touch hardware and human screen-reader checks remain unperformed.
+
+The integrator can allocate the existing focused runner, from the book root:
+
+```sh
+flock /tmp/interactive-books-heavy-gate.lock -c 'npm run validate:focused -- --part p02'
+```
+
+It keeps global type/production/platform checks while selecting p02 numerical and browser suites; it does not acquire a second nested flock. Coordinate Windows separately. Source/type/browser failures require correction before publication acceptance.
+
+## Limits and integration requests
+
+Interactive fixtures are deliberately small: scalar observations, a fixed four-row/two-feature multivariate editor, polynomial degrees 1–5, scalar-feature regularization, binary toy batches and a three-row/three-class softmax editor. The pure kernels validate broader documented small-matrix shapes. This is not an arbitrary-size fitting service. SVD rank decisions near the cutoff and slow L1 convergence are explicit limitations; there are no ill-conditioned-data guarantees beyond supported checks.
+
+No essential shared API change is requested, so no shared implementation or `INTEGRATION_REQUESTS.md` was needed. Both manifests only append p02 chapters/oracles and preserve III-07. The most material remaining risk is unexecuted type/render/browser validation, which the integrator owns and was expressly withheld from this agent.
+
+## Exact changed paths from synchronized base
+
+Implementation commit paths (repository-relative), followed by this report only:
+
+- `Interactive-Machine-Learning-Book/code/python/p02/classification_reference.py`
+- `Interactive-Machine-Learning-Book/code/python/p02/fit_reference.py`
+- `Interactive-Machine-Learning-Book/fixtures/p02/remainder.fixtures.json`
+- `Interactive-Machine-Learning-Book/oracle/p02/generate_remainder_fixtures.py`
+- `Interactive-Machine-Learning-Book/oracle/p02/manifest.json`
+- `Interactive-Machine-Learning-Book/oracle/p02/remainder_math.py`
+- `Interactive-Machine-Learning-Book/oracle/p02/test_remainder.py`
+- `Interactive-Machine-Learning-Book/src/parts/p02/ClassificationStage.tsx`
+- `Interactive-Machine-Learning-Book/src/parts/p02/FitStage.tsx`
+- `Interactive-Machine-Learning-Book/src/parts/p02/chapters/least-squares.mdx`
+- `Interactive-Machine-Learning-Book/src/parts/p02/chapters/logistic-regression.mdx`
+- `Interactive-Machine-Learning-Book/src/parts/p02/chapters/multiple-linear-regression.mdx`
+- `Interactive-Machine-Learning-Book/src/parts/p02/chapters/polynomial-features.mdx`
+- `Interactive-Machine-Learning-Book/src/parts/p02/chapters/precision-recall-roc.mdx`
+- `Interactive-Machine-Learning-Book/src/parts/p02/chapters/regression-gradient-descent.mdx`
+- `Interactive-Machine-Learning-Book/src/parts/p02/chapters/regularization.mdx`
+- `Interactive-Machine-Learning-Book/src/parts/p02/chapters/softmax-regression.mdx`
+- `Interactive-Machine-Learning-Book/src/parts/p02/chapters/thresholds-confusion.mdx`
+- `Interactive-Machine-Learning-Book/src/parts/p02/classification-lesson.ts`
+- `Interactive-Machine-Learning-Book/src/parts/p02/fit-lesson.ts`
+- `Interactive-Machine-Learning-Book/src/parts/p02/manifest.json`
+- `Interactive-Machine-Learning-Book/src/parts/p02/model/classification.ts`
+- `Interactive-Machine-Learning-Book/src/parts/p02/model/fit.ts`
+- `Interactive-Machine-Learning-Book/src/parts/p02/remainder.css`
+- `Interactive-Machine-Learning-Book/tests/e2e/p02/remainder.spec.ts`
+- `Interactive-Machine-Learning-Book/tests/unit/p02/fit.test.ts`
+- `Interactive-Machine-Learning-Book/tests/unit/p02/remainder-lessons.test.ts`
+- `Interactive-Machine-Learning-Book/tests/unit/p02/remainder-parity.test.ts`
+- `Interactive-Machine-Learning-Book/documentation/parts/p02/P02_COMPLETION_REPORT.md`
+
+Remainder fixture SHA256: `ca9f95bf914a14ea116f7c330c53632881ec00a5a5e4ff4aeb9ef23be1393d2f`. Final commit/status/ownership are verified in the accompanying handoff message; no freeze is claimed.
