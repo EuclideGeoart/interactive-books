@@ -9,7 +9,8 @@
     "state": "home",
     "sha256": "10460094d5433f5e5522bdddea0d9f18483f1299beb1c18975bb3cf2a386fa2e",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/desktop-light-part-ii.png",
@@ -21,7 +22,8 @@
     "state": "part-ii",
     "sha256": "80de7fdd3229cd08e709c8edc32aab034295d87ccc09221aaec1b56f9c6ec4bf",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/desktop-light-chapter-top.png",
@@ -33,7 +35,8 @@
     "state": "chapter-top",
     "sha256": "674f9930471b59390e01a9db66a736d839bc6a7bb264eca5d0b83f28ead4e491",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/desktop-light-canonical.png",
@@ -45,7 +48,8 @@
     "state": "canonical",
     "sha256": "87c6624ebec049b39a3e606056423cd322f60e4766c6b6eb00efbac503c058c7",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/desktop-light-one-update.png",
@@ -57,7 +61,8 @@
     "state": "one-update",
     "sha256": "e818f4dc16ea477d031a0b8273e8639030691638ccc3a992953addff7444f196",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/desktop-light-replay-frame-three.png",
@@ -69,7 +74,8 @@
     "state": "replay-frame-three",
     "sha256": "64aaf65a3aff38cb07b2bb51db328577fb1f6716f54b42b1e0a2d998b0e2050a",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/desktop-light-edited.png",
@@ -81,7 +87,8 @@
     "state": "edited",
     "sha256": "1c87b17fa460e8ff17cc2cdf8944baac3de6afdbd5bf4b74baab50fb40f6c6c0",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/desktop-dark-home.png",
@@ -93,7 +100,8 @@
     "state": "home",
     "sha256": "dee1894ae91bd9a11c1bdafbf34e76ad82def561893d5cb531ad7930685ba082",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/desktop-dark-part-ii.png",
@@ -105,7 +113,8 @@
     "state": "part-ii",
     "sha256": "279f044c955b419cbdc2debe221e838ed5d470d12b7cfa438df1d95eab9635c8",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/desktop-dark-chapter-top.png",
@@ -117,7 +126,8 @@
     "state": "chapter-top",
     "sha256": "3530e6cd9859db90c5a5c0f9ca9ff4923e836749d084e02ae5ee37832108f044",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/desktop-dark-canonical.png",
@@ -129,7 +139,8 @@
     "state": "canonical",
     "sha256": "57251075cf9bc3b4ede3c0371b85aba651f37ed148149f8905a1cff023c5fa18",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/desktop-dark-one-update.png",
@@ -141,7 +152,8 @@
     "state": "one-update",
     "sha256": "dd0844f4c97a1fffd006d21b9f2528ae7d712fc6a0a383d55270dc234e9ceee6",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/desktop-dark-replay-frame-three.png",
@@ -153,7 +165,8 @@
     "state": "replay-frame-three",
     "sha256": "d43b6b412f9c978fbe0dac9e43cd047164fb90dbc34004b655c1d4a23e7dbf3c",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/desktop-dark-edited.png",
@@ -165,7 +178,8 @@
     "state": "edited",
     "sha256": "aca678660d0a6a390aa54478b23e25681e16bb20098887f6120b722844601c85",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/tablet-light-home.png",
@@ -177,7 +191,8 @@
     "state": "home",
     "sha256": "248755db304d3f1ff27d72c7578b6277c3c2d3f009008391b36013e01ef78155",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/tablet-light-part-ii.png",
@@ -189,7 +204,8 @@
     "state": "part-ii",
     "sha256": "62f7e708b4d874372493ace626f7a3bf57951ab3054db56c2add441483da1705",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/tablet-light-chapter-top.png",
@@ -201,7 +217,8 @@
     "state": "chapter-top",
     "sha256": "4b222dc8dd77e6f38afbea9c4165d6e6fc20f47cac418d08a8883abeab01297a",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/tablet-light-canonical.png",
@@ -213,7 +230,8 @@
     "state": "canonical",
     "sha256": "faccaf9885ea6367f2f8738a37edd7048479d499f967290a485646baeb5983ba",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/tablet-light-one-update.png",
@@ -225,7 +243,8 @@
     "state": "one-update",
     "sha256": "8e818a0cd05e0e76f92045110c3fe9e498fd1f467333033a53ea239447ae8208",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/tablet-light-replay-frame-three.png",
@@ -237,7 +256,8 @@
     "state": "replay-frame-three",
     "sha256": "c21ac006873449b8b881b237958808be56ec6c371ba36e00091f2312e7d2d7fd",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/tablet-light-edited.png",
@@ -249,7 +269,8 @@
     "state": "edited",
     "sha256": "a571eb3fbae2c0c5fd0097930f8948f8161cb89d1d3511ade61129f1b28eb602",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/tablet-dark-home.png",
@@ -261,7 +282,8 @@
     "state": "home",
     "sha256": "33ad99a219be9b94b5ecafd7aee6dc2e317ef0487408448b70abf600f87dee84",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/tablet-dark-part-ii.png",
@@ -273,7 +295,8 @@
     "state": "part-ii",
     "sha256": "049d64f584b3a7e937d89e454580d3c760f9c4c5552c04ffed6eeed0fd7f100e",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/tablet-dark-chapter-top.png",
@@ -285,7 +308,8 @@
     "state": "chapter-top",
     "sha256": "529ff3dd96ff1b1c0d905e016f44e68ba21c7583ec20f6847744aa4a6bfb7263",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/tablet-dark-canonical.png",
@@ -297,7 +321,8 @@
     "state": "canonical",
     "sha256": "36fe7bbd8f903106e9cf3d7c0c6f993c5806b02c2d35061b7b1cf43b9064ae25",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/tablet-dark-one-update.png",
@@ -309,7 +334,8 @@
     "state": "one-update",
     "sha256": "5f27c7b1a9c0fae89245a96701b35dfd40590dccd009e27cc3a199bbf9b66e73",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/tablet-dark-replay-frame-three.png",
@@ -321,7 +347,8 @@
     "state": "replay-frame-three",
     "sha256": "aa6c9f6a1e1f9a223609d6dbe84571d3e5441bc59c2c02226650b5262e02c6bc",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/tablet-dark-edited.png",
@@ -333,7 +360,8 @@
     "state": "edited",
     "sha256": "9ce8252bbc71c591b378bd2f87172c28d25defce753934f245a62ba36708e858",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/mobile-light-home.png",
@@ -345,7 +373,8 @@
     "state": "home",
     "sha256": "ed17396e7ed90a9f4cbf1dfdcdc8d477f5106e46a3e7fe5ac18f8e796a72baaa",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/mobile-light-part-ii.png",
@@ -357,7 +386,8 @@
     "state": "part-ii",
     "sha256": "669bc8597d33949f851275f3629a92bd8e1dc16319c3a8c3c6c3518282dd0fb9",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/mobile-light-chapter-top.png",
@@ -369,7 +399,8 @@
     "state": "chapter-top",
     "sha256": "cdd4e9630362edaac254accd848ea82a6d93c33d2831c302157e09309d523b90",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/mobile-light-canonical.png",
@@ -381,7 +412,8 @@
     "state": "canonical",
     "sha256": "c25fe8fb8295cd99c20d1b229fef45d2ba89da0788edbd3c838ba8c811657dd4",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/mobile-light-one-update.png",
@@ -393,7 +425,8 @@
     "state": "one-update",
     "sha256": "c3c52bae6403c5179dfd4a915b2d1eac925fc6c235fcc98f885bd3e4c380eb9b",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/mobile-light-replay-frame-three.png",
@@ -405,7 +438,8 @@
     "state": "replay-frame-three",
     "sha256": "b4244ac8ea815515c25cacfac99221ab1de1933cfeed93dbd99cb1cabaffe578",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/mobile-light-edited.png",
@@ -417,7 +451,8 @@
     "state": "edited",
     "sha256": "d6edb0b0b335887d93182f94207dc81884b7846c14a7e66a40203c09e2136b15",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/mobile-dark-home.png",
@@ -429,7 +464,8 @@
     "state": "home",
     "sha256": "829c39fc122b42d9772842822b888fafbf79345565e58af749abf777360fc5af",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/mobile-dark-part-ii.png",
@@ -441,7 +477,8 @@
     "state": "part-ii",
     "sha256": "ff3706a2e7dde13490b91974edb269056c697f6d3e0854a5270618ed0620e4a1",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/mobile-dark-chapter-top.png",
@@ -453,7 +490,8 @@
     "state": "chapter-top",
     "sha256": "070f3f42bd35de8366b352ef8e15905ee5b05d237cf2b42278957819fa0c61c8",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/mobile-dark-canonical.png",
@@ -465,7 +503,8 @@
     "state": "canonical",
     "sha256": "019f90d17ec6e8a4a63ad21034b1e73f239756eaf242192192b962ca68de19ff",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/mobile-dark-one-update.png",
@@ -477,7 +516,8 @@
     "state": "one-update",
     "sha256": "ad86cf0cfc1cc8f6007a2d8722978b4f0f7505e204a160787f0d14cc140746ce",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/mobile-dark-replay-frame-three.png",
@@ -489,7 +529,8 @@
     "state": "replay-frame-three",
     "sha256": "05e09d4895ddf683d297da611acc9c048be80c7577ebe19f3d6d685d19da85ee",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   },
   {
     "path": "documentation/validation/captures/mobile-dark-edited.png",
@@ -501,6 +542,7 @@
     "state": "edited",
     "sha256": "62ab2461cab60d2d7d838a391cec81ea199bd42e0b4022dbcd21242730beb645",
     "deviceScaleFactor": 1,
-    "reviewStatus": "pending independent final review"
+    "reviewStatus": "hash verified; representative visual inspection recorded in FOUNDATION_ACCEPTANCE_REPORT.md",
+    "sourceCommit": "0169e2a36742a0d1216739645cde773640e096fd"
   }
 ]

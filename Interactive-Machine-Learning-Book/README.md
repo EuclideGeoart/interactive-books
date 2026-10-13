@@ -2,7 +2,7 @@
 
 Nine Parts and 41 chapters: from samples and prediction to evaluation and the transition to neural networks. Each chapter connects a manipulable numerical model with equations, executable Python+NumPy, independent mathematical oracles and browser state.
 
-The M0/M1 + III-07 foundation is under independent validation. Part implementation remains gated until the integrator records its accepted freeze. See `documentation/MASTER_PLAN.md`, `documentation/ARCHITECTURE_DECISIONS.md`, `documentation/CHAPTER_AUTHORING.md` and the preserved original assignments in `documentation/authority/`.
+The M0/M1 + III-07 foundation is independently accepted and frozen: **1 of 41 chapters** is available. See `documentation/FOUNDATION_ACCEPTANCE_REPORT.md` for exact source, checks, images and limitations. Wave A implements Parts I and II from that freeze; later waves remain gated. Contracts are in `documentation/MASTER_PLAN.md`, `documentation/ARCHITECTURE_DECISIONS.md`, `documentation/CHAPTER_AUTHORING.md` and the preserved original assignments in `documentation/authority/`.
 
 Use the actual provisioned Node/NumPy environment. Node packages are linked individually from the installed native Linux packages with independent worktree caches; `.venv` is a read-only environment link. Do not overwrite the canonical Windows installations or create a clone/environment.
 
