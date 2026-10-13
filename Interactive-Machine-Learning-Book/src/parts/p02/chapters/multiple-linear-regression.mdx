@@ -1,0 +1,109 @@
+---
+chapterId: III-10
+title: Multiple Linear Regression
+hero: Read a prediction as one matrix row
+lede: Edit design cells and coefficients, inspect XW row by row, and solve full-rank or dependent designs with a minimum norm SVD fit.
+description: Edit design cells and coefficients, inspect XW row by row, and solve full-rank or dependent designs with a minimum norm SVD fit.
+prerequisites: [II.9, II.15, II.19, V.7]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import FitStage from '../FitStage';
+import reference from '../../../../code/python/p02/fit_reference.py?raw';
+
+<Stage caption="Change the controls first, then inspect the active equation, numeric rows and shapes. Exact inputs and approximate computed values are distinguished; Reset restores the hand-authored experiment."><FitStage scope="iii10-multiple" mode="multiple" client:load /></Stage>
+
+
+## Make the design do visible work
+
+The opening sheet begins with three zero coefficients, so every prediction is zero. Edit an $x_1$ or $x_2$ design cell or a target, and inspect the changed prediction/residual rows. Editing a design cell changes the data used by every later solve; editing a coefficient changes the current model.
+
+Press **Solve minimum norm**. For the initial design, the fit gives $W=[1,2,-1]^\mathsf T$ and zero residuals up to floating-point rounding. Then press **Duplicate feature column** and solve again. Rank falls from three to two. The sheet reports the ambiguity and selects one explicit minimum norm coefficient column.
+
+## Define the augmented model and its shapes
+
+Each sample is a row, and each parameter vector is a column:
+
+$$
+X=\begin{bmatrix}1&-1&0\\1&0&1\\1&1&0\\1&2&1\end{bmatrix}\in\mathbb R^{4\times3},
+\quad W=\begin{bmatrix}b\\w_1\\w_2\end{bmatrix}\in\mathbb R^{3\times1},
+\quad y=\begin{bmatrix}-1\\0\\3\\4\end{bmatrix}\in\mathbb R^{4\times1}.
+$$
+
+The fixed first column of ones encodes an intercept; it is not another measured feature. Prediction $i$ is the dot product of row $i$ with $W$. Here the model is $\hat y_i=b+w_1x_{i1}+w_2x_{i2}$, while $\hat y=XW$ and residual $r=XW-y$ both have shape $4\times1$.
+
+These are hand-authored unitless toy rows with no random seed. The observation plot uses **sample index** horizontally and target/prediction vertically. It does not pretend that two features form a scalar horizontal input. The actual features remain in the design table.
+
+## Derive the least-squares condition
+
+Full MSE is $L(W)=\|XW-y\|_2^2/n$. Differentiating each coefficient gives
+
+$$
+\nabla_WL=\frac2nX^\mathsf T(XW-y)\in\mathbb R^{d\times1}.
+$$
+
+At an optimum, $X^\mathsf T(XW-y)=0$: the residual is orthogonal to every design column. This stationary condition characterizes the fit. It does **not** require forming $(X^\mathsf TX)^{-1}$. Squaring the design's condition number and then trying to invert a singular or nearly singular matrix is a poor numerical implementation.
+
+Instead decompose $X=U\Sigma V^\mathsf T$ and retain numerically resolvable singular directions:
+
+$$
+W_* = \sum_{\sigma_j>\tau}v_j\frac{u_j^\mathsf Ty}{\sigma_j},\qquad \tau=10^{-10}\sigma_{\max}.
+$$
+
+Zero or discarded singular directions receive zero coefficient in singular coordinates. This chooses the minimum Euclidean norm among fits to the retained design. Full column rank gives a unique parameter solution. Rank deficiency identifies predictions but leaves a family of parameter columns. Numerical rank is a declared tolerance policy, not an exact algebraic theorem about noisy measurements.
+
+## Work every row
+
+For $W=[1,2,-1]^\mathsf T$, the four dot products are
+
+$$
+1+2(-1)-1(0)=-1,\quad 1+2(0)-1(1)=0,
+\quad 1+2(1)-1(0)=3,\quad 1+2(2)-1(1)=4.
+$$
+
+Thus the canonical data MSE changes from $(1+0+9+16)/4=6.5$ at zero coefficients to approximately zero. This exact fit reflects how this toy dataset was authored, not a general property of multivariate regression.
+
+If two columns are identical, only the sum of their coefficients matters. For $X=[[1,1],[2,2]]$ and targets $[2,4]^\mathsf T$, every pair with $w_1+w_2=2$ fits exactly. Minimum norm gives $[1,1]^\mathsf T$. A one-row, three-column design $[1,1,1]$ targeting $3$ similarly selects $[1,1,1]^\mathsf T$ from infinitely many fits.
+
+## Inspect rank before interpreting coefficients
+
+The browser and canonical Python use a small scaled one-sided Jacobi SVD: orthogonalize design columns through rotations, recover singular values and right singular directions, then apply the retained-direction formula. They never invert normal equations. A distinct oracle uses NumPy's robust `lstsq` with the same explicit cutoff, including wide, dependent, nearly dependent and very small/large-scale designs.
+
+The first intercept column remains fixed in this sheet. Numeric fields label their row and feature, preserve exact input text, and accept Enter/arrow/touch operation. After solving, change a coefficient to see that current predictions can leave the optimal solution while numerical rank stays a property of the design.
+
+## Mistakes and numerical limits
+
+A feature coefficient is conditional on the other columns and their units. Duplicate or correlated features make individual coefficient interpretation fragile; a perfect residual does not establish causality. Omitting the intercept changes the model family. Transposing $X$ would confuse samples with features and break $XW$ shapes.
+
+The public pure solver supports 1–64 rows and 1–7 columns. Internal Ridge augmentation is trusted separately so 64 observations can still acquire up to seven penalty rows. Inputs must be finite and rectangular. The solver scales the design, uses relative column-orthogonality tolerance $10^{-14}$ and a 100-sweep budget, then rejects nonconvergence or nonfinite results. It reports rank and the cutoff rather than silently regularizing a near-singular direction.
+
+At a singular value extremely near the cutoff, a small perturbation can change numerical rank; inspect singular values and data precision. Parity tolerance is $2\cdot10^{-9}$ absolute plus relative for supported small fixtures. This does not certify arbitrary ill-conditioned data. The interactive table fixes four rows and two editable features; the kernel and oracle cover wider shapes.
+
+## Connections and checkpoints
+
+This is Book II's SVD/projection machinery applied to fitting. Polynomial features in III-11 change the design columns while retaining this linear solve. You should be able to account for the intercept, calculate a row prediction, identify rank ambiguity and explain why a minimum norm solve remains defined when inverse normal equations do not.
+
+## Execute the actual Python and NumPy
+
+The imported source below is the runnable file used in canonical comparisons. Read the named mechanism from this chapter; the other functions coordinate the same Part experiment. From the book root:
+
+```bash
+.venv/bin/python -B code/python/p02/fit_reference.py
+```
+
+<CodeFile source={reference} file="code/python/p02/fit_reference.py" />
+
+
+## Five graded investigations
+
+<ChoiceExercise id="iii10-1" client:load prompt={"Four samples, two measured features and one intercept require which X and W shapes?"} choices={[{"label": "X is 4×3 and W is 3×1.", "correct": true, "feedback": "The intercept adds one column, not one sample row."}, {"label": "X is 3×4 and W is 4×1.", "correct": false, "feedback": "Samples occupy rows; each coefficient matches a design column."}]} />
+
+<ChoiceExercise id="iii10-2" client:load prompt={"For row [1,2,1] and W=[1,2,−1]ᵀ, what is the prediction?"} choices={[{"label": "4", "correct": true, "feedback": "The dot product is 1 + 4 − 1."}, {"label": "2", "correct": false, "feedback": "Include the intercept and both feature products."}]} />
+
+<ChoiceExercise id="iii10-3" client:load prompt={"Duplicate design columns imply what about their coefficients?"} choices={[{"label": "Their sum can be identified while individual values are not.", "correct": true, "feedback": "The same prediction can arise from many parameter pairs."}, {"label": "The model has no possible least-squares fit.", "correct": false, "feedback": "A residual-minimizing prediction still exists; uniqueness is the issue."}]} />
+
+<ChoiceExercise id="iii10-4" client:load prompt={"For X=[[1,1],[2,2]], y=[2,4]ᵀ, what does minimum norm choose?"} choices={[{"label": "[1,1]ᵀ", "correct": true, "feedback": "Among pairs summing to 2, equal sharing minimizes squared parameter norm."}, {"label": "[2,0]ᵀ uniquely.", "correct": false, "feedback": "That fits, but has larger norm and is not the unique minimizer of the residual."}]} />
+
+<ChoiceExercise id="iii10-5" client:load prompt={"Why use an SVD solve instead of inverting XᵀX?"} choices={[{"label": "It handles rank and avoids squaring conditioning in a normal-equation inverse.", "correct": true, "feedback": "Retained singular directions expose unresolved parameter directions."}, {"label": "Because SVD guarantees predictions on unseen data.", "correct": false, "feedback": "SVD addresses the numerical training solve, not generalization."}]} />

@@ -1,0 +1,115 @@
+---
+chapterId: III-13
+title: Logistic Regression
+hero: Follow a logit into a likelihood gradient
+lede: Edit logistic coefficients, inspect stable binary cross entropy from logits, and replay simultaneous likelihood-based parameter updates.
+description: Edit logistic coefficients, inspect stable binary cross entropy from logits, and replay simultaneous likelihood-based parameter updates.
+prerequisites: [IV.9, V.8, III.6, VII.1]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import ClassificationStage from '../ClassificationStage';
+import reference from '../../../../code/python/p02/classification_reference.py?raw';
+
+<Stage caption="Change the controls first, then inspect the active equation, numeric rows and shapes. Exact inputs and approximate computed values are distinguished; Reset restores the hand-authored experiment."><ClassificationStage scope="iii13-logistic" mode="logistic" client:load /></Stage>
+
+
+## Change a probability by changing its model
+
+Edit the weight or intercept in the opening sheet. The curve shows $p(y=1\mid x)$; filled observations sit at binary labels zero or one and diamonds sit at predicted probabilities. Apply one update, then replay three. Every table row, gradient, probability and BCE follows the selected parameter snapshot.
+
+The threshold line changes decisions, but it does not change the logits, probabilities or likelihood loss. Move it independently to separate model fitting from the decision policy. Reset restores the original batch. Numeric coefficient, feature and rate fields accept Enter and arrows; the native threshold slider accepts keyboard, pointer and touch input.
+
+## A linear score becomes a Bernoulli probability
+
+With augmented design rows $[1,x_i]$, use intercept-first column $W=[b,w]^\mathsf T$:
+
+$$
+z_i=b+wx_i,\quad p_i=\sigma(z_i)=\frac1{1+e^{-z_i}}.
+$$
+
+The logit $z$ ranges over real numbers while $p$ lies between zero and one. Odds are $p/(1-p)=e^z$, so $z$ is log odds. Logistic regression is linear in the logit, not in the probability. The name does not make binary labels continuous regression targets.
+
+For a binary label $y$, the Bernoulli likelihood is $p^y(1-p)^{1-y}$. Its negative logarithm gives
+
+$$
+\ell(z,y)=-y\log p-(1-y)\log(1-p).
+$$
+
+Across independent illustrative rows we minimize the mean, $L=(1/n)\sum_i\ell(z_i,y_i)$. This is the training objective; accuracy and confusion counts evaluate thresholded decisions and need not improve on every update.
+
+## Derive a stable loss and its gradient
+
+Substitute the sigmoid into the likelihood:
+
+$$
+\ell(z,y)=\log(1+e^z)-yz
+=\max(z,0)-yz+\log(1+e^{-|z|}).
+$$
+
+The last expression never exponentiates a positive large argument. `log1p` retains a tiny correction near zero. Sigmoid itself branches on the logit's sign to avoid exponent overflow. We compute BCE from logits, rather than taking $\log(0)$ after a probability rounds to zero or one.
+
+Differentiating yields $\partial\ell/\partial z=\sigma(z)-y$. Apply the chain rule to the linear score:
+
+$$
+\nabla_WL=\frac1nX^\mathsf T(p-y),\qquad W^+=W-\eta\nabla_WL.
+$$
+
+Unlike full MSE, this gradient has no factor of two. The intercept entry averages $p-y$; the weight entry averages $x(p-y)$. All entries update simultaneously from the same old probabilities. The shape is $d\times1$, matching $W$.
+
+## Work the five-row likelihood update
+
+The hand-authored inputs are $[-2,-1,0,1,2]$ with labels $[0,0,1,0,1]$. There are two actual positives, no random seed and no measured population. At $b=0,w=1$, the logits equal the inputs.
+
+| x | Label | Probability | BCE |
+| ---: | ---: | ---: | ---: |
+| -2 | 0 | ≈ 0.1192029 | ≈ 0.1269280 |
+| -1 | 0 | ≈ 0.2689414 | ≈ 0.3132617 |
+| 0 | 1 | 0.5 | ≈ 0.6931472 |
+| 1 | 0 | ≈ 0.7310586 | ≈ 1.3132617 |
+| 2 | 1 | ≈ 0.8807971 | ≈ 0.1269280 |
+
+The mean BCE is approximately $0.5147053155$. The intercept gradient is $0.1$ and weight gradient approximately $-0.0029389062$. At rate $0.2$, $b^+=-0.02$ and $w^+\approx1.0005877812$. Inspect the gradient column before applying; the prospective update is not yet part of the current state.
+
+The augmented $X$ is $5\times2$, $W$ and its gradient are $2\times1$, and logits, probabilities and labels are $5\times1$. The first feature remains one; editing a sample feature changes its logit through the current weight. No intercept penalty is applied in this chapter.
+
+## Extreme scores and decision counterexamples
+
+For $z=1000,y=0$, stable BCE is approximately $1000$ even though sigmoid rounds to one. For $z=-1000,y=1$, it is again $1000$. For confidently correct labels it underflows toward a finite zero loss. Rounded probability endpoints do not make an impossible observation cost zero.
+
+At threshold $0.5$, $z=0$ is positive because equality counts. The canonical predictions are $[0,0,1,1,1]$: two true positives, one false positive, two true negatives and no false negatives. A gradient can reduce BCE without flipping any label. Conversely a small threshold change can flip a label without changing BCE at all.
+
+## Mistakes and numerical limits
+
+Do not train on a thresholded label: the differentiable score carries information that a zero/one decision discards. Do not use the MSE derivative for a BCE objective. Scores from this toy model are estimates; no calibration claim or causal interpretation is made.
+
+Inputs and arithmetic must be finite; labels must be exactly zero or one. The pure kernel permits 1–64 rows and 1–7 design columns. The sheet bounds coefficients to ±1000, editable features to −3…3 and rates to $0.001\ldots1$. Invalid edits preserve the current state. Large logits can saturate probabilities and gradients, while a mathematically infinite separation optimum need not yield finite learned coefficients. There is no claim of reaching a global fitted solution after three updates.
+
+## Connections and checkpoints
+
+The canonical Python `logistic`, `sigmoid` and `bce` implement the displayed likelihood. Independent 80-digit Decimal likelihoods and centered finite differences check the loss and gradient; NumPy `logaddexp` is a second stable-loss comparison. III-14 freezes illustrative scores to study thresholds without retraining, and III-16 generalizes the probability normalization to multiple classes. You should be able to derive BCE from likelihood, calculate its parameter gradient, and distinguish probability fitting from label decisions.
+
+## Execute the actual Python and NumPy
+
+The imported source below is the runnable file used in canonical comparisons. Read the named mechanism from this chapter; the other functions coordinate the same Part experiment. From the book root:
+
+```bash
+.venv/bin/python -B code/python/p02/classification_reference.py
+```
+
+<CodeFile source={reference} file="code/python/p02/classification_reference.py" />
+
+
+## Five graded investigations
+
+<ChoiceExercise id="iii13-1" client:load prompt={"A logit of zero gives which sigmoid probability?"} choices={[{"label": "0.5", "correct": true, "feedback": "The denominator is 1 + exp(0) = 2."}, {"label": "0", "correct": false, "feedback": "A zero logit means equal odds, not zero probability."}]} />
+
+<ChoiceExercise id="iii13-2" client:load prompt={"What is the derivative of binary logit BCE with respect to z?"} choices={[{"label": "sigmoid(z) − y", "correct": true, "feedback": "Differentiating log(1+exp(z)) − yz gives p−y."}, {"label": "2(sigmoid(z) − y)", "correct": false, "feedback": "That inserts the squared-error factor into a likelihood gradient."}]} />
+
+<ChoiceExercise id="iii13-3" client:load prompt={"What is BCE for z=1000 and label 0?"} choices={[{"label": "Approximately 1000, finite.", "correct": true, "feedback": "The stable logit expression retains the cost of a confidently wrong prediction."}, {"label": "Zero because sigmoid rounds to 1.", "correct": false, "feedback": "A high probability assigned to the wrong class should cost more, not disappear."}]} />
+
+<ChoiceExercise id="iii13-4" client:load prompt={"Using gradient db=0.1, b=0 and rate 0.2, what is next b?"} choices={[{"label": "−0.02", "correct": true, "feedback": "Subtract rate times the old intercept gradient."}, {"label": "0.02", "correct": false, "feedback": "That moves in the positive gradient direction."}]} />
+
+<ChoiceExercise id="iii13-5" client:load prompt={"Does moving the decision threshold change the current BCE?"} choices={[{"label": "No; logits, labels and probabilities are unchanged.", "correct": true, "feedback": "The decision policy is downstream of the likelihood calculation."}, {"label": "Yes; thresholded labels replace the training labels.", "correct": false, "feedback": "Actual labels remain fixed; predicted classes are not used as training targets."}]} />

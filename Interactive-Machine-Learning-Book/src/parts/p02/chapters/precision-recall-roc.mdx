@@ -1,0 +1,112 @@
+---
+chapterId: III-15
+title: Precision, Recall, F1 and ROC
+hero: Name the denominator before trusting a metric
+lede: Compute precision, recall and F1 from the same confusion rows, expose undefined denominators, and replay an exact tied-score ROC sweep.
+description: Compute precision, recall and F1 from the same confusion rows, expose undefined denominators, and replay an exact tied-score ROC sweep.
+prerequisites: [IV.4, IV.14, V.3]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import ClassificationStage from '../ClassificationStage';
+import reference from '../../../../code/python/p02/classification_reference.py?raw';
+
+<Stage caption="Change the controls first, then inspect the active equation, numeric rows and shapes. Exact inputs and approximate computed values are distinguished; Reset restores the hand-authored experiment."><ClassificationStage scope="iii15-metrics" mode="metrics" client:load /></Stage>
+
+
+## Compare one policy with the whole ranking
+
+At the opening threshold $0.5$, inspect the counts and metrics. Precision, recall and F1 are all $2/3$ on this specific fixture, but their denominators answer different questions. Press **Predict no positives**: precision becomes explicitly undefined, recall and F1 become zero because actual positives still exist.
+
+Press **No actual positives** to expose the missing recall denominator and undefined ROC/AUC. No chart fabricates a rate for a missing actual class. Reset, replay the threshold sweep and watch the active ROC point move over exactly the score transitions, including tied examples.
+
+## Derive the three operating-point metrics
+
+For one threshold, define
+
+$$
+\operatorname{precision}=\frac{TP}{TP+FP},\qquad
+\operatorname{recall}=\frac{TP}{TP+FN},\qquad
+F_1=\frac{2TP}{2TP+FP+FN}.
+$$
+
+Precision conditions on positive predictions: how many are actually positive? Recall conditions on actual positives: how many were found? F1 combines their balance, but the count expression is the primary definition here. It avoids propagating an undefined precision through a harmonic-mean expression when the count denominator remains meaningful.
+
+This implementation uses **undefined with a reason for every zero denominator**. If there are actual positives but no predicted positives, precision is undefined, recall is zero and F1 is zero. If there are neither actual nor predicted positives, all three are undefined. If actual positives are absent but positive predictions exist, recall is undefined while precision and F1 are zero. Undefined is JSON `null` plus a reason; it is never silently replaced by a favorable score.
+
+## Work the canonical operating point
+
+The same saved score column as III-14 is $[0.9,0.8,0.8,0.4,0.1]^\mathsf T$, with labels $[1,0,1,0,1]^\mathsf T$. These are hand-authored toy values without a seed or calibration claim. At $t=0.5$, counts are $TP=2,FP=1,TN=1,FN=1$, so precision $=2/3$, recall $=2/3$, and $F_1=4/6=2/3$.
+
+At $t=0.81$, counts become $(1,0,2,2)$. Precision rises to one while recall falls to $1/3$ and F1 to $2/(2+0+2)=1/2$. “One metric improved” does not mean the decision is preferable. It depends on the required error tradeoff.
+
+Accuracy is $(TP+TN)/n$. With 99 actual negatives and one actual positive, always predicting negative gives 99% accuracy and zero recall. Precision is undefined. The sheet's **One actual positive** preset gives a smaller inspectable imbalance example; it does not pretend five rows estimate a real population.
+
+## Derive the exact ROC sweep
+
+ROC uses
+
+$$
+TPR=\frac{TP}{TP+FN},\qquad FPR=\frac{FP}{FP+TN}.
+$$
+
+These denominators are the fixed counts of actual positives and actual negatives. Start above every score at $(FPR,TPR)=(0,0)$, then lower the threshold to each distinct stored score in descending order. With the $\ge$ rule, every tied score enters together. A uniform grid of thresholds can miss transitions and produce an inaccurate curve.
+
+| Threshold | TP | FP | TN | FN | FPR | TPR |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Above all (+∞) | 0 | 0 | 2 | 3 | 0 | 0 |
+| 0.9 | 1 | 0 | 2 | 2 | 0 | 1/3 |
+| 0.8 | 2 | 1 | 1 | 1 | 1/2 | 2/3 |
+| 0.4 | 2 | 2 | 0 | 1 | 1 | 2/3 |
+| 0.1 | 3 | 2 | 0 | 0 | 1 | 1 |
+
+There are five points, including the endpoint above all scores. The two score-0.8 examples create one joint move; their order is never an arbitrary ranking tiebreak. The displayed polyline and numeric sweep table derive from the same counts.
+
+## Area is a ranking statistic
+
+Trapezoidal area is
+
+$$
+AUC=\sum_j(FPR_j-FPR_{j-1})\frac{TPR_j+TPR_{j-1}}2.
+$$
+
+For this table it is $1/4+1/3=7/12\approx0.5833333$. Independently, compare every positive score with every negative score: count one for a strictly higher positive score, half for a tie and zero for a lower score. The three positive scores $0.9,0.8,0.1$ earn $2,1.5,0$ wins against negative scores $0.8,0.4$. Dividing $3.5$ by six pairs also gives $7/12$.
+
+This pairwise interpretation checks the sweep without repeating its trapezoid algorithm. AUC summarizes ranking over policies; it does not choose the threshold or establish probability calibration. When either actual class is absent, ROC rates and AUC are undefined with explicit reasons. With all scores tied and both classes present, the diagonal segment has AUC $1/2$.
+
+## Explore and avoid misleading comparisons
+
+Change a selected score and inspect the new distinct thresholds, active counts and AUC. Changing only the current threshold changes precision/recall/F1 and the active point but leaves the entire ROC ranking and AUC unchanged. Changing labels changes both the denominator populations and ranking comparison.
+
+Do not silently map undefined metrics to zero in one table and one in another. Do not compare recall across datasets without stating their label population. Do not assume a high ROC AUC means useful precision at low prevalence; precision depends on the mixture of actual classes. Choose metrics and costs appropriate to the decision, then evaluate on independent data.
+
+## Numerical limits, connections and checkpoints
+
+Exact count arithmetic and distinct-score ordering handle this 1–64-row probability contract. Rates and AUC use binary64 fractions; display rounding does not define ties. Both label classes are needed for a meaningful ROC plane. Keyboard/numeric/touch controls, reset, immutable sweep playback and spoken summaries report the same active policy, including the visible above-all sentinel.
+
+Python `roc` builds the exact score sweep; separate set-count literals and pairwise ranking establish its oracle. Later imbalance/calibration chapters consider dataset prevalence and score meaning. You should be able to name every denominator, justify each undefined state, handle ties without arbitrary ordering and distinguish one threshold's metric from a whole-ranking statistic.
+
+## Execute the actual Python and NumPy
+
+The imported source below is the runnable file used in canonical comparisons. Read the named mechanism from this chapter; the other functions coordinate the same Part experiment. From the book root:
+
+```bash
+.venv/bin/python -B code/python/p02/classification_reference.py
+```
+
+<CodeFile source={reference} file="code/python/p02/classification_reference.py" />
+
+
+## Five graded investigations
+
+<ChoiceExercise id="iii15-1" client:load prompt={"TP=2, FP=1 and FN=1 give which precision, recall and F1?"} choices={[{"label": "All three equal 2/3 in this case.", "correct": true, "feedback": "Their formulas have different meanings but coincidentally yield the same number."}, {"label": "Precision is 1 and recall is 1/3.", "correct": false, "feedback": "Those belong to the higher-threshold counts TP=1,FP=0,FN=2."}]} />
+
+<ChoiceExercise id="iii15-2" client:load prompt={"Actual positives exist but no predictions are positive. What is the policy here?"} choices={[{"label": "Precision undefined; recall and F1 zero.", "correct": true, "feedback": "Precision has denominator zero, while recall and the count-based F1 have nonzero denominators."}, {"label": "All three equal one.", "correct": false, "feedback": "A policy missing every actual positive cannot receive perfect recall or F1."}]} />
+
+<ChoiceExercise id="iii15-3" client:load prompt={"Two examples tie at score 0.8. How do they enter an exact ROC sweep?"} choices={[{"label": "Together in one threshold transition.", "correct": true, "feedback": "The ≥ policy cannot distinguish examples with the same score."}, {"label": "One at a time using row order.", "correct": false, "feedback": "That creates an arbitrary policy not defined by the score threshold."}]} />
+
+<ChoiceExercise id="iii15-4" client:load prompt={"Three positives earn 3.5 wins including half-credit ties over six pairs. What is AUC?"} choices={[{"label": "7/12, approximately 0.5833.", "correct": true, "feedback": "Divide wins by the number of positive-negative pairs."}, {"label": "3.5/5 = 0.7.", "correct": false, "feedback": "The denominator is six cross-class pairs, not the number of examples."}]} />
+
+<ChoiceExercise id="iii15-5" client:load prompt={"Changing only the operating threshold does what to AUC?"} choices={[{"label": "Leaves it unchanged for fixed scores and labels.", "correct": true, "feedback": "AUC summarizes the entire ranking, not the currently selected point."}, {"label": "Always increases it as recall increases.", "correct": false, "feedback": "The active point can move while the ranking curve and its area stay the same."}]} />

@@ -1,0 +1,107 @@
+---
+chapterId: III-12
+title: Regularization
+hero: Expose the price of a coefficient
+lede: Compare Ridge and Lasso on the same observations, inspect their real penalty terms, and choose whether the intercept is penalized.
+description: Compare Ridge and Lasso on the same observations, inspect their real penalty terms, and choose whether the intercept is penalized.
+prerequisites: [VI.3, VI.9, V.10]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import FitStage from '../FitStage';
+import reference from '../../../../code/python/p02/fit_reference.py?raw';
+
+<Stage caption="Change the controls first, then inspect the active equation, numeric rows and shapes. Exact inputs and approximate computed values are distinguished; Reset restores the hand-authored experiment."><FitStage scope="iii12-regularization" mode="regularization" client:load /></Stage>
+
+
+## Watch shrinkage change the actual objective
+
+Switch between L2/Ridge and L1/Lasso and change $\lambda$. The predictions, residuals, coefficients and penalty value update together. The comparison table fits both penalties to the same observations with the same intercept policy. Check **Penalize the intercept** to make that decision explicit; its default is off.
+
+At $\lambda=0$, the penalty disappears and the ordinary least-squares solution returns. Raising $\lambda$ trades fit to these training targets for smaller coefficients. A small training objective does not by itself establish lower evaluation error; the displayed data MSE deliberately excludes the penalty.
+
+## Define the loss, penalty and policy separately
+
+Use augmented design $X=[\mathbf1,x]$, coefficient column $W=[b,w]^\mathsf T$ and data loss $L_{\mathrm{data}}=\|XW-y\|^2/n$. Let $P$ contain the parameter indices to penalize. By default $P$ excludes the intercept.
+
+$$
+J_{L2}(W)=L_{\mathrm{data}}+\lambda\sum_{j\in P}w_j^2,
+\qquad J_{L1}(W)=L_{\mathrm{data}}+\lambda\sum_{j\in P}|w_j|.
+$$
+
+Neither definition has a half factor. Consequently the Ridge gradient contribution is $2\lambda w_j$, whereas the L1 nonzero-coordinate subgradient is $\lambda\operatorname{sign}(w_j)$. At zero, the L1 subgradient is the interval $[-\lambda,\lambda]$. Changing normalization changes the numerical interpretation of $\lambda$.
+
+The intercept shifts the prediction origin. Penalizing it pulls that origin toward zero, so whether it belongs to $P$ is a modeling choice. Excluding it means a constant offset in all targets can move the intercept without incurring a direct penalty.
+
+## Derive both fitting mechanisms
+
+For L2, append synthetic rows to the design. A penalized coefficient gets a row with $\sqrt{n\lambda}$ in its position and target zero. Then
+
+$$
+\frac1n\left\|\begin{bmatrix}X\\\sqrt{n\lambda}D\end{bmatrix}W-
+\begin{bmatrix}y\\0\end{bmatrix}\right\|^2
+=L_{\mathrm{data}}+\lambda\|DW\|^2,
+$$
+
+where $D$ selects penalized coordinates. The rank-aware SVD solves this augmented problem; it never inverts normal equations. Original observations still determine $n$ in the objective, not the number of augmented rows.
+
+For L1, hold all other coefficients fixed and let the partial residual exclude coordinate $j$. Define $\rho=(1/n)\sum_i x_{ij}(y_i-\sum_{k\ne j}x_{ik}w_k)$ and $a=(1/n)\sum_i x_{ij}^2$. Completing the one-coordinate quadratic plus absolute-value penalty yields
+
+$$
+w_j^+=\frac{\operatorname{sign}(\rho)\max(|\rho|-\lambda/2,0)}a
+$$
+
+for a penalized nonzero-design coordinate. An unpenalized coordinate uses threshold zero; an all-zero feature takes representative coefficient zero. Coordinate descent repeats these exact coordinate minimizations. The sheet reports the KKT residual, making an approximate iteration-limited solution distinguishable from a converged one.
+
+## Work an orthogonal two-row example
+
+For inputs $[-1,1]$, targets $[3,7]$ and unpenalized intercept, the data loss is
+
+$$
+L_{\mathrm{data}}=(b-5)^2+(w-2)^2.
+$$
+
+At $\lambda=2$, Ridge gives $b=5,w=2/(1+2)=2/3$. Data MSE is $16/9$, penalty $2(2/3)^2=8/9$, and objective $8/3$. Lasso gives $b=5,w=\operatorname{soft}(2,1)=1$. Its data MSE is $1$, penalty $2$, and objective $3$. L1 can make an exact zero: at $\lambda=4$, $w=0$.
+
+If the intercept is also penalized at $\lambda=2$, Ridge gives $b=5/3$ and Lasso gives $b=4$. These are not the predictions of the default policy. The checkbox changes the objective and recomputes the fit.
+
+The opening five-row data are the hand-authored III-07 observations. Their unpenalized optimum is $b=0.8,w=1.8$. At default $\lambda=0.5$, Ridge gives $w=1.44$ and Lasso $w=1.675$, both with $b=0.8$. Try these numbers in the comparison table. There is no seed or held-out set here.
+
+## KKT, shapes and interpretation
+
+For L1 at a zero penalized coefficient, $|\partial_j L_{\mathrm{data}}|\le\lambda$ is the optimality condition; at nonzero coefficients use $\partial_jL_{\mathrm{data}}+\lambda\operatorname{sign}(w_j)=0$. Unpenalized coordinates require a zero data gradient. L2 uses its smooth total gradient. The maximum violation is the shown KKT residual, with acceptance tolerance $10^{-8}$.
+
+Samples remain rows, $X$ is $n\times2$, $W$ is $2\times1$ and predictions are $n\times1$. Synthetic penalty rows are a solving device, not additional observations or an evaluation dataset. The pure implementation supports up to 64 original rows, including Ridge's internal augmentation.
+
+## Mistakes, limits and connections
+
+Do not compare numerical L1 and L2 objectives as if their penalties were interchangeable units. Do not add a penalty to evaluation MSE. Feature scaling changes what a coefficient magnitude means; standardization learned from training data matters when comparing different feature units.
+
+The sheet accepts $0\le\lambda\le10$. L1 coordinate descent has a 3000-sweep budget and parameter-change threshold $10^{-12}$, but the final KKT check independently decides convergence. Correlated features can slow it; the UI labels a budget-limited approximate solution. Uniqueness is not promised for rank-deficient L1 or zero-penalty designs. Finite arithmetic is validated; overflow preserves the last supported state. NumPy's canonical `regularized` uses these mechanisms; separate analytic shrinkage fixtures, Ridge `lstsq` checks and gradient/KKT tests verify them.
+
+Regularization changes the hypothesis preference, not the observation truth. It connects to Book II's constrained optimization and MAP interpretation; choosing $\lambda$ using held-out evaluation belongs to later chapters. You should be able to write both penalties, account for the intercept policy, derive soft thresholding and distinguish data loss from total objective.
+
+## Execute the actual Python and NumPy
+
+The imported source below is the runnable file used in canonical comparisons. Read the named mechanism from this chapter; the other functions coordinate the same Part experiment. From the book root:
+
+```bash
+.venv/bin/python -B code/python/p02/fit_reference.py
+```
+
+<CodeFile source={reference} file="code/python/p02/fit_reference.py" />
+
+
+## Five graded investigations
+
+<ChoiceExercise id="iii12-1" client:load prompt={"For full MSE plus λw², what is the L2 penalty gradient?"} choices={[{"label": "2λw", "correct": true, "feedback": "The square derivative contributes two; this objective has no half factor."}, {"label": "λw", "correct": false, "feedback": "That belongs to a half-scaled penalty or objective, not the convention here."}]} />
+
+<ChoiceExercise id="iii12-2" client:load prompt={"At λ=2 in (w−2)²+λw², what is the Ridge optimum?"} choices={[{"label": "2/3", "correct": true, "feedback": "Set 2(w−2)+4w=0."}, {"label": "1", "correct": false, "feedback": "One is the Lasso optimum for this example, not Ridge."}]} />
+
+<ChoiceExercise id="iii12-3" client:load prompt={"At λ=2 in (w−2)²+λ|w|, what is the Lasso optimum?"} choices={[{"label": "1", "correct": true, "feedback": "Soft threshold the unpenalized optimum by λ/2=1."}, {"label": "2/3", "correct": false, "feedback": "That is smooth Ridge shrinkage; L1 has a kink and a different optimality condition."}]} />
+
+<ChoiceExercise id="iii12-4" client:load prompt={"What does the default intercept policy do?"} choices={[{"label": "Exclude the intercept from the penalty.", "correct": true, "feedback": "It remains fitted by the data loss; the checkbox explicitly changes that policy."}, {"label": "Fix the intercept to zero.", "correct": false, "feedback": "Unpenalized does not mean unfitted or zero."}]} />
+
+<ChoiceExercise id="iii12-5" client:load prompt={"Which quantity should evaluate predictive squared error on held-out observations?"} choices={[{"label": "Data MSE without the training penalty.", "correct": true, "feedback": "The penalty is part of fitting preference, not an observed prediction error."}, {"label": "MSE plus λ times the parameter penalty.", "correct": false, "feedback": "That mixes model complexity with evaluation residuals and changes the metric."}]} />

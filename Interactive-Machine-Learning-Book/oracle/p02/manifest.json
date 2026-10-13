@@ -1,4 +1,11 @@
 {
-  "selfTests": ["linear_regression_oracle.py", "test_linear_regression.py"],
-  "goldenChecks": ["generate_fixtures.py"]
+  "selfTests": [
+    "linear_regression_oracle.py",
+    "test_linear_regression.py",
+    "test_remainder.py"
+  ],
+  "goldenChecks": [
+    "generate_fixtures.py",
+    "generate_remainder_fixtures.py"
+  ]
 }

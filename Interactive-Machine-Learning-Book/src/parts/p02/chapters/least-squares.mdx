@@ -1,0 +1,112 @@
+---
+chapterId: III-08
+title: Least Squares and the Closed-Form Best Fit
+hero: Find the line the data can identify
+lede: Center the observations, apply the exact scalar best fit, and discover why constant inputs cannot identify a unique slope.
+description: Center the observations, apply the exact scalar best fit, and discover why constant inputs cannot identify a unique slope.
+prerequisites: [II.4, II.18, V.1, V.7]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import FitStage from '../FitStage';
+import reference from '../../../../code/python/p02/fit_reference.py?raw';
+
+<Stage caption="Change the controls first, then inspect the active equation, numeric rows and shapes. Exact inputs and approximate computed values are distinguished; Reset restores the hand-authored experiment."><FitStage scope="iii08-least-squares" mode="least-squares" client:load /></Stage>
+
+
+## Let the observations choose the line
+
+Press **Apply closed-form fit** in the opening sheet. The weight changes from $0.5$ to $1.8$, the bias from $0$ to $0.8$, and the data MSE from $4.1$ to $0.08$. Edit one target and fit again. Every observation influences a single pair of coefficients; there is no private line for each row.
+
+Now press **Set constant x**, then **Apply closed-form fit**. Setting the inputs changes the observations while preserving the current coefficients; applying the fit adopts the horizontal representative. The sheet reports a nonunique-slope explanation. A valid best prediction still exists, even when a unique weight does not. Numeric observation fields work with Enter, arrow keys and touch; Reset restores the original five observations.
+
+## The objective and its stationary conditions
+
+For $n$ scalar inputs, choose an affine predictor and squared vertical residuals:
+
+$$
+\hat y_i=wx_i+b,\quad r_i=\hat y_i-y_i,\quad L(w,b)=\frac1n\sum_i r_i^2.
+$$
+
+This is an optimization objective, not a procedure for finding it. “Least squares” describes what is minimized. A closed-form calculation and gradient descent can solve the same objective. Neither gives a guarantee of generalization to an unseen population.
+
+Differentiating while holding the observations fixed gives
+
+$$
+\partial_bL=\frac2n\sum_i(wx_i+b-y_i)=0,
+\qquad \partial_wL=\frac2n\sum_i x_i(wx_i+b-y_i)=0.
+$$
+
+The first equation implies $b=\bar y-w\bar x$. Substitute it into the second and group centered quantities:
+
+$$
+S_{xx}=\sum_i(x_i-\bar x)^2,\quad S_{xy}=\sum_i(x_i-\bar x)(y_i-\bar y),
+\qquad w_*S_{xx}=S_{xy}.
+$$
+
+When $S_{xx}>0$, the unique result is $w_*=S_{xy}/S_{xx}$ and $b_*=\bar y-w_*\bar x$. Centering removes the intercept from the slope calculation. Geometrically the optimal residual column is orthogonal to both the input column and the column of ones. It is a projection onto the span of those two columns.
+
+## Work the five-row optimum
+
+The original hand-authored inputs are $[-2,-1,0,1,2]$ and targets $[-3,-1,1,3,4]$. There is no random seed, measurement claim or held-out set in this chapter. Here $\bar x=0$, $\bar y=0.8$, $S_{xx}=10$ and $S_{xy}=18$. Thus $w_*=1.8$, $b_*=0.8$.
+
+| x | Target | Optimal prediction | Residual |
+| ---: | ---: | ---: | ---: |
+| -2 | -3 | -2.8 | 0.2 |
+| -1 | -1 | -1 | 0 |
+| 0 | 1 | 0.8 | -0.2 |
+| 1 | 3 | 2.6 | -0.4 |
+| 2 | 4 | 4.4 | 0.4 |
+
+Both $\sum r_i$ and $\sum x_ir_i$ are zero. The squared residual sum is $0.4$, so MSE is $0.4/5=0.08$. A positive optimal training error is expected because the last observation departs from the otherwise exact line $2x+1$.
+
+The active design in this sheet is augmented: $X=[\mathbf1,x]\in\mathbb R^{n\times2}$, $W=[b,w]^\mathsf T\in\mathbb R^{2\times1}$ and $y\in\mathbb R^{n\times1}$. This intercept-first notation is equivalent to III-07's separate scalar bias; it does not alter its predictor or MSE normalization.
+
+## Zero variance is an identification failure
+
+If every input equals $c$, only the combination $wc+b$ is constrained. Its best value is $\bar y$. Every pair satisfying $wc+b=\bar y$ is a minimizer. We choose $w=0,b=\bar y$ as an explicitly labeled horizontal representative, **not** as a unique slope or the minimum norm parameter pair.
+
+For two observations $(2,1)$ and $(2,3)$, both $(w,b)=(0,2)$ and $(1,0)$ predict $2$ and have MSE $1$. A single observation has the same ambiguity. Do not divide $0/0$, invent an identifiable slope, or reject an otherwise meaningful prediction problem.
+
+When every input equals $x_0$, the plot draws the chosen predictor over $[x_0-1,x_0+1]$ so the line remains visible beyond the overlapping prediction markers. These are points on the displayed function, not additional observations or evidence identifying a slope. With a nonzero observed span, the drawing extends $0.15$ beyond each observed endpoint.
+
+## Explore the assumptions
+
+Fit, then edit one target without fitting again. The current line and current MSE reflect your displayed coefficients; “optimal data MSE” belongs to the newly computed optimum. Press fit to adopt it. Editing the data and optimizing the coefficients are different actions.
+
+Change only one input away from a constant-input dataset and refit. The slope becomes identifiable, but a tiny input spread can make it extremely sensitive to target errors. A unique answer can still be poorly conditioned. Extrapolating far beyond the observed inputs magnifies that sensitivity.
+
+<Callout title="A stable formula still has a numeric boundary" kind="numerical">
+Centered sums avoid subtracting two large uncentered second moments, but binary64 products or residual squares can still overflow. Unequal inputs whose variance underflows are reported as numerically unresolved, not declared mathematically constant. The sheet bounds editable observations to −5…5; its pure kernel validates broader finite inputs.
+</Callout>
+
+## Connections and checkpoints
+
+Least-squares geometry comes from Book II's orthogonal projection. III-09 solves this same objective iteratively, and III-10 replaces the scalar slope division with a rank-aware design solve. In the canonical Python, `closed_form` uses centered NumPy columns. A separate Fraction oracle eliminates the intercept through pair differences and independently confirms the optimum. Computed values are approximate displays; exact input text and underlying coefficients retain binary64 precision.
+
+You should now be able to derive the scalar optimum, check residual orthogonality, distinguish current coefficients from the best fit, and explain why zero variance identifies predictions but not a unique slope.
+
+## Execute the actual Python and NumPy
+
+The imported source below is the runnable file used in canonical comparisons. Read the named mechanism from this chapter; the other functions coordinate the same Part experiment. From the book root:
+
+```bash
+.venv/bin/python -B code/python/p02/fit_reference.py
+```
+
+<CodeFile source={reference} file="code/python/p02/fit_reference.py" />
+
+
+## Five graded investigations
+
+<ChoiceExercise id="iii08-1" client:load prompt={"With Sxx = 10 and Sxy = 18, what is the optimal slope?"} choices={[{"label": "1.8", "correct": true, "feedback": "Divide the centered cross sum by the centered input-square sum."}, {"label": "0.5556", "correct": false, "feedback": "That reverses the quotient; the slope is Sxy / Sxx."}]} />
+
+<ChoiceExercise id="iii08-2" client:load prompt={"For mean x = 0, mean y = 0.8 and slope 1.8, what is the intercept?"} choices={[{"label": "0.8", "correct": true, "feedback": "The fitted line passes through (mean x, mean y)."}, {"label": "1.8", "correct": false, "feedback": "The slope is not the intercept; b = mean y − w mean x."}]} />
+
+<ChoiceExercise id="iii08-3" client:load prompt={"All inputs equal 2 and mean target is 2. Which statement is correct?"} choices={[{"label": "Any pair with 2w + b = 2 minimizes the loss.", "correct": true, "feedback": "Only the shared prediction at x=2 is identifiable."}, {"label": "The only best pair is w=0, b=2.", "correct": false, "feedback": "That is our horizontal representative; w=1,b=0 has the same predictions."}]} />
+
+<ChoiceExercise id="iii08-4" client:load prompt={"Optimal squared errors sum to 0.4 over five observations. What is MSE?"} choices={[{"label": "0.08", "correct": true, "feedback": "This objective divides by n and has no half factor."}, {"label": "0.4", "correct": false, "feedback": "That is a squared-error sum, not its mean."}]} />
+
+<ChoiceExercise id="iii08-5" client:load prompt={"Does a closed-form training optimum establish low error on new data?"} choices={[{"label": "No; unseen-data error needs separate evaluation.", "correct": true, "feedback": "Optimization and generalization answer different questions."}, {"label": "Yes; the unique slope guarantees it.", "correct": false, "feedback": "Uniqueness identifies coefficients for these observations, not a future population."}]} />

@@ -1,0 +1,95 @@
+---
+chapterId: III-11
+title: Polynomial Features
+hero: Change the features and watch held-out error
+lede: Raise polynomial degree, fit only training rows, and compare exact interpolation with error on five untouched held-out inputs.
+description: Raise polynomial degree, fit only training rows, and compare exact interpolation with error on five untouched held-out inputs.
+prerequisites: [I.6, II.9, VI.3]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import FitStage from '../FitStage';
+import reference from '../../../../code/python/p02/fit_reference.py?raw';
+
+<Stage caption="Change the controls first, then inspect the active equation, numeric rows and shapes. Exact inputs and approximate computed values are distinguished; Reset restores the hand-authored experiment."><FitStage scope="iii11-polynomial" mode="polynomial" client:load /></Stage>
+
+
+## Increase capacity without moving the held-out targets
+
+Move the degree slider from one to two to five. The curve changes because the design acquires columns $x^2,x^3,\ldots$; the solve remains linear least squares in its coefficients. Circles are noisy training observations. Squares are five held-out observations never used to fit the coefficients. Diamonds show each prediction, including held-out predictions.
+
+At degree five, six coefficients can interpolate six distinct training inputs. Training MSE becomes essentially zero, yet held-out error rises above the quadratic fit. Inspect both values before choosing the degree. Editing a training target recomputes the fit; it never rewrites the held-out target column.
+
+## Define a feature map, not a nonlinear parameter solve
+
+For degree $q$, use
+
+$$
+\phi(x)=[1,x,x^2,\ldots,x^q],\quad W=[b,w_1,\ldots,w_q]^\mathsf T,
+\quad \hat y=\phi(x)W.
+$$
+
+The curve is nonlinear in $x$ when $q>1$, but linear in the learned coefficients. For $n$ observations, $X_{ij}=x_i^j$ has shape $n\times(q+1)$, $W$ is $(q+1)\times1$, and targets/predictions are $n\times1$. Column zero is the intercept. The sheet exposes each actual feature row, not just a smooth curve.
+
+Holding $X$ fixed, the derivation is unchanged: $\nabla_W L=(2/n)X^\mathsf T(XW-y)$. We use the rank-aware SVD solve from III-10. No inverse normal equations or iterative nonlinear fitting is introduced by taking powers of the inputs.
+
+## Work the hand-authored training and held-out split
+
+Training inputs are $[-1,-0.6,-0.2,0.2,0.6,1]$ with targets $[1.1,0.46,0,0.16,0.26,1.2]$. They were deliberately authored near $x^2$, with visible deviations. Held-out inputs are $[-0.8,-0.4,0,0.4,0.8]$ with exact illustrative targets $[0.64,0.16,0,0.16,0.64]$. Neither set is measured or randomly generated; there is no seed.
+
+At $x=-0.6$, a quadratic feature row is $[1,-0.6,0.36]$. The fitted quadratic coefficients are approximately $[0.001875,0.0042857143,1.1316964286]^\mathsf T$. At the held-out input $x=0$, the row is $[1,0,0]$, so the prediction is the intercept $0.001875$ while the held-out target is zero.
+
+| Degree | Training MSE | Held-out MSE |
+| ---: | ---: | ---: |
+| 1 | ≈ 0.2115581 | ≈ 0.1157859 |
+| 2 | ≈ 0.0075510 | ≈ 0.0031867 |
+| 5 | Near zero in binary64 | ≈ 0.0241152 |
+
+These values come from distinct robust NumPy `lstsq` expectations. They illustrate this dataset, not a universal guarantee that degree two wins. The six distinct training inputs give a full-rank degree-five Vandermonde design; its interpolation is expected. Perturb a target and observe how the degree-five curve responds between observations.
+
+## Capacity and evaluation answer different questions
+
+Adding columns expands the representable prediction space, so the mathematical least-squares training optimum cannot get worse when the previous design is contained in the next. In finite precision, numerical rank truncation can disturb strict monotonicity. Neither statement promises monotonically improving held-out error.
+
+Training loss measures the fit to rows that chose the coefficients. Held-out MSE measures errors on untouched rows. Using this held-out set repeatedly to select degree makes it a validation set; it should not then be advertised as an untouched final test. A future test set belongs to a separate evaluation step.
+
+## Explore the feature mechanism
+
+Try degree one and inspect that its design has only $[1,x]$. Set degree two and confirm that negative inputs yield positive square features. Change one training input without changing its target, then compare the feature row, rank, fitted coefficients and held-out predictions. Reset before comparing the table above.
+
+The slider is pointer/touch operable; the degree numeric field accepts integer Enter and arrows. Noninteger degrees are rejected with a reason. All prediction geometry comes from the selected fitted coefficient column and actual feature map. The plot uses a single x/y coordinate scale and expands its domain as needed; it does not clip a large coefficient into a plausible curve.
+
+## Mistakes and numerical limits
+
+Do not call the coefficients nonlinear merely because powers appear in the features. Do not compare training MSE at one degree with held-out MSE at another and pretend they are the same measurement. Do not fit or scale features using evaluation targets.
+
+Raw powers become badly conditioned for high degree or large input magnitudes. This sheet supports degrees one through five and training inputs in $[-1,1]$; its hand-authored example needs no fitted scaling step. A repeated input can reduce rank. The SVD cutoff $10^{-10}\sigma_{\max}$ is visible; near-cutoff directions may be discarded. Powers, products and outputs must remain finite, and failures do not return invented predictions. Scientific notation distinguishes tiny computed losses from an exact zero.
+
+## Connections and checkpoints
+
+Feature construction changes the hypothesis space while matrix regression stays the same. III-12 adds penalties to constrain coefficients; later evaluation chapters discuss selecting degree using independent data. In Python, `polynomial_design` and `polynomial_fit` expose every power and exclude held-out rows from the solve. You should be able to build a feature row, state the shapes, and explain why interpolation can coexist with worse held-out prediction.
+
+## Execute the actual Python and NumPy
+
+The imported source below is the runnable file used in canonical comparisons. Read the named mechanism from this chapter; the other functions coordinate the same Part experiment. From the book root:
+
+```bash
+.venv/bin/python -B code/python/p02/fit_reference.py
+```
+
+<CodeFile source={reference} file="code/python/p02/fit_reference.py" />
+
+
+## Five graded investigations
+
+<ChoiceExercise id="iii11-1" client:load prompt={"What is the quadratic feature row at x=−0.6?"} choices={[{"label": "[1,−0.6,0.36]", "correct": true, "feedback": "The intercept is one and the square of a negative input is positive."}, {"label": "[1,−0.6,−0.36]", "correct": false, "feedback": "Squaring removes the sign; this is not another copy of x."}]} />
+
+<ChoiceExercise id="iii11-2" client:load prompt={"Is yhat=b+w1x+w2x² linear in learned parameters?"} choices={[{"label": "Yes; each parameter multiplies a fixed feature.", "correct": true, "feedback": "For fixed x, prediction is a dot product with W."}, {"label": "No; any polynomial requires nonlinear parameter optimization.", "correct": false, "feedback": "The predictor is nonlinear in the input, not in its coefficients."}]} />
+
+<ChoiceExercise id="iii11-3" client:load prompt={"What are the degree-five design and coefficient shapes for six samples?"} choices={[{"label": "6×6 and 6×1.", "correct": true, "feedback": "There are five powers plus the intercept column."}, {"label": "6×5 and 5×1.", "correct": false, "feedback": "The constant feature contributes the sixth coefficient."}]} />
+
+<ChoiceExercise id="iii11-4" client:load prompt={"Why is the degree-five near-zero training loss not enough to choose it?"} choices={[{"label": "Its held-out MSE is worse here than degree two.", "correct": true, "feedback": "Interpolation measures fitting capacity, not unseen-data performance."}, {"label": "Training and held-out MSE are necessarily identical.", "correct": false, "feedback": "They use different observations, and only training rows determine coefficients."}]} />
+
+<ChoiceExercise id="iii11-5" client:load prompt={"After repeatedly choosing degree using the held-out set, what role does that set have?"} choices={[{"label": "Validation data; a final test should remain separate.", "correct": true, "feedback": "Model selection has used its outcomes."}, {"label": "An untouched final test forever.", "correct": false, "feedback": "Using the error to select degree consumes the set for model selection."}]} />

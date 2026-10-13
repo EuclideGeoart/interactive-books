@@ -1,4 +1,45 @@
 {
   "part": "p02",
-  "chapters": [{ "id": "III-07", "slug": "linear-regression" }]
+  "chapters": [
+    {
+      "id": "III-07",
+      "slug": "linear-regression"
+    },
+    {
+      "id": "III-08",
+      "slug": "least-squares"
+    },
+    {
+      "id": "III-09",
+      "slug": "regression-gradient-descent"
+    },
+    {
+      "id": "III-10",
+      "slug": "multiple-linear-regression"
+    },
+    {
+      "id": "III-11",
+      "slug": "polynomial-features"
+    },
+    {
+      "id": "III-12",
+      "slug": "regularization"
+    },
+    {
+      "id": "III-13",
+      "slug": "logistic-regression"
+    },
+    {
+      "id": "III-14",
+      "slug": "thresholds-confusion"
+    },
+    {
+      "id": "III-15",
+      "slug": "precision-recall-roc"
+    },
+    {
+      "id": "III-16",
+      "slug": "softmax-regression"
+    }
+  ]
 }
