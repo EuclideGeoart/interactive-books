@@ -1,6 +1,6 @@
 # P02 III-08–16 source handoff
 
-2026-10-13 · Agent 2 · recommendation **ACCEPT WITH LIMITATIONS for source handoff**. Publication acceptance and freeze remain the independent integrator's decision. All nine assigned chapters are authored and committed. The first integrator focused run passed type/content, unit, oracle, root/subpath production and audit gates, then failed browser collection before any case ran. The Part-owned JSON import correction is committed for an independent rerun; browser/visual acceptance remains pending.
+2026-10-13 · Agent 2 · recommendation **ACCEPT WITH LIMITATIONS for source handoff**. Publication acceptance and freeze remain the independent integrator's decision. All nine assigned chapters are authored and committed. The first integrator focused run passed type/content, unit, oracle, root/subpath production and audit gates, then failed browser collection before any case ran. The Part-owned JSON import and recurring-test ownership corrections are committed for an independent rerun; browser/visual acceptance remains pending.
 
 ## Integrator focused result and collection correction
 
@@ -9,6 +9,14 @@ The integration owner ran `npm run validate:focused -- --part p02` under the sha
 Root browser validation failed at module collection with **zero browser cases executed**: Node 24/Playwright ESM required `type: json` for the remainder fixture import. The ninth gate (subpath browser validation) was not reached. The failed raw log `artifacts/integrator-browser-collection-failure.log` and failed manifest are preserved unchanged.
 
 Correction: only `tests/e2e/p02/remainder.spec.ts` adds `with { type: 'json' }` to its fixture import. This report records the failure/correction; all mathematical source, fixtures, reference files and shared files remain untouched. A small native Node JSON-import smoke check passed; Playwright collection/browser execution and the complete focused rerun remain with the integrator. The correction commit SHA is returned in the accompanying handoff. No author heavy job was started.
+
+## Recurring unit integration correction
+
+Independent reviewer Avicenna identified a P1 integration blocker in `tests/unit/p02/remainder-lessons.test.ts`: the recurring test compared the entire repository Git diff and untracked files against `8157b7af`, then required every path to be p02-owned. An authorized P01 merge or integrator acceptance-document change would incorrectly fail a combined milestone. One-time exact branch-diff ownership verification belongs to the integrator handoff check, which already verified the 29 owned paths.
+
+The correction removes only that unscoped history/untracked assertion and its now-unused `execFileSync` import. The recurring tests retain all 13 frozen source hashes, p02 manifest/reference registrations, required oracle entries and every numerical/MDX/SSR assertion. The previously accepted JSON import attribute from `c51809ffc5f39bb978e9094453672a217f00e51e` remains unchanged. No model, fixture, reference or shared file changed.
+
+Actual lightweight validation after this correction: `node node_modules/vitest/vitest.mjs run tests/unit/p02/remainder-lessons.test.ts --maxWorkers=1` passed **24 tests in one file**. No author heavy job ran; the integrator focused rerun and browser results remain pending. The correction source SHA is returned in the accompanying handoff.
 
 ## Identity and ownership
 
