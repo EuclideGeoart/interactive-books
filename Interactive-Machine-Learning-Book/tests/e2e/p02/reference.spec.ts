@@ -158,6 +158,30 @@ test('keyboard and pointer edits share actual sample state and announce only at 
   await expect(root.locator('[data-announcement]')).toContainText('Drag finished. Sample s3, x 0.5, target 1.5');
 });
 
+test('reset during a held drag keeps release and cancel announcements on the authoritative state', async ({ page }) => {
+  const root = await open(page);
+  const handle = root.locator('[data-sample-id="s1"]');
+  const reset = root.getByRole('button', { name: 'Reset experiment' });
+  for (const ending of ['release', 'cancel']) {
+    await reset.click();
+    await handle.scrollIntoViewIfNeeded();
+    const plot = (await root.locator('[data-plane]').boundingBox())!;
+    const screen = (x: number, y: number) => ({ x: plot.x + (320 + 44 * x) * plot.width / 640, y: plot.y + (320 - 44 * y) * plot.height / 640 });
+    const start = screen(-2, -3), end = screen(-1, -3);
+    await page.mouse.move(start.x, start.y); await page.mouse.down(); await page.mouse.move(end.x, end.y, { steps: 5 });
+    await expect(handle).toHaveAttribute('data-x', '-1');
+    await reset.focus(); await reset.press('Enter');
+    const announcement = await root.locator('[data-announcement]').textContent();
+    expect(announcement).toContain('Reset. Sample s1, x -2, target -3');
+    expect(announcement).toContain('Mean squared error approximately 4.1');
+    if (ending === 'cancel') await handle.dispatchEvent('pointercancel', { pointerId: 1 });
+    await page.mouse.up();
+    expect(await root.locator('[data-announcement]').textContent()).toBe(announcement);
+    const state = await parity(page, root);
+    expect(state.mse).toBeCloseTo(4.1, 12); expect(state.rows[0]!.x).toBe(-2);
+  }
+});
+
 test('every replay frame drives controls, plot, table, formulas and inspector; editing starts there', async ({ page }) => {
   const root = await open(page);
   await root.getByRole('button', { name: 'Replay 3 updates' }).click();

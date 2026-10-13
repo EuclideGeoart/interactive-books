@@ -1,0 +1,53 @@
+
+> interactive-machine-learning@0.1.0 validate:milestone
+> node scripts/validate.mjs milestone
+
+Running: Type/content check
+16:26:01 [content] Syncing content
+16:26:01 [content] Astro config changed
+16:26:01 [content] Clearing content store
+16:26:01 [content] Synced content
+16:26:01 [types] Generated 304ms
+16:26:01 [check] Getting diagnostics for Astro files in /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-foundation/Interactive-Machine-Learning-Book...
+Result (46 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+
+Running: Unit and parity tests
+
+ RUN  v3.2.7 /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-foundation/Interactive-Machine-Learning-Book
+
+ ✓ tests/unit/p02/linear-regression-lesson.test.ts (9 tests) 53ms
+ ✓ tests/unit/platform/validation.test.ts (4 tests) 131ms
+ ✓ tests/unit/p02/linear-regression.test.ts (31 tests) 62ms
+ ✓ tests/unit/platform/contracts.test.ts (8 tests) 10ms
+ ❯ tests/unit/platform/reference-freeze.test.ts (1 test | 1 failed) 7ms
+   × preserves the frozen reference while Parts extend their own manifests 6ms
+     → src/parts/p02/RegressionStage.tsx: expected '10796c9a76f8fb0eb8e4b709aa451ca6c3a8f…' to be '66ebd77230f5111e0e2ee2086e25403283ae1…' // Object.is equality
+ ✓ tests/unit/platform/regression-independent.test.ts (3 tests) 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/platform/reference-freeze.test.ts > preserves the frozen reference while Parts extend their own manifests
+AssertionError: src/parts/p02/RegressionStage.tsx: expected '10796c9a76f8fb0eb8e4b709aa451ca6c3a8f…' to be '66ebd77230f5111e0e2ee2086e25403283ae1…' // Object.is equality
+
+Expected: "66ebd77230f5111e0e2ee2086e25403283ae13d908dac5d938439ed570757a0b"
+Received: "10796c9a76f8fb0eb8e4b709aa451ca6c3a8f313064a85298c3d4eeef2fbfcc0"
+
+ ❯ tests/unit/platform/reference-freeze.test.ts:8:139
+      6| 
+      7| it('preserves the frozen reference while Parts extend their own manife…
+      8|   for (const [file, hash] of Object.entries(footprint.files)) expect(c…
+       |                                                                                                                                           ^
+      9|   expect(findChapter('III-07')?.slug).toBe(footprint.chapter.slug);
+     10|   const manifest = JSON.parse(readFileSync('oracle/p02/manifest.json',…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 5 passed (6)
+      Tests  1 failed | 55 passed (56)
+   Start at  16:26:04
+   Duration  678ms (transform 152ms, setup 0ms, collect 273ms, tests 266ms, environment 1ms, prepare 244ms)
+

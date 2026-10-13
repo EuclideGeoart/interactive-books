@@ -1,12 +1,12 @@
 {
   "mode": "milestone",
   "part": "all",
-  "sourceSignature": "076761633d0b288836aa4ee156969126ec12b0f15f6e6bfd3534b2edbb6a0ad5",
+  "sourceSignature": "2d6c3d28e5dcc622510d7b246731212eda267a170ae4060518488017d52b05b6",
   "chapters": [
     "III-07"
   ],
-  "started": "2026-10-13T14:12:15.289Z",
-  "finished": "2026-10-13T14:13:26.619Z",
+  "started": "2026-10-13T14:26:30.583Z",
+  "finished": "2026-10-13T14:27:43.624Z",
   "complete": true,
   "results": [
     {
@@ -16,7 +16,7 @@
         "check"
       ],
       "exitCode": 0,
-      "seconds": 3.58,
+      "seconds": 3.679,
       "sourceUnchanged": true
     },
     {
@@ -27,7 +27,7 @@
         "--maxWorkers=2"
       ],
       "exitCode": 0,
-      "seconds": 0.855,
+      "seconds": 0.829,
       "sourceUnchanged": true
     },
     {
@@ -36,7 +36,7 @@
         "scripts/run-oracle.mjs"
       ],
       "exitCode": 0,
-      "seconds": 0.598,
+      "seconds": 0.51,
       "sourceUnchanged": true
     },
     {
@@ -47,7 +47,7 @@
         "dist"
       ],
       "exitCode": 0,
-      "seconds": 2.649,
+      "seconds": 2.629,
       "sourceUnchanged": true
     },
     {
@@ -58,7 +58,7 @@
         "dist-subpath"
       ],
       "exitCode": 0,
-      "seconds": 2.562,
+      "seconds": 2.627,
       "sourceUnchanged": true
     },
     {
@@ -69,7 +69,7 @@
         "/"
       ],
       "exitCode": 0,
-      "seconds": 0.1,
+      "seconds": 0.12,
       "sourceUnchanged": true
     },
     {
@@ -80,7 +80,7 @@
         "/machine-learning/"
       ],
       "exitCode": 0,
-      "seconds": 0.101,
+      "seconds": 0.097,
       "sourceUnchanged": true
     },
     {
@@ -90,7 +90,7 @@
         "playwright.config.ts"
       ],
       "exitCode": 0,
-      "seconds": 30.105,
+      "seconds": 31.445,
       "sourceUnchanged": true
     },
     {
@@ -100,7 +100,7 @@
         "playwright.subpath.config.ts"
       ],
       "exitCode": 0,
-      "seconds": 30.779,
+      "seconds": 31.102,
       "sourceUnchanged": true
     }
   ]

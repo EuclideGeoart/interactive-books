@@ -44,6 +44,7 @@ function RegressionExperiment() {
   }
   function accept(state: RegressionState, update = false, speak = true, sampleId = selected.id) {
     const value = deriveRegressionLesson(state, plotWidth);
+    if (speak) dragResult.current = null;
     const changed = state.weight !== active.state.weight || state.bias !== active.state.bias ||
       state.learningRate !== active.state.learningRate || state.samples.some((sample, i) =>
         sample.x !== active.state.samples[i]!.x || sample.y !== active.state.samples[i]!.y);
@@ -61,6 +62,7 @@ function RegressionExperiment() {
     catch (error) { reject(error instanceof Error ? error.message : 'This change cannot be represented. State preserved.'); }
   }
   function reset() {
+    dragResult.current = null;
     lesson.reset(); setFrames(null); setIndex(0); setUpdates(0); select('s1'); reject('');
     reviseControls(controlRevision + 1);
     announceResult(deriveRegressionLesson(CANONICAL_REGRESSION, plotWidth), 's1', 'Reset. ');
@@ -69,6 +71,7 @@ function RegressionExperiment() {
     attempt(() => {
       const trace = regressionTrace(active.state, 3);
       for (const frame of trace) deriveRegressionLesson(frame.state, plotWidth);
+      dragResult.current = null;
       setFrames(trace); setIndex(0); setTraceOrigin(updates); lesson.set(trace[0]!.state); reject('');
       reviseControls(controlRevision + 1);
       announceResult(active, selected.id, 'Replay frame 1 of 4. ');
@@ -77,6 +80,7 @@ function RegressionExperiment() {
   function seek(next: number) {
     const frame = frames?.[next];
     if (!frame) return;
+    dragResult.current = null;
     lesson.set(frame.state); setIndex(next); setUpdates(traceOrigin + next); reject('');
     reviseControls(controlRevision + 1);
     announceResult(deriveRegressionLesson(frame.state, plotWidth), selected.id, `Replay frame ${next + 1} of ${frames!.length}. `);
