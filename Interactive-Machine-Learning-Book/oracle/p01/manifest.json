@@ -1,0 +1,10 @@
+{
+  "selfTests": [
+    "arithmetic_oracle.py",
+    "test_foundations.py",
+    "capacity_counterexample.py"
+  ],
+  "goldenChecks": [
+    "generate_fixtures.py"
+  ]
+}

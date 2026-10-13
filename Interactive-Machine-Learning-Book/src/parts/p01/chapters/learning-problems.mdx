@@ -1,0 +1,104 @@
+---
+chapterId: III-03
+title: Learning Problems
+hero: Choose the task from what the answer means
+lede: The same numeric target codes can describe categories or measurements. Inspect the goal before naming the algorithm.
+description: Decide supervised regression, supervised classification and unsupervised exploration using explicit tiny datasets and semantic target counterexamples.
+prerequisites: ["I.5", "I.7", "IV.7"]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import TaskStage from '../TaskStage';
+import FoundationExercises from '../FoundationExercises';
+import reference from '../../../../code/python/p01/learning_problems.py?raw';
+import { href } from '../../../shell/href';
+
+<Stage caption="Select one of six goals, inspect its observed features and targets, and choose the learning task. Feedback follows the goal and target semantics rather than the storage dtype.">
+  <TaskStage client:load scope="p01-task-decisions" />
+</Stage>
+
+## What would count as a correct answer?
+
+A predicted sale price is an amount. A predicted spam label is a category. A grouping of customers is a discovered structure. All three can use numerical features, but they ask for different kinds of outputs and require different evaluation criteria.
+
+A supervised problem uses observed targets to judge predictions. Regression predicts a numerical quantity, such as price or a measured proportion. Classification predicts a category, such as spam or ordinary mail. Unsupervised exploration searches for structure using inputs without a target used by that goal. It still needs an objective: grouping nearby feature vectors is one possible goal, not the definition of every unsupervised method.
+
+These names describe a problem and information flow. They do not prescribe a particular algorithm, guarantee quality, or establish that an input causes an output.
+
+## State the problem before choosing a method
+
+For supervised learning, the observed dataset can be written
+
+$
+D=\{(\mathbf{x}_i,y_i)\}_{i=1}^{n},
+\qquad \hat y_i=f_\theta(\mathbf{x}_i).
+$
+
+A regression target belongs to a numerical measurement space with meaningful differences. For classification, $y_i\in\mathcal C$, where $\mathcal C$ is a set of category identifiers. A classification model may compute numeric scores or probabilities internally, but its category labels are not measured quantities merely because they have numeric codes.
+
+For an unsupervised grouping goal, write $D_X=\{\mathbf{x}_i\}_{i=1}^n$. A method might return group assignments $g_i$ and representative group centers. There is no supplied supervised $y_i$ against which a signed regression residual is automatically meaningful.
+
+The sheet’s decision rule is explicit:
+
+1. Does this goal use an observed target? If no, the demonstrated goal is unsupervised.
+2. If yes, does that target denote a category? Then the task is classification.
+3. If it denotes a measured amount, the task is regression.
+
+This is a rule for the six declared examples. Structured outputs, self-supervised objectives and reinforcement learning need richer descriptions than these introductory branches.
+
+## Work the numeric-code counterexample
+
+Two scenarios deliberately use the same feature matrix
+
+$
+X=\begin{bmatrix}1&2\\3&0\\2&1\end{bmatrix}\in\mathbb R^{3\times2}.
+$
+
+In one scenario, targets $[0,1,0]^{\mathsf T}$ are two category identifiers. The goal is classification. Replacing code $0$ with the name ordinary and code $1$ with spam changes the encoding, not the task.
+
+In another, targets $[0,0.4,1]^{\mathsf T}$ measure a fraction of time in sunlight. Differences have quantitative meaning and intermediate values are valid: the goal is regression.
+
+For a regression prediction $0.6$ against measurement $0.4$, the residual is $0.2$ and squared error is $0.04$. For a category coded $1$ against category coded $0$, the numeric difference is not inherently a physical prediction error. A third category could be coded $100$ without becoming one hundred times farther from the first. Choosing a suitable classification loss belongs to later chapters.
+
+## Labels can exist without being used by the goal
+
+The “explore features without using labels” scenario records labels a, a and b, but its specified goal groups rows using only features. This goal is unsupervised. The labels are displayed as recorded metadata, while the inspector correctly marks a target used by this goal as absent.
+
+One file can support several different learning questions. Predicting its labels would use supervision; exploring feature clusters while ignoring those labels would not. Inspecting labels repeatedly to tune the grouping would change that information boundary and should be disclosed as part of the procedure.
+
+<Callout title="Unsupervised does not mean untestable" kind="misconception">
+A grouping can be evaluated for stability, utility or an explicit geometric objective. What is absent is the supplied supervised answer for each row, not every possible criterion. A visually pleasing cluster is not automatically a scientifically meaningful category.
+</Callout>
+
+## Execute the actual decision reference
+
+The imported Python creates NumPy feature arrays and an observed target column only when the stated goal uses it. The decision branches depend on declared semantic type, not a dtype heuristic. Run <code>.venv/bin/python -B code/python/p01/learning_problems.py</code> to see all six correct decisions and their shapes.
+
+<CodeFile source={reference} file="code/python/p01/learning_problems.py" />
+
+An independent literal truth table checks sale price and sunlight proportion as regression; named and numeric-coded categories as classification; and both unlabelled and deliberately label-ignoring grouping goals as unsupervised. These discrete checks use exact comparisons rather than a floating-point tolerance.
+
+## Explore the consequences of the goal
+
+Select the coded-category scenario and choose regression. Read the corrective reason, then choose classification. Switch to the measured proportion while keeping the same feature shape: which interpretation must change?
+
+Compare the customer-grouping scenario with the label-ignoring scenario. Both have $X$ of shape $3\times2$ and no supervised target used by the goal. One has no recorded labels; the other deliberately excludes them. The distinction matters for provenance even when the selected task name is the same.
+
+Reset returns the price problem and an initial incorrect choice to invite a fresh decision. No classifier or clustering engine runs in this interaction; it is a problem-specification experiment with observable inputs and graded semantic feedback.
+
+## Limits and common mistakes
+
+A numeric dtype cannot decide between regression and classification. A binary target is not always a category; a real-valued array is not always a measurement. Conversely, categorical inputs do not make an output task classification. Input representation and target semantics are separate decisions.
+
+The six datasets are explicit hand-authored counterexamples. Their tiny size supplies no evidence of generalization, group quality or fairness. Units are stated in the scenario’s goal; the feature table is an illustrative representation, not a complete production schema.
+
+Problem choice also determines evaluation. Regression may use squared error; classification may use accuracy or probability-sensitive metrics; grouping may use a geometric or external utility criterion. The loss optimized during fitting need not be the only evaluation metric. We next separate the data used for fitting, choosing and finally evaluating a procedure in <a href={href('/chapters/training-validation-testing/')}>III-04</a>.
+
+## Check your understanding
+
+<FoundationExercises client:load chapter="III-03" />
+
+## Checkpoints
+
+You can state whether the goal uses supervision, decide whether its target is an amount or a category, and explain why target codes alone are insufficient. A learning problem starts with meaning and available information; array storage follows that specification.

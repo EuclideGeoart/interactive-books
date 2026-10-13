@@ -1,0 +1,901 @@
+
+> interactive-machine-learning@0.1.0 validate:focused
+> node scripts/validate.mjs focused --part p01
+
+Running: Type/content check
+18:28:47 [content] Syncing content
+18:28:47 [content] Synced content
+18:28:47 [types] Generated 342ms
+18:28:47 [check] Getting diagnostics for Astro files in /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book...
+Result (62 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+
+Running: Unit and parity tests
+
+ RUN  v3.2.7 /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book
+
+ ✓ tests/unit/p01/foundations.test.ts (24 tests) 202ms
+ ✓ tests/unit/platform/contracts.test.ts (9 tests) 6ms
+ ✓ tests/unit/p01/lesson.test.ts (13 tests) 306ms
+ ✓ tests/unit/platform/regression-independent.test.ts (3 tests) 3ms
+ ✓ tests/unit/platform/validation.test.ts (4 tests) 115ms
+ ✓ tests/unit/platform/reference-freeze.test.ts (1 test) 3ms
+
+ Test Files  6 passed (6)
+      Tests  54 passed (54)
+   Start at  18:28:50
+   Duration  949ms (transform 250ms, setup 0ms, collect 520ms, tests 635ms, environment 1ms, prepare 203ms)
+
+Running: Independent oracles and freshness
+arithmetic oracle: 9 literal assertions passed
+.................
+----------------------------------------------------------------------
+Ran 17 tests in 1.016s
+
+OK
+capacity counterexample: 4 assertions passed
+P01 golden check: foundations.json current
+Independent oracle commands passed: 4 across 1 Part(s).
+Running: Root production and offline bundle
+18:28:54 [content] Syncing content
+18:28:54 [content] Synced content
+18:28:54 [types] Generated 296ms
+18:28:54 [build] output: "static"
+18:28:54 [build] mode: "static"
+18:28:54 [build] directory: /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/dist/
+18:28:54 [build] Collecting build info...
+18:28:54 [build] ✓ Completed in 316ms.
+18:28:54 [build] Building static entrypoints...
+18:28:55 [vite] ✓ built in 1.68s
+18:28:55 [build] ✓ Completed in 1.71s.
+
+ building client (vite) 
+18:28:55 [vite] transforming...
+18:28:56 [vite] ✓ 40 modules transformed.
+18:28:56 [vite] rendering chunks...
+18:28:56 [vite] computing gzip size...
+18:28:56 [vite] dist/_astro/jsxRuntime.module.DLa4fAYi.js           0.42 kB │ gzip:  0.30 kB
+18:28:56 [vite] dist/_astro/ChoiceExercise.Bca9LHiu.js              0.67 kB │ gzip:  0.45 kB
+18:28:56 [vite] dist/_astro/NumberField.C5J2vK-J.js                 1.07 kB │ gzip:  0.69 kB
+18:28:56 [vite] dist/_astro/client.CGMsMmoA.js                      2.29 kB │ gzip:  1.24 kB
+18:28:56 [vite] dist/_astro/TaskStage.Bi7lYuJY.js                   2.58 kB │ gzip:  1.09 kB
+18:28:56 [vite] dist/_astro/MembershipBoard.BZlD8opX.js             2.79 kB │ gzip:  1.28 kB
+18:28:56 [vite] dist/_astro/hooks.module.C1GxTNnt.js                3.03 kB │ gzip:  1.33 kB
+18:28:56 [vite] dist/_astro/FeatureStage.B-08iYxM.js                4.26 kB │ gzip:  1.73 kB
+18:28:56 [vite] dist/_astro/TraceStepper.BYuJHgjH.js                4.30 kB │ gzip:  2.04 kB
+18:28:56 [vite] dist/_astro/PipelineStage.ft2sWPI2.js               4.50 kB │ gzip:  1.63 kB
+18:28:56 [vite] dist/_astro/SplitStage.BlrNuiJM.js                  5.14 kB │ gzip:  2.01 kB
+18:28:56 [vite] dist/_astro/linear-regression-lesson.DdjhstaZ.js    5.53 kB │ gzip:  2.45 kB
+18:28:56 [vite] dist/_astro/signals.module.C4An8D1c.js              7.92 kB │ gzip:  3.08 kB
+18:28:56 [vite] dist/_astro/CapacityStage.BhGno8vz.js               8.18 kB │ gzip:  3.10 kB
+18:28:56 [vite] dist/_astro/RegressionStage.CISIUB2D.js             9.27 kB │ gzip:  3.44 kB
+18:28:56 [vite] dist/_astro/preact.module.B5aEZR5Y.js              11.12 kB │ gzip:  4.67 kB
+18:28:56 [vite] dist/_astro/FoundationExercises.DhFwDY2j.js        14.85 kB │ gzip:  5.15 kB
+18:28:56 [vite] dist/_astro/experiment.HzO_dzDb.js                 24.29 kB │ gzip:  9.24 kB
+18:28:56 [vite] dist/_astro/Formula.UxhkAm7A.js                   261.63 kB │ gzip: 77.78 kB
+18:28:56 [vite] ✓ built in 581ms
+
+ generating static routes 
+18:28:56 ▶ src/pages/404.astro
+18:28:56   └─ /404.html (+4ms) 
+18:28:56 ▶ src/pages/contents.astro
+18:28:56   └─ /contents/index.html (+2ms) 
+18:28:56 λ src/pages/curriculum.json.ts
+18:28:56   └─ /curriculum.json (+1ms) 
+18:28:56 ▶ src/pages/index.astro
+18:28:56   └─ /index.html (+1ms) 
+18:28:56 ▶ src/pages/parts/[part].astro
+18:28:56   ├─ /parts/ml-foundations/index.html (+1ms) 
+18:28:56   ├─ /parts/regression-classification/index.html (+1ms) 
+18:28:56   ├─ /parts/instance-probabilistic/index.html (+1ms) 
+18:28:56   ├─ /parts/trees-ensembles/index.html (+1ms) 
+18:28:56   ├─ /parts/clustering/index.html (+1ms) 
+18:28:56   ├─ /parts/dimensionality-reduction/index.html (+1ms) 
+18:28:56   ├─ /parts/support-vector-machines/index.html (+1ms) 
+18:28:56   ├─ /parts/evaluation-practical-ml/index.html (+1ms) 
+18:28:56   └─ /parts/neural-network-bridge/index.html (+1ms) 
+18:28:56 ▶ src/pages/chapters/[slug].astro
+18:28:56   ├─ /chapters/learning-problems/index.html (+46ms) 
+18:28:56   ├─ /chapters/parameters-loss-optimization/index.html (+43ms) 
+18:28:56   ├─ /chapters/samples-features-labels-targets/index.html (+26ms) 
+18:28:56   ├─ /chapters/training-validation-testing/index.html (+38ms) 
+18:28:56   ├─ /chapters/underfitting-overfitting-baselines/index.html (+49ms) 
+18:28:56   ├─ /chapters/what-machine-learning-learns/index.html (+25ms) 
+18:28:56   └─ /chapters/linear-regression/index.html (+35ms) 
+18:28:56 ✓ Completed in 295ms.
+
+18:28:56 [build] 19 page(s) built in 2.92s
+18:28:56 [build] Complete!
+Running: Subpath production
+18:28:57 [content] Syncing content
+18:28:57 [content] Astro config changed
+18:28:57 [content] Clearing content store
+18:28:57 [content] Synced content
+18:28:57 [types] Generated 297ms
+18:28:57 [build] output: "static"
+18:28:57 [build] mode: "static"
+18:28:57 [build] directory: /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/dist-subpath/
+18:28:57 [build] Collecting build info...
+18:28:57 [build] ✓ Completed in 318ms.
+18:28:57 [build] Building static entrypoints...
+18:28:59 [vite] ✓ built in 1.67s
+18:28:59 [build] ✓ Completed in 1.69s.
+
+ building client (vite) 
+18:28:59 [vite] transforming...
+18:28:59 [vite] ✓ 40 modules transformed.
+18:28:59 [vite] rendering chunks...
+18:29:00 [vite] computing gzip size...
+18:29:00 [vite] dist-subpath/_astro/jsxRuntime.module.DLa4fAYi.js           0.42 kB │ gzip:  0.30 kB
+18:29:00 [vite] dist-subpath/_astro/ChoiceExercise.Bca9LHiu.js              0.67 kB │ gzip:  0.45 kB
+18:29:00 [vite] dist-subpath/_astro/NumberField.C5J2vK-J.js                 1.07 kB │ gzip:  0.69 kB
+18:29:00 [vite] dist-subpath/_astro/client.BeBs1SxV.js                      2.31 kB │ gzip:  1.25 kB
+18:29:00 [vite] dist-subpath/_astro/TaskStage.Bi7lYuJY.js                   2.58 kB │ gzip:  1.09 kB
+18:29:00 [vite] dist-subpath/_astro/MembershipBoard.BZlD8opX.js             2.79 kB │ gzip:  1.28 kB
+18:29:00 [vite] dist-subpath/_astro/hooks.module.C1GxTNnt.js                3.03 kB │ gzip:  1.33 kB
+18:29:00 [vite] dist-subpath/_astro/FeatureStage.B-08iYxM.js                4.26 kB │ gzip:  1.73 kB
+18:29:00 [vite] dist-subpath/_astro/TraceStepper.BYuJHgjH.js                4.30 kB │ gzip:  2.04 kB
+18:29:00 [vite] dist-subpath/_astro/PipelineStage.ft2sWPI2.js               4.50 kB │ gzip:  1.63 kB
+18:29:00 [vite] dist-subpath/_astro/SplitStage.BlrNuiJM.js                  5.14 kB │ gzip:  2.01 kB
+18:29:00 [vite] dist-subpath/_astro/linear-regression-lesson.DdjhstaZ.js    5.53 kB │ gzip:  2.45 kB
+18:29:00 [vite] dist-subpath/_astro/signals.module.C4An8D1c.js              7.92 kB │ gzip:  3.08 kB
+18:29:00 [vite] dist-subpath/_astro/CapacityStage.BhGno8vz.js               8.18 kB │ gzip:  3.10 kB
+18:29:00 [vite] dist-subpath/_astro/RegressionStage.CISIUB2D.js             9.27 kB │ gzip:  3.44 kB
+18:29:00 [vite] dist-subpath/_astro/preact.module.B5aEZR5Y.js              11.12 kB │ gzip:  4.67 kB
+18:29:00 [vite] dist-subpath/_astro/FoundationExercises.DhFwDY2j.js        14.85 kB │ gzip:  5.15 kB
+18:29:00 [vite] dist-subpath/_astro/experiment.HzO_dzDb.js                 24.29 kB │ gzip:  9.24 kB
+18:29:00 [vite] dist-subpath/_astro/Formula.UxhkAm7A.js                   261.63 kB │ gzip: 77.78 kB
+18:29:00 [vite] ✓ built in 569ms
+
+ generating static routes 
+18:29:00 ▶ src/pages/404.astro
+18:29:00   └─ /404.html (+4ms) 
+18:29:00 ▶ src/pages/contents.astro
+18:29:00   └─ /contents/index.html (+2ms) 
+18:29:00 λ src/pages/curriculum.json.ts
+18:29:00   └─ /curriculum.json (+1ms) 
+18:29:00 ▶ src/pages/index.astro
+18:29:00   └─ /index.html (+1ms) 
+18:29:00 ▶ src/pages/parts/[part].astro
+18:29:00   ├─ /parts/ml-foundations/index.html (+1ms) 
+18:29:00   ├─ /parts/regression-classification/index.html (+1ms) 
+18:29:00   ├─ /parts/instance-probabilistic/index.html (+1ms) 
+18:29:00   ├─ /parts/trees-ensembles/index.html (+1ms) 
+18:29:00   ├─ /parts/clustering/index.html (+1ms) 
+18:29:00   ├─ /parts/dimensionality-reduction/index.html (+1ms) 
+18:29:00   ├─ /parts/support-vector-machines/index.html (+1ms) 
+18:29:00   ├─ /parts/evaluation-practical-ml/index.html (+1ms) 
+18:29:00   └─ /parts/neural-network-bridge/index.html (+1ms) 
+18:29:00 ▶ src/pages/chapters/[slug].astro
+18:29:00   ├─ /chapters/learning-problems/index.html (+44ms) 
+18:29:00   ├─ /chapters/parameters-loss-optimization/index.html (+44ms) 
+18:29:00   ├─ /chapters/samples-features-labels-targets/index.html (+24ms) 
+18:29:00   ├─ /chapters/training-validation-testing/index.html (+38ms) 
+18:29:00   ├─ /chapters/underfitting-overfitting-baselines/index.html (+52ms) 
+18:29:00   ├─ /chapters/linear-regression/index.html (+35ms) 
+18:29:00   └─ /chapters/what-machine-learning-learns/index.html (+21ms) 
+18:29:00 ✓ Completed in 292ms.
+
+18:29:00 [build] 19 page(s) built in 2.89s
+18:29:00 [build] Complete!
+Running: Root production audit
+Production /: 7/41 chapter pages, all internal links/assets and PWA paths valid.
+Running: Subpath production audit
+Production /machine-learning/: 7/41 chapter pages, all internal links/assets and PWA paths valid.
+Running: Root browser validation
+[WebServer] (node:567173) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 78 tests using 2 workers
+
+(node:567185) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:567186) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › tests/e2e/p01/foundations.spec.ts:86:1 › pipeline keyboard numeric commits retain focus, repeat and tab normally (560ms)
+  ✓   2 [desktop] › tests/e2e/p01/foundations.spec.ts:111:1 › pipeline rejects numeric errors and every historical state drives the controls and rows (761ms)
+  ✓   3 [desktop] › tests/e2e/p01/foundations.spec.ts:132:1 › feature edits retain full precision, reject fractional counts and expose absent targets (412ms)
+  ✓   4 [desktop] › tests/e2e/p01/foundations.spec.ts:149:1 › task decisions use semantic target codes and grade misconceptions (446ms)
+  ✓   5 [desktop] › tests/e2e/p01/foundations.spec.ts:166:1 › group assignment preserves IDs and exposes leakage, seed replay and empty means (730ms)
+  ✓   6 [desktop] › tests/e2e/p01/foundations.spec.ts:193:1 › pointer assignment and numeric destination fit the same active capacity rows (1.2s)
+  ✓   7 [desktop] › tests/e2e/p01/foundations.spec.ts:211:1 › capacity numeric commits preserve focus and reject bad degree/seed/partition (705ms)
+  ✓   9 [desktop] › tests/e2e/p01/foundations.spec.ts:241:1 › empty and deficient training memberships retain observations and display actual reasons (1.1s)
+  ✓   8 [desktop] › tests/e2e/p01/foundations.spec.ts:223:1 › capacity replay drives every frame and edits begin at the displayed memberships (1.5s)
+  ✓  10 [desktop] › tests/e2e/p01/foundations.spec.ts:252:1 › seeded memberships, honest/leaked baseline and validation-only selection remain distinct (878ms)
+  ✘  11 [desktop] › tests/e2e/p01/foundations.spec.ts:269:1 › plot labels, physical geometry, both themes and reduced motion remain readable (694ms)
+(node:567936) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  12 [desktop] › tests/e2e/p01/foundations.spec.ts:301:1 › reset cancels a held membership drag before pointer release (624ms)
+  ✓  13 [desktop] › tests/e2e/p01/foundations.spec.ts:312:1 › III-05 reuses the accepted affine update with one required distinct island scope (513ms)
+  ✓  14 [desktop] › tests/e2e/platform/book.spec.ts:6:1 › Part-first navigation exposes exactly nine Parts and the correct publication count (691ms)
+  ✓  15 [desktop] › tests/e2e/platform/book.spec.ts:21:1 › theme preference persists, keyboard skip link works and root shell is accessible (1.1s)
+  ✓  16 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-01 publication, hydration, exercises, both-theme accessibility and narrow layout (4.0s)
+  ✓  17 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-02 publication, hydration, exercises, both-theme accessibility and narrow layout (4.2s)
+  ✓  18 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-03 publication, hydration, exercises, both-theme accessibility and narrow layout (3.2s)
+  ✘  19 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-04 publication, hydration, exercises, both-theme accessibility and narrow layout (3.8s)
+(node:568618) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  20 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-05 publication, hydration, exercises, both-theme accessibility and narrow layout (5.6s)
+  ✘  21 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-06 publication, hydration, exercises, both-theme accessibility and narrow layout (5.0s)
+(node:569064) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  23 [desktop] › tests/e2e/platform/book.spec.ts:64:1 › PWA precaches actual chapters and assets and survives offline reload (563ms)
+  ✓  24 [desktop] › tests/e2e/platform/book.spec.ts:82:1 › strict production server returns real 404s and rejects malformed/traversal paths (12ms)
+  ✓  25 [desktop] › tests/e2e/platform/reference-geometry.spec.ts:3:1 › actual displayed sample centers match equal-scale world projection after input and keyboard changes (463ms)
+  ✓  26 [desktop] › tests/e2e/platform/reference-geometry.spec.ts:30:1 › focusing and leaving an unchanged parameter preserves historical replay (487ms)
+(node:569505) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  27 [tablet] › tests/e2e/p01/foundations.spec.ts:86:1 › pipeline keyboard numeric commits retain focus, repeat and tab normally (506ms)
+  ✓  28 [tablet] › tests/e2e/p01/foundations.spec.ts:111:1 › pipeline rejects numeric errors and every historical state drives the controls and rows (675ms)
+  ✓  29 [tablet] › tests/e2e/p01/foundations.spec.ts:132:1 › feature edits retain full precision, reject fractional counts and expose absent targets (372ms)
+  ✓  30 [tablet] › tests/e2e/p01/foundations.spec.ts:149:1 › task decisions use semantic target codes and grade misconceptions (413ms)
+  ✓  31 [tablet] › tests/e2e/p01/foundations.spec.ts:166:1 › group assignment preserves IDs and exposes leakage, seed replay and empty means (707ms)
+  ✓  22 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-07 publication, hydration, exercises, both-theme accessibility and narrow layout (7.3s)
+(node:569947) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  32 [tablet] › tests/e2e/p01/foundations.spec.ts:193:1 › pointer assignment and numeric destination fit the same active capacity rows (1.1s)
+  ✓  33 [tablet] › tests/e2e/p01/foundations.spec.ts:211:1 › capacity numeric commits preserve focus and reject bad degree/seed/partition (877ms)
+  ✓  34 [tablet] › tests/e2e/p01/foundations.spec.ts:223:1 › capacity replay drives every frame and edits begin at the displayed memberships (1.5s)
+  ✓  35 [tablet] › tests/e2e/p01/foundations.spec.ts:241:1 › empty and deficient training memberships retain observations and display actual reasons (1.1s)
+  ✓  36 [tablet] › tests/e2e/p01/foundations.spec.ts:252:1 › seeded memberships, honest/leaked baseline and validation-only selection remain distinct (839ms)
+  ✘  37 [tablet] › tests/e2e/p01/foundations.spec.ts:269:1 › plot labels, physical geometry, both themes and reduced motion remain readable (683ms)
+(node:570512) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  38 [tablet] › tests/e2e/p01/foundations.spec.ts:301:1 › reset cancels a held membership drag before pointer release (565ms)
+  ✓  39 [tablet] › tests/e2e/p01/foundations.spec.ts:312:1 › III-05 reuses the accepted affine update with one required distinct island scope (501ms)
+  ✓  40 [tablet] › tests/e2e/platform/book.spec.ts:6:1 › Part-first navigation exposes exactly nine Parts and the correct publication count (681ms)
+  ✓  41 [tablet] › tests/e2e/platform/book.spec.ts:21:1 › theme preference persists, keyboard skip link works and root shell is accessible (1.0s)
+  ✓  42 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-01 publication, hydration, exercises, both-theme accessibility and narrow layout (4.0s)
+  ✓  43 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-02 publication, hydration, exercises, both-theme accessibility and narrow layout (4.0s)
+  ✓  44 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-03 publication, hydration, exercises, both-theme accessibility and narrow layout (3.1s)
+  ✘  45 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-04 publication, hydration, exercises, both-theme accessibility and narrow layout (4.0s)
+(node:571717) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  46 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-05 publication, hydration, exercises, both-theme accessibility and narrow layout (5.7s)
+  ✘  47 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-06 publication, hydration, exercises, both-theme accessibility and narrow layout (5.2s)
+(node:572225) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  49 [tablet] › tests/e2e/platform/book.spec.ts:64:1 › PWA precaches actual chapters and assets and survives offline reload (544ms)
+  ✓  50 [tablet] › tests/e2e/platform/book.spec.ts:82:1 › strict production server returns real 404s and rejects malformed/traversal paths (12ms)
+  ✓  51 [tablet] › tests/e2e/platform/reference-geometry.spec.ts:3:1 › actual displayed sample centers match equal-scale world projection after input and keyboard changes (449ms)
+  ✓  52 [tablet] › tests/e2e/platform/reference-geometry.spec.ts:30:1 › focusing and leaving an unchanged parameter preserves historical replay (515ms)
+(node:572664) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  53 [mobile] › tests/e2e/p01/foundations.spec.ts:86:1 › pipeline keyboard numeric commits retain focus, repeat and tab normally (490ms)
+  ✓  54 [mobile] › tests/e2e/p01/foundations.spec.ts:111:1 › pipeline rejects numeric errors and every historical state drives the controls and rows (617ms)
+  ✓  55 [mobile] › tests/e2e/p01/foundations.spec.ts:132:1 › feature edits retain full precision, reject fractional counts and expose absent targets (406ms)
+  ✓  56 [mobile] › tests/e2e/p01/foundations.spec.ts:149:1 › task decisions use semantic target codes and grade misconceptions (449ms)
+  ✓  57 [mobile] › tests/e2e/p01/foundations.spec.ts:166:1 › group assignment preserves IDs and exposes leakage, seed replay and empty means (792ms)
+  ✓  48 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-07 publication, hydration, exercises, both-theme accessibility and narrow layout (7.3s)
+(node:573085) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  58 [mobile] › tests/e2e/p01/foundations.spec.ts:193:1 › pointer assignment and numeric destination fit the same active capacity rows (1.3s)
+  ✓  59 [mobile] › tests/e2e/p01/foundations.spec.ts:211:1 › capacity numeric commits preserve focus and reject bad degree/seed/partition (904ms)
+  ✓  61 [mobile] › tests/e2e/p01/foundations.spec.ts:241:1 › empty and deficient training memberships retain observations and display actual reasons (1.2s)
+  ✓  60 [mobile] › tests/e2e/p01/foundations.spec.ts:223:1 › capacity replay drives every frame and edits begin at the displayed memberships (1.6s)
+  ✘  63 [mobile] › tests/e2e/p01/foundations.spec.ts:269:1 › plot labels, physical geometry, both themes and reduced motion remain readable (746ms)
+  ✓  62 [mobile] › tests/e2e/p01/foundations.spec.ts:252:1 › seeded memberships, honest/leaked baseline and validation-only selection remain distinct (888ms)
+(node:573414) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  64 [mobile] › tests/e2e/p01/foundations.spec.ts:312:1 › III-05 reuses the accepted affine update with one required distinct island scope (361ms)
+  ✓  66 [mobile] › tests/e2e/platform/book.spec.ts:6:1 › Part-first navigation exposes exactly nine Parts and the correct publication count (846ms)
+  ✓  65 [mobile] › tests/e2e/p01/foundations.spec.ts:301:1 › reset cancels a held membership drag before pointer release (1.1s)
+  ✓  67 [mobile] › tests/e2e/platform/book.spec.ts:21:1 › theme preference persists, keyboard skip link works and root shell is accessible (1.1s)
+  ✓  68 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-01 publication, hydration, exercises, both-theme accessibility and narrow layout (4.2s)
+  ✓  69 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-02 publication, hydration, exercises, both-theme accessibility and narrow layout (4.1s)
+  ✓  70 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-03 publication, hydration, exercises, both-theme accessibility and narrow layout (3.0s)
+  ✘  71 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-04 publication, hydration, exercises, both-theme accessibility and narrow layout (3.7s)
+(node:574309) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  72 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-05 publication, hydration, exercises, both-theme accessibility and narrow layout (5.5s)
+  ✘  73 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-06 publication, hydration, exercises, both-theme accessibility and narrow layout (5.0s)
+(node:574570) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  75 [mobile] › tests/e2e/platform/book.spec.ts:64:1 › PWA precaches actual chapters and assets and survives offline reload (546ms)
+  ✓  76 [mobile] › tests/e2e/platform/book.spec.ts:82:1 › strict production server returns real 404s and rejects malformed/traversal paths (9ms)
+  ✓  77 [mobile] › tests/e2e/platform/reference-geometry.spec.ts:3:1 › actual displayed sample centers match equal-scale world projection after input and keyboard changes (430ms)
+  ✓  78 [mobile] › tests/e2e/platform/reference-geometry.spec.ts:30:1 › focusing and leaving an unchanged parameter preserves historical replay (515ms)
+  ✓  74 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-07 publication, hydration, exercises, both-theme accessibility and narrow layout (6.6s)
+
+
+  1) [desktop] › tests/e2e/p01/foundations.spec.ts:269:1 › plot labels, physical geometry, both themes and reduced motion remain readable 
+
+    Error: expect(received).toBeCloseTo(expected, precision)
+
+    Expected: 267.8571428571429
+    Received: 267.85720915841586
+
+    Expected precision:    4
+    Expected difference: < 0.00005
+    Received difference:   0.0000663012729660295
+
+      291 |     const row=state.rows.find(row=>row.id===point.id)!;
+      292 |     expect(point.x).toBeCloseTo(48+(row.x+1.1)*544/2.2,4);
+    > 293 |     expect(point.y).toBeCloseTo(352-(row.y!+3)*304/7,4);
+          |                     ^
+      294 |   }
+      295 |   expect(await root.locator('[data-sample-id]').evaluateAll(nodes=>nodes.every(n=>{const box=n.getBoundingClientRect();return box.width>=44&&box.height>=44;}))).toBe(true);
+      296 |   expect(await root.locator('[data-sample-id=p1]').evaluate(node=>getComputedStyle(node).touchAction)).toBe('none');
+        at /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/tests/e2e/p01/foundations.spec.ts:293:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/p01-foundations-plot-label-90421-uced-motion-remain-readable-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/p01-foundations-plot-label-90421-uced-motion-remain-readable-desktop/error-context.md
+
+  2) [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-04 publication, hydration, exercises, both-theme accessibility and narrow layout 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 61
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "description": "Ensure <dl> elements are structured correctly",
+    +     "help": "<dl> elements must only directly contain properly-ordered <dt> and <dd> groups, <script>, <template> or <div> elements",
+    +     "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/definition-list?application=playwright",
+    +     "id": "definition-list",
+    +     "impact": "serious",
+    +     "nodes": Array [
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [],
+    +         "failureSummary": "Fix all of the following:
+    +   dl element has direct children that are not allowed: div > p",
+    +         "html": "<dl class=\"p01-metrics\">",
+    +         "impact": "serious",
+    +         "none": Array [
+    +           Object {
+    +             "data": Object {
+    +               "values": "div > p",
+    +             },
+    +             "id": "only-dlitems",
+    +             "impact": "serious",
+    +             "message": "dl element has direct children that are not allowed: div > p",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<p class=\"p01-help\">Outside training x range: none.</p>",
+    +                 "target": Array [
+    +                   ".p01-metrics:nth-child(9) > div:nth-child(1) > .p01-help",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<p class=\"p01-help\">Outside training x range: g3-a, g3-b.</p>",
+    +                 "target": Array [
+    +                   "div:nth-child(2) > .p01-help",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<p class=\"p01-help\">Outside training x range: g1-a, g1-b, g2-a, g2-b.</p>",
+    +                 "target": Array [
+    +                   "div:nth-child(3) > .p01-help",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "target": Array [
+    +           ".p01-metrics:nth-child(9)",
+    +         ],
+    +       },
+    +     ],
+    +     "tags": Array [
+    +       "cat.structure",
+    +       "wcag2a",
+    +       "wcag131",
+    +       "EN-301-549",
+    +       "EN-9.1.3.1",
+    +       "RGAAv4",
+    +       "RGAA-9.3.3",
+    +     ],
+    +   },
+    + ]
+
+      55 |     for (const theme of ['light', 'dark']) {
+      56 |       await page.evaluate(theme => { document.documentElement.dataset.theme = theme; }, theme);
+    > 57 |       expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+         |                                                                     ^
+      58 |       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+      59 |     }
+      60 |     expect(errors).toEqual([]);
+        at /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/tests/e2e/platform/book.spec.ts:57:69
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/platform-book-III-04-publi-7f9ec-ssibility-and-narrow-layout-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/platform-book-III-04-publi-7f9ec-ssibility-and-narrow-layout-desktop/error-context.md
+
+  3) [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-06 publication, hydration, exercises, both-theme accessibility and narrow layout 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 61
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "description": "Ensure <dl> elements are structured correctly",
+    +     "help": "<dl> elements must only directly contain properly-ordered <dt> and <dd> groups, <script>, <template> or <div> elements",
+    +     "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/definition-list?application=playwright",
+    +     "id": "definition-list",
+    +     "impact": "serious",
+    +     "nodes": Array [
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [],
+    +         "failureSummary": "Fix all of the following:
+    +   dl element has direct children that are not allowed: div > p",
+    +         "html": "<dl class=\"p01-metrics\">",
+    +         "impact": "serious",
+    +         "none": Array [
+    +           Object {
+    +             "data": Object {
+    +               "values": "div > p",
+    +             },
+    +             "id": "only-dlitems",
+    +             "impact": "serious",
+    +             "message": "dl element has direct children that are not allowed: div > p",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<p class=\"p01-help\">9 samples. Evaluation uses this partition’s actual rows.</p>",
+    +                 "target": Array [
+    +                   ".p01-metrics > div:nth-child(1) > .p01-help",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<p class=\"p01-help\">8 samples. Evaluation uses this partition’s actual rows.</p>",
+    +                 "target": Array [
+    +                   "div:nth-child(2) > .p01-help",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<p class=\"p01-help\">0 samples. No test samples: MSE is undefined.</p>",
+    +                 "target": Array [
+    +                   "div:nth-child(3) > .p01-help",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "target": Array [
+    +           ".p01-metrics",
+    +         ],
+    +       },
+    +     ],
+    +     "tags": Array [
+    +       "cat.structure",
+    +       "wcag2a",
+    +       "wcag131",
+    +       "EN-301-549",
+    +       "EN-9.1.3.1",
+    +       "RGAAv4",
+    +       "RGAA-9.3.3",
+    +     ],
+    +   },
+    + ]
+
+      55 |     for (const theme of ['light', 'dark']) {
+      56 |       await page.evaluate(theme => { document.documentElement.dataset.theme = theme; }, theme);
+    > 57 |       expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+         |                                                                     ^
+      58 |       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+      59 |     }
+      60 |     expect(errors).toEqual([]);
+        at /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/tests/e2e/platform/book.spec.ts:57:69
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/platform-book-III-06-publi-bc761-ssibility-and-narrow-layout-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/platform-book-III-06-publi-bc761-ssibility-and-narrow-layout-desktop/error-context.md
+
+  4) [tablet] › tests/e2e/p01/foundations.spec.ts:269:1 › plot labels, physical geometry, both themes and reduced motion remain readable 
+
+    Error: expect(received).toBeCloseTo(expected, precision)
+
+    Expected: 319.42857142857144
+    Received: 319.4286281779661
+
+    Expected precision:    4
+    Expected difference: < 0.00005
+    Received difference:   0.00005674939467326112
+
+      291 |     const row=state.rows.find(row=>row.id===point.id)!;
+      292 |     expect(point.x).toBeCloseTo(48+(row.x+1.1)*544/2.2,4);
+    > 293 |     expect(point.y).toBeCloseTo(352-(row.y!+3)*304/7,4);
+          |                     ^
+      294 |   }
+      295 |   expect(await root.locator('[data-sample-id]').evaluateAll(nodes=>nodes.every(n=>{const box=n.getBoundingClientRect();return box.width>=44&&box.height>=44;}))).toBe(true);
+      296 |   expect(await root.locator('[data-sample-id=p1]').evaluate(node=>getComputedStyle(node).touchAction)).toBe('none');
+        at /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/tests/e2e/p01/foundations.spec.ts:293:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/p01-foundations-plot-label-90421-uced-motion-remain-readable-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/p01-foundations-plot-label-90421-uced-motion-remain-readable-tablet/error-context.md
+
+  5) [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-04 publication, hydration, exercises, both-theme accessibility and narrow layout 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 61
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "description": "Ensure <dl> elements are structured correctly",
+    +     "help": "<dl> elements must only directly contain properly-ordered <dt> and <dd> groups, <script>, <template> or <div> elements",
+    +     "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/definition-list?application=playwright",
+    +     "id": "definition-list",
+    +     "impact": "serious",
+    +     "nodes": Array [
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [],
+    +         "failureSummary": "Fix all of the following:
+    +   dl element has direct children that are not allowed: div > p",
+    +         "html": "<dl class=\"p01-metrics\">",
+    +         "impact": "serious",
+    +         "none": Array [
+    +           Object {
+    +             "data": Object {
+    +               "values": "div > p",
+    +             },
+    +             "id": "only-dlitems",
+    +             "impact": "serious",
+    +             "message": "dl element has direct children that are not allowed: div > p",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<p class=\"p01-help\">Outside training x range: none.</p>",
+    +                 "target": Array [
+    +                   ".p01-metrics:nth-child(9) > div:nth-child(1) > .p01-help",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<p class=\"p01-help\">Outside training x range: g3-a, g3-b.</p>",
+    +                 "target": Array [
+    +                   "div:nth-child(2) > .p01-help",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<p class=\"p01-help\">Outside training x range: g1-a, g1-b, g2-a, g2-b.</p>",
+    +                 "target": Array [
+    +                   "div:nth-child(3) > .p01-help",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "target": Array [
+    +           ".p01-metrics:nth-child(9)",
+    +         ],
+    +       },
+    +     ],
+    +     "tags": Array [
+    +       "cat.structure",
+    +       "wcag2a",
+    +       "wcag131",
+    +       "EN-301-549",
+    +       "EN-9.1.3.1",
+    +       "RGAAv4",
+    +       "RGAA-9.3.3",
+    +     ],
+    +   },
+    + ]
+
+      55 |     for (const theme of ['light', 'dark']) {
+      56 |       await page.evaluate(theme => { document.documentElement.dataset.theme = theme; }, theme);
+    > 57 |       expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+         |                                                                     ^
+      58 |       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+      59 |     }
+      60 |     expect(errors).toEqual([]);
+        at /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/tests/e2e/platform/book.spec.ts:57:69
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/platform-book-III-04-publi-7f9ec-ssibility-and-narrow-layout-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/platform-book-III-04-publi-7f9ec-ssibility-and-narrow-layout-tablet/error-context.md
+
+  6) [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-06 publication, hydration, exercises, both-theme accessibility and narrow layout 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 61
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "description": "Ensure <dl> elements are structured correctly",
+    +     "help": "<dl> elements must only directly contain properly-ordered <dt> and <dd> groups, <script>, <template> or <div> elements",
+    +     "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/definition-list?application=playwright",
+    +     "id": "definition-list",
+    +     "impact": "serious",
+    +     "nodes": Array [
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [],
+    +         "failureSummary": "Fix all of the following:
+    +   dl element has direct children that are not allowed: div > p",
+    +         "html": "<dl class=\"p01-metrics\">",
+    +         "impact": "serious",
+    +         "none": Array [
+    +           Object {
+    +             "data": Object {
+    +               "values": "div > p",
+    +             },
+    +             "id": "only-dlitems",
+    +             "impact": "serious",
+    +             "message": "dl element has direct children that are not allowed: div > p",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<p class=\"p01-help\">9 samples. Evaluation uses this partition’s actual rows.</p>",
+    +                 "target": Array [
+    +                   ".p01-metrics > div:nth-child(1) > .p01-help",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<p class=\"p01-help\">8 samples. Evaluation uses this partition’s actual rows.</p>",
+    +                 "target": Array [
+    +                   "div:nth-child(2) > .p01-help",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<p class=\"p01-help\">0 samples. No test samples: MSE is undefined.</p>",
+    +                 "target": Array [
+    +                   "div:nth-child(3) > .p01-help",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "target": Array [
+    +           ".p01-metrics",
+    +         ],
+    +       },
+    +     ],
+    +     "tags": Array [
+    +       "cat.structure",
+    +       "wcag2a",
+    +       "wcag131",
+    +       "EN-301-549",
+    +       "EN-9.1.3.1",
+    +       "RGAAv4",
+    +       "RGAA-9.3.3",
+    +     ],
+    +   },
+    + ]
+
+      55 |     for (const theme of ['light', 'dark']) {
+      56 |       await page.evaluate(theme => { document.documentElement.dataset.theme = theme; }, theme);
+    > 57 |       expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+         |                                                                     ^
+      58 |       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+      59 |     }
+      60 |     expect(errors).toEqual([]);
+        at /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/tests/e2e/platform/book.spec.ts:57:69
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/platform-book-III-06-publi-bc761-ssibility-and-narrow-layout-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/platform-book-III-06-publi-bc761-ssibility-and-narrow-layout-tablet/error-context.md
+
+  7) [mobile] › tests/e2e/p01/foundations.spec.ts:269:1 › plot labels, physical geometry, both themes and reduced motion remain readable 
+
+    Error: expect(received).toBeCloseTo(expected, precision)
+
+    Expected: 319.42857142857144
+    Received: 319.42845394736844
+
+    Expected precision:    4
+    Expected difference: < 0.00005
+    Received difference:   0.00011748120300580922
+
+      291 |     const row=state.rows.find(row=>row.id===point.id)!;
+      292 |     expect(point.x).toBeCloseTo(48+(row.x+1.1)*544/2.2,4);
+    > 293 |     expect(point.y).toBeCloseTo(352-(row.y!+3)*304/7,4);
+          |                     ^
+      294 |   }
+      295 |   expect(await root.locator('[data-sample-id]').evaluateAll(nodes=>nodes.every(n=>{const box=n.getBoundingClientRect();return box.width>=44&&box.height>=44;}))).toBe(true);
+      296 |   expect(await root.locator('[data-sample-id=p1]').evaluate(node=>getComputedStyle(node).touchAction)).toBe('none');
+        at /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/tests/e2e/p01/foundations.spec.ts:293:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/p01-foundations-plot-label-90421-uced-motion-remain-readable-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/p01-foundations-plot-label-90421-uced-motion-remain-readable-mobile/error-context.md
+
+  8) [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-04 publication, hydration, exercises, both-theme accessibility and narrow layout 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 61
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "description": "Ensure <dl> elements are structured correctly",
+    +     "help": "<dl> elements must only directly contain properly-ordered <dt> and <dd> groups, <script>, <template> or <div> elements",
+    +     "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/definition-list?application=playwright",
+    +     "id": "definition-list",
+    +     "impact": "serious",
+    +     "nodes": Array [
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [],
+    +         "failureSummary": "Fix all of the following:
+    +   dl element has direct children that are not allowed: div > p",
+    +         "html": "<dl class=\"p01-metrics\">",
+    +         "impact": "serious",
+    +         "none": Array [
+    +           Object {
+    +             "data": Object {
+    +               "values": "div > p",
+    +             },
+    +             "id": "only-dlitems",
+    +             "impact": "serious",
+    +             "message": "dl element has direct children that are not allowed: div > p",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<p class=\"p01-help\">Outside training x range: none.</p>",
+    +                 "target": Array [
+    +                   ".p01-metrics:nth-child(9) > div:nth-child(1) > .p01-help",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<p class=\"p01-help\">Outside training x range: g3-a, g3-b.</p>",
+    +                 "target": Array [
+    +                   "div:nth-child(2) > .p01-help",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<p class=\"p01-help\">Outside training x range: g1-a, g1-b, g2-a, g2-b.</p>",
+    +                 "target": Array [
+    +                   "div:nth-child(3) > .p01-help",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "target": Array [
+    +           ".p01-metrics:nth-child(9)",
+    +         ],
+    +       },
+    +     ],
+    +     "tags": Array [
+    +       "cat.structure",
+    +       "wcag2a",
+    +       "wcag131",
+    +       "EN-301-549",
+    +       "EN-9.1.3.1",
+    +       "RGAAv4",
+    +       "RGAA-9.3.3",
+    +     ],
+    +   },
+    + ]
+
+      55 |     for (const theme of ['light', 'dark']) {
+      56 |       await page.evaluate(theme => { document.documentElement.dataset.theme = theme; }, theme);
+    > 57 |       expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+         |                                                                     ^
+      58 |       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+      59 |     }
+      60 |     expect(errors).toEqual([]);
+        at /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/tests/e2e/platform/book.spec.ts:57:69
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/platform-book-III-04-publi-7f9ec-ssibility-and-narrow-layout-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/platform-book-III-04-publi-7f9ec-ssibility-and-narrow-layout-mobile/error-context.md
+
+  9) [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-06 publication, hydration, exercises, both-theme accessibility and narrow layout 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 61
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "description": "Ensure <dl> elements are structured correctly",
+    +     "help": "<dl> elements must only directly contain properly-ordered <dt> and <dd> groups, <script>, <template> or <div> elements",
+    +     "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/definition-list?application=playwright",
+    +     "id": "definition-list",
+    +     "impact": "serious",
+    +     "nodes": Array [
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [],
+    +         "failureSummary": "Fix all of the following:
+    +   dl element has direct children that are not allowed: div > p",
+    +         "html": "<dl class=\"p01-metrics\">",
+    +         "impact": "serious",
+    +         "none": Array [
+    +           Object {
+    +             "data": Object {
+    +               "values": "div > p",
+    +             },
+    +             "id": "only-dlitems",
+    +             "impact": "serious",
+    +             "message": "dl element has direct children that are not allowed: div > p",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<p class=\"p01-help\">9 samples. Evaluation uses this partition’s actual rows.</p>",
+    +                 "target": Array [
+    +                   ".p01-metrics > div:nth-child(1) > .p01-help",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<p class=\"p01-help\">8 samples. Evaluation uses this partition’s actual rows.</p>",
+    +                 "target": Array [
+    +                   "div:nth-child(2) > .p01-help",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<p class=\"p01-help\">0 samples. No test samples: MSE is undefined.</p>",
+    +                 "target": Array [
+    +                   "div:nth-child(3) > .p01-help",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "target": Array [
+    +           ".p01-metrics",
+    +         ],
+    +       },
+    +     ],
+    +     "tags": Array [
+    +       "cat.structure",
+    +       "wcag2a",
+    +       "wcag131",
+    +       "EN-301-549",
+    +       "EN-9.1.3.1",
+    +       "RGAAv4",
+    +       "RGAA-9.3.3",
+    +     ],
+    +   },
+    + ]
+
+      55 |     for (const theme of ['light', 'dark']) {
+      56 |       await page.evaluate(theme => { document.documentElement.dataset.theme = theme; }, theme);
+    > 57 |       expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+         |                                                                     ^
+      58 |       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+      59 |     }
+      60 |     expect(errors).toEqual([]);
+        at /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book/tests/e2e/platform/book.spec.ts:57:69
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/platform-book-III-06-publi-bc761-ssibility-and-narrow-layout-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/platform-book-III-06-publi-bc761-ssibility-and-narrow-layout-mobile/error-context.md
+
+  9 failed
+    [desktop] › tests/e2e/p01/foundations.spec.ts:269:1 › plot labels, physical geometry, both themes and reduced motion remain readable 
+    [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-04 publication, hydration, exercises, both-theme accessibility and narrow layout 
+    [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-06 publication, hydration, exercises, both-theme accessibility and narrow layout 
+    [tablet] › tests/e2e/p01/foundations.spec.ts:269:1 › plot labels, physical geometry, both themes and reduced motion remain readable 
+    [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-04 publication, hydration, exercises, both-theme accessibility and narrow layout 
+    [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-06 publication, hydration, exercises, both-theme accessibility and narrow layout 
+    [mobile] › tests/e2e/p01/foundations.spec.ts:269:1 › plot labels, physical geometry, both themes and reduced motion remain readable 
+    [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-04 publication, hydration, exercises, both-theme accessibility and narrow layout 
+    [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-06 publication, hydration, exercises, both-theme accessibility and narrow layout 
+  69 passed (1.3m)

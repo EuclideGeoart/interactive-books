@@ -1,0 +1,106 @@
+---
+chapterId: III-04
+title: Training, Validation, Testing and Generalization
+hero: Protect the question you have not answered yet
+lede: Keep every observation’s identity while changing which data can fit, choose and finally evaluate a predictor.
+description: Repartition a seeded grouped dataset, inspect train-only baseline losses, and expose duplicate, distribution and preprocessing leakage.
+prerequisites: ["IV.5", "V.1", "V.3", "VIII.4"]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import SplitStage from '../SplitStage';
+import FoundationExercises from '../FoundationExercises';
+import reference from '../../../../code/python/p01/split_generalization.py?raw';
+import { href } from '../../../shell/href';
+
+<Stage caption="Drag an ID between partitions, use Left/Right on its handle, choose its destination, or enter partition index 0/1/2. Group preservation moves paired observations together.">
+  <SplitStage client:load scope="p01-data-partitions" />
+</Stage>
+
+## Three roles, not three kinds of data
+
+Training data fit the parameters and any learned preprocessing statistics. Validation data help choose a procedure, such as polynomial degree or learning rate. Test data evaluate the selected procedure after those decisions. These roles govern which information may influence a decision; they do not change what a sample means.
+
+Generalization is performance on new observations from a relevant data-generating process. A small training error measures fit to known targets. Held-out error is useful evidence only when the evaluation observations were not used to fit or repeatedly choose the procedure, and when their collection process relates to the intended use.
+
+The sheet uses twelve hand-authored rows: pairs at $x=0,1,2,3,4,10$ with $y=2x+1$. Each pair has two IDs but one group. The duplicated values represent repeated observations, deliberately making leakage inspectable. The seed chooses memberships, not data values.
+
+## Partition identities and independent units
+
+For training, validation and test ID sets $T,V,E$, require
+
+$
+T\cap V=T\cap E=V\cap E=\varnothing,\qquad
+T\cup V\cup E=I,
+$
+
+where $I$ contains every sample ID exactly once. Changing a destination never changes $x$, $y$, the ID or group.
+
+If a group is the independent unit, all its members must share a partition. Different row IDs from the same entity can remain strongly related. Likewise, identical values with different IDs can cross partitions; the sheet reports duplicate signatures separately from group leakage.
+
+At reset, groups are preserved. Seeded splitting sorts the independent unit names by UTF-16 code-unit order, then applies descending Fisher–Yates shuffling using the displayed unsigned 32-bit LCG. Approximately $60\%$ of units train, $20\%$ validate, and the remainder test; integer rounding is reflected in actual counts. Six groups yield three, one and two groups, hence six, two and four rows.
+
+A seed specifies an algorithmic experiment, not a guarantee of an unbiased split. Sorting before shuffling makes memberships reproducible when the same inputs arrive in another order. Disabling group preservation explicitly repartitions individual IDs and exposes the resulting leakage.
+
+## Fit and evaluate a literal baseline
+
+To isolate partition effects, the sheet fits a constant predictor using only training targets:
+
+$
+c_T=\frac1{|T|}\sum_{i\in T}y_i,\qquad
+\hat y_i=c_T,\qquad
+\operatorname{MSE}_A=\frac1{|A|}\sum_{i\in A}(c_T-y_i)^2.
+$
+
+At seed $42$, groups g4, g5 and g6 train, g3 validates, and g1 and g2 test. The six training targets are $7,7,9,9,21,21$, so $c_T=74/6=37/3$.
+
+The training MSE is $344/9\approx38.2222$. Validation targets are both $5$, giving $(37/3-5)^2=484/9\approx53.7778$. Test targets are $1,1,3,3$, giving MSE $970/9\approx107.7778$. These different scores use the same fitted constant and different evaluation rows. Re-estimating the constant separately on each held-out set would change the evaluated procedure.
+
+## A deliberate distribution mismatch
+
+Choose deliberate distribution shift. Inputs at most $3$ train; $x=4$ validates; $x=10$ tests. The training mean target is $4$, and the displayed MSEs are $5$, $25$ and $289$. The sheet identifies held-out inputs outside the training range.
+
+Disjoint IDs alone do not establish that the training distribution represents deployment. Time, geography, measurement devices or collection rules can create a mismatch. Our constant baseline performs poorly away from the training range; that is a statement about this toy predictor. It does not show that every algorithm must fail on these rows.
+
+## Work the preprocessing leakage counterexample
+
+The separate three-row example at seed $42$ has training inputs $[1,3]$, training targets $[-1,1]$, held-out input $11$ and target $9$. The fixed predictor is $\hat y=x-\mu$.
+
+Fit $\mu$ on training only: $\mu_T=(1+3)/2=2$, so the held-out prediction is $11-2=9$ and its MSE is $0$. Fit the feature mean on all three inputs: $\mu_{\mathrm{all}}=(1+3+11)/3=5$, so prediction is $6$ and MSE is $9$.
+
+That whole-dataset preprocessing read the held-out input before evaluation. It is invalid even though the score became worse. Changing the held-out distance leaves the honest training mean fixed while changing the leaked mean.
+
+There is a second, direct target leak. The honest constant baseline uses the training-label mean $0$, giving held-out MSE $81$. Including the held-out target produces a whole-label mean $3$ and MSE $36$. The apparent improvement is information contamination, not learned generalization.
+
+<Callout title="Split before fitting statistics" kind="misconception">
+Centering, scaling, imputing or selecting features can learn from data even without a named model class. Fit those choices on training observations, then apply the frozen transform to validation and test. Whole-dataset preprocessing can cross the evaluation boundary.
+</Callout>
+
+## Execute the actual split reference
+
+NumPy evaluates means and squared residuals; integer arithmetic reproduces the shared seed algorithm. A separate arithmetic oracle checks membership invariants, a closed-form LCG recurrence and exact mean/loss values. Run <code>.venv/bin/python -B code/python/p01/split_generalization.py</code>.
+
+<CodeFile source={reference} file="code/python/p01/split_generalization.py" />
+
+Golden cases cover seed boundaries, input-order invariance, group and individual splits, manual moves and deliberate shift. The immutable replay stores the starting state followed by three successive seeds, with complete rows and memberships in every frame.
+
+## Explore and preserve the evaluation boundary
+
+Move g1-a to validation with groups enabled. Its paired row moves too. Disable preservation, then move just one member: inspect both group and duplicate warnings. A dropdown, numeric partition index and handle arrow keys perform the same membership operation as dragging.
+
+Move every group out of training. The baseline mean and losses become undefined with a reason. Empty validation or test partitions also have undefined MSE; they do not earn a perfect zero. Replay selects actual historical memberships. Editing starts from that displayed frame and clears history; reset restores seed $42$ and the original rows.
+
+## Limits and connections
+
+Three-way seeded splitting requires at least three independent units. This toy demonstration does not estimate uncertainty, implement detailed cross-validation, or prove a split is appropriate for temporal data. Seeds use integers in $[0,2^{32}-1]$; changing the seed does not manufacture independent observations.
+
+Arithmetic goldens use $10^{-11}$ relative-plus-absolute tolerance, while identity, group membership and ordering checks are exact. The next <a href={href('/chapters/parameters-loss-optimization/')}>chapter</a> inspects the fitting update. The <a href={href('/chapters/underfitting-overfitting-baselines/')}>capacity lab</a> then couples editable memberships to actual model complexity and training-only fitting.
+
+## Check your understanding
+
+<FoundationExercises client:load chapter="III-04" />
+
+## Checkpoints
+
+You can distinguish fitting, choosing and evaluating; preserve ID and group invariants; calculate a training-only baseline on held-out rows; and identify leakage even when its score gets worse. A useful evaluation protects the information boundary and states which future observations it represents.

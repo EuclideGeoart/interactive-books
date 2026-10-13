@@ -1,0 +1,43 @@
+[data-p01] { min-width:0; }
+[data-p01] .p01-heading { display:flex; gap:1rem; flex-wrap:wrap; align-items:start; justify-content:space-between; }
+[data-p01] h2 { font-size:1.5rem; margin:.2rem 0 .75rem; }
+[data-p01] .p01-provenance,[data-p01] .p01-help { font:.82rem/1.6 var(--sans); color:var(--muted); }
+[data-p01] .p01-fields { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr)); gap:.75rem; margin:.8rem 0; }
+[data-p01] label.p01-picker { display:flex; flex-direction:column; gap:.4rem; font:.85rem var(--sans); }
+[data-p01] :is(select,button) { min-height:44px; }
+[data-p01] .p01-actions { display:flex; gap:.65rem; flex-wrap:wrap; margin:.8rem 0; }
+[data-p01] .p01-pipeline { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); list-style:none; padding:0; border-block:1px solid var(--rule); gap:.8rem; }
+[data-p01] .p01-pipeline li { padding:1rem .25rem; min-width:0; }
+[data-p01] .p01-pipeline strong { display:block; font:.95rem var(--mono); overflow-wrap:anywhere; margin:.7rem 0; }
+[data-p01] .p01-pipeline small { font:.8rem/1.5 var(--sans); color:var(--muted); }
+[data-p01] table { min-width:520px; }
+[data-p01] caption { text-align:left; font:.85rem/1.5 var(--sans); padding-bottom:.7rem; }
+[data-p01] .p01-partitions { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.8rem; margin:1rem 0; }
+[data-p01] .p01-partition { border:1px solid var(--muted); padding:.7rem; min-width:0; }
+[data-p01] .p01-partition h3 { font:600 .95rem var(--sans); margin:.2rem 0 .6rem; }
+[data-p01] .p01-membership { display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; margin:.5rem 0; }
+[data-p01] .p01-drag { touch-action:none; cursor:grab; min-width:44px; font:.85rem var(--mono); }
+[data-p01] .p01-membership label { flex:1; min-width:0; font:.8rem var(--sans); }
+[data-p01] .p01-membership select { width:100%; }
+[data-p01] [data-rejection], [data-p01] .p01-caution { border-left:3px solid var(--caution); padding-left:.8rem; }
+[data-p01] .p01-metrics { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; border-block:1px solid var(--rule); padding:1rem 0; }
+[data-p01] .p01-metrics dt { font:.82rem var(--sans); color:var(--muted); }
+[data-p01] .p01-metrics dd { margin:.5rem 0; font:1rem var(--mono); overflow-wrap:anywhere; }
+[data-p01] [data-capacity-plane] { display:block; width:100%; height:auto; }
+[data-p01] [data-capacity-plane] :is(path,line,circle,rect) { vector-effect:non-scaling-stroke; }
+[data-p01] .p01-axes { stroke:var(--muted); stroke-width:1.5; }
+[data-p01] .p01-ticks { fill:var(--muted); font-family:var(--mono); }
+[data-p01] .p01-fit { fill:none; stroke:var(--prediction); stroke-width:3; }
+[data-p01] .p01-truth { fill:none; stroke:var(--ink); stroke-width:2; stroke-dasharray:7 5; }
+[data-p01] .p01-baseline { fill:none; stroke:var(--muted); stroke-width:2; stroke-dasharray:2 5; }
+[data-p01] .p01-residual { stroke:var(--residual); stroke-width:1.5; }
+[data-p01] .p01-observation { fill:var(--data); stroke:var(--surface); stroke-width:1.5; }
+[data-p01] [data-current-frame] { font:.85rem/1.5 var(--sans); }
+@media(max-width:800px) { [data-p01] .p01-pipeline { grid-template-columns:1fr; gap:0; } [data-p01] .p01-pipeline li { display:grid; grid-template-columns:6rem minmax(0,1fr); gap:.4rem; padding:.65rem 0; } [data-p01] .p01-pipeline strong { margin:0; } [data-p01] .p01-pipeline small { grid-column:2; } }
+@media(max-width:600px) { [data-p01] .p01-metrics { grid-template-columns:1fr; } }
+@media(prefers-reduced-motion:reduce) { [data-p01] * { animation:none!important; transition:none!important; } }
+
+[data-p01] .inspector dt { min-width:0; }
+[data-p01] .inspector dd { flex-shrink:0; white-space:normal; overflow-wrap:anywhere; text-align:right; max-width:65%; }
+
+@media(max-width:600px) { [data-p01] .p01-partitions { gap:.35rem; } [data-p01] .p01-partition { padding:.4rem; } [data-p01] .p01-partition h3 { overflow-wrap:anywhere; } [data-p01] .p01-membership { gap:.25rem; } [data-p01] .p01-membership label { flex-basis:100%; } [data-p01] .p01-membership select { min-width:0; font-size:.72rem; } }

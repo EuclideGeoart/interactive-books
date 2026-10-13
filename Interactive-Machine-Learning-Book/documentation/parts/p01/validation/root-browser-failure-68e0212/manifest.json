@@ -1,0 +1,107 @@
+{
+  "mode": "focused",
+  "part": "p01",
+  "sourceSignature": "e15ff8dc46b9f347ff6f1fb0a5d0204aa965b33dd2d770cc4b3a83b07aa5ea02",
+  "chapters": [
+    "III-01",
+    "III-02",
+    "III-03",
+    "III-04",
+    "III-05",
+    "III-06",
+    "III-07"
+  ],
+  "started": "2026-10-13T16:28:46.181Z",
+  "finished": "2026-10-13T16:30:16.878Z",
+  "complete": false,
+  "results": [
+    {
+      "name": "Type/content check",
+      "argv": [
+        "node_modules/astro/astro.js",
+        "check"
+      ],
+      "exitCode": 0,
+      "seconds": 4.272,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Unit and parity tests",
+      "argv": [
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "tests/unit/p01",
+        "tests/unit/platform",
+        "--maxWorkers=2"
+      ],
+      "exitCode": 0,
+      "seconds": 1.187,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Independent oracles and freshness",
+      "argv": [
+        "scripts/run-oracle.mjs",
+        "p01"
+      ],
+      "exitCode": 0,
+      "seconds": 1.598,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Root production and offline bundle",
+      "argv": [
+        "scripts/build.mjs",
+        "/",
+        "dist"
+      ],
+      "exitCode": 0,
+      "seconds": 3.617,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Subpath production",
+      "argv": [
+        "scripts/build.mjs",
+        "/machine-learning/",
+        "dist-subpath"
+      ],
+      "exitCode": 0,
+      "seconds": 3.566,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Root production audit",
+      "argv": [
+        "scripts/check-dist.mjs",
+        "dist",
+        "/"
+      ],
+      "exitCode": 0,
+      "seconds": 0.111,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Subpath production audit",
+      "argv": [
+        "scripts/check-dist.mjs",
+        "dist-subpath",
+        "/machine-learning/"
+      ],
+      "exitCode": 0,
+      "seconds": 0.108,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Root browser validation",
+      "argv": [
+        "scripts/run-browser.mjs",
+        "playwright.config.ts",
+        "p01"
+      ],
+      "exitCode": 1,
+      "seconds": 76.235,
+      "sourceUnchanged": true
+    }
+  ]
+}

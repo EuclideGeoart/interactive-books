@@ -1,0 +1,117 @@
+---
+chapterId: III-02
+title: Samples, Features, Labels and Targets
+hero: Rows are observations. Columns have meanings.
+lede: Edit a tiny dataset and inspect its values, semantic types, units and array shapes before fitting anything.
+description: Build an editable feature matrix and target column, distinguishing sample identity, units, feature types and missing supervision.
+prerequisites: ["I.1", "I.9", "II.9", "II.11"]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import FeatureStage from '../FeatureStage';
+import FoundationExercises from '../FoundationExercises';
+import reference from '../../../../code/python/p01/samples_features.py?raw';
+import { href } from '../../../shell/href';
+
+<Stage caption="Choose the active rows and columns, select a cell’s feature, and edit its value. Target presets let the same feature schema carry a score, a category or no observed target.">
+  <FeatureStage client:load scope="p01-feature-schema" />
+</Stage>
+
+## A number needs a place and a meaning
+
+The value $2$ could mean two hours, two completed tasks, a category code, or row number two. Its role comes from the schema and the goal. Before choosing an algorithm, establish what one observation represents and what information is available for it.
+
+A sample is one observed entity or event under a specified collection process. A feature is an input attribute of that sample. A target is the output quantity or category the supervised goal seeks to predict. “Label” often means an observed category, but some writing uses it for any target; here we specify the semantic type directly.
+
+Sample IDs preserve identity when rows are reordered or assigned to partitions. They are metadata in this sheet, not numerical predictors. Two IDs may still refer to measurements of the same entity; distinct identifiers do not establish statistical independence.
+
+The six stored records are hand-authored examples of study hours, completed practice tasks, sleep hours and illustrative scores. They are not measured students and support no claim about education. Category presets use the names ready and practice. Changing target type restores that type’s preset targets; edited feature values remain.
+
+## Build the batch from feature columns
+
+For sample $i$ with $d$ features, its mathematical feature vector is a column
+
+$
+\mathbf{x}_i=
+\begin{bmatrix}x_{i1}\\ \vdots\\x_{id}\end{bmatrix}
+\in\mathbb{R}^{d\times1}.
+$
+
+A batch stores the transposed sample columns as rows:
+
+$
+X=\begin{bmatrix}\mathbf{x}_1^{\mathsf T}\\\vdots\\
+\mathbf{x}_n^{\mathsf T}\end{bmatrix}\in\mathbb{R}^{n\times d},
+\qquad y=\begin{bmatrix}y_1\\\vdots\\y_n\end{bmatrix}
+\in\mathbb{R}^{n\times1}.
+$
+
+Thus $X_{ij}$ selects feature $j$ of sample $i$. Increasing $n$ changes the number of observations. Increasing $d$ changes the input description. Neither operation automatically changes the dimensionality of the output.
+
+For a compatible scalar linear predictor, a weight column $W\in\mathbb{R}^{d\times1}$ produces
+
+$
+\hat y=XW+b\mathbf{1}_n\in\mathbb{R}^{n\times1}.
+$
+
+The inner dimensions $d$ match. The bias is separate; there is no column of ones in this inspector's $X$. The inspector shows this compatible weight shape without fitting or assigning weights. The later capacity experiment explicitly uses a column of ones for its intercept, and labels that different convention.
+
+## Work one row and one batch
+
+At reset, $n=4,d=2$. The observed inputs and scores are
+
+$
+X=\begin{bmatrix}0&0\\1&2\\2&3\\3&4\end{bmatrix},
+\qquad y=\begin{bmatrix}1\\3\\5\\7\end{bmatrix}.
+$
+
+The first feature is hours and the second is a task count. Suppose, for a shape calculation only, $W=[2,-0.5]^{\mathsf T}$ and $b=1$. For row three,
+
+$
+\hat y_3=2(2)-0.5(3)+1=3.5.
+$
+
+All four predictions are $[1,2,3.5,5]^{\mathsf T}$, a $4\times1$ column. Its residual against the third target is $3.5-5=-1.5$. The coefficient on hours has score-per-hour units and the coefficient on tasks has score-per-task units. Compatible array dimensions do not make arbitrary units interchangeable.
+
+If sleep time is added, $X$ becomes $4\times3$ and a compatible weight column becomes $3\times1$. The targets remain $4\times1$. If the goal is unlabelled exploration, $y$ is absent rather than a zero column.
+
+## Types constrain valid observations
+
+Study and sleep time accept finite real-valued hours from $0$ to $12$. Practice tasks accept integer counts from $0$ to $20$. Quantity targets accept scores from $0$ to $20$. Category targets accept the two declared names. These are illustrative UI limits, not universal limits on real measurements.
+
+Entering $2.5$ tasks is rejected; the sheet does not silently round it to an integer. Entering $2.5$ hours is valid. Finite numeric storage alone is insufficient validity: a feature can violate units, semantic type or a collection rule.
+
+<Callout title="Missing supervision has its own representation" kind="misconception">
+“No observed target” removes the target column. It does not enter zero, an empty category, or a prediction as a fabricated target. An unsupervised objective must still be chosen; the absence of y does not specify which structure to discover.
+</Callout>
+
+## Execute the actual schema reference
+
+NumPy constructs $X$ as a float64 rectangular matrix. A quantity target column uses float64; category labels use strings. Neither representation silently tells an algorithm whether the semantic learning problem is regression or classification. Run <code>.venv/bin/python -B code/python/p01/samples_features.py</code> for the three target schemas.
+
+<CodeFile source={reference} file="code/python/p01/samples_features.py" />
+
+The tests enumerate every supported $n,d$ shape and check column lengths separately. They also reject fractional counts, duplicate IDs, nonfinite values and mismatched target schemas. No numerical tolerance is needed to decide an integer count or array shape.
+
+## Explore the schema without losing observations
+
+Select row r3 and edit study hours. The same value appears in the table and the authoritative $X$. Enter more than four decimal places: the table retains the complete input number. Reduce $n$ to two, then restore four; hidden records retain their values. Reducing $d$ selects fewer feature columns without deleting the stored sleep-time column.
+
+Switch to categorical targets. Which cells changed, and which shapes stayed the same? Switch to no target and explain why the batch still exists. Reset returns all six stored records and the original four-row, two-feature view.
+
+## Numerical and conceptual limits
+
+Every active batch is rectangular, every stored ID is unique and nonempty, and each stored row retains three feature values. Ragged input cannot be treated as a numeric matrix by simply reporting the longest row. This sheet represents absence at the target-column level; it does not teach imputation for partially missing features.
+
+Binary64 is an approximation to real numbers. Given inputs use round-trip decimal text, while derived results elsewhere use marked approximations. Features with different scales can affect optimization even when their shapes agree. Fitting a centering or scaling statistic uses training data only, as the <a href={href('/chapters/training-validation-testing/')}>split experiment</a> demonstrates.
+
+A valid table is the beginning of a learning problem. The next chapter asks whether a target denotes an amount, a category, or information deliberately unused by the goal.
+
+## Check your understanding
+
+<FoundationExercises client:load chapter="III-02" />
+
+## Checkpoints
+
+You can identify samples, features, targets and identity metadata; construct $n\times d$ batches from column feature vectors; check a compatible weight and target shape; and distinguish missing supervision from numeric zero. Shapes, units and semantics are separate checks that all matter before fitting.
