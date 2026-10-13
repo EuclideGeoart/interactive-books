@@ -272,7 +272,10 @@ test('plot labels, physical geometry, both themes and reduced motion remain read
   await expect(root.locator('[data-capacity-plane]')).toHaveAttribute('viewBox','0 0 640 400');
   for(const theme of ['light','dark']){
     await page.evaluate(t=>{document.documentElement.dataset.theme=t;},theme);
-    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+    const viewport=page.viewportSize();expect(viewport).not.toBeNull();
+    const dimensions=await page.evaluate(()=>({scrollWidth:document.documentElement.scrollWidth,innerWidth}));
+    expect(dimensions.scrollWidth).toBeLessThanOrEqual(viewport!.width);
+    expect(dimensions.innerWidth).toBeLessThanOrEqual(viewport!.width);
     await expect.poll(()=>root.locator('.p01-ticks text').evaluateAll(nodes=>nodes.every(node=>{
       const plot=node.closest('svg')!,scale=plot.getBoundingClientRect().width/640;
       const font=Number.parseFloat(getComputedStyle(node).fontSize);

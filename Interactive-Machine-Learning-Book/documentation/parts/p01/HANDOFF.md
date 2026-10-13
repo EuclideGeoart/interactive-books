@@ -1,6 +1,6 @@
 # Book III Part I source handoff
 
-B3-P01: III-01–III-06. Recommended classification: **ACCEPT WITH LIMITATIONS for source review**, pending independently allocated type/production/browser validation. Acceptance belongs to the integration owner.
+B3-P01: III-01–III-06. Recommended classification: **CORRECTION REQUIRED pending integrator rerun**, following the failed type/content gate at the initial handoff; the scoped source corrections below pass focused units but have not received a heavy rerun. Acceptance belongs to the integration owner.
 
 Branch feature/book-iii-part-i-foundations. Synchronized base8157b7af7e209d94fffdf79001134b6e18744d34 (book-iii-wave-a-trace-keys-20261013). The handoff commit contains this report; its exact SHA is returned in the handoff chat. Initial worktree/common-dir/lock were verified, and only owned paths are staged and committed. The frozen foundation, other Parts, shared code/config and protected Books are unchanged.
 
@@ -93,3 +93,18 @@ Only the following owned files are delivered:
 - documentation/parts/p01/HANDOFF.md
 
 No data files or asset downloads were needed: the explicit toy rows and seeded-generation rules reside in their executable references.
+
+## Follow-up correction after the 59de0fa type/content failure
+
+Initial source handoff commit: 59de0faec704a6599a74a3b3fb9cc6195de002a4. Integrator focused run focused-2026-10-13T16-05-58-122Z stopped at the type/content gate with six errors. Its failed manifest and artifacts/integrator-focused-validation.log are preserved; no validation runner was invoked for this correction. The raw log SHA256 remains 1553e04f7fe3be214862c2fcf4da1c6f4392e3e0cbaa79a28095ef00108a44fd.
+
+The correction commit changes only four P01-owned files:
+
+- src/parts/p01/model/foundations.ts: after the runtime array guard, restore the declared readonly FeatureSample[] container. Validation values/indices and derived X rows retain numeric inference; this also fixes FeatureStage.tsx's implicit-any rendering callback without annotating or asserting its values.
+- src/parts/p01/model/capacity.ts: type the SplitState container, [string, Partition] entry tuples, assignment record and returned CapacityState. Partition literals no longer widen to arbitrary strings. No loose any, callback assertions or strictness relaxation is added.
+- tests/e2e/p01/foundations.spec.ts: bound document.documentElement.scrollWidth and innerWidth independently against page.viewportSize().width. An expanded mobile layout viewport can no longer make the old overflow assertion pass.
+- documentation/parts/p01/HANDOFF.md: record the failed gate, corrections, exact light verification and pending rerun.
+
+Verification for this correction: node node_modules/vitest/vitest.mjs run tests/unit/p01 --maxWorkers=1 — **34 tests passed in two files**, duration1.03s (2026-10-13, start18:09:58); git diff --check passed. Existing fixture parity is unchanged. Canonical Python and goldens were not modified, so their prior checks were not repeated.
+
+Full type/content, build and browser gates have NOT been rerun by this agent; the revised physical-width assertion remains unexecuted. No shared/platform/reference/config or failed-evidence file is edited. The exact correction SHA is returned in chat so the integration owner can synchronize the independent reviewer working at 59de0fa. Hold for owner allocation and independent review; no acceptance or freeze is claimed.

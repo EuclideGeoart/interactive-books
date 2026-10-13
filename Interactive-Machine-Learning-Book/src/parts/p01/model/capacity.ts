@@ -27,9 +27,9 @@ export function capacitySplit(state: CapacityState): SplitState {
   const samples = observations(state);
   const source = state.source ?? 'interleaved';
   if (!['interleaved', 'seeded', 'manual', 'distribution-shift'].includes(source)) throw new RangeError('Unknown capacity assignment provenance.');
-  const split = { samples, seed: state.splitSeed ?? 42, keepGroups: false,
-    assignments: state.assignments ?? Object.fromEntries(samples.map((row, i) => [row.id, i % 2 === 0 ? 'train' : 'validation'])),
-    source: source === 'interleaved' ? 'manual' as const : source };
+  const split: SplitState = { samples, seed: state.splitSeed ?? 42, keepGroups: false,
+    assignments: state.assignments ?? Object.fromEntries(samples.map((row, i): readonly [string, Partition] => [row.id, i % 2 === 0 ? 'train' : 'validation'])),
+    source: source === 'interleaved' ? 'manual' : source };
   deriveSplit(split);
   return split;
 }
@@ -43,9 +43,10 @@ export function assignCapacity(state: CapacityState, id: string, partition: Part
 }
 export function presetCapacitySplit(state: CapacityState, source: 'interleaved' | 'seeded' | 'distribution-shift', splitSeed = state.splitSeed ?? 42): CapacityState {
   const samples = observations(state); seeded(splitSeed);
-  const assignments = source === 'seeded' ? seedSplit(samples, splitSeed, false).assignments :
-    Object.fromEntries(samples.map((row, i) => [row.id, source === 'interleaved' ? (i % 2 === 0 ? 'train' : 'validation') : row.x <= 0 ? 'train' : row.x <= 0.5 ? 'validation' : 'test']));
-  const next = { ...state, assignments, splitSeed, source }; capacitySplit(next); return next;
+  const entries: readonly (readonly [string, Partition])[] = samples.map((row, i) =>
+    [row.id, source === 'interleaved' ? (i % 2 === 0 ? 'train' : 'validation') : row.x <= 0 ? 'train' : row.x <= 0.5 ? 'validation' : 'test']);
+  const assignments: Readonly<Record<string, Partition>> = source === 'seeded' ? seedSplit(samples, splitSeed, false).assignments : Object.fromEntries(entries);
+  const next: CapacityState = { ...state, assignments, splitSeed, source }; capacitySplit(next); return next;
 }
 export function polynomialPrediction(x: number, coefficients: readonly number[]): number {
   if (!coefficients.length || coefficients.length > 9 || !Number.isFinite(x)) throw new RangeError('A polynomial requires 1–9 coefficients and a finite input.');

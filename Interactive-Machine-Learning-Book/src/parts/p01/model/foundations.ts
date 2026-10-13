@@ -60,8 +60,9 @@ export const FEATURE_CANONICAL: FeatureState = { samples: [
 ], sampleCount: 4, featureCount: 2, targetKind: 'quantity' };
 export function deriveFeatures(state: FeatureState) {
   if (!Array.isArray(state.samples) || state.samples.length !== 6 || !Number.isInteger(state.sampleCount) || state.sampleCount < 1 || state.sampleCount > 6 || !Number.isInteger(state.featureCount) || state.featureCount < 1 || state.featureCount > 3 || !['quantity', 'category', 'none'].includes(state.targetKind)) throw new RangeError('This schema requires 1–6 active samples, 1–3 features, and a supported target kind.');
+  const samples: readonly FeatureSample[] = state.samples;
   const ids = new Set<string>();
-  for (const row of state.samples) {
+  for (const row of samples) {
     if (typeof row.id !== 'string' || !row.id.trim() || ids.has(row.id) || row.values.length !== 3) throw new RangeError('Sample IDs must be unique and nonempty; every stored row has three feature values.');
     ids.add(row.id);
     row.values.forEach((value, j) => { const column = FEATURE_COLUMNS[j]!;
@@ -71,7 +72,7 @@ export function deriveFeatures(state: FeatureState) {
     if (state.targetKind === 'category' && !['ready', 'practice'].includes(String(row.target))) throw new RangeError('Choose ready or practice as the category label.');
     if (state.targetKind === 'none' && row.target !== null) throw new RangeError('An unlabelled schema has no target values.');
   }
-  const rows = state.samples.slice(0, state.sampleCount);
+  const rows = samples.slice(0, state.sampleCount);
   return { state, rows, columns: FEATURE_COLUMNS.slice(0, state.featureCount),
     X: rows.map(row => row.values.slice(0, state.featureCount)), y: state.targetKind === 'none' ? null : rows.map(row => [row.target]),
     shapes: { X: [rows.length, state.featureCount] as const, weights: [state.featureCount, 1] as const,
