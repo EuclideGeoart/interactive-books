@@ -1,0 +1,290 @@
+
+> interactive-machine-learning@0.1.0 validate:milestone
+> node scripts/validate.mjs milestone
+
+Running: Type/content check
+16:53:32 [content] Syncing content
+16:53:32 [content] Astro config changed
+16:53:32 [content] Clearing content store
+16:53:32 [content] Synced content
+16:53:32 [types] Generated 307ms
+16:53:32 [check] Getting diagnostics for Astro files in /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-foundation/Interactive-Machine-Learning-Book...
+Result (46 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+
+Running: Unit and parity tests
+
+ RUN  v3.2.7 /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-foundation/Interactive-Machine-Learning-Book
+
+ ✓ tests/unit/p02/linear-regression-lesson.test.ts (9 tests) 49ms
+ ✓ tests/unit/platform/validation.test.ts (4 tests) 108ms
+ ✓ tests/unit/p02/linear-regression.test.ts (31 tests) 42ms
+ ✓ tests/unit/platform/contracts.test.ts (9 tests) 16ms
+ ✓ tests/unit/platform/reference-freeze.test.ts (1 test) 4ms
+ ✓ tests/unit/platform/regression-independent.test.ts (3 tests) 3ms
+
+ Test Files  6 passed (6)
+      Tests  57 passed (57)
+   Start at  16:53:35
+   Duration  594ms (transform 117ms, setup 0ms, collect 236ms, tests 220ms, environment 1ms, prepare 208ms)
+
+Running: Independent oracles and freshness
+III-07 independent rational literals: passed
+...............
+----------------------------------------------------------------------
+Ran 15 tests in 0.157s
+
+OK
+Fresh fixture: /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-foundation/Interactive-Machine-Learning-Book/fixtures/p02/linear-regression.fixtures.json
+Independent oracle commands passed: 3 across 1 Part(s).
+Running: Root production and offline bundle
+16:53:37 [content] Syncing content
+16:53:37 [content] Synced content
+16:53:37 [types] Generated 298ms
+16:53:37 [build] output: "static"
+16:53:37 [build] mode: "static"
+16:53:37 [build] directory: /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-foundation/Interactive-Machine-Learning-Book/dist/
+16:53:37 [build] Collecting build info...
+16:53:37 [build] ✓ Completed in 317ms.
+16:53:37 [build] Building static entrypoints...
+16:53:38 [vite] ✓ built in 931ms
+16:53:38 [build] ✓ Completed in 953ms.
+
+ building client (vite) 
+16:53:38 [vite] transforming...
+16:53:38 [vite] ✓ 25 modules transformed.
+16:53:38 [vite] rendering chunks...
+16:53:38 [vite] computing gzip size...
+16:53:38 [vite] dist/_astro/jsxRuntime.module.DLa4fAYi.js    0.42 kB │ gzip:  0.30 kB
+16:53:38 [vite] dist/_astro/ChoiceExercise.Bca9LHiu.js       0.67 kB │ gzip:  0.45 kB
+16:53:38 [vite] dist/_astro/client.CGMsMmoA.js               2.29 kB │ gzip:  1.24 kB
+16:53:38 [vite] dist/_astro/hooks.module.C1GxTNnt.js         3.03 kB │ gzip:  1.33 kB
+16:53:38 [vite] dist/_astro/signals.module.C4An8D1c.js       7.92 kB │ gzip:  3.08 kB
+16:53:38 [vite] dist/_astro/preact.module.B5aEZR5Y.js       11.12 kB │ gzip:  4.67 kB
+16:53:38 [vite] dist/_astro/RegressionStage.BffHhf7I.js    281.32 kB │ gzip: 85.11 kB
+16:53:38 [vite] ✓ built in 408ms
+
+ generating static routes 
+16:53:38 ▶ src/pages/404.astro
+16:53:38   └─ /404.html (+4ms) 
+16:53:38 ▶ src/pages/contents.astro
+16:53:38   └─ /contents/index.html (+1ms) 
+16:53:38 λ src/pages/curriculum.json.ts
+16:53:38   └─ /curriculum.json (+1ms) 
+16:53:38 ▶ src/pages/index.astro
+16:53:38   └─ /index.html (+1ms) 
+16:53:38 ▶ src/pages/parts/[part].astro
+16:53:38   ├─ /parts/ml-foundations/index.html (+2ms) 
+16:53:38   ├─ /parts/regression-classification/index.html (+1ms) 
+16:53:38   ├─ /parts/instance-probabilistic/index.html (+1ms) 
+16:53:38   ├─ /parts/trees-ensembles/index.html (+1ms) 
+16:53:38   ├─ /parts/clustering/index.html (+1ms) 
+16:53:38   ├─ /parts/dimensionality-reduction/index.html (+1ms) 
+16:53:38   ├─ /parts/support-vector-machines/index.html (+1ms) 
+16:53:38   ├─ /parts/evaluation-practical-ml/index.html (+1ms) 
+16:53:38   └─ /parts/neural-network-bridge/index.html (+1ms) 
+16:53:38 ▶ src/pages/chapters/[slug].astro
+16:53:38   └─ /chapters/linear-regression/index.html (+74ms) 
+16:53:38 ✓ Completed in 108ms.
+
+16:53:38 [build] 13 page(s) built in 1.81s
+16:53:38 [build] Complete!
+Running: Subpath production
+16:53:39 [content] Syncing content
+16:53:39 [content] Astro config changed
+16:53:39 [content] Clearing content store
+16:53:39 [content] Synced content
+16:53:39 [types] Generated 291ms
+16:53:39 [build] output: "static"
+16:53:39 [build] mode: "static"
+16:53:39 [build] directory: /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-foundation/Interactive-Machine-Learning-Book/dist-subpath/
+16:53:39 [build] Collecting build info...
+16:53:39 [build] ✓ Completed in 311ms.
+16:53:39 [build] Building static entrypoints...
+16:53:40 [vite] ✓ built in 990ms
+16:53:40 [build] ✓ Completed in 1.01s.
+
+ building client (vite) 
+16:53:40 [vite] transforming...
+16:53:41 [vite] ✓ 25 modules transformed.
+16:53:41 [vite] rendering chunks...
+16:53:41 [vite] computing gzip size...
+16:53:41 [vite] dist-subpath/_astro/jsxRuntime.module.DLa4fAYi.js    0.42 kB │ gzip:  0.30 kB
+16:53:41 [vite] dist-subpath/_astro/ChoiceExercise.Bca9LHiu.js       0.67 kB │ gzip:  0.45 kB
+16:53:41 [vite] dist-subpath/_astro/client.BeBs1SxV.js               2.31 kB │ gzip:  1.25 kB
+16:53:41 [vite] dist-subpath/_astro/hooks.module.C1GxTNnt.js         3.03 kB │ gzip:  1.33 kB
+16:53:41 [vite] dist-subpath/_astro/signals.module.C4An8D1c.js       7.92 kB │ gzip:  3.08 kB
+16:53:41 [vite] dist-subpath/_astro/preact.module.B5aEZR5Y.js       11.12 kB │ gzip:  4.67 kB
+16:53:41 [vite] dist-subpath/_astro/RegressionStage.BffHhf7I.js    281.32 kB │ gzip: 85.11 kB
+16:53:41 [vite] ✓ built in 424ms
+
+ generating static routes 
+16:53:41 ▶ src/pages/404.astro
+16:53:41   └─ /404.html (+4ms) 
+16:53:41 ▶ src/pages/contents.astro
+16:53:41   └─ /contents/index.html (+1ms) 
+16:53:41 λ src/pages/curriculum.json.ts
+16:53:41   └─ /curriculum.json (+1ms) 
+16:53:41 ▶ src/pages/index.astro
+16:53:41   └─ /index.html (+1ms) 
+16:53:41 ▶ src/pages/parts/[part].astro
+16:53:41   ├─ /parts/ml-foundations/index.html (+1ms) 
+16:53:41   ├─ /parts/regression-classification/index.html (+1ms) 
+16:53:41   ├─ /parts/instance-probabilistic/index.html (+1ms) 
+16:53:41   ├─ /parts/trees-ensembles/index.html (+1ms) 
+16:53:41   ├─ /parts/clustering/index.html (+1ms) 
+16:53:41   ├─ /parts/dimensionality-reduction/index.html (+1ms) 
+16:53:41   ├─ /parts/support-vector-machines/index.html (+1ms) 
+16:53:41   ├─ /parts/evaluation-practical-ml/index.html (+1ms) 
+16:53:41   └─ /parts/neural-network-bridge/index.html (+1ms) 
+16:53:41 ▶ src/pages/chapters/[slug].astro
+16:53:41   └─ /chapters/linear-regression/index.html (+70ms) 
+16:53:41 ✓ Completed in 105ms.
+
+16:53:41 [build] 13 page(s) built in 1.87s
+16:53:41 [build] Complete!
+Running: Root production audit
+Production /: 1/41 chapter pages, all internal links/assets and PWA paths valid.
+Running: Subpath production audit
+Production /machine-learning/: 1/41 chapter pages, all internal links/assets and PWA paths valid.
+Running: Root browser validation
+[WebServer] (node:390794) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 48 tests using 2 workers
+
+(node:390806) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:390807) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › tests/e2e/p02/reference.spec.ts:93:49 › canonical state, projection and touch targets in light (629ms)
+  ✓   2 [desktop] › tests/e2e/p02/reference.spec.ts:93:49 › canonical state, projection and touch targets in dark (650ms)
+  ✓   4 [desktop] › tests/e2e/p02/reference.spec.ts:139:1 › keyboard and pointer edits share actual sample state and announce only at drag end (905ms)
+  ✓   3 [desktop] › tests/e2e/p02/reference.spec.ts:108:1 › numeric edits reject invalid entries, preserve precision, announce results and reset (1.2s)
+  ✓   5 [desktop] › tests/e2e/p02/reference.spec.ts:161:1 › reset during a held drag keeps release and cancel announcements on the authoritative state (1.0s)
+  ✓   6 [desktop] › tests/e2e/p02/reference.spec.ts:185:1 › every replay frame drives controls, plot, table, formulas and inspector; editing starts there (1.4s)
+  ✓   7 [desktop] › tests/e2e/p02/reference.spec.ts:215:1 › unsupported updates and replays visibly preserve the valid state (747ms)
+  ✓   9 [desktop] › tests/e2e/p02/reference.spec.ts:239:1 › prerequisites, real Python and graded misconception feedback are present (466ms)
+  ✓   8 [desktop] › tests/e2e/p02/reference.spec.ts:227:1 › reduced motion keeps manual replay usable and touch capture local to handles (604ms)
+  ✓  10 [desktop] › tests/e2e/platform/book.spec.ts:6:1 › Part-first navigation exposes exactly nine Parts and the correct publication count (600ms)
+  ✓  11 [desktop] › tests/e2e/platform/book.spec.ts:21:1 › theme preference persists, keyboard skip link works and root shell is accessible (1.1s)
+  ✓  13 [desktop] › tests/e2e/platform/book.spec.ts:64:1 › PWA precaches actual chapters and assets and survives offline reload (446ms)
+  ✓  14 [desktop] › tests/e2e/platform/book.spec.ts:82:1 › strict production server returns real 404s and rejects malformed/traversal paths (7ms)
+  ✓  15 [desktop] › tests/e2e/platform/reference-geometry.spec.ts:3:1 › actual displayed sample centers match equal-scale world projection after input and keyboard changes (395ms)
+  ✓  16 [desktop] › tests/e2e/platform/reference-geometry.spec.ts:30:1 › focusing and leaving an unchanged parameter preserves historical replay (442ms)
+(node:391702) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  17 [tablet] › tests/e2e/p02/reference.spec.ts:93:49 › canonical state, projection and touch targets in light (565ms)
+  ✓  18 [tablet] › tests/e2e/p02/reference.spec.ts:93:49 › canonical state, projection and touch targets in dark (465ms)
+  ✓  19 [tablet] › tests/e2e/p02/reference.spec.ts:108:1 › numeric edits reject invalid entries, preserve precision, announce results and reset (1.0s)
+  ✓  20 [tablet] › tests/e2e/p02/reference.spec.ts:139:1 › keyboard and pointer edits share actual sample state and announce only at drag end (774ms)
+  ✓  21 [tablet] › tests/e2e/p02/reference.spec.ts:161:1 › reset during a held drag keeps release and cancel announcements on the authoritative state (979ms)
+  ✓  12 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-07 publication, hydration, exercises, both-theme accessibility and narrow layout (7.0s)
+(node:392298) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  22 [tablet] › tests/e2e/p02/reference.spec.ts:185:1 › every replay frame drives controls, plot, table, formulas and inspector; editing starts there (1.4s)
+  ✓  24 [tablet] › tests/e2e/p02/reference.spec.ts:227:1 › reduced motion keeps manual replay usable and touch capture local to handles (560ms)
+  ✓  23 [tablet] › tests/e2e/p02/reference.spec.ts:215:1 › unsupported updates and replays visibly preserve the valid state (1.0s)
+  ✓  25 [tablet] › tests/e2e/p02/reference.spec.ts:239:1 › prerequisites, real Python and graded misconception feedback are present (502ms)
+  ✓  26 [tablet] › tests/e2e/platform/book.spec.ts:6:1 › Part-first navigation exposes exactly nine Parts and the correct publication count (611ms)
+  ✓  27 [tablet] › tests/e2e/platform/book.spec.ts:21:1 › theme preference persists, keyboard skip link works and root shell is accessible (1.1s)
+  ✓  29 [tablet] › tests/e2e/platform/book.spec.ts:64:1 › PWA precaches actual chapters and assets and survives offline reload (430ms)
+  ✓  30 [tablet] › tests/e2e/platform/book.spec.ts:82:1 › strict production server returns real 404s and rejects malformed/traversal paths (8ms)
+  ✓  31 [tablet] › tests/e2e/platform/reference-geometry.spec.ts:3:1 › actual displayed sample centers match equal-scale world projection after input and keyboard changes (342ms)
+  ✓  32 [tablet] › tests/e2e/platform/reference-geometry.spec.ts:30:1 › focusing and leaving an unchanged parameter preserves historical replay (481ms)
+(node:392828) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  33 [mobile] › tests/e2e/p02/reference.spec.ts:93:49 › canonical state, projection and touch targets in light (570ms)
+  ✓  34 [mobile] › tests/e2e/p02/reference.spec.ts:93:49 › canonical state, projection and touch targets in dark (530ms)
+  ✓  35 [mobile] › tests/e2e/p02/reference.spec.ts:108:1 › numeric edits reject invalid entries, preserve precision, announce results and reset (1.4s)
+  ✓  36 [mobile] › tests/e2e/p02/reference.spec.ts:139:1 › keyboard and pointer edits share actual sample state and announce only at drag end (873ms)
+  ✓  37 [mobile] › tests/e2e/p02/reference.spec.ts:161:1 › reset during a held drag keeps release and cancel announcements on the authoritative state (972ms)
+  ✓  28 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-07 publication, hydration, exercises, both-theme accessibility and narrow layout (7.2s)
+(node:393339) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  38 [mobile] › tests/e2e/p02/reference.spec.ts:185:1 › every replay frame drives controls, plot, table, formulas and inspector; editing starts there (1.5s)
+  ✓  39 [mobile] › tests/e2e/p02/reference.spec.ts:215:1 › unsupported updates and replays visibly preserve the valid state (1.0s)
+  ✓  40 [mobile] › tests/e2e/p02/reference.spec.ts:227:1 › reduced motion keeps manual replay usable and touch capture local to handles (607ms)
+  ✓  41 [mobile] › tests/e2e/p02/reference.spec.ts:239:1 › prerequisites, real Python and graded misconception feedback are present (584ms)
+  ✓  42 [mobile] › tests/e2e/platform/book.spec.ts:6:1 › Part-first navigation exposes exactly nine Parts and the correct publication count (664ms)
+  ✓  43 [mobile] › tests/e2e/platform/book.spec.ts:21:1 › theme preference persists, keyboard skip link works and root shell is accessible (1.1s)
+  ✓  45 [mobile] › tests/e2e/platform/book.spec.ts:64:1 › PWA precaches actual chapters and assets and survives offline reload (493ms)
+  ✓  46 [mobile] › tests/e2e/platform/book.spec.ts:82:1 › strict production server returns real 404s and rejects malformed/traversal paths (10ms)
+  ✓  47 [mobile] › tests/e2e/platform/reference-geometry.spec.ts:3:1 › actual displayed sample centers match equal-scale world projection after input and keyboard changes (404ms)
+  ✓  48 [mobile] › tests/e2e/platform/reference-geometry.spec.ts:30:1 › focusing and leaving an unchanged parameter preserves historical replay (497ms)
+  ✓  44 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-07 publication, hydration, exercises, both-theme accessibility and narrow layout (6.5s)
+
+  48 passed (30.2s)
+Executed Part/project browser coverage: {"p02:desktop":9,"p02:tablet":9,"p02:mobile":9}
+Running: Subpath browser validation
+[WebServer] (node:394357) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 48 tests using 2 workers
+
+(node:394369) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:394370) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   2 [desktop] › tests/e2e/p02/reference.spec.ts:93:49 › canonical state, projection and touch targets in dark (685ms)
+  ✓   1 [desktop] › tests/e2e/p02/reference.spec.ts:93:49 › canonical state, projection and touch targets in light (697ms)
+  ✓   4 [desktop] › tests/e2e/p02/reference.spec.ts:139:1 › keyboard and pointer edits share actual sample state and announce only at drag end (914ms)
+  ✓   3 [desktop] › tests/e2e/p02/reference.spec.ts:108:1 › numeric edits reject invalid entries, preserve precision, announce results and reset (1.2s)
+  ✓   5 [desktop] › tests/e2e/p02/reference.spec.ts:161:1 › reset during a held drag keeps release and cancel announcements on the authoritative state (1.0s)
+  ✓   6 [desktop] › tests/e2e/p02/reference.spec.ts:185:1 › every replay frame drives controls, plot, table, formulas and inspector; editing starts there (1.5s)
+  ✓   7 [desktop] › tests/e2e/p02/reference.spec.ts:215:1 › unsupported updates and replays visibly preserve the valid state (780ms)
+  ✓   9 [desktop] › tests/e2e/p02/reference.spec.ts:239:1 › prerequisites, real Python and graded misconception feedback are present (497ms)
+  ✓   8 [desktop] › tests/e2e/p02/reference.spec.ts:227:1 › reduced motion keeps manual replay usable and touch capture local to handles (600ms)
+  ✓  10 [desktop] › tests/e2e/platform/book.spec.ts:6:1 › Part-first navigation exposes exactly nine Parts and the correct publication count (622ms)
+  ✓  11 [desktop] › tests/e2e/platform/book.spec.ts:21:1 › theme preference persists, keyboard skip link works and root shell is accessible (1.1s)
+  ✓  13 [desktop] › tests/e2e/platform/book.spec.ts:64:1 › PWA precaches actual chapters and assets and survives offline reload (444ms)
+  ✓  14 [desktop] › tests/e2e/platform/book.spec.ts:82:1 › strict production server returns real 404s and rejects malformed/traversal paths (9ms)
+  ✓  15 [desktop] › tests/e2e/platform/reference-geometry.spec.ts:3:1 › actual displayed sample centers match equal-scale world projection after input and keyboard changes (372ms)
+  ✓  16 [desktop] › tests/e2e/platform/reference-geometry.spec.ts:30:1 › focusing and leaving an unchanged parameter preserves historical replay (475ms)
+(node:395272) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  17 [tablet] › tests/e2e/p02/reference.spec.ts:93:49 › canonical state, projection and touch targets in light (666ms)
+  ✓  18 [tablet] › tests/e2e/p02/reference.spec.ts:93:49 › canonical state, projection and touch targets in dark (513ms)
+  ✓  19 [tablet] › tests/e2e/p02/reference.spec.ts:108:1 › numeric edits reject invalid entries, preserve precision, announce results and reset (1.1s)
+  ✓  20 [tablet] › tests/e2e/p02/reference.spec.ts:139:1 › keyboard and pointer edits share actual sample state and announce only at drag end (801ms)
+  ✓  21 [tablet] › tests/e2e/p02/reference.spec.ts:161:1 › reset during a held drag keeps release and cancel announcements on the authoritative state (1.2s)
+  ✓  12 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-07 publication, hydration, exercises, both-theme accessibility and narrow layout (7.4s)
+(node:396071) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  22 [tablet] › tests/e2e/p02/reference.spec.ts:185:1 › every replay frame drives controls, plot, table, formulas and inspector; editing starts there (1.5s)
+  ✓  24 [tablet] › tests/e2e/p02/reference.spec.ts:227:1 › reduced motion keeps manual replay usable and touch capture local to handles (610ms)
+  ✓  23 [tablet] › tests/e2e/p02/reference.spec.ts:215:1 › unsupported updates and replays visibly preserve the valid state (1.1s)
+  ✓  25 [tablet] › tests/e2e/p02/reference.spec.ts:239:1 › prerequisites, real Python and graded misconception feedback are present (515ms)
+  ✓  26 [tablet] › tests/e2e/platform/book.spec.ts:6:1 › Part-first navigation exposes exactly nine Parts and the correct publication count (676ms)
+  ✓  27 [tablet] › tests/e2e/platform/book.spec.ts:21:1 › theme preference persists, keyboard skip link works and root shell is accessible (1.1s)
+  ✓  29 [tablet] › tests/e2e/platform/book.spec.ts:64:1 › PWA precaches actual chapters and assets and survives offline reload (495ms)
+  ✓  30 [tablet] › tests/e2e/platform/book.spec.ts:82:1 › strict production server returns real 404s and rejects malformed/traversal paths (7ms)
+  ✓  31 [tablet] › tests/e2e/platform/reference-geometry.spec.ts:3:1 › actual displayed sample centers match equal-scale world projection after input and keyboard changes (392ms)
+  ✓  32 [tablet] › tests/e2e/platform/reference-geometry.spec.ts:30:1 › focusing and leaving an unchanged parameter preserves historical replay (478ms)
+(node:396608) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  33 [mobile] › tests/e2e/p02/reference.spec.ts:93:49 › canonical state, projection and touch targets in light (606ms)
+  ✓  34 [mobile] › tests/e2e/p02/reference.spec.ts:93:49 › canonical state, projection and touch targets in dark (538ms)
+  ✓  35 [mobile] › tests/e2e/p02/reference.spec.ts:108:1 › numeric edits reject invalid entries, preserve precision, announce results and reset (1.2s)
+  ✓  36 [mobile] › tests/e2e/p02/reference.spec.ts:139:1 › keyboard and pointer edits share actual sample state and announce only at drag end (1.0s)
+  ✓  37 [mobile] › tests/e2e/p02/reference.spec.ts:161:1 › reset during a held drag keeps release and cancel announcements on the authoritative state (1.0s)
+  ✓  28 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-07 publication, hydration, exercises, both-theme accessibility and narrow layout (7.3s)
+(node:397052) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  38 [mobile] › tests/e2e/p02/reference.spec.ts:185:1 › every replay frame drives controls, plot, table, formulas and inspector; editing starts there (1.4s)
+  ✓  39 [mobile] › tests/e2e/p02/reference.spec.ts:215:1 › unsupported updates and replays visibly preserve the valid state (987ms)
+  ✓  40 [mobile] › tests/e2e/p02/reference.spec.ts:227:1 › reduced motion keeps manual replay usable and touch capture local to handles (608ms)
+  ✓  41 [mobile] › tests/e2e/p02/reference.spec.ts:239:1 › prerequisites, real Python and graded misconception feedback are present (502ms)
+  ✓  42 [mobile] › tests/e2e/platform/book.spec.ts:6:1 › Part-first navigation exposes exactly nine Parts and the correct publication count (620ms)
+  ✓  43 [mobile] › tests/e2e/platform/book.spec.ts:21:1 › theme preference persists, keyboard skip link works and root shell is accessible (1.1s)
+  ✓  45 [mobile] › tests/e2e/platform/book.spec.ts:64:1 › PWA precaches actual chapters and assets and survives offline reload (445ms)
+  ✓  46 [mobile] › tests/e2e/platform/book.spec.ts:82:1 › strict production server returns real 404s and rejects malformed/traversal paths (8ms)
+  ✓  47 [mobile] › tests/e2e/platform/reference-geometry.spec.ts:3:1 › actual displayed sample centers match equal-scale world projection after input and keyboard changes (397ms)
+  ✓  48 [mobile] › tests/e2e/platform/reference-geometry.spec.ts:30:1 › focusing and leaving an unchanged parameter preserves historical replay (523ms)
+  ✓  44 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-07 publication, hydration, exercises, both-theme accessibility and narrow layout (6.5s)
+
+  48 passed (31.1s)
+Executed Part/project browser coverage: {"p02:desktop":9,"p02:tablet":9,"p02:mobile":9}
+Passed 9 gates. Evidence: validation-results/milestone-2026-10-13T14-53-31-438Z/manifest.json

@@ -57,6 +57,17 @@ describe('Prerequisites and path ownership', () => {
 });
 
 describe('Deterministic state and replay', () => {
+  it('preserves special-name assignment keys as detached immutable data', () => {
+    const assignments = Object.fromEntries([['__proto__', { partition: 'train' }], ['constructor', { partition: 'test' }]]);
+    const saved = traceFrom([{ state: { assignments } }])[0]!.state.assignments;
+    expect(Object.keys(saved)).toEqual(['__proto__', 'constructor']);
+    expect(Object.hasOwn(saved, '__proto__')).toBe(true);
+    expect(Object.getPrototypeOf(saved)).toBe(Object.prototype);
+    assignments['__proto__']!.partition = 'validation';
+    expect(saved['__proto__']!.partition).toBe('train');
+    expect(Object.isFrozen(saved['__proto__'])).toBe(true);
+    expect(saved['constructor']!.partition).toBe('test');
+  });
   it('uses independently known unsigned LCG values', () => {
     const draw = seeded(0);
     expect(draw()).toBe(1013904223 / 4294967296);

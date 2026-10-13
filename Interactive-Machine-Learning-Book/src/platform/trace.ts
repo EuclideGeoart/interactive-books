@@ -43,7 +43,8 @@ function snapshot<T>(value: T, seen = new WeakMap<object, unknown>()): T {
   if (proto !== Object.prototype && proto !== null) throw new TypeError('Trace states must be plain data (arrays and plain objects); found ' + (value.constructor?.name ?? 'an exotic object'));
   const copy: Record<string, unknown> = proto === null ? Object.create(null) : {};
   seen.set(value, copy);
-  for (const key of Object.keys(value)) copy[key] = snapshot((value as Record<string, unknown>)[key], seen);
+  // Assignment maps may contain valid sample IDs such as __proto__; copy them as data keys.
+  for (const key of Object.keys(value)) Object.defineProperty(copy, key, { value: snapshot((value as Record<string, unknown>)[key], seen), enumerable: true });
   return Object.freeze(copy) as T;
 }
 

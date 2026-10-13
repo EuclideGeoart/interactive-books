@@ -1,0 +1,31 @@
+
+ RUN  v3.2.7 /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-i-foundations/Interactive-Machine-Learning-Book
+
+ ❯ artifacts/integrator-wave-a.test.ts (9 tests | 1 failed) 8ms
+   ✓ the training pipeline agrees with the literal frozen reference 1ms
+   ✓ inference preserves learned parameters and has no observed loss or update 1ms
+   ✓ pipeline frames are detached history with a genuine final update 1ms
+   ✓ sample and feature counts select the declared row-batch and target columns 1ms
+   ✓ feature units reject fractional count and preserve source observations 0ms
+   ✓ task identity follows the target meaning and goal rather than numeric storage 0ms
+   ✓ seeded partitions preserve ID membership, groups and repeated rows 1ms
+   ✓ feature/target preprocessing leakage has independently literal consequences 0ms
+   × valid special-name IDs survive immutable split replay 3ms
+     → Every sample ID must have exactly one valid partition, with no extra assignment IDs.
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  artifacts/integrator-wave-a.test.ts > valid special-name IDs survive immutable split replay
+RangeError: Every sample ID must have exactly one valid partition, with no extra assignment IDs.
+ ❯ deriveSplit src/parts/p01/model/splits.ts:48:156
+
+ ❯ artifacts/integrator-wave-a.test.ts:38:77
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 passed (9)
+   Start at  16:51:53
+   Duration  180ms (transform 51ms, setup 0ms, collect 59ms, tests 8ms, environment 0ms, prepare 36ms)
+
