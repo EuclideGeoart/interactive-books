@@ -67,3 +67,9 @@ Training markers are squares, validation circles, test triangles. Solid fit, das
 data-pipeline/data-features/data-task/data-split/data-capacity identify stages. State seeds, degree, coefficient JSON, training ID JSON and baseline are exposed on capacity root. Rows expose ID, partition, x/y, prediction, residual and squared error; scalars expose data-value/data-number. Undefined and deliberately hidden outcomes use explicit strings, never NaN. SVG data-point-id and cx/cy or data-cx/data-cy allow independent physical projection tests. Formula MathML/annotations, table, inspector, speech and controls come from the active derived state.
 
 No motion or timers are introduced. Reduced motion leaves replay manually operable.
+
+## Definition-list semantics and painted geometry
+
+Split/capacity metric notes are in separate dd elements with their helper paragraphs inside. Numeric scalar dd elements keep their exact text and data-value/data-number hooks. A focused server-render test parses the output with the already installed parse5 parser and checks metric groups contain dt/dd definitions, with scalar text separate from notes. Axe remains enabled in the shared browser suite.
+
+Browser geometry checks independently derive SVG coordinates from actual row data and require coordinate attrs within1e−9 world units. Painted marker centers are checked against those expected coordinates projected through the real SVG bounding rectangle, within0.02 CSS pixels per axis. The tolerance concerns browser layout/BBox quantization (the failed run’s observed discrepancies were below0.0001 CSS pixels), not mathematical state or golden parity. Model/unit/golden tolerances are unchanged.

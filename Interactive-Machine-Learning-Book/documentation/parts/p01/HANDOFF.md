@@ -93,6 +93,10 @@ Only the following owned files are delivered:
 - documentation/parts/p01/INTEGRATION_REQUESTS.md
 - documentation/parts/p01/HANDOFF.md
 - documentation/parts/p01/validation/boundaries-before-c588aa2-fix.log
+- documentation/parts/p01/validation/root-browser-failure-68e0212/browser-root.json
+- documentation/parts/p01/validation/root-browser-failure-68e0212/integrator-focused-validation-68e0212.log
+- documentation/parts/p01/validation/root-browser-failure-68e0212/manifest.json
+- documentation/parts/p01/validation/root-browser-failure-68e0212/evidence.json
 
 No data files or asset downloads were needed: the explicit toy rows and seeded-generation rules reside in their executable references.
 
@@ -126,3 +130,18 @@ Before fixing source, the focused TypeScript run failed the categorical-array re
 After correction, node node_modules/vitest/vitest.mjs run tests/unit/p01 --maxWorkers=1 passed **37 tests in two files** (24 kernel/boundary/parity,13 lesson/source/render; duration3.24s, start18:20:01). .venv/bin/python -B oracle/p01/test_foundations.py passed **17 tests** in3.853s. .venv/bin/python -B oracle/p01/generate_fixtures.py --check passed; normal golden outputs are unchanged. git diff --check passed.
 
 This follow-up changes only the owned feature model, four canonical Python references plus numeric.py, the two focused regression files, NUMERICS.md/HANDOFF.md and the new owned failing-evidence log. No frozen/shared/config/other-Part source or golden file is changed. Full type/content, production and browser acceptance remains pending; no heavy job was run. The correction SHA is reported in chat for integrator/reviewer synchronization.
+
+## Root-browser corrections after 68e0212
+
+The integration owner ran the full focused pipeline at 68e02120dcdf8b5436e55871aba913a07c6ac6c6. Its first seven gates passed, including type/content with zero diagnostics,54 units, the oracles, production builds and audits. Root browser results were69 passed/9 failed; subpath browser validation did not run. Six failures were the definition-list rule in III-04/III-06 across three viewports; three were excessive world-unit precision applied to CSS bounding-box measurements.
+
+Original evidence is preserved byte-for-byte under documentation/parts/p01/validation/root-browser-failure-68e0212/: browser-root.json, integrator-focused-validation-68e0212.log and the failed focused-2026-10-13T16-28-46-181Z manifest.json. evidence.json records original paths, byte counts and SHA256 hashes. The original files also remain unchanged.
+
+Owned source/test corrections:
+
+- SplitStage.tsx and CapacityStage.tsx wrap helper paragraphs in separate dd descriptions. Scalar dd text and data-value/data-number selectors remain unchanged. No Axe rule is disabled.
+- lesson.test.ts adds a meaningful rendered-HTML definition-list regression using the installed parse5 parser, including the requirement that scalar definitions remain plain text.
+- foundations.spec.ts reads actual SVG coordinate attrs and compares them independently with expected row-data projections at1e−9 absolute world-unit tolerance. Painted marker centers are compared in CSS pixels with0.02 absolute tolerance, accounting for browser BBox quantization; numerical/golden tolerances are unchanged.
+- NUMERICS.md/HANDOFF.md document semantics, tolerance rationale, failed evidence and exact verification.
+
+This agent ran only node node_modules/vitest/vitest.mjs run tests/unit/p01 --maxWorkers=1: **38 tests passed in two files** (24 kernel/boundary/parity and14 lesson/source/render), duration1.07s, start18:36:20. No mathematical/Python/fixture source changed, so its previously passed checks were not repeated. Full type/build/browser reruns have NOT been run for this correction. git diff --check passed. Hold for integration-owner allocation and acceptance; the correction SHA is returned in chat.

@@ -284,13 +284,25 @@ test('plot labels, physical geometry, both themes and reduced motion remain read
   }
   const points=await root.locator('[data-point-id]').evaluateAll(nodes=>nodes.map(node=>{
     const box=node.getBoundingClientRect(),plot=node.closest('svg')!.getBoundingClientRect();
-    return {id:node.getAttribute('data-point-id')!,x:(box.x+box.width/2-plot.x)*640/plot.width,y:(box.y+box.height/2-plot.y)*400/plot.height};
+    const coordinate=(axis:'x'|'y')=>{
+      const raw=node.getAttribute(axis==='x'?'cx':'cy')??node.getAttribute('data-c'+axis);
+      if(raw===null||!Number.isFinite(Number(raw)))throw new Error('Missing finite SVG marker coordinate');
+      return Number(raw);
+    };
+    return {id:node.getAttribute('data-point-id')!,svgX:coordinate('x'),svgY:coordinate('y'),
+      paintedX:box.x+box.width/2,paintedY:box.y+box.height/2,
+      plot:{left:plot.left,top:plot.top,width:plot.width,height:plot.height}};
   }));
   const state=await capacitySnapshot(root);
   for(const point of points){
     const row=state.rows.find(row=>row.id===point.id)!;
-    expect(point.x).toBeCloseTo(48+(row.x+1.1)*544/2.2,4);
-    expect(point.y).toBeCloseTo(352-(row.y!+3)*304/7,4);
+    const svgX=48+(row.x+1.1)*544/2.2,svgY=352-(row.y!+3)*304/7;
+    expect(Math.abs(point.svgX-svgX)).toBeLessThanOrEqual(1e-9);
+    expect(Math.abs(point.svgY-svgY)).toBeLessThanOrEqual(1e-9);
+    const cssX=point.plot.left+svgX*point.plot.width/640,cssY=point.plot.top+svgY*point.plot.height/400;
+    // BBox layout/raster quantization is a CSS-pixel concern; mathematical coordinates stay tight above.
+    expect(Math.abs(point.paintedX-cssX)).toBeLessThanOrEqual(.02);
+    expect(Math.abs(point.paintedY-cssY)).toBeLessThanOrEqual(.02);
   }
   expect(await root.locator('[data-sample-id]').evaluateAll(nodes=>nodes.every(n=>{const box=n.getBoundingClientRect();return box.width>=44&&box.height>=44;}))).toBe(true);
   expect(await root.locator('[data-sample-id=p1]').evaluate(node=>getComputedStyle(node).touchAction)).toBe('none');

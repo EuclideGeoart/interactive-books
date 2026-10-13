@@ -1,6 +1,7 @@
 import { describe,expect,it } from 'vitest';
 import { h } from 'preact';
 import { render } from 'preact-render-to-string';
+import { parseFragment,type DefaultTreeAdapterMap } from 'parse5';
 import { readFileSync } from 'node:fs';
 import { compile } from '@mdx-js/mdx';
 import remarkMath from 'remark-math';
@@ -93,6 +94,27 @@ describe('six chapter source contracts and renderable controls',()=>{
     for(const Component of [PipelineStage,FeatureStage,TaskStage,SplitStage,CapacityStage]){
       const html=render(h(Component,{scope:'p01-unit-'+Component.name}));
       expect(html).toContain('data-p01');expect(html).toContain('Reset experiment');expect(html).toContain('data-announcement');
+    }
+  });
+  it('renders metric definitions with ordered terms/descriptions and keeps scalar text separate',()=>{
+    const elements=(node:DefaultTreeAdapterMap['parentNode'])=>node.childNodes.filter((child):child is DefaultTreeAdapterMap['element']=>'tagName' in child);
+    function metricLists(node:DefaultTreeAdapterMap['node']):DefaultTreeAdapterMap['element'][] {
+      const own='tagName' in node&&node.tagName==='dl'&&node.attrs.some(a=>a.name==='class'&&a.value.split(/\s+/).includes('p01-metrics'))?[node]:[];
+      return [...own,...('childNodes' in node?node.childNodes.flatMap(metricLists):[])];
+    }
+    for(const Component of [SplitStage,CapacityStage]){
+      const lists=metricLists(parseFragment(render(h(Component,{scope:'metrics-'+Component.name}))));
+      expect(lists.length).toBeGreaterThan(0);
+      for(const list of lists)for(const group of elements(list)){
+        expect(group.tagName).toBe('div');
+        const definitions=elements(group),tags=definitions.map(node=>node.tagName);
+        expect(tags[0]).toBe('dt');expect(tags.at(-1)).toBe('dd');
+        expect(tags.every(tag=>tag==='dt'||tag==='dd')).toBe(true);
+        for(const scalar of definitions.filter(node=>node.attrs.some(a=>a.name==='data-value'))){
+          expect(scalar.tagName).toBe('dd');
+          expect(scalar.childNodes.every(node=>node.nodeName==='#text')).toBe(true);
+        }
+      }
     }
   });
   it('creates unique SVG references for two stages using distinct scopes',()=>{

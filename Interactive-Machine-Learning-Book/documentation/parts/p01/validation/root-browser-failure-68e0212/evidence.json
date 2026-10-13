@@ -1,0 +1,23 @@
+{
+  "sourceCommit": "68e02120dcdf8b5436e55871aba913a07c6ac6c6",
+  "files": [
+    {
+      "source": "artifacts/browser-root.json",
+      "copy": "browser-root.json",
+      "sha256": "debe514f5fd26f2e175fd5e3702c17d530d86866084cb9b475811cd191980bd2",
+      "bytes": 193414
+    },
+    {
+      "source": "artifacts/integrator-focused-validation-68e0212.log",
+      "copy": "integrator-focused-validation-68e0212.log",
+      "sha256": "275e53ce1f2802cd1345b26bb60e86dc5b67cb6c585c4b4f4a2340dacf8af019",
+      "bytes": 56877
+    },
+    {
+      "source": "validation-results/focused-2026-10-13T16-28-46-181Z/manifest.json",
+      "copy": "manifest.json",
+      "sha256": "ddc18af41c5f290b68b6dfb40e38894ecb91d8d8d7766159b309b7aea5b70ffe",
+      "bytes": 2223
+    }
+  ]
+}

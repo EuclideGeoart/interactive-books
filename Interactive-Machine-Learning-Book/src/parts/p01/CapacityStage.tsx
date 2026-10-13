@@ -38,7 +38,7 @@ function Experiment() {
     <dl class="p01-metrics">{a.errors.map(error=><div><dt>{error.partition} polynomial MSE</dt>
       <dd data-value={`${error.partition}-mse`} data-number={error.partition==='test'&&!reveal?'hidden':error.mse??'undefined'}>{error.partition==='test'&&!reveal?'Reveal after choosing':approx(error.mse)}</dd>
       <dt>{error.partition} training-mean baseline MSE</dt><dd data-value={`${error.partition}-baseline-mse`} data-number={error.partition==='test'&&!reveal?'hidden':error.baselineMSE??'undefined'}>{error.partition==='test'&&!reveal?'Reveal after choosing':approx(error.baselineMSE)}</dd>
-      <p class="p01-help">{error.count} samples. {error.reason??'Evaluation uses this partition’s actual rows.'}</p></div>)}</dl>
+      <dd><p class="p01-help">{error.count} samples. {error.reason??'Evaluation uses this partition’s actual rows.'}</p></dd></div>)}</dl>
     <button onClick={()=>setReveal(true)} disabled={reveal}>Reveal test evaluation</button>
     <p class="p01-help">Training and validation residuals stay inspectable. Test outcomes are hidden until you reveal them; repeated reveal-and-edit turns the test into another validation set. Any edit hides test outcomes again.</p>
     <svg ref={svg} data-capacity-plane viewBox={a.plot.viewBox} role="img" aria-labelledby={`${titleId} ${descId}`}>
