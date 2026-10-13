@@ -36,6 +36,8 @@ test('theme preference persists, keyboard skip link works and root shell is acce
 
 for (const chapter of curriculum.chapters.filter(c => c.slug)) {
   test(`${chapter.id} publication, hydration, exercises, both-theme accessibility and narrow layout`, async ({ page }) => {
+    // Two full-page/theme accessibility scans need more time on long chapters.
+    test.slow();
     const errors: string[] = [];
     page.on('pageerror', error => errors.push(error.message));
     page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
