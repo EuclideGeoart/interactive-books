@@ -6,6 +6,7 @@
 !/setup-learning-books-github.sh
 !/Interactive-C++-Data-Structures-&-Algorithms-Book/
 !/Interactive-Mathematical-Foundations-Book/
+!/Interactive-Machine-Learning-Book/
 
 # Generated output and machine-local state in every book
 **/node_modules

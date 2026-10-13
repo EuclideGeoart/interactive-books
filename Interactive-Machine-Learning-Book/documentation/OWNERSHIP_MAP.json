@@ -1,0 +1,214 @@
+{
+  "sharedOwner": "integrator",
+  "sharedPaths": [
+    "src/curriculum/",
+    "src/platform/",
+    "src/ui/",
+    "src/shell/",
+    "src/pages/",
+    "src/styles/",
+    "scripts/",
+    "package.json",
+    "package-lock.json",
+    "astro.config.mjs",
+    "tsconfig.json",
+    "vitest.config.ts",
+    "playwright*.config.ts",
+    "tests/unit/platform/",
+    "tests/e2e/platform/",
+    "documentation/REFERENCE_FOOTPRINT.json",
+    "documentation/validation/",
+    ".gitignore"
+  ],
+  "protectedBooks": [
+    "Interactive-C++-Data-Structures-&-Algorithms-Book",
+    "Interactive-Mathematical-Foundations-Book"
+  ],
+  "referenceFootprint": "documentation/REFERENCE_FOOTPRINT.json",
+  "parts": [
+    {
+      "id": "p01",
+      "chapters": [
+        "III-01",
+        "III-02",
+        "III-03",
+        "III-04",
+        "III-05",
+        "III-06"
+      ],
+      "ownedPaths": [
+        "src/parts/p01/",
+        "code/python/p01/",
+        "oracle/p01/",
+        "fixtures/p01/",
+        "data/p01/",
+        "tests/unit/p01/",
+        "tests/e2e/p01/",
+        "documentation/parts/p01/"
+      ],
+      "override": null
+    },
+    {
+      "id": "p02",
+      "chapters": [
+        "III-08",
+        "III-09",
+        "III-10",
+        "III-11",
+        "III-12",
+        "III-13",
+        "III-14",
+        "III-15",
+        "III-16"
+      ],
+      "ownedPaths": [
+        "src/parts/p02/",
+        "code/python/p02/",
+        "oracle/p02/",
+        "fixtures/p02/",
+        "data/p02/",
+        "tests/unit/p02/",
+        "tests/e2e/p02/",
+        "documentation/parts/p02/"
+      ],
+      "override": "III-07 footprint stays read-only; registration/oracle manifest additions must preserve it"
+    },
+    {
+      "id": "p03",
+      "chapters": [
+        "III-17",
+        "III-18",
+        "III-19"
+      ],
+      "ownedPaths": [
+        "src/parts/p03/",
+        "code/python/p03/",
+        "oracle/p03/",
+        "fixtures/p03/",
+        "data/p03/",
+        "tests/unit/p03/",
+        "tests/e2e/p03/",
+        "documentation/parts/p03/"
+      ],
+      "override": null
+    },
+    {
+      "id": "p04",
+      "chapters": [
+        "III-20",
+        "III-21",
+        "III-22",
+        "III-23",
+        "III-24",
+        "III-25"
+      ],
+      "ownedPaths": [
+        "src/parts/p04/",
+        "code/python/p04/",
+        "oracle/p04/",
+        "fixtures/p04/",
+        "data/p04/",
+        "tests/unit/p04/",
+        "tests/e2e/p04/",
+        "documentation/parts/p04/"
+      ],
+      "override": null
+    },
+    {
+      "id": "p05",
+      "chapters": [
+        "III-26",
+        "III-27",
+        "III-28"
+      ],
+      "ownedPaths": [
+        "src/parts/p05/",
+        "code/python/p05/",
+        "oracle/p05/",
+        "fixtures/p05/",
+        "data/p05/",
+        "tests/unit/p05/",
+        "tests/e2e/p05/",
+        "documentation/parts/p05/"
+      ],
+      "override": null
+    },
+    {
+      "id": "p06",
+      "chapters": [
+        "III-29",
+        "III-30",
+        "III-31"
+      ],
+      "ownedPaths": [
+        "src/parts/p06/",
+        "code/python/p06/",
+        "oracle/p06/",
+        "fixtures/p06/",
+        "data/p06/",
+        "tests/unit/p06/",
+        "tests/e2e/p06/",
+        "documentation/parts/p06/"
+      ],
+      "override": null
+    },
+    {
+      "id": "p07",
+      "chapters": [
+        "III-32",
+        "III-33",
+        "III-34"
+      ],
+      "ownedPaths": [
+        "src/parts/p07/",
+        "code/python/p07/",
+        "oracle/p07/",
+        "fixtures/p07/",
+        "data/p07/",
+        "tests/unit/p07/",
+        "tests/e2e/p07/",
+        "documentation/parts/p07/"
+      ],
+      "override": null
+    },
+    {
+      "id": "p08",
+      "chapters": [
+        "III-35",
+        "III-36",
+        "III-37",
+        "III-38",
+        "III-39"
+      ],
+      "ownedPaths": [
+        "src/parts/p08/",
+        "code/python/p08/",
+        "oracle/p08/",
+        "fixtures/p08/",
+        "data/p08/",
+        "tests/unit/p08/",
+        "tests/e2e/p08/",
+        "documentation/parts/p08/"
+      ],
+      "override": null
+    },
+    {
+      "id": "p09",
+      "chapters": [
+        "III-40",
+        "III-41"
+      ],
+      "ownedPaths": [
+        "src/parts/p09/",
+        "code/python/p09/",
+        "oracle/p09/",
+        "fixtures/p09/",
+        "data/p09/",
+        "tests/unit/p09/",
+        "tests/e2e/p09/",
+        "documentation/parts/p09/"
+      ],
+      "override": null
+    }
+  ]
+}

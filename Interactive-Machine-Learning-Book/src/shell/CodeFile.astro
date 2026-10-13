@@ -1,0 +1,6 @@
+---
+import { Code } from 'astro:components';
+interface Props { source: string; file: string }
+const { source, file } = Astro.props;
+---
+<figure class="code-file"><figcaption>{file}</figcaption><Code code={source} lang="python" theme="css-variables" /></figure>

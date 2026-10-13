@@ -1,0 +1,12 @@
+---
+import { getCollection, render } from 'astro:content';
+import ChapterLayout from '../../shell/ChapterLayout.astro';
+import { checkChapterContent, findChapter } from '../../curriculum/registry';
+export async function getStaticPaths() {
+  const entries = await getCollection('chapters'); checkChapterContent(entries);
+  return entries.map(entry => ({ params: { slug: findChapter(entry.data.chapterId)!.slug }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+---
+<ChapterLayout {...entry.data} headings={headings}><Content /></ChapterLayout>

@@ -1,0 +1,50 @@
+{
+  "name": "interactive-machine-learning",
+  "version": "0.1.0",
+  "description": "Book III — Interactive Machine Learning",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "node scripts/build.mjs / dist",
+    "build:subpath": "node scripts/build-subpath.mjs",
+    "serve": "node scripts/serve-dist.mjs dist / 4461",
+    "serve:subpath": "node scripts/serve-dist.mjs dist-subpath /machine-learning/ 4462",
+    "check": "astro check",
+    "test": "vitest run",
+    "test:oracle": "node scripts/run-oracle.mjs",
+    "check:dist": "node scripts/check-dist.mjs dist / && node scripts/check-dist.mjs dist-subpath /machine-learning/",
+    "test:e2e": "node scripts/run-browser.mjs playwright.config.ts",
+    "test:e2e:subpath": "node scripts/run-browser.mjs playwright.subpath.config.ts",
+    "validate:focused": "node scripts/validate.mjs focused",
+    "validate:milestone": "node scripts/validate.mjs milestone",
+    "validation:enumerate": "node scripts/validate.mjs enumerate"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "4.3.14",
+    "@astrojs/preact": "4.1.3",
+    "@fontsource-variable/instrument-sans": "^5.2.0",
+    "@fontsource-variable/jetbrains-mono": "^5.2.0",
+    "@fontsource-variable/source-serif-4": "^5.2.0",
+    "astro": "5.18.2",
+    "katex": "^0.16.0",
+    "preact": "^10.27.0",
+    "rehype-katex": "7.0.1",
+    "remark-math": "6.0.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.63.0",
+    "@types/katex": "^0.16.0",
+    "@types/node": "^24.0.0",
+    "typescript": "5.9.3",
+    "vitest": "3.2.7"
+  },
+  "overrides": {
+    "playwright-core": "1.63.0"
+  }
+}

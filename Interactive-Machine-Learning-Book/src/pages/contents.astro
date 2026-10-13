@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../shell/BaseLayout.astro';
+import { available, chapters, parts } from '../curriculum/registry';
+import { href } from '../shell/href';
+---
+<BaseLayout title="The Parts" description="The nine Parts of Interactive Machine Learning, from samples and model fitting to evaluation and the transition to neural networks.">
+  <section class="contents"><p class="chapter-label">The learning path</p><h1>Explore a Part.</h1><p class="lede">Choose a mechanism, then follow the chapters within it. {available.length} of {chapters.length} chapters are ready to explore.</p>
+    <div class="part-index"><ol>{parts.map(part => <li id={`part-${part.id}`}><a href={href(`/parts/${part.slug}/`)}><span class="part-numeral">{part.numeral}</span><span><strong>{part.title}</strong><small>{part.chapters.length} chapters · {part.chapters.filter(c => c.slug).length} available</small></span><span aria-hidden="true">↗</span></a></li>)}</ol></div>
+  </section>
+</BaseLayout>

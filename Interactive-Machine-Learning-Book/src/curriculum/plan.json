@@ -1,0 +1,239 @@
+[
+  {
+    "id": "p01",
+    "numeral": "I",
+    "title": "ML Foundations",
+    "slug": "ml-foundations",
+    "chapters": [
+      {
+        "id": "III-01",
+        "title": "What Machine Learning Actually Learns"
+      },
+      {
+        "id": "III-02",
+        "title": "Samples, Features, Labels and Targets"
+      },
+      {
+        "id": "III-03",
+        "title": "Learning Problems"
+      },
+      {
+        "id": "III-04",
+        "title": "Training, Validation, Testing and Generalization"
+      },
+      {
+        "id": "III-05",
+        "title": "Parameters, Hyperparameters, Loss and Optimization"
+      },
+      {
+        "id": "III-06",
+        "title": "Underfitting, Overfitting, Bias, Variance and Baselines"
+      }
+    ]
+  },
+  {
+    "id": "p02",
+    "numeral": "II",
+    "title": "Regression and Classification",
+    "slug": "regression-classification",
+    "chapters": [
+      {
+        "id": "III-07",
+        "title": "Linear Regression",
+        "role": "reference"
+      },
+      {
+        "id": "III-08",
+        "title": "Least Squares and the Closed-Form Best Fit"
+      },
+      {
+        "id": "III-09",
+        "title": "Gradient Descent for Linear Regression"
+      },
+      {
+        "id": "III-10",
+        "title": "Multiple Linear Regression"
+      },
+      {
+        "id": "III-11",
+        "title": "Polynomial Features"
+      },
+      {
+        "id": "III-12",
+        "title": "Regularization"
+      },
+      {
+        "id": "III-13",
+        "title": "Logistic Regression"
+      },
+      {
+        "id": "III-14",
+        "title": "Decision Thresholds and Confusion Matrix"
+      },
+      {
+        "id": "III-15",
+        "title": "Precision, Recall, F1 and ROC"
+      },
+      {
+        "id": "III-16",
+        "title": "Multiclass Classification and Softmax Regression"
+      }
+    ]
+  },
+  {
+    "id": "p03",
+    "numeral": "III",
+    "title": "Instance and Probabilistic Methods",
+    "slug": "instance-probabilistic",
+    "chapters": [
+      {
+        "id": "III-17",
+        "title": "k-Nearest Neighbors"
+      },
+      {
+        "id": "III-18",
+        "title": "Distance Metrics and Curse of Dimensionality"
+      },
+      {
+        "id": "III-19",
+        "title": "Naive Bayes"
+      }
+    ]
+  },
+  {
+    "id": "p04",
+    "numeral": "IV",
+    "title": "Trees and Ensemble Learning",
+    "slug": "trees-ensembles",
+    "chapters": [
+      {
+        "id": "III-20",
+        "title": "Decision Trees and Candidate Splits"
+      },
+      {
+        "id": "III-21",
+        "title": "Entropy, Gini Impurity and Information Gain"
+      },
+      {
+        "id": "III-22",
+        "title": "Regression Trees, Tree Depth and Pruning"
+      },
+      {
+        "id": "III-23",
+        "title": "Bagging and Bootstrap Sampling"
+      },
+      {
+        "id": "III-24",
+        "title": "Random Forests"
+      },
+      {
+        "id": "III-25",
+        "title": "Boosting and Gradient Boosting"
+      }
+    ]
+  },
+  {
+    "id": "p05",
+    "numeral": "V",
+    "title": "Clustering",
+    "slug": "clustering",
+    "chapters": [
+      {
+        "id": "III-26",
+        "title": "k-Means"
+      },
+      {
+        "id": "III-27",
+        "title": "Initialization, Convergence, Scaling and Failure Cases"
+      },
+      {
+        "id": "III-28",
+        "title": "Hierarchical and Density-Based Clustering"
+      }
+    ]
+  },
+  {
+    "id": "p06",
+    "numeral": "VI",
+    "title": "Dimensionality Reduction",
+    "slug": "dimensionality-reduction",
+    "chapters": [
+      {
+        "id": "III-29",
+        "title": "High-Dimensional Data and Covariance"
+      },
+      {
+        "id": "III-30",
+        "title": "PCA: Eigenvectors and Explained Variance"
+      },
+      {
+        "id": "III-31",
+        "title": "PCA Projection and Reconstruction"
+      }
+    ]
+  },
+  {
+    "id": "p07",
+    "numeral": "VII",
+    "title": "Support Vector Machines",
+    "slug": "support-vector-machines",
+    "chapters": [
+      {
+        "id": "III-32",
+        "title": "Maximum-Margin Classification"
+      },
+      {
+        "id": "III-33",
+        "title": "Soft Margins and Regularization Tradeoff"
+      },
+      {
+        "id": "III-34",
+        "title": "Kernel Methods"
+      }
+    ]
+  },
+  {
+    "id": "p08",
+    "numeral": "VIII",
+    "title": "Evaluation and Practical ML",
+    "slug": "evaluation-practical-ml",
+    "chapters": [
+      {
+        "id": "III-35",
+        "title": "Cross-Validation and Hyperparameter Tuning"
+      },
+      {
+        "id": "III-36",
+        "title": "Learning Curves and Model Selection"
+      },
+      {
+        "id": "III-37",
+        "title": "Class Imbalance, Calibration and Metric Choice"
+      },
+      {
+        "id": "III-38",
+        "title": "Preprocessing, Feature Engineering and Pipelines"
+      },
+      {
+        "id": "III-39",
+        "title": "Reproducibility and Numerical Reliability"
+      }
+    ]
+  },
+  {
+    "id": "p09",
+    "numeral": "IX",
+    "title": "Bridge to Neural Networks",
+    "slug": "neural-network-bridge",
+    "chapters": [
+      {
+        "id": "III-40",
+        "title": "From Linear Model to Artificial Neuron"
+      },
+      {
+        "id": "III-41",
+        "title": "Composition and Learned Representations"
+      }
+    ]
+  }
+]

@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../shell/BaseLayout.astro';
+import { available, chapters, parts } from '../curriculum/registry';
+import { href } from '../shell/href';
+const first = available[0];
+---
+<BaseLayout title="Explore the mechanism" description="An interactive machine learning book. Manipulate observations, inspect a model, follow its predictions and understand how learning changes it.">
+  <section class="home-intro"><p class="chapter-label">Book III · Interactive Machine Learning</p><h1>A model is a rule<br />you can <em>inspect.</em></h1>
+    <p class="lede">Change the data. Follow the prediction. See exactly why the parameters move.</p>
+    {first && <a class="start-link" href={href(`/chapters/${first.slug}/`)}>Start with {first.title.toLowerCase()} <span aria-hidden="true">↗</span></a>}
+    <div class="pipeline" aria-label="One supervised learning step"><div><span>Observe</span><strong>X, y</strong><small>Samples and targets</small></div><b aria-hidden="true">→</b><div><span>Predict</span><strong>ŷ</strong><small>The model's output</small></div><b aria-hidden="true">→</b><div><span>Measure</span><strong>L</strong><small>Error under a chosen loss</small></div><b aria-hidden="true">→</b><div><span>Update</span><strong>θ</strong><small>Learned parameters</small></div></div>
+  </section>
+  <section class="part-index"><div class="index-heading"><h2>Nine Parts. One inspectable path.</h2><p>{available.length} of {chapters.length} chapters available</p></div>
+    <ol>{parts.map(part => <li><a href={href(`/parts/${part.slug}/`)}><span class="part-numeral">{part.numeral}</span><span><strong>{part.title}</strong><small>{part.chapters.length} chapters · {part.chapters.filter(c => c.slug).length} available</small></span><span aria-hidden="true">↗</span></a></li>)}</ol>
+  </section>
+</BaseLayout>

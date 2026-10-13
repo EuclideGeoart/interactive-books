@@ -1,0 +1,233 @@
+---
+chapterId: III-07
+title: Linear Regression
+hero: Follow a line from prediction to update
+lede: Move a sample, calculate its signed residual, and see how all five observations determine one simultaneous gradient update.
+description: Inspect affine predictions, column shapes, signed residuals, mean squared error and analytical gradients, then replay immutable parameter updates.
+prerequisites: [II.9, III.6, III.7, III.8]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import RegressionStage from '../RegressionStage';
+import reference from '../../../../code/python/p02/linear_regression.py?raw';
+
+<Stage caption="One active state supplies the observations, predictor, signed residuals, equations and update. Filled circles are observations; hollow diamonds are predictions; dashed vertical segments connect them. Reset restores the five hand-authored samples."><RegressionStage scope="iii07-reference" client:load /></Stage>
+
+## A prediction is a claim about an observation
+
+An observation supplies an input $x_i$ and a target $y_i$. An affine predictor uses two shared parameters to produce a number:
+
+$$
+\hat y_i = wx_i+b.
+$$
+
+The weight $w$ controls how much the prediction changes when the input increases by one. The bias $b$ is the prediction at $x=0$. Changing either parameter changes the same line for every sample. Moving an observation changes the data; it does not directly move the predictor's parameters.
+
+Select a sample in the stage. Its filled circle is the observed pair $(x_i,y_i)$, and its hollow diamond is $(x_i,\hat y_i)$. The dashed segment is vertical because this loss compares target and prediction at the **same input**. It does not measure the shortest distance to the line.
+
+Our residual convention is
+
+$$
+r_i=\hat y_i-y_i.
+$$
+
+A positive residual means overprediction; a negative residual means underprediction. The sign is useful even though the squared error $r_i^2$ is nonnegative. Some books reverse the residual convention, so check the definition before copying a gradient.
+
+## Samples, columns and shapes
+
+These five unitless observations were explicitly hand-authored for this experiment: inputs $[-2,-1,0,1,2]$ and targets $[-3,-1,1,3,4]$, with stable IDs `s1` through `s5`. They are synthetic toy data, not measurements or evidence about a population. The last target is one below the otherwise exact line $y=2x+1$.
+
+Mathematical vectors are columns. A batch puts one observation in each row of $X$:
+
+$$
+X=\begin{bmatrix}-2\\-1\\0\\1\\2\end{bmatrix}\in\mathbb R^{5\times1},
+\quad W=\begin{bmatrix}w\end{bmatrix}\in\mathbb R^{1\times1},
+\quad y=\begin{bmatrix}-3\\-1\\1\\3\\4\end{bmatrix}\in\mathbb R^{5\times1}.
+$$
+
+The scalar bias broadcasts to all five entries: $\hat y=XW+b\mathbf1$, where $\mathbf1$ is a $5\times1$ column of ones. Thus predictions and residuals also have shape $5\times1$. There is no intercept column in this chapter's $X$; the bias remains a separate scalar. For $n$ observations, replace five with $n$.
+
+The inspector reports these actual shapes. Stable IDs identify observations when their coordinates change; their IDs are not extra features.
+
+## Turn all residuals into one objective
+
+Mean squared error averages the squared vertical residuals:
+
+$$
+L(w,b)=\operatorname{MSE}(w,b)=\frac1n\sum_{i=1}^{n}(wx_i+b-y_i)^2.
+$$
+
+Squaring prevents positive and negative errors from cancelling and makes larger residuals contribute more. Averaging distinguishes MSE from the sum of squared errors. This definition contains **no factor of one half** and no square root.
+
+MSE is the training objective in this experiment. A low value says the predictor matches these targets; it does not establish causal influence, reliable extrapolation, or performance on unseen observations. We have no separate validation or test set here.
+
+## Work one update by hand
+
+Reset to $w=0.5$, $b=0$ and learning rate $\eta=0.1$. Compute each row before changing a parameter.
+
+<div class="table-scroll" tabindex="0" role="region" aria-label="Initial hand calculation, scrollable">
+
+| Sample | x | Target y | Prediction | Residual | Squared error |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| s1 | -2 | -3 | -1 | 2 | 4 |
+| s2 | -1 | -1 | -0.5 | 0.5 | 0.25 |
+| s3 | 0 | 1 | 0 | -1 | 1 |
+| s4 | 1 | 3 | 0.5 | -2.5 | 6.25 |
+| s5 | 2 | 4 | 1 | -3 | 9 |
+
+</div>
+
+The squared errors sum to $20.5$, giving $L=20.5/5=4.1$. Their signed residuals sum to $-4$; the weighted residuals sum to
+
+$$
+\sum_i r_i x_i=2(-2)+0.5(-1)+(-1)(0)+(-2.5)(1)+(-3)(2)=-13.
+$$
+
+The gradients below therefore give $dw=(2/5)(-13)=-5.2$ and $db=(2/5)(-4)=-1.6$. Subtract both gradients, evaluated at the **same old state**:
+
+$$
+\begin{aligned}
+w_{\mathrm{next}}&=0.5-0.1(-5.2)=1.02,\\
+b_{\mathrm{next}}&=0-0.1(-1.6)=0.16.
+\end{aligned}
+$$
+
+Press **Apply one update** and check the new rows:
+
+<div class="table-scroll" tabindex="0" role="region" aria-label="Hand calculation after one update, scrollable">
+
+| Sample | Prediction | Residual | Squared error |
+| --- | ---: | ---: | ---: |
+| s1 | -1.88 | 1.12 | 1.2544 |
+| s2 | -0.86 | 0.14 | 0.0196 |
+| s3 | 0.16 | -0.84 | 0.7056 |
+| s4 | 1.18 | -1.82 | 3.3124 |
+| s5 | 2.2 | -1.8 | 3.24 |
+
+</div>
+
+Their sum is $8.532$, so the new MSE is $1.7064$. Recomputing the gradients at this new state gives $dw=-3.12$ and $db=-1.28$. A second update would use these values, not the old gradients. The first decrease is an observation about this update, not a promise that every permitted learning rate decreases loss.
+
+## Derive the analytical gradients
+
+Hold the data fixed. The chain rule and the partial derivatives of the affine predictor give
+
+$$
+\frac{\partial r_i}{\partial w}=x_i,
+\qquad
+\frac{\partial r_i}{\partial b}=1.
+$$
+
+For a squared residual, the outer derivative contributes $2r_i$. Differentiating the average term by term gives
+
+$$
+\begin{aligned}
+\frac{\partial L}{\partial w}&=\frac2n\sum_i r_i x_i=dw,\\
+\frac{\partial L}{\partial b}&=\frac2n\sum_i r_i=db.
+\end{aligned}
+$$
+
+The gradient is the column $\nabla L=[dw,db]^{\mathsf T}$. The weight gradient includes the input because changing $w$ affects each prediction by $x_i$ times that change. The bias gradient weights every sample equally. For the observation at $x=0$, the weight's contribution is zero even if its residual is large.
+
+Gradient descent takes the simultaneous update
+
+$$
+\begin{bmatrix}w_{\mathrm{next}}\\b_{\mathrm{next}}\end{bmatrix}
+=\begin{bmatrix}w\\b\end{bmatrix}
+-\eta\begin{bmatrix}dw\\db\end{bmatrix}.
+$$
+
+The implementation calculates these analytical derivatives directly. It does not use automatic differentiation or a fitted-model library. A central finite difference, $[L(w+h,b)-L(w-h,b)]/(2h)$, is a separate numerical check of $dw$; it is not the update rule used by the stage.
+
+## Edit and replay the same state
+
+Use the numeric fields to change weight, bias, learning rate or the selected observation's coordinates. Enter applies a valid value; a rejected entry gives a reason and preserves the model. Sample handles also accept pointer dragging and arrow keys. Each arrow changes a coordinate by $0.1$; holding Shift changes it by $0.5$. These paths all edit the observation used by the plot and table.
+
+**Replay 3 updates** records the starting state and three successive updates. Frame 1 contains zero replay updates; frame 4 contains three. First, Previous and Next select immutable snapshots. The parameters, sample editor, plot, equations, table and inspector all switch to that exact selected frame. Editing or applying a new update starts from the displayed frame and clears the replay. Reset restores the original five observations and parameters.
+
+Try these investigations:
+
+1. Set the bias to $1$ and keep the weight fixed. Which predictions change? Check every row.
+2. Reset, then change only sample `s3`'s target. Explain why its direct contribution to $dw$ is zero while its contribution to $db$ changes.
+3. Move `s5` vertically and compare its squared error with its residual. Doubling a residual multiplies its squared error by four.
+4. Reset and replay three updates. Return to frame 2, edit the weight, and verify the new state begins from frame 2's observations and bias.
+
+## Counterexamples clarify the limits
+
+**Constant inputs are still valid predictor data.** If two samples have $x=2$ and targets $1$ and $3$, the predictors $(w,b)=(0,2)$ and $(1,0)$ both predict $2$ for both observations. Both have MSE $1$. The data constrain $2w+b$, so they do not identify a unique weight and bias. A single observation has the same kind of ambiguity. Neither case makes prediction, residuals or gradients undefined.
+
+**A perfect fit has zero gradient.** For observations $(-1,-1)$ and $(1,3)$ with $w=2$, $b=1$, both residuals are zero. MSE and both gradients are zero, so an update leaves the parameters unchanged.
+
+**A valid rate can overshoot.** With the single observation $(2,1)$, start at $w=b=0$ and $\eta=1$. MSE is initially $1$, and gradients are $dw=-4$, $db=-2$. The next parameters $(4,2)$ predict $10$, so the next MSE is $(10-1)^2=81$. A positive bounded rate alone is not a convergence certificate. Input scale and curvature matter.
+
+<Callout title="An unsupported update is visible" kind="numerical">
+The interactive sheet supports weights and biases from −4 to 4, sample coordinates from −5 to 5, and learning rates from 0.001 to 1. A proposed update outside those ranges is rejected with a reason; the last valid state remains on screen. No parameter is silently clipped into the permitted range. The numerical model itself accepts a broader range of finite values.
+</Callout>
+
+## Execute the actual Python reference
+
+This is the source file used to generate the golden calculations. NumPy constructs $X$, $W$ and $y$ as column arrays, then computes predictions, residuals, MSE and analytical gradients from scratch. Running it prints the canonical before/after results and an initial-plus-three-updates trace.
+
+From the book root, with the provisioned NumPy environment:
+
+```bash
+.venv/bin/python -B code/python/p02/linear_regression.py
+```
+
+<CodeFile source={reference} file="code/python/p02/linear_regression.py" />
+
+The independent oracle uses exact rational arithmetic and an expanded loss based on data moments. It imports neither NumPy nor this reference. Its literal tests independently confirm the canonical MSE, gradients, first update and following loss; numerical tests also compare NumPy with that oracle and check the gradients by finite differences.
+
+## Numerical considerations
+
+State uses binary64 numbers. Given sample coordinates use full round-trip decimal text in the table and accessible names. Computed predictions, residuals, squared errors, MSE and update values are displayed to four decimal places and marked approximately. A displayed approximate zero can therefore hide a small nonzero loss or gradient. Display rounding never changes the values used for an update. Keyboard movement adds its increment to the existing coordinate with ordinary binary64 arithmetic, preserving fine precision without extra decimal truncation; pointer movement explicitly snaps to the stated 0.1 lattice. Python/TypeScript parity is checked with absolute and relative tolerances of $10^{-12}$, rather than exact equality between independently rounded calculations.
+
+The numerical API requires 1–64 observations, unique nonempty IDs, finite inputs and $0<\eta\leq1$. Finite inputs can still overflow during products, squared residuals or reductions. Such arithmetic is rejected with an informative error; an overflowing replay returns no partial history. Subnormal values and underflow follow binary64 arithmetic, and a very small update can round to no parameter change.
+
+The plot has equal x/y scale and a fixed domain from −6 to 6. Predictions outside that plane are clipped visually but remain visible numerically in the table. Pointer movement stops at the observation editor's boundary; numeric entry instead rejects an out-of-range value. Large touch targets expand with the rendered plot size, and only sample handles capture touch gestures, so the rest of the page remains scrollable.
+
+## Check your understanding
+
+Each question grades the chosen answer and explains the misconception behind the alternatives. Use the canonical state unless the question says otherwise.
+
+<ChoiceExercise id="iii07-residual" client:load prompt="At x = 1, the target is 3 and the canonical prediction is 0.5. What is the signed residual?" choices={[
+  { label: '−2.5', correct: true, feedback: 'Residual = prediction − target = 0.5 − 3. A negative value means underprediction.' },
+  { label: '2.5', correct: false, feedback: 'That reverses this chapter’s convention. We subtract the target from the prediction.' },
+  { label: '6.25', correct: false, feedback: 'That is the squared error. Squaring removes the residual’s sign.' },
+]} />
+
+<ChoiceExercise id="iii07-loss" client:load prompt="The five squared errors sum to 20.5. What is the MSE used here?" choices={[
+  { label: '4.1', correct: true, feedback: 'Divide the squared-error sum by the number of observations: 20.5 / 5.' },
+  { label: '20.5', correct: false, feedback: 'That is the sum of squared errors. MSE averages over all five samples.' },
+  { label: '2.05', correct: false, feedback: 'That inserts a one-half factor. This objective has no one-half factor.' },
+]} />
+
+<ChoiceExercise id="iii07-gradients" client:load prompt="At the canonical state, Σ residual × x = −13 and Σ residual = −4. Which gradients are correct?" choices={[
+  { label: 'dw = −5.2, db = −1.6', correct: true, feedback: 'Multiply each sum by 2 / 5; the weight gradient includes x, while the bias gradient does not.' },
+  { label: 'dw = −1.6, db = −5.2', correct: false, feedback: 'Those swap the parameters. Weight changes predictions in proportion to x; bias shifts every prediction equally.' },
+  { label: 'dw = −2.6, db = −0.8', correct: false, feedback: 'The derivative of a squared residual contributes a factor of two. These omit it.' },
+]} />
+
+<ChoiceExercise id="iii07-update" client:load prompt="Using learning rate 0.1 and canonical gradients −5.2 and −1.6, what are the next parameters?" choices={[
+  { label: 'Weight 1.02, bias 0.16', correct: true, feedback: 'Subtract the old-state gradients simultaneously: 0.5 − 0.1(−5.2), and 0 − 0.1(−1.6).' },
+  { label: 'Weight −0.02, bias −0.16', correct: false, feedback: 'Those add the gradients. Gradient descent subtracts them, so a negative gradient increases the corresponding parameter.' },
+  { label: 'Weight 0.76, bias 0.08', correct: false, feedback: 'Those use gradients for a half-MSE objective. Keep the objective and its derivative convention consistent.' },
+]} />
+
+<ChoiceExercise id="iii07-shapes" client:load prompt="For the five scalar-feature samples, what are the shapes of X, W and y in this chapter?" choices={[
+  { label: '5 × 1, 1 × 1, 5 × 1', correct: true, feedback: 'Samples occupy rows, the single weight is a 1 × 1 matrix, and targets are a column. Bias broadcasts separately.' },
+  { label: '1 × 5, 1 × 1, 1 × 5', correct: false, feedback: 'Those make the batch and targets rows. This chapter uses mathematical column vectors and samples in rows of X.' },
+  { label: '5 × 2, 2 × 1, 5 × 1', correct: false, feedback: 'That could encode an intercept column in a different convention. Here X has one feature column and bias is separate.' },
+]} />
+
+<ChoiceExercise id="iii07-rate" client:load prompt="Does a learning rate between 0.001 and 1 guarantee that an accepted update decreases MSE?" choices={[
+  { label: 'No; a finite update can overshoot and increase loss.', correct: true, feedback: 'The one-sample example raises MSE from 1 to 81 at rate 1. The rate bounds validate input; they do not certify convergence.' },
+  { label: 'Yes; all positive learning rates decrease MSE.', correct: false, feedback: 'A large step can cross the minimum. A descent direction gives only a local guide, not a guarantee for an arbitrary step length.' },
+  { label: 'Yes; replay snapshots make the optimization stable.', correct: false, feedback: 'Immutable snapshots protect history. They do not change the mathematical update or its stability.' },
+]} />
+
+## Checkpoints
+
+You can now identify the observation, prediction and signed residual; account for batch and column shapes; calculate MSE and both analytical gradients; apply one simultaneous update; and inspect immutable replay without confusing an input bound with a convergence guarantee. Closed-form fitting, multiple features and classification belong to later chapters.

@@ -1,0 +1,1339 @@
+{
+  "policy": {
+    "provenance": "Explicit hand-authored toy datasets; no downloaded or measured data.",
+    "arithmetic": "NumPy float64; independently checked with exact Fraction data-moment expansion.",
+    "residual": "prediction - target",
+    "loss": "mean squared error, without a one-half factor",
+    "tolerance": {
+      "absolute": 1e-12,
+      "relative": 1e-12
+    },
+    "trace": "Initial state plus each update; at most 20 updates."
+  },
+  "cases": [
+    {
+      "id": "canonical",
+      "state": {
+        "samples": [
+          {
+            "id": "s1",
+            "x": -2,
+            "y": -3
+          },
+          {
+            "id": "s2",
+            "x": -1,
+            "y": -1
+          },
+          {
+            "id": "s3",
+            "x": 0,
+            "y": 1
+          },
+          {
+            "id": "s4",
+            "x": 1,
+            "y": 3
+          },
+          {
+            "id": "s5",
+            "x": 2,
+            "y": 4
+          }
+        ],
+        "weight": 0.5,
+        "bias": 0,
+        "learningRate": 0.1
+      },
+      "steps": 5,
+      "before": {
+        "rows": [
+          {
+            "id": "s1",
+            "x": -2,
+            "y": -3,
+            "prediction": -1.0,
+            "residual": 2.0,
+            "squaredError": 4.0
+          },
+          {
+            "id": "s2",
+            "x": -1,
+            "y": -1,
+            "prediction": -0.5,
+            "residual": 0.5,
+            "squaredError": 0.25
+          },
+          {
+            "id": "s3",
+            "x": 0,
+            "y": 1,
+            "prediction": 0.0,
+            "residual": -1.0,
+            "squaredError": 1.0
+          },
+          {
+            "id": "s4",
+            "x": 1,
+            "y": 3,
+            "prediction": 0.5,
+            "residual": -2.5,
+            "squaredError": 6.25
+          },
+          {
+            "id": "s5",
+            "x": 2,
+            "y": 4,
+            "prediction": 1.0,
+            "residual": -3.0,
+            "squaredError": 9.0
+          }
+        ],
+        "mse": 4.1,
+        "gradients": {
+          "weight": -5.2,
+          "bias": -1.6
+        },
+        "next": {
+          "weight": 1.02,
+          "bias": 0.16000000000000003
+        },
+        "shapes": {
+          "X": [
+            5,
+            1
+          ],
+          "weights": [
+            1,
+            1
+          ],
+          "targets": [
+            5,
+            1
+          ]
+        }
+      },
+      "after": {
+        "rows": [
+          {
+            "id": "s1",
+            "x": -2,
+            "y": -3,
+            "prediction": -1.88,
+            "residual": 1.12,
+            "squaredError": 1.2544000000000002
+          },
+          {
+            "id": "s2",
+            "x": -1,
+            "y": -1,
+            "prediction": -0.86,
+            "residual": 0.14,
+            "squaredError": 0.019600000000000003
+          },
+          {
+            "id": "s3",
+            "x": 0,
+            "y": 1,
+            "prediction": 0.16000000000000003,
+            "residual": -0.84,
+            "squaredError": 0.7055999999999999
+          },
+          {
+            "id": "s4",
+            "x": 1,
+            "y": 3,
+            "prediction": 1.1800000000000002,
+            "residual": -1.8199999999999998,
+            "squaredError": 3.3123999999999993
+          },
+          {
+            "id": "s5",
+            "x": 2,
+            "y": 4,
+            "prediction": 2.2,
+            "residual": -1.7999999999999998,
+            "squaredError": 3.2399999999999993
+          }
+        ],
+        "mse": 1.7064,
+        "gradients": {
+          "weight": -3.12,
+          "bias": -1.2799999999999998
+        },
+        "next": {
+          "weight": 1.332,
+          "bias": 0.28800000000000003
+        },
+        "shapes": {
+          "X": [
+            5,
+            1
+          ],
+          "weights": [
+            1,
+            1
+          ],
+          "targets": [
+            5,
+            1
+          ]
+        }
+      },
+      "trace": [
+        {
+          "index": 0,
+          "state": {
+            "samples": [
+              {
+                "id": "s1",
+                "x": -2,
+                "y": -3
+              },
+              {
+                "id": "s2",
+                "x": -1,
+                "y": -1
+              },
+              {
+                "id": "s3",
+                "x": 0,
+                "y": 1
+              },
+              {
+                "id": "s4",
+                "x": 1,
+                "y": 3
+              },
+              {
+                "id": "s5",
+                "x": 2,
+                "y": 4
+              }
+            ],
+            "weight": 0.5,
+            "bias": 0,
+            "learningRate": 0.1
+          }
+        },
+        {
+          "index": 1,
+          "state": {
+            "samples": [
+              {
+                "id": "s1",
+                "x": -2,
+                "y": -3
+              },
+              {
+                "id": "s2",
+                "x": -1,
+                "y": -1
+              },
+              {
+                "id": "s3",
+                "x": 0,
+                "y": 1
+              },
+              {
+                "id": "s4",
+                "x": 1,
+                "y": 3
+              },
+              {
+                "id": "s5",
+                "x": 2,
+                "y": 4
+              }
+            ],
+            "weight": 1.02,
+            "bias": 0.16000000000000003,
+            "learningRate": 0.1
+          }
+        },
+        {
+          "index": 2,
+          "state": {
+            "samples": [
+              {
+                "id": "s1",
+                "x": -2,
+                "y": -3
+              },
+              {
+                "id": "s2",
+                "x": -1,
+                "y": -1
+              },
+              {
+                "id": "s3",
+                "x": 0,
+                "y": 1
+              },
+              {
+                "id": "s4",
+                "x": 1,
+                "y": 3
+              },
+              {
+                "id": "s5",
+                "x": 2,
+                "y": 4
+              }
+            ],
+            "weight": 1.332,
+            "bias": 0.28800000000000003,
+            "learningRate": 0.1
+          }
+        },
+        {
+          "index": 3,
+          "state": {
+            "samples": [
+              {
+                "id": "s1",
+                "x": -2,
+                "y": -3
+              },
+              {
+                "id": "s2",
+                "x": -1,
+                "y": -1
+              },
+              {
+                "id": "s3",
+                "x": 0,
+                "y": 1
+              },
+              {
+                "id": "s4",
+                "x": 1,
+                "y": 3
+              },
+              {
+                "id": "s5",
+                "x": 2,
+                "y": 4
+              }
+            ],
+            "weight": 1.5192,
+            "bias": 0.3904000000000001,
+            "learningRate": 0.1
+          }
+        },
+        {
+          "index": 4,
+          "state": {
+            "samples": [
+              {
+                "id": "s1",
+                "x": -2,
+                "y": -3
+              },
+              {
+                "id": "s2",
+                "x": -1,
+                "y": -1
+              },
+              {
+                "id": "s3",
+                "x": 0,
+                "y": 1
+              },
+              {
+                "id": "s4",
+                "x": 1,
+                "y": 3
+              },
+              {
+                "id": "s5",
+                "x": 2,
+                "y": 4
+              }
+            ],
+            "weight": 1.63152,
+            "bias": 0.4723200000000001,
+            "learningRate": 0.1
+          }
+        },
+        {
+          "index": 5,
+          "state": {
+            "samples": [
+              {
+                "id": "s1",
+                "x": -2,
+                "y": -3
+              },
+              {
+                "id": "s2",
+                "x": -1,
+                "y": -1
+              },
+              {
+                "id": "s3",
+                "x": 0,
+                "y": 1
+              },
+              {
+                "id": "s4",
+                "x": 1,
+                "y": 3
+              },
+              {
+                "id": "s5",
+                "x": 2,
+                "y": 4
+              }
+            ],
+            "weight": 1.698912,
+            "bias": 0.5378560000000001,
+            "learningRate": 0.1
+          }
+        }
+      ]
+    },
+    {
+      "id": "asymmetric",
+      "state": {
+        "samples": [
+          {
+            "id": "s1",
+            "x": -2,
+            "y": 1
+          },
+          {
+            "id": "s2",
+            "x": 1,
+            "y": 4
+          }
+        ],
+        "weight": 0.5,
+        "bias": -1,
+        "learningRate": 0.2
+      },
+      "steps": 2,
+      "before": {
+        "rows": [
+          {
+            "id": "s1",
+            "x": -2,
+            "y": 1,
+            "prediction": -2.0,
+            "residual": -3.0,
+            "squaredError": 9.0
+          },
+          {
+            "id": "s2",
+            "x": 1,
+            "y": 4,
+            "prediction": -0.5,
+            "residual": -4.5,
+            "squaredError": 20.25
+          }
+        ],
+        "mse": 14.625,
+        "gradients": {
+          "weight": 1.5,
+          "bias": -7.5
+        },
+        "next": {
+          "weight": 0.19999999999999996,
+          "bias": 0.5
+        },
+        "shapes": {
+          "X": [
+            2,
+            1
+          ],
+          "weights": [
+            1,
+            1
+          ],
+          "targets": [
+            2,
+            1
+          ]
+        }
+      },
+      "after": {
+        "rows": [
+          {
+            "id": "s1",
+            "x": -2,
+            "y": 1,
+            "prediction": 0.10000000000000009,
+            "residual": -0.8999999999999999,
+            "squaredError": 0.8099999999999998
+          },
+          {
+            "id": "s2",
+            "x": 1,
+            "y": 4,
+            "prediction": 0.7,
+            "residual": -3.3,
+            "squaredError": 10.889999999999999
+          }
+        ],
+        "mse": 5.85,
+        "gradients": {
+          "weight": -1.5,
+          "bias": -4.199999999999999
+        },
+        "next": {
+          "weight": 0.5,
+          "bias": 1.3399999999999999
+        },
+        "shapes": {
+          "X": [
+            2,
+            1
+          ],
+          "weights": [
+            1,
+            1
+          ],
+          "targets": [
+            2,
+            1
+          ]
+        }
+      },
+      "trace": [
+        {
+          "index": 0,
+          "state": {
+            "samples": [
+              {
+                "id": "s1",
+                "x": -2,
+                "y": 1
+              },
+              {
+                "id": "s2",
+                "x": 1,
+                "y": 4
+              }
+            ],
+            "weight": 0.5,
+            "bias": -1,
+            "learningRate": 0.2
+          }
+        },
+        {
+          "index": 1,
+          "state": {
+            "samples": [
+              {
+                "id": "s1",
+                "x": -2,
+                "y": 1
+              },
+              {
+                "id": "s2",
+                "x": 1,
+                "y": 4
+              }
+            ],
+            "weight": 0.19999999999999996,
+            "bias": 0.5,
+            "learningRate": 0.2
+          }
+        },
+        {
+          "index": 2,
+          "state": {
+            "samples": [
+              {
+                "id": "s1",
+                "x": -2,
+                "y": 1
+              },
+              {
+                "id": "s2",
+                "x": 1,
+                "y": 4
+              }
+            ],
+            "weight": 0.5,
+            "bias": 1.3399999999999999,
+            "learningRate": 0.2
+          }
+        }
+      ]
+    },
+    {
+      "id": "one-sample",
+      "state": {
+        "samples": [
+          {
+            "id": "s1",
+            "x": 2,
+            "y": 3
+          }
+        ],
+        "weight": 0,
+        "bias": 0,
+        "learningRate": 0.1
+      },
+      "steps": 2,
+      "before": {
+        "rows": [
+          {
+            "id": "s1",
+            "x": 2,
+            "y": 3,
+            "prediction": 0.0,
+            "residual": -3.0,
+            "squaredError": 9.0
+          }
+        ],
+        "mse": 9.0,
+        "gradients": {
+          "weight": -12.0,
+          "bias": -6.0
+        },
+        "next": {
+          "weight": 1.2000000000000002,
+          "bias": 0.6000000000000001
+        },
+        "shapes": {
+          "X": [
+            1,
+            1
+          ],
+          "weights": [
+            1,
+            1
+          ],
+          "targets": [
+            1,
+            1
+          ]
+        }
+      },
+      "after": {
+        "rows": [
+          {
+            "id": "s1",
+            "x": 2,
+            "y": 3,
+            "prediction": 3.0000000000000004,
+            "residual": 4.440892098500626e-16,
+            "squaredError": 1.9721522630525295e-31
+          }
+        ],
+        "mse": 1.9721522630525295e-31,
+        "gradients": {
+          "weight": 1.7763568394002505e-15,
+          "bias": 8.881784197001252e-16
+        },
+        "next": {
+          "weight": 1.2,
+          "bias": 0.6
+        },
+        "shapes": {
+          "X": [
+            1,
+            1
+          ],
+          "weights": [
+            1,
+            1
+          ],
+          "targets": [
+            1,
+            1
+          ]
+        }
+      },
+      "trace": [
+        {
+          "index": 0,
+          "state": {
+            "samples": [
+              {
+                "id": "s1",
+                "x": 2,
+                "y": 3
+              }
+            ],
+            "weight": 0,
+            "bias": 0,
+            "learningRate": 0.1
+          }
+        },
+        {
+          "index": 1,
+          "state": {
+            "samples": [
+              {
+                "id": "s1",
+                "x": 2,
+                "y": 3
+              }
+            ],
+            "weight": 1.2000000000000002,
+            "bias": 0.6000000000000001,
+            "learningRate": 0.1
+          }
+        },
+        {
+          "index": 2,
+          "state": {
+            "samples": [
+              {
+                "id": "s1",
+                "x": 2,
+                "y": 3
+              }
+            ],
+            "weight": 1.2,
+            "bias": 0.6,
+            "learningRate": 0.1
+          }
+        }
+      ]
+    },
+    {
+      "id": "constant-x",
+      "state": {
+        "samples": [
+          {
+            "id": "s1",
+            "x": 2,
+            "y": 1
+          },
+          {
+            "id": "s2",
+            "x": 2,
+            "y": 3
+          }
+        ],
+        "weight": 0,
+        "bias": 0,
+        "learningRate": 0.1
+      },
+      "steps": 2,
+      "before": {
+        "rows": [
+          {
+            "id": "s1",
+            "x": 2,
+            "y": 1,
+            "prediction": 0.0,
+            "residual": -1.0,
+            "squaredError": 1.0
+          },
+          {
+            "id": "s2",
+            "x": 2,
+            "y": 3,
+            "prediction": 0.0,
+            "residual": -3.0,
+            "squaredError": 9.0
+          }
+        ],
+        "mse": 5.0,
+        "gradients": {
+          "weight": -8.0,
+          "bias": -4.0
+        },
+        "next": {
+          "weight": 0.8,
+          "bias": 0.4
+        },
+        "shapes": {
+          "X": [
+            2,
+            1
+          ],
+          "weights": [
+            1,
+            1
+          ],
+          "targets": [
+            2,
+            1
+          ]
+        }
+      },
+      "after": {
+        "rows": [
+          {
+            "id": "s1",
+            "x": 2,
+            "y": 1,
+            "prediction": 2.0,
+            "residual": 1.0,
+            "squaredError": 1.0
+          },
+          {
+            "id": "s2",
+            "x": 2,
+            "y": 3,
+            "prediction": 2.0,
+            "residual": -1.0,
+            "squaredError": 1.0
+          }
+        ],
+        "mse": 1.0,
+        "gradients": {
+          "weight": 0.0,
+          "bias": 0.0
+        },
+        "next": {
+          "weight": 0.8,
+          "bias": 0.4
+        },
+        "shapes": {
+          "X": [
+            2,
+            1
+          ],
+          "weights": [
+            1,
+            1
+          ],
+          "targets": [
+            2,
+            1
+          ]
+        }
+      },
+      "trace": [
+        {
+          "index": 0,
+          "state": {
+            "samples": [
+              {
+                "id": "s1",
+                "x": 2,
+                "y": 1
+              },
+              {
+                "id": "s2",
+                "x": 2,
+                "y": 3
+              }
+            ],
+            "weight": 0,
+            "bias": 0,
+            "learningRate": 0.1
+          }
+        },
+        {
+          "index": 1,
+          "state": {
+            "samples": [
+              {
+                "id": "s1",
+                "x": 2,
+                "y": 1
+              },
+              {
+                "id": "s2",
+                "x": 2,
+                "y": 3
+              }
+            ],
+            "weight": 0.8,
+            "bias": 0.4,
+            "learningRate": 0.1
+          }
+        },
+        {
+          "index": 2,
+          "state": {
+            "samples": [
+              {
+                "id": "s1",
+                "x": 2,
+                "y": 1
+              },
+              {
+                "id": "s2",
+                "x": 2,
+                "y": 3
+              }
+            ],
+            "weight": 0.8,
+            "bias": 0.4,
+            "learningRate": 0.1
+          }
+        }
+      ]
+    },
+    {
+      "id": "perfect-fit",
+      "state": {
+        "samples": [
+          {
+            "id": "s1",
+            "x": -1,
+            "y": -1
+          },
+          {
+            "id": "s2",
+            "x": 0,
+            "y": 1
+          },
+          {
+            "id": "s3",
+            "x": 1,
+            "y": 3
+          }
+        ],
+        "weight": 2,
+        "bias": 1,
+        "learningRate": 0.1
+      },
+      "steps": 2,
+      "before": {
+        "rows": [
+          {
+            "id": "s1",
+            "x": -1,
+            "y": -1,
+            "prediction": -1.0,
+            "residual": 0.0,
+            "squaredError": 0.0
+          },
+          {
+            "id": "s2",
+            "x": 0,
+            "y": 1,
+            "prediction": 1.0,
+            "residual": 0.0,
+            "squaredError": 0.0
+          },
+          {
+            "id": "s3",
+            "x": 1,
+            "y": 3,
+            "prediction": 3.0,
+            "residual": 0.0,
+            "squaredError": 0.0
+          }
+        ],
+        "mse": 0.0,
+        "gradients": {
+          "weight": 0.0,
+          "bias": 0.0
+        },
+        "next": {
+          "weight": 2.0,
+          "bias": 1.0
+        },
+        "shapes": {
+          "X": [
+            3,
+            1
+          ],
+          "weights": [
+            1,
+            1
+          ],
+          "targets": [
+            3,
+            1
+          ]
+        }
+      },
+      "after": {
+        "rows": [
+          {
+            "id": "s1",
+            "x": -1,
+            "y": -1,
+            "prediction": -1.0,
+            "residual": 0.0,
+            "squaredError": 0.0
+          },
+          {
+            "id": "s2",
+            "x": 0,
+            "y": 1,
+            "prediction": 1.0,
+            "residual": 0.0,
+            "squaredError": 0.0
+          },
+          {
+            "id": "s3",
+            "x": 1,
+            "y": 3,
+            "prediction": 3.0,
+            "residual": 0.0,
+            "squaredError": 0.0
+          }
+        ],
+        "mse": 0.0,
+        "gradients": {
+          "weight": 0.0,
+          "bias": 0.0
+        },
+        "next": {
+          "weight": 2.0,
+          "bias": 1.0
+        },
+        "shapes": {
+          "X": [
+            3,
+            1
+          ],
+          "weights": [
+            1,
+            1
+          ],
+          "targets": [
+            3,
+            1
+          ]
+        }
+      },
+      "trace": [
+        {
+          "index": 0,
+          "state": {
+            "samples": [
+              {
+                "id": "s1",
+                "x": -1,
+                "y": -1
+              },
+              {
+                "id": "s2",
+                "x": 0,
+                "y": 1
+              },
+              {
+                "id": "s3",
+                "x": 1,
+                "y": 3
+              }
+            ],
+            "weight": 2,
+            "bias": 1,
+            "learningRate": 0.1
+          }
+        },
+        {
+          "index": 1,
+          "state": {
+            "samples": [
+              {
+                "id": "s1",
+                "x": -1,
+                "y": -1
+              },
+              {
+                "id": "s2",
+                "x": 0,
+                "y": 1
+              },
+              {
+                "id": "s3",
+                "x": 1,
+                "y": 3
+              }
+            ],
+            "weight": 2.0,
+            "bias": 1.0,
+            "learningRate": 0.1
+          }
+        },
+        {
+          "index": 2,
+          "state": {
+            "samples": [
+              {
+                "id": "s1",
+                "x": -1,
+                "y": -1
+              },
+              {
+                "id": "s2",
+                "x": 0,
+                "y": 1
+              },
+              {
+                "id": "s3",
+                "x": 1,
+                "y": 3
+              }
+            ],
+            "weight": 2.0,
+            "bias": 1.0,
+            "learningRate": 0.1
+          }
+        }
+      ]
+    },
+    {
+      "id": "finite-divergence",
+      "state": {
+        "samples": [
+          {
+            "id": "s1",
+            "x": 2,
+            "y": 1
+          }
+        ],
+        "weight": 0,
+        "bias": 0,
+        "learningRate": 1
+      },
+      "steps": 2,
+      "before": {
+        "rows": [
+          {
+            "id": "s1",
+            "x": 2,
+            "y": 1,
+            "prediction": 0.0,
+            "residual": -1.0,
+            "squaredError": 1.0
+          }
+        ],
+        "mse": 1.0,
+        "gradients": {
+          "weight": -4.0,
+          "bias": -2.0
+        },
+        "next": {
+          "weight": 4.0,
+          "bias": 2.0
+        },
+        "shapes": {
+          "X": [
+            1,
+            1
+          ],
+          "weights": [
+            1,
+            1
+          ],
+          "targets": [
+            1,
+            1
+          ]
+        }
+      },
+      "after": {
+        "rows": [
+          {
+            "id": "s1",
+            "x": 2,
+            "y": 1,
+            "prediction": 10.0,
+            "residual": 9.0,
+            "squaredError": 81.0
+          }
+        ],
+        "mse": 81.0,
+        "gradients": {
+          "weight": 36.0,
+          "bias": 18.0
+        },
+        "next": {
+          "weight": -32.0,
+          "bias": -16.0
+        },
+        "shapes": {
+          "X": [
+            1,
+            1
+          ],
+          "weights": [
+            1,
+            1
+          ],
+          "targets": [
+            1,
+            1
+          ]
+        }
+      },
+      "trace": [
+        {
+          "index": 0,
+          "state": {
+            "samples": [
+              {
+                "id": "s1",
+                "x": 2,
+                "y": 1
+              }
+            ],
+            "weight": 0,
+            "bias": 0,
+            "learningRate": 1
+          }
+        },
+        {
+          "index": 1,
+          "state": {
+            "samples": [
+              {
+                "id": "s1",
+                "x": 2,
+                "y": 1
+              }
+            ],
+            "weight": 4.0,
+            "bias": 2.0,
+            "learningRate": 1
+          }
+        },
+        {
+          "index": 2,
+          "state": {
+            "samples": [
+              {
+                "id": "s1",
+                "x": 2,
+                "y": 1
+              }
+            ],
+            "weight": -32.0,
+            "bias": -16.0,
+            "learningRate": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "small-scale",
+      "state": {
+        "samples": [
+          {
+            "id": "s1",
+            "x": 1,
+            "y": 1e-150
+          }
+        ],
+        "weight": 0,
+        "bias": 0,
+        "learningRate": 0.1
+      },
+      "steps": 2,
+      "before": {
+        "rows": [
+          {
+            "id": "s1",
+            "x": 1,
+            "y": 1e-150,
+            "prediction": 0.0,
+            "residual": -1e-150,
+            "squaredError": 1e-300
+          }
+        ],
+        "mse": 1e-300,
+        "gradients": {
+          "weight": -2e-150,
+          "bias": -2e-150
+        },
+        "next": {
+          "weight": 2.0000000000000002e-151,
+          "bias": 2.0000000000000002e-151
+        },
+        "shapes": {
+          "X": [
+            1,
+            1
+          ],
+          "weights": [
+            1,
+            1
+          ],
+          "targets": [
+            1,
+            1
+          ]
+        }
+      },
+      "after": {
+        "rows": [
+          {
+            "id": "s1",
+            "x": 1,
+            "y": 1e-150,
+            "prediction": 4.0000000000000004e-151,
+            "residual": -5.9999999999999996e-151,
+            "squaredError": 3.5999999999999997e-301
+          }
+        ],
+        "mse": 3.5999999999999997e-301,
+        "gradients": {
+          "weight": -1.1999999999999999e-150,
+          "bias": -1.1999999999999999e-150
+        },
+        "next": {
+          "weight": 3.2e-151,
+          "bias": 3.2e-151
+        },
+        "shapes": {
+          "X": [
+            1,
+            1
+          ],
+          "weights": [
+            1,
+            1
+          ],
+          "targets": [
+            1,
+            1
+          ]
+        }
+      },
+      "trace": [
+        {
+          "index": 0,
+          "state": {
+            "samples": [
+              {
+                "id": "s1",
+                "x": 1,
+                "y": 1e-150
+              }
+            ],
+            "weight": 0,
+            "bias": 0,
+            "learningRate": 0.1
+          }
+        },
+        {
+          "index": 1,
+          "state": {
+            "samples": [
+              {
+                "id": "s1",
+                "x": 1,
+                "y": 1e-150
+              }
+            ],
+            "weight": 2.0000000000000002e-151,
+            "bias": 2.0000000000000002e-151,
+            "learningRate": 0.1
+          }
+        },
+        {
+          "index": 2,
+          "state": {
+            "samples": [
+              {
+                "id": "s1",
+                "x": 1,
+                "y": 1e-150
+              }
+            ],
+            "weight": 3.2e-151,
+            "bias": 3.2e-151,
+            "learningRate": 0.1
+          }
+        }
+      ]
+    }
+  ]
+}

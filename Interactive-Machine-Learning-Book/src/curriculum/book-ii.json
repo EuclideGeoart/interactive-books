@@ -1,0 +1,588 @@
+{
+  "sourceCommit": "325f7bdf91ad61758e083ba2c91cb20a2a74f753",
+  "base": "/math-foundations/",
+  "chapters": [
+    {
+      "id": "I.1",
+      "title": "Scalars, quantities, units, powers and roots",
+      "slug": "quantities",
+      "status": "available"
+    },
+    {
+      "id": "I.2",
+      "title": "Coordinates and points",
+      "slug": "coordinates",
+      "status": "available"
+    },
+    {
+      "id": "I.3",
+      "title": "Vectors: components, magnitude, and direction",
+      "slug": "vectors",
+      "status": "available"
+    },
+    {
+      "id": "I.4",
+      "title": "Algebraic expressions, equations and inequalities",
+      "slug": "algebra",
+      "status": "available"
+    },
+    {
+      "id": "I.5",
+      "title": "Functions as input → transformation → output",
+      "slug": "functions",
+      "status": "available"
+    },
+    {
+      "id": "I.6",
+      "title": "Essential function families",
+      "slug": "function-families",
+      "status": "available"
+    },
+    {
+      "id": "I.7",
+      "title": "Sets, intervals, and relations",
+      "slug": "sets-and-relations",
+      "status": "available"
+    },
+    {
+      "id": "I.8",
+      "title": "Indexed quantities and summation",
+      "slug": "summation",
+      "status": "available"
+    },
+    {
+      "id": "I.9",
+      "title": "The notation map for ML",
+      "slug": "notation-map",
+      "status": "available"
+    },
+    {
+      "id": "II.1",
+      "title": "Vector addition and subtraction",
+      "slug": "vector-addition",
+      "status": "available"
+    },
+    {
+      "id": "II.2",
+      "title": "Scalar multiplication and vector scaling",
+      "slug": "vector-scaling",
+      "status": "available"
+    },
+    {
+      "id": "II.3",
+      "title": "Norms, magnitude, and normalization",
+      "slug": "vector-norms",
+      "status": "available"
+    },
+    {
+      "id": "II.4",
+      "title": "Dot product, angle, and orthogonality",
+      "slug": "vector-dot-product",
+      "status": "available"
+    },
+    {
+      "id": "II.5",
+      "title": "Projection and distance to a direction",
+      "slug": "vector-projection",
+      "status": "available"
+    },
+    {
+      "id": "II.6",
+      "title": "Linear combinations and span",
+      "slug": "vector-span",
+      "status": "available"
+    },
+    {
+      "id": "II.7",
+      "title": "Linear independence, basis, and coordinates",
+      "slug": "vector-basis",
+      "status": "available"
+    },
+    {
+      "id": "II.8",
+      "title": "Matrices as linear transformations",
+      "slug": "matrix-transformations",
+      "status": "available"
+    },
+    {
+      "id": "II.9",
+      "title": "Matrix × vector",
+      "slug": "matrix-vector",
+      "status": "available"
+    },
+    {
+      "id": "II.10",
+      "title": "Matrix × matrix as composition",
+      "slug": "matrix-composition",
+      "status": "available"
+    },
+    {
+      "id": "II.11",
+      "title": "Transpose and orthogonality",
+      "slug": "matrix-transpose-orthogonality",
+      "status": "available"
+    },
+    {
+      "id": "II.12",
+      "title": "Determinant: orientation and area/volume scaling",
+      "slug": "matrix-determinant",
+      "status": "available"
+    },
+    {
+      "id": "II.13",
+      "title": "Linear systems as intersecting constraints",
+      "slug": "linear-systems",
+      "status": "available"
+    },
+    {
+      "id": "II.14",
+      "title": "Gaussian elimination and row operations",
+      "slug": "gaussian-elimination",
+      "status": "available"
+    },
+    {
+      "id": "II.15",
+      "title": "Rank and invertibility",
+      "slug": "rank-invertibility",
+      "status": "available"
+    },
+    {
+      "id": "II.16",
+      "title": "Inverse matrices",
+      "slug": "inverse-matrices",
+      "status": "available"
+    },
+    {
+      "id": "II.17",
+      "title": "Eigenvalues and eigenvectors",
+      "slug": "eigenvalues-eigenvectors",
+      "status": "available"
+    },
+    {
+      "id": "II.18",
+      "title": "Orthogonal bases and least-squares geometry",
+      "slug": "orthogonal-least-squares",
+      "status": "available"
+    },
+    {
+      "id": "II.19",
+      "title": "Singular Value Decomposition",
+      "slug": "singular-value-decomposition",
+      "status": "available"
+    },
+    {
+      "id": "III.1",
+      "title": "Limits through approach",
+      "slug": "limits",
+      "status": "available"
+    },
+    {
+      "id": "III.2",
+      "title": "Continuity and local behavior",
+      "slug": "continuity",
+      "status": "available"
+    },
+    {
+      "id": "III.3",
+      "title": "Derivative as secant → tangent",
+      "slug": "derivative-secant-tangent",
+      "status": "available"
+    },
+    {
+      "id": "III.4",
+      "title": "Derivative as rate of change and local linear model",
+      "slug": "derivative-rate-linear-model",
+      "status": "available"
+    },
+    {
+      "id": "III.5",
+      "title": "Derivative rules",
+      "slug": "derivative-rules",
+      "status": "available"
+    },
+    {
+      "id": "III.6",
+      "title": "Chain rule",
+      "slug": "chain-rule",
+      "status": "available"
+    },
+    {
+      "id": "III.7",
+      "title": "Multivariable functions and partial derivatives",
+      "slug": "partial-derivatives",
+      "status": "available"
+    },
+    {
+      "id": "III.8",
+      "title": "Gradient and directional derivatives",
+      "slug": "gradient-directional-derivatives",
+      "status": "available"
+    },
+    {
+      "id": "III.9",
+      "title": "Jacobian",
+      "slug": "jacobian",
+      "status": "available"
+    },
+    {
+      "id": "III.10",
+      "title": "Computational graphs and automatic differentiation",
+      "slug": "automatic-differentiation",
+      "status": "available"
+    },
+    {
+      "id": "III.11",
+      "title": "Hessian and curvature",
+      "slug": "hessian-curvature",
+      "status": "available"
+    },
+    {
+      "id": "III.12",
+      "title": "Integrals as accumulation",
+      "slug": "integrals-accumulation",
+      "status": "available"
+    },
+    {
+      "id": "III.13",
+      "title": "Fundamental derivative/integral connection",
+      "slug": "fundamental-theorem",
+      "status": "available"
+    },
+    {
+      "id": "III.14",
+      "title": "Numerical differentiation",
+      "slug": "numerical-differentiation",
+      "status": "available"
+    },
+    {
+      "id": "III.15",
+      "title": "Numerical integration",
+      "slug": "numerical-integration",
+      "status": "available"
+    },
+    {
+      "id": "IV.1",
+      "title": "Random experiments, outcomes, and sample spaces",
+      "slug": "random-experiments",
+      "status": "available"
+    },
+    {
+      "id": "IV.2",
+      "title": "Events and probability mass",
+      "slug": "events-probability",
+      "status": "available"
+    },
+    {
+      "id": "IV.3",
+      "title": "Counting and finite probability where needed",
+      "slug": "counting-probability",
+      "status": "available"
+    },
+    {
+      "id": "IV.4",
+      "title": "Conditional probability as restricted sample space",
+      "slug": "conditional-probability",
+      "status": "available"
+    },
+    {
+      "id": "IV.5",
+      "title": "Independence",
+      "slug": "independence",
+      "status": "available"
+    },
+    {
+      "id": "IV.6",
+      "title": "Bayes' theorem as probability-mass update",
+      "slug": "bayes-theorem",
+      "status": "available"
+    },
+    {
+      "id": "IV.7",
+      "title": "Random variables",
+      "slug": "random-variables",
+      "status": "available"
+    },
+    {
+      "id": "IV.8",
+      "title": "PMF, PDF, and CDF",
+      "slug": "pmf-pdf-cdf",
+      "status": "available"
+    },
+    {
+      "id": "IV.9",
+      "title": "Bernoulli and Binomial distributions",
+      "slug": "bernoulli-binomial",
+      "status": "available"
+    },
+    {
+      "id": "IV.10",
+      "title": "Uniform and Gaussian distributions",
+      "slug": "uniform-gaussian",
+      "status": "available"
+    },
+    {
+      "id": "IV.11",
+      "title": "Expectation",
+      "slug": "expectation",
+      "status": "available"
+    },
+    {
+      "id": "IV.12",
+      "title": "Variance and standard deviation",
+      "slug": "variance-standard-deviation",
+      "status": "available"
+    },
+    {
+      "id": "IV.13",
+      "title": "Joint, marginal, and conditional distributions",
+      "slug": "joint-distributions",
+      "status": "available"
+    },
+    {
+      "id": "IV.14",
+      "title": "Covariance and correlation",
+      "slug": "covariance-correlation",
+      "status": "available"
+    },
+    {
+      "id": "IV.15",
+      "title": "Law of Large Numbers",
+      "slug": "law-of-large-numbers",
+      "status": "available"
+    },
+    {
+      "id": "IV.16",
+      "title": "Central Limit Theorem",
+      "slug": "central-limit-theorem",
+      "status": "available"
+    },
+    {
+      "id": "V.1",
+      "title": "Data summaries: mean, median, mode",
+      "slug": "data-summaries",
+      "status": "available"
+    },
+    {
+      "id": "V.2",
+      "title": "Spread: variance, standard deviation, robust interpretation",
+      "slug": "data-spread",
+      "status": "available"
+    },
+    {
+      "id": "V.3",
+      "title": "Population, sample, and sampling variability",
+      "slug": "population-sampling",
+      "status": "available"
+    },
+    {
+      "id": "V.4",
+      "title": "Estimators and estimation",
+      "slug": "estimators-estimation",
+      "status": "available"
+    },
+    {
+      "id": "V.5",
+      "title": "Confidence intervals through repeated sampling",
+      "slug": "confidence-intervals",
+      "status": "available"
+    },
+    {
+      "id": "V.6",
+      "title": "Covariance matrices and multivariate spread",
+      "slug": "covariance-matrices",
+      "status": "available"
+    },
+    {
+      "id": "V.7",
+      "title": "Regression fundamentals",
+      "slug": "regression-fundamentals",
+      "status": "available"
+    },
+    {
+      "id": "V.8",
+      "title": "Likelihood",
+      "slug": "likelihood",
+      "status": "available"
+    },
+    {
+      "id": "V.9",
+      "title": "Maximum Likelihood Estimation",
+      "slug": "maximum-likelihood",
+      "status": "available"
+    },
+    {
+      "id": "V.10",
+      "title": "Maximum A Posteriori estimation",
+      "slug": "maximum-a-posteriori",
+      "status": "available"
+    },
+    {
+      "id": "VI.1",
+      "title": "Objective functions and optimization landscapes",
+      "slug": "objective-landscapes",
+      "status": "available"
+    },
+    {
+      "id": "VI.2",
+      "title": "Local vs global optima and stationary points",
+      "slug": "local-global-optima",
+      "status": "available"
+    },
+    {
+      "id": "VI.3",
+      "title": "Convexity",
+      "slug": "convexity",
+      "status": "available"
+    },
+    {
+      "id": "VI.4",
+      "title": "Gradient descent",
+      "slug": "gradient-descent",
+      "status": "available"
+    },
+    {
+      "id": "VI.5",
+      "title": "Learning rate and convergence behavior",
+      "slug": "learning-rate-convergence",
+      "status": "available"
+    },
+    {
+      "id": "VI.6",
+      "title": "Momentum",
+      "slug": "momentum",
+      "status": "available"
+    },
+    {
+      "id": "VI.7",
+      "title": "Stochastic and mini-batch gradient descent",
+      "slug": "stochastic-mini-batch-descent",
+      "status": "available"
+    },
+    {
+      "id": "VI.8",
+      "title": "Adam intuition",
+      "slug": "adam",
+      "status": "available"
+    },
+    {
+      "id": "VI.9",
+      "title": "Constraints and projected/penalized intuition",
+      "slug": "constraints-regularization",
+      "status": "available"
+    },
+    {
+      "id": "VI.10",
+      "title": "Numerical stopping and optimization diagnostics",
+      "slug": "optimization-diagnostics",
+      "status": "available"
+    },
+    {
+      "id": "VII.1",
+      "title": "Logarithms and log probabilities in computation",
+      "slug": "log-probabilities",
+      "status": "available"
+    },
+    {
+      "id": "VII.2",
+      "title": "Self-information",
+      "slug": "self-information",
+      "status": "available"
+    },
+    {
+      "id": "VII.3",
+      "title": "Entropy",
+      "slug": "entropy",
+      "status": "available"
+    },
+    {
+      "id": "VII.4",
+      "title": "Cross entropy and negative log-likelihood",
+      "slug": "cross-entropy-nll",
+      "status": "available"
+    },
+    {
+      "id": "VII.5",
+      "title": "KL divergence",
+      "slug": "kl-divergence",
+      "status": "available"
+    },
+    {
+      "id": "VII.6",
+      "title": "Logits and softmax",
+      "slug": "logits-softmax",
+      "status": "available"
+    },
+    {
+      "id": "VII.7",
+      "title": "Numerical stability: log-sum-exp and stable softmax",
+      "slug": "stable-logsumexp",
+      "status": "available"
+    },
+    {
+      "id": "VII.8",
+      "title": "From token logits to language-model loss",
+      "slug": "token-logits-loss",
+      "status": "available"
+    },
+    {
+      "id": "VIII.1",
+      "title": "Floating-point representation",
+      "slug": "floating-point-representation",
+      "status": "available"
+    },
+    {
+      "id": "VIII.2",
+      "title": "Rounding and representation error",
+      "slug": "rounding-representation-error",
+      "status": "available"
+    },
+    {
+      "id": "VIII.3",
+      "title": "Error propagation and conditioning",
+      "slug": "error-propagation-conditioning",
+      "status": "available"
+    },
+    {
+      "id": "VIII.4",
+      "title": "Catastrophic cancellation",
+      "slug": "catastrophic-cancellation",
+      "status": "available"
+    },
+    {
+      "id": "VIII.5",
+      "title": "Overflow and underflow",
+      "slug": "overflow-underflow",
+      "status": "available"
+    },
+    {
+      "id": "VIII.6",
+      "title": "Stable algorithms",
+      "slug": "stable-algorithms",
+      "status": "available"
+    },
+    {
+      "id": "VIII.7",
+      "title": "Numerical linear algebra realities",
+      "slug": "numerical-linear-algebra",
+      "status": "available"
+    },
+    {
+      "id": "VIII.8",
+      "title": "Sparse matrices and sparse structure",
+      "slug": "sparse-matrices-structure",
+      "status": "available"
+    },
+    {
+      "id": "VIII.9",
+      "title": "Vectorized computation",
+      "slug": "vectorized-computation",
+      "status": "available"
+    },
+    {
+      "id": "VIII.10",
+      "title": "Reproducibility, random seeds, and nondeterminism",
+      "slug": "reproducibility-random-seeds",
+      "status": "available"
+    }
+  ]
+}

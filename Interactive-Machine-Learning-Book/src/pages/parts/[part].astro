@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../../shell/BaseLayout.astro';
+import { parts } from '../../curriculum/registry';
+import { href } from '../../shell/href';
+export function getStaticPaths() { return parts.map(part => ({ params: { part: part.slug }, props: { part } })); }
+const { part } = Astro.props;
+---
+<BaseLayout title={part.title} description={`Part ${part.numeral}: ${part.title}. Choose an available chapter and explore its mathematical mechanism.`} partTitle={part.title}>
+  <section class="part-page"><a class="back-link" href={href('/contents/')}>← All Parts</a><p class="chapter-label">Part {part.numeral}</p><h1>{part.title}</h1>
+    <p class="lede">{part.chapters.length} chapters, from the first idea to the working mechanism.</p>
+    <ol class="chapter-list">{part.chapters.map(chapter => <li id={chapter.id.toLowerCase()}>{chapter.slug ? <a href={href(`/chapters/${chapter.slug}/`)}><span>{chapter.id}</span><strong>{chapter.title}</strong><small>Explore →</small></a> : <div><span>{chapter.id}</span><strong>{chapter.title}</strong><small>Available soon</small></div>}</li>)}</ol>
+  </section>
+</BaseLayout>

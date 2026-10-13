@@ -1,0 +1,4 @@
+{
+  "selfTests": ["linear_regression_oracle.py", "test_linear_regression.py"],
+  "goldenChecks": ["generate_fixtures.py"]
+}

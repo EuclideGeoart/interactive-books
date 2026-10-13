@@ -1,0 +1,59 @@
+---
+import '@fontsource-variable/source-serif-4/opsz.css';
+import '@fontsource-variable/source-serif-4/opsz-italic.css';
+import '@fontsource-variable/instrument-sans/wght.css';
+import '@fontsource-variable/jetbrains-mono/wght.css';
+import 'katex/dist/katex.min.css';
+import '../styles/book.css';
+import { href } from './href';
+interface Props { title: string; description: string; partTitle?: string }
+const { title, description, partTitle } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} /><meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f4f1e8" />
+    <title>{title} — Interactive Machine Learning</title>
+    <link rel="icon" href={href('/favicon.svg')} type="image/svg+xml" />
+    <link rel="manifest" href={href('/manifest.webmanifest')} />
+    <script is:inline>
+      try { const saved = localStorage.getItem('book-iii:theme'); document.documentElement.dataset.theme = saved === 'light' || saved === 'dark' ? saved : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+      catch { document.documentElement.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+    </script>
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="book-header"><nav aria-label="Book navigation">
+      <a class="book-name" href={href('/')}><span class="book-number">III</span> <span>Machine Learning</span></a>
+      {partTitle && <span class="current-part">{partTitle}</span>}
+      <a href={href('/contents/')}>Parts</a><button data-theme-toggle aria-label="Switch color theme" type="button">Theme</button>
+    </nav></header>
+    <main id="main" tabindex="-1"><slot /></main>
+    <footer class="book-footer"><span>Book III · Learn by inspecting the mechanism.</span><a href={href('/contents/')}>Explore the Parts</a><a href="#top">Back to top</a></footer>
+    <script>
+      import { labelDuplicates, syncScrollable } from '../platform/overflow';
+      document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
+        const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = theme;
+        try { localStorage.setItem('book-iii:theme', theme); } catch {}
+      });
+      function scrollRegions() {
+        const elements = [...document.querySelectorAll<HTMLElement>('.formula, .katex-display, pre, .table-scroll')];
+        elements.forEach(element => {
+          element.dataset.scrollable ||= element.matches('.formula,.katex-display') ? 'Equation, scrollable' : element.getAttribute('aria-label') || (element.tagName === 'PRE' ? 'Code, scrollable' : 'Table, scrollable');
+        });
+        const labels = labelDuplicates(elements, 'Mathematics, scrollable');
+        elements.forEach(element => {
+          syncScrollable(element, labels.get(element));
+          if (element.matches('.formula') && element.tabIndex === -1) { element.setAttribute('role', 'group'); element.setAttribute('aria-label', element.dataset.formulaLabel!); }
+        });
+      }
+      new ResizeObserver(scrollRegions).observe(document.querySelector('main')!);
+      new MutationObserver(scrollRegions).observe(document.querySelector('main')!, { childList: true, subtree: true });
+      scrollRegions();
+      if (import.meta.env.PROD && 'serviceWorker' in navigator) navigator.serviceWorker.register(`${import.meta.env.BASE_URL}service-worker.js`, { scope: import.meta.env.BASE_URL }).catch(() => {});
+    </script>
+  </body>
+</html>

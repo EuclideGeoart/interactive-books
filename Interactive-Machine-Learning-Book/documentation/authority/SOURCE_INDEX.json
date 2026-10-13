@@ -1,0 +1,17 @@
+{
+  "source_archive": "BookIII_Nine_Part_Agent_Tasks.zip",
+  "preparation_date": "2026-10-13",
+  "interpretation": "Original assignments are preserved verbatim. Their pre-foundation repository observations are historical; the current accepted foundation report supplies the actual Part-agent base. The user separately authorized the missing foundation phase.",
+  "sha256": {
+    "B3_Integrator_Orchestration.md": "dca36618cf85ac0b282515c97f56e5579129801216444d28d2ab917a3cead785",
+    "B3_P01_ml-foundations.md": "b50603ef07befdcacf91a077c0755ca4ee489474fd44630c6ed5499c04760d7d",
+    "B3_P02_regression-classification.md": "9f7f5ef3925b97dbc8e50b18868eef83d216fa69c3df97617f4f165fa0dc08af",
+    "B3_P03_instance-probabilistic.md": "c5b521e250b96f7b91343278025b43e7c6a4580c8ef1a74e91508b46e374007a",
+    "B3_P04_trees-ensembles.md": "e7bf8c9fd13c9773270b459be76a7bd27881d29cc64fa7b66afa3007bbf9feef",
+    "B3_P05_clustering.md": "1fbf3bdb09222f1840d093999a1f51d072d8f52b3f1a7db11cc17708d280645a",
+    "B3_P06_dimensionality-reduction.md": "03e4babe1b8acef9d50afc4935492bb7684c56fe0505e388cc4b673f58af0d05",
+    "B3_P07_support-vector-machines.md": "15b02fd5f86005a4a0b65578e153e1720ed6020c664749885fc5517458272f35",
+    "B3_P08_evaluation-practical-ml.md": "ffd97d86accf8c3799631bf8d6e2fcfd071ce33e76e4e48e86c77cefa1cad570",
+    "B3_P09_neural-network-bridge.md": "a2030eb9b2eb11cdfb6ddf2c2af9348e579175c9caceab64bbe7e67176d4e606"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "chapter": {
+    "id": "III-07",
+    "slug": "linear-regression"
+  },
+  "files": {
+    "src/parts/p02/model/linear-regression.ts": "61adfd9a7162b60a79d0d7c748b155ea47484001a16724048855990c2ddad49b",
+    "src/parts/p02/linear-regression-lesson.ts": "88ea4e97b0052ea43ba2fc737c188382a2d44c2d8671bd609c6ed53c72693c42",
+    "src/parts/p02/RegressionStage.tsx": "66ebd77230f5111e0e2ee2086e25403283ae13d908dac5d938439ed570757a0b",
+    "src/parts/p02/linear-regression.css": "c8653a04a1f3532ebe39623f493f81cc2d1ac68e7ad4113b71c63c7dd94b555b",
+    "src/parts/p02/chapters/linear-regression.mdx": "6b0da0d627ba36382190e8f8f7e8bf0bd5dfd6a5615ce0389ad659a32d97631b",
+    "code/python/p02/linear_regression.py": "52b35daeb0e34c593e07ea98e650ad8fc523578ad96a984df4734a6b0a856d6c",
+    "oracle/p02/linear_regression_oracle.py": "f424d93546da1fb0e1cb1c41a6faa65b3cd59fc2e5b0a6edc05c3d236c4fe6ad",
+    "oracle/p02/generate_fixtures.py": "4a7066ce4a0e288b1cbcd844a286753d6aeba25ebf58295dd968b3a9472b202d",
+    "oracle/p02/test_linear_regression.py": "d78e70847187737b3f3974d9556d2d4667d3e0aaa78de632370522e87fe6a8a1",
+    "fixtures/p02/linear-regression.fixtures.json": "037b59c2d39b13d5dc61fa812d58753c5d2c8fbb696dcbd645568e4003684e58",
+    "tests/unit/p02/linear-regression.test.ts": "076ed3e804f0a21aa7764bc51554c85874473d658ce098e8b8dd537f387d9e1c",
+    "tests/unit/p02/linear-regression-lesson.test.ts": "1fc17e7f984fd642795275c1e8c2eaaea3cc5b1b43676eee5fa82afacff2b2f6",
+    "tests/e2e/p02/reference.spec.ts": "234d491fb0fed7aebdef7a53576503e600f2dc8e0838b3a201935074a8b69c7c"
+  },
+  "requiredOracleEntries": {
+    "selfTests": [
+      "linear_regression_oracle.py",
+      "test_linear_regression.py"
+    ],
+    "goldenChecks": [
+      "generate_fixtures.py"
+    ]
+  },
+  "policy": "Reference files are immutable after independent freeze. PartII may append its registrations/oracle entries, preserving the reference entry and every required reference command."
+}

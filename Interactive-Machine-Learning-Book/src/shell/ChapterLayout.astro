@@ -1,0 +1,28 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { chapters, findChapter, parts } from '../curriculum/registry';
+import { bookIIChapter, bookIIHref } from '../curriculum/prerequisites.mjs';
+import { href } from './href';
+interface Props { chapterId: string; title: string; hero: string; lede: string; description: string; prerequisites: string[]; headings: { depth: number; slug: string; text: string }[] }
+const { chapterId, title, hero, lede, description, prerequisites, headings } = Astro.props;
+const chapter = findChapter(chapterId)!;
+const part = parts.find(p => p.id === chapter.partId)!;
+const position = chapters.findIndex(c => c.id === chapterId);
+const previous = chapters[position - 1]; const next = chapters[position + 1];
+const bookIIBase = import.meta.env.PUBLIC_BOOK_II_BASE ?? '/math-foundations/';
+---
+<BaseLayout title={title} description={description} partTitle={part.title}>
+  <article class="chapter" data-chapter-id={chapterId}>
+    <nav class="breadcrumb" aria-label="Chapter location"><a href={href('/contents/')}>Book III</a><span>/</span><a href={href(`/parts/${part.slug}/`)}>Part {part.numeral}</a><span>/ {chapterId}</span></nav>
+    <header class="chapter-heading"><p class="chapter-label">{chapterId} · {title}</p><h1>{hero}</h1><p class="lede">{lede}</p></header>
+    <details class="chapter-menu"><summary>Chapters in Part {part.numeral}</summary><ol>{part.chapters.map(c => <li>{c.slug ? <a href={href(`/chapters/${c.slug}/`)} aria-current={c.id === chapterId ? 'page' : undefined}>{c.id} · {c.title}</a> : <span>{c.id} · {c.title} <small>Available soon</small></span>}</li>)}</ol></details>
+    <div class="chapter-body"><div class="chapter-content"><slot /></div>
+      <nav class="section-outline" aria-label="In this chapter"><span>In this chapter</span><ol>{headings.filter(h => h.depth === 2).map(h => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol></nav>
+    </div>
+    {prerequisites.length > 0 && <aside class="prerequisites"><h2>Refresh the mathematics</h2><p>These chapters in Book II explain the notation used here.</p><ul>{prerequisites.map(id => <li><a href={bookIIHref(id, bookIIBase)}>{id} · {bookIIChapter(id).title}</a></li>)}</ul></aside>}
+    <nav class="chapter-pager" aria-label="Adjacent chapters">
+      <div>{previous?.slug && <a rel="prev" href={href(`/chapters/${previous.slug}/`)}>← {previous.id} · {previous.title}</a>}</div>
+      <div>{next?.slug ? <a rel="next" href={href(`/chapters/${next.slug}/`)}>{next.id} · {next.title} →</a> : next && <span>Next: {next.title}<small>Available soon</small></span>}</div>
+    </nav>
+  </article>
+</BaseLayout>
