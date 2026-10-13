@@ -1,0 +1,613 @@
+
+> interactive-machine-learning@0.1.0 validate:milestone
+> node scripts/validate.mjs milestone
+
+Running: Type/content check
+19:20:39 [content] Syncing content
+19:20:39 [content] Synced content
+19:20:39 [types] Generated 402ms
+19:20:39 [check] Getting diagnostics for Astro files in /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books/Interactive-Machine-Learning-Book...
+Result (72 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+
+Running: Unit and parity tests
+
+ RUN  v3.2.7 /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books/Interactive-Machine-Learning-Book
+
+ ✓ tests/unit/p02/linear-regression.test.ts (31 tests) 45ms
+ ✓ tests/unit/p01/foundations.test.ts (24 tests) 199ms
+ ✓ tests/unit/p02/remainder-lessons.test.ts (26 tests) 190ms
+ ✓ tests/unit/p02/remainder-parity.test.ts (40 tests) 40ms
+ ✓ tests/unit/p01/lesson.test.ts (14 tests) 354ms
+ ✓ tests/unit/p02/linear-regression-lesson.test.ts (9 tests) 55ms
+ ✓ tests/unit/platform/contracts.test.ts (9 tests) 7ms
+ ✓ tests/unit/p02/fit.test.ts (7 tests) 6ms
+ ✓ tests/unit/platform/validation.test.ts (4 tests) 123ms
+ ✓ tests/unit/platform/regression-independent.test.ts (3 tests) 3ms
+ ✓ tests/unit/platform/reference-freeze.test.ts (1 test) 3ms
+
+ Test Files  11 passed (11)
+      Tests  168 passed (168)
+   Start at  19:20:42
+   Duration  1.58s (transform 354ms, setup 0ms, collect 828ms, tests 1.02s, environment 1ms, prepare 386ms)
+
+Running: Independent oracles and freshness
+arithmetic oracle: 9 literal assertions passed
+.................
+----------------------------------------------------------------------
+Ran 17 tests in 1.153s
+
+OK
+capacity counterexample: 4 assertions passed
+P01 golden check: foundations.json current
+III-07 independent rational literals: passed
+...............
+----------------------------------------------------------------------
+Ran 15 tests in 0.183s
+
+OK
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.397s
+
+OK
+Fresh fixture: /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books/Interactive-Machine-Learning-Book/fixtures/p02/linear-regression.fixtures.json
+Fresh independent p02 remainder fixtures (34 cases).
+Independent oracle commands passed: 9 across 2 Part(s).
+Running: Root production and offline bundle
+19:20:48 [content] Syncing content
+19:20:48 [content] Synced content
+19:20:48 [types] Generated 286ms
+19:20:48 [build] output: "static"
+19:20:48 [build] mode: "static"
+19:20:48 [build] directory: /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books/Interactive-Machine-Learning-Book/dist/
+19:20:48 [build] Collecting build info...
+19:20:48 [build] ✓ Completed in 311ms.
+19:20:48 [build] Building static entrypoints...
+19:20:51 [vite] ✓ built in 2.72s
+19:20:51 [build] ✓ Completed in 2.74s.
+
+ building client (vite) 
+19:20:51 [vite] transforming...
+19:20:51 [vite] ✓ 47 modules transformed.
+19:20:51 [vite] rendering chunks...
+19:20:51 [vite] computing gzip size...
+19:20:51 [vite] dist/_astro/jsxRuntime.module.DLa4fAYi.js           0.42 kB │ gzip:  0.30 kB
+19:20:51 [vite] dist/_astro/ChoiceExercise.Bca9LHiu.js              0.67 kB │ gzip:  0.45 kB
+19:20:51 [vite] dist/_astro/NumberField.C5J2vK-J.js                 1.07 kB │ gzip:  0.69 kB
+19:20:51 [vite] dist/_astro/client.CGMsMmoA.js                      2.29 kB │ gzip:  1.24 kB
+19:20:51 [vite] dist/_astro/TaskStage.DzfwF89f.js                   2.58 kB │ gzip:  1.09 kB
+19:20:51 [vite] dist/_astro/MembershipBoard.BZlD8opX.js             2.79 kB │ gzip:  1.28 kB
+19:20:51 [vite] dist/_astro/hooks.module.C1GxTNnt.js                3.03 kB │ gzip:  1.33 kB
+19:20:51 [vite] dist/_astro/FeatureStage.Br7jf2Uq.js                4.26 kB │ gzip:  1.73 kB
+19:20:51 [vite] dist/_astro/TraceStepper.BYuJHgjH.js                4.30 kB │ gzip:  2.04 kB
+19:20:51 [vite] dist/_astro/PipelineStage.C7OzYXDK.js               4.50 kB │ gzip:  1.63 kB
+19:20:51 [vite] dist/_astro/SplitStage.SEieJDXd.js                  5.16 kB │ gzip:  2.02 kB
+19:20:51 [vite] dist/_astro/linear-regression-lesson.DdjhstaZ.js    5.53 kB │ gzip:  2.45 kB
+19:20:51 [vite] dist/_astro/signals.module.C4An8D1c.js              7.92 kB │ gzip:  3.08 kB
+19:20:51 [vite] dist/_astro/CapacityStage.Dn7TzMhB.js               8.29 kB │ gzip:  3.16 kB
+19:20:51 [vite] dist/_astro/RegressionStage.CISIUB2D.js             9.27 kB │ gzip:  3.44 kB
+19:20:51 [vite] dist/_astro/preact.module.B5aEZR5Y.js              11.12 kB │ gzip:  4.67 kB
+19:20:51 [vite] dist/_astro/fit-lesson.B-WotxeJ.js                 12.55 kB │ gzip:  5.63 kB
+19:20:51 [vite] dist/_astro/FitStage.BlHMqMJJ.js                   14.16 kB │ gzip:  4.76 kB
+19:20:51 [vite] dist/_astro/FoundationExercises.DhFwDY2j.js        14.85 kB │ gzip:  5.15 kB
+19:20:51 [vite] dist/_astro/ClassificationStage.CmUTA47C.js        24.25 kB │ gzip:  8.48 kB
+19:20:51 [vite] dist/_astro/experiment.HzO_dzDb.js                 24.29 kB │ gzip:  9.24 kB
+19:20:51 [vite] dist/_astro/Formula.UxhkAm7A.js                   261.63 kB │ gzip: 77.78 kB
+19:20:51 [vite] ✓ built in 692ms
+
+ generating static routes 
+19:20:51 ▶ src/pages/404.astro
+19:20:51   └─ /404.html (+4ms) 
+19:20:51 ▶ src/pages/contents.astro
+19:20:51   └─ /contents/index.html (+1ms) 
+19:20:51 λ src/pages/curriculum.json.ts
+19:20:51   └─ /curriculum.json (+1ms) 
+19:20:51 ▶ src/pages/index.astro
+19:20:51   └─ /index.html (+1ms) 
+19:20:51 ▶ src/pages/parts/[part].astro
+19:20:51   ├─ /parts/ml-foundations/index.html (+1ms) 
+19:20:51   ├─ /parts/regression-classification/index.html (+1ms) 
+19:20:51   ├─ /parts/instance-probabilistic/index.html (+1ms) 
+19:20:51   ├─ /parts/trees-ensembles/index.html (+1ms) 
+19:20:51   ├─ /parts/clustering/index.html (+1ms) 
+19:20:51   ├─ /parts/dimensionality-reduction/index.html (+1ms) 
+19:20:51   ├─ /parts/support-vector-machines/index.html (+1ms) 
+19:20:51   ├─ /parts/evaluation-practical-ml/index.html (+1ms) 
+19:20:51   └─ /parts/neural-network-bridge/index.html (+1ms) 
+19:20:51 ▶ src/pages/chapters/[slug].astro
+19:20:51   ├─ /chapters/learning-problems/index.html (+48ms) 
+19:20:51   ├─ /chapters/samples-features-labels-targets/index.html (+31ms) 
+19:20:51   ├─ /chapters/parameters-loss-optimization/index.html (+36ms) 
+19:20:51   ├─ /chapters/training-validation-testing/index.html (+38ms) 
+19:20:52   ├─ /chapters/underfitting-overfitting-baselines/index.html (+53ms) 
+19:20:52   ├─ /chapters/what-machine-learning-learns/index.html (+21ms) 
+19:20:52   ├─ /chapters/linear-regression/index.html (+35ms) 
+19:20:52   ├─ /chapters/least-squares/index.html (+53ms) 
+19:20:52   ├─ /chapters/logistic-regression/index.html (+37ms) 
+19:20:52   ├─ /chapters/multiple-linear-regression/index.html (+43ms) 
+19:20:52   ├─ /chapters/polynomial-features/index.html (+41ms) 
+19:20:52   ├─ /chapters/precision-recall-roc/index.html (+30ms) 
+19:20:52   ├─ /chapters/regression-gradient-descent/index.html (+41ms) 
+19:20:52   ├─ /chapters/regularization/index.html (+46ms) 
+19:20:52   ├─ /chapters/softmax-regression/index.html (+36ms) 
+19:20:52   └─ /chapters/thresholds-confusion/index.html (+28ms) 
+19:20:52 ✓ Completed in 651ms.
+
+19:20:52 [build] 28 page(s) built in 4.42s
+19:20:52 [build] Complete!
+Running: Subpath production
+19:20:53 [content] Syncing content
+19:20:53 [content] Astro config changed
+19:20:53 [content] Clearing content store
+19:20:53 [content] Synced content
+19:20:53 [types] Generated 310ms
+19:20:53 [build] output: "static"
+19:20:53 [build] mode: "static"
+19:20:53 [build] directory: /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books/Interactive-Machine-Learning-Book/dist-subpath/
+19:20:53 [build] Collecting build info...
+19:20:53 [build] ✓ Completed in 330ms.
+19:20:53 [build] Building static entrypoints...
+19:20:56 [vite] ✓ built in 2.67s
+19:20:56 [build] ✓ Completed in 2.69s.
+
+ building client (vite) 
+19:20:56 [vite] transforming...
+19:20:56 [vite] ✓ 47 modules transformed.
+19:20:56 [vite] rendering chunks...
+19:20:56 [vite] computing gzip size...
+19:20:56 [vite] dist-subpath/_astro/jsxRuntime.module.DLa4fAYi.js           0.42 kB │ gzip:  0.30 kB
+19:20:56 [vite] dist-subpath/_astro/ChoiceExercise.Bca9LHiu.js              0.67 kB │ gzip:  0.45 kB
+19:20:56 [vite] dist-subpath/_astro/NumberField.C5J2vK-J.js                 1.07 kB │ gzip:  0.69 kB
+19:20:56 [vite] dist-subpath/_astro/client.BeBs1SxV.js                      2.31 kB │ gzip:  1.25 kB
+19:20:56 [vite] dist-subpath/_astro/TaskStage.DzfwF89f.js                   2.58 kB │ gzip:  1.09 kB
+19:20:56 [vite] dist-subpath/_astro/MembershipBoard.BZlD8opX.js             2.79 kB │ gzip:  1.28 kB
+19:20:56 [vite] dist-subpath/_astro/hooks.module.C1GxTNnt.js                3.03 kB │ gzip:  1.33 kB
+19:20:56 [vite] dist-subpath/_astro/FeatureStage.Br7jf2Uq.js                4.26 kB │ gzip:  1.73 kB
+19:20:56 [vite] dist-subpath/_astro/TraceStepper.BYuJHgjH.js                4.30 kB │ gzip:  2.04 kB
+19:20:56 [vite] dist-subpath/_astro/PipelineStage.C7OzYXDK.js               4.50 kB │ gzip:  1.63 kB
+19:20:56 [vite] dist-subpath/_astro/SplitStage.SEieJDXd.js                  5.16 kB │ gzip:  2.02 kB
+19:20:56 [vite] dist-subpath/_astro/linear-regression-lesson.DdjhstaZ.js    5.53 kB │ gzip:  2.45 kB
+19:20:56 [vite] dist-subpath/_astro/signals.module.C4An8D1c.js              7.92 kB │ gzip:  3.08 kB
+19:20:56 [vite] dist-subpath/_astro/CapacityStage.Dn7TzMhB.js               8.29 kB │ gzip:  3.16 kB
+19:20:56 [vite] dist-subpath/_astro/RegressionStage.CISIUB2D.js             9.27 kB │ gzip:  3.44 kB
+19:20:56 [vite] dist-subpath/_astro/preact.module.B5aEZR5Y.js              11.12 kB │ gzip:  4.67 kB
+19:20:56 [vite] dist-subpath/_astro/fit-lesson.B-WotxeJ.js                 12.55 kB │ gzip:  5.63 kB
+19:20:56 [vite] dist-subpath/_astro/FitStage.BlHMqMJJ.js                   14.16 kB │ gzip:  4.76 kB
+19:20:56 [vite] dist-subpath/_astro/FoundationExercises.DhFwDY2j.js        14.85 kB │ gzip:  5.15 kB
+19:20:56 [vite] dist-subpath/_astro/ClassificationStage.CmUTA47C.js        24.25 kB │ gzip:  8.48 kB
+19:20:56 [vite] dist-subpath/_astro/experiment.HzO_dzDb.js                 24.29 kB │ gzip:  9.24 kB
+19:20:56 [vite] dist-subpath/_astro/Formula.UxhkAm7A.js                   261.63 kB │ gzip: 77.78 kB
+19:20:56 [vite] ✓ built in 700ms
+
+ generating static routes 
+19:20:56 ▶ src/pages/404.astro
+19:20:56   └─ /404.html (+4ms) 
+19:20:56 ▶ src/pages/contents.astro
+19:20:56   └─ /contents/index.html (+1ms) 
+19:20:56 λ src/pages/curriculum.json.ts
+19:20:56   └─ /curriculum.json (+1ms) 
+19:20:56 ▶ src/pages/index.astro
+19:20:56   └─ /index.html (+1ms) 
+19:20:56 ▶ src/pages/parts/[part].astro
+19:20:56   ├─ /parts/ml-foundations/index.html (+2ms) 
+19:20:56   ├─ /parts/regression-classification/index.html (+1ms) 
+19:20:56   ├─ /parts/instance-probabilistic/index.html (+1ms) 
+19:20:56   ├─ /parts/trees-ensembles/index.html (+1ms) 
+19:20:56   ├─ /parts/clustering/index.html (+1ms) 
+19:20:56   ├─ /parts/dimensionality-reduction/index.html (+1ms) 
+19:20:56   ├─ /parts/support-vector-machines/index.html (+1ms) 
+19:20:56   ├─ /parts/evaluation-practical-ml/index.html (+1ms) 
+19:20:56   └─ /parts/neural-network-bridge/index.html (+1ms) 
+19:20:56 ▶ src/pages/chapters/[slug].astro
+19:20:56   ├─ /chapters/learning-problems/index.html (+48ms) 
+19:20:57   ├─ /chapters/parameters-loss-optimization/index.html (+41ms) 
+19:20:57   ├─ /chapters/samples-features-labels-targets/index.html (+23ms) 
+19:20:57   ├─ /chapters/training-validation-testing/index.html (+37ms) 
+19:20:57   ├─ /chapters/underfitting-overfitting-baselines/index.html (+53ms) 
+19:20:57   ├─ /chapters/what-machine-learning-learns/index.html (+21ms) 
+19:20:57   ├─ /chapters/least-squares/index.html (+50ms) 
+19:20:57   ├─ /chapters/linear-regression/index.html (+38ms) 
+19:20:57   ├─ /chapters/logistic-regression/index.html (+37ms) 
+19:20:57   ├─ /chapters/multiple-linear-regression/index.html (+42ms) 
+19:20:57   ├─ /chapters/polynomial-features/index.html (+41ms) 
+19:20:57   ├─ /chapters/precision-recall-roc/index.html (+30ms) 
+19:20:57   ├─ /chapters/regression-gradient-descent/index.html (+41ms) 
+19:20:57   ├─ /chapters/regularization/index.html (+47ms) 
+19:20:57   ├─ /chapters/softmax-regression/index.html (+36ms) 
+19:20:57   └─ /chapters/thresholds-confusion/index.html (+28ms) 
+19:20:57 ✓ Completed in 647ms.
+
+19:20:57 [build] 28 page(s) built in 4.39s
+19:20:57 [build] Complete!
+Running: Root production audit
+Production /: 16/41 chapter pages, all internal links/assets and PWA paths valid.
+Running: Subpath production audit
+Production /machine-learning/: 16/41 chapter pages, all internal links/assets and PWA paths valid.
+Running: Root browser validation
+[WebServer] (node:673783) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 171 tests using 2 workers
+
+(node:673796) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:673795) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓    2 [desktop] › tests/e2e/p01/foundations.spec.ts:86:1 › pipeline keyboard numeric commits retain focus, repeat and tab normally (531ms)
+  ✓    1 [desktop] › tests/e2e/p01/foundations.spec.ts:127:1 › pipeline rejects numeric errors and every historical state drives the controls and rows (738ms)
+  ✓    3 [desktop] › tests/e2e/p01/foundations.spec.ts:148:1 › feature edits retain full precision, reject fractional counts and expose absent targets (452ms)
+  ✓    4 [desktop] › tests/e2e/p01/foundations.spec.ts:165:1 › task decisions use semantic target codes and grade misconceptions (439ms)
+  ✓    5 [desktop] › tests/e2e/p01/foundations.spec.ts:182:1 › group assignment preserves IDs and exposes leakage, seed replay and empty means (717ms)
+  ✓    6 [desktop] › tests/e2e/p01/foundations.spec.ts:209:1 › pointer assignment and numeric destination fit the same active capacity rows (1.2s)
+  ✓    7 [desktop] › tests/e2e/p01/foundations.spec.ts:227:1 › capacity numeric commits preserve focus and reject bad degree/seed/partition (756ms)
+  ✓    9 [desktop] › tests/e2e/p01/foundations.spec.ts:257:1 › empty and deficient training memberships retain observations and display actual reasons (1.1s)
+  ✓    8 [desktop] › tests/e2e/p01/foundations.spec.ts:239:1 › capacity replay drives every frame and edits begin at the displayed memberships (1.5s)
+  ✓   10 [desktop] › tests/e2e/p01/foundations.spec.ts:268:1 › seeded memberships, honest/leaked baseline and validation-only selection remain distinct (897ms)
+  ✓   11 [desktop] › tests/e2e/p01/foundations.spec.ts:285:1 › plot labels, physical geometry, both themes and reduced motion remain readable (582ms)
+  ✓   13 [desktop] › tests/e2e/p01/foundations.spec.ts:340:1 › III-05 reuses the accepted affine update with one required distinct island scope (384ms)
+  ✓   12 [desktop] › tests/e2e/p01/foundations.spec.ts:329:1 › reset cancels a held membership drag before pointer release (746ms)
+  ✓   14 [desktop] › tests/e2e/p02/reference.spec.ts:93:49 › canonical state, projection and touch targets in light (555ms)
+  ✓   15 [desktop] › tests/e2e/p02/reference.spec.ts:93:49 › canonical state, projection and touch targets in dark (556ms)
+  ✓   17 [desktop] › tests/e2e/p02/reference.spec.ts:139:1 › keyboard and pointer edits share actual sample state and announce only at drag end (793ms)
+  ✓   16 [desktop] › tests/e2e/p02/reference.spec.ts:108:1 › numeric edits reject invalid entries, preserve precision, announce results and reset (1.1s)
+  ✓   18 [desktop] › tests/e2e/p02/reference.spec.ts:161:1 › reset during a held drag keeps release and cancel announcements on the authoritative state (1.0s)
+  ✓   19 [desktop] › tests/e2e/p02/reference.spec.ts:185:1 › every replay frame drives controls, plot, table, formulas and inspector; editing starts there (1.5s)
+  ✓   20 [desktop] › tests/e2e/p02/reference.spec.ts:215:1 › unsupported updates and replays visibly preserve the valid state (832ms)
+  ✓   21 [desktop] › tests/e2e/p02/reference.spec.ts:227:1 › reduced motion keeps manual replay usable and touch capture local to handles (674ms)
+  ✓   22 [desktop] › tests/e2e/p02/reference.spec.ts:239:1 › prerequisites, real Python and graded misconception feedback are present (506ms)
+  ✓   23 [desktop] › tests/e2e/p02/remainder.spec.ts:62:49 › all nine mechanisms preserve active numbers and readable geometry in light (1.9s)
+  ✓   24 [desktop] › tests/e2e/p02/remainder.spec.ts:62:49 › all nine mechanisms preserve active numbers and readable geometry in dark (1.8s)
+  ✓   25 [desktop] › tests/e2e/p02/remainder.spec.ts:108:1 › closed form, constant variance, exact numeric precision and reset are distinct actions (777ms)
+  ✓   27 [desktop] › tests/e2e/p02/remainder.spec.ts:189:1 › editable multiple design exposes rank, robust solve and minimum norm coefficients (589ms)
+  ✓   26 [desktop] › tests/e2e/p02/remainder.spec.ts:148:1 › descent uses every selected immutable frame and demonstrates oscillation and divergence (1.4s)
+  ✓   28 [desktop] › tests/e2e/p02/remainder.spec.ts:201:1 › polynomial fit preserves held-out rows and shows interpolation is not best evaluation (560ms)
+  ✓   29 [desktop] › tests/e2e/p02/remainder.spec.ts:213:1 › regularization has real L2/L1 penalties, explicit intercept treatment and KKT status (710ms)
+  ✓   31 [desktop] › tests/e2e/p02/remainder.spec.ts:238:1 › threshold ties, keyboard and pointer/touch paths use the same score column (474ms)
+  ✓   30 [desktop] › tests/e2e/p02/remainder.spec.ts:225:1 › logistic gradients, update/replay, extreme BCE and visible rejection follow active coefficients (979ms)
+  ✓   32 [desktop] › tests/e2e/p02/remainder.spec.ts:252:1 › above-all plus score one has consistent active controls and negative predictions (743ms)
+  ✓   33 [desktop] › tests/e2e/p02/remainder.spec.ts:264:1 › metrics use literal denominators, exact tied sweep and pairwise AUC; missing classes stay undefined (728ms)
+  ✓   34 [desktop] › tests/e2e/p02/remainder.spec.ts:279:1 › softmax shift equation and actual logits match while probabilities/loss are invariant (731ms)
+  ✓   36 [desktop] › tests/e2e/platform/book.spec.ts:6:1 › Part-first navigation exposes exactly nine Parts and the correct publication count (569ms)
+  ✓   37 [desktop] › tests/e2e/platform/book.spec.ts:21:1 › theme preference persists, keyboard skip link works and root shell is accessible (993ms)
+  ✓   35 [desktop] › tests/e2e/p02/remainder.spec.ts:297:1 › all nine chapter exercise feedback hydrates and Python/prerequisite content is real (2.7s)
+  ✓   38 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-01 publication, hydration, exercises, both-theme accessibility and narrow layout (4.0s)
+  ✓   39 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-02 publication, hydration, exercises, both-theme accessibility and narrow layout (4.0s)
+  ✓   40 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-03 publication, hydration, exercises, both-theme accessibility and narrow layout (3.0s)
+  ✓   41 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-04 publication, hydration, exercises, both-theme accessibility and narrow layout (6.9s)
+  ✓   42 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-05 publication, hydration, exercises, both-theme accessibility and narrow layout (5.6s)
+  ✓   44 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-07 publication, hydration, exercises, both-theme accessibility and narrow layout (6.4s)
+  ✓   43 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-06 publication, hydration, exercises, both-theme accessibility and narrow layout (8.9s)
+  ✓   45 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-08 publication, hydration, exercises, both-theme accessibility and narrow layout (8.9s)
+  ✓   46 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-09 publication, hydration, exercises, both-theme accessibility and narrow layout (8.8s)
+  ✓   47 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-10 publication, hydration, exercises, both-theme accessibility and narrow layout (9.2s)
+  ✓   48 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-11 publication, hydration, exercises, both-theme accessibility and narrow layout (8.4s)
+  ✓   50 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-13 publication, hydration, exercises, both-theme accessibility and narrow layout (7.1s)
+  ✓   49 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-12 publication, hydration, exercises, both-theme accessibility and narrow layout (9.0s)
+  ✓   51 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-14 publication, hydration, exercises, both-theme accessibility and narrow layout (6.4s)
+  ✓   52 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-15 publication, hydration, exercises, both-theme accessibility and narrow layout (7.0s)
+  ✓   54 [desktop] › tests/e2e/platform/book.spec.ts:64:1 › PWA precaches actual chapters and assets and survives offline reload (457ms)
+  ✓   55 [desktop] › tests/e2e/platform/book.spec.ts:82:1 › strict production server returns real 404s and rejects malformed/traversal paths (8ms)
+  ✓   56 [desktop] › tests/e2e/platform/reference-geometry.spec.ts:3:1 › actual displayed sample centers match equal-scale world projection after input and keyboard changes (391ms)
+  ✓   57 [desktop] › tests/e2e/platform/reference-geometry.spec.ts:30:1 › focusing and leaving an unchanged parameter preserves historical replay (460ms)
+(node:677266) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   58 [tablet] › tests/e2e/p01/foundations.spec.ts:86:1 › pipeline keyboard numeric commits retain focus, repeat and tab normally (434ms)
+  ✓   59 [tablet] › tests/e2e/p01/foundations.spec.ts:127:1 › pipeline rejects numeric errors and every historical state drives the controls and rows (592ms)
+  ✓   60 [tablet] › tests/e2e/p01/foundations.spec.ts:148:1 › feature edits retain full precision, reject fractional counts and expose absent targets (386ms)
+  ✓   61 [tablet] › tests/e2e/p01/foundations.spec.ts:165:1 › task decisions use semantic target codes and grade misconceptions (419ms)
+  ✓   62 [tablet] › tests/e2e/p01/foundations.spec.ts:182:1 › group assignment preserves IDs and exposes leakage, seed replay and empty means (696ms)
+  ✓   63 [tablet] › tests/e2e/p01/foundations.spec.ts:209:1 › pointer assignment and numeric destination fit the same active capacity rows (1.1s)
+  ✓   64 [tablet] › tests/e2e/p01/foundations.spec.ts:227:1 › capacity numeric commits preserve focus and reject bad degree/seed/partition (658ms)
+  ✓   53 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-16 publication, hydration, exercises, both-theme accessibility and narrow layout (8.3s)
+(node:677757) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   65 [tablet] › tests/e2e/p01/foundations.spec.ts:239:1 › capacity replay drives every frame and edits begin at the displayed memberships (1.5s)
+  ✓   66 [tablet] › tests/e2e/p01/foundations.spec.ts:257:1 › empty and deficient training memberships retain observations and display actual reasons (1.3s)
+  ✓   67 [tablet] › tests/e2e/p01/foundations.spec.ts:268:1 › seeded memberships, honest/leaked baseline and validation-only selection remain distinct (862ms)
+  ✓   68 [tablet] › tests/e2e/p01/foundations.spec.ts:285:1 › plot labels, physical geometry, both themes and reduced motion remain readable (689ms)
+  ✓   70 [tablet] › tests/e2e/p01/foundations.spec.ts:340:1 › III-05 reuses the accepted affine update with one required distinct island scope (352ms)
+  ✓   69 [tablet] › tests/e2e/p01/foundations.spec.ts:329:1 › reset cancels a held membership drag before pointer release (666ms)
+  ✓   71 [tablet] › tests/e2e/p02/reference.spec.ts:93:49 › canonical state, projection and touch targets in light (545ms)
+  ✓   72 [tablet] › tests/e2e/p02/reference.spec.ts:93:49 › canonical state, projection and touch targets in dark (551ms)
+  ✓   74 [tablet] › tests/e2e/p02/reference.spec.ts:139:1 › keyboard and pointer edits share actual sample state and announce only at drag end (864ms)
+  ✓   73 [tablet] › tests/e2e/p02/reference.spec.ts:108:1 › numeric edits reject invalid entries, preserve precision, announce results and reset (1.2s)
+  ✓   75 [tablet] › tests/e2e/p02/reference.spec.ts:161:1 › reset during a held drag keeps release and cancel announcements on the authoritative state (986ms)
+  ✓   76 [tablet] › tests/e2e/p02/reference.spec.ts:185:1 › every replay frame drives controls, plot, table, formulas and inspector; editing starts there (1.4s)
+  ✓   77 [tablet] › tests/e2e/p02/reference.spec.ts:215:1 › unsupported updates and replays visibly preserve the valid state (755ms)
+  ✓   79 [tablet] › tests/e2e/p02/reference.spec.ts:239:1 › prerequisites, real Python and graded misconception feedback are present (544ms)
+  ✓   78 [tablet] › tests/e2e/p02/reference.spec.ts:227:1 › reduced motion keeps manual replay usable and touch capture local to handles (641ms)
+  ✓   80 [tablet] › tests/e2e/p02/remainder.spec.ts:62:49 › all nine mechanisms preserve active numbers and readable geometry in light (1.8s)
+  ✓   81 [tablet] › tests/e2e/p02/remainder.spec.ts:62:49 › all nine mechanisms preserve active numbers and readable geometry in dark (1.9s)
+  ✓   82 [tablet] › tests/e2e/p02/remainder.spec.ts:108:1 › closed form, constant variance, exact numeric precision and reset are distinct actions (752ms)
+  ✓   84 [tablet] › tests/e2e/p02/remainder.spec.ts:189:1 › editable multiple design exposes rank, robust solve and minimum norm coefficients (597ms)
+  ✓   83 [tablet] › tests/e2e/p02/remainder.spec.ts:148:1 › descent uses every selected immutable frame and demonstrates oscillation and divergence (1.4s)
+  ✓   85 [tablet] › tests/e2e/p02/remainder.spec.ts:201:1 › polynomial fit preserves held-out rows and shows interpolation is not best evaluation (542ms)
+  ✓   86 [tablet] › tests/e2e/p02/remainder.spec.ts:213:1 › regularization has real L2/L1 penalties, explicit intercept treatment and KKT status (665ms)
+  ✓   88 [tablet] › tests/e2e/p02/remainder.spec.ts:238:1 › threshold ties, keyboard and pointer/touch paths use the same score column (463ms)
+  ✓   87 [tablet] › tests/e2e/p02/remainder.spec.ts:225:1 › logistic gradients, update/replay, extreme BCE and visible rejection follow active coefficients (1.0s)
+  ✓   89 [tablet] › tests/e2e/p02/remainder.spec.ts:252:1 › above-all plus score one has consistent active controls and negative predictions (667ms)
+  ✓   90 [tablet] › tests/e2e/p02/remainder.spec.ts:264:1 › metrics use literal denominators, exact tied sweep and pairwise AUC; missing classes stay undefined (783ms)
+  ✓   91 [tablet] › tests/e2e/p02/remainder.spec.ts:279:1 › softmax shift equation and actual logits match while probabilities/loss are invariant (647ms)
+  ✓   93 [tablet] › tests/e2e/platform/book.spec.ts:6:1 › Part-first navigation exposes exactly nine Parts and the correct publication count (569ms)
+  ✓   94 [tablet] › tests/e2e/platform/book.spec.ts:21:1 › theme preference persists, keyboard skip link works and root shell is accessible (1.0s)
+  ✓   92 [tablet] › tests/e2e/p02/remainder.spec.ts:297:1 › all nine chapter exercise feedback hydrates and Python/prerequisite content is real (2.7s)
+  ✓   95 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-01 publication, hydration, exercises, both-theme accessibility and narrow layout (4.0s)
+  ✓   96 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-02 publication, hydration, exercises, both-theme accessibility and narrow layout (4.1s)
+  ✓   97 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-03 publication, hydration, exercises, both-theme accessibility and narrow layout (3.0s)
+  ✓   98 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-04 publication, hydration, exercises, both-theme accessibility and narrow layout (6.9s)
+  ✓   99 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-05 publication, hydration, exercises, both-theme accessibility and narrow layout (5.6s)
+  ✓  101 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-07 publication, hydration, exercises, both-theme accessibility and narrow layout (6.4s)
+  ✓  100 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-06 publication, hydration, exercises, both-theme accessibility and narrow layout (8.8s)
+  ✓  102 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-08 publication, hydration, exercises, both-theme accessibility and narrow layout (8.9s)
+  ✓  103 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-09 publication, hydration, exercises, both-theme accessibility and narrow layout (8.7s)
+  ✓  104 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-10 publication, hydration, exercises, both-theme accessibility and narrow layout (8.9s)
+  ✓  105 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-11 publication, hydration, exercises, both-theme accessibility and narrow layout (8.3s)
+  ✓  107 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-13 publication, hydration, exercises, both-theme accessibility and narrow layout (7.0s)
+  ✓  106 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-12 publication, hydration, exercises, both-theme accessibility and narrow layout (9.1s)
+  ✓  108 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-14 publication, hydration, exercises, both-theme accessibility and narrow layout (6.4s)
+  ✓  109 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-15 publication, hydration, exercises, both-theme accessibility and narrow layout (6.8s)
+  ✓  111 [tablet] › tests/e2e/platform/book.spec.ts:64:1 › PWA precaches actual chapters and assets and survives offline reload (474ms)
+  ✓  112 [tablet] › tests/e2e/platform/book.spec.ts:82:1 › strict production server returns real 404s and rejects malformed/traversal paths (8ms)
+  ✓  113 [tablet] › tests/e2e/platform/reference-geometry.spec.ts:3:1 › actual displayed sample centers match equal-scale world projection after input and keyboard changes (384ms)
+  ✓  114 [tablet] › tests/e2e/platform/reference-geometry.spec.ts:30:1 › focusing and leaving an unchanged parameter preserves historical replay (478ms)
+(node:680779) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  115 [mobile] › tests/e2e/p01/foundations.spec.ts:86:1 › pipeline keyboard numeric commits retain focus, repeat and tab normally (492ms)
+  ✓  116 [mobile] › tests/e2e/p01/foundations.spec.ts:127:1 › pipeline rejects numeric errors and every historical state drives the controls and rows (646ms)
+  ✓  117 [mobile] › tests/e2e/p01/foundations.spec.ts:148:1 › feature edits retain full precision, reject fractional counts and expose absent targets (428ms)
+  ✓  118 [mobile] › tests/e2e/p01/foundations.spec.ts:165:1 › task decisions use semantic target codes and grade misconceptions (415ms)
+  ✓  119 [mobile] › tests/e2e/p01/foundations.spec.ts:182:1 › group assignment preserves IDs and exposes leakage, seed replay and empty means (755ms)
+  ✓  120 [mobile] › tests/e2e/p01/foundations.spec.ts:209:1 › pointer assignment and numeric destination fit the same active capacity rows (1.1s)
+  ✓  110 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-16 publication, hydration, exercises, both-theme accessibility and narrow layout (8.1s)
+  ✓  121 [mobile] › tests/e2e/p01/foundations.spec.ts:227:1 › capacity numeric commits preserve focus and reject bad degree/seed/partition (664ms)
+(node:681249) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  122 [mobile] › tests/e2e/p01/foundations.spec.ts:257:1 › empty and deficient training memberships retain observations and display actual reasons (1.2s)
+  ✓  124 [mobile] › tests/e2e/p01/foundations.spec.ts:268:1 › seeded memberships, honest/leaked baseline and validation-only selection remain distinct (818ms)
+  ✓  123 [mobile] › tests/e2e/p01/foundations.spec.ts:239:1 › capacity replay drives every frame and edits begin at the displayed memberships (1.6s)
+  ✓  125 [mobile] › tests/e2e/p01/foundations.spec.ts:285:1 › plot labels, physical geometry, both themes and reduced motion remain readable (698ms)
+  ✓  126 [mobile] › tests/e2e/p01/foundations.spec.ts:329:1 › reset cancels a held membership drag before pointer release (689ms)
+  ✓  127 [mobile] › tests/e2e/p01/foundations.spec.ts:340:1 › III-05 reuses the accepted affine update with one required distinct island scope (420ms)
+  ✓  128 [mobile] › tests/e2e/p02/reference.spec.ts:93:49 › canonical state, projection and touch targets in light (589ms)
+  ✓  129 [mobile] › tests/e2e/p02/reference.spec.ts:93:49 › canonical state, projection and touch targets in dark (551ms)
+  ✓  131 [mobile] › tests/e2e/p02/reference.spec.ts:139:1 › keyboard and pointer edits share actual sample state and announce only at drag end (825ms)
+  ✓  130 [mobile] › tests/e2e/p02/reference.spec.ts:108:1 › numeric edits reject invalid entries, preserve precision, announce results and reset (1.2s)
+  ✓  132 [mobile] › tests/e2e/p02/reference.spec.ts:161:1 › reset during a held drag keeps release and cancel announcements on the authoritative state (1.1s)
+  ✓  133 [mobile] › tests/e2e/p02/reference.spec.ts:185:1 › every replay frame drives controls, plot, table, formulas and inspector; editing starts there (1.5s)
+  ✓  134 [mobile] › tests/e2e/p02/reference.spec.ts:215:1 › unsupported updates and replays visibly preserve the valid state (847ms)
+  ✓  135 [mobile] › tests/e2e/p02/reference.spec.ts:227:1 › reduced motion keeps manual replay usable and touch capture local to handles (660ms)
+  ✓  136 [mobile] › tests/e2e/p02/reference.spec.ts:239:1 › prerequisites, real Python and graded misconception feedback are present (543ms)
+  ✓  137 [mobile] › tests/e2e/p02/remainder.spec.ts:62:49 › all nine mechanisms preserve active numbers and readable geometry in light (2.0s)
+  ✓  138 [mobile] › tests/e2e/p02/remainder.spec.ts:62:49 › all nine mechanisms preserve active numbers and readable geometry in dark (2.0s)
+  ✓  139 [mobile] › tests/e2e/p02/remainder.spec.ts:108:1 › closed form, constant variance, exact numeric precision and reset are distinct actions (796ms)
+  ✓  141 [mobile] › tests/e2e/p02/remainder.spec.ts:189:1 › editable multiple design exposes rank, robust solve and minimum norm coefficients (722ms)
+  ✓  140 [mobile] › tests/e2e/p02/remainder.spec.ts:148:1 › descent uses every selected immutable frame and demonstrates oscillation and divergence (1.3s)
+  ✓  142 [mobile] › tests/e2e/p02/remainder.spec.ts:201:1 › polynomial fit preserves held-out rows and shows interpolation is not best evaluation (591ms)
+  ✓  143 [mobile] › tests/e2e/p02/remainder.spec.ts:213:1 › regularization has real L2/L1 penalties, explicit intercept treatment and KKT status (694ms)
+  ✓  145 [mobile] › tests/e2e/p02/remainder.spec.ts:238:1 › threshold ties, keyboard and pointer/touch paths use the same score column (502ms)
+  ✓  144 [mobile] › tests/e2e/p02/remainder.spec.ts:225:1 › logistic gradients, update/replay, extreme BCE and visible rejection follow active coefficients (1.0s)
+  ✓  146 [mobile] › tests/e2e/p02/remainder.spec.ts:252:1 › above-all plus score one has consistent active controls and negative predictions (753ms)
+  ✓  147 [mobile] › tests/e2e/p02/remainder.spec.ts:264:1 › metrics use literal denominators, exact tied sweep and pairwise AUC; missing classes stay undefined (768ms)
+  ✓  148 [mobile] › tests/e2e/p02/remainder.spec.ts:279:1 › softmax shift equation and actual logits match while probabilities/loss are invariant (761ms)
+  ✓  150 [mobile] › tests/e2e/platform/book.spec.ts:6:1 › Part-first navigation exposes exactly nine Parts and the correct publication count (602ms)
+  ✓  151 [mobile] › tests/e2e/platform/book.spec.ts:21:1 › theme preference persists, keyboard skip link works and root shell is accessible (993ms)
+  ✓  149 [mobile] › tests/e2e/p02/remainder.spec.ts:297:1 › all nine chapter exercise feedback hydrates and Python/prerequisite content is real (2.7s)
+  ✓  152 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-01 publication, hydration, exercises, both-theme accessibility and narrow layout (4.0s)
+  ✓  153 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-02 publication, hydration, exercises, both-theme accessibility and narrow layout (4.2s)
+  ✓  154 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-03 publication, hydration, exercises, both-theme accessibility and narrow layout (3.0s)
+  ✓  155 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-04 publication, hydration, exercises, both-theme accessibility and narrow layout (7.0s)
+  ✓  156 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-05 publication, hydration, exercises, both-theme accessibility and narrow layout (5.5s)
+  ✓  158 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-07 publication, hydration, exercises, both-theme accessibility and narrow layout (6.5s)
+  ✓  157 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-06 publication, hydration, exercises, both-theme accessibility and narrow layout (8.7s)
+  ✓  159 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-08 publication, hydration, exercises, both-theme accessibility and narrow layout (9.3s)
+  ✓  160 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-09 publication, hydration, exercises, both-theme accessibility and narrow layout (9.0s)
+  ✓  161 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-10 publication, hydration, exercises, both-theme accessibility and narrow layout (9.0s)
+  ✓  162 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-11 publication, hydration, exercises, both-theme accessibility and narrow layout (8.3s)
+  ✓  164 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-13 publication, hydration, exercises, both-theme accessibility and narrow layout (7.2s)
+  ✓  163 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-12 publication, hydration, exercises, both-theme accessibility and narrow layout (9.1s)
+  ✓  165 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-14 publication, hydration, exercises, both-theme accessibility and narrow layout (6.4s)
+  ✓  166 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-15 publication, hydration, exercises, both-theme accessibility and narrow layout (6.9s)
+  ✓  168 [mobile] › tests/e2e/platform/book.spec.ts:64:1 › PWA precaches actual chapters and assets and survives offline reload (451ms)
+  ✓  169 [mobile] › tests/e2e/platform/book.spec.ts:82:1 › strict production server returns real 404s and rejects malformed/traversal paths (8ms)
+  ✓  170 [mobile] › tests/e2e/platform/reference-geometry.spec.ts:3:1 › actual displayed sample centers match equal-scale world projection after input and keyboard changes (425ms)
+  ✓  171 [mobile] › tests/e2e/platform/reference-geometry.spec.ts:30:1 › focusing and leaving an unchanged parameter preserves historical replay (524ms)
+  ✓  167 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-16 publication, hydration, exercises, both-theme accessibility and narrow layout (7.5s)
+
+  171 passed (3.7m)
+Executed Part/project browser coverage: {"p01:desktop":13,"p01:tablet":13,"p01:mobile":13,"p02:desktop":22,"p02:tablet":22,"p02:mobile":22}
+Running: Subpath browser validation
+[WebServer] (node:684707) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 171 tests using 2 workers
+
+(node:684719) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:684720) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓    2 [desktop] › tests/e2e/p01/foundations.spec.ts:86:1 › pipeline keyboard numeric commits retain focus, repeat and tab normally (538ms)
+  ✓    1 [desktop] › tests/e2e/p01/foundations.spec.ts:127:1 › pipeline rejects numeric errors and every historical state drives the controls and rows (802ms)
+  ✓    3 [desktop] › tests/e2e/p01/foundations.spec.ts:148:1 › feature edits retain full precision, reject fractional counts and expose absent targets (431ms)
+  ✓    4 [desktop] › tests/e2e/p01/foundations.spec.ts:165:1 › task decisions use semantic target codes and grade misconceptions (453ms)
+  ✓    5 [desktop] › tests/e2e/p01/foundations.spec.ts:182:1 › group assignment preserves IDs and exposes leakage, seed replay and empty means (740ms)
+  ✓    7 [desktop] › tests/e2e/p01/foundations.spec.ts:227:1 › capacity numeric commits preserve focus and reject bad degree/seed/partition (702ms)
+  ✓    6 [desktop] › tests/e2e/p01/foundations.spec.ts:209:1 › pointer assignment and numeric destination fit the same active capacity rows (1.2s)
+  ✓    9 [desktop] › tests/e2e/p01/foundations.spec.ts:257:1 › empty and deficient training memberships retain observations and display actual reasons (1.1s)
+  ✓    8 [desktop] › tests/e2e/p01/foundations.spec.ts:239:1 › capacity replay drives every frame and edits begin at the displayed memberships (1.5s)
+  ✓   10 [desktop] › tests/e2e/p01/foundations.spec.ts:268:1 › seeded memberships, honest/leaked baseline and validation-only selection remain distinct (885ms)
+  ✓   11 [desktop] › tests/e2e/p01/foundations.spec.ts:285:1 › plot labels, physical geometry, both themes and reduced motion remain readable (561ms)
+  ✓   13 [desktop] › tests/e2e/p01/foundations.spec.ts:340:1 › III-05 reuses the accepted affine update with one required distinct island scope (438ms)
+  ✓   12 [desktop] › tests/e2e/p01/foundations.spec.ts:329:1 › reset cancels a held membership drag before pointer release (686ms)
+  ✓   14 [desktop] › tests/e2e/p02/reference.spec.ts:93:49 › canonical state, projection and touch targets in light (537ms)
+  ✓   15 [desktop] › tests/e2e/p02/reference.spec.ts:93:49 › canonical state, projection and touch targets in dark (545ms)
+  ✓   17 [desktop] › tests/e2e/p02/reference.spec.ts:139:1 › keyboard and pointer edits share actual sample state and announce only at drag end (817ms)
+  ✓   16 [desktop] › tests/e2e/p02/reference.spec.ts:108:1 › numeric edits reject invalid entries, preserve precision, announce results and reset (1.1s)
+  ✓   18 [desktop] › tests/e2e/p02/reference.spec.ts:161:1 › reset during a held drag keeps release and cancel announcements on the authoritative state (998ms)
+  ✓   19 [desktop] › tests/e2e/p02/reference.spec.ts:185:1 › every replay frame drives controls, plot, table, formulas and inspector; editing starts there (1.5s)
+  ✓   20 [desktop] › tests/e2e/p02/reference.spec.ts:215:1 › unsupported updates and replays visibly preserve the valid state (844ms)
+  ✓   21 [desktop] › tests/e2e/p02/reference.spec.ts:227:1 › reduced motion keeps manual replay usable and touch capture local to handles (616ms)
+  ✓   22 [desktop] › tests/e2e/p02/reference.spec.ts:239:1 › prerequisites, real Python and graded misconception feedback are present (456ms)
+  ✓   23 [desktop] › tests/e2e/p02/remainder.spec.ts:62:49 › all nine mechanisms preserve active numbers and readable geometry in light (2.0s)
+  ✓   24 [desktop] › tests/e2e/p02/remainder.spec.ts:62:49 › all nine mechanisms preserve active numbers and readable geometry in dark (1.8s)
+  ✓   25 [desktop] › tests/e2e/p02/remainder.spec.ts:108:1 › closed form, constant variance, exact numeric precision and reset are distinct actions (788ms)
+  ✓   26 [desktop] › tests/e2e/p02/remainder.spec.ts:148:1 › descent uses every selected immutable frame and demonstrates oscillation and divergence (1.4s)
+  ✓   27 [desktop] › tests/e2e/p02/remainder.spec.ts:189:1 › editable multiple design exposes rank, robust solve and minimum norm coefficients (637ms)
+  ✓   28 [desktop] › tests/e2e/p02/remainder.spec.ts:201:1 › polynomial fit preserves held-out rows and shows interpolation is not best evaluation (542ms)
+  ✓   29 [desktop] › tests/e2e/p02/remainder.spec.ts:213:1 › regularization has real L2/L1 penalties, explicit intercept treatment and KKT status (688ms)
+  ✓   31 [desktop] › tests/e2e/p02/remainder.spec.ts:238:1 › threshold ties, keyboard and pointer/touch paths use the same score column (480ms)
+  ✓   30 [desktop] › tests/e2e/p02/remainder.spec.ts:225:1 › logistic gradients, update/replay, extreme BCE and visible rejection follow active coefficients (973ms)
+  ✓   32 [desktop] › tests/e2e/p02/remainder.spec.ts:252:1 › above-all plus score one has consistent active controls and negative predictions (693ms)
+  ✓   33 [desktop] › tests/e2e/p02/remainder.spec.ts:264:1 › metrics use literal denominators, exact tied sweep and pairwise AUC; missing classes stay undefined (732ms)
+  ✓   34 [desktop] › tests/e2e/p02/remainder.spec.ts:279:1 › softmax shift equation and actual logits match while probabilities/loss are invariant (698ms)
+  ✓   36 [desktop] › tests/e2e/platform/book.spec.ts:6:1 › Part-first navigation exposes exactly nine Parts and the correct publication count (595ms)
+  ✓   37 [desktop] › tests/e2e/platform/book.spec.ts:21:1 › theme preference persists, keyboard skip link works and root shell is accessible (1.1s)
+  ✓   35 [desktop] › tests/e2e/p02/remainder.spec.ts:297:1 › all nine chapter exercise feedback hydrates and Python/prerequisite content is real (2.6s)
+  ✓   38 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-01 publication, hydration, exercises, both-theme accessibility and narrow layout (4.1s)
+  ✓   39 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-02 publication, hydration, exercises, both-theme accessibility and narrow layout (4.1s)
+  ✓   40 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-03 publication, hydration, exercises, both-theme accessibility and narrow layout (3.1s)
+  ✓   41 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-04 publication, hydration, exercises, both-theme accessibility and narrow layout (7.1s)
+  ✓   42 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-05 publication, hydration, exercises, both-theme accessibility and narrow layout (5.8s)
+  ✓   44 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-07 publication, hydration, exercises, both-theme accessibility and narrow layout (6.7s)
+  ✓   43 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-06 publication, hydration, exercises, both-theme accessibility and narrow layout (9.1s)
+  ✓   45 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-08 publication, hydration, exercises, both-theme accessibility and narrow layout (9.2s)
+  ✓   46 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-09 publication, hydration, exercises, both-theme accessibility and narrow layout (8.8s)
+  ✓   48 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-11 publication, hydration, exercises, both-theme accessibility and narrow layout (8.3s)
+  ✓   47 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-10 publication, hydration, exercises, both-theme accessibility and narrow layout (9.3s)
+  ✓   50 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-13 publication, hydration, exercises, both-theme accessibility and narrow layout (7.8s)
+  ✓   49 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-12 publication, hydration, exercises, both-theme accessibility and narrow layout (9.4s)
+  ✓   51 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-14 publication, hydration, exercises, both-theme accessibility and narrow layout (6.7s)
+  ✓   52 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-15 publication, hydration, exercises, both-theme accessibility and narrow layout (7.1s)
+  ✓   54 [desktop] › tests/e2e/platform/book.spec.ts:64:1 › PWA precaches actual chapters and assets and survives offline reload (511ms)
+  ✓   55 [desktop] › tests/e2e/platform/book.spec.ts:82:1 › strict production server returns real 404s and rejects malformed/traversal paths (10ms)
+  ✓   56 [desktop] › tests/e2e/platform/reference-geometry.spec.ts:3:1 › actual displayed sample centers match equal-scale world projection after input and keyboard changes (420ms)
+  ✓   57 [desktop] › tests/e2e/platform/reference-geometry.spec.ts:30:1 › focusing and leaving an unchanged parameter preserves historical replay (483ms)
+(node:688531) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   58 [tablet] › tests/e2e/p01/foundations.spec.ts:86:1 › pipeline keyboard numeric commits retain focus, repeat and tab normally (503ms)
+  ✓   59 [tablet] › tests/e2e/p01/foundations.spec.ts:127:1 › pipeline rejects numeric errors and every historical state drives the controls and rows (598ms)
+  ✓   60 [tablet] › tests/e2e/p01/foundations.spec.ts:148:1 › feature edits retain full precision, reject fractional counts and expose absent targets (391ms)
+  ✓   61 [tablet] › tests/e2e/p01/foundations.spec.ts:165:1 › task decisions use semantic target codes and grade misconceptions (399ms)
+  ✓   62 [tablet] › tests/e2e/p01/foundations.spec.ts:182:1 › group assignment preserves IDs and exposes leakage, seed replay and empty means (707ms)
+  ✓   63 [tablet] › tests/e2e/p01/foundations.spec.ts:209:1 › pointer assignment and numeric destination fit the same active capacity rows (1.1s)
+  ✓   64 [tablet] › tests/e2e/p01/foundations.spec.ts:227:1 › capacity numeric commits preserve focus and reject bad degree/seed/partition (624ms)
+  ✓   53 [desktop] › tests/e2e/platform/book.spec.ts:38:3 › III-16 publication, hydration, exercises, both-theme accessibility and narrow layout (8.3s)
+(node:689019) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   65 [tablet] › tests/e2e/p01/foundations.spec.ts:239:1 › capacity replay drives every frame and edits begin at the displayed memberships (1.5s)
+  ✓   66 [tablet] › tests/e2e/p01/foundations.spec.ts:257:1 › empty and deficient training memberships retain observations and display actual reasons (1.3s)
+  ✓   67 [tablet] › tests/e2e/p01/foundations.spec.ts:268:1 › seeded memberships, honest/leaked baseline and validation-only selection remain distinct (915ms)
+  ✓   68 [tablet] › tests/e2e/p01/foundations.spec.ts:285:1 › plot labels, physical geometry, both themes and reduced motion remain readable (585ms)
+  ✓   70 [tablet] › tests/e2e/p01/foundations.spec.ts:340:1 › III-05 reuses the accepted affine update with one required distinct island scope (399ms)
+  ✓   69 [tablet] › tests/e2e/p01/foundations.spec.ts:329:1 › reset cancels a held membership drag before pointer release (729ms)
+  ✓   71 [tablet] › tests/e2e/p02/reference.spec.ts:93:49 › canonical state, projection and touch targets in light (557ms)
+  ✓   72 [tablet] › tests/e2e/p02/reference.spec.ts:93:49 › canonical state, projection and touch targets in dark (530ms)
+  ✓   74 [tablet] › tests/e2e/p02/reference.spec.ts:139:1 › keyboard and pointer edits share actual sample state and announce only at drag end (822ms)
+  ✓   73 [tablet] › tests/e2e/p02/reference.spec.ts:108:1 › numeric edits reject invalid entries, preserve precision, announce results and reset (1.1s)
+  ✓   75 [tablet] › tests/e2e/p02/reference.spec.ts:161:1 › reset during a held drag keeps release and cancel announcements on the authoritative state (956ms)
+  ✓   76 [tablet] › tests/e2e/p02/reference.spec.ts:185:1 › every replay frame drives controls, plot, table, formulas and inspector; editing starts there (1.5s)
+  ✓   77 [tablet] › tests/e2e/p02/reference.spec.ts:215:1 › unsupported updates and replays visibly preserve the valid state (828ms)
+  ✓   78 [tablet] › tests/e2e/p02/reference.spec.ts:227:1 › reduced motion keeps manual replay usable and touch capture local to handles (625ms)
+  ✓   79 [tablet] › tests/e2e/p02/reference.spec.ts:239:1 › prerequisites, real Python and graded misconception feedback are present (487ms)
+  ✓   80 [tablet] › tests/e2e/p02/remainder.spec.ts:62:49 › all nine mechanisms preserve active numbers and readable geometry in light (1.7s)
+  ✓   81 [tablet] › tests/e2e/p02/remainder.spec.ts:62:49 › all nine mechanisms preserve active numbers and readable geometry in dark (1.8s)
+  ✓   82 [tablet] › tests/e2e/p02/remainder.spec.ts:108:1 › closed form, constant variance, exact numeric precision and reset are distinct actions (785ms)
+  ✓   84 [tablet] › tests/e2e/p02/remainder.spec.ts:189:1 › editable multiple design exposes rank, robust solve and minimum norm coefficients (597ms)
+  ✓   83 [tablet] › tests/e2e/p02/remainder.spec.ts:148:1 › descent uses every selected immutable frame and demonstrates oscillation and divergence (1.3s)
+  ✓   85 [tablet] › tests/e2e/p02/remainder.spec.ts:201:1 › polynomial fit preserves held-out rows and shows interpolation is not best evaluation (539ms)
+  ✓   86 [tablet] › tests/e2e/p02/remainder.spec.ts:213:1 › regularization has real L2/L1 penalties, explicit intercept treatment and KKT status (689ms)
+  ✓   88 [tablet] › tests/e2e/p02/remainder.spec.ts:238:1 › threshold ties, keyboard and pointer/touch paths use the same score column (478ms)
+  ✓   87 [tablet] › tests/e2e/p02/remainder.spec.ts:225:1 › logistic gradients, update/replay, extreme BCE and visible rejection follow active coefficients (981ms)
+  ✓   89 [tablet] › tests/e2e/p02/remainder.spec.ts:252:1 › above-all plus score one has consistent active controls and negative predictions (723ms)
+  ✓   90 [tablet] › tests/e2e/p02/remainder.spec.ts:264:1 › metrics use literal denominators, exact tied sweep and pairwise AUC; missing classes stay undefined (713ms)
+  ✓   91 [tablet] › tests/e2e/p02/remainder.spec.ts:279:1 › softmax shift equation and actual logits match while probabilities/loss are invariant (702ms)
+  ✓   93 [tablet] › tests/e2e/platform/book.spec.ts:6:1 › Part-first navigation exposes exactly nine Parts and the correct publication count (604ms)
+  ✓   94 [tablet] › tests/e2e/platform/book.spec.ts:21:1 › theme preference persists, keyboard skip link works and root shell is accessible (1.0s)
+  ✓   92 [tablet] › tests/e2e/p02/remainder.spec.ts:297:1 › all nine chapter exercise feedback hydrates and Python/prerequisite content is real (2.8s)
+  ✓   95 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-01 publication, hydration, exercises, both-theme accessibility and narrow layout (3.9s)
+  ✓   96 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-02 publication, hydration, exercises, both-theme accessibility and narrow layout (4.1s)
+  ✓   97 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-03 publication, hydration, exercises, both-theme accessibility and narrow layout (3.0s)
+  ✓   98 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-04 publication, hydration, exercises, both-theme accessibility and narrow layout (6.9s)
+  ✓   99 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-05 publication, hydration, exercises, both-theme accessibility and narrow layout (5.5s)
+  ✓  101 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-07 publication, hydration, exercises, both-theme accessibility and narrow layout (6.4s)
+  ✓  100 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-06 publication, hydration, exercises, both-theme accessibility and narrow layout (8.8s)
+  ✓  102 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-08 publication, hydration, exercises, both-theme accessibility and narrow layout (8.8s)
+  ✓  103 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-09 publication, hydration, exercises, both-theme accessibility and narrow layout (8.7s)
+  ✓  104 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-10 publication, hydration, exercises, both-theme accessibility and narrow layout (9.1s)
+  ✓  105 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-11 publication, hydration, exercises, both-theme accessibility and narrow layout (8.3s)
+  ✓  107 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-13 publication, hydration, exercises, both-theme accessibility and narrow layout (7.1s)
+  ✓  106 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-12 publication, hydration, exercises, both-theme accessibility and narrow layout (9.1s)
+  ✓  108 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-14 publication, hydration, exercises, both-theme accessibility and narrow layout (6.4s)
+  ✓  109 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-15 publication, hydration, exercises, both-theme accessibility and narrow layout (6.8s)
+  ✓  111 [tablet] › tests/e2e/platform/book.spec.ts:64:1 › PWA precaches actual chapters and assets and survives offline reload (421ms)
+  ✓  112 [tablet] › tests/e2e/platform/book.spec.ts:82:1 › strict production server returns real 404s and rejects malformed/traversal paths (7ms)
+  ✓  113 [tablet] › tests/e2e/platform/reference-geometry.spec.ts:3:1 › actual displayed sample centers match equal-scale world projection after input and keyboard changes (361ms)
+  ✓  114 [tablet] › tests/e2e/platform/reference-geometry.spec.ts:30:1 › focusing and leaving an unchanged parameter preserves historical replay (442ms)
+(node:692014) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  115 [mobile] › tests/e2e/p01/foundations.spec.ts:86:1 › pipeline keyboard numeric commits retain focus, repeat and tab normally (505ms)
+  ✓  116 [mobile] › tests/e2e/p01/foundations.spec.ts:127:1 › pipeline rejects numeric errors and every historical state drives the controls and rows (618ms)
+  ✓  117 [mobile] › tests/e2e/p01/foundations.spec.ts:148:1 › feature edits retain full precision, reject fractional counts and expose absent targets (411ms)
+  ✓  118 [mobile] › tests/e2e/p01/foundations.spec.ts:165:1 › task decisions use semantic target codes and grade misconceptions (417ms)
+  ✓  119 [mobile] › tests/e2e/p01/foundations.spec.ts:182:1 › group assignment preserves IDs and exposes leakage, seed replay and empty means (720ms)
+  ✓  120 [mobile] › tests/e2e/p01/foundations.spec.ts:209:1 › pointer assignment and numeric destination fit the same active capacity rows (1.1s)
+  ✓  121 [mobile] › tests/e2e/p01/foundations.spec.ts:227:1 › capacity numeric commits preserve focus and reject bad degree/seed/partition (678ms)
+  ✓  110 [tablet] › tests/e2e/platform/book.spec.ts:38:3 › III-16 publication, hydration, exercises, both-theme accessibility and narrow layout (8.0s)
+(node:692511) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  122 [mobile] › tests/e2e/p01/foundations.spec.ts:239:1 › capacity replay drives every frame and edits begin at the displayed memberships (1.5s)
+  ✓  123 [mobile] › tests/e2e/p01/foundations.spec.ts:257:1 › empty and deficient training memberships retain observations and display actual reasons (1.3s)
+  ✓  124 [mobile] › tests/e2e/p01/foundations.spec.ts:268:1 › seeded memberships, honest/leaked baseline and validation-only selection remain distinct (927ms)
+  ✓  125 [mobile] › tests/e2e/p01/foundations.spec.ts:285:1 › plot labels, physical geometry, both themes and reduced motion remain readable (589ms)
+  ✓  127 [mobile] › tests/e2e/p01/foundations.spec.ts:340:1 › III-05 reuses the accepted affine update with one required distinct island scope (414ms)
+  ✓  126 [mobile] › tests/e2e/p01/foundations.spec.ts:329:1 › reset cancels a held membership drag before pointer release (723ms)
+  ✓  128 [mobile] › tests/e2e/p02/reference.spec.ts:93:49 › canonical state, projection and touch targets in light (558ms)
+  ✓  129 [mobile] › tests/e2e/p02/reference.spec.ts:93:49 › canonical state, projection and touch targets in dark (575ms)
+  ✓  131 [mobile] › tests/e2e/p02/reference.spec.ts:139:1 › keyboard and pointer edits share actual sample state and announce only at drag end (851ms)
+  ✓  130 [mobile] › tests/e2e/p02/reference.spec.ts:108:1 › numeric edits reject invalid entries, preserve precision, announce results and reset (1.2s)
+  ✓  132 [mobile] › tests/e2e/p02/reference.spec.ts:161:1 › reset during a held drag keeps release and cancel announcements on the authoritative state (1.0s)
+  ✓  133 [mobile] › tests/e2e/p02/reference.spec.ts:185:1 › every replay frame drives controls, plot, table, formulas and inspector; editing starts there (1.5s)
+  ✓  134 [mobile] › tests/e2e/p02/reference.spec.ts:215:1 › unsupported updates and replays visibly preserve the valid state (876ms)
+  ✓  135 [mobile] › tests/e2e/p02/reference.spec.ts:227:1 › reduced motion keeps manual replay usable and touch capture local to handles (596ms)
+  ✓  136 [mobile] › tests/e2e/p02/reference.spec.ts:239:1 › prerequisites, real Python and graded misconception feedback are present (541ms)
+  ✓  137 [mobile] › tests/e2e/p02/remainder.spec.ts:62:49 › all nine mechanisms preserve active numbers and readable geometry in light (1.9s)
+  ✓  138 [mobile] › tests/e2e/p02/remainder.spec.ts:62:49 › all nine mechanisms preserve active numbers and readable geometry in dark (2.0s)
+  ✓  139 [mobile] › tests/e2e/p02/remainder.spec.ts:108:1 › closed form, constant variance, exact numeric precision and reset are distinct actions (783ms)
+  ✓  141 [mobile] › tests/e2e/p02/remainder.spec.ts:189:1 › editable multiple design exposes rank, robust solve and minimum norm coefficients (735ms)
+  ✓  140 [mobile] › tests/e2e/p02/remainder.spec.ts:148:1 › descent uses every selected immutable frame and demonstrates oscillation and divergence (1.4s)
+  ✓  142 [mobile] › tests/e2e/p02/remainder.spec.ts:201:1 › polynomial fit preserves held-out rows and shows interpolation is not best evaluation (588ms)
+  ✓  143 [mobile] › tests/e2e/p02/remainder.spec.ts:213:1 › regularization has real L2/L1 penalties, explicit intercept treatment and KKT status (699ms)
+  ✓  145 [mobile] › tests/e2e/p02/remainder.spec.ts:238:1 › threshold ties, keyboard and pointer/touch paths use the same score column (493ms)
+  ✓  144 [mobile] › tests/e2e/p02/remainder.spec.ts:225:1 › logistic gradients, update/replay, extreme BCE and visible rejection follow active coefficients (1.1s)
+  ✓  146 [mobile] › tests/e2e/p02/remainder.spec.ts:252:1 › above-all plus score one has consistent active controls and negative predictions (717ms)
+  ✓  147 [mobile] › tests/e2e/p02/remainder.spec.ts:264:1 › metrics use literal denominators, exact tied sweep and pairwise AUC; missing classes stay undefined (726ms)
+  ✓  148 [mobile] › tests/e2e/p02/remainder.spec.ts:279:1 › softmax shift equation and actual logits match while probabilities/loss are invariant (734ms)
+  ✓  150 [mobile] › tests/e2e/platform/book.spec.ts:6:1 › Part-first navigation exposes exactly nine Parts and the correct publication count (605ms)
+  ✓  151 [mobile] › tests/e2e/platform/book.spec.ts:21:1 › theme preference persists, keyboard skip link works and root shell is accessible (1.0s)
+  ✓  149 [mobile] › tests/e2e/p02/remainder.spec.ts:297:1 › all nine chapter exercise feedback hydrates and Python/prerequisite content is real (2.7s)
+  ✓  152 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-01 publication, hydration, exercises, both-theme accessibility and narrow layout (4.0s)
+  ✓  153 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-02 publication, hydration, exercises, both-theme accessibility and narrow layout (4.0s)
+  ✓  154 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-03 publication, hydration, exercises, both-theme accessibility and narrow layout (3.0s)
+  ✓  155 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-04 publication, hydration, exercises, both-theme accessibility and narrow layout (7.0s)
+  ✓  156 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-05 publication, hydration, exercises, both-theme accessibility and narrow layout (5.5s)
+  ✓  158 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-07 publication, hydration, exercises, both-theme accessibility and narrow layout (6.5s)
+  ✓  157 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-06 publication, hydration, exercises, both-theme accessibility and narrow layout (8.6s)
+  ✓  159 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-08 publication, hydration, exercises, both-theme accessibility and narrow layout (9.0s)
+  ✓  160 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-09 publication, hydration, exercises, both-theme accessibility and narrow layout (8.6s)
+  ✓  161 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-10 publication, hydration, exercises, both-theme accessibility and narrow layout (9.2s)
+  ✓  162 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-11 publication, hydration, exercises, both-theme accessibility and narrow layout (8.4s)
+  ✓  164 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-13 publication, hydration, exercises, both-theme accessibility and narrow layout (7.2s)
+  ✓  163 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-12 publication, hydration, exercises, both-theme accessibility and narrow layout (9.1s)
+  ✓  165 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-14 publication, hydration, exercises, both-theme accessibility and narrow layout (6.4s)
+  ✓  166 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-15 publication, hydration, exercises, both-theme accessibility and narrow layout (7.0s)
+  ✓  168 [mobile] › tests/e2e/platform/book.spec.ts:64:1 › PWA precaches actual chapters and assets and survives offline reload (441ms)
+  ✓  169 [mobile] › tests/e2e/platform/book.spec.ts:82:1 › strict production server returns real 404s and rejects malformed/traversal paths (8ms)
+  ✓  170 [mobile] › tests/e2e/platform/reference-geometry.spec.ts:3:1 › actual displayed sample centers match equal-scale world projection after input and keyboard changes (418ms)
+  ✓  171 [mobile] › tests/e2e/platform/reference-geometry.spec.ts:30:1 › focusing and leaving an unchanged parameter preserves historical replay (519ms)
+  ✓  167 [mobile] › tests/e2e/platform/book.spec.ts:38:3 › III-16 publication, hydration, exercises, both-theme accessibility and narrow layout (7.3s)
+
+  171 passed (3.7m)
+Executed Part/project browser coverage: {"p01:desktop":13,"p01:tablet":13,"p01:mobile":13,"p02:desktop":22,"p02:tablet":22,"p02:mobile":22}
+Passed 9 gates. Evidence: validation-results/milestone-2026-10-13T17-20-37-982Z/manifest.json

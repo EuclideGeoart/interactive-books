@@ -1,0 +1,213 @@
+{
+  "sha": "0eec563954f6d4d8d09f01c6908cb2194f2927b7",
+  "validationSignature": "7be52da2447b4fef6ee52b4a1353f0a7c2b65ac88e7d5f144d721afbb0840236",
+  "dpr": 1,
+  "images": [
+    {
+      "file": "home-desktop-light.png",
+      "route": "/",
+      "view": "desktop",
+      "theme": "light",
+      "layout": {
+        "innerWidth": 1440,
+        "scrollWidth": 1440
+      },
+      "sha256": "f296d0c688d51d9ab23d881db46e6e7ad51ad4ac8ef28a8bf75132b858b6ff76"
+    },
+    {
+      "file": "part-i-desktop-light.png",
+      "route": "/parts/ml-foundations/",
+      "view": "desktop",
+      "theme": "light",
+      "layout": {
+        "innerWidth": 1440,
+        "scrollWidth": 1440
+      },
+      "sha256": "ed8f735343cebc3f0e25a0b8b956d9d8288e267771dc7394fee0e3d062d5c032"
+    },
+    {
+      "file": "part-ii-desktop-light.png",
+      "route": "/parts/regression-classification/",
+      "view": "desktop",
+      "theme": "light",
+      "layout": {
+        "innerWidth": 1440,
+        "scrollWidth": 1440
+      },
+      "sha256": "b74985f2eb6a7709dbb5abc8ac9c30e8cf6e378427a88d5e710e5a9774628a16"
+    },
+    {
+      "file": "home-desktop-dark.png",
+      "route": "/",
+      "view": "desktop",
+      "theme": "dark",
+      "layout": {
+        "innerWidth": 1440,
+        "scrollWidth": 1440
+      },
+      "sha256": "b29954214c4379c9d10e12140af40c3c00cd3c3010c5b540852775aaa5fa7640"
+    },
+    {
+      "file": "part-i-desktop-dark.png",
+      "route": "/parts/ml-foundations/",
+      "view": "desktop",
+      "theme": "dark",
+      "layout": {
+        "innerWidth": 1440,
+        "scrollWidth": 1440
+      },
+      "sha256": "e482b0d5f642bdd2400c3b98feffceb6ccc4bafb5c45e74c721f8faf96cfdaa5"
+    },
+    {
+      "file": "part-ii-desktop-dark.png",
+      "route": "/parts/regression-classification/",
+      "view": "desktop",
+      "theme": "dark",
+      "layout": {
+        "innerWidth": 1440,
+        "scrollWidth": 1440
+      },
+      "sha256": "cb95f2b2b75f403883bce1fe30dee213d5e51595c01372356f2323e656a76c17"
+    },
+    {
+      "file": "home-tablet-light.png",
+      "route": "/",
+      "view": "tablet",
+      "theme": "light",
+      "layout": {
+        "innerWidth": 820,
+        "scrollWidth": 820
+      },
+      "sha256": "4b4fa617a9006fa67d8571cbf0655cc3c4fcc702199e2c7857fc34e5cff1971b"
+    },
+    {
+      "file": "part-i-tablet-light.png",
+      "route": "/parts/ml-foundations/",
+      "view": "tablet",
+      "theme": "light",
+      "layout": {
+        "innerWidth": 820,
+        "scrollWidth": 820
+      },
+      "sha256": "ee7e445b3e5b918136de916289cf4e6275fcac20a993047a8ea589704987c914"
+    },
+    {
+      "file": "part-ii-tablet-light.png",
+      "route": "/parts/regression-classification/",
+      "view": "tablet",
+      "theme": "light",
+      "layout": {
+        "innerWidth": 820,
+        "scrollWidth": 820
+      },
+      "sha256": "99dce96f2275ec610f27ca9300fd62fe026a594801d6cdd03ff6568a1bce3836"
+    },
+    {
+      "file": "home-tablet-dark.png",
+      "route": "/",
+      "view": "tablet",
+      "theme": "dark",
+      "layout": {
+        "innerWidth": 820,
+        "scrollWidth": 820
+      },
+      "sha256": "71891e58e68e3beb97f1e32f8dc5e342a42571149dc49fd3b870bd1d39bb9225"
+    },
+    {
+      "file": "part-i-tablet-dark.png",
+      "route": "/parts/ml-foundations/",
+      "view": "tablet",
+      "theme": "dark",
+      "layout": {
+        "innerWidth": 820,
+        "scrollWidth": 820
+      },
+      "sha256": "75f105c57e91bc8887dcd34d8870787d9353203d978edb5b9b4493abf7f1e3d6"
+    },
+    {
+      "file": "part-ii-tablet-dark.png",
+      "route": "/parts/regression-classification/",
+      "view": "tablet",
+      "theme": "dark",
+      "layout": {
+        "innerWidth": 820,
+        "scrollWidth": 820
+      },
+      "sha256": "846fc70b2dc3a6281028bc2804a7cbb19a6a05ebefeab07cf1a03c81d1c8a333"
+    },
+    {
+      "file": "home-mobile-light.png",
+      "route": "/",
+      "view": "mobile",
+      "theme": "light",
+      "layout": {
+        "innerWidth": 390,
+        "scrollWidth": 390
+      },
+      "sha256": "38103f123c1c6acb9ba0dc889a8eafd6bd426d6fcf5f167fcce40e6f040ef177"
+    },
+    {
+      "file": "part-i-mobile-light.png",
+      "route": "/parts/ml-foundations/",
+      "view": "mobile",
+      "theme": "light",
+      "layout": {
+        "innerWidth": 390,
+        "scrollWidth": 390
+      },
+      "sha256": "93b9f77d675f53051823553bcc097676a58f832e6c99244bda856c92e86ce156"
+    },
+    {
+      "file": "part-ii-mobile-light.png",
+      "route": "/parts/regression-classification/",
+      "view": "mobile",
+      "theme": "light",
+      "layout": {
+        "innerWidth": 390,
+        "scrollWidth": 390
+      },
+      "sha256": "7f6b13b6637666e1bfb69c3187f9252eaeb6f6bc925ba8315dbc0fc884fec394"
+    },
+    {
+      "file": "home-mobile-dark.png",
+      "route": "/",
+      "view": "mobile",
+      "theme": "dark",
+      "layout": {
+        "innerWidth": 390,
+        "scrollWidth": 390
+      },
+      "sha256": "e2fab91586a0fba27b024f8753f77730f227689bb940b03110887206cfeb0f71"
+    },
+    {
+      "file": "part-i-mobile-dark.png",
+      "route": "/parts/ml-foundations/",
+      "view": "mobile",
+      "theme": "dark",
+      "layout": {
+        "innerWidth": 390,
+        "scrollWidth": 390
+      },
+      "sha256": "6602b703a197359d12158a6dea3794f2e92c6d0ba949310b2edd0a5ccde094f6"
+    },
+    {
+      "file": "part-ii-mobile-dark.png",
+      "route": "/parts/regression-classification/",
+      "view": "mobile",
+      "theme": "dark",
+      "layout": {
+        "innerWidth": 390,
+        "scrollWidth": 390
+      },
+      "sha256": "b98ca135d6dea942d12194d71e3c9835f695e8cb38f509c306251ce930a2602b"
+    }
+  ],
+  "manuallyInspected": [
+    "home-desktop-light.png",
+    "home-tablet-dark.png",
+    "home-mobile-light.png",
+    "part-i-mobile-dark.png",
+    "part-ii-desktop-dark.png",
+    "part-ii-tablet-light.png"
+  ]
+}

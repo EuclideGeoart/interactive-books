@@ -1,0 +1,122 @@
+{
+  "mode": "milestone",
+  "part": "all",
+  "sourceSignature": "7be52da2447b4fef6ee52b4a1353f0a7c2b65ac88e7d5f144d721afbb0840236",
+  "chapters": [
+    "III-01",
+    "III-02",
+    "III-03",
+    "III-04",
+    "III-05",
+    "III-06",
+    "III-07",
+    "III-08",
+    "III-09",
+    "III-10",
+    "III-11",
+    "III-12",
+    "III-13",
+    "III-14",
+    "III-15",
+    "III-16"
+  ],
+  "started": "2026-10-13T17:20:37.982Z",
+  "finished": "2026-10-13T17:28:28.217Z",
+  "complete": true,
+  "results": [
+    {
+      "name": "Type/content check",
+      "argv": [
+        "node_modules/astro/astro.js",
+        "check"
+      ],
+      "exitCode": 0,
+      "seconds": 4.69,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Unit and parity tests",
+      "argv": [
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--maxWorkers=2"
+      ],
+      "exitCode": 0,
+      "seconds": 1.836,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Independent oracles and freshness",
+      "argv": [
+        "scripts/run-oracle.mjs"
+      ],
+      "exitCode": 0,
+      "seconds": 2.953,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Root production and offline bundle",
+      "argv": [
+        "scripts/build.mjs",
+        "/",
+        "dist"
+      ],
+      "exitCode": 0,
+      "seconds": 5.103,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Subpath production",
+      "argv": [
+        "scripts/build.mjs",
+        "/machine-learning/",
+        "dist-subpath"
+      ],
+      "exitCode": 0,
+      "seconds": 5.089,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Root production audit",
+      "argv": [
+        "scripts/check-dist.mjs",
+        "dist",
+        "/"
+      ],
+      "exitCode": 0,
+      "seconds": 0.126,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Subpath production audit",
+      "argv": [
+        "scripts/check-dist.mjs",
+        "dist-subpath",
+        "/machine-learning/"
+      ],
+      "exitCode": 0,
+      "seconds": 0.134,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Root browser validation",
+      "argv": [
+        "scripts/run-browser.mjs",
+        "playwright.config.ts"
+      ],
+      "exitCode": 0,
+      "seconds": 224.975,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "Subpath browser validation",
+      "argv": [
+        "scripts/run-browser.mjs",
+        "playwright.subpath.config.ts"
+      ],
+      "exitCode": 0,
+      "seconds": 225.327,
+      "sourceUnchanged": true
+    }
+  ]
+}
