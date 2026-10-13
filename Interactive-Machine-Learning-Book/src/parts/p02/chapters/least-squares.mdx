@@ -70,6 +70,8 @@ If every input equals $c$, only the combination $wc+b$ is constrained. Its best 
 
 For two observations $(2,1)$ and $(2,3)$, both $(w,b)=(0,2)$ and $(1,0)$ predict $2$ and have MSE $1$. A single observation has the same ambiguity. Do not divide $0/0$, invent an identifiable slope, or reject an otherwise meaningful prediction problem.
 
+When every input equals $x_0$, the plot draws the chosen predictor over $[x_0-1,x_0+1]$ so the line remains visible beyond the overlapping prediction markers. These are points on the displayed function, not additional observations or evidence identifying a slope. With a nonzero observed span, the drawing extends $0.15$ beyond each observed endpoint.
+
 ## Explore the assumptions
 
 Fit, then edit one target without fitting again. The current line and current MSE reflect your displayed coefficients; “optimal data MSE” belongs to the newly computed optimum. Press fit to adopt it. Editing the data and optimizing the coefficients are different actions.

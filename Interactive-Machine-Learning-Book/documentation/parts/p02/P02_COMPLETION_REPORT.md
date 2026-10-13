@@ -1,6 +1,6 @@
 # P02 III-08–16 source handoff
 
-2026-10-13 · Agent 2 · status **CORRECTION REQUIRED pending post-fix runtime and visual verification**. Publication acceptance and freeze remain the independent integrator's decision. All nine assigned chapters are authored and committed. The integrator focused rerun at `2cff99bd` passed all nine gates, but independent DPR1 captures exposed an overflowing III-10 fieldset and overlapping III-09 point labels. Part-owned layout, marker/legend and physical-viewport test corrections are committed for another independent rerun; no post-fix browser or visual pass is claimed.
+2026-10-13 · Agent 2 · status **CORRECTION REQUIRED pending post-fix runtime and visual verification**. Publication acceptance and freeze remain the independent integrator's decision. All nine assigned chapters are authored and committed. Integrator focused runs through `5f76af49` passed all nine gates; subsequent captures exposed one remaining III-08 constant-input predictor segment hidden beneath its prediction glyph. The Part-owned degenerate drawing-interval correction is committed for another independent rerun; no runtime or visual pass is claimed for this latest correction.
 
 ## Integrator focused result and collection correction
 
@@ -40,6 +40,20 @@ Three supplied PNGs were inspected (mobile failure, desktop-dark multiple regres
 - `artifacts/integrator-visual-p02-2cff99bd/overflow-failure.png` — `615ddf904bebe1945d6aadd7fc75ac9f1a810d56ff730b9a62bf62ecba011340`
 - `artifacts/integrator-visual-p02-2cff99bd/multiple-linear-regression-desktop-dark-canonical.png` — `41e50228fb4241f667c310464c1f8a36a320b46fdee4600de0996e6fa7340e2b`
 - `artifacts/integrator-visual-p02-2cff99bd/regression-gradient-descent-desktop-light-replay-frame-1.png` — `6b4d74c472ab2cfca1cf23701e975785e5cc5cebfe2ba3047e976874b512e88c`
+
+## Constant-input predictor visibility correction after 5f76af49
+
+The inspected integrator manifest `validation-results/focused-2026-10-13T16-16-54-956Z/manifest.json` records all nine gates passing at `5f76af49`, with unchanged input signature `fa88723569135da66c407f044ea7655a0b8b2179b684e15599e8c90ca7f63266`. Its raw log records 56 type/content files with zero errors, 129 units, and 114 root + 114 subpath browsers. This is evidence for the preceding source, not for the current interval change.
+
+The supplied `least-squares-desktop-light-constant-x-fit.png` was inspected. With all inputs exactly 2 and the explicit representative fit w=0, b=0.8, the old drawing interval was only [1.85,2.15]. Its roughly 14-pixel horizontal segment was completely hidden by the prediction diamond. The fitted function and numeric table were correct; the visible predictor was missing. The owner separately reported the other inspected polynomial, Lasso, multivariate mobile, new legend and shifted-softmax scenes good; those reports are not claimed as this agent's manual inspection.
+
+The correction changes only the drawing margin in `src/parts/p02/fit-lesson.ts`: a degenerate observed x-span uses [x₀−1,x₀+1]; a nondegenerate span retains its previous 0.15 margin. The same coefficient-based predictor evaluates every curve sample. No observation is added or moved, and no kernel, canonical source, oracle or fixture changes. III-08 briefly explains the local drawing interval and that it does not identify a unique slope or introduce data.
+
+A single geometry regression decodes all 65 actual path vertices, checks endpoint inputs 1 and 3 and f(x)=0.8 at every vertex, requires the line to extend beyond the prediction glyph at small and large rendered widths, and verifies unchanged observations. The existing browser case additionally reads the real SVG path's length, bounding box and endpoints, its visible stroke/style and CSS length relative to the actual prediction glyph. Native path API comparisons allow 0.0005 viewBox units for float32 rounding, far below a pixel here; numerical expectations do not rely solely on data attributes.
+
+Actual light check: `node node_modules/vitest/vitest.mjs run tests/unit/p02/remainder-lessons.test.ts --maxWorkers=1` passed **26 tests in one file**. The authored painted-path browser check and new capture remain pending the integrator allocation. No author build/browser/capture/heavy job ran.
+
+Failure PNG preserved unchanged: `artifacts/integrator-visual-p02-5f76af49/least-squares-desktop-light-constant-x-fit.png` — SHA256 `b66176b2e70d72d9bdbeb077e4364dad3dbcb08dba5f64341c518a7e25ec6dcc`. No baseline or failure evidence was replaced. The correction commit SHA is returned in the accompanying handoff; source then remains held for the owner rerun.
 
 ## Identity and ownership
 
@@ -113,9 +127,9 @@ The integration owner also reported 19 isolated mathematical challenges passing.
 
 `tests/e2e/p02/remainder.spec.ts` authors **13 tests**, selected by the existing three projects (39 cases per mount). The same relative routes work for root and `/machine-learning/`. Cases cover all nine current numerical mechanisms in both themes, physical equal-scale projections/readable plot text, exact inputs and approximate outputs, invalid entry/reset, editable rank-aware design, polynomial held-out integrity, L1/L2/intercept/objective numbers, selected-frame replay edits, real logistic/softmax gradients, extreme logits, tie/undefined ROC, numeric/range keyboard plus native pointer/touch operation, sentinel score-1 consistency and shifted softmax equation/logit/invariance consistency.
 
-The shared publication suite already discovers all new routes and adds hydration, five-exercise, imported-code, ID, both-theme axe and overflow checks. The existing viewports remain 1440×900, 820×1180 and 390×844. New plot text sizes derive from measured width for at least 14 rendered pixels. The strengthened physical-viewport and legend/glyph checks are authored but have not been executed in a browser on this corrected source.
+The shared publication suite already discovers all new routes and adds hydration, five-exercise, imported-code, ID, both-theme axe and overflow checks. The existing viewports remain 1440×900, 820×1180 and 390×844. New plot text sizes derive from measured width for at least 14 rendered pixels. The strengthened physical-viewport and legend/glyph checks passed in the integrator run at `5f76af49`; the new painted constant-input path check has not run in a browser on this latest corrected source.
 
-**Pending after the visual corrections:** integrator focused rerun with the strengthened viewport/glyph checks, new DPR1 rendered captures/manual visual review and independent acceptance. All nine gates passed at the earlier `2cff99bd` source; independent captures then exposed the defects recorded above. Three supplied pre-fix PNGs and the overflow JSON were inspected/hashed; no new capture or baseline was created or updated by this agent. All 13 frozen source hashes remain verified. Native Windows, physical touch hardware and human screen-reader checks remain unperformed.
+**Pending after the constant-input drawing correction:** integrator focused rerun including the actual painted-path assertion, new DPR1 constant-input captures/manual visual review and independent acceptance. All nine gates passed through `5f76af49`; its subsequent capture exposed the short predictor segment recorded above. This agent inspected/hashed four supplied PNGs in total plus the earlier overflow JSON, preserving all evidence, and created or updated no capture/baseline. All 13 frozen source hashes remain verified. Native Windows, physical touch hardware and human screen-reader checks remain unperformed.
 
 The integrator can allocate the existing focused runner, from the book root:
 
@@ -129,7 +143,7 @@ It keeps global type/production/platform checks while selecting p02 numerical an
 
 Interactive fixtures are deliberately small: scalar observations, a fixed four-row/two-feature multivariate editor, polynomial degrees 1–5, scalar-feature regularization, binary toy batches and a three-row/three-class softmax editor. The pure kernels validate broader documented small-matrix shapes. This is not an arbitrary-size fitting service. SVD rank decisions near the cutoff and slow L1 convergence are explicit limitations; there are no ill-conditioned-data guarantees beyond supported checks.
 
-No essential shared API change is requested, so no shared implementation or `INTEGRATION_REQUESTS.md` was needed. Both manifests only append p02 chapters/oracles and preserve III-07. The most material remaining risk is post-fix browser/render validation of physical bounds and parameter-marker legibility; the integrator owns the focused rerun and acceptance.
+No essential shared API change is requested, so no shared implementation or `INTEGRATION_REQUESTS.md` was needed. Both manifests only append p02 chapters/oracles and preserve III-07. The most material remaining risk is post-fix browser/render validation of the degenerate-interval predictor visibility; the integrator owns the focused rerun and acceptance.
 
 ## Exact changed paths from synchronized base
 

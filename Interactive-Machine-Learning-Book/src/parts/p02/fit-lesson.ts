@@ -40,8 +40,9 @@ export function deriveFitLesson(state: FitState, mode: FitMode, renderedWidth = 
   });
   const held = poly ? poly.held.predictions.map((prediction, i) => ({ id: `h${i + 1}`, x: [-.8, -.4, 0, .4, .8][i]!, y: [.64, .16, 0, .16, .64][i]!, prediction, held: true })) : [];
   const xMin = Math.min(...rows.map(r => r.x)), xMax = Math.max(...rows.map(r => r.x));
+  const curveMargin = xMin === xMax ? 1 : .15;
   const curve = multi ? [] : Array.from({ length: 65 }, (_, i) => {
-    const x = xMin - .15 + (xMax - xMin + .3) * i / 64;
+    const x = xMin - curveMargin + (xMax - xMin + 2 * curveMargin) * i / 64;
     const y = poly ? dot(polynomialDesign([x], state.degree)[0]!, coefficients) : finite(coefficients[0]! + coefficients[1]! * x, 'Curve prediction');
     return { x, y };
   });

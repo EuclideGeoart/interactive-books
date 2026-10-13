@@ -112,6 +112,27 @@ test('closed form, constant variance, exact numeric precision and reset are dist
   await expect(root.locator('[data-optimum]')).toContainText('Zero x-variance');
   await root.getByRole('button', { name: 'Apply closed-form fit' }).click();
   expect((await fitParity(root)).coefficients).toEqual([.8, 0]);
+  const curve = root.locator('[data-fit-curve]');
+  const painted = await curve.evaluate(element => {
+    const path = element as SVGPathElement, svg = path.ownerSVGElement!, box = svg.getBoundingClientRect();
+    const length = path.getTotalLength(), start = path.getPointAtLength(0), end = path.getPointAtLength(length), style = getComputedStyle(path);
+    const pixelsPerUnit = box.width / svg.viewBox.baseVal.width;
+    return { length, start: { x: start.x, y: start.y }, end: { x: end.x, y: end.y }, height: path.getBBox().height,
+      cssLength: length * pixelsPerUnit, startScreenX: box.x + start.x * pixelsPerUnit, endScreenX: box.x + end.x * pixelsPerUnit,
+      stroke: style.stroke, strokeWidth: parseFloat(style.strokeWidth), opacity: Number(style.opacity), strokeOpacity: Number(style.strokeOpacity), visibility: style.visibility, display: style.display };
+  });
+  const expectedScale = 210 / (4 * 1.15);
+  // Native SVG path APIs can round to float32; 0.0005 viewBox units is well below a CSS pixel here.
+  expect(painted.length).toBeCloseTo(2 * expectedScale, 3);
+  expect(painted.start.x).toBeCloseTo(280 + expectedScale, 3); expect(painted.end.x).toBeCloseTo(280 + 3 * expectedScale, 3);
+  expect(painted.start.y).toBeCloseTo(280 - .8 * expectedScale, 3); expect(painted.end.y).toBeCloseTo(painted.start.y, 3);
+  expect(painted.height).toBeLessThan(.001);
+  expect(painted.stroke).not.toBe('none'); expect(painted.strokeWidth).toBeGreaterThan(0);
+  expect(painted.opacity).toBeGreaterThan(0); expect(painted.strokeOpacity).toBeGreaterThan(0);
+  expect(painted.visibility).toBe('visible'); expect(painted.display).not.toBe('none');
+  const glyph = (await root.locator('[data-fit-point]').first().locator('.p02-prediction').boundingBox())!;
+  expect(painted.cssLength).toBeGreaterThan(3 * glyph.width);
+  expect(painted.startScreenX).toBeLessThan(glyph.x); expect(painted.endScreenX).toBeGreaterThan(glyph.x + glyph.width);
   await root.getByRole('button', { name: 'Reset experiment' }).click();
   await commit(root, 'Observation x', '0.123456789123');
   expect(Number(await field(root, 'Observation x').inputValue())).toBe(.123456789123);

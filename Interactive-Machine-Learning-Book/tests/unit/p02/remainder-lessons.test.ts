@@ -93,6 +93,27 @@ describe('one authoritative state and numerical projections', () => {
     expect(before.optimum!.unique).toBe(false); expect(before.formulas[2]!.tex).toContain('S_{xx}=0');
     expect(deriveFitLesson(fitStep(constant, 'least-squares'), 'least-squares').coefficients).toEqual([.8, 0]);
   });
+  it('draws the constant-x representative beyond its prediction glyph while preserving every observation', () => {
+    const s = initialFit('least-squares'), constant = { ...s, samples: s.samples.map(r => ({ ...r, x: 2 })) };
+    const fitted = fitStep(constant, 'least-squares');
+    for (const width of [280, 560]) {
+      const a = deriveFitLesson(fitted, 'least-squares', width);
+      const vertices = a.plot.path.match(/[ML][^ML]+/g)!.map(segment => segment.slice(1).split(',').map(Number));
+      expect(vertices).toHaveLength(65);
+      expect((vertices[0]![0]! - 280) / a.plot.scale).toBeCloseTo(1, 12);
+      expect((vertices.at(-1)![0]! - 280) / a.plot.scale).toBeCloseTo(3, 12);
+      for (const [cx, cy] of vertices) {
+        const x = (cx! - 280) / a.plot.scale, y = (280 - cy!) / a.plot.scale;
+        expect(y).toBeCloseTo(fitted.weight * x + fitted.bias, 12);
+        expect(y).toBeCloseTo(.8, 12);
+      }
+      const center = a.plot.points[0]!.cx, start = vertices[0]![0]!, end = vertices.at(-1)![0]!;
+      expect(start).toBeLessThan(center - 7); expect(end).toBeGreaterThan(center + 7);
+      expect((end - start) * width / 560).toBeGreaterThan(3 * 14 * width / 560);
+      expect(a.rows.map(r => ({ id: r.id, x: r.x, y: r.y }))).toEqual(constant.samples);
+      expect(a.plot.points).toHaveLength(constant.samples.length);
+    }
+  });
   it('detached traces support selected-frame edits without history mutation', () => {
     const original = initialClassification(), after = classificationStep(original, 'logistic');
     const frames = traceFrom([{ state: original }, { state: after }]);
