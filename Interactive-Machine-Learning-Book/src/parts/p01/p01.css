@@ -37,6 +37,7 @@
 @media(max-width:600px) { [data-p01] .p01-metrics { grid-template-columns:1fr; } }
 @media(prefers-reduced-motion:reduce) { [data-p01] * { animation:none!important; transition:none!important; } }
 
-[data-p01] .inspector dd { white-space:normal; overflow-wrap:anywhere; text-align:right; max-width:65%; }
+[data-p01] .inspector dt { min-width:0; }
+[data-p01] .inspector dd { flex-shrink:0; white-space:normal; overflow-wrap:anywhere; text-align:right; max-width:65%; }
 
 @media(max-width:600px) { [data-p01] .p01-partitions { gap:.35rem; } [data-p01] .p01-partition { padding:.4rem; } [data-p01] .p01-partition h3 { overflow-wrap:anywhere; } [data-p01] .p01-membership { gap:.25rem; } [data-p01] .p01-membership label { flex-basis:100%; } [data-p01] .p01-membership select { min-width:0; font-size:.72rem; } }

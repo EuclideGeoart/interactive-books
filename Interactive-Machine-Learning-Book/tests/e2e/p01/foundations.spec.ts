@@ -106,6 +106,22 @@ test('pipeline keyboard numeric commits retain focus, repeat and tab normally',a
   expect(Number(await root.locator('[data-stored-batch-mse]').getAttribute('data-stored-batch-mse'))).toBeCloseTo(batchMSE,11);
   await expect(root.locator('[data-value=mse]')).toHaveText('Undefined');
   await expect(root.getByRole('button',{name:'Apply one update'})).toBeDisabled();
+  if(page.viewportSize()!.width===390){
+    const mode=root.locator('.inspector > div').filter({hasText:/^Current mode/}).locator('dd');
+    await expect(mode).toHaveText('inference');
+    for(const theme of ['light','dark']){
+      await page.evaluate(t=>{document.documentElement.dataset.theme=t;},theme);
+      const geometry=await mode.evaluate(node=>{
+        const text=document.createRange();text.selectNodeContents(node);
+        return {lines:text.getClientRects().length,textWidth:text.getBoundingClientRect().width,valueWidth:node.getBoundingClientRect().width};
+      });
+      expect(geometry.lines).toBe(1);
+      expect(geometry.textWidth).toBeLessThanOrEqual(geometry.valueWidth+.02);
+      const dimensions=await page.evaluate(()=>({scrollWidth:document.documentElement.scrollWidth,innerWidth}));
+      expect(dimensions.scrollWidth).toBeLessThanOrEqual(page.viewportSize()!.width);
+      expect(dimensions.innerWidth).toBeLessThanOrEqual(page.viewportSize()!.width);
+    }
+  }
 });
 
 test('pipeline rejects numeric errors and every historical state drives the controls and rows',async({page})=>{

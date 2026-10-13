@@ -51,7 +51,7 @@ function Experiment() {
           {point.glyph?<path class="p01-observation" data-point-id={point.id} data-cx={point.cx} data-cy={point.cy} d={point.glyph}/>:<circle class="p01-observation" data-point-id={point.id} cx={point.cx} cy={point.cy} r={point.r}/>}</g>)}
       </g>
     </svg>
-    <p class="p01-help">■ Train · ● Validation · ▲ Test (after reveal). Solid fit · dashed known signal · dotted baseline. {a.plot.projection}</p>
+    <p class="p01-help">■ Train · ● Validation · ▲ Test (after reveal). Solid fit · dashed known signal · dotted baseline. The axes use different scales. The plot clips y outside the fixed range [−3,4]; the table retains every value.</p>
     <Formula {...a.formula}/><Inspector rows={a.inspector}/>
     <p data-coefficient-text>Coefficients θ₀…θ{String(s.degree)}: {a.coefficients?a.coefficients.map(approx).join(', '):'Undefined; see fit reason.'}. Training mean {approx(a.baselineMean)}.</p>
     <div class="table-scroll" tabIndex={0} role="region" aria-label="Capacity predictions, residuals and baselines, scrollable"><table><caption>Every fit uses only current training IDs. Observations retain their original identities.</caption>

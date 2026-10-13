@@ -1,6 +1,6 @@
 # Book III Part I source handoff
 
-B3-P01: III-01–III-06. Recommended classification: **CORRECTION REQUIRED pending integrator rerun**, following the failed type/content gate at the initial handoff; the scoped source corrections below pass focused units but have not received a heavy rerun. Acceptance belongs to the integration owner.
+B3-P01: III-01–III-06. Source complete; the final scoped visual correction below awaits an allocated browser rerun. The integration owner reports all nine gates passed at 5ae496d, with matching captures at delivery afcfb44. Acceptance belongs to the integration owner.
 
 Branch feature/book-iii-part-i-foundations. Synchronized base8157b7af7e209d94fffdf79001134b6e18744d34 (book-iii-wave-a-trace-keys-20261013). The handoff commit contains this report; its exact SHA is returned in the handoff chat. Initial worktree/common-dir/lock were verified, and only owned paths are staged and committed. The frozen foundation, other Parts, shared code/config and protected Books are unchanged.
 
@@ -33,7 +33,7 @@ Bias/variance is explained with its stochastic assumptions and qualitative seede
 - .venv/bin/python -B oracle/p01/capacity_counterexample.py — independent seed0 quadratic vs degree8 overfitting check.
 - .venv/bin/python -B oracle/p01/generate_fixtures.py — small owned fixture generation; same command with --check verifies freshness.
 
-Final focused results (2026-10-13, provisioned Linux overlay): **34 TypeScript tests in two files passed** (21 kernel/parity, 13 lesson/source/render; reported duration1.12s); **14 Python unittest tests passed** (3.873s); **9 independent arithmetic literal assertions passed**; **4 seed0 overfitting counterexample assertions passed**; **golden --check passed**. The final TypeScript run followed the requested inference-scope/exercise wording correction; canonical Python and goldens were unchanged by that UI-only correction. All five direct commands exited0. No recurring tests assert whole-repository diffs or untracked paths; ownership is checked once for this source handoff. Earlier failures were an incorrect one-row test expectation (1.25→1.5), a test that treated the plan JSON array as an object, an unnecessarily long feedback-length expectation, and missing parameter details in spoken pipeline output. These were corrected. The user-supplied near-rank mismatch was corrected by one shared mathematical policy in both owned runtimes; it is not hidden with tolerance.
+Initial focused results (2026-10-13, provisioned Linux overlay): **34 TypeScript tests in two files passed** (21 kernel/parity, 13 lesson/source/render; reported duration1.12s); **14 Python unittest tests passed** (3.873s); **9 independent arithmetic literal assertions passed**; **4 seed0 overfitting counterexample assertions passed**; **golden --check passed**. The final TypeScript run followed the requested inference-scope/exercise wording correction; canonical Python and goldens were unchanged by that UI-only correction. All five direct commands exited0. No recurring tests assert whole-repository diffs or untracked paths; ownership is checked once for this source handoff. Earlier failures were an incorrect one-row test expectation (1.25→1.5), a test that treated the plan JSON array as an object, an unnecessarily long feedback-length expectation, and missing parameter details in spoken pipeline output. These were corrected. The user-supplied near-rank mismatch was corrected by one shared mathematical policy in both owned runtimes; it is not hidden with tolerance.
 
 ## Authored browser coverage — not executed here
 
@@ -43,7 +43,7 @@ It checks repeated numeric keyboard input without refocusing, Enter/Tab focus, f
 
 ## Pending and observed performance
 
-No full type check, production build, browser, screenshot, full oracle sweep or validate runner was executed by this agent. Rendered browser layout, responsive/accessibility and interaction results remain unverified until the integrator runs them. No baseline image changes exist.
+No full type check, production build, browser, screenshot, full oracle sweep or validate runner was executed by this agent. Integration-owner results are recorded below; the latest inspector legibility correction and its browser assertion await an allocated rerun. No baseline image changes exist.
 
 Models are bounded (17 active capacity observations; degree0–8; at most64 API observations). Candidate selection fits nine small designs only on request. Focused unit wall time is recorded as verification evidence, not a browser-performance benchmark. No network/model API calls or autoplay timers occur.
 
@@ -145,3 +145,18 @@ Owned source/test corrections:
 - NUMERICS.md/HANDOFF.md document semantics, tolerance rationale, failed evidence and exact verification.
 
 This agent ran only node node_modules/vitest/vitest.mjs run tests/unit/p01 --maxWorkers=1: **38 tests passed in two files** (24 kernel/boundary/parity and14 lesson/source/render), duration1.07s, start18:36:20. No mathematical/Python/fixture source changed, so its previously passed checks were not repeated. Full type/build/browser reruns have NOT been run for this correction. The source/test/report git diff --check passed. The unfiltered check flags trailing whitespace in the byte-for-byte preserved raw integrator log; those original evidence bytes are deliberately retained, and no source file has a whitespace error. Hold for integration-owner allocation and acceptance; the correction SHA is returned in chat.
+
+## Final visual correction after the nine-gate pass
+
+The integration owner reports all nine focused gates passed at 5ae496dd049d2c806db294054a647c13fc4b552f: 55 unit tests, 78 root browser cases and 78 subpath browser cases. The 60 captures at delivery afcfb44146172d58e8b63ae421b58f0bb7227352 match signature 95de4053. These are owner-run results; this agent did not execute those jobs. Earlier failed evidence remains preserved.
+
+The final visual review found the mobile-dark inference mode value breaking across three lines. This correction changes exactly four owned paths:
+
+- src/parts/p01/p01.css: prevent inspector values from flex-shrinking while retaining their 65% maximum width and wrapping for long values; allow the label column to shrink with min-width:0.
+- src/parts/p01/CapacityStage.tsx: remove SVG viewBox/pixel projection formulas from the learner-facing caption. Keep partition glyphs, fitted/signal/baseline curve meanings, differing axis scales, fixed y clipping at [−3,4] and the table's complete values. Shapes and model curves remain inspectable. Exact projection formulas remain documented in NUMERICS.md and checked in the existing geometry test.
+- tests/e2e/p01/foundations.spec.ts: extend the existing inference test at the 390px viewport in both themes. Measure the actual inference text with DOM Range client rectangles, require one line that fits its value box, and bound both document scrollWidth and innerWidth by the configured physical viewport. No CSS-property mirror assertion or new test definition is added.
+- documentation/parts/p01/HANDOFF.md: record prior owner validation, this correction and the remaining browser verification.
+
+Final light verification: node node_modules/vitest/vitest.mjs run tests/unit/p01 --maxWorkers=1 passed **38 tests in two files** (24 kernel/boundary/parity and 14 lesson/source/render), duration 1.07s, start 18:58:48 on 2026-10-13. git diff --check passed for this four-file correction. Mathematical models, lesson geometry, canonical Python and fixtures are unchanged. Their previous oracle/freshness results were not rerun for this rendering-only correction.
+
+The added browser assertion has NOT been executed here. No heavy job, screenshot, shared/reference/config edit or snapshot update was performed. Stop source edits after the local owned commit and hold for the integration owner's allocated validation and acceptance.
