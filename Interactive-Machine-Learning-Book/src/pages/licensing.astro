@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../shell/BaseLayout.astro';
+import { href } from '../shell/href';
+---
+
+<BaseLayout title="Copyright and licensing" description="Copyright, reuse terms, software rights and third-party notices for Interactive Machine Learning, Book III.">
+  <article class="chapter">
+    <header class="chapter-heading">
+      <p class="chapter-label">Book III · Rights and attribution</p>
+      <h1>Copyright and licensing</h1>
+      <p class="lede">Book III is free to read and use online. Different material in the book has different reuse terms.</p>
+    </header>
+    <div class="chapter-content">
+      <section aria-labelledby="content-license">
+        <h2 id="content-license">Original educational content</h2>
+        <p><strong>Copyright © 2026 Mario Balit.</strong> Original Book III educational prose, non-code worked examples and teaching commentary, original illustrations and diagrams, exercises and explanatory feedback, and original teaching datasets (where copyright or similar rights exist) are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License (CC BY-NC-SA 4.0)</a>, to the extent Mario Balit holds or is authorized to grant the relevant rights.</p>
+        <p>You may share and adapt covered material for noncommercial purposes if you give appropriate credit, link to the license, identify changes, and share adaptations under CC BY-NC-SA 4.0 or a compatible license. A suggested credit is: <em>“Interactive Machine Learning, Book III, by Mario Balit. Original educational content licensed under CC BY-NC-SA 4.0. Changes made: [describe changes].”</em></p>
+        <p>“NonCommercial” has the meaning in the license: a use not primarily intended for or directed toward commercial advantage or monetary compensation. Educational or institutional use is not automatically noncommercial; assess the context of the particular use. The license does not claim copyright over mathematical facts, formulas, methods, algorithms, underlying ideas or uncopyrightable material.</p>
+        <p>Read the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.en">official legal code</a> and the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">license deed</a>. The legal code governs the licensed reuse.</p>
+      </section>
+
+      <section aria-labelledby="software-rights">
+        <h2 id="software-rights">Software and example code</h2>
+        <p>The hosted website is free to read and interact with in a browser. A source archive is provided for reading and inspection. Those forms of access do not grant a general software license.</p>
+        <p>Original TypeScript and Python implementations, interactive application source, code examples, numerical engines, tests and oracles remain copyrighted and all rights are reserved. The CC BY-NC-SA license above does not cover software or code excerpts. Local execution or building, classroom copying or running of code, copying, modifying, incorporating or redistributing original code requires separate permission, except where an applicable legal exception provides otherwise.</p>
+        <p>Third-party software, fonts and other components remain under their own licenses. Their notices are listed in the <a href={href('/third-party-notices/index.txt')}>third-party notices</a>. This page covers Book III only and does not change the rights for Books I or II.</p>
+      </section>
+
+      <section aria-labelledby="commercial-permission">
+        <h2 id="commercial-permission">Commercial permission and support</h2>
+        <p>The content license does not grant commercial reuse. Commercial republication, publisher licensing and commercial integrations require separate permission and can be discussed separately. No public licensing inquiry contact has been designated yet.</p>
+        <p>This book is independently developed. Voluntary support may help sustain future work; no donation or payment link is currently published.</p>
+      </section>
+    </div>
+  </article>
+</BaseLayout>

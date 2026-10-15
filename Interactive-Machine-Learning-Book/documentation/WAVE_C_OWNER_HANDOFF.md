@@ -1,0 +1,11 @@
+# Separate Wave C integration-owner handoff
+
+Wave B is **FREEZE** at local annotated tag `book-iii-wave-b-freeze-20261014`. Resolve the exact delivery with `git rev-parse book-iii-wave-b-freeze-20261014^{}`. Validated executable source is `06529c0c52215555bcc1a53d80f2bd8dc977bbce`, signature `7c0c8208935ee18e796dafa13536f984d5e6f1cababa68c0af2f62e0d07afd44`; the delivery adds acceptance/evidence without changing that source. III-01–25 are published.
+
+Canonical repository: `/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books`. Integration worktree: `/media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-foundation`, branch `feature/book-iii-foundation`. Canonical `main` remains `d2be911c407dde5949ad71757da8853128d3d8b5`; promotion, push and deployment were not performed.
+
+Accepted Part sources: P03 `93d6eb37c1889acacf3cf329cb21db832beb5c2e`; P04 `976a8dd8db5dcd0261e0bf6cd1df32fec431bc6b`. Owner merges: `ac5e515423fbdec48bea7ef673dfe806b4d20b8d` and `06529c0c52215555bcc1a53d80f2bd8dc977bbce`. All three existing worktrees finish clean and remain locked for Linux use on D. Preserve their evidence and native dependency overlays.
+
+Read `WAVE_B_ACCEPTANCE_REPORT.md`, the two Part acceptance records, `MASTER_PLAN.md`, `ARCHITECTURE_DECISIONS.md`, `CHAPTER_AUTHORING.md`, ownership/reference maps and numerical decisions before further work. The combined milestone passed all nine gates: 275 units, 78 Python tests, 14 oracle commands, 37-page root/subpath builds and 303+303 browsers, zero failures/skips/flakes, unchanged source. Evidence is under `documentation/validation/wave-b/continuation-owner/`; retained older runs and owned HANDOFF reports describe their historical checkpoints.
+
+The next wave is P05/P06 (III-26–31) only when separately dispatched by the user. No Wave C agents, worktrees or implementation were started here. Reverify live HEADs, cleanliness, registered locks, active processes, APIs and evidence before dispatch. Start from the exact Wave B delivery tag, preserve all 13 III-07 hashes and Book I/II trees/baselines, retain Part ownership, and serialize expensive work through `/tmp/interactive-books-heavy-gate.lock`. Native Windows/other engines/real hardware/human screen-reader validation and deployed prerequisite links remain outside the completed acceptance scope.

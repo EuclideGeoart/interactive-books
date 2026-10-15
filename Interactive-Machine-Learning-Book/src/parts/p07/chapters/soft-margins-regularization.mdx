@@ -1,0 +1,119 @@
+---
+chapterId: III-33
+title: Soft Margins and Regularization Tradeoff
+hero: Make each violation visible
+lede: Permit imperfect constraints at an explicit cost, and inspect how C changes the solved separator rather than merely changing a drawing.
+description: Explore a bounded soft-margin SVM with outliers, overlap, slack, hinge losses, dual bounds and primal–dual diagnostics under the sum-hinge C convention.
+prerequisites: [II.3, III.8, VI.3, VI.9, VI.10]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import { href } from '../../../shell/href';
+import SVMStage from '../SVMStage';
+import reference from '../../../../code/python/p07/svm.py?raw';
+
+<Stage caption="Change C on the same outlier data. The actual dual optimization changes coefficients, weights, intercept, violations and objective together; every iterative result is labeled approximate."><SVMStage scope="iii33-soft" mode="soft" client:load /></Stage>
+
+## Let the data disagree
+
+The opening cloud includes a positive observation on the negative side. Compare C=0.05 and C=4, using Enter in the penalty editor or the tradeoff replay. Inspect the new separator, each score and each slack. A low penalty permits violations to keep the normal small. A high penalty spends more of the objective on satisfying individual observations. Depending on the data, the line may move or some violations may remain; C cannot make inconsistent labels consistent.
+
+Select **overlap data**. Its class hulls cross, so the preceding hard problem has no solution. The soft problem still has a finite optimum because it permits and accounts for violated constraints. Select **coincident data** for the clearest contradiction: the two opposite labels occupy one coordinate, and no decision can satisfy both simultaneously.
+
+## Slack and hinge are the same optimal accounting
+
+Introduce ξi≥0 and relax the constraints to yi f(xi)≥1−ξi:
+
+$$
+\min_{w,b,\xi}\frac12\|w\|^2+C\sum_i\xi_i,
+\quad y_if(x_i)\ge1-\xi_i,\quad \xi_i\ge0.
+$$
+
+With $C>0$ and fixed w,b, unnecessary slack only increases the objective. Its optimal value is therefore
+
+$$
+\xi_i=\max(0,1-y_if(x_i)),\qquad
+J=\frac12\|w\|^2+C\sum_i\max(0,1-y_if(x_i)).
+$$
+
+The laboratory uses **sum hinge**, not mean hinge. X has n×2 batch rows; individual x,w are 2×1 columns, y and ξ are n×1 columns, and b is an unpenalized scalar. Changing n changes the relative weight of the sum. A mean-hinge implementation with coefficient Cmean matches this convention only when Cmean=n Csum. Comparing C across libraries requires checking normalization and intercept treatment.
+
+A margin greater than or equal to one has zero hinge. A positive margin below one predicts the correct class but lies within the desired margin. A margin of zero is a decision tie and costs one. A negative margin is misclassified and costs more than one. Thus “margin violation” and “classification mistake” are different counts.
+
+## Derive the kink convention
+
+Write m=yi f(xi) and h(m)=max(0,1−m). Below one its slope is −1; above one its slope is zero. At exactly one the subgradient set is [−1,0]. The reference `hinge` function chooses **zero at the kink**, one valid member of that set:
+
+$$
+\partial h(m)=\{-1\}\ (m<1),\quad[-1,0]\ (m=1),\quad\{0\}\ (m>1).
+$$
+
+For an active example away from the kink, its contributions to the primal subgradient are −C yi xi for w and −C yi for b, plus the regularizer's w term. This explains the objective locally; the browser solves the dual through feasible pair steps, so it does not use a fixed learning-rate subgradient trajectory. A finite-difference estimate across the kink need not equal the chosen one-sided representative.
+
+Hand margins [−1,0,0.5,1,2] produce hinge [2,1,0.5,0,0] and selected subgradients [−1,−1,−1,0,0]. The kink convention is committed as an independent literal fixture.
+
+## Derive the bounded dual and read support correctly
+
+The soft dual keeps the hard dual objective and equality, but adds upper bounds:
+
+$$
+\max_{0\le\alpha_i\le C,\ y^T\alpha=0}
+\mathbf1^T\alpha-\frac12(\alpha\odot y)^TK(\alpha\odot y).
+$$
+
+For the linear kernel Kij=xiᵀxj, w=Σαi yi xi. At a KKT solution, αi=0 permits yi f≥1; $0<\alpha_i<C$ requires yi f=1; αi=C permits yi f≤1. A bounded support coefficient can identify an inside-margin or misclassified sample. A geometric on-margin point can also be redundant and have zero coefficient. The ledger therefore lists coefficient support and on-margin status separately.
+
+## Work the exact two-point C regimes
+
+Use negative [−1,0] and positive [1,0]. Symmetry permits b=0 and w2=0. The objective becomes
+
+$$
+J(w_1)=\frac12w_1^2+2C\max(0,1-w_1).
+$$
+
+For $w_1<1$ its derivative is w1−2C. Thus w1=min(2C,1), with α−=α+=min(C,1/2). For $C<1/2$ each slack is 1−2C and J=2C−2C²; for C≥1/2 both slacks are zero and J=1/2. The smallest bound changes the coefficient regime, not the fact that the line x1=0 predicts the two anchor labels correctly.
+
+At C=1/4, w=[1/2,0], both coefficients are 1/4, each slack is 1/2, the feature norm squared is 1/4, and primal=dual=3/8. The half-margin is two although the training observations lie inside it. At C=1 the hard anchor is recovered. These exact values distinguish margin width from constraint satisfaction.
+
+For opposite labels at [0,0], the optimum is w=0 with any b in [−1,1]; the laboratory deterministically chooses b=0. Both coefficients equal C, total hinge is two, primal=dual=2C, and distances/half-margin are undefined because the normal has zero length. A zero norm is a useful optimum here, not a fabricated separating direction.
+
+## How each approximate fit is obtained
+
+Start α=0. A pair update changes αi by yi t and αj by −yj t, preserving yᵀα=0 algebraically. Intersect their box bounds to get the feasible interval [L,H]. Along this interval, the dual gain is
+
+$$
+\Delta D(t)=st-\frac12\eta t^2,\qquad
+\eta=K_{ii}+K_{jj}-2K_{ij}\ge0.
+$$
+
+For positive curvature, maximize by clipping s/η to [L,H]. For flat curvature, evaluate feasible endpoints rather than dividing by zero. Each iteration examines all pairs and takes the largest improving step, deterministically breaking equal gains by row order. The cap is 1200 pair steps for at most 12 rows; gains below 10⁻¹² stop updates. Bias comes from free supports, or the midpoint of the admissible bias interval when none are free. All scores and diagnostics are reconstructed from the final coefficients rather than accumulated gradients.
+
+The displayed maximum KKT residual must be ≤2×10⁻⁵, equality residual ≤10⁻⁷, bound residual ≤10⁻⁹ and absolute gap ≤10⁻⁵(1+primal). These are fixed numerical certificates for this bounded educational solve, not permission to widen constraints. A capped fit may pass diagnostics; a stalled fit may fail them. Failure is visible, and no fitted boundary is drawn. Iterative successes remain approximate, never exact acceptance claims.
+
+## Execute the canonical reference and explore
+
+The real imported file accepts `mode: soft`, a positive bounded C, explicit labeled observations and complete kernel configuration. Its hard/soft modes use the linear kernel. The independent oracle separately enumerates dual active sets and solves equality-constrained quadratic systems using NumPy linear algebra; it does not reuse pair updates.
+
+<CodeFile source={reference} file="code/python/p07/svm.py" />
+
+Replay C, stop at C=0.25 and move an outlier by keyboard. The edit starts from that displayed C and exits replay. Numeric, touch and pointer edits recompute synchronously. Reset restores the opening C and data, not the last visited frame. For zero normal or unresolved arithmetic the ledger says unavailable where a distance cannot be defined.
+
+## Common mistakes, limitations and connections
+
+A larger C usually prioritizes training hinge more strongly; it does not promise better held-out performance. Hinge is neither a probability nor an accuracy metric. Feature scaling, repeated rows and inconsistent labels affect the compromise. The intercept is not regularized, so some degenerate optima have nonunique bias; dual coefficients can also be nonunique. Our deterministic bias convention is part of reproducibility, not mathematical uniqueness.
+
+<Callout title="Choose C using held-out evidence" kind="misconception">The laboratory explains the optimization tradeoff. It does not tune C on these same training labels and call that generalization. Part VIII supplies validation and model-selection methods.</Callout>
+
+## Five graded investigations
+
+<ChoiceExercise id="iii33-1" client:load prompt="A correctly classified sample has y f = 0.4. What is its hinge?" choices={[{label:'0.6.',correct:true,feedback:'The sample is inside the margin: max(0,1−0.4)=0.6.'},{label:'Zero because its class is correct.',correct:false,feedback:'Hinge measures margin violation, not just an incorrect sign.'}]} />
+<ChoiceExercise id="iii33-2" client:load prompt="Which subgradient does this reference select at margin 1?" choices={[{label:'Zero, a valid member of [−1,0].',correct:true,feedback:'The selected kink convention is explicit and independently fixture-tested.'},{label:'The derivative is uniquely −1.',correct:false,feedback:'Hinge is not differentiable at the kink; it has a subgradient interval.'}]} />
+<ChoiceExercise id="iii33-3" client:load prompt="For the anchor at C=1/4, what is w1?" choices={[{label:'1/2.',correct:true,feedback:'The soft optimum is min(2C,1); each training slack is 1/2.'},{label:'1 because all SVMs satisfy hard constraints.',correct:false,feedback:'Soft constraints trade nonzero hinge against a smaller normal.'}]} />
+<ChoiceExercise id="iii33-4" client:load prompt="When alpha equals C, must the sample be exactly on the margin?" choices={[{label:'No; its functional margin may be below one.',correct:true,feedback:'Bounded supports can be inside the margin or misclassified.'},{label:'Yes; every support ring means y f = 1.',correct:false,feedback:'The ring is a dual coefficient property, separate from the on-margin flag.'}]} />
+<ChoiceExercise id="iii33-5" client:load prompt="What matches Csum=2 in a mean-hinge objective with n=10?" choices={[{label:'Cmean=20.',correct:true,feedback:'Cmean/n must equal Csum to preserve the same objective.'},{label:'Cmean=2.',correct:false,feedback:'A mean divides the total hinge by n, changing the tradeoff if C is unchanged.'}]} />
+
+## Summary
+
+You can compute slack and hinge, read dual bounds, derive the anchor's C regimes and distinguish optimization from evaluation. Soft margins make disagreement explicit. <a href={href('/chapters/kernel-methods/')}>III-34</a> keeps this same dual machinery while replacing dot products with valid similarities, changing which boundaries the model can express.

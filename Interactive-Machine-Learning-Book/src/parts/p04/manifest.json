@@ -1,0 +1,29 @@
+{
+  "part": "p04",
+  "chapters": [
+    {
+      "id": "III-20",
+      "slug": "decision-trees"
+    },
+    {
+      "id": "III-21",
+      "slug": "entropy-gini-gain"
+    },
+    {
+      "id": "III-22",
+      "slug": "regression-trees-pruning"
+    },
+    {
+      "id": "III-23",
+      "slug": "bagging-bootstrap"
+    },
+    {
+      "id": "III-24",
+      "slug": "random-forests"
+    },
+    {
+      "id": "III-25",
+      "slug": "gradient-boosting"
+    }
+  ]
+}

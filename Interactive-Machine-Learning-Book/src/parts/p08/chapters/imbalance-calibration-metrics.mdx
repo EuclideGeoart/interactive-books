@@ -1,0 +1,104 @@
+---
+chapterId: III-37
+title: Class Imbalance, Calibration and Metric Choice
+hero: A correct label is not a calibrated probability
+lede: Move a decision threshold, count its mistakes and compare forecast probabilities with observed frequencies in fixed bins.
+description: Compute confusion counts, undefined precision and recall, PR tradeoffs, exact Brier probability error and fixed-bin reliability under class imbalance.
+prerequisites: [IV.4, IV.9, IV.11, V.3]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import { href } from '../../../shell/href';
+import EvaluationStage from '../EvaluationStage';
+import reference from '../../../../code/python/p08/evaluation.py?raw';
+
+<Stage caption="Equality is positive: p ≥ threshold. Counts, PR cutoffs, Brier error and reliability bins derive from the displayed hand-authored forecasts."><EvaluationStage scope="iii37-metrics" mode="metrics" client:load /></Stage>
+
+## Change a decision without changing a probability
+
+Raise the threshold from 0.5 to 1. No displayed probability reaches 1, so the model predicts no positives. Precision becomes undefined because its denominator is zero; recall becomes zero because there are two actual positives. Brier score stays fixed: changing the decision rule did not change a forecast.
+
+Reset. Select row m7 and reduce its probability. Now you changed a forecast itself, so both the threshold decision and probability error can change. Try **Use all-negative data**. Recall and balanced accuracy become undefined because there are no positive examples; the interface reports the missing denominator rather than treating an absent class as perfectly recalled. These eight rows are a hand-authored metric counterexample, separate from the regression workflow dataset.
+
+## Imbalance makes the question matter
+
+With 99 negatives and one positive, predicting every row negative gives 99% accuracy and zero positive recall. That can be unusable when missing the positive is costly. Accuracy asks the fraction of all decisions that are correct; it does not express the cost of each error or ensure that both classes are served. Class prevalence changes its meaning.
+
+Define positive by p≥τ. True positives TP have y=1 and a positive decision; false positives FP have y=0 and a positive decision; true negatives TN have y=0 and a negative decision; false negatives FN have y=1 and a negative decision. These are counts of observations, not probabilities.
+
+$$
+\mathrm{accuracy}=\frac{TP+TN}{n},\quad
+\mathrm{precision}=\frac{TP}{TP+FP},\quad
+\mathrm{recall}=\frac{TP}{TP+FN},
+$$
+
+$$
+\mathrm{balanced\ accuracy}=\frac12\left(\frac{TP}{TP+FN}+\frac{TN}{TN+FP}\right),\quad
+F_1=\frac{2TP}{2TP+FP+FN}.
+$$
+
+A zero denominator means undefined. F1's count formula remains defined as zero when there are actual positives but no predicted positives. If TP=FP=FN=0, its denominator is zero and F1 is undefined. Balanced accuracy needs both classes present. Declaring these conventions prevents silent disagreements between libraries with different zero-division options.
+
+## Count the original forecasts by hand
+
+The six negative forecasts are 0.1,0.2,0.3,0.4,0.6,0.8; the two positive forecasts are 0.5,0.9. At τ=0.5, TP=2, FP=2, TN=4, FN=0. Accuracy is 6/8=3/4, precision is 2/4=1/2, recall is 1 and F1 is 4/6=2/3. Negative recall is 4/6=2/3, so balanced accuracy is (1+2/3)/2=5/6.
+
+At τ=0.8, equality keeps the negative forecast 0.8 positive. TP=1, FP=1, TN=5, FN=1; precision and recall are both 1/2. The board lists all distinct observed cutoffs plus 0 and 1. Between neighboring cutoffs, the confusion counts stay fixed. Increasing a threshold removes predicted positives and cannot increase recall on this fixed dataset, though precision need not change monotonically.
+
+A PR tradeoff is relevant when positives are scarce: it explicitly compares positive recovery with the fraction of positive alerts that are correct. Choose a threshold using development data and operational costs, then lock it before the final test. The metric board is descriptive; it does not silently tune thresholds on the regression test group.
+
+## Calibration asks a probability question
+
+For a calibrated forecaster, among observations assigned probability near q, the positive fraction should be near q. Good ranking and threshold accuracy do not establish that property. A forecast of 0.99 and a forecast of 0.51 produce the same positive decision at τ=0.5, yet claim very different confidence.
+
+The Brier score measures probability squared error:
+
+$$
+B=\frac1n\sum_i(p_i-y_i)^2.
+$$
+
+For the original rows, the squared errors are .01,.04,.09,.16,.36,.64,.25,.01. Their sum is 1.56=39/25 and B=39/200=0.195. It is a probability error score, influenced by more than calibration alone, and it does not depend on τ. A lower Brier score can reflect improved discrimination as well as calibration; the reliability diagram provides a different descriptive view.
+
+Natural-log loss is
+
+$$
+L=-\frac1n\sum_i[y_i\log p_i+(1-y_i)\log(1-p_i)].
+$$
+
+The code evaluates only the probability of the true class, avoiding 0·log 0. A true-class probability of zero gives unbounded log loss. It is represented as unavailable with an explicit reason, never clipped to a convenient finite number.
+
+## Fixed bins, explicit membership
+
+The five reliability bins are [0,.2), [.2,.4), [.4,.6), [.6,.8), [.8,1]. Boundary values enter the bin on their right; 1 enters the last bin. For each nonempty bin, plot its mean forecast against its empirical positive fraction. Original counts are 1,2,2,1,2. The [.4,.6) bin contains .4 with label 0 and .5 with label 1: mean forecast .45, frequency .5. The final bin contains .8 with label 0 and .9 with label 1: mean .85, frequency .5.
+
+Tiny bins are noisy. Empty bins have no defined mean or frequency and are omitted from the plot. Fixed bins keep comparisons interpretable; changing bins after inspecting results can hide discrepancies. These eight artificial forecasts cannot certify calibration on a deployment population.
+
+## Actual canonical code and explorer
+
+The Python reference validates binary labels, real probabilities in [0,1], unique IDs and the threshold. Confusion counts use integers; independent oracle expectations use rational arithmetic. In the browser, the count table, scalar metrics and plot project one derived result. No seed is claimed for these literal forecasts.
+
+<CodeFile source={reference} file="code/python/p08/evaluation.py" />
+
+Try m7 at p=0 and y=1 to expose unbounded log loss. Set τ=0 to predict all positives, then τ=1 to inspect undefined precision. Move .6 to .59 to inspect the documented bin boundary independently of the threshold. Numeric inputs reject malformed or out-of-range values and preserve the previous state; reset restores the original forecasts.
+
+<Callout title="A metric is a declared decision" kind="misconception">
+Do not choose accuracy solely because it is familiar, or claim a calibration improvement because accuracy rose. Start with error costs, prevalence, probability use and the evaluation population. Rebalancing training data can change learned probabilities and does not by itself calibrate forecasts to deployment prevalence.
+</Callout>
+
+## Connections and limits
+
+<a href={href('/chapters/thresholds-confusion/')}>III-14</a> introduced the decision boundary; <a href={href('/chapters/precision-recall-roc/')}>III-15</a> explored ranking and threshold tradeoffs. This chapter adds calibration and class-aware reporting. Calibration methods themselves are fitted procedures and need development-only fitting. The bounded lab implements no resampling trainer, learned calibrator or production risk guarantee.
+
+## Five graded decisions
+
+<ChoiceExercise id="iii37-1" client:load prompt="At p=0.5 and threshold 0.5, what is the decision?" choices={[{label:'Positive, because equality is included.',correct:true,feedback:'The frozen convention is p ≥ τ.'},{label:'Negative, because the threshold is strict.',correct:false,feedback:'This lab uses ≥, not >. Equality affects counts at observed cutoffs.'}]} />
+<ChoiceExercise id="iii37-2" client:load prompt="No positives are predicted, but actual positives exist. What is precision?" choices={[{label:'Undefined; TP+FP is zero.',correct:true,feedback:'Recall is zero in this case, but precision lacks a denominator.'},{label:'One, because no false positives occurred.',correct:false,feedback:'No positive predictions do not provide evidence of perfect positive precision.'}]} />
+<ChoiceExercise id="iii37-3" client:load prompt="What is the original Brier score?" choices={[{label:'39/200 = 0.195.',correct:true,feedback:'Sum the eight probability squared errors, then divide by eight.'},{label:'3/4, the fraction of correct decisions.',correct:false,feedback:'3/4 is threshold accuracy. Brier measures probability squared error.'}]} />
+<ChoiceExercise id="iii37-4" client:load prompt="Where does a probability of 0.6 enter the fixed bins?" choices={[{label:'[0.6,0.8).',correct:true,feedback:'The lower boundary is included; upper boundaries are excluded except at 1.'},{label:'[0.4,0.6).',correct:false,feedback:'0.6 is the excluded upper endpoint of that bin.'}]} />
+<ChoiceExercise id="iii37-5" client:load prompt="Does raising a threshold without changing forecasts improve Brier score?" choices={[{label:'No; Brier depends on probabilities and labels, not threshold.',correct:true,feedback:'Only the decision counts change.'},{label:'Yes, whenever accuracy increases.',correct:false,feedback:'Threshold accuracy and probability error are different measurements.'}]} />
+
+## What you can now explain
+
+You can compute class-aware counts, identify undefined denominators, inspect PR cutoffs and distinguish decisions from probabilities. You can calculate Brier exactly and interpret reliability bins cautiously. Next, <a href={href('/chapters/preprocessing-feature-pipelines/')}>III-38</a> audits what fitted preprocessing is allowed to know.

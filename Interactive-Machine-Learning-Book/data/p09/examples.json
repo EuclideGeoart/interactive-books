@@ -1,0 +1,5 @@
+{
+  "neuron": {"kind":"neuron","x":[2,-1],"w":[0.5,2],"b":0.25,"activation":"relu"},
+  "network": {"kind":"network","x":[1,0],"W1":[[1,-1],[-1,1]],"b1":[0,0],"W2":[[1,1]],"b2":[0],"activation":"relu"},
+  "binary": [[0,0],[0,1],[1,0],[1,1]]
+}

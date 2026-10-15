@@ -1,0 +1,47 @@
+.p04-lab { min-width:0; color:var(--ink); font-family:var(--sans); }
+.p04-heading { border-bottom:1px solid var(--rule); padding-bottom:1rem; }
+.p04-heading h2 { margin:.5rem 0; font-family:var(--serif); }
+.p04-heading p,.p04-note { color:var(--muted); }
+.p04-controls { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; margin:1.5rem 0; }
+.p04-controls fieldset { min-inline-size:0; max-inline-size:100%; margin:0; padding:1rem; border:1px solid var(--rule); display:flex; flex-direction:column; gap:.75rem; }
+.p04-controls legend { max-inline-size:100%; white-space:normal; overflow-wrap:anywhere; padding:0 .25rem; font-weight:600; }
+.p04-select,.p04-slider { display:flex; flex-direction:column; gap:.3rem; min-width:0; }
+.p04-lab select { min-width:0; max-width:100%; width:100%; min-height:44px; padding:.4rem; background:var(--surface); color:var(--ink); border:1px solid var(--rule); }
+.p04-lab input[type=range] { width:100%; min-width:0; min-height:44px; accent-color:var(--update); }
+.p04-lab button { min-height:44px; white-space:normal; overflow-wrap:anywhere; }
+.p04-actions { display:flex; flex-wrap:wrap; gap:.5rem; margin:.5rem 0; }
+.p04-actions button { flex:1 1 9rem; }
+.p04-live { border-left:3px solid var(--update); padding:.75rem; margin:1rem 0; background:var(--surface); }
+.p04-view { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:1rem; align-items:start; }
+.p04-plot { margin:0; min-width:0; }
+.p04-plot svg { display:block; width:100%; height:auto; overflow:visible; }
+.p04-plot figcaption { font-size:1rem; color:var(--muted); }
+.p04-axis { fill:none; stroke:var(--rule); stroke-width:2; }
+.p04-axes { fill:var(--ink); font-family:var(--sans); }
+.p04-class0 { fill:var(--data); stroke:var(--surface); stroke-width:1.5; }
+.p04-class1 { fill:var(--data); stroke:var(--surface); stroke-width:1.5; }
+.p04-prediction { fill:var(--surface); stroke:var(--prediction); stroke-width:2.5; }
+.p04-residual { stroke:var(--residual); stroke-width:2; }
+.p04-query { fill:none; stroke:var(--update); stroke-width:3; }
+.p04-boundary { stroke:var(--update); stroke-width:2.5; stroke-dasharray:7 5; }
+.p04-equations { min-width:0; }
+.p04-equations .formula { min-width:0; max-width:100%; }
+.p04-table { min-width:0; max-width:100%; overflow-x:auto; margin:1rem 0; border:1px solid var(--rule); }
+.p04-table table { border-collapse:collapse; width:100%; margin:0; font-size:1rem; }
+.p04-table th,.p04-table td { padding:.5rem; border-bottom:1px solid var(--rule); text-align:left; vertical-align:top; }
+.p04-table th { font-weight:600; }
+.p04-table caption { text-align:left; padding:.5rem; color:var(--muted); font-size:1rem; }
+.p04-tree,.p04-tree ul { list-style:none; padding:0; margin:.75rem 0; min-width:0; }
+.p04-tree ul { margin-left:.65rem; border-left:2px solid var(--rule); padding-left:.65rem; }
+.p04-node { display:flex; flex-direction:column; gap:.25rem; border-bottom:1px solid var(--rule); padding:.5rem 0; overflow-wrap:anywhere; font-size:1rem; }
+.p04-node small { font-size:1rem; color:var(--muted); }
+.p04-lab section { min-width:0; margin-top:1.5rem; }
+.p04-lab :focus-visible { outline:2px solid var(--update); outline-offset:3px; }
+@media(max-width:1050px) { .p04-controls { grid-template-columns:repeat(2,minmax(0,1fr)); } .p04-controls fieldset:last-child { grid-column:1/-1; } .p04-view { grid-template-columns:minmax(0,1fr); } .p04-plot { width:100%; max-width:560px; margin:0 auto; } }
+@media(max-width:560px) { .p04-controls { grid-template-columns:minmax(0,1fr); } .p04-controls fieldset:last-child { grid-column:auto; } .p04-controls fieldset { padding:.75rem; } .p04-tree ul { margin-left:.4rem; padding-left:.4rem; } }
+.p04-lab .inspector>div { min-width:0; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); }
+.p04-lab .inspector dd { white-space:normal; overflow-wrap:anywhere; }
+.p04-lab .inspector small { overflow-wrap:anywhere; }
+@media(max-width:560px) { .p04-lab .inspector>div { grid-template-columns:minmax(0,1fr); gap:.3rem; } }
+
+.p04-tree [data-query-leaf=true]>.p04-node { border-left:3px solid var(--prediction); padding-left:.5rem; }

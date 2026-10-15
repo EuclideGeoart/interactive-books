@@ -1,0 +1,133 @@
+---
+chapterId: III-28
+title: Hierarchical and Density-Based Clustering
+hero: Decide whether a cluster is a merge or a neighborhood
+lede: Inspect actual linkage merges, then identify the core observations that can propagate a density cluster and the border points that cannot.
+description: Explore single, complete and average linkage trees together with exact DBSCAN neighborhoods, self counts, core propagation, shared borders and explicit noise.
+prerequisites: ["II.3", "I.8", "IV.2", "V.1"]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import { href } from '../../../shell/href';
+import ClusteringStage from '../ClusteringStage';
+import reference from '../../../../code/python/p05/clustering.py?raw';
+
+<Stage caption="The feature plane keeps actual raw positions. Filled circles are core, hollow diamonds border, crosses noise. A selected-point label avoids dense annotation overlap. Inspect every coordinate and neighborhood in the table; the second SVG projects the actual linkage merge tree."><ClusteringStage scope="iii28-alternatives" mode="alternatives" client:load /></Stage>
+
+## Change the definition of a group
+
+At reset, the six x coordinates are 0, 0.1, 0.2, 0.3, 0.6 and 2; all y coordinates are zero. With ε=0.31 and minimum points 4, the first four observations are core, the fifth is border and the last is noise. Select a handle or use its numeric coordinates to inspect its closed neighborhood. Every neighborhood count is recomputed from these actual positions and the same explicit feature scales.
+
+Now change **Linkage** from single to complete. The observations stay fixed, but the merge heights change because “distance between groups” changes. **Replay actual merges** selects successive cuts of that calculated tree. The immutable replay contains complete numerical input states; it does not manufacture a drawn tree or change DBSCAN parameters behind the scenes.
+
+These methods answer different questions from k-means. Hierarchical clustering asks how to build nested groups. Density clustering asks which regions have enough nearby observations to propagate connectivity. Neither needs labels supplied as ground truth.
+
+## Start with one observation per group
+
+Agglomerative clustering begins with n singleton groups. At each step it merges the closest active pair, creating a new group. The full sequence is a hierarchy; selecting a merge count creates a cut with n−count groups. A dendrogram's vertical merge height encodes the declared linkage distance, not time, a centroid objective, or a probability.
+
+Let $d(x,y)$ be the square root of the scaled squared Euclidean distance. For disjoint nonempty groups A and B, our three linkages are
+
+$$
+\begin{aligned}
+D_{\mathrm{single}}(A,B)&=\min_{x\in A,y\in B}d(x,y),\\
+D_{\mathrm{complete}}(A,B)&=\max_{x\in A,y\in B}d(x,y),\\
+D_{\mathrm{average}}(A,B)&=\frac{1}{|A||B|}\sum_{x\in A,y\in B}d(x,y).
+\end{aligned}
+$$
+
+Average linkage averages **all cross-observation distances**. It is neither distance between centroids nor the unweighted average of earlier group scores. Single linkage can connect long chains through short local links. Complete linkage waits for all cross distances to be small. These choices encode different group preferences; no one is universally correct.
+
+Initial group IDs are input indices 0…n−1. New IDs are n, n+1, and so on. Active groups are sorted by these persistent IDs. Exact computed-distance ties choose the first enumerated pair in that order. Input row order therefore resolves ties; sample IDs remain visible identifiers. A tie does not supply evidence that one merge is naturally preferred.
+
+## Work a three-observation hierarchy
+
+Use the tiny canonical fixture with points at x=0, 1 and 3, y=0 and unit scales. The initial distances are 1, 3 and 2. All three methods first merge rows 0 and 1 at height 1.
+
+The remaining active groups have IDs 2 and 3, where ID 3 contains [0,1]. Their cross distances are 3 and 2:
+
+<div class="table-scroll" tabindex="0" role="region" aria-label="III-28 literal linkage calculation, scrollable">
+
+| Linkage | Calculation for [0,1] vs [2] | Final merge height |
+| --- | --- | ---: |
+| Single | min(3,2) | 2 |
+| Complete | max(3,2) | 3 |
+| Average | (3+2)/2 | 2.5 |
+
+</div>
+
+The final merge table lists left [2], right [0,1] because the persistent IDs are ordered. That left/right drawing orientation is a reproducibility convention, not a meaningful ordering of clusters. A cut after the first merge has two groups; after the second, every observation is in one group.
+
+The Stage's dendrogram paths use these actual merge heights and child memberships. Wide tree geometry retains readable labels in a bounded scroll region. Dense observations keep their true raw coordinates; the density plane uses one selected annotation and a complete numeric table instead of stacking unreadable labels.
+
+## Define density before propagating it
+
+For ε≥0, the closed neighborhood includes the observation itself:
+
+$$
+N_\varepsilon(x_i)=\{j:d(x_i,x_j)\le\varepsilon\},
+\qquad
+\text{core}(i)\iff |N_\varepsilon(x_i)|\ge m.
+$$
+
+Here m is **Minimum points**, including self. In the implementation the equivalent comparison is squared distance ≤ ε², with checked finite arithmetic. A row at exactly ε is included. Coincident rows with distinct IDs count separately, including when ε=0.
+
+A core point can expand the search to all of its neighbors. A **border** point is noncore but reached from a core component; it receives that cluster label and does not expand the component. **Noise** is not reached from any core component. The displayed label −1 is an explicit noise marker, not a learned negative class or a prediction of an observed target.
+
+Operationally, scan input indices in ascending order. Visit a new point; if it is core, start a cluster and expand its neighborhood with a queue. Neighbors enter that queue in ascending input order; each enters at most once per expansion. Previously visited noise can become border when a core expansion reaches it. A point already assigned to a cluster is never stolen by a later expansion.
+
+## Count a core, a border and noise literally
+
+At the six-row reset, s1=(0,0) sees s1, s2, s3 and s4: four observations within ε=0.31. Rows s2/s3 also see that same four. Row s4=(0.3,0) additionally sees s5=(0.6,0), since their distance is 0.3, so it sees five. All four are core for m=4.
+
+s5 sees itself and s4 only. It is noncore, yet s4's expansion reaches it, so it is border with label 0. s6=(2,0) sees only itself. No core expansion reaches it, so it is noise with label −1. The labels are [0,0,0,0,0,−1]. Lowering m to 1 makes even an isolated point core, illustrating how parameter choice changes the definition rather than discovering a uniquely true answer.
+
+A separate exact boundary fixture uses dyadic x coordinates 0, 1/8, 1/4, 3/8, 3/4 and 2 with ε=3/8. The first point includes the fourth **at equality**. The neighborhoods are [0,1,2,3], [0,1,2,3], [0,1,2,3], [0,1,2,3,4], [3,4], [5]. This rational example checks both the closed boundary and self-count rule independently of decimal rounding.
+
+## A shared border must not merge two core components
+
+Load **Shared border**. Four left-core observations and four right-core observations are internally connected. The central point s9=(0,0) sees the two inner cores s4=(−0.9,0), s8=(0.9,0), plus itself. With ε=1 and m=4 it has only three neighbors, so it is border rather than core.
+
+It touches both core components but cannot expand through itself to join them. The left component is encountered first in input order, so s9 receives its label 0. The right component retains label 1. Swapping component order could assign this ambiguous border to the right without changing core connectivity. Our convention is explicit; other DBSCAN implementations may resolve such border ownership differently.
+
+The independent oracle builds the graph of core-to-core neighborhood edges, computes its transitive closure, and finds components. It then assigns each noncore point to the first adjacent component by smallest core input index. That is mathematically different from translating the canonical queue traversal and exposes the mistaken claim that border vertices propagate connectivity.
+
+## Limits and numerical assumptions
+
+The batch is n×2, with each feature vector a 2×1 mathematical column. Pairwise distances and the Boolean neighborhood relation are n×n; labels are n×1. The stored neighborhoods are ragged per-row lists of neighbor indices, not an n×n matrix. At reset their lengths are [4,4,4,5,2,1]. Core flags are Boolean decisions, not confidence probabilities. Single, complete and average linkage report distances; the density method does not optimize k-means WCSS. The comparison WCSS inspector refers to the separately defined centroid model and is not a DBSCAN objective.
+
+<Callout title="A boundary is a numerical decision" kind="numerical">
+All coordinates, scales and ε must be finite; scales are positive. Overflowing differences, squares, sums or ε² are rejected. A nonzero feature difference that underflows when normalized or squared is rejected with rescaling guidance, preventing false zero-radius neighbors. Ordinary rounding remains for supported binary64 arithmetic; near-ε cases can depend on the represented values. The dyadic oracle cases provide exact membership boundaries without tolerance-based changes to neighborhoods.
+</Callout>
+
+The educational model supports 1–32 rows, ε≥0 and 1≤m≤n; the Stage bounds ε to 0…2 and coordinates to −5…5. No observations is an invalid state, with no invented objective or hierarchy. The implementation is a transparent tiny-data mechanism, not a spatially indexed large-data implementation. It does not handle missing values or varying local density automatically. A dense bridge of actual core points may legitimately connect two regions, while a border bridge cannot.
+
+Feature units still matter: the ε neighborhood is circular in normalized coordinates and elliptical on raw axes when reference scales differ. The visible selected neighborhood ellipse uses those same scales. Coincidence does not erase observation identity. Distinct cluster labels can be permuted; noise treatment must be declared separately in any external evaluation.
+
+## Read the actual code and connect the definitions
+
+The imported reference implements `hierarchical` and `dbscan` from scratch, using NumPy distance arrays and explicit loops. Send an `operation` of `hierarchical` or `dbscan` with the fixture's JSON input on stdin to inspect that operation. Running without stdin prints the Part's original Lloyd mean-update example:
+
+```bash
+.venv/bin/python -B code/python/p05/clustering.py
+```
+
+<CodeFile source={reference} file="code/python/p05/clustering.py" />
+
+<a href={href('chapters/k-means/')}>III-26</a> optimized squared distance to means; <a href={href('chapters/clustering-initialization-failures/')}>III-27</a> showed its initialization and scale dependence. Hierarchical linkage now supplies nested relations; DBSCAN supplies core connectivity and an explicit noise category. Select the definition that matches the use of a grouping before comparing algorithm names.
+
+## Five graded investigations
+
+<div data-p05-exercises>
+<ChoiceExercise id="iii28-1" client:load prompt="After merging x=0 and x=1, what is average linkage to x=3?" choices={[{label:'2.5',correct:true,feedback:'Average linkage uses all cross-point distances: (3+2)/2. It does not choose a minimum or an arbitrary center distance formula.'},{label:'2',correct:false,feedback:'2 is the single-linkage minimum. Average linkage includes both cross-observation distances, giving 2.5 in this literal example.'}]} />
+<ChoiceExercise id="iii28-2" client:load prompt="Does an observation count itself toward Minimum points?" choices={[{label:'Yes; its zero self-distance is in the closed neighborhood.',correct:true,feedback:'This chapter explicitly includes self. A threshold of four means four observations in total, not four other observations.'},{label:'No; only other IDs count.',correct:false,feedback:'That would implement a different core threshold. The actual model includes the row itself and counts distinct IDs at coincident positions.'}]} />
+<ChoiceExercise id="iii28-3" client:load prompt="At reset, s5=(0.6,0) sees only itself and core s4. What is its role?" choices={[{label:'Border, because it is noncore but reached from core.',correct:true,feedback:'Two neighbors are fewer than the threshold of four, but s4 reaches s5. A border label does not grant expansion privileges.'},{label:'Noise, because it is not core.',correct:false,feedback:'Noncore is not synonymous with noise. A noncore point reached from a core component is a border point.'}]} />
+<ChoiceExercise id="iii28-4" client:load prompt="Can the shared noncore border point join two core components into one?" choices={[{label:'No; border points do not propagate expansion.',correct:true,feedback:'Only core connectivity propagates a cluster. This shared border is assigned to the first reached component and cannot merge the two.'},{label:'Yes; every labeled point expands to all neighbors.',correct:false,feedback:'Expanding noncore border points would change DBSCAN into a different connectivity rule. The canonical queue expands only core points.'}]} />
+<ChoiceExercise id="iii28-5" client:load prompt="At ε=0, two distinct IDs have identical coordinates and m=2. What happens?" choices={[{label:'Both are core in one cluster.',correct:true,feedback:'Each closed zero-radius neighborhood contains both coincident observations, including self. Their count is two, so both meet the threshold.'},{label:'Both are noise because zero radius has no neighbors.',correct:false,feedback:'Zero radius excludes distinct coordinates, not coincident IDs or self. Under the declared closed-neighborhood rule both rows are neighbors.'}]} />
+</div>
+
+## Checkpoints
+
+You can calculate literal linkage heights, read a genuine merge tree and its cut, enumerate closed neighborhoods, and distinguish core propagation from border ownership and noise. The choice of cluster definition, input traversal order, feature scale and noise convention is part of the result. It is not evidence that an algorithm's numeric labels are true categories.

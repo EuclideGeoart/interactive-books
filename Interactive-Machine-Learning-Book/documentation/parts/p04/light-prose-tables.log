@@ -1,0 +1,9 @@
+
+ RUN  v3.2.7 /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-iv-trees-ensembles/Interactive-Machine-Learning-Book
+
+ ✓ tests/unit/p04/lessons.test.ts (19 tests) 208ms
+
+ Test Files  1 passed (1)
+      Tests  19 passed (19)
+   Start at  21:32:23
+   Duration  556ms (transform 117ms, setup 0ms, collect 234ms, tests 208ms, environment 0ms, prepare 37ms)

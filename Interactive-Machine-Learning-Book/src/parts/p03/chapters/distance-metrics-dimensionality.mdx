@@ -1,0 +1,145 @@
+---
+chapterId: III-18
+title: Distance Metrics and Curse of Dimensionality
+hero: Nearness depends on a measuring rule
+lede: Change the metric and its reference scales, then ask what adding dimensions actually does to a particular distribution.
+description: Compare scaled Manhattan, Euclidean and Minkowski distances and inspect a seeded dimension experiment with explicit normalization and an embedded-line counterexample.
+prerequisites: ["II.3", "IV.10", "IV.11", "IV.12", "VIII.10"]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import { href } from '../../../shell/href';
+import MetricStage from '../MetricStage';
+import PartExercises from '../PartExercises';
+import source from '../../../../code/python/p03/distance_metrics.py?raw';
+import common from '../../../../code/python/p03/common.py?raw';
+
+<Stage caption="The upper diagram compares two feature vectors. The lower experiment uses 24 seeded vectors and an origin query in the selected dimension; its distribution and normalization are explicit.">
+  <MetricStage client:load scope="iii18-metrics" />
+</Stage>
+
+## A distance encodes a judgment
+
+A difference of two metres and a difference of one second cannot be added as if they had the same physical unit. The upper sheet states one reference scale for each coordinate. Dividing each difference by its reference scale produces dimensionless quantities that can enter a norm.
+
+At the original pair $q=(0,0)$ and $z=(2,1)$, with reference scales one metre and one second, the scaled differences are $(2,1)$. L1 gives $3$; L2 gives $\sqrt5\approx2.2361$. The same points therefore have different numerical distances under different rules.
+
+The dashed unit-distance contour changes shape when you choose a metric or change a scale. It is a geometric explanation of the rule, not a new source of mathematical state. The table and numeric distance use the same active rule as the contour.
+
+## Three norms, one explicit representation
+
+For positive reference scales $s_j$, the Minkowski family is
+
+$
+d_r(q,z)=\left(\sum_{j=1}^d
+\left|\frac{q_j-z_j}{s_j}\right|^r\right)^{1/r},
+\qquad r\ge1.
+$
+
+L1, or Manhattan distance, uses $r=1$. L2, or Euclidean distance, uses $r=2$. The Lp control supplies another finite power from 1 to 8. When L1 or L2 is selected, its fixed power applies; the stored Lp control is preserved for switching back.
+
+Absolute values make each coordinate contribution nonnegative. The final root returns the norm from its powered sum. If $r<1$, this expression can violate the triangle inequality, which is why that range is excluded here. As r becomes very large, the largest scaled component increasingly dominates; the infinity norm is a limiting connection, not an implemented control.
+
+With unit scales, differences $(3,4)$ give $d_1=7$ and $d_2=\sqrt{9+16}=5$. For differences $(1,1)$, $d_3=\sqrt[3]{2}$.
+
+For the sheet's $(2,1)$ example, changing the first reference scale to two metres gives scaled differences $(1,1)$ and L2 distance $\sqrt2$. This says that a two-metre difference should count as one reference unit. It changes the rule.
+
+A pure unit conversion is different. Writing two metres as 200 centimetres while converting its reference scale from one metre to 100 centimetres keeps $200/100=2$. Converting the coordinate but leaving its numerical reference scale at 1 would assign a new meaning to nearness.
+
+<Callout title="Feature scaling is part of the model" kind="misconception">
+A large raw coordinate need not be more relevant. Choose units, transformations and reference scales for the task. If scales are estimated from data, estimate them using training data rather than future evaluation rows.
+</Callout>
+
+## What the dimension experiment actually samples
+
+The lower sheet fixes 24 row identities. The shared 32-bit LCG uses
+
+$
+t_{i+1}=(1664525t_i+1013904223)\bmod2^{32},
+\qquad u_i=t_i/2^{32}.
+$
+
+It draws 32 coordinates per row, then maps each draw to $2u_i-1$. A selected dimension uses that row's first d coordinates. Changing d keeps the same prefixes rather than replacing the observations with unrelated draws.
+
+The **cube model** represents uniform-coordinate sampling in $[-1,1]^d$. The generator is deterministic pseudorandom arithmetic; a seed is a reproducibility specification, not evidence that a dataset came from a real population. The **embedded line** keeps only the first generated coordinate and sets the rest to zero.
+
+The origin query is a $d\times1$ column. The simulation batch is $24\times d$, with a $24\times1$ distance column. These dimensionless simulation coordinates are separate from the metres/seconds example above. Changing its two reference scales affects the pair diagram, while the simulation retains unit reference scales.
+
+## Derive a distribution-specific tendency
+
+For genuinely independent uniform coordinates $U_j$ on $[-1,1]$, let $S=\|U\|_2^2=\sum_j U_j^2$. The second and fourth moments are
+
+$
+\mathbb E[U_j^2]=\frac12\int_{-1}^{1}u^2\,du=\frac13,\qquad
+\mathbb E[U_j^4]=\frac15.
+$
+
+Independence makes the variances add, giving
+
+$
+\mathbb E[S]=d/3,\qquad
+\operatorname{Var}(S)=d(1/5-1/9)=4d/45.
+$
+
+Consequently the coefficient of variation of **squared** Euclidean distance under this model is $2/\sqrt{5d}$. This is a statement about that distribution and that quantity. It is not the coefficient of variation of Euclidean distance itself, and it does not describe every finite dataset.
+
+The experiment reports ordinary distances with their mean, population standard deviation, relative spread $(\max-\min)/\operatorname{mean}$ and coefficient of variation $\operatorname{SD}/\operatorname{mean}$. “Population” here means dividing by the 24 displayed rows; it is not an unbiased estimator of an unknown population variance.
+
+## Inspect a worked seeded result and its counterexample
+
+For seed 42, L2, raw normalization and cube data, d=2 gives mean distance approximately $0.6868$ and coefficient of variation approximately $0.4701$. At d=32, the same coordinate-prefix experiment gives mean approximately $3.2045$ and coefficient of variation approximately $0.0851$. The observed relative spread changes from approximately $1.5516$ to $0.3773$.
+
+Those are committed results for this finite experiment. Another seed or distribution can produce different comparisons, and every intermediate dimension need not change monotonically.
+
+Switch to the embedded line. At every dimension,
+
+$
+\|(U_1,0,\ldots,0)\|_r=|U_1|.
+$
+
+For seed 42 its raw mean is approximately $0.4399$ and coefficient of variation approximately $0.6668$ at both d=1 and d=32. Ambient dimension increased, but intrinsic variation did not. This is a concrete counterexample to a claim that adding dimensions alone forces distances to become nearly equal.
+
+Select per-coordinate normalization. It displays
+
+$
+\frac{\|x\|_r}{d^{1/r}}
+=\left(\frac1d\sum_j|x_j|^r\right)^{1/r}.
+$
+
+This divides every distance in the current sample by the same positive factor. Magnitudes change; neighbor ordering, relative spread and coefficient of variation do not. A new normalization should not be mistaken for a new sample distribution.
+
+## Execute and reproduce the mechanism
+
+Run `.venv/bin/python -B code/python/p03/distance_metrics.py`. It emits before/after states and all dimension-replay frames, including actual coordinates and distances.
+
+<CodeFile source={source} file="code/python/p03/distance_metrics.py" />
+<CodeFile source={common} file="code/python/p03/common.py" />
+
+Independent goldens use a closed-form modular expression for each generator state instead of translating the stepwise LCG. Fraction coordinates and high-precision powered sums check the distances. Exact small-summary tests cover tiny values and subnormal representation limits.
+
+## Explore and connect the measurements
+
+Compare L1, L2 and Lp with the same seed and distribution. Change the seed and check whether your explanation still names the distribution, norm, query and normalization. Compare cube data with the line before interpreting a dimension effect.
+
+For <a href={href('/chapters/k-nearest-neighbors/')}>k-NN</a>, small relative distance differences can make neighborhoods sensitive to features or noise. This does not establish that all high-dimensional prediction is impossible. Useful structure, sparsity, representation, sample size and the target relationship matter.
+
+Replay selects complete mathematical states; controls, features, shapes, diagrams and summaries all follow the selected frame. A manual edit starts there and ends replay. Reset restores the original pair and seeded experiment.
+
+## Numerical limits
+
+The plot accepts pair coordinates in $[-3,3]$ and reference scales from $0.1$ to $10$. The simulation uses 24 rows, dimensions 1–32 and unsigned 32-bit seeds. Lp power is 1–8. Unsupported numeric entries are rejected without altering the valid state.
+
+The norm rescales coordinate differences before powers. Finite inputs can still yield an overflowing subtraction, scale division or final norm; those cases have an explicit arithmetic error. Given coordinates retain full decimal text; displayed distances are approximate.
+
+Summary calculations normalize by the largest actual distance before computing mean and deviation. This preserves, for example, the SD $5\times10^{-201}$ and CV 1 for $[0,10^{-200}]$. Relative metrics are undefined only when every distance is actually zero. If a positive absolute mean or SD rounds to zero by underflow, a separate flag/reason distinguishes that representation limit from zero observations; relative metrics remain calculated at the normalized scale.
+
+This is a bounded synthetic origin-distance experiment, not a universal concentration theorem, a benchmark of search algorithms or an estimate of a task's prediction error.
+
+## Check your understanding
+
+<PartExercises client:load chapter="III-18" />
+
+## Checkpoints
+
+You can state a distance with its representation, units and scales; distinguish changing a measuring rule from changing units; reproduce the seeded data; and describe a dimension effect with its assumptions. A claim about nearness is incomplete until the geometry and distribution are named.

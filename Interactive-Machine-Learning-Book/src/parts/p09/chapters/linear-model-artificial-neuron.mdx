@@ -1,0 +1,123 @@
+---
+chapterId: III-40
+title: From Linear Model to Artificial Neuron
+hero: Keep the affine predictor and add one explicit function
+lede: Inspect each weighted contribution, the bias and the activation without confusing a forward calculation with learning.
+description: Edit a two-feature artificial neuron, inspect its complete forward trace and compare identity, ReLU and stable sigmoid, including extreme and zero inputs.
+prerequisites: [II.4, II.9, I.5, III.6, VI.4, VIII.5]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import { href } from '../../../shell/href';
+import ForwardStage from '../ForwardStage';
+import reference from '../../../../code/python/p09/forward.py?raw';
+
+<Stage caption="Read the weighted products before changing the activation. Every displayed number comes from the same forward calculation; these hand-chosen weights have not been fitted."><ForwardStage scope="iii40-neuron" mode="neuron" client:load /></Stage>
+
+## Start with a negative preactivation
+
+The opening neuron has x=(2,−1), w=(0.5,2) and b=0.25. Its contributions are 1 and −2, the running sums are 1 then −1, and the preactivation is −0.75. ReLU returns 0. Change **Activation** to identity: the contributions and preactivation stay fixed, while the output becomes −0.75. Choose sigmoid: the output is about 0.320821. Changing the output function changes the mechanism even though no weight changes.
+
+Now change x 2 from −1 to 1. The second contribution becomes 2; the dot is 3 and z=3.25. ReLU now passes that positive value through. Enter b=−3 to reach z=0, where both identity and ReLU return 0 but sigmoid returns 0.5. Each x coordinate, each weight and b has a numeric editor. Enter applies a draft; arrows move by 0.1 and Shift + arrows by 0.5. Invalid drafts keep the previous numerical state. Buttons and selectors also work by keyboard and touch.
+
+**Replay forward pass** starts at the current input and walks through every product, running sum, bias addition and activation. The complete calculation stays visible throughout: replay explains a forward pass rather than simulating training. Editing during replay begins at the displayed input and ends replay; reset restores the original negative example, ReLU and operation 1. Expand the complete record to inspect full-precision values and the detached stored trace event.
+
+## The neuron contains the old predictor
+
+In <a href={href('/chapters/linear-regression/')}>III-07 Linear Regression</a>, the frozen scalar predictor is ŷ=wx+b. Here the dot product generalizes that same affine mechanism to d features:
+
+$$
+z=w^Tx+b=\sum_{j=1}^d w_jx_j+b,\qquad a=\phi(z).
+$$
+
+For d=1 and identity activation, a=wx+b is exactly that scalar affine prediction in real arithmetic. The earlier chapter's predictor remains unchanged; this Part implements the vector extension with its own validated kernel. In III-07 a fitted weight could result from minimizing MSE. Here the parameters are supplied by us and the explorer never updates them from data.
+
+An artificial neuron is a numerical function, not a biological cell simulation. Each weight scales one coordinate; the sum combines contributions; the bias shifts the preactivation; the activation transforms that scalar. A zero weight removes that feature's direct contribution. A zero input removes its contribution for that sample, even when the weight is nonzero. Neither fact means a parameter was learned to be irrelevant.
+
+## Define values and shapes separately
+
+The mathematical vectors x and w are d×1 columns. Their transpose product wᵀx is 1×1. The bias b, preactivation z and activation a are scalar values, represented as 1×1 in the shape inspector. The JSON interface stores columns as flat arrays; the canonical Python creates a NumPy column explicitly. It accepts one sample only, without implicit broadcasting or a batch convention.
+
+The input x is an observation; w and b are parameters; φ is an explicitly selected function. These roles do not swap when we edit them. There is no target, loss, decision threshold, optimizer or evaluation metric in a bare forward pass. A sigmoid value in [0,1] could be used as a probability in an appropriately fitted and evaluated binary model, as in <a href={href('/chapters/logistic-regression/')}>III-13</a>; merely putting sigmoid here does not establish calibration or define a class decision.
+
+## Derive the three output functions
+
+Identity, ReLU and sigmoid are
+
+$$
+\phi_{\rm id}(z)=z,\qquad
+\phi_{\rm ReLU}(z)=\max(0,z),\qquad
+\sigma(z)=\frac{1}{1+e^{-z}}.
+$$
+
+Identity leaves the affine function unchanged. ReLU is piecewise linear: negative z gives 0, positive z gives z, and z=0 gives 0. It is continuous, but its derivative is not uniquely defined at zero. Forward evaluation at that point is perfectly defined. A later optimizer must state a derivative convention; this chapter implements none.
+
+For very negative z, directly evaluating e⁻ᶻ can overflow. Multiply the numerator and denominator by eᶻ to obtain eᶻ/(1+eᶻ). The stable implementation therefore uses
+
+$$
+\sigma(z)=\begin{cases}
+1/(1+e^{-z})&z\ge0,\\
+e^z/(1+e^z)&z<0.
+\end{cases}
+$$
+
+Every exponential argument is nonpositive. Real sigmoid is strictly between 0 and 1 for finite z; binary64 can round its positive tail to 1 and underflow its negative tail to 0. Those rounded endpoint outputs are disclosed, not treated as exact probabilities of certainty.
+
+## Work the products by hand
+
+For the opening x, w and b,
+
+$$
+w_1x_1=0.5(2)=1,\quad w_2x_2=2(-1)=-2,\quad
+w^Tx=1-2=-1,\quad z=-1+0.25=-0.75.
+$$
+
+The outputs are identity −0.75, ReLU 0, and sigmoid approximately 0.3208213008. With x=(0,0) and b=2, both products and the dot vanish; identity and ReLU output 2 while sigmoid outputs approximately 0.880797078. The bias survives zero input. **Zero neuron** instead sets both inputs and bias to zero, retains the weights, and selects ReLU.
+
+A compact set of further cases is useful:
+
+<div class="table-scroll" tabindex="0" role="region" aria-label="Neuron activation examples, scrollable" data-scrollable="Neuron activation examples, scrollable">
+
+| z | Identity | ReLU | Sigmoid in binary64 |
+| ---: | ---: | ---: | ---: |
+| −2 | −2 | 0 | ≈ 0.1192029220 |
+| 0 | 0 | 0 | 0.5 |
+| 2 | 2 | 2 | ≈ 0.8807970780 |
+| −40 | −40 | 0 | ≈ 4.2483542553 × 10⁻¹⁸ |
+| 40 | 40 | 40 | 1 after rounding |
+| −1000 | −1000 | 0 | 0 after exponential underflow |
+| 1000 | 1000 | 1000 | 1 after rounding |
+
+</div>
+
+Use the two extreme buttons to inspect ±1000 with zero input and the extreme bias. Small changes far into a saturated sigmoid tail can leave the displayed output unchanged. Saturation concerns the function's sensitivity and floating representation; it is separate from choosing a class threshold. ReLU's negative side is exactly flat even in real arithmetic.
+
+## Explore the actual canonical reference
+
+The code below is imported from the actual executable Python file. `forward(request)` constructs NumPy products, then accumulates them in the same left-to-right order shown in the inspector. Its default CLI request is the opening neuron; a complete JSON request on stdin selects other values. The network branch will be developed in III-41. Committed expectations use independent rational sums and high-precision Decimal sigmoid; agreement between two translations alone is insufficient.
+
+<CodeFile source={reference} file="code/python/p09/forward.py" />
+
+## Mistakes and numerical limits
+
+Do not activate each contribution separately and then sum it: φ(Σwⱼxⱼ+b) is generally different from Σφ(wⱼxⱼ)+b. Do not discard a negative weight: its sign is part of the dot product. Do not omit the bias or silently change units. Do not report a ReLU zero as a class label, nor claim that a nonlinear function has learned from data without a fitting procedure.
+
+<Callout title="Finite input does not guarantee representable arithmetic" kind="numerical">
+The pure model rejects wrong kinds, empty/ragged/sparse arrays, mismatched shapes, strings, Booleans, NaN and infinity. Each product, running sum and bias addition must remain finite. A nonzero affine product that underflows to zero is rejected. Ordinary rounding and nonzero subnormal products remain possible; rounded sigmoid endpoints are deliberately allowed. The UI is a bounded two-feature explorer with every editable scalar in −1000…1000; the pure model accepts other compatible dimensions. No tolerance changes the model output or excuses overflow.
+</Callout>
+
+Exact integer and dyadic worked examples need no approximation tolerance. Independent and unit comparisons check every expected zero exactly. Other nonexact sigmoid values compare to Decimal using relative 32ε plus an absolute 32ε for magnitudes at least 10⁻⁸, where ε=2⁻⁵². Tiny nonzero tails use relative-only comparison. Endpoint cases declared exact use equality; nonexact derived sums, including the sum of separately rounded sigmoid complements near 1, use the allowance rather than an endpoint rule. Browser numerical projections use the stated allowance, including an absolute 32ε at expected zero, independently of these exact oracle/unit assertions. This small-case allowance covers exponential implementation and final rounding; it is not a universal error guarantee or a way to accept a fabricated zero tail. SVG quantities retain full-precision data attributes; labels round for readability.
+
+## Five graded investigations
+
+<ChoiceExercise id="iii40-1" client:load prompt="For x=(2,−1), w=(0.5,2), b=0.25, what is z?" choices={[{label:'−0.75.',correct:true,feedback:'The products are 1 and −2; their sum −1 plus 0.25 gives −0.75.'},{label:'1.25.',correct:false,feedback:'The second input is negative, so its weight-2 contribution is −2, not zero.'}]} />
+<ChoiceExercise id="iii40-2" client:load prompt="At z=0, what are ReLU and sigmoid outputs?" choices={[{label:'ReLU 0; sigmoid 0.5.',correct:true,feedback:'ReLU uses max(0,0); sigmoid divides 1 by 1+1.'},{label:'Both are undefined.',correct:false,feedback:'The ReLU derivative has a corner; the forward function itself is defined.'}]} />
+<ChoiceExercise id="iii40-3" client:load prompt="If x is zero and b=2, is the preactivation zero?" choices={[{label:'No; the dot is zero but z=2.',correct:true,feedback:'Bias is added after the dot product and survives zero input.'},{label:'Yes; zero input forces every neuron to zero.',correct:false,feedback:'That ignores the bias and, for sigmoid, its value at zero.'}]} />
+<ChoiceExercise id="iii40-4" client:load prompt="Why use exp(z)/(1+exp(z)) for a large negative z?" choices={[{label:'It avoids forming an overflowing positive exponential.',correct:true,feedback:'The exponential argument stays nonpositive; a very small tail may still round to zero.'},{label:'It changes sigmoid into a hard classification threshold.',correct:false,feedback:'It is an algebraically equivalent evaluation of sigmoid; no decision rule is applied.'}]} />
+<ChoiceExercise id="iii40-5" client:load prompt="What evidence of learning does editing these weights provide?" choices={[{label:'None; these are hand-chosen forward computations.',correct:true,feedback:'Learning would require data, an objective, parameter updates and evaluation.'},{label:'A nonlinear activation proves that the weights have been trained.',correct:false,feedback:'Nonlinearity describes a function family, not how its parameters were obtained.'}]} />
+
+## What you can now explain
+
+You can carry the frozen affine predictor into a vector dot product, account for every term and bias, distinguish preactivation from activation, and evaluate stable sigmoid at extreme inputs. <a href={href('/chapters/composition-learned-representations/')}>III-41</a> composes these mechanisms. To learn weights rather than choose them, Book IV will need a loss, derivatives and optimization: the Book II chain-rule and gradient-descent prerequisites explain why output sensitivity must reach every parameter. This Part stops at forward computation.

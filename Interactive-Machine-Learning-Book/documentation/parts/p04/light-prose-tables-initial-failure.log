@@ -1,0 +1,29 @@
+
+ RUN  v3.2.7 /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-iv-trees-ensembles/Interactive-Machine-Learning-Book
+
+ ❯ tests/unit/p04/lessons.test.ts (19 tests | 1 failed) 203ms
+   ✓ complete mathematical lessons > III-20 compiles complete mechanism prose, code and five exercises 53ms
+   ✓ complete mathematical lessons > III-21 compiles complete mechanism prose, code and five exercises 19ms
+   ✓ complete mathematical lessons > III-22 compiles complete mechanism prose, code and five exercises 14ms
+   ✓ complete mathematical lessons > III-23 compiles complete mechanism prose, code and five exercises 15ms
+   ✓ complete mathematical lessons > III-24 compiles complete mechanism prose, code and five exercises 13ms
+   ✓ complete mathematical lessons > III-25 compiles complete mechanism prose, code and five exercises 12ms
+   ✓ complete mathematical lessons > splits: selected frame equations and geometry follow its numeric state 9ms
+   ✓ complete mathematical lessons > impurity: selected frame equations and geometry follow its numeric state 7ms
+   ✓ complete mathematical lessons > regression: selected frame equations and geometry follow its numeric state 9ms
+   ✓ complete mathematical lessons > bagging: selected frame equations and geometry follow its numeric state 8ms
+   ✓ complete mathematical lessons > forest: selected frame equations and geometry follow its numeric state 6ms
+   ✓ complete mathematical lessons > boosting: selected frame equations and geometry follow its numeric state 7ms
+   ✓ complete mathematical lessons > recursive SSR draws actual node identities and distinct role glyphs without floating labels 2ms
+   ✓ complete mathematical lessons > bounded fieldsets, wrapped legends and inspectors preserve real overflow detection 0ms
+   ✓ complete mathematical lessons > Part manifest and frozen reference guards remain integration-safe 2ms
+   ✓ scientific-notation thresholds keep their actual numeric meaning in the active formula 1ms
+   ✓ bounded UI inputs reject invalid state without changing the canonical rows 0ms
+   ✓ the direct-tree query names and highlights its actual terminal leaf 2ms
+   × every prose table renders semantic headers and stable unique labels for shared overflow synchronization 21ms
+     → expected '<div class="table-scroll" id="iii25-w…' to contain '<th>Half MSE</th>'
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 18 passed (19)
+   Start at  21:31:16
+   Duration  566ms (transform 120ms, setup 0ms, collect 247ms, tests 203ms, environment 0ms, prepare 36ms)

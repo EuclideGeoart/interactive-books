@@ -1,0 +1,123 @@
+---
+chapterId: III-34
+title: Kernel Methods
+hero: Change similarity; solve the new boundary
+lede: Replace dot products with valid kernels and reconstruct nonlinear decisions from the actual fitted support coefficients.
+description: Compare linear, polynomial and RBF Gram matrices and fitted nonlinear contours while inspecting support coefficients, PSD requirements and feature-space norm diagnostics.
+prerequisites: [II.4, II.9, II.17, VI.3, VIII.3, VIII.7]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import SVMStage from '../SVMStage';
+import reference from '../../../../code/python/p07/svm.py?raw';
+
+<Stage caption="The XOR data cannot be separated by an input-space line. Compare actual linear, polynomial and RBF fits; the Gram matrix, coefficients and contours are reconstructed from the same numerical result."><SVMStage scope="iii34-kernel" mode="kernel" client:load /></Stage>
+
+## Ask what a line can express
+
+The opening XOR observations have positive labels at [−1,−1] and [1,1], negative labels at [−1,1] and [1,−1]. Their convex hulls intersect, so a hard input-space line is impossible. Switch to **linear**: the soft optimum can account for disagreement, but cannot invent nonlinear expressiveness. With the symmetric cloud its normal can be zero, giving ties rather than a separating line.
+
+Switch to **polynomial**, degree 2, gamma 1 and offset 0. A product of coordinates distinguishes the diagonals. Switch to **RBF** and alter gamma. The similarity scale changes, the optimizer refits, and the resulting curved zero contour changes accordingly. The laboratory never puts a decorative curve over an unrelated linear model.
+
+## Define a valid similarity
+
+A kernel represents an inner product in a feature space:
+
+$$
+K(x,z)=\langle\phi(x),\phi(z)\rangle_{\mathcal H}.
+$$
+
+For a finite sample, the Gram matrix has n×n shape with Kij=K(xi,xj). It must be symmetric positive semidefinite: for every real column c, cᵀKc≥0. Symmetry alone is insufficient, and kernel entries need not be probabilities or individually nonnegative. PSD is required for the dual's concavity and for interpreting its quadratic form as a squared feature-space norm.
+
+The laboratory restricts parameters to known valid kernel families; it does not accept an arbitrary user-supplied similarity matrix. The independent oracle checks Gram eigenvalues with NumPy `eigvalsh` and separately checks literal entries. This tests the implementation; finite-sample PSD alone does not prove a proposed kernel is valid for every possible dataset.
+
+## Three kernel families and bounded parameters
+
+The linear kernel K(x,z)=xᵀz gives the original input-space model. The polynomial kernel is
+
+$$
+K(x,z)=(\gamma x^Tz+c_0)^d,
+\quad\gamma>0,\ c_0\ge0,\ d\in\{1,2,3,4\}.
+$$
+
+Nonnegative coefficients and an integral degree make this a valid polynomial inner product. The laboratory bounds gamma to [0.05,2] and offset to [0,2]. Degree must be integral; a fractional exponent is rejected even if one particular base would give a finite result. Offset zero gives a homogeneous polynomial; a positive offset permits lower-degree terms.
+
+The radial basis kernel is
+
+$$
+K(x,z)=\exp(-\gamma\|x-z\|^2),\qquad\gamma\in[0.05,2].
+$$
+
+It gives one on the diagonal and decreases with separation. Increasing gamma makes similarity more local. It is not a Gaussian probability density: there is no normalization constant, and Gram rows do not sum to one. RBF feature space is implicit and generally infinite-dimensional. The code computes finite similarities and finite kernel sums; it does **not** materialize infinite coordinate vectors.
+
+## Derive the kernel decision from the dual
+
+The representer form of the fitted feature-space normal is w=Σαi yi φ(xi). Thus the same bounded soft dual uses only K, and prediction is
+
+$$
+f(x)=\sum_i\alpha_i y_i K(x_i,x)+b,\quad
+\hat y=\operatorname{sign}f(x),\quad y^T\alpha=0,\quad0\le\alpha_i\le C.
+$$
+
+The α column has n×1 shape. X still stores n×2 source rows, but the implicit feature-space normal can have a different or infinite dimension. There is no source-space weight vector for a nonlinear fit. Its squared norm is
+
+$$
+\|w\|_{\mathcal H}^2=(\alpha\odot y)^TK(\alpha\odot y).
+$$
+
+The regularizer and primal–dual diagnostics use this feature norm. Dividing f(x) by the feature norm, f(x)/‖w‖𝓗 (the square root of the displayed norm squared), gives a feature-space signed distance when the normal is nonzero, but generally **not** Euclidean distance from x to a curved input-space boundary. The laboratory deliberately leaves source-space signed distance unavailable for nonlinear kernels. Its f=±1 contours represent functional margin levels; their visual spacing in the input plane need not be constant.
+
+Positive α means a support coefficient, while $0<\alpha<C$ and α=C have the KKT interpretations from III-33. Location alone does not determine a coefficient. On-margin flags remain separate and the actual Gram matrix stays visible even if fitting diagnostics fail.
+
+## Work a polynomial feature map literally
+
+For degree 2, gamma 1, offset 0 in two dimensions,
+
+$$
+\phi(x)=\begin{bmatrix}x_1^2\\\sqrt2 x_1x_2\\x_2^2\end{bmatrix},\quad
+\phi(x)^T\phi(z)=(x^Tz)^2.
+$$
+
+For the XOR rows in opening order, within-class diagonally opposite vectors have dot product −2; self dot products are 2; cross-class adjacent vectors have dot product zero. Squaring gives
+
+$$
+K=\begin{bmatrix}4&4&0&0\\4&4&0&0\\0&0&4&4\\0&0&4&4\end{bmatrix}.
+$$
+
+For C≥1/8, one symmetric optimum has all α=1/8 and b=0, yielding f(x)=x1x2, feature norm squared 1/2 and primal=dual=1/4. The feature normal is [0,1/√2,0]ᵀ. Its zero set consists of both coordinate axes in the input plane. Coefficients are not unique because some feature rows coincide; a deterministic pair solver may place the same total class mass on fewer observations. Compare reconstructed decisions and objective rather than demanding these particular coefficients from every solver.
+
+For x=[1,0], z=[0,1], the linear entry is zero; the degree-2 polynomial with offset 1 is one; RBF gamma 1 is exp(−2). Diagonal RBF entries are one. These are hand-defined expectations, not outputs generated by the browser.
+
+For the XOR RBF kernel, write a=exp(−4), so cross-class entries are a and opposite same-class entries a². A symmetric optimum with inactive upper bounds has α=1/(1−a)², b=0 and primal=dual=2/(1−a)². C=4 is above that coefficient. This is a useful analytic anchor for the owner to compare against the actual optimizer.
+
+## Execute the actual reference and inspect the mesh
+
+The canonical reference accepts `mode: kernel` and a complete valid kernel configuration, then constructs a NumPy Gram array and performs bounded pair-coordinate optimization. It reconstructs training decisions, feature norm, hinge, objective, equality and KKT residuals. The oracle independently enumerates dual active sets through linear algebra and checks eigenvalues, entry identities and decisions at additional query points.
+
+<CodeFile source={reference} file="code/python/p07/svm.py" />
+
+The input plane is sampled on a 32×32 mesh. Cell colors use actual kernel decisions at cell centers. Zero and ±1 contour segments interpolate corner scores; they are a finite-resolution visualization of the solved function. Ambiguous saddle cells use deterministic edge-order pairing. Training rows and any tested queries use the full kernel sum rather than that interpolation. A coarse contour can miss small islands; it is not evidence of exact source-space geometry.
+
+Select **Show diagnostic failure** to load the three-row polynomial case with C=1, gamma=1, offset=1 and degree=4. Its valid Gram matrix remains inspectable, but the fixed gain cutoff leaves a KKT residual above the required bound. The laboratory reports failed and draws no fitted contours. This is optimization unavailability, not hard-margin infeasibility; reset restores the opening experiment.
+
+Replay C and then edit a sample. The displayed coefficients and boundary are recomputed from the selected historical input frame. Reset restores RBF gamma 1, C=4 and XOR rows. Keyboard, numeric and touch controls use the same update path and reject invalid values visibly.
+
+## Common mistakes and numerical limits
+
+A nonlinear score is not an input-space distance or calibrated probability. More localized RBF similarity can fit small-scale training patterns and still generalize poorly. Large polynomial entries can worsen conditioning even with valid bounded parameters. PSD roundoff is diagnostic: significantly negative pair curvature is rejected; a nonpositive curvature within the fixed 10⁻¹⁰ numerical allowance uses feasible endpoints and still must pass global KKT/gap diagnostics.
+
+<Callout title="A fit can be unavailable" kind="numerical">All iterative solutions are approximate. Bounded parameters do not guarantee convergence within 1200 steps, especially near degeneracy or ill-conditioning. A failed diagnostic removes the fitted contour and explains the result. Nonfinite or nonzero-underflow arithmetic is rejected; neither zeroing a norm nor widening tolerances repairs an unresolved model.</Callout>
+
+## Five graded investigations
+
+<ChoiceExercise id="iii34-1" client:load prompt="What condition does a Gram matrix need beyond symmetry?" choices={[{label:'Positive semidefiniteness: cᵀKc≥0 for every c.',correct:true,feedback:'The quadratic form is a squared feature-space norm and keeps the dual concave.'},{label:'Every row must sum to one.',correct:false,feedback:'Kernel similarities are not normalized probability distributions.'}]} />
+<ChoiceExercise id="iii34-2" client:load prompt="Does the RBF implementation materialize infinite features?" choices={[{label:'No; it evaluates similarities and finite weighted sums.',correct:true,feedback:'The feature-space interpretation is implicit.'},{label:'Yes; each Gram row contains all infinite coordinates.',correct:false,feedback:'A finite Gram matrix stores pairwise inner products, not an infinite coordinate list.'}]} />
+<ChoiceExercise id="iii34-3" client:load prompt="For nonlinear kernels, is f(x)/feature norm the Euclidean input-boundary distance?" choices={[{label:'Generally no; it is a feature-space quantity.',correct:true,feedback:'A nonlinear feature map does not preserve source-plane Euclidean distance.'},{label:'Yes, every dashed input contour is equidistant.',correct:false,feedback:'Functional margin levels can have varying source-space spacing.'}]} />
+<ChoiceExercise id="iii34-4" client:load prompt="With degree 2 and offset 0, how does the XOR classifier separate diagonals?" choices={[{label:'Through the product feature x1 x2.',correct:true,feedback:'Its sign distinguishes equal-sign from opposite-sign coordinates.'},{label:'By rotating one input-space line.',correct:false,feedback:'The class convex hulls intersect; rotating an input line cannot separate them.'}]} />
+<ChoiceExercise id="iii34-5" client:load prompt="Two optimal coefficient arrays differ on redundant observations. What should be compared?" choices={[{label:'Reconstructed decisions, objective and KKT certificates.',correct:true,feedback:'Dual representations may be nonunique even when the fitted function agrees.'},{label:'Only exact elementwise alpha equality.',correct:false,feedback:'That would mistake a nonunique representation for a mathematical disagreement.'}]} />
+
+## Connections and summary
+
+Dot products, PSD matrices and convex duality explain the kernel trick. You can read Gram entries, reconstruct decisions and distinguish feature-space norms from source-space distance. The model family, C and gamma remain hyperparameters: III-35 will explain how to select such settings using validation evidence rather than training fit alone.

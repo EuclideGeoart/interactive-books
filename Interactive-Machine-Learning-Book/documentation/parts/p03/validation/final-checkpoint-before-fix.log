@@ -1,0 +1,107 @@
+Held source HEAD 7c37db9a0725c42fcaa84195c026ff6dac41a3c4; new regressions added, model source unchanged.
+
+Command: node node_modules/vitest/vitest.mjs run tests/unit/p03/models.test.ts --maxWorkers=1 -t final source checkpoint regressions
+Exit: 1
+
+ RUN  v3.2.7 /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-iii-instance-probabilistic/Interactive-Machine-Learning-Book
+
+ ❯ tests/unit/p03/models.test.ts (29 tests | 3 failed | 25 skipped) 8ms
+   ↓ independent committed arithmetic > agrees with exhaustive-subset neighbor fixtures, including actual ID ties
+   ↓ independent committed arithmetic > agrees with Decimal norms and closed-form seeded dimension fixtures
+   ↓ independent committed arithmetic > agrees with direct rational Bayes products and normalized posterior fixtures
+   ↓ independent committed arithmetic > matches every full-state replay fixture
+   ↓ nearest neighbors and numeric trust boundaries > checks literal neighbors, vote, regression mean and boundary tie
+   ↓ nearest neighbors and numeric trust boundaries > keeps conflicting duplicates separate and deterministic vote ties visible
+   ↓ nearest neighbors and numeric trust boundaries > does not silently clamp k greater than n
+   ↓ nearest neighbors and numeric trust boundaries > supports a one-sample predictor and all-zero regression targets
+   ↓ nearest neighbors and numeric trust boundaries > rejects empty/oversized observations, bad IDs, categories and fractional k
+   ↓ nearest neighbors and numeric trust boundaries > rejects bool/string/nonfinite quantities on public numerical boundaries
+   ↓ nearest neighbors and numeric trust boundaries > uses binary64 large-integer quantities and duplicate identity
+   ↓ nearest neighbors and numeric trust boundaries > preserves input order/state and genuinely immutable detached history
+   ↓ metric and seeded dimension limits > computes independent literal L1/L2/Lp and feature-unit scaling
+   ↓ metric and seeded dimension limits > rescales powers for wide floats but rejects nonfinite differences/results
+   ↓ metric and seeded dimension limits > retains row IDs and coordinate prefixes as dimension changes
+   ↓ metric and seeded dimension limits > exposes the embedded-line counterexample and normalization convention
+   ↓ Bayes support, estimation and replay > matches the hand-worked exact tiny posterior
+   ↓ Bayes support, estimation and replay > keeps zero priors, impossible evidence and missing estimates distinct
+   ↓ Bayes support, estimation and replay > normalizes in log space even when every positive raw score underflows
+   ↓ Bayes support, estimation and replay > validates count/feature shapes and preserves count identity
+   ↓ independent reviewer boundary reproducers > canonicalizes the same representable likelihood ratio before log scoring
+   ↓ independent reviewer boundary reproducers > defaults scales only when the whole optional vector is omitted
+   ↓ independent reviewer boundary reproducers > preserves tiny variance and distinguishes subnormal output underflow
+   ↓ exact decision proof and underflow fixtures > proves all distinct-factor, weighted and smoothed ties without an epsilon
+   ↓ exact decision proof and underflow fixtures > checks tiny summary goldens with exact representable mean and SD assertions
+   × final source checkpoint regressions > keeps 'six equal large distances' finite with exactly zero SD 5ms
+     → expected 9.999999999999998e+307 to be 1e+308 // Object.is equality
+   × final source checkpoint regressions > keeps 'nine equal maximum distances' finite with exactly zero SD 0ms
+     → expected Infinity to be 1.7976931348623157e+308 // Object.is equality
+   ✓ final source checkpoint regressions > keeps distinct nearby large observations distinct without epsilon-zeroing 0ms
+   × final source checkpoint regressions > rejects every holey required Bayes tuple before creating replay 1ms
+     → expected function to throw an error, but it didn't
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/p03/models.test.ts > final source checkpoint regressions > keeps 'six equal large distances' finite with exactly zero SD
+AssertionError: expected 9.999999999999998e+307 to be 1e+308 // Object.is equality
+
+- Expected
++ Received
+
+- 1e+308
++ 9.999999999999998e+307
+
+ ❯ tests/unit/p03/models.test.ts:241:20
+    239|   ])('keeps $name finite with exactly zero SD',({value,count})=>{
+    240|     const a=summarizeDistances(Array.from({length:count},()=>value));
+    241|     expect(a.mean).toBe(value);expect(a.sd).toBe(0);
+       |                    ^
+    242|     expect(a.relativeSpread).toBe(0);expect(a.coefficientOfVariation).…
+    243|     expect(a.reason).toBeNull();expect(a.meanUnderflow).toBe(false);ex…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/unit/p03/models.test.ts > final source checkpoint regressions > keeps 'nine equal maximum distances' finite with exactly zero SD
+AssertionError: expected Infinity to be 1.7976931348623157e+308 // Object.is equality
+
+- Expected
++ Received
+
+- 1.7976931348623157e+308
++ Infinity
+
+ ❯ tests/unit/p03/models.test.ts:241:20
+    239|   ])('keeps $name finite with exactly zero SD',({value,count})=>{
+    240|     const a=summarizeDistances(Array.from({length:count},()=>value));
+    241|     expect(a.mean).toBe(value);expect(a.sd).toBe(0);
+       |                    ^
+    242|     expect(a.relativeSpread).toBe(0);expect(a.coefficientOfVariation).…
+    243|     expect(a.reason).toBeNull();expect(a.meanUnderflow).toBe(false);ex…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/unit/p03/models.test.ts > final source checkpoint regressions > rejects every holey required Bayes tuple before creating replay
+AssertionError: expected function to throw an error, but it didn't
+ ❯ tests/unit/p03/models.test.ts:259:40
+    257|       Reflect.deleteProperty(positiveA.classes[0]!.positive,j);Reflect…
+    258|       for(const state of [query,observed,positiveA,positiveB]){
+    259|         expect(()=>deriveBayes(state)).toThrow(RangeError);
+       |                                        ^
+    260|         expect(()=>bayesTrace(state)).toThrow(RangeError);
+    261|       }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 1 passed | 25 skipped (29)
+   Start at  21:28:41
+   Duration  193ms (transform 60ms, setup 0ms, collect 68ms, tests 8ms, environment 0ms, prepare 37ms)
+
+
+Command: .venv/bin/python -B oracle/p03/test_instance_methods.py InstanceMethods.test_large_constant_summary_literals InstanceMethods.test_required_bayes_tuple_positions_before_trace
+Exit: 0
+..
+----------------------------------------------------------------------
+Ran 2 tests in 0.002s
+
+OK

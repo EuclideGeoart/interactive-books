@@ -1,0 +1,31 @@
+# Wave B / Part IV — ACCEPT
+
+Integration-owner decision on 2026-10-14, before any Wave B Part merge. Mathematical verdict: **ACCEPT**. Technical verdict: **ACCEPT** within the required Linux Chromium production scope. Accepted source: `976a8dd8db5dcd0261e0bf6cd1df32fec431bc6b`, branch `feature/book-iii-part-iv-trees-ensembles`. This accepts III-20–25. Combined integration acceptance and the Wave B freeze remain separate gates.
+
+Original final author delivery `72a7a1df85d3e5870e1d6b223d84691a768adbb6` is classified **CORRECTION REQUIRED** by fresh owner review. Its kernel sparse-array corrections pass independent challenges, but its exported lesson query guard still skipped holes. With zero ensemble trees or zero boosting stages, no kernel prediction rejected the malformed query and lesson geometry became NaN. The owner retained the failing reproduction, cancelled its active focused run after seven passing gates (actual subprocess return -15/SIGTERM; shell result 241), then made the necessary three-path correction on the existing P04 branch. `976a8dd` changes one indexed query guard, adds one regression covering all six modes/both positions/JSON nulls, and records the owned correction. Canonical Python, mathematical algorithms, fixture numbers, prose tables, shared files and baselines are preserved.
+
+The clean corrected source passed a fresh complete owner run at signature `1ba7edcadaa95e91eb7d715c3b995e8e792f84bf9475d005418845cf24e792ff`. It started `2026-10-13T21:48:14.846Z` and finished `21:59:42.809Z`. All nine gates record exit 0 and unchanged sources; the separately recorded actual runner exit is 0.
+
+| Required gate | Actual result |
+| --- | --- |
+| Type/content check | Zero errors, warnings and hints |
+| Unit/parity | 79 passed in 7 files: 62 Part units and 17 platform units |
+| Independent oracle/freshness | 2 commands; 15 Python unittests; 23 freshly executed independent/canonical cases match committed fixture |
+| Root production/offline build | 34 pages built; passed |
+| `/machine-learning/` production build | 34 pages built; passed |
+| Root production audit | All 22 published chapter routes, internal assets/links and PWA paths passed |
+| Subpath production audit | Same published coverage and paths passed |
+| Root real browser | 162 passed; zero unexpected, skipped, flaky or report errors |
+| Subpath real browser | 162 passed; zero unexpected, skipped, flaky or report errors |
+
+Actual core command from the Part Book: `npm run validate:focused -- --part p04`, executed by the owner wrapper under `flock /tmp/interactive-books-heavy-gate.lock`. Exact child argv, cwd, source binding and exit are in `p04-corrected/RUN.json`. Gate argv, source binding and timings are in [the manifest](validation/wave-b/continuation-owner/p04-corrected/FOCUSED_MANIFEST.json); the raw log, separate exit and raw browser reports are beside it. Browser execution includes 26 owned cases in each viewport project on each mount, plus publication/reference cases. The previous cccfd3f passing run and cancelled 72a7a1d run remain separate historical evidence; cached browser JSON in the cancelled directory is explicitly not current acceptance.
+
+The owner independently reviewed split ordering/legality, weighted Gini and entropy, actual regression SSE/means, root-normalized pruning, disjoint reserved bootstrap/feature streams, per-node feature subsets, actual tree aggregation/OOB exclusion and sequential squared-error residual stages. Nineteen independent TypeScript challenges for this Part pass; eighteen additional canonical Python assertions verify serialized terminal queries, zero-work row boundaries, means and exact constant decimals. [The mathematical review](validation/wave-b/continuation-owner/MATHEMATICAL_REVIEW.md) records methods, failure history, precise semantics and evidence.
+
+The independent oracle enumerates separable row subsets and all pruned subtrees, uses Fraction moments/Gini/residual updates, 80-digit Decimal entropy and closed-form LCG arithmetic. Fresh fixture generation executes the actual canonical NumPy code and compares every registered case. Boundary rejection, IDs, memberships, dimensions, seeds and feature subsets remain exact. The existing 2e-12 arithmetic comparison, separately justified geometry tolerances and authorized eight-epsilon pruning selection policy retain their meanings.
+
+Fresh capture evidence contains 67 P04 images across all six chapters, three physical viewports, both themes, root/subpath, chapter openings and threshold/entropy/pruning/zero-tree/mean-only/prose-table states. All hashes verify. The owner reviewed all 36 canonical root layouts through six contact sheets and original/detail views of mobile forest, pruned regression, baseline-only boosting and the repaired worked-stage table. The UI shows actual source rows, leaf/ensemble/stage outputs and their declared plot scales; controls, inspector and long tables remain contained. The five prose tables retain their original values and overflow-dependent accessible wrapper behavior; both-theme physical-width and native keyboard-scroll browser cases pass on both mounts. Exact pixel-inspection coverage is in [visual review](validation/wave-b/continuation-owner/VISUAL_REVIEW.json).
+
+All 35 added paths versus d2be911 are within P04 ownership (the previous delivery's 34 paths plus the new owned correction note). The correction touches only three owned paths. All 13 III-07 hashes, required reference oracle entries, accepted fixtures/baselines, protected Book I/II trees, original tags and 74 historical evidence files remain unchanged; `PRE_MERGE_PRESERVATION.json` records them. The P04 worktree is clean. Only the integration owner may merge the accepted corrected SHA.
+
+Limits: numeric binary CART and scalar-regression ensembles remain bounded to 32 kernel rows, 1–4 features, depth five and six trees/stages; the sheet has two bounded features. Missing values/categorical splits and other boosting objectives are outside scope. Finite arithmetic failure and unresolved underflow are explicit. Native Windows, other engines, real devices and human screen-reader checks remain unperformed. No push/deployment or Wave C work is included.

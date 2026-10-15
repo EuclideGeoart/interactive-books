@@ -1,0 +1,130 @@
+---
+chapterId: III-21
+title: Entropy, Gini Impurity and Information Gain
+hero: Let the child counts set the weights
+lede: Compare entropy and Gini on literal class counts and see why a small pure child cannot dominate split selection.
+description: Compare entropy and Gini on literal class counts and see why a small pure child cannot dominate split selection.
+prerequisites: [IV.4, VII.1, VII.2, VII.3]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import TreeStage from '../TreeStage';
+import reference from '../../../../code/python/p04/trees_ensembles.py?raw';
+
+<Stage caption="Start with the controls. Every branch, score, bootstrap draw and stage output comes from the active numeric state; Reset restores the hand-authored inputs."><TreeStage scope="iii21-impurity" mode="impurity" client:load /></Stage>
+
+## Compare the same partition in two units
+
+Select **Entropy (bits)** in the opening sheet. Keep x1 and threshold 2.5. The parent impurity changes from Gini 0.5 to entropy 1 bit; gain changes from 0.25 to about 0.459148. The IDs and counts do not change. Now move the threshold to 1.5: a one-row pure child is attractive, but five other rows still contribute to the score.
+
+Inspect a descendant node to recompute its local probabilities. Its parent count is that node's count, not the original six. Pure labels, constant features and empty data are explicit controls. Replay depth 0–3 to see how the selected impurity guides actual recursive choices. Reset, numeric Enter/arrows, query fields and the touch-capable slider share the same state and counts.
+
+## Impurity summarizes the label distribution
+
+For binary labels in nonempty node S, p0=n0/n and p1=n1/n. Two common impurities are
+
+$$
+I_G(S)=1-p_0^2-p_1^2=2p_0p_1,\qquad
+H(S)=-p_0\log_2p_0-p_1\log_2p_1.
+$$
+
+Gini is zero for pure labels and reaches 1/2 at equal counts. It is the probability of a mismatch between two independently drawn labels from this empirical distribution. Entropy is expected self-information in bits; it is zero when the label is certain and reaches 1 bit at equal binary proportions.
+
+The limit of p log p as p approaches zero is zero. We implement that convention by skipping zero counts, not by evaluating log(0) and multiplying infinity by zero. Empty data do not define probabilities; our zero empty-node impurity is a bookkeeping convention, while the prediction remains undefined.
+
+## Derive the weighted gain
+
+Draw a row uniformly from the current node. It lands in the left child with probability nL/n and in the right with probability nR/n. Expected remaining impurity is therefore
+
+$$
+I_{\mathrm{child}}=\frac{n_L}{n}I_L+\frac{n_R}{n}I_R,\qquad
+\Delta=I_P-I_{\mathrm{child}}.
+$$
+
+For entropy, this reduction is empirical information gain between the branch outcome and label. For Gini, it is a decrease in a different impurity. Both choose locally more homogeneous children; their numeric gains use different scales and must not be compared as though they were the same unit.
+
+A useful Gini identity follows by letting a and b be child positive-label fractions and q=nL/n:
+
+$$
+\Delta_G=2q(1-q)(a-b)^2.
+$$
+
+It is nonnegative in exact arithmetic for a legal partition. The identity shows why a large difference between child fractions matters, but also why a tiny child receives a small weight. The runtime uses explicit child risks, while the oracle independently evaluates exact count fractions.
+
+## Work the canonical root in bits
+
+Counts [3,3] give parent H=1. At x1 ≤ 2.5, left counts [2,0] give H=0; right counts [1,3] give
+
+$$
+H_R=-\frac14\log_2\frac14-\frac34\log_2\frac34
+\approx0.811278124459.
+$$
+
+The weighted child entropy is (2/6)0+(4/6)HR ≈ 0.540852082973. Gain is about 0.459147917027 bits.
+
+At x1 ≤ 1.5, the left has one class-zero row and the right counts [2,3]. Right entropy is about 0.970950594455. Its weight is 5/6, yielding weighted entropy about 0.809125495379 and gain about 0.190874504621. Taking an unweighted average would assign the pure one-row child half the influence and overstate this split's benefit.
+
+<div class="table-scroll" id="iii21-worked-entropy" data-p04-prose-table="iii21-worked-entropy" data-scrollable="III-21 weighted entropy and gain comparison, scrollable" tabindex="0" role="region" aria-label="III-21 weighted entropy and gain comparison, scrollable">
+
+| Partition | Child sizes | Weighted entropy | Gain |
+| --- | --- | ---: | ---: |
+| x1 ≤ 1.5 | 1 and 5 | ≈ 0.809125 | ≈ 0.190875 |
+| x1 ≤ 2.5 | 2 and 4 | ≈ 0.540852 | ≈ 0.459148 |
+
+</div>
+
+## Examine common confusions
+
+Information gain is a training split score, not classification accuracy, a coefficient gradient, or a promise of causal information. At a leaf, this sheet predicts the majority label with class-zero ties. Changing the impurity can change the tree without changing that terminal decision policy.
+
+A feature with many possible values offers more opportunities to find a favorable training split. Greedy gain alone does not correct selection bias or protect a held-out population. We support finite numeric features and two labels; missing values, categorical grouping and multiway branching require additional policies.
+
+<Callout title="Exact identities, approximate logarithms" kind="numerical">
+Counts, IDs and legal memberships are exact. Entropy is a binary64 logarithmic calculation. The independent oracle uses 80-digit Decimal logarithms, and its small-case parity bound is absolute plus relative 2×10^-12. That score tolerance does not change candidate legality or the runtime's exact computed-gain tie rule.
+</Callout>
+
+## Connections and checkpoints
+
+Book II's entropy supplies the uncertainty measure; III-20 supplies the partition search. III-22 replaces class uncertainty with squared error, and III-24 limits which features participate in each node's search. You should be able to compute both impurities, apply the zero-probability convention, derive the child weights, and distinguish an impurity objective from downstream prediction error.
+
+The actual Python functions stats and evaluate_split produce the active node counts and scores. An exhaustive subset oracle verifies legal splits independently; Fraction checks Gini and Decimal checks entropy. The plot's color and shape labels show classes, while the numeric table remains authoritative when observations overlap.
+
+## Execute the actual Python and NumPy
+
+The imported file below is the canonical runnable source used by the numerical tests. Read the named functions for this chapter; the same recursive kernel supports the Part's later ensembles. From the book root:
+
+```bash
+.venv/bin/python -B code/python/p04/trees_ensembles.py
+```
+
+That default command prints the six-row squared-error boosting demonstration as JSON. To run this chapter's tree or sampling operation, pass a JSON request on stdin with `operation` equal to `tree`, `bootstrap`, `bagging` or `boosting`, the displayed `rows`, and the `options` keys in `DEFAULT_OPTIONS`. The independent fixture file contains complete runnable requests for all six lessons. Core lessons require no network or model service.
+
+For this chapter's exact committed example, run the independent fixture request through the actual canonical module:
+
+```bash
+.venv/bin/python -B - <<'PYTHON'
+import json, sys
+from pathlib import Path
+sys.path.insert(0, "code/python/p04")
+from trees_ensembles import dispatch
+cases = json.loads(Path("fixtures/p04/trees.fixtures.json").read_text())["cases"]
+request = next(c["input"] for c in cases if c["input"]["name"] == "classification-entropy")
+print(json.dumps(dispatch(request), allow_nan=False))
+PYTHON
+```
+
+<CodeFile source={reference} file="code/python/p04/trees_ensembles.py" />
+
+## Five graded investigations
+
+<ChoiceExercise id="iii21-1" client:load prompt={"What is the entropy of a pure binary node?"} choices={[{"label":"0 bits.","correct":true,"feedback":"The certain class contributes −1 log2(1)=0; the absent class contributes 0."},{"label":"Undefined because log2(0) occurs.","correct":false,"feedback":"We use the finite zero-probability convention."}]} />
+
+<ChoiceExercise id="iii21-2" client:load prompt={"Child entropies are 0 and 1 bit, with sizes 1 and 9. What is weighted child entropy?"} choices={[{"label":"0.9 bit.","correct":true,"feedback":"Use (1/10)0+(9/10)1."},{"label":"0.5 bit.","correct":false,"feedback":"That unweighted average ignores nine of ten rows' influence."}]} />
+
+<ChoiceExercise id="iii21-3" client:load prompt={"A binary node has equal class counts. Which pair is correct?"} choices={[{"label":"Gini 0.5; entropy 1 bit.","correct":true,"feedback":"The two impurities have different maximum scales."},{"label":"Gini 1; entropy 0.5 bit.","correct":false,"feedback":"These reverse the measures' binary maxima."}]} />
+
+<ChoiceExercise id="iii21-4" client:load prompt={"Parent entropy is 1 and weighted child entropy ≈0.540852. What is information gain?"} choices={[{"label":"≈0.459148 bit.","correct":true,"feedback":"Gain is the expected reduction in node entropy."},{"label":"≈1.540852 bits.","correct":false,"feedback":"Adding uncertainty does not measure information gained by branching."}]} />
+
+<ChoiceExercise id="iii21-5" client:load prompt={"A high information gain establishes which claim?"} choices={[{"label":"A favorable local training partition under that impurity.","correct":true,"feedback":"Generalization and causality need different evidence."},{"label":"A causal relationship and guaranteed unseen accuracy.","correct":false,"feedback":"The score is calculated from the current empirical counts."}]} />

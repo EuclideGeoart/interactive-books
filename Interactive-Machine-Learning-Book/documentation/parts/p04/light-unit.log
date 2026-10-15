@@ -1,0 +1,12 @@
+
+ RUN  v3.2.7 /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-iv-trees-ensembles/Interactive-Machine-Learning-Book
+
+ ✓ tests/unit/p04/lessons.test.ts (18 tests) 723ms
+ ✓ tests/unit/p04/parity.test.ts (26 tests) 520ms
+   ✓ canonical Python normalizes arbitrary-int boundary and integer-valued options without mutating inputs  335ms
+ ✓ tests/unit/p04/tree.test.ts (13 tests) 69ms
+
+ Test Files  3 passed (3)
+      Tests  57 passed (57)
+   Start at  20:27:53
+   Duration  3.46s (transform 527ms, setup 0ms, collect 941ms, tests 1.31s, environment 1ms, prepare 348ms)

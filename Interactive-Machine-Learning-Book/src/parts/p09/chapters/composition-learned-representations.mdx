@@ -1,0 +1,129 @@
+---
+chapterId: III-41
+title: Composition and Learned Representations
+hero: Compose two layers and locate what nonlinearity changes
+lede: Trace hidden coordinates, prove the affine collapse and construct an untrained XOR counterexample before asking how weights could be learned.
+description: Inspect every parameter and intermediate value of a tiny two-layer network, compare its affine collapse and explain hand-chosen ReLU XOR features without claiming training.
+prerequisites: [II.9, II.10, II.13, III.6, III.8, VI.1, VI.4, VIII.2]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import { href } from '../../../shell/href';
+import ForwardStage from '../ForwardStage';
+import reference from '../../../../code/python/p09/forward.py?raw';
+
+<Stage caption="All four binary cases are recomputed with the current editable parameters. The opening ReLU features and output weights were chosen by hand; the affine comparison removes the hidden activation."><ForwardStage scope="iii41-network" mode="network" client:load /></Stage>
+
+## Change the function between the layers
+
+At the opening input x=(1,0), the hidden preactivations are (1,−1). ReLU turns them into a1=(1,0), and the output row sums these coordinates to z2=1. Choose identity: a1 becomes (1,−1) and the output becomes 0. The matrices did not change. The affine-collapse comparison is 0 for either selection; its label explains why it is an identity comparison in one case and a counterfactual in the other.
+
+Use the four input buttons to inspect (0,0), (0,1), (1,0), (1,1). The table keeps all four cases visible, including both hidden activations and the current output when the calculation is representable. Each case is evaluated separately: a failing counterfactual row says **Unavailable** with its numerical reason and withholds its derived values, while the valid active pass remains visible. Selecting such a row through an input button reports rejection and preserves the last valid active state. With the original ReLU parameters the outputs are 0,1,1,0. Edit any entry of W1, b1, W2 or b2: the table reflects the new function, so it may stop matching the XOR targets. **Restore hand-chosen XOR** restores the original matrices and ReLU. Reset additionally restores operation 1 and the opening input.
+
+Replay walks through first-layer terms, hidden activations, second-layer terms and final output. Every contribution, running sum, bias and tensor shape remains inspectable. This is an explanation of dependency order, not a sequence of learning updates. An edit during replay forks the displayed input and parameters and closes playback; historical frames remain detached and immutable.
+
+## Composition changes the coordinates supplied to the next layer
+
+For a single sample, define
+
+$$
+z_1=W_1x+b_1,\qquad a_1=\phi(z_1),\qquad z_2=W_2a_1+b_2.
+$$
+
+Activation applies separately to each hidden coordinate. The final output is z2; there is no output activation or classification threshold. The first layer can be understood as h copies of the neuron from <a href={href('/chapters/linear-model-artificial-neuron/')}>III-40</a>. Each row of W1 contains one hidden neuron's weights. Its activated result becomes one coordinate of the next layer's input.
+
+The contracts are x d×1, W1 h×d, b1,z1,a1 h×1, W2 o×h, and b2,z2 o×1. Inner dimensions determine which products exist. Bias vectors must match the corresponding number of rows; they are not arbitrary broadcastable objects. The explorer fixes d=h=2,o=1. The pure model supports other positive compatible dimensions and rejects incompatible, empty or ragged shapes. It supports no batches; columns are flat arrays in JSON, not observation rows.
+
+A **representation** here simply means the coordinates a1 supplied to the second layer. A **learned representation** would require those coordinates' defining parameters to have been fitted from data. Their interpretation depends on the objective and evidence, not the word “hidden.” Our hand-chosen features do not demonstrate semantic understanding, learned categories or generalization.
+
+## Prove that two affine maps collapse
+
+For identity activation a1=z1. Substitution and distributivity yield
+
+$$
+z_2=W_2(W_1x+b_1)+b_2
+=(W_2W_1)x+(W_2b_1+b_2).
+$$
+
+Thus W_eff=W2W1 has shape o×d and b_eff=W2b1+b2 has shape o×1. No matter how wide the intermediate layer is, the resulting input-to-output function is affine. Repeating the argument collapses further affine-only layers too. Such factorizations may impose rank constraints or change optimization, but they do not add a new nonlinear input-output function family.
+
+With nonidentity φ, replacing a1 by z1 changes the function in general. The comparison in the explorer explicitly removes φ: it is a **counterfactual affine collapse**, not an asserted equivalent representation of the nonlinear network. They may agree at some inputs, and some special parameters make them agree everywhere. One equality or inequality at a single input should not be mistaken for a universal proof.
+
+## Work an identity composition completely
+
+Consider the independent literal example
+
+$$
+x=\begin{bmatrix}2\\-1\end{bmatrix},\quad
+W_1=\begin{bmatrix}1&2\\-1&0.5\end{bmatrix},\quad
+b_1=\begin{bmatrix}1\\-2\end{bmatrix},\quad
+W_2=\begin{bmatrix}3&-2\end{bmatrix},\quad b_2=0.5.
+$$
+
+Hidden row 1 has products (2,−2), dot 0, and z1[1]=1. Hidden row 2 has products (−2,−0.5), dot −2.5, and z1[2]=−4.5. With identity, the output products are (3,9); the running sums are 3 then 12 and z2=12.5.
+
+The effective weight row is (3·1+(−2)(−1),3·2+(−2)0.5)=(5,5). Its bias is 3·1+(−2)(−2)+0.5=7.5. Direct collapse gives 5·2+5(−1)+7.5=12.5. All these numbers are exactly representable dyadic values. Enter these parameters in the explorer to reproduce each intermediate.
+
+Switch to ReLU without changing them. The hidden coordinates become (1,0) and z2=3.5. The counterfactual remains 12.5. The difference −9 comes from replacing the negative hidden coordinate by zero, before applying its second-layer weight −2. Applying ReLU only after the final sum would be a different network.
+
+## Construct XOR with two hand-chosen features
+
+The opening parameters are
+
+$$
+W_1=\begin{bmatrix}1&-1\\-1&1\end{bmatrix},\quad b_1=\begin{bmatrix}0\\0\end{bmatrix},\quad
+W_2=\begin{bmatrix}1&1\end{bmatrix},\quad b_2=0.
+$$
+
+They define h1=max(0,x1−x2), h2=max(0,x2−x1), and z2=h1+h2=|x1−x2|. On binary inputs this equals XOR. Outside the four binary corners it is an absolute-difference function, not a guaranteed binary output or probability.
+
+<div class="table-scroll" tabindex="0" role="region" aria-label="Hand-chosen XOR derivation, scrollable" data-scrollable="Hand-chosen XOR derivation, scrollable">
+
+| x | z1 | h1 | h2 | Output z2 |
+| --- | --- | ---: | ---: | ---: |
+| (0,0) | (0,0) | 0 | 0 | 0 |
+| (0,1) | (−1,1) | 0 | 1 | 1 |
+| (1,0) | (1,−1) | 1 | 0 | 1 |
+| (1,1) | (0,0) | 0 | 0 | 0 |
+
+</div>
+
+Now independently rule out a scalar affine function that matches these four values. Suppose f(x)=c1x1+c2x2+b. The (0,0) case forces b=0. The (1,0) and (0,1) cases force c1=c2=1. Then f(1,1)=2, contradicting the required 0. This contradiction does not rely on the implementation, or on merely observing the collapse in the browser. It concerns exact scalar outputs; it does not sneak in a thresholding rule.
+
+For these matrices W_eff=(0,0) and b_eff=0. Identity composition therefore outputs zero for every input, while ReLU separates the two signs of a difference. We chose the features using our knowledge of XOR. The example establishes representational possibility, not that a trainer discovers those parameters or that the coordinates have learned a semantic concept.
+
+## Arithmetic order is part of the experiment
+
+The affine-collapse proof is exact algebra over the reals. Binary64 rounds each product and addition. A scalar example makes the limit visible: choose x=1, W1=1, b1=10¹⁶, W2=1, b2=−10¹⁶ and identity. The staged calculation rounds 1+10¹⁶ to 10¹⁶, then cancels to 0. The collapsed bias cancels to 0 first, and the direct affine output is 1. Algebraic equivalence does not promise identical rounded intermediates. These scales exceed the UI's ±1000 editing bound but are covered by the authored pure-model tests.
+
+<Callout title="A comparison can fail when the forward pass succeeds" kind="numerical">
+All active forward products, sums and bias additions must be finite, and nonzero affine products may not underflow to zero. Computing W_eff can overflow even when ReLU makes the actual hidden values zero. In that case the comparison is explicitly unavailable and the valid forward result remains visible. No fabricated effective weights, automatic rescaling or tolerance-based clipping is applied. Sigmoid uses stable signed branches and discloses rounded endpoint tails.
+</Callout>
+
+The oracle uses exact Fraction sums for these small rational examples, with Decimal activation values for sigmoid. Exact integer/dyadic fixtures are checked exactly; transcendental quantities use the documented 32ε small-case allowance from III-40, with relative-only checks for small nonzero tails. There is no arbitrary tolerance for shape acceptance, XOR targets or the contradiction. Near cancellation, input precision and intermediate rounding can dominate; no small universal relative error guarantee is implied.
+
+## Read the executable mechanism
+
+The same actual Python file supplies both chapters. NumPy handles column construction and elementwise product arrays; explicit sequential sums expose the computation order. It returns hidden `products`, `running`, `dot`, `b`, `z`, the activated vector `a1`, output rows, effective matrices/biases, direct collapsed rows and actual-minus-collapsed differences. The separate oracle computes exact arithmetic without deriving expectations through this module. The owner executes its self-tests, committed-literal freshness check and actual Python/TypeScript parity tests.
+
+<CodeFile source={reference} file="code/python/p09/forward.py" />
+
+## Mistakes, connections and the next book
+
+More affine-only layers do not create nonlinear expressiveness. More hidden coordinates do not prove that useful features were learned. A hidden activation is not the same as an output threshold. ReLU at zero is a valid forward value even though derivative-based learning needs a convention at the corner. A sigmoid hidden feature can saturate; a tiny forward sensitivity matters later to derivatives, not to the shape of matrix multiplication.
+
+Book III has distinguished model families, fitting objectives, evaluation and numerical limits. Book IV must connect a forward output to a task-specific loss, use the chain rule to relate changes in that loss to earlier weights, and use optimization to update parameters. Book II's actual chain-rule, gradient and objective prerequisites are linked below through the frozen resolver. Training-only data boundaries, held-out evaluation and numerical diagnostics remain necessary when features are learned. This closing chapter implements no derivatives, backward pass, trainer or later architecture.
+
+## Five graded investigations
+
+<ChoiceExercise id="iii41-1" client:load prompt="For d=3, h=2 and o=4, what are W1 and W2 shapes?" choices={[{label:'W1 is 2 × 3; W2 is 4 × 2.',correct:true,feedback:'Rows index destination coordinates and columns index source coordinates.'},{label:'W1 is 3 × 2; W2 is 2 × 4.',correct:false,feedback:'Those transposed shapes cannot multiply the stated input and hidden column vectors.'}]} />
+<ChoiceExercise id="iii41-2" client:load prompt="What is the effective bias when the hidden activation is identity?" choices={[{label:'W2 b1 + b2.',correct:true,feedback:'The first bias passes through W2 before the second bias is added.'},{label:'b1 + b2 regardless of dimensions.',correct:false,feedback:'The two biases may even have different lengths; the first must be transformed by W2.'}]} />
+<ChoiceExercise id="iii41-3" client:load prompt="For the hand-chosen ReLU XOR at x=(0,1), what are (h1,h2) and z2?" choices={[{label:'(0,1), then z2=1.',correct:true,feedback:'The preactivations are (−1,1); ReLU keeps only the positive coordinate.'},{label:'(−1,1), then z2=0.',correct:false,feedback:'That is identity composition, which removes the nonlinearity and collapses to zero.'}]} />
+<ChoiceExercise id="iii41-4" client:load prompt="Why can no scalar affine map match XOR values 0,1,1,0?" choices={[{label:'The first three cases force b=0 and both weights 1, giving 2 at (1,1).',correct:true,feedback:'The fourth value contradicts the coefficients forced by the first three.'},{label:'Because the explorer happened to display zero after selecting identity.',correct:false,feedback:'That tests only the chosen parameters; the contradiction excludes every scalar affine map.'}]} />
+<ChoiceExercise id="iii41-5" client:load prompt="Does a nonlinear hidden representation here prove learned semantic features?" choices={[{label:'No; the parameters were chosen by hand and never optimized.',correct:true,feedback:'Learned representations require fitting and task-specific evidence; coordinates alone establish neither.'},{label:'Yes; hidden coordinates inherently encode learned meanings.',correct:false,feedback:'The word hidden describes an intermediate value, not provenance or understanding.'}]} />
+
+## What you can now explain
+
+You can trace a two-layer column-vector computation, prove the affine collapse, identify the hidden nonlinearity's effect, construct and independently justify XOR, and distinguish a fixed representation from learned features. Book III ends here. Learning those weights requires optimization and derivatives; the conceptual bridge is ready for Book IV without implementing its training machinery.

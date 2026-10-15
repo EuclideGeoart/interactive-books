@@ -1,0 +1,39 @@
+.p08-lab { min-width:0; color:var(--ink); font-family:var(--sans); }
+.p08-heading { display:flex; flex-wrap:wrap; align-items:start; justify-content:space-between; gap:1rem; padding-bottom:1rem; border-bottom:1px solid var(--rule); }
+.p08-heading h2 { margin:.4rem 0; font-family:var(--serif); }
+.p08-heading p,.p08-lab [data-provenance],.p08-plot figcaption { color:var(--muted); font-size:1rem; }
+.p08-controls,.p08-pair { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; margin:1.5rem 0; }
+.p08-lab fieldset { min-inline-size:0; max-inline-size:100%; display:flex; flex-direction:column; gap:.75rem; padding:1rem; border:1px solid var(--rule); }
+.p08-lab legend { font-weight:600; max-width:100%; white-space:normal; overflow-wrap:anywhere; }
+.p08-lab label { display:flex; flex-direction:column; gap:.25rem; min-width:0; }
+.p08-lab select,.p08-lab input { min-width:0; width:100%; max-width:100%; min-height:44px; color:var(--ink); background:var(--surface); border:1px solid var(--rule); font:inherit; padding:.5rem; }
+.p08-lab button { min-height:44px; white-space:normal; overflow-wrap:anywhere; }
+.p08-actions { display:flex; flex-wrap:wrap; gap:.5rem; }
+.p08-actions button { flex:1 1 9rem; }
+.p08-lab :focus-visible { outline:2px solid var(--update); outline-offset:3px; }
+.p08-lab .inspector,.p08-lab .inspector dt { min-width:0; }
+.p08-lab .inspector dd { white-space:normal; overflow-wrap:anywhere; min-width:0; max-width:65%; }
+.p08-lab .table-scroll { min-width:0; max-width:100%; overflow-x:auto; margin:1.5rem 0; }
+.p08-lab table { font-size:1rem; }
+.p08-lab td { white-space:nowrap; }
+.p08-lab tr[data-selected=true] { background:var(--surface); outline:2px solid var(--update); outline-offset:-2px; }
+.p08-lab [role=alert] { border-left:3px solid var(--residual); padding:.75rem; }
+.p08-scalars { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; }
+.p08-scalars div { border-bottom:1px solid var(--rule); padding:.5rem 0; min-width:0; }
+.p08-scalars dt { color:var(--muted); }
+.p08-scalars dd { margin:.3rem 0 0; font-family:var(--mono); overflow-wrap:anywhere; }
+.p08-plot { width:100%; max-width:640px; margin:1.5rem auto; }
+.p08-plot svg { display:block; width:100%; height:auto; overflow:visible; }
+.p08-plot text { fill:var(--ink); font-family:var(--sans); }
+.p08-axis { fill:none; stroke:var(--rule); stroke-width:2; }
+.p08-training { fill:none; stroke:var(--data); stroke-width:3; }
+.p08-validation { fill:none; stroke:var(--prediction); stroke-width:3; stroke-dasharray:7 5; }
+.p08-training-dot { fill:var(--data); stroke:var(--surface); stroke-width:2; }
+.p08-validation-dot { fill:var(--surface); stroke:var(--prediction); stroke-width:3; }
+.p08-lab rect.p08-validation-dot { fill:none; }
+.p08-lab pre { max-width:100%; overflow:auto; font-size:.875rem; }
+.p08-lab .formula { min-width:0; max-width:100%; }
+@media(max-width:1050px) { .p08-controls,.p08-pair { grid-template-columns:minmax(0,1fr); } }
+@media(max-width:560px) { .p08-scalars { grid-template-columns:repeat(2,minmax(0,1fr)); } .p08-lab .inspector>div { display:block; } .p08-lab .inspector dd { max-width:100%; margin-top:.4rem; } .p08-heading button { width:100%; } }
+.p08-lab [data-experiment-record] { min-width:0; max-width:100%; max-height:26rem; overflow:auto; }
+.p08-lab [data-experiment-record] pre { width:max-content; min-width:100%; max-width:none; margin:0; overflow:visible; white-space:pre; }

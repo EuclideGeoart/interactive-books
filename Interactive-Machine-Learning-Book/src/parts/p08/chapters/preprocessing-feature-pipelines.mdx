@@ -1,0 +1,102 @@
+---
+chapterId: III-38
+title: Preprocessing, Feature Engineering and Pipelines
+hero: A transform has a training membership
+lede: Compare identical held-out observations through a proper training-only pipeline and a contaminated fit-before-split pipeline.
+description: Inspect mean imputation, population scaling, scalar feature engineering and ridge fitting, with an actual held-out numerical leakage counterexample.
+prerequisites: [I.5, II.10, V.1, V.2, V.7]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import { href } from '../../../shell/href';
+import EvaluationStage from '../EvaluationStage';
+import reference from '../../../../code/python/p08/evaluation.py?raw';
+
+<Stage caption="Proper and leaked paths use identical rows, seed, fold 1 and ridge convention. Only the preprocessing fit membership differs."><EvaluationStage scope="iii38-pipeline" mode="pipeline" client:load /></Stage>
+
+## Locate the contamination
+
+Find the transform fit IDs in the proper path. They match fold 1 training IDs. The leaked path adds fold 1 validation IDs, while the model fit IDs remain training-only in both paths. The held-out table exposes filled features, standardized coordinates and predictions for the same observations. The scalar difference is actual leaked MSE minus proper MSE, not a decorative warning label.
+
+Change a validation feature and inspect both fitted states. The proper preprocessing statistics do not change; the leaked statistics can. Even when validation labels are never fitted, validation feature information has crossed the boundary. Reset and compare with constant or shifted data. Leakage need not improve the displayed score, and some datasets give zero difference; neither outcome makes the procedure legitimate.
+
+## Fit is distinct from transform
+
+A fitted transform stores information learned from a declared training set T. Transform applies that stored information to any row without learning again. A pipeline orders these operations:
+
+1. Fit a mean imputer on observed training features.
+2. Fill missing training features with that mean; fit center and population scale on the filled training rows.
+3. Apply the declared feature power to the standardized scalar.
+4. Fit slope and intercept on training engineered features and targets.
+5. Apply the same fitted steps to held-out rows and evaluate predictions.
+
+In CV, repeat the entire fit sequence separately inside each training fold. In the final model, fit it again on all development rows after selecting hyperparameters. Test rows enter only transform and evaluation. Storing a single scaler before CV is not equivalent to this process.
+
+## Derive each fitted state
+
+Let Oₜ be the observed feature entries among training rows. With at least one observed value,
+
+$$
+m_T=\frac1{|O_T|}\sum_{i\in O_T}x_i,\quad
+\tilde x_i=\begin{cases}x_i&\text{if observed}\\m_T&\text{if missing},\end{cases}
+$$
+
+$$
+\mu_T=\frac1{|T|}\sum_{i\in T}\tilde x_i,\quad
+s_T=\sqrt{\frac1{|T|}\sum_{i\in T}(\tilde x_i-\mu_T)^2},\quad
+z_i=\frac{\tilde x_i-\mu_T}{s_T}.
+$$
+
+This is population RMS scale on the fitted empirical training batch, not sample standard deviation. If variance is zero, the lab stores scale 1 and marks the feature constant. All-missing training features are rejected because mₜ is unavailable. The raw n×1 batch may contain explicit null entries; after filling, the model receives dense finite n×1 values.
+
+Feature engineering chooses φ=zᵖ, p∈{1,2}. Here p=2 means a single quadratic feature, not both linear and quadratic terms. The order matters: (x−μ)²/s² is generally different from (x²−mean(x²))/scale(x²). The selected procedure includes this order and the meaning of λ. Fitting ridge after scaling makes the penalty refer to the standardized feature's units.
+
+## A leakage counterexample with exact answers
+
+Take training x=(0,2), y=(0,2), and held-out x=(missing,10), y=(0,10). Use linear feature and λ=1. Both paths fit the model only on the same two training rows.
+
+Proper fitting gives imputer 1, center 1, scale 1. Training z=(−1,1), so w=1/2 and b=1. Held-out predictions are 1 and 11/2. Squared errors are 1 and 81/4, giving held-out MSE 85/8=10.625.
+
+Leaked transform fitting uses observed x=(0,2,10), so the imputer is 4. Filled fit values are (0,2,4,10), center is 4, and population variance is (16+4+0+36)/4=14. The scale is √14. Transformed training values are (−4/√14,−2/√14), feature mean −3/√14, variance 1/14 and covariance with y 1/√14. Therefore
+
+$$
+w=\frac{1/\sqrt{14}}{1/14+1}=\frac{\sqrt{14}}{15},\qquad b=\frac65.
+$$
+
+Held-out transformed values are 0 and 6/√14. Predictions are 6/5 and 8/5; squared errors are 36/25 and 1764/25. Their MSE is 36. The leaked-minus-proper difference is 36−85/8=203/8=25.375. Here contamination makes the score worse. The exact sign is irrelevant to the rule: held-out feature information changed the fitted procedure.
+
+The board applies the same paired experiment to its full hand dataset and fold 1. The literal four-row counterexample above is separately committed for owner oracle and parity tests; it is not presented as the board's numerical opening state.
+
+## Inspect the actual implementation
+
+The reference fits each transform from an explicit list of IDs. `fit_ids` defaults to model training IDs; the paired leakage path deliberately supplies training plus validation IDs. Every output includes that membership and the numerical imputer, center, scale, feature mean, slope and intercept. Canonical NumPy stores the engineered X and y as column-shaped row batches; no AutoML service or hidden estimator imports are needed.
+
+<CodeFile source={reference} file="code/python/p08/evaluation.py" />
+
+## Explorer and mistakes
+
+Choose b2 to inspect an explicitly missing raw value, then change an observed row. The mean imputer changes only when that row belongs to its fit membership. A missing held-out value uses the stored training imputer; it does not use its held-out neighbors. Marking a feature missing is different from treating zero as missing. The editor can restore an observed zero, and the table exposes filled values so the distinction remains visible.
+
+A frozen feature mapping like a declared square can be applied without learning a statistic. A learned category vocabulary, feature selector, dimensionality reduction or target encoder must still fit inside the training boundary. Target encoding adds label leakage hazards and requires additional within-training cross-fitting; this lab does not implement it. Do not fit preprocessing on a test set merely because it is “unsupervised.”
+
+<Callout title="Pipeline objects are bookkeeping, not protection by magic" kind="misconception">
+A library pipeline can keep fit order and prediction order consistent. It prevents this leakage only when the caller gives it the correct training rows and places the complete pipeline inside the selection procedure. Passing already globally scaled data into CV defeats that protection.
+</Callout>
+
+## Limits and connections
+
+Mean imputation assumes a useful observed mean and can erase missingness information. Scaling does not remove distribution shift or make unrelated features comparable in meaning. The lab is bounded to one raw feature, one engineered feature and a closed-form ridge fit; it is not a recommended universal production preprocessing recipe. <a href={href('/chapters/data-covariance/')}>III-29</a> explains fitted centering, and <a href={href('/chapters/cross-validation-hyperparameter-tuning/')}>III-35</a> supplies the fold boundaries.
+
+## Five graded investigations
+
+<ChoiceExercise id="iii38-1" client:load prompt="Which rows fit a scaler for a CV fold?" choices={[{label:'Only that fold’s training rows.',correct:true,feedback:'Validation rows use the fitted state without contributing statistics.'},{label:'All development rows because labels are excluded.',correct:false,feedback:'Feature-only information can leak. Refit preprocessing inside each training fold.'}]} />
+<ChoiceExercise id="iii38-2" client:load prompt="In the literal proper path, what fills the missing held-out feature?" choices={[{label:'1, the observed training mean.',correct:true,feedback:'The observed training values 0 and 2 average to 1.'},{label:'4, the mean including held-out feature 10.',correct:false,feedback:'4 is the deliberately leaked imputer. Held-out features may not fit the proper path.'}]} />
+<ChoiceExercise id="iii38-3" client:load prompt="What is the literal proper held-out MSE?" choices={[{label:'85/8 = 10.625.',correct:true,feedback:'Average squared errors 1 and 81/4.'},{label:'36, the leaked result.',correct:false,feedback:'36 uses the contaminated imputer and scaler. Keep fit provenance with the number.'}]} />
+<ChoiceExercise id="iii38-4" client:load prompt="Must leakage always lower held-out error?" choices={[{label:'No; it invalidates the boundary regardless of score direction.',correct:true,feedback:'The exact example worsens the score by 203/8.'},{label:'Yes; a worse score proves there was no leakage.',correct:false,feedback:'Leakage concerns information flow, not whether it happened to help.'}]} />
+<ChoiceExercise id="iii38-5" client:load prompt="When training features are all missing, what does this lab do?" choices={[{label:'Rejects fitting because the observed training mean is unavailable.',correct:true,feedback:'There is no invented imputation statistic.'},{label:'Fits the mean from validation observations.',correct:false,feedback:'That would cross the boundary precisely when fitting is undefined.'}]} />
+
+## What you can now explain
+
+You can distinguish fit from transform, derive imputation and scaling state, trace feature order and calculate an actual leakage difference. You can audit a complete fitted procedure by membership. <a href={href('/chapters/reproducibility-numerical-reliability/')}>III-39</a> adds experiment provenance and arithmetic reliability to that audit.

@@ -1,0 +1,30 @@
+P04 sparse-input correction; source payload d98ca403fb1381559bbf28d855cce3eb8bd336bf.
+Only authorized light checks; no heavy runner, build, browser or fixture generation.
+
+$ node node_modules/vitest/vitest.mjs run tests/unit/p04/tree.test.ts tests/unit/p04/parity.test.ts --maxWorkers=1
+
+ RUN  v3.2.7 /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-iv-trees-ensembles/Interactive-Machine-Learning-Book
+
+ ✓ tests/unit/p04/tree.test.ts (16 tests) 31ms
+ ✓ tests/unit/p04/parity.test.ts (26 tests) 173ms
+
+ Test Files  2 passed (2)
+      Tests  42 passed (42)
+   Start at  22:16:15
+   Duration  637ms (transform 92ms, setup 0ms, collect 112ms, tests 203ms, environment 0ms, prepare 86ms)
+
+
+Actual CLI exit: 0
+
+$ .venv/bin/python -B oracle/p04/test_trees.py IndependentTreeChecks.test_missing_row_features_rejected_by_training_and_serialized_cli IndependentTreeChecks.test_missing_query_features_rejected_at_terminal_leaves_and_serialized_cli IndependentTreeChecks.test_missing_mean_observations_rejected_before_constant_shortcut IndependentTreeChecks.test_exact_decimal_constant_mean_ensemble_oob_and_boosting
+test_missing_row_features_rejected_by_training_and_serialized_cli (__main__.IndependentTreeChecks.test_missing_row_features_rejected_by_training_and_serialized_cli) ... ok
+test_missing_query_features_rejected_at_terminal_leaves_and_serialized_cli (__main__.IndependentTreeChecks.test_missing_query_features_rejected_at_terminal_leaves_and_serialized_cli) ... ok
+test_missing_mean_observations_rejected_before_constant_shortcut (__main__.IndependentTreeChecks.test_missing_mean_observations_rejected_before_constant_shortcut) ... ok
+test_exact_decimal_constant_mean_ensemble_oob_and_boosting (__main__.IndependentTreeChecks.test_exact_decimal_constant_mean_ensemble_oob_and_boosting) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.617s
+
+OK
+
+Actual CLI exit: 0

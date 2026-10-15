@@ -1,0 +1,9 @@
+{
+  "selfTests": [
+    "independent.py",
+    "test_instance_methods.py"
+  ],
+  "goldenChecks": [
+    "generate_fixtures.py"
+  ]
+}

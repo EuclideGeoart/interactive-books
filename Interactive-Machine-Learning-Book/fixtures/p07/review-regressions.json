@@ -1,0 +1,17 @@
+{
+  "provenance": "Independent owner hand derivations; literals authored without execution or generation.",
+  "orientation": {
+    "input": {"mode":"hard","C":1,"kernel":{"kind":"linear","gamma":1,"coef0":1,"degree":2},"points":[{"id":"A","x":[0,0],"y":-1},{"id":"B","x":[1.0000000000000002,1.0000000000000004],"y":-1},{"id":"P","x":[1,1.0000000000000002],"y":1}]},
+    "exactDeterminant": "2^-104",
+    "exactHardFeasible": true,
+    "floatingFit": "failed or a numerical-unavailability error; never infeasible"
+  },
+  "diagnosticFailure": {
+    "input": {"mode":"kernel","C":1,"kernel":{"kind":"polynomial","gamma":1,"coef0":1,"degree":4},"points":[{"id":"A","x":[-5,0],"y":-1},{"id":"B","x":[5,0],"y":1},{"id":"C","x":[0,5],"y":1}]},
+    "gram": [[456976,331776,1],[331776,456976,1],[1,1,456976]],
+    "status": "failed",
+    "kktLowerBound": 0.00002,
+    "gainStop": 1e-12,
+    "dual": "D(u,v)=2u+2v-125200u^2-125200uv-456975v^2, alpha=(u+v,u,v)"
+  }
+}

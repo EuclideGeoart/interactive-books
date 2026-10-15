@@ -1,0 +1,164 @@
+---
+chapterId: III-19
+title: Naive Bayes
+hero: Follow every probability factor
+lede: Turn class priors and feature-wise counts into an inspectable posterior, including the cases where normalization has no answer.
+description: Inspect Bernoulli Naive Bayes priors, smoothed feature likelihoods, log scores, normalized posteriors and explicit impossible-evidence or missing-estimate states.
+prerequisites: ["IV.4", "IV.5", "IV.6", "IV.13", "VII.1", "VII.7"]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import { href } from '../../../shell/href';
+import BayesStage from '../BayesStage';
+import PartExercises from '../PartExercises';
+import source from '../../../../code/python/p03/naive_bayes.py?raw';
+
+<Stage caption="Edit prior weights, binary feature counts, observed evidence and smoothing. Read each likelihood factor, log score and normalized posterior; zero evidence is shown explicitly rather than replaced by a guessed distribution.">
+  <BayesStage client:load scope="iii19-bayes" />
+</Stage>
+
+## Evidence redistributes prior mass
+
+A class prior describes mass before the selected feature evidence. A likelihood describes how compatible that evidence is with a class. Bayes' theorem combines them:
+
+$
+P(c\mid x)=\frac{P(c)P(x\mid c)}{\sum_r P(r)P(x\mid r)}.
+$
+
+A high prior is not a prediction by itself, and a large likelihood is not a posterior probability. The denominator accounts for the evidence under every class in the model.
+
+The sheet has two classes and two binary features, where 1 means present and 0 means absent. It implements **Bernoulli Naive Bayes**, not a Gaussian model for continuous measurements or a multinomial word-count model. A missing feature observation is different from observing its absence: an unchecked evidence flag omits that factor.
+
+## The “naive” part is a model assumption
+
+Naive Bayes replaces a joint conditional likelihood with a product:
+
+$
+P(x_1,x_2\mid c)\ \text{is modeled as}\ P(x_1\mid c)P(x_2\mid c).
+$
+
+This is a conditional-independence assumption **within the model**. The empirical training features need not be independent for you to count outcomes, fit this model or evaluate its predictions. Correlation can make the product a poor description of the true joint distribution and can lead to overconfident posteriors.
+
+Duplicating one informative feature does not create another independent piece of evidence. Multiplying its likelihood twice can amplify a class score without adding information. Assess the representation and validate prediction quality rather than treating a model posterior as an automatic statement of truth.
+
+<Callout title="An assumption is not an admission test" kind="misconception">
+Correlated observed features do not make Naive Bayes unavailable. They mean the chosen factorization may be inaccurate. Independence concerns the class-conditional model, not a requirement that every pair of empirical columns be unrelated.
+</Callout>
+
+## Estimate each binary likelihood from counts
+
+Let $n_c$ be the number of training observations in class c and $m_{cj}$ its count of feature-j presence. With smoothing $\alpha\ge0$,
+
+$
+P(x_j=1\mid c)=\frac{m_{cj}+\alpha}{n_c+2\alpha},
+\qquad
+P(x_j=0\mid c)=\frac{n_c-m_{cj}+\alpha}{n_c+2\alpha}.
+$
+
+The two pseudocounts explain the denominator. Adding alpha only to the observed outcome would not define a normalized binary distribution. At alpha zero, these are empirical frequencies when $n_c>0$. A zero outcome count gives probability zero. With no class observations and no smoothing, the likelihood estimate is unavailable.
+
+Positive prior weights are normalized separately:
+
+$
+\pi_c=\frac{w_c}{\sum_r w_r}.
+$
+
+The weights are chosen inputs to this sheet; they need not track edited counts automatically. Setting one weight to zero excludes that class. Setting both to zero fails to define a prior distribution.
+
+The original counts come from ten explicit hand-authored toy records in `data/p03/bernoulli-toy.json`, not from measured data:
+
+| Class | Observations | Feature 1 present | Feature 2 present |
+| --- | --- | --- | --- |
+| A | 6 | 4 | 1 |
+| B | 4 | 1 | 3 |
+
+Within A, one record has both features present, so the empirical joint frequency is $1/6$. The product of empirical marginals is $(4/6)(1/6)=1/9$. They differ. The experiment's own records therefore demonstrate why the factorization is a modeling assumption.
+
+Edited counts describe a new sufficient-count model and are not claimed to match the original records. Query vectors are $2\times1$, priors and posteriors are $2\times1$, and the class-by-feature likelihood ledger is $2\times2$. There is no affine coefficient vector or intercept.
+
+## Work through a complete posterior
+
+Take exact priors $\pi_A=3/5$ and $\pi_B=2/5$, equivalently prior weights 3 and 2, and observe both features present with alpha 1. The sheet starts from the decimal weights 0.6 and 0.4; its numerical outputs approximate this worked calculation.
+
+For A, likelihoods are $(4+1)/(6+2)=5/8$ and $(1+1)/(6+2)=1/4$. For B, they are $2/6=1/3$ and $4/6=2/3$. The unnormalized scores are
+
+$
+s_A=\frac35\frac58\frac14=\frac3{32},\qquad
+s_B=\frac25\frac13\frac23=\frac4{45}.
+$
+
+Their sum is $263/1440$, giving
+
+$
+P(A\mid x)=\frac{135}{263}\approx0.5133,\qquad
+P(B\mid x)=\frac{128}{263}\approx0.4867.
+$
+
+A wins narrowly. The model does not say the observation is certain to belong to A.
+
+With only feature 1 observed, the same exact calculation gives posterior A $45/61$. Feature 2 is much more likely under B, so observing it moves mass back toward B. Replay makes this sequence visible without changing the training counts.
+
+Set alpha to zero. The scores become $1/15$ and $3/40$, and posterior probabilities are $8/17$ and $9/17$. B now wins. Smoothing changes the estimated model; it is not merely a way to print more decimal places.
+
+## Preserve products through log arithmetic
+
+Multiplying many small likelihoods can underflow. For the observed evidence set E, calculate
+
+$
+\ell_c=\log\pi_c+\sum_{j\in E}\log P(x_j\mid c).
+$
+
+For finite supported scores, take $m=\max_c\ell_c$ and normalize by
+
+$
+P(c\mid x_E)=\frac{\exp(\ell_c-m)}{\sum_r\exp(\ell_r-m)}.
+$
+
+Subtracting a common finite value preserves relative mass, and at least one shifted exponential is one. The ledger exposes the shift, sum and log evidence. Raw products remain visible for comparison, but they do not drive the normalization.
+
+Load **Tiny positive likelihoods**. With positive smoothing $10^{-200}$ and zero positive counts, both raw scores underflow to zero. Their logs remain finite and the posterior is defined, approximately A:0.4, B:0.6. This differs from structural zero probability.
+
+Load **All-impossible evidence**. At alpha zero, both classes now assign the observed present features probability zero. Evidence mass is zero, so no posterior exists. The sheet shows undefined values and a reason; it does not silently return a uniform distribution.
+
+A mathematical log of zero is $-\infty$, shown with its zero-probability reason. An unavailable $0/0$ likelihood is labeled Undefined with a missing-estimate reason. Those states must not be confused with a finite log of a very small positive probability.
+
+## Make a decision without inventing a numerical tie
+
+Load **Exact-score tie**. Both classes have count 7. The observed positive counts are $(1,6)$ for A and $(2,3)$ for B, with equal prior weights and no smoothing. Each conditional product is exactly $6/49$. The posterior is one half for each class, and the declared rule chooses A.
+
+The sheet proves score ordering from the accepted input quantities. A proved exact tie uses one consistent log representation before normalization. Displayed posterior values are approximate and can coincide even when the model scores differ; that is not labeled an exact tie. A/B tie handling and structural impossibility are separate decisions.
+
+## Execute the actual reference
+
+Run `.venv/bin/python -B code/python/p03/naive_bayes.py`. It emits original and unsmoothed ledgers plus complete evidence-mask frames. The reference implements the count likelihoods, private exact decision comparison and NumPy log-domain normalization directly.
+
+<CodeFile source={source} file="code/python/p03/naive_bayes.py" />
+
+Independent expected posteriors use direct exact rational mass multiplication and division instead of log-sum-exp. Fixtures cover zero priors, zero counts, missing estimates, masks, tiny positive evidence, and distinct-factor, prior-weighted and smoothed exact ties. Browser numbers must agree with those expectations within documented arithmetic tolerances.
+
+## Explore and connect the model
+
+Change one class prior weight without changing its counts. Then restore it and change a feature count. Explain which column is a prior and which is a conditional likelihood. Hide a feature observation and compare that with changing its observed value to zero.
+
+An empty class with alpha zero has no required likelihood estimate. With positive smoothing, its two outcomes become one half each; that is a prior-like modeling choice, not evidence from a nonexistent observation. A zero-prior class cannot acquire posterior mass from smoothing its features alone.
+
+Each replay frame is a full state, and every control and ledger cell follows it. Editing begins at the selected frame and ends replay; reset restores the original counts, prior weights, evidence and smoothing. Numeric fields retain focus across valid commits.
+
+Compared with <a href={href('/chapters/k-nearest-neighbors/')}>k-NN</a>, this method stores class-conditional summaries rather than a query's local neighborhood. Both depend on a useful representation and a <a href={href('/chapters/training-validation-testing/')}>held-out evaluation design</a>. Detailed calibration and model selection belong to later evaluation chapters.
+
+## Numerical limits and assumptions
+
+This model supports two classes, two binary features, count/positive-count integers up to one million, nonnegative prior weights and smoothing up to one million. The controls use counts 0–20 and weights/alpha 0–10. A positive count cannot exceed its class count. Nonfinite, boolean and string quantities are rejected; evidence flags are deliberately boolean.
+
+Accepted numerical quantities use binary64; displayed probabilities and logs are approximate. Positive probabilities, scores or evidence can underflow, with finite-log normalization retained when available. Undefined support or estimates carry explicit reasons.
+
+This sheet is a small Bernoulli model with chosen priors and uniform feature smoothing. It does not assert empirical independence, population calibration, causal interpretation or the truth of the most likely class.
+
+## Check your understanding
+
+<PartExercises client:load chapter="III-19" />
+
+## Checkpoints
+
+You can separate prior, likelihood, score and posterior; reconstruct a smoothed estimate; explain the class-conditional factorization; and distinguish impossible evidence from numerical underflow. A probabilistic decision is inspectable only when every factor and normalization assumption is visible.

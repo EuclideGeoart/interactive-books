@@ -1,0 +1,135 @@
+---
+chapterId: III-25
+title: Boosting and Gradient Boosting
+hero: Fit a tree to the current loss direction
+lede: Derive squared-error negative gradients and inspect the actual residual tree, learning-rate update and objective at every stage.
+description: Derive squared-error negative gradients and inspect the actual residual tree, learning-rate update and objective at every stage.
+prerequisites: [III.5, III.8, V.1, VI.4, VI.5]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import TreeStage from '../TreeStage';
+import reference from '../../../../code/python/p04/trees_ensembles.py?raw';
+
+<Stage caption="Start with the controls. Every branch, score, bootstrap draw and stage output comes from the active numeric state; Reset restores the hand-authored inputs."><TreeStage scope="iii25-boosting" mode="boosting" client:load /></Stage>
+
+## Follow the first correction numerically
+
+The opening four rows have targets [0,0,2,2]. Their initial mean predictor is 1. At learning rate 0.5, the first stump fits residuals [−1,−1,1,1] and updates predictions to [0.5,0.5,1.5,1.5]. The displayed half-MSE is 0.125. Press **Fit one more stage**: a new tree fits the new residuals, rather than reusing the first tree's target.
+
+Replay 0–3 stages. Frame 0 is the mean-only baseline; frame 1 includes one fitted correction. Read the residual fitting ledger across frames, inspect the actual last-stage tree and change a query. Its prediction sums all fitted stages, not only the displayed last tree. Editing a selected frame exits replay and starts from that frame's data, rate and stage count.
+
+## An ordered additive model
+
+In this lesson, boosting is squared-error regression:
+
+$$
+F_0(x)=\bar y,\qquad
+F_m(x)=F_{m-1}(x)+\eta h_m(x),\quad 0<\eta\le1.
+$$
+
+Each hm is a new regression tree. Its training targets depend on Fm−1, so stage order matters. Bagging uses resamples of the original targets and averages separately fitted models; this boosting procedure uses all original rows and accumulates learning-rate-scaled corrections.
+
+The experiment is deterministic all-feature squared-error boosting. It does not add bootstrap sampling, random feature subsets or a classification variant. Many other boosting algorithms use other objectives, gradients, line searches or weighting schemes. Only the mechanism derived here is claimed.
+
+## Derive the residual target from the loss
+
+For a single row, choose half squared error:
+
+$$
+\ell_i(F_i)=\frac12(y_i-F_i)^2,\qquad
+-\frac{\partial\ell_i}{\partial F_i}=y_i-F_i.
+$$
+
+The negative per-example gradient is exactly the residual ri=yi−Fi. The training objective is L=(1/n)sum elli=half MSE. Its vector gradient has entries (Fi−yi)/n; using residuals as the fitted direction absorbs this common positive scaling into the step convention.
+
+Fit hm to these residual targets by minimizing squared error within a bounded regression-tree family. Its leaves predict residual means. Then update all predictions simultaneously using the old Fi and this new hm. A residual vector, fitted correction vector and prediction vector are conceptual n by 1 columns; X remains n by 2. There is no coefficient matrix or softmax dimension hidden in this experiment.
+
+## Why the rate controls the correction
+
+Write r for the old residual vector and h for the new fitted leaf-mean vector. The new residual is r−ηh, giving
+
+$$
+L(F+\eta h)-L(F)
+=-\frac{\eta}{n}r^\mathsf T h+\frac{\eta^2}{2n}h^\mathsf T h.
+$$
+
+Within each fitted leaf, h is its residual mean, so the leaf's residual sum equals its count times h. Summing leaves gives r transpose h = h transpose h. Consequently
+
+$$
+L(F+\eta h)-L(F)=
+-\frac{\eta(2-\eta)}{2n}\|h\|^2.
+$$
+
+For $0<\eta\le1$ this is nonpositive in exact arithmetic. A zero correction leaves the objective unchanged. This argument applies to least-squares leaf means on the current rows; it is not a universal guarantee for arbitrary objectives or different stage solvers. Lower training loss also does not imply better validation performance.
+
+## Work three tiny stages
+
+The canonical opening rows have feature pairs [1,0], [2,0], [3,1], [4,1]. Either feature can separate the two target groups; the exact tie chooses x1 at 2.5. A depth-1 stump fits each residual group exactly.
+
+<div class="table-scroll" id="iii25-worked-stages" data-p04-prose-table="iii25-worked-stages" data-scrollable="III-25 worked squared-error boosting stages, scrollable" tabindex="0" role="region" aria-label="III-25 worked squared-error boosting stages, scrollable">
+
+| Stage | Residuals before fitting | Fitted h | Predictions after η=0.5 | Half MSE |
+| --- | --- | --- | --- | ---: |
+| 0 | — | — | [1,1,1,1] | 0.5 |
+| 1 | [−1,−1,1,1] | [−1,−1,1,1] | [0.5,0.5,1.5,1.5] | 0.125 |
+| 2 | [−0.5,−0.5,0.5,0.5] | same as residuals | [0.25,0.25,1.75,1.75] | 0.03125 |
+| 3 | [−0.25,−0.25,0.25,0.25] | same as residuals | [0.125,0.125,1.875,1.875] | 0.0078125 |
+
+</div>
+
+Residual magnitude halves each stage here, so squared loss becomes one quarter. At η=1, the first stump solves this particular four-row problem exactly and later stages fit zero corrections. This special example does not imply that every dataset is solved by one stump.
+
+## Make the weak learner's limits visible
+
+Set **Maximum depth** to 0. The mean-initialized residuals sum to zero, so a root-only residual tree predicts zero and cannot change the original mean. Increase depth to 1 and observe a real correction. Set constant features while retaining varying targets: no separating test exists, and again the residual mean is zero. Constant targets are already solved by the baseline.
+
+Empty data have no baseline, residual stages or loss. Invalid numeric edits preserve the last accepted state. The pure kernels reject nonfinite inputs and nonfinite residual squares or sums. Python observations are normalized to binary64 consistently with the browser, and seed/count/depth arguments remain integer indices after validation.
+
+The sheet permits rates 0.01…1, up to six stages and depth five; the pure boosting kernel allows every finite rate in (0,1]. The practical number of stages, depth and rate should be selected with validation. Repeated small corrections can overfit despite a monotone training objective.
+
+## Connections and independent proof
+
+For logistic BCE, the negative derivative with respect to a logit is y−sigmoid(z), not the scalar-regression residual y−z. Other losses have their own derivatives and may require different terminal-value optimization. This lesson implements none of those variants; III-13 supplies the distinct logistic derivation.
+
+The independent tiny-stage oracle retains Fraction means, residuals, updates and losses throughout, while a separate exhaustive partition search chooses each residual tree. The actual Python/NumPy source executes these stages, and committed expectations compare every before/residual/fitted/after vector with TypeScript. The row-index plot displays actual final predictions and residual segments, rather than an invented generic convergence curve.
+
+## Execute the actual Python and NumPy
+
+The imported file below is the canonical runnable source used by the numerical tests. Read the named functions for this chapter; the same recursive kernel supports the Part's later ensembles. From the book root:
+
+```bash
+.venv/bin/python -B code/python/p04/trees_ensembles.py
+```
+
+That default command prints the six-row squared-error boosting demonstration as JSON. To run this chapter's tree or sampling operation, pass a JSON request on stdin with `operation` equal to `tree`, `bootstrap`, `bagging` or `boosting`, the displayed `rows`, and the `options` keys in `DEFAULT_OPTIONS`. The independent fixture file contains complete runnable requests for all six lessons. Core lessons require no network or model service.
+
+For this chapter's exact committed example, run the independent fixture request through the actual canonical module:
+
+```bash
+.venv/bin/python -B - <<'PYTHON'
+import json, sys
+from pathlib import Path
+sys.path.insert(0, "code/python/p04")
+from trees_ensembles import dispatch
+cases = json.loads(Path("fixtures/p04/trees.fixtures.json").read_text())["cases"]
+request = next(c["input"] for c in cases if c["input"]["name"] == "boosting-tiny")
+print(json.dumps(dispatch(request), allow_nan=False))
+PYTHON
+```
+
+<CodeFile source={reference} file="code/python/p04/trees_ensembles.py" />
+
+## Five graded investigations
+
+<ChoiceExercise id="iii25-1" client:load prompt={"For half squared error, what is the negative derivative with respect to prediction F?"} choices={[{"label":"y − F.","correct":true,"feedback":"Differentiating ½(y−F)^2 gives F−y; negate it for the fitted direction."},{"label":"2(y − F).","correct":false,"feedback":"The half factor removes the factor of two."}]} />
+
+<ChoiceExercise id="iii25-2" client:load prompt={"F=1, fitted h=−1 and η=0.5. What is the updated F?"} choices={[{"label":"0.5.","correct":true,"feedback":"Use F + ηh, keeping h's sign."},{"label":"1.5.","correct":false,"feedback":"A negative correction must decrease the prediction."}]} />
+
+<ChoiceExercise id="iii25-3" client:load prompt={"Four residuals have magnitude 0.5. What is half MSE?"} choices={[{"label":"0.125.","correct":true,"feedback":"Sum four squares 0.25, divide by 2×4."},{"label":"0.25.","correct":false,"feedback":"That is full MSE; the objective includes a half factor."}]} />
+
+<ChoiceExercise id="iii25-4" client:load prompt={"A root-only residual tree follows a mean-only baseline. What correction does it fit?"} choices={[{"label":"Zero, because residuals sum to zero.","correct":true,"feedback":"No split means only the residual mean can be represented."},{"label":"The original target mean again.","correct":false,"feedback":"The new target is the residual, not the original response."}]} />
+
+<ChoiceExercise id="iii25-5" client:load prompt={"Does every boosting objective use target minus raw prediction as its gradient?"} choices={[{"label":"No; gradients depend on the chosen loss and prediction parameterization.","correct":true,"feedback":"The residual derivation here is specific to squared-error regression."},{"label":"Yes; classification uses exactly the same residual formula.","correct":false,"feedback":"Logistic logit BCE uses y−sigmoid(z), a distinct gradient."}]} />

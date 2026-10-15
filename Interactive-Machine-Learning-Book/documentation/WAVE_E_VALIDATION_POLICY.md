@@ -1,0 +1,11 @@
+# Wave E execution and preservation policy
+
+The user dispatched Wave E on 2026-10-14. The main integration owner is the sole validation executor and acceptance authority. The GPT-6.1 Sol High P09 author works in the administratively locked D-volume linked worktree `book-iii-part-ix-neural-bridge`, branch `feature/book-iii-part-ix-neural-bridge`, starting at exact Wave D delivery `f916281abf91152efc4a99a4e6497987ed93c66b`.
+
+The author owns only the eight P09 prefixes in OWNERSHIP_MAP.json and executes no tests, oracles, fixture generators, compilers, builds, browsers, captures, profiling or exploratory correctness programs. The archived P09 prompt's light-check instruction is superseded. Its final handoff must say **IMPLEMENTATION COMPLETE — UNVALIDATED — OWNER VALIDATION REQUIRED**. Read-only independent review executes no validation either.
+
+The owner reviews exact owned commits, complete teaching and mathematics before provisional non-fast-forward integration. All validation uses the supported `npm run validate:milestone` without `--part`, from this Book directory, serialized by `/tmp/interactive-books-heavy-gate.lock`. The existing nine gates and runner remain unchanged. Every attempted source, signature, log, exit, gate manifest and fresh browser report must be retained. An interrupted or failed attempt is never acceptance.
+
+Owner additions consist of independent mathematical challenges, full-book production capture/acceptance checks and reports. One existing owner browser assertion must evolve: Wave D previously required III-40/41 to remain unpublished. It now requires its own eight chapters and all original 39 publications to remain available. This is the sole planned modification of starting tracked bytes. Its original form remains in the Wave D tag and starting preservation inventory. All earlier source, fixtures, screenshot baselines, acceptance evidence, 13 III-07 reference files, protected Book I/II trees, tags, other worktrees and canonical main remain preserved.
+
+No numerical, SVG, screenshot or physical accessibility tolerance increase is authorized. Fresh production captures are separate evidence and do not replace screenshot baselines. No main promotion, push, deployment, publication or Book IV implementation is authorized. The final local freeze ends the goal; publication checks receive a separate handoff.

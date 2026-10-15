@@ -1,0 +1,129 @@
+---
+chapterId: III-17
+title: k-Nearest Neighbors
+hero: Move the question, watch the evidence change
+lede: A prediction can be built from nearby stored observations without fitting a coefficient vector.
+description: Drag a query through a k-nearest neighbor landscape and inspect exact distance ordering, classification votes, regression averages and deterministic ties.
+prerequisites: ["I.3", "II.3", "II.9"]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import { href } from '../../../shell/href';
+import NeighborStage from '../NeighborStage';
+import PartExercises from '../PartExercises';
+import source from '../../../../code/python/p03/nearest_neighbors.py?raw';
+import common from '../../../../code/python/p03/common.py?raw';
+
+<Stage caption="Move the hollow query diamond, change k, and read the selected rows. The classification and regression outputs use exactly the same neighborhood.">
+  <NeighborStage client:load scope="iii17-neighbors" />
+</Stage>
+
+## Nearby examples become the rule
+
+At the original query, the nearest observation belongs to B. With three neighbors, two of the selected observations belong to A, so the classification changes to A. The numerical regression output uses their targets instead of their categories. Neither output requires an affine weight or bias.
+
+This is **instance-based learning**. Training stores a feature representation and its observed outcomes. Inference compares a new query with the stored inputs, selects a neighborhood and aggregates its outcomes. This does not mean there are no modeling choices: the feature representation, metric, scales, neighbor count and tie policy all influence the returned rule.
+
+In a real task, each feature must be information available at prediction time. A target cannot quietly become a coordinate merely because that would make the nearest neighbor easy to identify. A point's category and numerical target are separate outcomes in this toy sheet.
+
+## Define a neighborhood precisely
+
+For observations $x_i\in\mathbb R^d$ and query $q\in\mathbb R^d$, let $d(q,x_i)$ be a chosen feature distance. The experiment initially uses the scaled Euclidean distance
+
+$
+d_2(q,x_i)=\left(\sum_{j=1}^d
+\left|\frac{q_j-x_{ij}}{s_j}\right|^2\right)^{1/2},
+\qquad s_j>0.
+$
+
+A reference scale $s_j$ states how much a coordinate difference should count. Here both feature axes are dimensionless toy coordinates, initially with unit reference scales. Changing a scale changes the neighborhood; it is a model choice, not a harmless change to the drawing.
+
+Sort all stored rows by increasing distance. For equal computed distances, sort by the stable sample ID using the declared UTF-16 code-unit order. Define $N_k(q)$ as the first $k$ rows of that ordering. The unweighted classification rule is
+
+$
+\hat c(q)=\operatorname*{arg\,max}_{c\in\{A,B\}}
+\sum_{i\in N_k(q)}\mathbf 1[c_i=c].
+$
+
+The sheet chooses A on an exact vote-count tie. That convention produces a reproducible decision; it does not supply additional evidence for A. A different application could abstain or use another declared rule.
+
+For numerical outcomes, the regression rule is
+
+$
+\hat y(q)=\frac1k\sum_{i\in N_k(q)}y_i.
+$
+
+This average minimizes the sum of squared deviations from the selected targets: differentiating $\sum_{i\in N_k}(a-y_i)^2$ gives $2ka-2\sum_i y_i=0$. Classification votes and this regression mean answer different questions even though they share the same feature neighborhood.
+
+The individual feature vectors are $2\times1$ columns. The batch $X$ stores six sample rows, so it is $6\times2$; the query is $2\times1$, and distances and numerical targets are $6\times1$. Categories A/B are labels, not numerical values to average.
+
+## Work through the original query
+
+These six observations are hand-authored synthetic examples, not measured data. The targets are arbitrary numerical quantities.
+
+| ID | Feature row | Class | Numerical target |
+| --- | --- | --- | --- |
+| s1 | $(-2,0)$ | A | 2 |
+| s2 | $(-1,1)$ | A | 4 |
+| s3 | $(-1,-1)$ | A | 6 |
+| s4 | $(1,0)$ | B | 8 |
+| s5 | $(1,1)$ | B | 10 |
+| s6 | $(2,-1)$ | B | 12 |
+
+At $q=(0,0)$ with unit scales, the complete order is s4 at distance $1$; s2, s3 and s5 at $\sqrt2$; s1 at $2$; and s6 at $\sqrt5$. For $k=3$, ID order selects s2 and s3 from the tied group alongside s4. The votes are A:2, B:1, while
+
+$
+\hat y=\frac{8+4+6}{3}=6.
+$
+
+Move the query to $(1.5,0)$. The first row is s4 at $0.5$. Rows s5 and s6 both have distance $\sqrt{1.25}$, so the selected set is s4, s5, s6. All vote B, and the regression output is $(8+10+12)/3=10$.
+
+With $k=1$, the original query chooses B and target 8. With $k=6$, votes tie three to three, the declared classifier chooses A, and the average is $42/6=7$. These changes illustrate a modeling tradeoff rather than proof that any one k is best.
+
+## Duplicate geometry is not duplicate identity
+
+Load **Conflicting duplicates**. Rows s4 and s7 occupy $(1,0)$ but have different categories and targets. At the coincident query with $k=2$, both have distance zero. They remain separate observations: votes tie, the declared choice is A, and the mean is $(8+0)/2=4$.
+
+For $k=1$, the ID tie rule selects s4. Removing s7 would change the dataset and its predictions. Whether coincident rows are genuine repeated measurements or accidental data duplication is a provenance question that a geometric algorithm cannot answer.
+
+<Callout title="A rounded distance is not the sorting key" kind="numerical">
+The visible distance carries an approximation sign. Two values can look equal after display rounding while their full computed values differ. Ranking uses the authoritative values; an exact computed tie uses IDs.
+</Callout>
+
+## Execute the actual reference
+
+Run `.venv/bin/python -B code/python/p03/nearest_neighbors.py` from the book root. It emits the original prediction, the rightward query result and a complete query-path trace. The NumPy target column supplies the unweighted average; sorting and voting are explicit.
+
+<CodeFile source={source} file="code/python/p03/nearest_neighbors.py" />
+<CodeFile source={common} file="code/python/p03/common.py" />
+
+The norm rescales before powers to avoid overflow from squaring a large but representable coordinate. All accepted numerical quantities are binary64 in both runtimes. Integer spellings beyond exact binary64 integer precision therefore enter the same representation before subtraction or duplicate comparison.
+
+Committed expectations come from high-precision norm arithmetic and exhaustive enumeration of small neighbor subsets, with exact target averaging. Agreement between Python and the browser is checked against that independent result.
+
+## Explore a discontinuous decision
+
+Move the query slowly across a neighbor boundary. Distances vary continuously, but a selected row can change abruptly. Classification can jump when a vote changes, and unweighted regression can jump when a different target enters the average.
+
+The dashed contour illustrates the kth distance; a polygonal drawing is a projection of the numeric metric. The ordered table determines the actual selected set. Squares, triangles, labels, filling and dotted links retain meaning without color.
+
+Try L1 and Lp and then change one feature reference scale. The next chapter explains why raw units can dominate a distance. Choose k and preprocessing using an appropriate <a href={href('/chapters/training-validation-testing/')}>validation design</a>; k=1 can memorize noisy observations, while a large neighborhood can erase useful local structure.
+
+Replay retains the current observations, metric, scales and k. Every frame changes the controls, diagram, table, votes and equation together. Editing starts from the selected frame and ends replay. Reset returns the original six-row state.
+
+## Numerical limits and failure cases
+
+The API accepts 1–32 rows with unique nonempty IDs, finite coordinates and targets, positive scales and integer k from 1 to 64. Coincident coordinates are valid. k larger than the row count is retained visibly but has no defined prediction; the algorithm neither clamps k nor invents rows. Empty data and malformed quantities are rejected.
+
+The plot supports coordinates from $-3$ to $3$ and scales from $0.1$ to $10$. Arrow movement preserves existing fine precision; pointer dragging deliberately snaps to a $0.1$ lattice. Unsupported keyboard or numeric changes preserve the previous valid mathematical state with a visible reason. No display rounding is fed back into computation.
+
+A finite input can still produce a nonfinite difference or final distance; that arithmetic is rejected. Exact computed distance ties and exact vote ties have separate policies. This sheet implements two-dimensional, unweighted k-NN with two categories, not approximate search, weighted voting or an empirical accuracy guarantee.
+
+## Check your understanding
+
+<PartExercises client:load chapter="III-17" />
+
+## Checkpoints
+
+You can reconstruct a neighborhood from distances and identities, distinguish votes from numerical averaging, and explain why k, scales, duplicates and ties change the rule. k-NN converts stored local evidence into a decision; its geometry must match the prediction you report.

@@ -1,0 +1,121 @@
+---
+chapterId: III-23
+title: Bagging and Bootstrap Sampling
+hero: Keep the repeated observations visible
+lede: Follow sampling with replacement, actual separately fitted trees, majority votes and row-specific out-of-bag eligibility.
+description: Follow sampling with replacement, actual separately fitted trees, majority votes and row-specific out-of-bag eligibility.
+prerequisites: [IV.1, IV.4, IV.11, V.3, VIII.10]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import TreeStage from '../TreeStage';
+import reference from '../../../../code/python/p04/trees_ensembles.py?raw';
+
+<Stage caption="Start with the controls. Every branch, score, bootstrap draw and stage output comes from the active numeric state; Reset restores the hand-authored inputs."><TreeStage scope="iii23-bagging" mode="bagging" client:load /></Stage>
+
+## Read the draw ledger before the vote
+
+In **Bootstrap tree**, choose tree1. With six source rows and seed 7 its source-index ledger is [1,5,3,5,0,5], using zero-based indices. Source s6 appears three times, while s3 and s5 are absent. Six draws do not mean six unique observations. The recursive tree counts every occurrence with a unique draw ID and preserves its source ID alongside it.
+
+Choose tree2 and tree3 to inspect their distinct samples and fitted thresholds. Read the source prediction table: each result is the majority of those actual trees, not a smoothed curve or a vote drawn directly from targets. Replay 0–3 trees to see undefined zero-tree predictions become actual aggregates. Change the seed, then reset to recover the original ledger.
+
+## A bootstrap empirical experiment
+
+A bootstrap training sample draws n times with replacement from n source rows. Each draw selects an index uniformly. Its multiplicities (m1,…,mn) sum to n, but some are zero and some exceed one. The multiset feeds the tree learner; replacing it with a set would erase sample weights and change impurity, legal leaf counts and predictions.
+
+For a particular row, the probability of exclusion from a size-n sample is
+
+$$
+P(m_i=0)=\left(1-\frac1n\right)^n.
+$$
+
+As n grows this approaches exp(−1), about 0.368, under ideal independent uniform draws. This is an expectation over random samples, not a fixed requirement that every small bootstrap sample exclude 36.8% of rows. Our seeded generator produces reproducible pseudorandom draws for inspection.
+
+Bagging fits the same learning procedure separately to these resamples. Each tree may reuse all features at each split. The trees are not trained to correct each other's errors, and no earlier prediction enters a later training target.
+
+## Aggregate the fitted predictions
+
+For binary hard predictions hb(x), the sheet uses
+
+$$
+\hat y(x)=\mathbf1\left[\sum_{b=1}^B h_b(x)>B/2\right].
+$$
+
+An exact vote tie returns 0. The positive vote fraction is a fraction of hard tree decisions, not the average leaf probability and not automatically a calibrated probability. The canonical kernel also supports scalar-regression bagging, where it averages actual leaf means.
+
+Averaging can reduce variation when tree errors are imperfectly correlated. For equal-variance errors with variance σ² and pairwise correlation ρ, the average has variance
+
+$$
+\mathrm{Var}(\bar e)=\sigma^2\left(\rho+\frac{1-\rho}{B}\right).
+$$
+
+The identity follows by summing B variance terms and B(B−1) covariance terms, then dividing by B². Increasing B cannot remove the correlated component ρσ². It also does not erase systematic bias or data leakage.
+
+## Work the first sample and all-tree votes
+
+Tree1's multiplicities in source order s1…s6 are [1,1,0,1,0,3]. Its legal root threshold is x1 ≤ 3, giving pure left and right leaves. Tree2 uses source indices [2,0,0,5,5,3] and threshold 2; tree3 uses [2,3,3,4,4,2] and threshold 4.5.
+
+For s3, the actual tree labels are [0,1,1], so the majority prediction is 1 and positive vote fraction is 2/3. For s5, they are [1,1,0], also majority 1, although its target is 0. Aggregation is a model decision, not a guarantee of correctness.
+
+## Derive out-of-bag evaluation
+
+For source row i, let Bi be the trees whose own bootstrap sample excludes that source ID. Its OOB prediction aggregates only those trees. Let E contain rows with at least one eligible nonempty prediction. We report
+
+$$
+\mathrm{Acc}_{\mathrm{OOB}}=\frac1{|E|}\sum_{i\in E}
+\mathbf1[\hat y_i^{\mathrm{OOB}}=y_i].
+$$
+
+This averages eligible source rows once each; rows with more eligible trees do not receive extra evaluation weight. Canonical regression OOB uses mean squared error over the same eligible set.
+
+With the three original trees, s4 has no OOB tree and is excluded from evaluation. The other five rows have OOB predictions [1,0,0,1,0] in order s1,s2,s3,s5,s6. Only s2 is correct, so OOB accuracy is 1/5=0.2. This differs from all-tree training accuracy because every evaluated row is predicted without its own inclusion in the eligible trees.
+
+Try **Keep one source row**. Every nonempty bootstrap includes it, so there is no eligible OOB prediction and the metric is explicitly undefined. **Use empty data** also leaves every query/tree value undefined; it must not fabricate class 0.
+
+## Reproducible streams and limits
+
+The shared LCG uses unsigned 32-bit state. For each tree we reserve n consecutive outputs for bootstrap draws, then a bounded feature-draw segment. Bagging considers all features and needs no feature draws. Tree2 begins after tree1's consumed bootstrap segment, rather than using seeds that create overlapping shifted windows. The visible segment table records offsets and seeds. Uniform pseudorandom resampling is reproducible; the construction is not a proof of statistical independence.
+
+OOB evaluation is useful for bootstrap models but has limited coverage with few trees. It does not replace a held-out test for model selection or distribution change, and source IDs must represent the units that should be excluded together. Grouped or time-dependent observations require different resampling policies.
+
+The independent oracle derives each LCG state by an integer closed form, counts multiplicities with a multiset, enumerates legal splits independently, and aggregates the resulting predictions using exact rational arithmetic. III-24 adds feature randomization at every eligible node, while III-25 changes the training sequence itself.
+
+## Execute the actual Python and NumPy
+
+The imported file below is the canonical runnable source used by the numerical tests. Read the named functions for this chapter; the same recursive kernel supports the Part's later ensembles. From the book root:
+
+```bash
+.venv/bin/python -B code/python/p04/trees_ensembles.py
+```
+
+That default command prints the six-row squared-error boosting demonstration as JSON. To run this chapter's tree or sampling operation, pass a JSON request on stdin with `operation` equal to `tree`, `bootstrap`, `bagging` or `boosting`, the displayed `rows`, and the `options` keys in `DEFAULT_OPTIONS`. The independent fixture file contains complete runnable requests for all six lessons. Core lessons require no network or model service.
+
+For this chapter's exact committed example, run the independent fixture request through the actual canonical module:
+
+```bash
+.venv/bin/python -B - <<'PYTHON'
+import json, sys
+from pathlib import Path
+sys.path.insert(0, "code/python/p04")
+from trees_ensembles import dispatch
+cases = json.loads(Path("fixtures/p04/trees.fixtures.json").read_text())["cases"]
+request = next(c["input"] for c in cases if c["input"]["name"] == "bagging")
+print(json.dumps(dispatch(request), allow_nan=False))
+PYTHON
+```
+
+<CodeFile source={reference} file="code/python/p04/trees_ensembles.py" />
+
+## Five graded investigations
+
+<ChoiceExercise id="iii23-1" client:load prompt={"Six draws are [s2,s6,s4,s6,s1,s6]. How many unique source IDs are present?"} choices={[{"label":"4.","correct":true,"feedback":"The IDs are s1,s2,s4,s6; repetitions remain weighted observations."},{"label":"6.","correct":false,"feedback":"Six draw identities do not imply six distinct source observations."}]} />
+
+<ChoiceExercise id="iii23-2" client:load prompt={"Which IDs are OOB in that six-source sample?"} choices={[{"label":"s3 and s5.","correct":true,"feedback":"Both have zero multiplicity in this tree's training sample."},{"label":"s6 because it was repeated.","correct":false,"feedback":"Repeated rows are in-bag; absence defines OOB."}]} />
+
+<ChoiceExercise id="iii23-3" client:load prompt={"Hard predictions are [0,1,1]. What is the aggregate?"} choices={[{"label":"Class 1, positive vote fraction 2/3.","correct":true,"feedback":"The majority uses actual fitted tree labels."},{"label":"Class 0 because the first tree predicts 0.","correct":false,"feedback":"No tree has special voting priority."}]} />
+
+<ChoiceExercise id="iii23-4" client:load prompt={"A source row has zero eligible OOB trees. How is it evaluated?"} choices={[{"label":"It has an undefined OOB prediction and is excluded from the metric.","correct":true,"feedback":"If all rows are excluded, the entire OOB metric is undefined."},{"label":"It gets prediction 0 and counts as an error if its label is 1.","correct":false,"feedback":"Fabricating a prediction would bias the evaluation."}]} />
+
+<ChoiceExercise id="iii23-5" client:load prompt={"What feeds the target for the second bagged tree?"} choices={[{"label":"Original targets on its own bootstrap multiset.","correct":true,"feedback":"Trees are fitted separately; previous predictions do not become targets."},{"label":"Residuals of the first tree.","correct":false,"feedback":"That sequential correction belongs to the squared-error boosting lesson."}]} />

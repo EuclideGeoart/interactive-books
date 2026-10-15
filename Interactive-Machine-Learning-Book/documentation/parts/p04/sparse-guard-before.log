@@ -1,0 +1,93 @@
+Held baseline: cccfd3fdf2961e6105fa2bff94e0bff2d178ee2b; new owned regressions, guards not yet changed.
+$ node node_modules/vitest/vitest.mjs run tests/unit/p04/tree.test.ts --maxWorkers=1 -t 'rejects missing'
+
+ RUN  v3.2.7 /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-iv-trees-ensembles/Interactive-Machine-Learning-Book
+
+ ❯ tests/unit/p04/tree.test.ts (16 tests | 3 failed | 13 skipped) 9ms
+   ↓ literal root split counts and recursively learned decisions agree
+   ↓ finite zero-log-zero, pure/constant/empty stopping and min-leaf legality are explicit
+   ↓ regression leaves and cost-complexity pruning use actual SSE and fewer-leaf ties
+   ↓ bootstrap distinguishes draw multiplicities, unique IDs and OOB, with repeatable seeds
+   ↓ bagging uses its actual trees, OOB eligibility and explicit empty metrics
+   ↓ forest selects features separately at eligible nodes
+   ↓ literal squared-error boosting stages fit the residual gradient direction
+   ↓ rejects malformed inputs, unsupported labels, seeds and nonfinite arithmetic
+   ↓ declared prediction shape survives empty, pure and feature-zero-only trees
+   ↓ reserves nonoverlapping bootstrap and per-node feature streams at every depth
+   ↓ pruning resolves a one-ulp rational breakpoint without merging distinct costs
+   ↓ underflowed regression squares are an explicit numeric limit, not a constant-target claim
+   ↓ exact decimal-constant targets preserve means, zero SSE, boost baseline and ensemble/OOB predictions
+   × rejects missing feature entries before terminal training and all ensemble paths 6ms
+     → expected [Function] to throw an error
+   × rejects missing query entries even at empty, pure and depth-limited leaves 1ms
+     → expected [Function] to throw an error
+   × rejects missing mean observations before constant shortcuts or summation 1ms
+     → expected [Function] to throw an error
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/p04/tree.test.ts > rejects missing feature entries before terminal training and all ensemble paths
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/unit/p04/tree.test.ts:136:21
+    134|       () => bagging(rows, { ...options, mtry: 1 }, 7, 0),
+    135|       () => boosting(rows, regression, .5, 0),
+    136|     ]) expect(call).toThrow('Feature must remain finite');
+       |                     ^
+    137|     const serialized: typeof rows = JSON.parse(JSON.stringify(rows));
+    138|     expect(serialized[0]!.x[feature]).toBeNull();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/unit/p04/tree.test.ts > rejects missing query entries even at empty, pure and depth-limited leaves
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/unit/p04/tree.test.ts:149:40
+    147|     const query = [1, 0];
+    148|     Reflect.deleteProperty(query, feature);
+    149|     expect(() => predict(tree, query)).toThrow('Prediction feature mus…
+       |                                        ^
+    150|     expect(() => predict(tree, JSON.parse(JSON.stringify(query)))).toT…
+    151|     expect(Object.hasOwn(query, feature)).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/unit/p04/tree.test.ts > rejects missing mean observations before constant shortcuts or summation
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/unit/p04/tree.test.ts:158:46
+    156|     const values = [...dense];
+    157|     Reflect.deleteProperty(values, index);
+    158|     expect(() => finiteMean(values, 'mean')).toThrow('mean must remain…
+       |                                              ^
+    159|     expect(() => finiteMean(JSON.parse(JSON.stringify(values)), 'mean'…
+    160|     expect(Object.hasOwn(values, index)).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 13 skipped (16)
+   Start at  22:15:34
+   Duration  218ms (transform 61ms, setup 0ms, collect 67ms, tests 9ms, environment 0ms, prepare 42ms)
+
+
+Actual CLI exit: 1

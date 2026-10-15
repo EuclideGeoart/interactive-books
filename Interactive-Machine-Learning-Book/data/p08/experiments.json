@@ -1,0 +1,18 @@
+{
+  "version": "p08-hand-v1",
+  "provenance": "Hand-authored synthetic rows; seed controls group assignment only, never data generation.",
+  "rows": [
+    {"id":"a1","group":"a","x":[-3],"y":8}, {"id":"a2","group":"a","x":[-2.5],"y":6},
+    {"id":"b1","group":"b","x":[-2],"y":4}, {"id":"b2","group":"b","x":[null],"y":3},
+    {"id":"c1","group":"c","x":[-1],"y":1}, {"id":"c2","group":"c","x":[-0.5],"y":0.5},
+    {"id":"d1","group":"d","x":[0.5],"y":0.5}, {"id":"d2","group":"d","x":[1],"y":1},
+    {"id":"e1","group":"e","x":[2],"y":4}, {"id":"e2","group":"e","x":[2.5],"y":6},
+    {"id":"f1","group":"f","x":[3],"y":8}, {"id":"f2","group":"f","x":[4],"y":15}
+  ],
+  "probabilities": [
+    {"id":"m1","y":0,"p":0.1}, {"id":"m2","y":0,"p":0.2},
+    {"id":"m3","y":0,"p":0.3}, {"id":"m4","y":0,"p":0.4},
+    {"id":"m5","y":0,"p":0.6}, {"id":"m6","y":0,"p":0.8},
+    {"id":"m7","y":1,"p":0.5}, {"id":"m8","y":1,"p":0.9}
+  ]
+}

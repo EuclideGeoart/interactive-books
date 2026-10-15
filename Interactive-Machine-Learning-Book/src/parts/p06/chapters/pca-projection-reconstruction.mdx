@@ -1,0 +1,128 @@
+---
+chapterId: III-31
+title: PCA Projection and Reconstruction
+hero: Keep a shadow and measure the missing part
+lede: Project centered observations into k coordinates, reconstruct them in the original feature space, and account for every squared residual.
+description: Drag points and choose zero, one or two components to inspect PCA scores, reconstruction residuals, retained variance and exact error-normalization conventions.
+prerequisites: [II.5, II.11, II.18, II.19]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import { href } from '../../../shell/href';
+import PCAStage from '../PCAStage';
+import reference from '../../../../code/python/p06/pca.py?raw';
+
+<Stage caption="Choose k=0,1,2. Hollow squares are actual reconstructions and the connecting segments are actual residual vectors, all from the displayed numerical state."><PCAStage scope="iii31-reconstruction" mode="reconstruction" client:load /></Stage>
+
+## Remove a coordinate and inspect what survives
+
+At k=1, points a and b have the same hollow reconstruction square. Their first scores agree, even though the points differ. The residual segments show which information was discarded. Move either observation and inspect its scores, reconstruction and squared error in the table.
+
+Select **Replay k = 0, 1, 2**. The first frame keeps no components and reconstructs every observation at the mean. Next keeps the leading direction. The last retains the whole two-feature space. This trace changes the component count; PCA is not taking three optimization iterations. Editing a point, normalization or k during replay starts from the displayed cloud and ends replay.
+
+Reset restores the original cloud with k=1. Try **line cloud**: a single component suffices in exact arithmetic. Try **isotropic cloud**: any one line loses the same total energy, although the individual shadows depend on the conventional basis. Try **constant cloud**: reconstruction error is zero even though retained variance is undefined. A reconstruction can be perfect without a meaningful variance ratio.
+
+## Projection changes the representation, not the observation count
+
+Let Vk contain k orthonormal direction columns, so Vk is d×k. Each centered observation has a k×1 score vector $z_i=V_k^T(x_i-\mu)$. The row-batch equation is
+
+$$
+Z=X_cV_k\in\mathbb R^{n\times k},\qquad
+\hat X=ZV_k^T+\mathbf1\mu^T\in\mathbb R^{n\times d}.
+$$
+
+The observation count n remains the same. Scores are coordinates in a learned basis, not selected original feature columns. A single principal component can combine every original feature. Reconstructing adds the training mean back into source coordinates; forgetting it would place the cloud around the origin rather than its actual location.
+
+At k=0, Z has n×0 shape. The empty product is zero, so reconstruction is the mean-only baseline. At k=d, VkVkᵀ=I and reconstruction is exactly X in real arithmetic. Both the browser and canonical Python apply that full-space identity directly for k=2, copying the original coordinate values. They still calculate and expose the scores, but avoid an unnecessary floating rotate/unrotate round trip. Thus full-space residuals and SSE are exactly zero in this implementation, rather than accumulated rounding artifacts.
+
+## Derive the residual and its optimality
+
+The projector Pk=VkVkᵀ is symmetric and idempotent. Reconstruction of the centered column xci is Pkxci; the residual is
+
+$$
+r_i=x_i-\hat x_i=(I-P_k)(x_i-\mu),\qquad V_k^Tr_i=0.
+$$
+
+The residual is perpendicular to every retained direction. Pythagoras separates retained and discarded energy. Over the whole batch,
+
+$$
+\mathrm{SSE}=\|X-\hat X\|_F^2
+=\|X_c(I-P_k)\|_F^2
+=q\sum_{j=k+1}^d\lambda_j.
+$$
+
+Why is PCA the best rank-k orthogonal reconstruction for this centered batch? A k-dimensional projector retains variance tr(VkᵀCVk), maximized by the leading eigenvectors. Total variance tr(C) is fixed, so maximizing retained variance minimizes the remainder. Equivalently, the SVD keeps the largest singular values and discards the rest. This is a training reconstruction optimum in the declared Euclidean metric, not a guarantee about downstream prediction or future data.
+
+We report SSE, per-observation MSE=SSE/n, and per-entry MSE=SSE/(nd). They answer different questions. The first averages each observation's squared vector norm; the second averages individual scalar-coordinate errors. For this lab d=2, they differ by a factor of two. None uses n−1: that divisor belongs to sample covariance, not the reconstruction metric.
+
+## Work every shadow in the original cloud
+
+For $v_1=(1,1)^T/\sqrt2$ and μ=0, point a=(−2,−1) has
+
+$$
+z_a=v_1^Tx_a=-3/\sqrt2,\quad
+\hat x_a=v_1z_a=(-3/2,-3/2)^T,\quad
+r_a=(-1/2,1/2)^T,\quad \|r_a\|_2^2=1/2.
+$$
+
+Point b has the same first score and reconstruction, with residual (1/2,−1/2). Points c and d reconstruct at (3/2,3/2), each with squared residual 1/2. Hence SSE=2, per-observation MSE=1/2 and per-entry MSE=1/4. With sample eigenvalues 6 and 2/3, the spectral identity gives qλ2=3(2/3)=2. Population covariance instead gives 4(1/2)=2: the geometric error agrees.
+
+<div class="table-scroll" id="iii31-errors" data-p06-prose-table data-scrollable="III-31 retained space and reconstruction errors, scrollable" tabindex="0" role="region" aria-label="III-31 retained space and reconstruction errors, scrollable">
+
+| k | Score shape | Reconstruction | Retained fraction | SSE | MSE per observation |
+| --- | --- | --- | ---: | ---: | ---: |
+| 0 | 4 × 0 | All rows at (0,0) | 0 | 20 | 5 |
+| 1 | 4 × 1 | Rows at (−1.5,−1.5) or (1.5,1.5) | 0.9 | 2 | 0.5 |
+| 2 | 4 × 2 | Source rows, direct identity | 1 | 0 | 0 |
+
+</div>
+
+Changing the first eigenvector to its negative flips −3/√2 to +3/√2 and flips the reconstruction direction at the same time. The product is identical. If the spectrum repeats at the truncation boundary, changing the retained line can change the individual reconstructed points while preserving the optimal total SSE.
+
+## Use the learned transform on future rows
+
+Fit μ and Vk using training data. A future row xnew uses znew=Vkᵀ(xnew−μ) and reconstructs as μ+Vkznew. Refitting the basis on the future row would be a different operation. The lab refits its displayed descriptive cloud after edits; it does not implement a frozen train/test pipeline or estimate unseen reconstruction performance.
+
+A retained fraction can guide a compression budget, but low-variance directions may contain important predictive information. Consider a class label encoded in a tiny perpendicular offset from a long line. One-component PCA can retain almost all variation while discarding exactly that label signal. Use evaluation suited to the downstream task, rather than assuming a 90% retained fraction is a 90% accuracy promise.
+
+Units matter here too. Raw squared reconstruction error adds squared errors from each feature. Changing one feature's numerical scale changes the objective and can change the chosen basis. Standardization and inverse scaling must be explicit parts of a larger pipeline; this Part applies neither automatically. It also does not whiten, invent missing values or claim arbitrary-dimensional browser support.
+
+## Numerical and shape caveats
+
+The 2D core accepts 1–128 dense finite observations with unique IDs and integral numeric k in [0,2]. Sparse array holes, ragged rows, NaN, infinity, invalid configuration and computed overflow are rejected before degenerate returns. k=0 still validates every coordinate: “not retaining components” is not permission to accept malformed data.
+
+For a singleton, population covariance has zero spread and reconstruction is the observed mean. Sample covariance is undefined, and the lab withholds PCA outputs instead of fabricating them. For a constant batch, covariance is zero, reconstruction error is zero and ratios stay undefined at every k. There is no unique principal direction for zero spread.
+
+<Callout title="Error bounds do not redefine the data" kind="numerical">
+The model never clamps a positive eigenvalue or residual to zero by tolerance. It uses direct minor-direction energy to avoid eigenvalue subtraction cancellation, rejects unrepresentable squared-component or variance-normalization underflow, and uses the full-space identity when k=2. The oracle checks covariance, eigen relations, subspaces and discarded singular-value energy with absolute plus relative 2×10⁻¹² on these small cases; tiny positive minor eigenvalues use relative-only checks. SVG geometry has a separate pixel tolerance. No finite tolerance can recover lost input precision or make a nearly repeated direction well conditioned.
+</Callout>
+
+## Execute the actual Python and NumPy
+
+The reference `pca(request)` returns each row's `scores`, `fullScores`, `reconstructed`, `residual` and `squaredError`, plus batch SSE and both MSE conventions. `scores` has k entries; `fullScores` contains the two inspectable coordinates before truncation. `axes` is a list of direction columns. The kernel deliberately handles k=2 as the identity and k=0 as the empty-basis mean baseline.
+
+```bash
+.venv/bin/python -B code/python/p06/pca.py
+```
+
+That terminal invocation uses the four original rows. Complete JSON on stdin selects another cloud or k. Independent committed literals include the k=0/1/2 cloud, a rank-one line, repeated spectrum, zero spread, one-sample conventions and a tiny positive minor eigenvalue. The independent Fraction/SVD/eigh oracle executes the canonical module and checks actual reconstruction energy; it does not trust copied browser output.
+
+<CodeFile source={reference} file="code/python/p06/pca.py" />
+
+## Five graded investigations
+
+<ChoiceExercise id="iii31-1" client:load prompt="X has shape 12 × 5 and k=2. What are the score and reconstruction shapes?" choices={[{label:'Z is 12 × 2; reconstructed X is 12 × 5.',correct:true,feedback:'Projection reduces coordinates per observation; reconstruction returns to the original feature space.'},{label:'Z is 2 × 5; reconstructed X is 2 × 12.',correct:false,feedback:'Observations remain rows and their count remains twelve.'}]} />
+
+<ChoiceExercise id="iii31-2" client:load prompt="What does k=0 reconstruct?" choices={[{label:'Every observation at the fitted mean.',correct:true,feedback:'The empty-basis product is zero, and adding μ yields the mean-only baseline.'},{label:'Every observation at zero, regardless of its mean.',correct:false,feedback:'PCA reconstructs in source coordinates; the mean must be restored.'}]} />
+
+<ChoiceExercise id="iii31-3" client:load prompt="For a=(−2,−1), v1=(1,1)/√2 and μ=0, what is the one-component reconstruction?" choices={[{label:'(−1.5,−1.5).',correct:true,feedback:'The score is −3/√2; multiplying it by v1 gives the orthogonal shadow.'},{label:'(−2,0).',correct:false,feedback:'Keeping a principal component keeps a learned direction, not the first original feature.'}]} />
+
+<ChoiceExercise id="iii31-4" client:load prompt="SSE is 2 for four two-feature rows. What are the two MSE conventions?" choices={[{label:'Per observation 0.5; per entry 0.25.',correct:true,feedback:'Divide by n=4 or nd=8 explicitly. Covariance’s n−1 is a separate normalization.'},{label:'Both are 2/3 because covariance uses n−1.',correct:false,feedback:'Reconstruction metrics average observations or scalar entries, not sample covariance estimates.'}]} />
+
+<ChoiceExercise id="iii31-5" client:load prompt="One component retains 99% of variance. What does this establish?" choices={[{label:'High retained empirical variation in this metric; predictive accuracy still needs evaluation.',correct:true,feedback:'A low-variance discarded direction can contain essential target information.'},{label:'At least 99% classification accuracy on future rows.',correct:false,feedback:'PCA has used no labels and gives no such supervised guarantee.'}]} />
+
+## Carry the mechanism forward
+
+You can compute scores and source-space reconstructions, prove residual orthogonality, relate discarded eigenvalues to SSE, distinguish both MSE denominators and handle zero or repeated spectra honestly. <a href={href('/chapters/data-covariance/')}>III-29</a> established centered covariance; III-30 selected its directions. This completes the geometry of dimensionality reduction and prepares you to ask how a representation affects later supervised evaluation.

@@ -1,0 +1,126 @@
+---
+chapterId: III-22
+title: Regression Trees, Tree Depth and Pruning
+hero: Trade leaf error against leaf count
+lede: Fit terminal means, inspect actual squared-error splits, and select a pruned subtree by a normalized cost-complexity objective.
+description: Fit terminal means, inspect actual squared-error splits, and select a pruned subtree by a normalized cost-complexity objective.
+prerequisites: [V.1, V.2, V.7, VI.9]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import TreeStage from '../TreeStage';
+import reference from '../../../../code/python/p04/trees_ensembles.py?raw';
+
+<Stage caption="Start with the controls. Every branch, score, bootstrap draw and stage output comes from the active numeric state; Reset restores the hand-authored inputs."><TreeStage scope="iii22-regression" mode="regression" client:load /></Stage>
+
+## Grow first, then price the leaves
+
+The opening tree fits targets [0,0,2,2,0,2]. It has four terminal leaves and zero training MSE at depth 3. Set **Pruning strength α** to 0.25: two leaves remain, normalized training risk is 0.5 and cost is 1. At α=0.5, one leaf remains, predicts the mean 1 and has cost 1.5. The fewer-leaf tie policy matters at these breakpoints.
+
+Change **Maximum depth** to 1, then restore 3. Pruning searches subtrees of the grown tree; it cannot create a branch that was never grown. Increase **Minimum leaf count** to constrain legal children before fitting. Replay pruning strengths to compare the same grown tree at α=0, 0.25, 0.5 and 1. Each selected frame supplies the predictions, node ledger, cost and accessible tree.
+
+## Why a regression leaf predicts a mean
+
+For a terminal region containing targets yi, choose a constant c. Its squared-error objective and derivative are
+
+$$
+\mathrm{SSE}(c)=\sum_{i\in S}(y_i-c)^2,\qquad
+\frac{d}{dc}\mathrm{SSE}=2|S|c-2\sum_{i\in S}y_i.
+$$
+
+For nonempty S the unique minimizer is c=mean(y in S). Its SSE is the sum of squared centered targets; SSE/|S| is the node's mean squared error. This is a population-normalized empirical variance, not the unbiased sample variance with denominator |S|−1.
+
+A tree maps each query to one leaf mean. X has n sample rows and two feature columns; y and predictions are conceptual n by 1 columns. It adds no intercept column. The row-index plot shows exact per-source targets and predictions, connected only by residual segments. It does not imply interpolation between adjacent rows or a smooth one-dimensional function.
+
+## Search by squared-error reduction
+
+The legal threshold policy is unchanged: equality goes left, duplicates stay together, and each child meets minimum leaf count. Node impurity is SSE/n, so the weighted-child expression simplifies:
+
+$$
+\Delta=\frac{\mathrm{SSE}_P-\mathrm{SSE}_L-\mathrm{SSE}_R}{n_P}.
+$$
+
+For the six-row root, mean is 1 and SSE is 6. At x1 ≤ 2.5, left mean is 0 with SSE 0; right targets [2,2,0,2] have mean 1.5 and SSE 3. Gain is (6−3)/6=0.5. The depth-1 tree has normalized risk 3/6=0.5. Further splits isolate the zero target at s5, giving zero training error with four leaves.
+
+This greedily decreases training squared error. It can also fit noise, produce abrupt boundaries and extrapolate a constant terminal value far beyond observed features. A deeper tree's lower training objective is not evidence of lower validation error.
+
+## Derive cost-complexity pruning
+
+For a subtree T of the grown tree, let |T| denote its number of terminal leaves. We minimize
+
+$$
+C_\alpha(T)=R(T)+\alpha|T|,
+\qquad R(T)=\frac1{n_{\mathrm{root}}}\sum_{\ell\in\mathrm{leaves}(T)}\mathrm{SSE}_\ell.
+$$
+
+The denominator is the original root count, including bootstrap multiplicity if present; each leaf is not separately reweighted to one vote. α has units of mean squared target error per leaf.
+
+At each branch, compare collapsing it to its own mean with retaining its optimally pruned children. This recursive dynamic program finds the minimum cost among all subtrees of the already-grown tree. It does not solve the larger problem of growing every possible tree. Cost ties prefer fewer leaves.
+
+For the canonical data:
+
+<div class="table-scroll" id="iii22-worked-pruning" data-p04-prose-table="iii22-worked-pruning" data-scrollable="III-22 cost-complexity subtree comparison, scrollable" tabindex="0" role="region" aria-label="III-22 cost-complexity subtree comparison, scrollable">
+
+| Subtree | Leaves | Normalized risk | Cost |
+| --- | ---: | ---: | --- |
+| Fully grown | 4 | 0 | 4α |
+| Root split only | 2 | 0.5 | 0.5+2α |
+| Root leaf | 1 | 1 | 1+α |
+
+</div>
+
+At α=0.25, the first two cost 1, so the two-leaf subtree wins. At α=0.5, the two-leaf and one-leaf alternatives both cost 1.5, so the one-leaf tree wins.
+
+## Check a nonbinary mean and a numerical tie
+
+For targets [1,1,5,5,5] at x=0,1,2,3,4, root mean is 17/5 and SSE is 96/5. A two-leaf split at 1.5 has zero SSE. The costs meet when 96/25+α=2α, hence α=96/25=3.84.
+
+<Callout title="Resolve selection roundoff, preserve measured costs" kind="numerical">
+Accumulating binary64 SSE and child costs can move this real tie by an ulp. The selection comparison allows eight machine epsilons times the larger compared absolute cost, then prefers fewer leaves. It never changes the reported SSE, MSE or objective. Tests at 3.84±10^-10 verify that distinct costs still choose different subtrees. An independent oracle enumerates all possible pruned subtrees and uses exact Fraction moments.
+</Callout>
+
+## Assumptions, limits and connections
+
+Constant targets give a zero-risk leaf; constant features with varying targets give the best mean without a legal split. Empty data have no mean or normalized cost. Nonfinite inputs, malformed shapes and overflowing residual squares are rejected rather than becoming silent NaNs. At very small target scales, squared deviations can underflow to zero; the stopping reason reports unresolved finer variation rather than claiming mathematically constant targets. Numeric inputs in the sheet are bounded to ±10; the pure kernels accept broader finite binary64 values subject to finite arithmetic.
+
+Use validation data to choose depth, minimum leaf size and α, then evaluate the selected policy on separate test data. This lesson exposes training risk only and does not pretend its hand-authored rows provide a generalization estimate. III-23 uses many resampled trees, while III-25 fits regression trees to residual targets rather than directly to the original response.
+
+## Execute the actual Python and NumPy
+
+The imported file below is the canonical runnable source used by the numerical tests. Read the named functions for this chapter; the same recursive kernel supports the Part's later ensembles. From the book root:
+
+```bash
+.venv/bin/python -B code/python/p04/trees_ensembles.py
+```
+
+That default command prints the six-row squared-error boosting demonstration as JSON. To run this chapter's tree or sampling operation, pass a JSON request on stdin with `operation` equal to `tree`, `bootstrap`, `bagging` or `boosting`, the displayed `rows`, and the `options` keys in `DEFAULT_OPTIONS`. The independent fixture file contains complete runnable requests for all six lessons. Core lessons require no network or model service.
+
+For this chapter's exact committed example, run the independent fixture request through the actual canonical module:
+
+```bash
+.venv/bin/python -B - <<'PYTHON'
+import json, sys
+from pathlib import Path
+sys.path.insert(0, "code/python/p04")
+from trees_ensembles import dispatch
+cases = json.loads(Path("fixtures/p04/trees.fixtures.json").read_text())["cases"]
+request = next(c["input"] for c in cases if c["input"]["name"] == "regression")
+print(json.dumps(dispatch(request), allow_nan=False))
+PYTHON
+```
+
+<CodeFile source={reference} file="code/python/p04/trees_ensembles.py" />
+
+## Five graded investigations
+
+<ChoiceExercise id="iii22-1" client:load prompt={"Which constant minimizes leaf squared error for targets [1,1,5,5,5]?"} choices={[{"label":"17/5 = 3.4.","correct":true,"feedback":"Setting the derivative to zero gives the arithmetic mean."},{"label":"The median 5.","correct":false,"feedback":"The median minimizes absolute error, not this squared-error objective."}]} />
+
+<ChoiceExercise id="iii22-2" client:load prompt={"Root SSE is 6 and child SSEs sum to 3 across six rows. What is split gain?"} choices={[{"label":"0.5.","correct":true,"feedback":"Use (6−3)/6 with the parent count."},{"label":"3.","correct":false,"feedback":"That is an SSE decrease, before normalizing by the parent count."}]} />
+
+<ChoiceExercise id="iii22-3" client:load prompt={"At α=0.25, risks 0 and 0.5 accompany 4 and 2 leaves. Which wins?"} choices={[{"label":"Two leaves: both cost 1, and fewer leaves win the tie.","correct":true,"feedback":"The tie rule is part of the pruning contract."},{"label":"Four leaves, because zero training error always wins.","correct":false,"feedback":"Cost includes the complexity penalty."}]} />
+
+<ChoiceExercise id="iii22-4" client:load prompt={"Can pruning create a threshold absent from the grown tree?"} choices={[{"label":"No; it chooses among subtrees of that tree.","correct":true,"feedback":"Depth and leaf constraints first determine the available branches."},{"label":"Yes; it searches all possible new trees.","correct":false,"feedback":"The recursive comparison only collapses or retains existing branches."}]} />
+
+<ChoiceExercise id="iii22-5" client:load prompt={"Does the displayed training cost select the best population model?"} choices={[{"label":"No; tune hyperparameters with separate validation.","correct":true,"feedback":"Training risk and unseen-data evaluation serve different purposes."},{"label":"Yes; the minimum cost guarantees generalization.","correct":false,"feedback":"The penalty expresses a preference; its strength still needs evaluation."}]} />

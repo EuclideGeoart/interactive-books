@@ -6,7 +6,7 @@ An independently buildable collection of visual-first, interactive books for com
 | --- | --- | --- |
 | **I — Interactive C++ Data Structures & Algorithms** | Completed and release-validated; installable PWA | [Book I](Interactive-C++-Data-Structures-&-Algorithms-Book/) |
 | **II — Interactive Mathematical Foundations** | M0/M2 foundation complete; REF-1 Vectors awaits independent review | [Book II](Interactive-Mathematical-Foundations-Book/) |
-| **III — Interactive Machine Learning** | M0/M1 + III-07 accepted; 1/41 chapters; Wave A next | [Book III](Interactive-Machine-Learning-Book/) |
+| **III — Interactive Machine Learning** | Complete: 41/41 chapters, validated and ready for publication | [Book III](Interactive-Machine-Learning-Book/) |
 | **IV — Neural Networks, Transformers & LLMs** | Planned | Pending |
 
 ## Book I

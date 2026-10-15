@@ -1,0 +1,86 @@
+---
+chapterId: III-36
+title: Learning Curves and Model Selection
+hero: Each curve point is a fitted experiment
+lede: Grow nested training groups and trace the fitted preprocessing, objective and held-out error behind every plotted point.
+description: Fit transparent scalar ridge models at exact nested training sizes, compare training and validation MSE and inspect the effects of selection and sampling variability.
+prerequisites: [I.5, V.3, V.7, VI.1]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import { href } from '../../../shell/href';
+import EvaluationStage from '../EvaluationStage';
+import reference from '../../../../code/python/p08/evaluation.py?raw';
+
+<Stage caption="Each solid or dashed point comes from an actual fit on the exact nested IDs in the table; every fit learns its own preprocessing."><EvaluationStage scope="iii36-curves" mode="curves" client:load /></Stage>
+
+## Read the IDs behind the line
+
+Inspect the first curve point and its training IDs. The next point adds a whole training group, retaining every earlier ID. Fold 1 validation membership stays fixed. Each point refits the imputer, scaler, feature transform, slope and intercept on its own training subset. The chosen power and penalty come from the explicit development CV grid above the plot; they are shared across sizes. Test observations are absent from both the curve training subsets and curve validation set.
+
+Change a development target and watch the curve values change. Change a test target: curve fits and selected parameters stay fixed. The plot is a projection of the same authoritative numerical state as the table, equations and inspector. Use shifted data to observe how training-fitted centering absorbs a common feature translation; use constant data to see a flat, perfectly fitted synthetic case rather than a fabricated generic learning-curve shape.
+
+## A learning curve is a family of procedures
+
+For nested training subsets T₁⊂T₂⊂⋯ and a fixed validation set V, let fⱼ be the model fitted on Tⱼ using a declared hyperparameter h. Two comparable descriptive errors are
+
+$$
+E_{\mathrm{train}}(j)=\frac1{|T_j|}\sum_{i\in T_j}(f_j(x_i)-y_i)^2,
+\quad E_{\mathrm{val}}(j)=\frac1{|V|}\sum_{i\in V}(f_j(x_i)-y_i)^2.
+$$
+
+The horizontal coordinate is the actual row count |Tⱼ|, not a percentage without a denominator. Nested membership gives a controlled interpretation of “more data”: the larger dataset contains the smaller one. It does not guarantee that added groups are equally informative or representative. These prefixes follow seeded group order and preserve group boundaries.
+
+Training error and validation error have the same units, squared target units. The ridge **objective** is different:
+
+$$
+J_j=E_{\mathrm{train}}(j)+\lambda w_j^2.
+$$
+
+The table shows both, but the solid curve plots training MSE. Comparing validation MSE to a penalized objective would confuse fit error with a complexity term. Because the objective normalizes squared error by n, a fixed λ has the same per-observation convention at each size; implementations using unnormalized SSE must adjust their penalty convention accordingly.
+
+## Derive a two-row fit by hand
+
+Consider a separate literal training pair x=(0,2), y=(0,2), no missing values, linear feature and λ=1. The fitted center is 1, population scale is 1 and transformed feature values are (−1,1). Feature and target means are 0 and 1. Feature variance and feature-target covariance are both 1. Therefore w=1/(1+1)=1/2 and b=1.
+
+Predictions on the training pair are (1/2,3/2). Residuals prediction minus target are (1/2,−1/2), so training MSE is 1/4 and objective is 1/4+1·(1/2)²=1/2. For fixed validation x=4, y=4, the same fitted transform yields z=3, prediction 5/2 and validation MSE 9/4. The validation value does not refit the center or scale.
+
+Adding another training pair would require a new fit. It is invalid to take the earlier w and move the plotted point to a larger sample count. The board computes every point from its actual subset and records fitted preprocessing and parameters in `data-numerical`.
+
+## What curve shapes suggest
+
+Large training and validation errors can suggest underfitting, but also a poor metric, corrupt labels, uninformative features or distribution shift. A large gap can suggest overfitting or validation mismatch. These are diagnostic hypotheses. Neither pattern uniquely identifies a causal explanation. More data can increase training error as a previously easy subset becomes more diverse, and validation error can rise when newly added groups pull the fit away from this particular validation group.
+
+Fold-to-fold CV scores above the curve expose one source of sampling variability. This bounded lab uses one nested prefix sequence and one fixed validation fold; it does not invent confidence ribbons or claim that three points estimate a variance distribution. To estimate uncertainty, repeat the entire declared sampling procedure and summarize genuinely fitted repeats, respecting group or time boundaries. More curve points alone do not make them independent repeats.
+
+## Canonical fits and explorer
+
+X stores n×1 row observations after one scalar engineered feature; y is n×1, w is 1×1 and b is scalar. The closed-form fit recomputes all subset means. Constant features use a declared scale-one convention; with zero variance and λ=0, zero slope gives the mean-target prediction. All-missing training features are rejected because no observed training mean exists.
+
+<CodeFile source={reference} file="code/python/p08/evaluation.py" />
+
+Try two and four folds. The training groups available to fold 1 change, so the nested row counts change too. Inspect every membership before comparing curves across splits. Change the split seed using keyboard arrows or a numeric entry; reset restores seed 7 and the original rows synchronously. Replay can reveal the final test, but that test remains outside the plotted curves.
+
+<Callout title="Selection changes the meaning of validation" kind="misconception">
+These curves reuse a validation fold already involved in hyperparameter selection. They describe the selected procedure and are useful diagnostics, but their errors are not an independent estimate of the final selected model's population risk. Reserve an outer evaluation boundary or the untouched test for that question.
+</Callout>
+
+## Limits and connections
+
+The one-feature quadratic option can describe a U-shaped response while the linear option cannot; this connects to <a href={href('/chapters/polynomial-features/')}>III-11</a>. It is still not an arbitrary polynomial expansion. Scaling changes the numerical meaning of a ridge penalty, so preprocessing and hyperparameters form one fitted procedure. Missingness itself may be informative; a production experiment would examine an indicator feature or domain-specific imputation rather than assuming the mean is adequate.
+
+The displayed toy errors cannot guarantee deployment quality. Examine data provenance, group representativeness, costs of errors and future drift before deciding to collect more data or deploy a model.
+
+## Five graded investigations
+
+<ChoiceExercise id="iii36-1" client:load prompt="What makes the displayed training subsets nested?" choices={[{label:'Each larger subset contains all IDs of the previous subset.',correct:true,feedback:'The board adds complete training groups in fixed order.'},{label:'Only their row counts increase; membership can be unrelated.',correct:false,feedback:'Increasing counts alone does not establish nesting. Inspect IDs.'}]} />
+<ChoiceExercise id="iii36-2" client:load prompt="In the literal two-row example, what is the ridge objective?" choices={[{label:'1/2: MSE 1/4 plus penalty 1/4.',correct:true,feedback:'The solid training curve would show 1/4; the objective includes λw².'},{label:'1/4 because the penalty is a validation metric.',correct:false,feedback:'The penalty is part of fitting, not validation. Add λw² to training MSE.'}]} />
+<ChoiceExercise id="iii36-3" client:load prompt="Does validation error have to fall as training groups are added?" choices={[{label:'No; finite samples and group differences can make it rise.',correct:true,feedback:'These are actual fits on heterogeneous synthetic prefixes, not monotonic illustrations.'},{label:'Yes; otherwise the curve code must be wrong.',correct:false,feedback:'There is no such monotonicity theorem for held-out error.'}]} />
+<ChoiceExercise id="iii36-4" client:load prompt="May each validation batch fit a new scale for its own curve point?" choices={[{label:'No; apply the scale fitted on that point’s training subset.',correct:true,feedback:'Validation transformation uses training fit state.'},{label:'Yes; normalization is harmless because it has no targets.',correct:false,feedback:'Validation features can leak even without labels; the coordinate system would change.'}]} />
+<ChoiceExercise id="iii36-5" client:load prompt="Are curves using a tuning validation fold unbiased final evidence?" choices={[{label:'No; selection has already used that validation information.',correct:true,feedback:'Use a separate outer boundary or final test for independent selected-model evaluation.'},{label:'Yes, because MSE is averaged.',correct:false,feedback:'Averaging does not undo selection on the same data.'}]} />
+
+## What you can now explain
+
+You can connect every plotted point to a fitted subset, distinguish MSE from the ridge objective, interpret gaps cautiously and account for selection reuse. <a href={href('/chapters/imbalance-calibration-metrics/')}>III-37</a> asks whether the evaluation metric measures the decision you actually care about.

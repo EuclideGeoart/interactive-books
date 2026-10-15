@@ -1,0 +1,115 @@
+---
+chapterId: III-32
+title: Maximum-Margin Classification
+hero: Find the widest defensible gap
+lede: Solve a separating hyperplane from labeled observations, then measure its margins and recognize when no hard separation exists.
+description: Drag labeled points through an actual two-dimensional maximum-margin solve and inspect weights, intercept, distances, support coefficients, constraints and hard-margin infeasibility.
+prerequisites: [II.3, II.4, II.5, VI.3, VI.9, VI.10]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import { href } from '../../../shell/href';
+import SVMStage from '../SVMStage';
+import reference from '../../../../code/python/p07/svm.py?raw';
+
+<Stage caption="Drag an observation to change the actual maximum-margin solution. Rings identify nonzero dual coefficients; the constraint ledger separately identifies on-margin points."><SVMStage scope="iii32-hard" mode="hard" client:load /></Stage>
+
+## Start with the gap, not a guessed line
+
+Drag point b toward the positive class. The line is recomputed from the observations: its normal w, intercept b, constraints and distances change together. The point ID b and the intercept b are different objects; the ledger labels each explicitly. Select **anchor data** for the simplest exact example. Select **overlap data** or **coincident data** to see a failed assumption: opposite classes cannot always be separated.
+
+Many lines can separate two clouds. Maximum-margin classification chooses the one with the largest clearance to the nearest labeled observations. Clearance measures robustness to movement in the supplied feature metric; it is not a probability, a guarantee of future accuracy, or a claim about causal importance. Scaling a feature changes that metric and can change the answer.
+
+## Define the model and its shapes
+
+A sample x and weight w are mathematical 2×1 columns. The laboratory stores n samples as rows of X, an n×2 matrix, and labels y as an n×1 column with entries −1 and +1. The scalar intercept is separate from w:
+
+$$
+f(x)=w^Tx+b,\qquad f(X)=Xw+\mathbf1b.
+$$
+
+Positive scores predict +1, negative scores −1. Exactly zero is an explicit tie, recorded as decision 0. The zero set is the model boundary. For nonzero w, it is a line perpendicular to w. We do not penalize the intercept. Training accuracy counts correct signs; the optimization objective controls margin geometry instead.
+
+The functional margin of observation i is yi f(xi). It has no fixed unit: multiplying w and b by a positive constant preserves the boundary and predictions while multiplying functional margins. Fix the model's scale by requiring the nearest functional margins to equal one. The geometric signed distance to the boundary is f(x)/‖w‖, and the label-adjusted geometric margin is yi f(xi)/‖w‖.
+
+## Derive the maximum-margin objective
+
+The parallel lines f=−1 and f=+1 are each 1/‖w‖ away from f=0. Their total separation is 2/‖w‖. Maximizing this gap is equivalent to minimizing the squared normal length under the normalized constraints:
+
+$$
+\min_{w,b}\frac12\|w\|_2^2
+\quad\text{subject to}\quad y_i(w^Tx_i+b)\ge1\quad\text{for every }i.
+$$
+
+The factor 1/2 simplifies derivatives. It is not a mean over samples. A solution needs strict linear separability before scale normalization; overlapping class convex hulls make the constraints infeasible. Opposite labels at the same coordinate directly require f(x)≥1 and f(x)≤−1 at once. No finite w,b can satisfy both.
+
+Introduce nonnegative multipliers αi and form the Lagrangian. Stationarity with respect to w and the unpenalized intercept gives
+
+$$
+w=\sum_i\alpha_i y_i x_i,\qquad\sum_i\alpha_i y_i=0.
+$$
+
+Substitution gives the concave dual:
+
+$$
+\max_{\alpha\ge0,\ y^T\alpha=0}
+\sum_i\alpha_i-\frac12\sum_{i,j}\alpha_i\alpha_jy_iy_jx_i^Tx_j.
+$$
+
+Complementarity is αi(yi f(xi)−1)=0. A positive multiplier requires an active margin constraint at an optimum. The converse need not hold: duplicate or redundant active constraints can have zero multiplier in one optimal representation. The ring shows $\alpha>10^{-9}$ by the solver's diagnostic convention; the ledger's on-margin flag independently tests |yi f−1|≤2×10⁻⁵. These numerical classifications do not redefine mathematical support.
+
+## Work the two-point optimum by hand
+
+Take negative x−=[−1,0]ᵀ and positive x+=[1,0]ᵀ. The constraints are w1−b≥1 and w1+b≥1. Adding gives w1≥1. Choosing w2=0 minimizes the norm; w1=1 forces b=0.
+
+$$
+w=\begin{bmatrix}1\\0\end{bmatrix},\quad b=0,\quad
+\gamma=1,\quad\alpha_-=\alpha_+=\frac12.
+$$
+
+The scores are −1 and +1, signed distances −1 and +1, and both label-adjusted margins are one. The half-margin is one and full gap two. The primal is 1/2. The dual is α−+α+−‖w‖²/2=1−1/2=1/2. Equality holds because −α−+α+=0. This is an independently hand-derived fixture, not output copied from the program.
+
+If the samples move to [−2,0] and [2,0], w=[1/2,0], b=0, half-margin two, and each α=1/8. Coordinate scale and geometric margin change, while functional margins remain one under normalization.
+
+## How the bounded laboratory solves hard margins
+
+The implementation first builds the two class convex hulls in the input plane. If they intersect, including crossing edges, containment or coincident opposite points, it reports infeasibility and draws no fitted model. If they are disjoint, let n and p be their closest points, with δ=p−n. Supporting planes perpendicular to δ touch those hulls, so
+
+$$
+w=\frac{2\delta}{\|\delta\|^2},\qquad
+b=-w^T\frac{p+n}{2},\qquad\gamma=\frac{\|\delta\|}{2}.
+$$
+
+Endpoint-to-segment projections enumerate the shortest hull distance. Barycentric weights of the closest segment points distribute the common dual mass 2/‖δ‖² among their observations. This gives an explicit dual certificate; it is not merely a visually plausible separator. The result reconstructs all training scores, constraints, primal and dual values and checks KKT, equality, nonnegative coefficients and gap before allowing a line to be displayed.
+
+The API is intentionally two-dimensional and limited to 2–12 rows with both labels and coordinates in [−5,5]. This geometric method does not extend automatically to higher dimensions. Orientation signs use an exact dyadic fallback on the original binary64 coordinates. Closest-point projections and fitted coefficients still round; even an exactly separable configuration can yield numerical unavailability or diagnostic failure. A distance that cannot be squared or inverted representably is unavailable. No failed hard solution is displayed as fitted.
+
+## Execute the actual Python and NumPy
+
+The imported source is the canonical reference. With no piped JSON, its CLI uses the exact anchor above. A full request supplies mode, points with unique IDs/x/y, C and kernel configuration; hard/soft modes force the linear kernel but validate all fields. JSON errors, malformed shapes, Booleans and unrepresentable arithmetic return a structured error and nonzero exit.
+
+<CodeFile source={reference} file="code/python/p07/svm.py" />
+
+## Investigate the explorer
+
+Reset, then replay the feasibility cases. Each frame is an immutable input snapshot and selects its own rederived numerical result. At the overlap frame, choose a point and edit it: the next experiment starts from that displayed snapshot and exits replay. The numeric editor preserves finer precision than the pointer's 0.1 lattice. Arrow keys give an equivalent path, and the point selector makes coincident observations independently reachable.
+
+## Common mistakes and limits
+
+A large raw f(x) is not a large geometric distance unless you divide by the normal length. A point on f=0 is a decision tie, not a support margin point. A ring is a coefficient property, not simply a location on a drawn line. Maximizing training clearance alone does not establish generalization. Outliers can dominate hard separation, and one conflicting label can destroy feasibility.
+
+<Callout title="Infeasibility is a learning result" kind="numerical">The overlap state has no hard fitted line. The next chapter changes the optimization problem to permit explicit slack; it does not conceal the failed hard constraints by widening a numerical tolerance.</Callout>
+
+## Five graded investigations
+
+<ChoiceExercise id="iii32-1" client:load prompt="Multiply w and b by 3. What is unchanged?" choices={[{label:'The boundary and geometric signed distances.',correct:true,feedback:'f and the normal length both multiply by 3; functional margins multiply by 3.'},{label:'All functional margins.',correct:false,feedback:'Functional margins inherit the arbitrary scale of w and b.'}]} />
+<ChoiceExercise id="iii32-2" client:load prompt="For the anchor, what is the full margin width?" choices={[{label:'2.',correct:true,feedback:'Each margin plane is one unit from the boundary; the gap is 2/‖w‖.'},{label:'1/2.',correct:false,feedback:'The primal objective 1/2 is not a distance.'}]} />
+<ChoiceExercise id="iii32-3" client:load prompt="What happens with opposite labels at one coordinate?" choices={[{label:'Hard constraints are infeasible.',correct:true,feedback:'The same score cannot be at least 1 and at most −1.'},{label:'The optimizer puts both on the boundary and satisfies the constraints.',correct:false,feedback:'A zero score has functional margin zero, below the required one.'}]} />
+<ChoiceExercise id="iii32-4" client:load prompt="Must every on-margin point have positive alpha?" choices={[{label:'No; redundant active constraints can have zero alpha.',correct:true,feedback:'Complementarity forces positive alpha to be active, not every active constraint to have positive alpha.'},{label:'Yes, location uniquely determines the coefficient.',correct:false,feedback:'Duplicate or redundant samples can have nonunique dual representations.'}]} />
+<ChoiceExercise id="iii32-5" client:load prompt="A candidate line looks right but fails its KKT diagnostics. What should the lab do?" choices={[{label:'Show the failure and withhold a fitted boundary.',correct:true,feedback:'The picture must be supported by the actual solved objective and constraints.'},{label:'Call it maximum-margin because it visually separates.',correct:false,feedback:'Separation alone does not certify the maximum clearance or dual conditions.'}]} />
+
+## Connections and summary
+
+Book II's norms, dot products and projections explain the distance formula; convex constraints explain the optimization. You can now distinguish scores, functional margins, distances, support coefficients and feasibility. <a href={href('/chapters/soft-margins-regularization/')}>III-33</a> permits violations at an explicit cost and shows why a classifier can be useful even when hard constraints cannot hold.

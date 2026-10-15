@@ -1,0 +1,125 @@
+---
+chapterId: III-20
+title: Decision Trees and Candidate Splits
+hero: Make every branch earn its rows
+lede: Move a threshold through exact row identities, compare legal splits, and inspect the recursively fitted classifier.
+description: Move a threshold through exact row identities, compare legal splits, and inspect the recursively fitted classifier.
+prerequisites: [I.7, I.8, IV.4, V.1]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import TreeStage from '../TreeStage';
+import reference from '../../../../code/python/p04/trees_ensembles.py?raw';
+
+<Stage caption="Start with the controls. Every branch, score, bootstrap draw and stage output comes from the active numeric state; Reset restores the hand-authored inputs."><TreeStage scope="iii20-splits" mode="splits" client:load /></Stage>
+
+## Begin with a partition, not a diagram
+
+Move **Inspection threshold** from 2.5 to 3.5. At 2.5, the left IDs are s1 and s2; at 3.5, s3 joins them. Every displayed count, impurity and gain changes from these exact memberships. The green line shows this proposed branch. The **Actual recursive tree** is fitted independently by searching legal candidates; moving the inspection line does not force the model to use it.
+
+Set **Maximum depth** to 1 and inspect its predictions. Then replay depth 0–3. These frames refit at four depth bounds; they are not four mutations of one tree. Inspect node rootR to see its own subset and candidate list. Query features follow the fitted branches, while the observation selector edits the source rows. Enter commits a numeric edit, arrows make another edit without losing focus, and the native slider supports keyboard and touch. Reset restores the original experiment.
+
+## A tree partitions input space
+
+A binary classification tree is a collection of conditional tests followed by terminal predictions. At a node containing row set S, feature j and threshold t define
+
+$$
+S_L=\{i\in S:x_{ij}\le t\},\qquad S_R=\{i\in S:x_{ij}>t\}.
+$$
+
+Equality always goes left. A prediction starts at the root, follows one branch at each test, and returns the terminal majority label. Our binary label tie policy returns class 0. A leaf also stores the fraction of its rows labeled 1; this empirical fraction is distinct from the hard class decision and is not a calibration guarantee.
+
+The batch uses $X\in\mathbb R^{n\times2}$: its rows are samples, its columns are features, and $y\in\mathbb R^{n\times1}$ is the target column. There is no intercept feature or coefficient vector. A single query is a length-2 feature row. Even an empty or pure tree retains this declared shape and rejects missing or extra query entries.
+
+## Enumerate legal partitions
+
+Sort the distinct observed values in each feature. Two adjacent values a and b create one partition represented by threshold (a+b)/2. Duplicate feature values must remain together; we never split identical coordinates just because their labels differ. Both children must contain at least the configured minimum leaf count.
+
+For a node with n rows, let I be its impurity. The candidate score is
+
+$$
+\Delta(j,t)=I(S)-\frac{|S_L|}{n}I(S_L)-\frac{|S_R|}{n}I(S_R).
+$$
+
+We maximize this reduction, then repeat the same search recursively in each child. Exact computed binary64 gain ties choose the lower zero-based feature index, then the lower threshold. This is a greedy procedure: it finds the best immediate branch among considered candidates, not the globally best tree of every possible shape. The next chapter derives both available classification impurities.
+
+## Work the six-row root
+
+The hand-authored data are:
+
+<div class="table-scroll" id="iii20-worked-samples" data-p04-prose-table="iii20-worked-samples" data-scrollable="III-20 hand-authored classification observations, scrollable" tabindex="0" role="region" aria-label="III-20 hand-authored classification observations, scrollable">
+
+| ID | x1 | x2 | Label |
+| --- | ---: | ---: | ---: |
+| s1 | 1 | 1 | 0 |
+| s2 | 2 | 0 | 0 |
+| s3 | 3 | 1 | 1 |
+| s4 | 4 | 0 | 1 |
+| s5 | 5 | 1 | 0 |
+| s6 | 6 | 0 | 1 |
+
+</div>
+
+The parent has counts [3,3] and Gini 1/2. At x1 ≤ 2.5, left counts are [2,0], right counts [1,3]. The weighted child Gini is
+
+$$
+\frac26(0)+\frac46\left(1-\left(\frac14\right)^2-\left(\frac34\right)^2\right)=\frac14.
+$$
+
+Gain is 1/2 − 1/4 = 1/4. This is the selected root test. At x1 ≤ 3.5, both three-row children have Gini 4/9; gain is only 1/18. The latter candidate is legal but worse.
+
+At depth 1, the left leaf predicts 0 and the right predicts 1; s5 is misclassified, so training error is 1/6. Depth 3 separates s5 from s6 and achieves zero error on these six rows. Zero training error provides no evidence about future inputs. Each terminal region is constant, and predictions can change abruptly across its boundary.
+
+## Stop rather than invent a branch
+
+Try **Set pure class 0**, **Set constant features**, and **Use empty data**. Pure labels have zero risk and need no split. Mixed labels with constant features have no separating threshold. Empty nodes carry conventionally zero impurity/risk but an undefined prediction; zero is not fabricated as a label. A depth bound or insufficient rows for two legal leaves also stops growth.
+
+<Callout title="Numeric identity is part of the partition" kind="numerical">
+Python normalizes accepted features and targets to detached binary64 values before deduplication, NumPy masks or recursion. Thus integers near 2^53 that round to the same browser value remain together. A midpoint uses a/2 + b/2 to avoid summing large endpoints; if adjacent floats have no representable interior midpoint, threshold a preserves the same ≤ partition. Finite input does not guarantee finite squared arithmetic in regression.
+</Callout>
+
+## Connections and verification
+
+Trees express nonlinear decisions through axis-aligned local tests. They do not require smooth derivatives, but small changes in data can change a chosen threshold and its descendants. Depth and leaf limits constrain this sensitivity; III-22 adds regression means and pruning, and III-23 averages separately resampled trees.
+
+The independent oracle enumerates every subset of each tiny node, retains only subsets that a feature can actually separate, and computes exact Fraction Gini scores. This is a different search from sorting adjacent coordinates. It checks exact row membership and literal ties as well as scores. The source table and accessible nested tree retain identities even when plot points overlap.
+
+## Execute the actual Python and NumPy
+
+The imported file below is the canonical runnable source used by the numerical tests. Read the named functions for this chapter; the same recursive kernel supports the Part's later ensembles. From the book root:
+
+```bash
+.venv/bin/python -B code/python/p04/trees_ensembles.py
+```
+
+That default command prints the six-row squared-error boosting demonstration as JSON. To run this chapter's tree or sampling operation, pass a JSON request on stdin with `operation` equal to `tree`, `bootstrap`, `bagging` or `boosting`, the displayed `rows`, and the `options` keys in `DEFAULT_OPTIONS`. The independent fixture file contains complete runnable requests for all six lessons. Core lessons require no network or model service.
+
+For this chapter's exact committed example, run the independent fixture request through the actual canonical module:
+
+```bash
+.venv/bin/python -B - <<'PYTHON'
+import json, sys
+from pathlib import Path
+sys.path.insert(0, "code/python/p04")
+from trees_ensembles import dispatch
+cases = json.loads(Path("fixtures/p04/trees.fixtures.json").read_text())["cases"]
+request = next(c["input"] for c in cases if c["input"]["name"] == "classification-gini")
+print(json.dumps(dispatch(request), allow_nan=False))
+PYTHON
+```
+
+<CodeFile source={reference} file="code/python/p04/trees_ensembles.py" />
+
+## Five graded investigations
+
+<ChoiceExercise id="iii20-1" client:load prompt={"At threshold x1 ≤ 2.5, where does a query with x1=2.5 go?"} choices={[{"label":"Left.","correct":true,"feedback":"Equality belongs to the ≤ child."},{"label":"Right.","correct":false,"feedback":"The right test is strictly greater than the threshold."}]} />
+
+<ChoiceExercise id="iii20-2" client:load prompt={"The root Gini is 0.5 and weighted child Gini is 0.25. What is gain?"} choices={[{"label":"0.25.","correct":true,"feedback":"Subtract child impurity from parent impurity."},{"label":"0.75.","correct":false,"feedback":"Adding impurities does not measure a reduction."}]} />
+
+<ChoiceExercise id="iii20-3" client:load prompt={"Can a threshold separate two rows with identical feature values?"} choices={[{"label":"No, that feature places both on the same side.","correct":true,"feedback":"Candidates are partitions of values, not arbitrary row positions."},{"label":"Yes, if their labels differ.","correct":false,"feedback":"Different labels do not change the feature comparison."}]} />
+
+<ChoiceExercise id="iii20-4" client:load prompt={"Two legal candidates have exactly equal computed gain. Which comes first here?"} choices={[{"label":"Lower feature index, then lower threshold.","correct":true,"feedback":"This explicit rule makes the greedy choice reproducible."},{"label":"Whichever has more visually separated points.","correct":false,"feedback":"The plot is a projection, not the scoring rule."}]} />
+
+<ChoiceExercise id="iii20-5" client:load prompt={"Does zero training error at depth 3 prove good unseen-data performance?"} choices={[{"label":"No; a separate evaluation is needed.","correct":true,"feedback":"The six-row fit can memorize local structure."},{"label":"Yes, because every terminal leaf is pure.","correct":false,"feedback":"Purity is measured on the training rows only."}]} />

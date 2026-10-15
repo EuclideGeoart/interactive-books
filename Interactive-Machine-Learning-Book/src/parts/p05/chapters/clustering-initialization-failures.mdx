@@ -1,0 +1,129 @@
+---
+chapterId: III-27
+title: Initialization, Convergence, Scaling and Failure Cases
+hero: A stable center can still be the wrong destination
+lede: Compare two fixed points on the same rectangle, inspect an empty cluster, and change the units that determine nearest-center decisions.
+description: Examine deterministic initialization, Lloyd convergence, local minima, unit scaling, coincident observations and explicit empty-cluster behavior.
+prerequisites: ["II.3", "V.1", "VI.2", "VI.10", "VIII.10"]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import { href } from '../../../shell/href';
+import ClusteringStage from '../ClusteringStage';
+import reference from '../../../../code/python/p05/clustering.py?raw';
+
+<Stage caption="Load Vertical groups and Horizontal local minimum on the same rectangle. Apply real assignments and mean updates, compare objectives, then test seeds, scales, empty clusters and coincident observations."><ClusteringStage scope="iii27-failures" mode="failures" client:load /></Stage>
+
+## Stop does not mean best
+
+Load **Horizontal local minimum**, press **Assign nearest**, and inspect the proposed means. Press **Update means**. The centers remain (0,−1) and (0,1), and WCSS stays 16. The sheet honestly reports a fixed point. Now load **Vertical groups** and perform the same two operations: centers (−2,0) and (2,0) also stay fixed, but WCSS is 4.
+
+Both results use exactly the four points (−2,−1), (−2,1), (2,−1), (2,1). The difference is the starting centers, not the dataset or a fabricated convergence trace. Drag a center away from either configuration and inspect how the nearest-center boundary changes. A manually moved center is a new experiment; monotonicity applies to Lloyd steps on fixed data and scales.
+
+## Derive the two costs
+
+For horizontal groups, each point is two units horizontally from its group center. Each squared distance is 4; four points give $J_H=16$. For vertical groups, every point is one unit vertically from its center, so $J_V=4$.
+
+For the same rectangle with positive reference scales $s_x,s_y$, these fixed groupings have costs
+
+$$
+J_H=\frac{16}{s_x^2},\qquad J_V=\frac4{s_y^2}.
+$$
+
+With $s_x=s_y=1$, vertical groups are better. With $s_x=10,s_y=1$, horizontal groups cost 0.16 while vertical groups cost 4. This is a change of the model's metric. It need not preserve what “nearby” means.
+
+For this four-row example only, an independent oracle enumerates all seven unlabeled nonempty two-cluster partitions. The singleton/triple splits have WCSS $40/3$, the diagonal pairing costs 20, horizontal costs 16, and vertical costs 4. Thus 4 is the exact global two-cluster minimum **for these unit-scale observations**. Lloyd's stop flag does not perform that enumeration, and no global guarantee is exported to larger data.
+
+## Monotonicity has a scope
+
+The assignment step minimizes each row's cost given the centers; the nonempty mean update minimizes each cluster's cost given its membership. Retaining an empty center changes no assigned cost. Therefore each half-step has non-increasing WCSS in exact arithmetic.
+
+This explains a descent property, not a promise of a unique solution. At the horizontal rectangle configuration, every point is strictly closer to its assigned horizontal center, and those centers are already the means. There is no improving Lloyd half-step even though another grouping is better. Ties, empty centers and coincident data can also make assignments or centers non-unique.
+
+The implementation stops only when every updated center exactly equals its old binary64 coordinates. It reports that condition rather than declaring mathematical convergence to infinite precision. Replay is capped at 40 half-steps; a trace reaching that cap without the stop flag is **unfinished**, not converged. The pure trace helper supports up to 100 half-steps. It returns no partial history if an arithmetic failure occurs.
+
+## A seed is a reproducible choice of rows
+
+Our initialization samples k distinct observation **indices** without replacement using a partial Fisher–Yates permutation. It does not implement k-means++, estimate a global optimum, or forbid coincident coordinates. At step i, draw a number u from the frozen platform LCG, choose index j=i+floor(u(n−i)), exchange positions i and j, and retain the first k observation rows as initial centers.
+
+The integer generator is
+
+$$
+z_{t+1}=(1664525z_t+1013904223)\bmod2^{32},
+\qquad u_{t+1}=z_{t+1}/2^{32}.
+$$
+
+Seeds are unsigned 32-bit integers. There is one draw per selected center. Seed 0 is valid. At seed 0 the first two generator integers are 1013904223 and 1196435762. For the original four-point row order, the first selected index is 0; the second is 1. Centers are therefore (−3,0) and (−1,0). Seed 7 selects indices 0 and 3, giving centers (−3,0) and (3,0).
+
+Change **Seed** and press **Initialize from seed** to make that choice concrete. Merely typing a seed does not replace already edited centers. Changing k deliberately initializes k new centers using the current seed. Repeat seeds to compare runs; a favorable objective is evidence about this objective on these data, not about a natural category structure.
+
+Row order is part of the deterministic experiment. Reordering observations while keeping the same seed can choose different coordinates. Stable unique IDs preserve identity; IDs themselves are not features and are not used as random keys. The independent oracle evaluates a closed-form modular geometric series for the generator rather than translating its recurrence.
+
+## Units change squared importance
+
+Suppose an observation's first coordinate is 2 metres from a center. With reference scale 1 metre, its normalized difference is 2 and squared contribution 4. Express the same difference as 200 centimetres and the same reference as 100 centimetres: the ratio is still 2. Changing both together preserves the metric. Converting the coordinate but leaving its numerical reference at 1 instead makes that feature's squared contribution 10,000 times larger.
+
+The sheet keeps raw coordinates in the plot and divides by the explicit **Scale x/y** in the numerical model. Larger reference scales reduce a feature's importance. If scales are estimated from real data, estimate them on the training design and carry the same transformation into later observations. Outliers, constant features, missing values and inappropriate feature units need deliberate preprocessing; this toy sheet does not infer a pipeline.
+
+An objective expressed under one scale cannot be compared numerically with a differently scaled objective as if it were the same unit. Comparing k on the same representation also needs care because training WCSS cannot increase when additional unconstrained centers are allowed.
+
+## Empty clusters and repeated observations stay visible
+
+Load **Empty cluster**. Two points at (−1,0) and (1,0) and two centers at (0,0) create exact ties. Both rows choose label 0, whose mean is (0,0). Cluster 1 has no rows. It keeps its old center; its mean is explicitly undefined. WCSS remains 2, and the mean update stops without inventing a second group.
+
+Load **Coincident observations**. Three distinct IDs all occupy (1,1), with k=3 and three coincident initial centers. Every distance is zero, every tie chooses label 0, and two clusters stay empty. k≤n is necessary for this initialization, but it does not guarantee k nonempty groups when distinct rows share coordinates. Removing duplicate IDs from the dataset would change its empirical weights; coordinate coincidence alone cannot justify removing them.
+
+<div class="table-scroll" tabindex="0" role="region" aria-label="III-27 failure cases, scrollable">
+
+| Situation | Defined numerical result | Interpretation |
+| --- | --- | --- |
+| k=1 | One coordinatewise mean | WCSS summarizes total scatter |
+| k>n or k=0 | Rejected with reason | No silent clamping of k |
+| Duplicate coordinates, distinct IDs | Separate weighted observations | Can produce empty centers |
+| Empty cluster | Undefined mean; retain old center | No hidden reseeding |
+| Horizontal rectangle fixed point | WCSS 16 | Worse than another fixed point |
+| Nonzero squared-distance underflow | Rejected; rescale | No manufactured zero-distance tie |
+
+</div>
+
+## Evaluate partitions, not arbitrary label names
+
+Assignments [0,0,1,1] and [1,1,0,0] describe the same grouping. They have identical within/between membership relations, even though a literal elementwise “accuracy” would call every label different. Our `same_partition` checks whether every pair of observations is together in both assignments. It is invariant to a one-to-one permutation of occupied labels.
+
+This helper is a partition-equivalence predicate, not an external accuracy score, adjusted Rand index or semantic ground truth. It accepts nonnegative cluster labels. DBSCAN's −1 noise marker is handled separately; grouping all noise points into one true cluster would introduce a different evaluation convention. Real external labels require an explicitly defined metric and treatment of noise or unmatched groups.
+
+## Numerical caveats and connections
+
+<Callout title="A visible zero must not erase a distinct point" kind="numerical">
+The browser and canonical Python reject nonzero coordinate differences whose normalized difference or square underflows to zero, even if another coordinate contributes a finite nonzero square. The remedy is rescaling coordinates or reference scales. Overflow is also rejected. Ordinary binary64 rounding can still lose a small positive term when added to a larger sum; six-digit display rounding never controls assignments. Authored oracle comparisons use absolute plus relative 10^-12 for these small fixtures, while IDs, shapes, memberships and labels are exact.
+</Callout>
+
+The interactive coordinates stay within −5…5 and reference scales within 0.1…10; these are educational bounds, not model theory. Numeric edits reject values beyond them without replacing the last valid state. Numeric, pointer, touch, keyboard and reset paths share the same validated model. Editing during replay starts from the displayed frozen state and clears the old trace.
+
+<a href={href('chapters/k-means/')}>III-26</a> established the two subproblems. <a href={href('chapters/hierarchical-density-clustering/')}>III-28</a> will question whether squared distance to a mean is even the right definition of a cluster. Book II's local/global optima and numerical stopping chapters explain why reproducibility, stability and optimality are separate questions.
+
+## Read the canonical reference
+
+`initialize`, `lloyd_trace`, `same_partition` and the shape/arithmetic validators below are the actual Python source, not a prose copy. The default executable prints the first mean update; fixture inputs can be sent as JSON on stdin to select other operations.
+
+```bash
+.venv/bin/python -B code/python/p05/clustering.py
+```
+
+<CodeFile source={reference} file="code/python/p05/clustering.py" />
+
+## Five graded investigations
+
+<div data-p05-exercises>
+<ChoiceExercise id="iii27-1" client:load prompt="The horizontal rectangle run stops with WCSS 16. What follows?" choices={[{label:'It is a Lloyd fixed point; a vertical grouping still costs 4.',correct:true,feedback:'Assignments and means can be mutually stable without giving the best partition. The literal rectangle supplies a concrete counterexample.'},{label:'16 is the global minimum because the centers stopped.',correct:false,feedback:'The vertical fixed point costs 4. An unchanged mean only certifies the declared stopping condition, not an exhaustive search.'}]} />
+<ChoiceExercise id="iii27-2" client:load prompt="A feature and its reference scale are both multiplied by 100. What happens to its squared-distance contribution?" choices={[{label:'It stays unchanged.',correct:true,feedback:'The coordinate difference and reference scale change by the same factor, preserving their ratio and its square.'},{label:'It becomes 10,000 times larger.',correct:false,feedback:'That would happen if only the coordinate difference were multiplied by 100. Here the reference scale changes as well.'}]} />
+<ChoiceExercise id="iii27-3" client:load prompt="With seed 0 and the original four-row order, which initial centers does k=2 select?" choices={[{label:'−3 and −1 on the x axis.',correct:true,feedback:'The first two exact LCG draws select positions 0 and 1 in the partial permutation. Seed zero is a supported seed.'},{label:'Seed 0 is invalid.',correct:false,feedback:'Unsigned 32-bit seeds include zero. The recurrence has a nonzero additive term and produces a valid deterministic sequence.'}]} />
+<ChoiceExercise id="iii27-4" client:load prompt="Three rows coincide and k=3. Must all three clusters be occupied?" choices={[{label:'No; the tie rule can assign all rows to label 0.',correct:true,feedback:'Distinct observation indices can have identical coordinates. The lowest-index tie convention leaves other centers empty and visible.'},{label:'Yes; k≤n guarantees k nonempty groups.',correct:false,feedback:'k≤n bounds the selection of distinct observation indices. It does not guarantee distinct geometry or nonempty nearest-center assignments.'}]} />
+<ChoiceExercise id="iii27-5" client:load prompt="Are [0,0,1,1] and [1,1,0,0] the same partition?" choices={[{label:'Yes; every observation pair has the same membership relation.',correct:true,feedback:'Whole cluster names were exchanged. Their numerical labels have no semantic order, so partition evaluation must respect this permutation.'},{label:'No; all four numerical labels changed.',correct:false,feedback:'Comparing names elementwise mistakes arbitrary identifiers for targets. The same pairs remain together in both assignments.'}]} />
+</div>
+
+## Checkpoints
+
+You can reproduce initialization from a seed and row order, explain both rectangle costs, distinguish monotonic descent from global optimization, convert units consistently and inspect empty or coincident clusters without manufacturing a mean. An honest experiment states its data, metric, tie rule, stopping condition, numerical limits and evaluation convention together.

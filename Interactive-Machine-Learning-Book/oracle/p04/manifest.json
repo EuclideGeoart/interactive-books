@@ -1,0 +1,8 @@
+{
+  "selfTests": [
+    "test_trees.py"
+  ],
+  "goldenChecks": [
+    "generate_fixtures.py"
+  ]
+}

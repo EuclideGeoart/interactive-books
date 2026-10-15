@@ -1,0 +1,6811 @@
+{
+  "provenance": "Independent exhaustive row subsets, Fraction means/SSE/Gini, 80-digit Decimal entropy, closed-form LCG, enumerated subtrees, exact residual stages. Canonical Python+NumPy executed freshly.",
+  "tolerance": {
+    "absolute": 2e-12,
+    "relative": 2e-12,
+    "exact": "IDs, counts, dimensions, seeds, partitions, feature subsets, nullability"
+  },
+  "cases": [
+    {
+      "input": {
+        "name": "decimal-constant",
+        "operation": "tree",
+        "rows": [
+          {
+            "id": "d0",
+            "x": [
+              0
+            ],
+            "y": 0.1
+          },
+          {
+            "id": "d1",
+            "x": [
+              1
+            ],
+            "y": 0.1
+          },
+          {
+            "id": "d2",
+            "x": [
+              2
+            ],
+            "y": 0.1
+          }
+        ],
+        "options": {
+          "task": "regression",
+          "criterion": "sse",
+          "dimensions": 1,
+          "maxDepth": 3,
+          "minLeaf": 1,
+          "mtry": 0,
+          "seed": 7
+        }
+      },
+      "expected": {
+        "tree": [
+          {
+            "id": "root",
+            "dimensions": 1,
+            "depth": 0,
+            "rowIds": [
+              "d0",
+              "d1",
+              "d2"
+            ],
+            "sourceIds": [
+              "d0",
+              "d1",
+              "d2"
+            ],
+            "stats": {
+              "n": 3,
+              "counts": null,
+              "mean": 0.1,
+              "value": 0.1,
+              "probability": null,
+              "impurity": 0.0,
+              "risk": 0.0
+            },
+            "features": [],
+            "split": null
+          }
+        ],
+        "candidates": [
+          {
+            "feature": 0,
+            "threshold": 0.5,
+            "leftIds": [
+              "d0"
+            ],
+            "rightIds": [
+              "d1",
+              "d2"
+            ],
+            "weighted": 0.0,
+            "gain": 0.0
+          },
+          {
+            "feature": 0,
+            "threshold": 1.5,
+            "leftIds": [
+              "d0",
+              "d1"
+            ],
+            "rightIds": [
+              "d2"
+            ],
+            "weighted": 0.0,
+            "gain": 0.0
+          }
+        ],
+        "predictions": [
+          0.1,
+          0.1,
+          0.1
+        ]
+      }
+    },
+    {
+      "input": {
+        "name": "decimal-close-distinct",
+        "operation": "tree",
+        "rows": [
+          {
+            "id": "d0",
+            "x": [
+              0
+            ],
+            "y": 0.1
+          },
+          {
+            "id": "d1",
+            "x": [
+              1
+            ],
+            "y": 0.10000000000000006
+          }
+        ],
+        "options": {
+          "task": "regression",
+          "criterion": "sse",
+          "dimensions": 1,
+          "maxDepth": 3,
+          "minLeaf": 1,
+          "mtry": 0,
+          "seed": 7
+        }
+      },
+      "expected": {
+        "tree": [
+          {
+            "id": "root",
+            "dimensions": 1,
+            "depth": 0,
+            "rowIds": [
+              "d0",
+              "d1"
+            ],
+            "sourceIds": [
+              "d0",
+              "d1"
+            ],
+            "stats": {
+              "n": 2,
+              "counts": null,
+              "mean": 0.10000000000000003,
+              "value": 0.10000000000000003,
+              "probability": null,
+              "impurity": 7.703719777548943e-34,
+              "risk": 1.5407439555097887e-33
+            },
+            "features": [
+              0
+            ],
+            "split": {
+              "feature": 0,
+              "threshold": 0.5,
+              "leftIds": [
+                "d0"
+              ],
+              "rightIds": [
+                "d1"
+              ],
+              "weighted": 0.0,
+              "gain": 7.703719777548943e-34
+            }
+          },
+          {
+            "id": "rootL",
+            "dimensions": 1,
+            "depth": 1,
+            "rowIds": [
+              "d0"
+            ],
+            "sourceIds": [
+              "d0"
+            ],
+            "stats": {
+              "n": 1,
+              "counts": null,
+              "mean": 0.1,
+              "value": 0.1,
+              "probability": null,
+              "impurity": 0.0,
+              "risk": 0.0
+            },
+            "features": [],
+            "split": null
+          },
+          {
+            "id": "rootR",
+            "dimensions": 1,
+            "depth": 1,
+            "rowIds": [
+              "d1"
+            ],
+            "sourceIds": [
+              "d1"
+            ],
+            "stats": {
+              "n": 1,
+              "counts": null,
+              "mean": 0.10000000000000006,
+              "value": 0.10000000000000006,
+              "probability": null,
+              "impurity": 0.0,
+              "risk": 0.0
+            },
+            "features": [],
+            "split": null
+          }
+        ],
+        "candidates": [
+          {
+            "feature": 0,
+            "threshold": 0.5,
+            "leftIds": [
+              "d0"
+            ],
+            "rightIds": [
+              "d1"
+            ],
+            "weighted": 0.0,
+            "gain": 7.703719777548943e-34
+          }
+        ],
+        "predictions": [
+          0.1,
+          0.10000000000000006
+        ]
+      }
+    },
+    {
+      "input": {
+        "name": "decimal-ensemble",
+        "operation": "bagging",
+        "rows": [
+          {
+            "id": "d0",
+            "x": [
+              0
+            ],
+            "y": 0.1
+          },
+          {
+            "id": "d1",
+            "x": [
+              1
+            ],
+            "y": 0.1
+          },
+          {
+            "id": "d2",
+            "x": [
+              2
+            ],
+            "y": 0.1
+          }
+        ],
+        "options": {
+          "task": "regression",
+          "criterion": "sse",
+          "dimensions": 1,
+          "maxDepth": 3,
+          "minLeaf": 1,
+          "mtry": 0,
+          "seed": 7
+        },
+        "seed": 7,
+        "count": 3
+      },
+      "expected": {
+        "trees": [
+          {
+            "bootstrapStart": 0,
+            "featureStart": 3,
+            "featureBudget": 0,
+            "bootstrapSeed": 7,
+            "featureSeed": 2630631676,
+            "sample": {
+              "indices": [
+                0,
+                2,
+                1
+              ],
+              "counts": [
+                {
+                  "id": "d0",
+                  "count": 1
+                },
+                {
+                  "id": "d1",
+                  "count": 1
+                },
+                {
+                  "id": "d2",
+                  "count": 1
+                }
+              ],
+              "uniqueIds": [
+                "d0",
+                "d1",
+                "d2"
+              ],
+              "oobIds": []
+            },
+            "tree": [
+              {
+                "id": "root",
+                "dimensions": 1,
+                "depth": 0,
+                "rowIds": [
+                  "draw1",
+                  "draw2",
+                  "draw3"
+                ],
+                "sourceIds": [
+                  "d0",
+                  "d2",
+                  "d1"
+                ],
+                "stats": {
+                  "n": 3,
+                  "counts": null,
+                  "mean": 0.1,
+                  "value": 0.1,
+                  "probability": null,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              }
+            ]
+          },
+          {
+            "bootstrapStart": 3,
+            "featureStart": 6,
+            "featureBudget": 0,
+            "bootstrapSeed": 2630631676,
+            "featureSeed": 3675562389,
+            "sample": {
+              "indices": [
+                2,
+                0,
+                2
+              ],
+              "counts": [
+                {
+                  "id": "d0",
+                  "count": 1
+                },
+                {
+                  "id": "d1",
+                  "count": 0
+                },
+                {
+                  "id": "d2",
+                  "count": 2
+                }
+              ],
+              "uniqueIds": [
+                "d0",
+                "d2"
+              ],
+              "oobIds": [
+                "d1"
+              ]
+            },
+            "tree": [
+              {
+                "id": "root",
+                "dimensions": 1,
+                "depth": 0,
+                "rowIds": [
+                  "draw1",
+                  "draw2",
+                  "draw3"
+                ],
+                "sourceIds": [
+                  "d2",
+                  "d0",
+                  "d2"
+                ],
+                "stats": {
+                  "n": 3,
+                  "counts": null,
+                  "mean": 0.1,
+                  "value": 0.1,
+                  "probability": null,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              }
+            ]
+          },
+          {
+            "bootstrapStart": 6,
+            "featureStart": 9,
+            "featureBudget": 0,
+            "bootstrapSeed": 3675562389,
+            "featureSeed": 295425186,
+            "sample": {
+              "indices": [
+                1,
+                0,
+                0
+              ],
+              "counts": [
+                {
+                  "id": "d0",
+                  "count": 2
+                },
+                {
+                  "id": "d1",
+                  "count": 1
+                },
+                {
+                  "id": "d2",
+                  "count": 0
+                }
+              ],
+              "uniqueIds": [
+                "d0",
+                "d1"
+              ],
+              "oobIds": [
+                "d2"
+              ]
+            },
+            "tree": [
+              {
+                "id": "root",
+                "dimensions": 1,
+                "depth": 0,
+                "rowIds": [
+                  "draw1",
+                  "draw2",
+                  "draw3"
+                ],
+                "sourceIds": [
+                  "d1",
+                  "d0",
+                  "d0"
+                ],
+                "stats": {
+                  "n": 3,
+                  "counts": null,
+                  "mean": 0.1,
+                  "value": 0.1,
+                  "probability": null,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              }
+            ]
+          }
+        ],
+        "predictions": [
+          {
+            "id": "d0",
+            "values": [
+              0.1,
+              0.1,
+              0.1
+            ],
+            "value": 0.1,
+            "voteFraction": null
+          },
+          {
+            "id": "d1",
+            "values": [
+              0.1,
+              0.1,
+              0.1
+            ],
+            "value": 0.1,
+            "voteFraction": null
+          },
+          {
+            "id": "d2",
+            "values": [
+              0.1,
+              0.1,
+              0.1
+            ],
+            "value": 0.1,
+            "voteFraction": null
+          }
+        ],
+        "oob": [
+          {
+            "id": "d0",
+            "treeIds": [],
+            "values": [],
+            "value": null
+          },
+          {
+            "id": "d1",
+            "treeIds": [
+              "tree2"
+            ],
+            "values": [
+              0.1
+            ],
+            "value": 0.1
+          },
+          {
+            "id": "d2",
+            "treeIds": [
+              "tree3"
+            ],
+            "values": [
+              0.1
+            ],
+            "value": 0.1
+          }
+        ],
+        "eligible": 2,
+        "oobMetric": 0.0
+      }
+    },
+    {
+      "input": {
+        "name": "decimal-boosting",
+        "operation": "boosting",
+        "rows": [
+          {
+            "id": "d0",
+            "x": [
+              0
+            ],
+            "y": 0.1
+          },
+          {
+            "id": "d1",
+            "x": [
+              1
+            ],
+            "y": 0.1
+          },
+          {
+            "id": "d2",
+            "x": [
+              2
+            ],
+            "y": 0.1
+          }
+        ],
+        "options": {
+          "task": "regression",
+          "criterion": "sse",
+          "dimensions": 1,
+          "maxDepth": 3,
+          "minLeaf": 1,
+          "mtry": 0,
+          "seed": 7
+        },
+        "rate": 0.5,
+        "stages": 3
+      },
+      "expected": {
+        "baseline": 0.1,
+        "predictions": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "stages": [
+          {
+            "stage": 1,
+            "before": [
+              0.1,
+              0.1,
+              0.1
+            ],
+            "residuals": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "fitted": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "after": [
+              0.1,
+              0.1,
+              0.1
+            ],
+            "lossBefore": 0.0,
+            "lossAfter": 0.0,
+            "tree": [
+              {
+                "id": "root",
+                "dimensions": 1,
+                "depth": 0,
+                "rowIds": [
+                  "d0",
+                  "d1",
+                  "d2"
+                ],
+                "sourceIds": [
+                  "d0",
+                  "d1",
+                  "d2"
+                ],
+                "stats": {
+                  "n": 3,
+                  "counts": null,
+                  "mean": 0.0,
+                  "value": 0.0,
+                  "probability": null,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              }
+            ]
+          },
+          {
+            "stage": 2,
+            "before": [
+              0.1,
+              0.1,
+              0.1
+            ],
+            "residuals": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "fitted": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "after": [
+              0.1,
+              0.1,
+              0.1
+            ],
+            "lossBefore": 0.0,
+            "lossAfter": 0.0,
+            "tree": [
+              {
+                "id": "root",
+                "dimensions": 1,
+                "depth": 0,
+                "rowIds": [
+                  "d0",
+                  "d1",
+                  "d2"
+                ],
+                "sourceIds": [
+                  "d0",
+                  "d1",
+                  "d2"
+                ],
+                "stats": {
+                  "n": 3,
+                  "counts": null,
+                  "mean": 0.0,
+                  "value": 0.0,
+                  "probability": null,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              }
+            ]
+          },
+          {
+            "stage": 3,
+            "before": [
+              0.1,
+              0.1,
+              0.1
+            ],
+            "residuals": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "fitted": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "after": [
+              0.1,
+              0.1,
+              0.1
+            ],
+            "lossBefore": 0.0,
+            "lossAfter": 0.0,
+            "tree": [
+              {
+                "id": "root",
+                "dimensions": 1,
+                "depth": 0,
+                "rowIds": [
+                  "d0",
+                  "d1",
+                  "d2"
+                ],
+                "sourceIds": [
+                  "d0",
+                  "d1",
+                  "d2"
+                ],
+                "stats": {
+                  "n": 3,
+                  "counts": null,
+                  "mean": 0.0,
+                  "value": 0.0,
+                  "probability": null,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              }
+            ]
+          }
+        ],
+        "loss": 0.0
+      }
+    },
+    {
+      "input": {
+        "name": "classification-gini",
+        "operation": "tree",
+        "rows": [
+          {
+            "id": "s1",
+            "x": [
+              1,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s2",
+            "x": [
+              2,
+              0
+            ],
+            "y": 0
+          },
+          {
+            "id": "s3",
+            "x": [
+              3,
+              1
+            ],
+            "y": 1
+          },
+          {
+            "id": "s4",
+            "x": [
+              4,
+              0
+            ],
+            "y": 1
+          },
+          {
+            "id": "s5",
+            "x": [
+              5,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s6",
+            "x": [
+              6,
+              0
+            ],
+            "y": 1
+          }
+        ],
+        "options": {
+          "task": "classification",
+          "criterion": "gini",
+          "dimensions": 2,
+          "maxDepth": 3,
+          "minLeaf": 1,
+          "mtry": 0,
+          "seed": 7
+        },
+        "probe": [
+          2.5,
+          0
+        ]
+      },
+      "expected": {
+        "tree": [
+          {
+            "id": "root",
+            "dimensions": 2,
+            "depth": 0,
+            "rowIds": [
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "sourceIds": [
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "stats": {
+              "n": 6,
+              "counts": [
+                3,
+                3
+              ],
+              "mean": null,
+              "value": 0,
+              "probability": 0.5,
+              "impurity": 0.5,
+              "risk": 3.0
+            },
+            "features": [
+              0,
+              1
+            ],
+            "split": {
+              "feature": 0,
+              "threshold": 2.5,
+              "leftIds": [
+                "s1",
+                "s2"
+              ],
+              "rightIds": [
+                "s3",
+                "s4",
+                "s5",
+                "s6"
+              ],
+              "weighted": 0.25,
+              "gain": 0.25
+            }
+          },
+          {
+            "id": "rootL",
+            "dimensions": 2,
+            "depth": 1,
+            "rowIds": [
+              "s1",
+              "s2"
+            ],
+            "sourceIds": [
+              "s1",
+              "s2"
+            ],
+            "stats": {
+              "n": 2,
+              "counts": [
+                2,
+                0
+              ],
+              "mean": null,
+              "value": 0,
+              "probability": 0.0,
+              "impurity": 0.0,
+              "risk": 0.0
+            },
+            "features": [],
+            "split": null
+          },
+          {
+            "id": "rootR",
+            "dimensions": 2,
+            "depth": 1,
+            "rowIds": [
+              "s3",
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "sourceIds": [
+              "s3",
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "stats": {
+              "n": 4,
+              "counts": [
+                1,
+                3
+              ],
+              "mean": null,
+              "value": 1,
+              "probability": 0.75,
+              "impurity": 0.375,
+              "risk": 1.5
+            },
+            "features": [
+              0,
+              1
+            ],
+            "split": {
+              "feature": 0,
+              "threshold": 4.5,
+              "leftIds": [
+                "s3",
+                "s4"
+              ],
+              "rightIds": [
+                "s5",
+                "s6"
+              ],
+              "weighted": 0.25,
+              "gain": 0.125
+            }
+          },
+          {
+            "id": "rootRL",
+            "dimensions": 2,
+            "depth": 2,
+            "rowIds": [
+              "s3",
+              "s4"
+            ],
+            "sourceIds": [
+              "s3",
+              "s4"
+            ],
+            "stats": {
+              "n": 2,
+              "counts": [
+                0,
+                2
+              ],
+              "mean": null,
+              "value": 1,
+              "probability": 1.0,
+              "impurity": 0.0,
+              "risk": 0.0
+            },
+            "features": [],
+            "split": null
+          },
+          {
+            "id": "rootRR",
+            "dimensions": 2,
+            "depth": 2,
+            "rowIds": [
+              "s5",
+              "s6"
+            ],
+            "sourceIds": [
+              "s5",
+              "s6"
+            ],
+            "stats": {
+              "n": 2,
+              "counts": [
+                1,
+                1
+              ],
+              "mean": null,
+              "value": 0,
+              "probability": 0.5,
+              "impurity": 0.5,
+              "risk": 1.0
+            },
+            "features": [
+              0,
+              1
+            ],
+            "split": {
+              "feature": 0,
+              "threshold": 5.5,
+              "leftIds": [
+                "s5"
+              ],
+              "rightIds": [
+                "s6"
+              ],
+              "weighted": 0.0,
+              "gain": 0.5
+            }
+          },
+          {
+            "id": "rootRRL",
+            "dimensions": 2,
+            "depth": 3,
+            "rowIds": [
+              "s5"
+            ],
+            "sourceIds": [
+              "s5"
+            ],
+            "stats": {
+              "n": 1,
+              "counts": [
+                1,
+                0
+              ],
+              "mean": null,
+              "value": 0,
+              "probability": 0.0,
+              "impurity": 0.0,
+              "risk": 0.0
+            },
+            "features": [],
+            "split": null
+          },
+          {
+            "id": "rootRRR",
+            "dimensions": 2,
+            "depth": 3,
+            "rowIds": [
+              "s6"
+            ],
+            "sourceIds": [
+              "s6"
+            ],
+            "stats": {
+              "n": 1,
+              "counts": [
+                0,
+                1
+              ],
+              "mean": null,
+              "value": 1,
+              "probability": 1.0,
+              "impurity": 0.0,
+              "risk": 0.0
+            },
+            "features": [],
+            "split": null
+          }
+        ],
+        "candidates": [
+          {
+            "feature": 0,
+            "threshold": 1.5,
+            "leftIds": [
+              "s1"
+            ],
+            "rightIds": [
+              "s2",
+              "s3",
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "weighted": 0.4,
+            "gain": 0.1
+          },
+          {
+            "feature": 0,
+            "threshold": 2.5,
+            "leftIds": [
+              "s1",
+              "s2"
+            ],
+            "rightIds": [
+              "s3",
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "weighted": 0.25,
+            "gain": 0.25
+          },
+          {
+            "feature": 0,
+            "threshold": 3.5,
+            "leftIds": [
+              "s1",
+              "s2",
+              "s3"
+            ],
+            "rightIds": [
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "weighted": 0.4444444444444444,
+            "gain": 0.05555555555555555
+          },
+          {
+            "feature": 0,
+            "threshold": 4.5,
+            "leftIds": [
+              "s1",
+              "s2",
+              "s3",
+              "s4"
+            ],
+            "rightIds": [
+              "s5",
+              "s6"
+            ],
+            "weighted": 0.5,
+            "gain": 0.0
+          },
+          {
+            "feature": 0,
+            "threshold": 5.5,
+            "leftIds": [
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ],
+            "rightIds": [
+              "s6"
+            ],
+            "weighted": 0.4,
+            "gain": 0.1
+          },
+          {
+            "feature": 1,
+            "threshold": 0.5,
+            "leftIds": [
+              "s2",
+              "s4",
+              "s6"
+            ],
+            "rightIds": [
+              "s1",
+              "s3",
+              "s5"
+            ],
+            "weighted": 0.4444444444444444,
+            "gain": 0.05555555555555555
+          }
+        ],
+        "predictions": [
+          0,
+          0,
+          1,
+          1,
+          0,
+          1
+        ],
+        "probe": 0
+      }
+    },
+    {
+      "input": {
+        "name": "classification-entropy",
+        "operation": "tree",
+        "rows": [
+          {
+            "id": "s1",
+            "x": [
+              1,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s2",
+            "x": [
+              2,
+              0
+            ],
+            "y": 0
+          },
+          {
+            "id": "s3",
+            "x": [
+              3,
+              1
+            ],
+            "y": 1
+          },
+          {
+            "id": "s4",
+            "x": [
+              4,
+              0
+            ],
+            "y": 1
+          },
+          {
+            "id": "s5",
+            "x": [
+              5,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s6",
+            "x": [
+              6,
+              0
+            ],
+            "y": 1
+          }
+        ],
+        "options": {
+          "task": "classification",
+          "criterion": "entropy",
+          "dimensions": 2,
+          "maxDepth": 3,
+          "minLeaf": 1,
+          "mtry": 0,
+          "seed": 7
+        },
+        "probe": [
+          2.5,
+          0
+        ]
+      },
+      "expected": {
+        "tree": [
+          {
+            "id": "root",
+            "dimensions": 2,
+            "depth": 0,
+            "rowIds": [
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "sourceIds": [
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "stats": {
+              "n": 6,
+              "counts": [
+                3,
+                3
+              ],
+              "mean": null,
+              "value": 0,
+              "probability": 0.5,
+              "impurity": 1.0,
+              "risk": 6.0
+            },
+            "features": [
+              0,
+              1
+            ],
+            "split": {
+              "feature": 0,
+              "threshold": 2.5,
+              "leftIds": [
+                "s1",
+                "s2"
+              ],
+              "rightIds": [
+                "s3",
+                "s4",
+                "s5",
+                "s6"
+              ],
+              "weighted": 0.5408520829727552,
+              "gain": 0.4591479170272448
+            }
+          },
+          {
+            "id": "rootL",
+            "dimensions": 2,
+            "depth": 1,
+            "rowIds": [
+              "s1",
+              "s2"
+            ],
+            "sourceIds": [
+              "s1",
+              "s2"
+            ],
+            "stats": {
+              "n": 2,
+              "counts": [
+                2,
+                0
+              ],
+              "mean": null,
+              "value": 0,
+              "probability": 0.0,
+              "impurity": 0.0,
+              "risk": 0.0
+            },
+            "features": [],
+            "split": null
+          },
+          {
+            "id": "rootR",
+            "dimensions": 2,
+            "depth": 1,
+            "rowIds": [
+              "s3",
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "sourceIds": [
+              "s3",
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "stats": {
+              "n": 4,
+              "counts": [
+                1,
+                3
+              ],
+              "mean": null,
+              "value": 1,
+              "probability": 0.75,
+              "impurity": 0.8112781244591328,
+              "risk": 3.2451124978365313
+            },
+            "features": [
+              0,
+              1
+            ],
+            "split": {
+              "feature": 0,
+              "threshold": 4.5,
+              "leftIds": [
+                "s3",
+                "s4"
+              ],
+              "rightIds": [
+                "s5",
+                "s6"
+              ],
+              "weighted": 0.5,
+              "gain": 0.3112781244591329
+            }
+          },
+          {
+            "id": "rootRL",
+            "dimensions": 2,
+            "depth": 2,
+            "rowIds": [
+              "s3",
+              "s4"
+            ],
+            "sourceIds": [
+              "s3",
+              "s4"
+            ],
+            "stats": {
+              "n": 2,
+              "counts": [
+                0,
+                2
+              ],
+              "mean": null,
+              "value": 1,
+              "probability": 1.0,
+              "impurity": 0.0,
+              "risk": 0.0
+            },
+            "features": [],
+            "split": null
+          },
+          {
+            "id": "rootRR",
+            "dimensions": 2,
+            "depth": 2,
+            "rowIds": [
+              "s5",
+              "s6"
+            ],
+            "sourceIds": [
+              "s5",
+              "s6"
+            ],
+            "stats": {
+              "n": 2,
+              "counts": [
+                1,
+                1
+              ],
+              "mean": null,
+              "value": 0,
+              "probability": 0.5,
+              "impurity": 1.0,
+              "risk": 2.0
+            },
+            "features": [
+              0,
+              1
+            ],
+            "split": {
+              "feature": 0,
+              "threshold": 5.5,
+              "leftIds": [
+                "s5"
+              ],
+              "rightIds": [
+                "s6"
+              ],
+              "weighted": 0.0,
+              "gain": 1.0
+            }
+          },
+          {
+            "id": "rootRRL",
+            "dimensions": 2,
+            "depth": 3,
+            "rowIds": [
+              "s5"
+            ],
+            "sourceIds": [
+              "s5"
+            ],
+            "stats": {
+              "n": 1,
+              "counts": [
+                1,
+                0
+              ],
+              "mean": null,
+              "value": 0,
+              "probability": 0.0,
+              "impurity": 0.0,
+              "risk": 0.0
+            },
+            "features": [],
+            "split": null
+          },
+          {
+            "id": "rootRRR",
+            "dimensions": 2,
+            "depth": 3,
+            "rowIds": [
+              "s6"
+            ],
+            "sourceIds": [
+              "s6"
+            ],
+            "stats": {
+              "n": 1,
+              "counts": [
+                0,
+                1
+              ],
+              "mean": null,
+              "value": 1,
+              "probability": 1.0,
+              "impurity": 0.0,
+              "risk": 0.0
+            },
+            "features": [],
+            "split": null
+          }
+        ],
+        "candidates": [
+          {
+            "feature": 0,
+            "threshold": 1.5,
+            "leftIds": [
+              "s1"
+            ],
+            "rightIds": [
+              "s2",
+              "s3",
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "weighted": 0.8091254953788906,
+            "gain": 0.19087450462110947
+          },
+          {
+            "feature": 0,
+            "threshold": 2.5,
+            "leftIds": [
+              "s1",
+              "s2"
+            ],
+            "rightIds": [
+              "s3",
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "weighted": 0.5408520829727552,
+            "gain": 0.4591479170272448
+          },
+          {
+            "feature": 0,
+            "threshold": 3.5,
+            "leftIds": [
+              "s1",
+              "s2",
+              "s3"
+            ],
+            "rightIds": [
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "weighted": 0.9182958340544896,
+            "gain": 0.08170416594551048
+          },
+          {
+            "feature": 0,
+            "threshold": 4.5,
+            "leftIds": [
+              "s1",
+              "s2",
+              "s3",
+              "s4"
+            ],
+            "rightIds": [
+              "s5",
+              "s6"
+            ],
+            "weighted": 1.0,
+            "gain": 0.0
+          },
+          {
+            "feature": 0,
+            "threshold": 5.5,
+            "leftIds": [
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ],
+            "rightIds": [
+              "s6"
+            ],
+            "weighted": 0.8091254953788906,
+            "gain": 0.19087450462110947
+          },
+          {
+            "feature": 1,
+            "threshold": 0.5,
+            "leftIds": [
+              "s2",
+              "s4",
+              "s6"
+            ],
+            "rightIds": [
+              "s1",
+              "s3",
+              "s5"
+            ],
+            "weighted": 0.9182958340544896,
+            "gain": 0.08170416594551048
+          }
+        ],
+        "predictions": [
+          0,
+          0,
+          1,
+          1,
+          0,
+          1
+        ],
+        "probe": 0
+      }
+    },
+    {
+      "input": {
+        "name": "pure",
+        "operation": "tree",
+        "rows": [
+          {
+            "id": "s1",
+            "x": [
+              1,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s2",
+            "x": [
+              2,
+              0
+            ],
+            "y": 0
+          }
+        ],
+        "options": {
+          "task": "classification",
+          "criterion": "gini",
+          "dimensions": 2,
+          "maxDepth": 3,
+          "minLeaf": 1,
+          "mtry": 0,
+          "seed": 7
+        },
+        "probe": [
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "tree": [
+          {
+            "id": "root",
+            "dimensions": 2,
+            "depth": 0,
+            "rowIds": [
+              "s1",
+              "s2"
+            ],
+            "sourceIds": [
+              "s1",
+              "s2"
+            ],
+            "stats": {
+              "n": 2,
+              "counts": [
+                2,
+                0
+              ],
+              "mean": null,
+              "value": 0,
+              "probability": 0.0,
+              "impurity": 0.0,
+              "risk": 0.0
+            },
+            "features": [],
+            "split": null
+          }
+        ],
+        "candidates": [
+          {
+            "feature": 0,
+            "threshold": 1.5,
+            "leftIds": [
+              "s1"
+            ],
+            "rightIds": [
+              "s2"
+            ],
+            "weighted": 0.0,
+            "gain": 0.0
+          },
+          {
+            "feature": 1,
+            "threshold": 0.5,
+            "leftIds": [
+              "s2"
+            ],
+            "rightIds": [
+              "s1"
+            ],
+            "weighted": 0.0,
+            "gain": 0.0
+          }
+        ],
+        "predictions": [
+          0,
+          0
+        ],
+        "probe": 0
+      }
+    },
+    {
+      "input": {
+        "name": "empty",
+        "operation": "tree",
+        "rows": [],
+        "options": {
+          "task": "classification",
+          "criterion": "gini",
+          "dimensions": 2,
+          "maxDepth": 3,
+          "minLeaf": 1,
+          "mtry": 0,
+          "seed": 7
+        },
+        "probe": [
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "tree": [
+          {
+            "id": "root",
+            "dimensions": 2,
+            "depth": 0,
+            "rowIds": [],
+            "sourceIds": [],
+            "stats": {
+              "n": 0,
+              "counts": [
+                0,
+                0
+              ],
+              "mean": null,
+              "value": null,
+              "probability": null,
+              "impurity": 0.0,
+              "risk": 0.0
+            },
+            "features": [],
+            "split": null
+          }
+        ],
+        "candidates": [],
+        "predictions": [],
+        "probe": null
+      }
+    },
+    {
+      "input": {
+        "name": "constant-features",
+        "operation": "tree",
+        "rows": [
+          {
+            "id": "s1",
+            "x": [
+              1,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s2",
+            "x": [
+              1,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s3",
+            "x": [
+              1,
+              1
+            ],
+            "y": 1
+          },
+          {
+            "id": "s4",
+            "x": [
+              1,
+              1
+            ],
+            "y": 1
+          },
+          {
+            "id": "s5",
+            "x": [
+              1,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s6",
+            "x": [
+              1,
+              1
+            ],
+            "y": 1
+          }
+        ],
+        "options": {
+          "task": "classification",
+          "criterion": "gini",
+          "dimensions": 2,
+          "maxDepth": 3,
+          "minLeaf": 1,
+          "mtry": 0,
+          "seed": 7
+        }
+      },
+      "expected": {
+        "tree": [
+          {
+            "id": "root",
+            "dimensions": 2,
+            "depth": 0,
+            "rowIds": [
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "sourceIds": [
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "stats": {
+              "n": 6,
+              "counts": [
+                3,
+                3
+              ],
+              "mean": null,
+              "value": 0,
+              "probability": 0.5,
+              "impurity": 0.5,
+              "risk": 3.0
+            },
+            "features": [
+              0,
+              1
+            ],
+            "split": null
+          }
+        ],
+        "candidates": [],
+        "predictions": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "input": {
+        "name": "minimum-leaf",
+        "operation": "tree",
+        "rows": [
+          {
+            "id": "s1",
+            "x": [
+              1,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s2",
+            "x": [
+              2,
+              0
+            ],
+            "y": 0
+          },
+          {
+            "id": "s3",
+            "x": [
+              3,
+              1
+            ],
+            "y": 1
+          },
+          {
+            "id": "s4",
+            "x": [
+              4,
+              0
+            ],
+            "y": 1
+          },
+          {
+            "id": "s5",
+            "x": [
+              5,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s6",
+            "x": [
+              6,
+              0
+            ],
+            "y": 1
+          }
+        ],
+        "options": {
+          "task": "classification",
+          "criterion": "gini",
+          "dimensions": 2,
+          "maxDepth": 3,
+          "minLeaf": 3,
+          "mtry": 0,
+          "seed": 7
+        }
+      },
+      "expected": {
+        "tree": [
+          {
+            "id": "root",
+            "dimensions": 2,
+            "depth": 0,
+            "rowIds": [
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "sourceIds": [
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "stats": {
+              "n": 6,
+              "counts": [
+                3,
+                3
+              ],
+              "mean": null,
+              "value": 0,
+              "probability": 0.5,
+              "impurity": 0.5,
+              "risk": 3.0
+            },
+            "features": [
+              0,
+              1
+            ],
+            "split": {
+              "feature": 0,
+              "threshold": 3.5,
+              "leftIds": [
+                "s1",
+                "s2",
+                "s3"
+              ],
+              "rightIds": [
+                "s4",
+                "s5",
+                "s6"
+              ],
+              "weighted": 0.4444444444444444,
+              "gain": 0.05555555555555555
+            }
+          },
+          {
+            "id": "rootL",
+            "dimensions": 2,
+            "depth": 1,
+            "rowIds": [
+              "s1",
+              "s2",
+              "s3"
+            ],
+            "sourceIds": [
+              "s1",
+              "s2",
+              "s3"
+            ],
+            "stats": {
+              "n": 3,
+              "counts": [
+                2,
+                1
+              ],
+              "mean": null,
+              "value": 0,
+              "probability": 0.3333333333333333,
+              "impurity": 0.4444444444444444,
+              "risk": 1.3333333333333333
+            },
+            "features": [],
+            "split": null
+          },
+          {
+            "id": "rootR",
+            "dimensions": 2,
+            "depth": 1,
+            "rowIds": [
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "sourceIds": [
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "stats": {
+              "n": 3,
+              "counts": [
+                1,
+                2
+              ],
+              "mean": null,
+              "value": 1,
+              "probability": 0.6666666666666666,
+              "impurity": 0.4444444444444444,
+              "risk": 1.3333333333333333
+            },
+            "features": [],
+            "split": null
+          }
+        ],
+        "candidates": [
+          {
+            "feature": 0,
+            "threshold": 3.5,
+            "leftIds": [
+              "s1",
+              "s2",
+              "s3"
+            ],
+            "rightIds": [
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "weighted": 0.4444444444444444,
+            "gain": 0.05555555555555555
+          },
+          {
+            "feature": 1,
+            "threshold": 0.5,
+            "leftIds": [
+              "s2",
+              "s4",
+              "s6"
+            ],
+            "rightIds": [
+              "s1",
+              "s3",
+              "s5"
+            ],
+            "weighted": 0.4444444444444444,
+            "gain": 0.05555555555555555
+          }
+        ],
+        "predictions": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "input": {
+        "name": "gain-tie",
+        "operation": "tree",
+        "rows": [
+          {
+            "id": "t0",
+            "x": [
+              0,
+              0
+            ],
+            "y": 0
+          },
+          {
+            "id": "t1",
+            "x": [
+              1,
+              1
+            ],
+            "y": 1
+          },
+          {
+            "id": "t2",
+            "x": [
+              2,
+              2
+            ],
+            "y": 1
+          },
+          {
+            "id": "t3",
+            "x": [
+              3,
+              3
+            ],
+            "y": 0
+          }
+        ],
+        "options": {
+          "task": "classification",
+          "criterion": "gini",
+          "dimensions": 2,
+          "maxDepth": 3,
+          "minLeaf": 1,
+          "mtry": 0,
+          "seed": 7
+        }
+      },
+      "expected": {
+        "tree": [
+          {
+            "id": "root",
+            "dimensions": 2,
+            "depth": 0,
+            "rowIds": [
+              "t0",
+              "t1",
+              "t2",
+              "t3"
+            ],
+            "sourceIds": [
+              "t0",
+              "t1",
+              "t2",
+              "t3"
+            ],
+            "stats": {
+              "n": 4,
+              "counts": [
+                2,
+                2
+              ],
+              "mean": null,
+              "value": 0,
+              "probability": 0.5,
+              "impurity": 0.5,
+              "risk": 2.0
+            },
+            "features": [
+              0,
+              1
+            ],
+            "split": {
+              "feature": 0,
+              "threshold": 0.5,
+              "leftIds": [
+                "t0"
+              ],
+              "rightIds": [
+                "t1",
+                "t2",
+                "t3"
+              ],
+              "weighted": 0.3333333333333333,
+              "gain": 0.16666666666666666
+            }
+          },
+          {
+            "id": "rootL",
+            "dimensions": 2,
+            "depth": 1,
+            "rowIds": [
+              "t0"
+            ],
+            "sourceIds": [
+              "t0"
+            ],
+            "stats": {
+              "n": 1,
+              "counts": [
+                1,
+                0
+              ],
+              "mean": null,
+              "value": 0,
+              "probability": 0.0,
+              "impurity": 0.0,
+              "risk": 0.0
+            },
+            "features": [],
+            "split": null
+          },
+          {
+            "id": "rootR",
+            "dimensions": 2,
+            "depth": 1,
+            "rowIds": [
+              "t1",
+              "t2",
+              "t3"
+            ],
+            "sourceIds": [
+              "t1",
+              "t2",
+              "t3"
+            ],
+            "stats": {
+              "n": 3,
+              "counts": [
+                1,
+                2
+              ],
+              "mean": null,
+              "value": 1,
+              "probability": 0.6666666666666666,
+              "impurity": 0.4444444444444444,
+              "risk": 1.3333333333333333
+            },
+            "features": [
+              0,
+              1
+            ],
+            "split": {
+              "feature": 0,
+              "threshold": 2.5,
+              "leftIds": [
+                "t1",
+                "t2"
+              ],
+              "rightIds": [
+                "t3"
+              ],
+              "weighted": 0.0,
+              "gain": 0.4444444444444444
+            }
+          },
+          {
+            "id": "rootRL",
+            "dimensions": 2,
+            "depth": 2,
+            "rowIds": [
+              "t1",
+              "t2"
+            ],
+            "sourceIds": [
+              "t1",
+              "t2"
+            ],
+            "stats": {
+              "n": 2,
+              "counts": [
+                0,
+                2
+              ],
+              "mean": null,
+              "value": 1,
+              "probability": 1.0,
+              "impurity": 0.0,
+              "risk": 0.0
+            },
+            "features": [],
+            "split": null
+          },
+          {
+            "id": "rootRR",
+            "dimensions": 2,
+            "depth": 2,
+            "rowIds": [
+              "t3"
+            ],
+            "sourceIds": [
+              "t3"
+            ],
+            "stats": {
+              "n": 1,
+              "counts": [
+                1,
+                0
+              ],
+              "mean": null,
+              "value": 0,
+              "probability": 0.0,
+              "impurity": 0.0,
+              "risk": 0.0
+            },
+            "features": [],
+            "split": null
+          }
+        ],
+        "candidates": [
+          {
+            "feature": 0,
+            "threshold": 0.5,
+            "leftIds": [
+              "t0"
+            ],
+            "rightIds": [
+              "t1",
+              "t2",
+              "t3"
+            ],
+            "weighted": 0.3333333333333333,
+            "gain": 0.16666666666666666
+          },
+          {
+            "feature": 0,
+            "threshold": 1.5,
+            "leftIds": [
+              "t0",
+              "t1"
+            ],
+            "rightIds": [
+              "t2",
+              "t3"
+            ],
+            "weighted": 0.5,
+            "gain": 0.0
+          },
+          {
+            "feature": 0,
+            "threshold": 2.5,
+            "leftIds": [
+              "t0",
+              "t1",
+              "t2"
+            ],
+            "rightIds": [
+              "t3"
+            ],
+            "weighted": 0.3333333333333333,
+            "gain": 0.16666666666666666
+          },
+          {
+            "feature": 1,
+            "threshold": 0.5,
+            "leftIds": [
+              "t0"
+            ],
+            "rightIds": [
+              "t1",
+              "t2",
+              "t3"
+            ],
+            "weighted": 0.3333333333333333,
+            "gain": 0.16666666666666666
+          },
+          {
+            "feature": 1,
+            "threshold": 1.5,
+            "leftIds": [
+              "t0",
+              "t1"
+            ],
+            "rightIds": [
+              "t2",
+              "t3"
+            ],
+            "weighted": 0.5,
+            "gain": 0.0
+          },
+          {
+            "feature": 1,
+            "threshold": 2.5,
+            "leftIds": [
+              "t0",
+              "t1",
+              "t2"
+            ],
+            "rightIds": [
+              "t3"
+            ],
+            "weighted": 0.3333333333333333,
+            "gain": 0.16666666666666666
+          }
+        ],
+        "predictions": [
+          0,
+          1,
+          1,
+          0
+        ]
+      }
+    },
+    {
+      "input": {
+        "name": "regression",
+        "operation": "tree",
+        "rows": [
+          {
+            "id": "s1",
+            "x": [
+              1,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s2",
+            "x": [
+              2,
+              0
+            ],
+            "y": 0
+          },
+          {
+            "id": "s3",
+            "x": [
+              3,
+              1
+            ],
+            "y": 2
+          },
+          {
+            "id": "s4",
+            "x": [
+              4,
+              0
+            ],
+            "y": 2
+          },
+          {
+            "id": "s5",
+            "x": [
+              5,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s6",
+            "x": [
+              6,
+              0
+            ],
+            "y": 2
+          }
+        ],
+        "options": {
+          "task": "regression",
+          "criterion": "sse",
+          "dimensions": 2,
+          "maxDepth": 3,
+          "minLeaf": 1,
+          "mtry": 0,
+          "seed": 7
+        },
+        "alpha": 0.25
+      },
+      "expected": {
+        "tree": [
+          {
+            "id": "root",
+            "dimensions": 2,
+            "depth": 0,
+            "rowIds": [
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "sourceIds": [
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "stats": {
+              "n": 6,
+              "counts": null,
+              "mean": 1.0,
+              "value": 1.0,
+              "probability": null,
+              "impurity": 1.0,
+              "risk": 6.0
+            },
+            "features": [
+              0,
+              1
+            ],
+            "split": {
+              "feature": 0,
+              "threshold": 2.5,
+              "leftIds": [
+                "s1",
+                "s2"
+              ],
+              "rightIds": [
+                "s3",
+                "s4",
+                "s5",
+                "s6"
+              ],
+              "weighted": 0.5,
+              "gain": 0.5
+            }
+          },
+          {
+            "id": "rootL",
+            "dimensions": 2,
+            "depth": 1,
+            "rowIds": [
+              "s1",
+              "s2"
+            ],
+            "sourceIds": [
+              "s1",
+              "s2"
+            ],
+            "stats": {
+              "n": 2,
+              "counts": null,
+              "mean": 0.0,
+              "value": 0.0,
+              "probability": null,
+              "impurity": 0.0,
+              "risk": 0.0
+            },
+            "features": [],
+            "split": null
+          },
+          {
+            "id": "rootR",
+            "dimensions": 2,
+            "depth": 1,
+            "rowIds": [
+              "s3",
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "sourceIds": [
+              "s3",
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "stats": {
+              "n": 4,
+              "counts": null,
+              "mean": 1.5,
+              "value": 1.5,
+              "probability": null,
+              "impurity": 0.75,
+              "risk": 3.0
+            },
+            "features": [
+              0,
+              1
+            ],
+            "split": {
+              "feature": 0,
+              "threshold": 4.5,
+              "leftIds": [
+                "s3",
+                "s4"
+              ],
+              "rightIds": [
+                "s5",
+                "s6"
+              ],
+              "weighted": 0.5,
+              "gain": 0.25
+            }
+          },
+          {
+            "id": "rootRL",
+            "dimensions": 2,
+            "depth": 2,
+            "rowIds": [
+              "s3",
+              "s4"
+            ],
+            "sourceIds": [
+              "s3",
+              "s4"
+            ],
+            "stats": {
+              "n": 2,
+              "counts": null,
+              "mean": 2.0,
+              "value": 2.0,
+              "probability": null,
+              "impurity": 0.0,
+              "risk": 0.0
+            },
+            "features": [],
+            "split": null
+          },
+          {
+            "id": "rootRR",
+            "dimensions": 2,
+            "depth": 2,
+            "rowIds": [
+              "s5",
+              "s6"
+            ],
+            "sourceIds": [
+              "s5",
+              "s6"
+            ],
+            "stats": {
+              "n": 2,
+              "counts": null,
+              "mean": 1.0,
+              "value": 1.0,
+              "probability": null,
+              "impurity": 1.0,
+              "risk": 2.0
+            },
+            "features": [
+              0,
+              1
+            ],
+            "split": {
+              "feature": 0,
+              "threshold": 5.5,
+              "leftIds": [
+                "s5"
+              ],
+              "rightIds": [
+                "s6"
+              ],
+              "weighted": 0.0,
+              "gain": 1.0
+            }
+          },
+          {
+            "id": "rootRRL",
+            "dimensions": 2,
+            "depth": 3,
+            "rowIds": [
+              "s5"
+            ],
+            "sourceIds": [
+              "s5"
+            ],
+            "stats": {
+              "n": 1,
+              "counts": null,
+              "mean": 0.0,
+              "value": 0.0,
+              "probability": null,
+              "impurity": 0.0,
+              "risk": 0.0
+            },
+            "features": [],
+            "split": null
+          },
+          {
+            "id": "rootRRR",
+            "dimensions": 2,
+            "depth": 3,
+            "rowIds": [
+              "s6"
+            ],
+            "sourceIds": [
+              "s6"
+            ],
+            "stats": {
+              "n": 1,
+              "counts": null,
+              "mean": 2.0,
+              "value": 2.0,
+              "probability": null,
+              "impurity": 0.0,
+              "risk": 0.0
+            },
+            "features": [],
+            "split": null
+          }
+        ],
+        "candidates": [
+          {
+            "feature": 0,
+            "threshold": 1.5,
+            "leftIds": [
+              "s1"
+            ],
+            "rightIds": [
+              "s2",
+              "s3",
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "weighted": 0.8,
+            "gain": 0.2
+          },
+          {
+            "feature": 0,
+            "threshold": 2.5,
+            "leftIds": [
+              "s1",
+              "s2"
+            ],
+            "rightIds": [
+              "s3",
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "weighted": 0.5,
+            "gain": 0.5
+          },
+          {
+            "feature": 0,
+            "threshold": 3.5,
+            "leftIds": [
+              "s1",
+              "s2",
+              "s3"
+            ],
+            "rightIds": [
+              "s4",
+              "s5",
+              "s6"
+            ],
+            "weighted": 0.8888888888888888,
+            "gain": 0.1111111111111111
+          },
+          {
+            "feature": 0,
+            "threshold": 4.5,
+            "leftIds": [
+              "s1",
+              "s2",
+              "s3",
+              "s4"
+            ],
+            "rightIds": [
+              "s5",
+              "s6"
+            ],
+            "weighted": 1.0,
+            "gain": 0.0
+          },
+          {
+            "feature": 0,
+            "threshold": 5.5,
+            "leftIds": [
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5"
+            ],
+            "rightIds": [
+              "s6"
+            ],
+            "weighted": 0.8,
+            "gain": 0.2
+          },
+          {
+            "feature": 1,
+            "threshold": 0.5,
+            "leftIds": [
+              "s2",
+              "s4",
+              "s6"
+            ],
+            "rightIds": [
+              "s1",
+              "s3",
+              "s5"
+            ],
+            "weighted": 0.8888888888888888,
+            "gain": 0.1111111111111111
+          }
+        ],
+        "predictions": [
+          0.0,
+          0.0,
+          2.0,
+          2.0,
+          0.0,
+          2.0
+        ],
+        "pruned": {
+          "leaves": 2,
+          "risk": 0.5,
+          "objective": 1.0
+        }
+      }
+    },
+    {
+      "input": {
+        "name": "pruning-rational-tie",
+        "operation": "tree",
+        "rows": [
+          {
+            "id": "r0",
+            "x": [
+              0
+            ],
+            "y": 1
+          },
+          {
+            "id": "r1",
+            "x": [
+              1
+            ],
+            "y": 1
+          },
+          {
+            "id": "r2",
+            "x": [
+              2
+            ],
+            "y": 5
+          },
+          {
+            "id": "r3",
+            "x": [
+              3
+            ],
+            "y": 5
+          },
+          {
+            "id": "r4",
+            "x": [
+              4
+            ],
+            "y": 5
+          }
+        ],
+        "options": {
+          "task": "regression",
+          "criterion": "sse",
+          "dimensions": 1,
+          "maxDepth": 3,
+          "minLeaf": 1,
+          "mtry": 0,
+          "seed": 7
+        },
+        "alpha": 3.84
+      },
+      "expected": {
+        "tree": [
+          {
+            "id": "root",
+            "dimensions": 1,
+            "depth": 0,
+            "rowIds": [
+              "r0",
+              "r1",
+              "r2",
+              "r3",
+              "r4"
+            ],
+            "sourceIds": [
+              "r0",
+              "r1",
+              "r2",
+              "r3",
+              "r4"
+            ],
+            "stats": {
+              "n": 5,
+              "counts": null,
+              "mean": 3.4,
+              "value": 3.4,
+              "probability": null,
+              "impurity": 3.84,
+              "risk": 19.2
+            },
+            "features": [
+              0
+            ],
+            "split": {
+              "feature": 0,
+              "threshold": 1.5,
+              "leftIds": [
+                "r0",
+                "r1"
+              ],
+              "rightIds": [
+                "r2",
+                "r3",
+                "r4"
+              ],
+              "weighted": 0.0,
+              "gain": 3.84
+            }
+          },
+          {
+            "id": "rootL",
+            "dimensions": 1,
+            "depth": 1,
+            "rowIds": [
+              "r0",
+              "r1"
+            ],
+            "sourceIds": [
+              "r0",
+              "r1"
+            ],
+            "stats": {
+              "n": 2,
+              "counts": null,
+              "mean": 1.0,
+              "value": 1.0,
+              "probability": null,
+              "impurity": 0.0,
+              "risk": 0.0
+            },
+            "features": [],
+            "split": null
+          },
+          {
+            "id": "rootR",
+            "dimensions": 1,
+            "depth": 1,
+            "rowIds": [
+              "r2",
+              "r3",
+              "r4"
+            ],
+            "sourceIds": [
+              "r2",
+              "r3",
+              "r4"
+            ],
+            "stats": {
+              "n": 3,
+              "counts": null,
+              "mean": 5.0,
+              "value": 5.0,
+              "probability": null,
+              "impurity": 0.0,
+              "risk": 0.0
+            },
+            "features": [],
+            "split": null
+          }
+        ],
+        "candidates": [
+          {
+            "feature": 0,
+            "threshold": 0.5,
+            "leftIds": [
+              "r0"
+            ],
+            "rightIds": [
+              "r1",
+              "r2",
+              "r3",
+              "r4"
+            ],
+            "weighted": 2.4,
+            "gain": 1.44
+          },
+          {
+            "feature": 0,
+            "threshold": 1.5,
+            "leftIds": [
+              "r0",
+              "r1"
+            ],
+            "rightIds": [
+              "r2",
+              "r3",
+              "r4"
+            ],
+            "weighted": 0.0,
+            "gain": 3.84
+          },
+          {
+            "feature": 0,
+            "threshold": 2.5,
+            "leftIds": [
+              "r0",
+              "r1",
+              "r2"
+            ],
+            "rightIds": [
+              "r3",
+              "r4"
+            ],
+            "weighted": 2.1333333333333333,
+            "gain": 1.7066666666666668
+          },
+          {
+            "feature": 0,
+            "threshold": 3.5,
+            "leftIds": [
+              "r0",
+              "r1",
+              "r2",
+              "r3"
+            ],
+            "rightIds": [
+              "r4"
+            ],
+            "weighted": 3.2,
+            "gain": 0.64
+          }
+        ],
+        "predictions": [
+          1.0,
+          1.0,
+          5.0,
+          5.0,
+          5.0
+        ],
+        "pruned": {
+          "leaves": 1,
+          "risk": 3.84,
+          "objective": 7.68
+        }
+      }
+    },
+    {
+      "input": {
+        "name": "bootstrap-zero",
+        "operation": "bootstrap",
+        "rows": [
+          {
+            "id": "s1",
+            "x": [
+              1,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s2",
+            "x": [
+              2,
+              0
+            ],
+            "y": 0
+          },
+          {
+            "id": "s3",
+            "x": [
+              3,
+              1
+            ],
+            "y": 1
+          },
+          {
+            "id": "s4",
+            "x": [
+              4,
+              0
+            ],
+            "y": 1
+          },
+          {
+            "id": "s5",
+            "x": [
+              5,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s6",
+            "x": [
+              6,
+              0
+            ],
+            "y": 1
+          }
+        ],
+        "options": {
+          "task": "classification",
+          "criterion": "gini",
+          "dimensions": 2,
+          "maxDepth": 3,
+          "minLeaf": 1,
+          "mtry": 0,
+          "seed": 7
+        },
+        "seed": 0
+      },
+      "expected": {
+        "indices": [
+          1,
+          1,
+          4,
+          4,
+          2,
+          3
+        ],
+        "counts": [
+          {
+            "id": "s1",
+            "count": 0
+          },
+          {
+            "id": "s2",
+            "count": 2
+          },
+          {
+            "id": "s3",
+            "count": 1
+          },
+          {
+            "id": "s4",
+            "count": 1
+          },
+          {
+            "id": "s5",
+            "count": 2
+          },
+          {
+            "id": "s6",
+            "count": 0
+          }
+        ],
+        "uniqueIds": [
+          "s2",
+          "s3",
+          "s4",
+          "s5"
+        ],
+        "oobIds": [
+          "s1",
+          "s6"
+        ]
+      }
+    },
+    {
+      "input": {
+        "name": "bootstrap-seven",
+        "operation": "bootstrap",
+        "rows": [
+          {
+            "id": "s1",
+            "x": [
+              1,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s2",
+            "x": [
+              2,
+              0
+            ],
+            "y": 0
+          },
+          {
+            "id": "s3",
+            "x": [
+              3,
+              1
+            ],
+            "y": 1
+          },
+          {
+            "id": "s4",
+            "x": [
+              4,
+              0
+            ],
+            "y": 1
+          },
+          {
+            "id": "s5",
+            "x": [
+              5,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s6",
+            "x": [
+              6,
+              0
+            ],
+            "y": 1
+          }
+        ],
+        "options": {
+          "task": "classification",
+          "criterion": "gini",
+          "dimensions": 2,
+          "maxDepth": 3,
+          "minLeaf": 1,
+          "mtry": 0,
+          "seed": 7
+        },
+        "seed": 7
+      },
+      "expected": {
+        "indices": [
+          1,
+          5,
+          3,
+          5,
+          0,
+          5
+        ],
+        "counts": [
+          {
+            "id": "s1",
+            "count": 1
+          },
+          {
+            "id": "s2",
+            "count": 1
+          },
+          {
+            "id": "s3",
+            "count": 0
+          },
+          {
+            "id": "s4",
+            "count": 1
+          },
+          {
+            "id": "s5",
+            "count": 0
+          },
+          {
+            "id": "s6",
+            "count": 3
+          }
+        ],
+        "uniqueIds": [
+          "s1",
+          "s2",
+          "s4",
+          "s6"
+        ],
+        "oobIds": [
+          "s3",
+          "s5"
+        ]
+      }
+    },
+    {
+      "input": {
+        "name": "bagging",
+        "operation": "bagging",
+        "rows": [
+          {
+            "id": "s1",
+            "x": [
+              1,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s2",
+            "x": [
+              2,
+              0
+            ],
+            "y": 0
+          },
+          {
+            "id": "s3",
+            "x": [
+              3,
+              1
+            ],
+            "y": 1
+          },
+          {
+            "id": "s4",
+            "x": [
+              4,
+              0
+            ],
+            "y": 1
+          },
+          {
+            "id": "s5",
+            "x": [
+              5,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s6",
+            "x": [
+              6,
+              0
+            ],
+            "y": 1
+          }
+        ],
+        "options": {
+          "task": "classification",
+          "criterion": "gini",
+          "dimensions": 2,
+          "maxDepth": 3,
+          "minLeaf": 1,
+          "mtry": 0,
+          "seed": 7
+        },
+        "seed": 7,
+        "count": 3
+      },
+      "expected": {
+        "trees": [
+          {
+            "bootstrapStart": 0,
+            "featureStart": 6,
+            "featureBudget": 0,
+            "bootstrapSeed": 7,
+            "featureSeed": 3675562389,
+            "sample": {
+              "indices": [
+                1,
+                5,
+                3,
+                5,
+                0,
+                5
+              ],
+              "counts": [
+                {
+                  "id": "s1",
+                  "count": 1
+                },
+                {
+                  "id": "s2",
+                  "count": 1
+                },
+                {
+                  "id": "s3",
+                  "count": 0
+                },
+                {
+                  "id": "s4",
+                  "count": 1
+                },
+                {
+                  "id": "s5",
+                  "count": 0
+                },
+                {
+                  "id": "s6",
+                  "count": 3
+                }
+              ],
+              "uniqueIds": [
+                "s1",
+                "s2",
+                "s4",
+                "s6"
+              ],
+              "oobIds": [
+                "s3",
+                "s5"
+              ]
+            },
+            "tree": [
+              {
+                "id": "root",
+                "dimensions": 2,
+                "depth": 0,
+                "rowIds": [
+                  "draw1",
+                  "draw2",
+                  "draw3",
+                  "draw4",
+                  "draw5",
+                  "draw6"
+                ],
+                "sourceIds": [
+                  "s2",
+                  "s6",
+                  "s4",
+                  "s6",
+                  "s1",
+                  "s6"
+                ],
+                "stats": {
+                  "n": 6,
+                  "counts": [
+                    2,
+                    4
+                  ],
+                  "mean": null,
+                  "value": 1,
+                  "probability": 0.6666666666666666,
+                  "impurity": 0.4444444444444444,
+                  "risk": 2.6666666666666665
+                },
+                "features": [
+                  0,
+                  1
+                ],
+                "split": {
+                  "feature": 0,
+                  "threshold": 3.0,
+                  "leftIds": [
+                    "draw1",
+                    "draw5"
+                  ],
+                  "rightIds": [
+                    "draw2",
+                    "draw3",
+                    "draw4",
+                    "draw6"
+                  ],
+                  "weighted": 0.0,
+                  "gain": 0.4444444444444444
+                }
+              },
+              {
+                "id": "rootL",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "draw1",
+                  "draw5"
+                ],
+                "sourceIds": [
+                  "s2",
+                  "s1"
+                ],
+                "stats": {
+                  "n": 2,
+                  "counts": [
+                    2,
+                    0
+                  ],
+                  "mean": null,
+                  "value": 0,
+                  "probability": 0.0,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              },
+              {
+                "id": "rootR",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "draw2",
+                  "draw3",
+                  "draw4",
+                  "draw6"
+                ],
+                "sourceIds": [
+                  "s6",
+                  "s4",
+                  "s6",
+                  "s6"
+                ],
+                "stats": {
+                  "n": 4,
+                  "counts": [
+                    0,
+                    4
+                  ],
+                  "mean": null,
+                  "value": 1,
+                  "probability": 1.0,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              }
+            ]
+          },
+          {
+            "bootstrapStart": 6,
+            "featureStart": 12,
+            "featureBudget": 0,
+            "bootstrapSeed": 3675562389,
+            "featureSeed": 2281704755,
+            "sample": {
+              "indices": [
+                2,
+                0,
+                0,
+                5,
+                5,
+                3
+              ],
+              "counts": [
+                {
+                  "id": "s1",
+                  "count": 2
+                },
+                {
+                  "id": "s2",
+                  "count": 0
+                },
+                {
+                  "id": "s3",
+                  "count": 1
+                },
+                {
+                  "id": "s4",
+                  "count": 1
+                },
+                {
+                  "id": "s5",
+                  "count": 0
+                },
+                {
+                  "id": "s6",
+                  "count": 2
+                }
+              ],
+              "uniqueIds": [
+                "s1",
+                "s3",
+                "s4",
+                "s6"
+              ],
+              "oobIds": [
+                "s2",
+                "s5"
+              ]
+            },
+            "tree": [
+              {
+                "id": "root",
+                "dimensions": 2,
+                "depth": 0,
+                "rowIds": [
+                  "draw1",
+                  "draw2",
+                  "draw3",
+                  "draw4",
+                  "draw5",
+                  "draw6"
+                ],
+                "sourceIds": [
+                  "s3",
+                  "s1",
+                  "s1",
+                  "s6",
+                  "s6",
+                  "s4"
+                ],
+                "stats": {
+                  "n": 6,
+                  "counts": [
+                    2,
+                    4
+                  ],
+                  "mean": null,
+                  "value": 1,
+                  "probability": 0.6666666666666666,
+                  "impurity": 0.4444444444444444,
+                  "risk": 2.6666666666666665
+                },
+                "features": [
+                  0,
+                  1
+                ],
+                "split": {
+                  "feature": 0,
+                  "threshold": 2.0,
+                  "leftIds": [
+                    "draw2",
+                    "draw3"
+                  ],
+                  "rightIds": [
+                    "draw1",
+                    "draw4",
+                    "draw5",
+                    "draw6"
+                  ],
+                  "weighted": 0.0,
+                  "gain": 0.4444444444444444
+                }
+              },
+              {
+                "id": "rootL",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "draw2",
+                  "draw3"
+                ],
+                "sourceIds": [
+                  "s1",
+                  "s1"
+                ],
+                "stats": {
+                  "n": 2,
+                  "counts": [
+                    2,
+                    0
+                  ],
+                  "mean": null,
+                  "value": 0,
+                  "probability": 0.0,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              },
+              {
+                "id": "rootR",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "draw1",
+                  "draw4",
+                  "draw5",
+                  "draw6"
+                ],
+                "sourceIds": [
+                  "s3",
+                  "s6",
+                  "s6",
+                  "s4"
+                ],
+                "stats": {
+                  "n": 4,
+                  "counts": [
+                    0,
+                    4
+                  ],
+                  "mean": null,
+                  "value": 1,
+                  "probability": 1.0,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              }
+            ]
+          },
+          {
+            "bootstrapStart": 12,
+            "featureStart": 18,
+            "featureBudget": 0,
+            "bootstrapSeed": 2281704755,
+            "featureSeed": 1795628641,
+            "sample": {
+              "indices": [
+                2,
+                3,
+                3,
+                4,
+                4,
+                2
+              ],
+              "counts": [
+                {
+                  "id": "s1",
+                  "count": 0
+                },
+                {
+                  "id": "s2",
+                  "count": 0
+                },
+                {
+                  "id": "s3",
+                  "count": 2
+                },
+                {
+                  "id": "s4",
+                  "count": 2
+                },
+                {
+                  "id": "s5",
+                  "count": 2
+                },
+                {
+                  "id": "s6",
+                  "count": 0
+                }
+              ],
+              "uniqueIds": [
+                "s3",
+                "s4",
+                "s5"
+              ],
+              "oobIds": [
+                "s1",
+                "s2",
+                "s6"
+              ]
+            },
+            "tree": [
+              {
+                "id": "root",
+                "dimensions": 2,
+                "depth": 0,
+                "rowIds": [
+                  "draw1",
+                  "draw2",
+                  "draw3",
+                  "draw4",
+                  "draw5",
+                  "draw6"
+                ],
+                "sourceIds": [
+                  "s3",
+                  "s4",
+                  "s4",
+                  "s5",
+                  "s5",
+                  "s3"
+                ],
+                "stats": {
+                  "n": 6,
+                  "counts": [
+                    2,
+                    4
+                  ],
+                  "mean": null,
+                  "value": 1,
+                  "probability": 0.6666666666666666,
+                  "impurity": 0.4444444444444444,
+                  "risk": 2.6666666666666665
+                },
+                "features": [
+                  0,
+                  1
+                ],
+                "split": {
+                  "feature": 0,
+                  "threshold": 4.5,
+                  "leftIds": [
+                    "draw1",
+                    "draw2",
+                    "draw3",
+                    "draw6"
+                  ],
+                  "rightIds": [
+                    "draw4",
+                    "draw5"
+                  ],
+                  "weighted": 0.0,
+                  "gain": 0.4444444444444444
+                }
+              },
+              {
+                "id": "rootL",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "draw1",
+                  "draw2",
+                  "draw3",
+                  "draw6"
+                ],
+                "sourceIds": [
+                  "s3",
+                  "s4",
+                  "s4",
+                  "s3"
+                ],
+                "stats": {
+                  "n": 4,
+                  "counts": [
+                    0,
+                    4
+                  ],
+                  "mean": null,
+                  "value": 1,
+                  "probability": 1.0,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              },
+              {
+                "id": "rootR",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "draw4",
+                  "draw5"
+                ],
+                "sourceIds": [
+                  "s5",
+                  "s5"
+                ],
+                "stats": {
+                  "n": 2,
+                  "counts": [
+                    2,
+                    0
+                  ],
+                  "mean": null,
+                  "value": 0,
+                  "probability": 0.0,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              }
+            ]
+          }
+        ],
+        "predictions": [
+          {
+            "id": "s1",
+            "values": [
+              0,
+              0,
+              1
+            ],
+            "value": 0,
+            "voteFraction": 0.3333333333333333
+          },
+          {
+            "id": "s2",
+            "values": [
+              0,
+              0,
+              1
+            ],
+            "value": 0,
+            "voteFraction": 0.3333333333333333
+          },
+          {
+            "id": "s3",
+            "values": [
+              0,
+              1,
+              1
+            ],
+            "value": 1,
+            "voteFraction": 0.6666666666666666
+          },
+          {
+            "id": "s4",
+            "values": [
+              1,
+              1,
+              1
+            ],
+            "value": 1,
+            "voteFraction": 1.0
+          },
+          {
+            "id": "s5",
+            "values": [
+              1,
+              1,
+              0
+            ],
+            "value": 1,
+            "voteFraction": 0.6666666666666666
+          },
+          {
+            "id": "s6",
+            "values": [
+              1,
+              1,
+              0
+            ],
+            "value": 1,
+            "voteFraction": 0.6666666666666666
+          }
+        ],
+        "oob": [
+          {
+            "id": "s1",
+            "treeIds": [
+              "tree3"
+            ],
+            "values": [
+              1
+            ],
+            "value": 1
+          },
+          {
+            "id": "s2",
+            "treeIds": [
+              "tree2",
+              "tree3"
+            ],
+            "values": [
+              0,
+              1
+            ],
+            "value": 0
+          },
+          {
+            "id": "s3",
+            "treeIds": [
+              "tree1"
+            ],
+            "values": [
+              0
+            ],
+            "value": 0
+          },
+          {
+            "id": "s4",
+            "treeIds": [],
+            "values": [],
+            "value": null
+          },
+          {
+            "id": "s5",
+            "treeIds": [
+              "tree1",
+              "tree2"
+            ],
+            "values": [
+              1,
+              1
+            ],
+            "value": 1
+          },
+          {
+            "id": "s6",
+            "treeIds": [
+              "tree3"
+            ],
+            "values": [
+              0
+            ],
+            "value": 0
+          }
+        ],
+        "eligible": 5,
+        "oobMetric": 0.2
+      }
+    },
+    {
+      "input": {
+        "name": "forest",
+        "operation": "bagging",
+        "rows": [
+          {
+            "id": "s1",
+            "x": [
+              1,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s2",
+            "x": [
+              2,
+              0
+            ],
+            "y": 0
+          },
+          {
+            "id": "s3",
+            "x": [
+              3,
+              1
+            ],
+            "y": 1
+          },
+          {
+            "id": "s4",
+            "x": [
+              4,
+              0
+            ],
+            "y": 1
+          },
+          {
+            "id": "s5",
+            "x": [
+              5,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s6",
+            "x": [
+              6,
+              0
+            ],
+            "y": 1
+          }
+        ],
+        "options": {
+          "task": "classification",
+          "criterion": "gini",
+          "dimensions": 2,
+          "maxDepth": 3,
+          "minLeaf": 1,
+          "mtry": 1,
+          "seed": 7
+        },
+        "seed": 7,
+        "count": 3
+      },
+      "expected": {
+        "trees": [
+          {
+            "bootstrapStart": 0,
+            "featureStart": 6,
+            "featureBudget": 7,
+            "bootstrapSeed": 7,
+            "featureSeed": 3675562389,
+            "sample": {
+              "indices": [
+                1,
+                5,
+                3,
+                5,
+                0,
+                5
+              ],
+              "counts": [
+                {
+                  "id": "s1",
+                  "count": 1
+                },
+                {
+                  "id": "s2",
+                  "count": 1
+                },
+                {
+                  "id": "s3",
+                  "count": 0
+                },
+                {
+                  "id": "s4",
+                  "count": 1
+                },
+                {
+                  "id": "s5",
+                  "count": 0
+                },
+                {
+                  "id": "s6",
+                  "count": 3
+                }
+              ],
+              "uniqueIds": [
+                "s1",
+                "s2",
+                "s4",
+                "s6"
+              ],
+              "oobIds": [
+                "s3",
+                "s5"
+              ]
+            },
+            "tree": [
+              {
+                "id": "root",
+                "dimensions": 2,
+                "depth": 0,
+                "rowIds": [
+                  "draw1",
+                  "draw2",
+                  "draw3",
+                  "draw4",
+                  "draw5",
+                  "draw6"
+                ],
+                "sourceIds": [
+                  "s2",
+                  "s6",
+                  "s4",
+                  "s6",
+                  "s1",
+                  "s6"
+                ],
+                "stats": {
+                  "n": 6,
+                  "counts": [
+                    2,
+                    4
+                  ],
+                  "mean": null,
+                  "value": 1,
+                  "probability": 0.6666666666666666,
+                  "impurity": 0.4444444444444444,
+                  "risk": 2.6666666666666665
+                },
+                "features": [
+                  0
+                ],
+                "split": {
+                  "feature": 0,
+                  "threshold": 3.0,
+                  "leftIds": [
+                    "draw1",
+                    "draw5"
+                  ],
+                  "rightIds": [
+                    "draw2",
+                    "draw3",
+                    "draw4",
+                    "draw6"
+                  ],
+                  "weighted": 0.0,
+                  "gain": 0.4444444444444444
+                }
+              },
+              {
+                "id": "rootL",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "draw1",
+                  "draw5"
+                ],
+                "sourceIds": [
+                  "s2",
+                  "s1"
+                ],
+                "stats": {
+                  "n": 2,
+                  "counts": [
+                    2,
+                    0
+                  ],
+                  "mean": null,
+                  "value": 0,
+                  "probability": 0.0,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              },
+              {
+                "id": "rootR",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "draw2",
+                  "draw3",
+                  "draw4",
+                  "draw6"
+                ],
+                "sourceIds": [
+                  "s6",
+                  "s4",
+                  "s6",
+                  "s6"
+                ],
+                "stats": {
+                  "n": 4,
+                  "counts": [
+                    0,
+                    4
+                  ],
+                  "mean": null,
+                  "value": 1,
+                  "probability": 1.0,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              }
+            ]
+          },
+          {
+            "bootstrapStart": 13,
+            "featureStart": 19,
+            "featureBudget": 7,
+            "bootstrapSeed": 1940713718,
+            "featureSeed": 2036278348,
+            "sample": {
+              "indices": [
+                3,
+                3,
+                4,
+                4,
+                2,
+                2
+              ],
+              "counts": [
+                {
+                  "id": "s1",
+                  "count": 0
+                },
+                {
+                  "id": "s2",
+                  "count": 0
+                },
+                {
+                  "id": "s3",
+                  "count": 2
+                },
+                {
+                  "id": "s4",
+                  "count": 2
+                },
+                {
+                  "id": "s5",
+                  "count": 2
+                },
+                {
+                  "id": "s6",
+                  "count": 0
+                }
+              ],
+              "uniqueIds": [
+                "s3",
+                "s4",
+                "s5"
+              ],
+              "oobIds": [
+                "s1",
+                "s2",
+                "s6"
+              ]
+            },
+            "tree": [
+              {
+                "id": "root",
+                "dimensions": 2,
+                "depth": 0,
+                "rowIds": [
+                  "draw1",
+                  "draw2",
+                  "draw3",
+                  "draw4",
+                  "draw5",
+                  "draw6"
+                ],
+                "sourceIds": [
+                  "s4",
+                  "s4",
+                  "s5",
+                  "s5",
+                  "s3",
+                  "s3"
+                ],
+                "stats": {
+                  "n": 6,
+                  "counts": [
+                    2,
+                    4
+                  ],
+                  "mean": null,
+                  "value": 1,
+                  "probability": 0.6666666666666666,
+                  "impurity": 0.4444444444444444,
+                  "risk": 2.6666666666666665
+                },
+                "features": [
+                  1
+                ],
+                "split": {
+                  "feature": 1,
+                  "threshold": 0.5,
+                  "leftIds": [
+                    "draw1",
+                    "draw2"
+                  ],
+                  "rightIds": [
+                    "draw3",
+                    "draw4",
+                    "draw5",
+                    "draw6"
+                  ],
+                  "weighted": 0.3333333333333333,
+                  "gain": 0.1111111111111111
+                }
+              },
+              {
+                "id": "rootL",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "draw1",
+                  "draw2"
+                ],
+                "sourceIds": [
+                  "s4",
+                  "s4"
+                ],
+                "stats": {
+                  "n": 2,
+                  "counts": [
+                    0,
+                    2
+                  ],
+                  "mean": null,
+                  "value": 1,
+                  "probability": 1.0,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              },
+              {
+                "id": "rootR",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "draw3",
+                  "draw4",
+                  "draw5",
+                  "draw6"
+                ],
+                "sourceIds": [
+                  "s5",
+                  "s5",
+                  "s3",
+                  "s3"
+                ],
+                "stats": {
+                  "n": 4,
+                  "counts": [
+                    2,
+                    2
+                  ],
+                  "mean": null,
+                  "value": 0,
+                  "probability": 0.5,
+                  "impurity": 0.5,
+                  "risk": 2.0
+                },
+                "features": [
+                  0
+                ],
+                "split": {
+                  "feature": 0,
+                  "threshold": 4.0,
+                  "leftIds": [
+                    "draw5",
+                    "draw6"
+                  ],
+                  "rightIds": [
+                    "draw3",
+                    "draw4"
+                  ],
+                  "weighted": 0.0,
+                  "gain": 0.5
+                }
+              },
+              {
+                "id": "rootRL",
+                "dimensions": 2,
+                "depth": 2,
+                "rowIds": [
+                  "draw5",
+                  "draw6"
+                ],
+                "sourceIds": [
+                  "s3",
+                  "s3"
+                ],
+                "stats": {
+                  "n": 2,
+                  "counts": [
+                    0,
+                    2
+                  ],
+                  "mean": null,
+                  "value": 1,
+                  "probability": 1.0,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              },
+              {
+                "id": "rootRR",
+                "dimensions": 2,
+                "depth": 2,
+                "rowIds": [
+                  "draw3",
+                  "draw4"
+                ],
+                "sourceIds": [
+                  "s5",
+                  "s5"
+                ],
+                "stats": {
+                  "n": 2,
+                  "counts": [
+                    2,
+                    0
+                  ],
+                  "mean": null,
+                  "value": 0,
+                  "probability": 0.0,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              }
+            ]
+          },
+          {
+            "bootstrapStart": 26,
+            "featureStart": 32,
+            "featureBudget": 7,
+            "bootstrapSeed": 1538083369,
+            "featureSeed": 463890471,
+            "sample": {
+              "indices": [
+                1,
+                5,
+                0,
+                2,
+                2,
+                0
+              ],
+              "counts": [
+                {
+                  "id": "s1",
+                  "count": 2
+                },
+                {
+                  "id": "s2",
+                  "count": 1
+                },
+                {
+                  "id": "s3",
+                  "count": 2
+                },
+                {
+                  "id": "s4",
+                  "count": 0
+                },
+                {
+                  "id": "s5",
+                  "count": 0
+                },
+                {
+                  "id": "s6",
+                  "count": 1
+                }
+              ],
+              "uniqueIds": [
+                "s1",
+                "s2",
+                "s3",
+                "s6"
+              ],
+              "oobIds": [
+                "s4",
+                "s5"
+              ]
+            },
+            "tree": [
+              {
+                "id": "root",
+                "dimensions": 2,
+                "depth": 0,
+                "rowIds": [
+                  "draw1",
+                  "draw2",
+                  "draw3",
+                  "draw4",
+                  "draw5",
+                  "draw6"
+                ],
+                "sourceIds": [
+                  "s2",
+                  "s6",
+                  "s1",
+                  "s3",
+                  "s3",
+                  "s1"
+                ],
+                "stats": {
+                  "n": 6,
+                  "counts": [
+                    3,
+                    3
+                  ],
+                  "mean": null,
+                  "value": 0,
+                  "probability": 0.5,
+                  "impurity": 0.5,
+                  "risk": 3.0
+                },
+                "features": [
+                  0
+                ],
+                "split": {
+                  "feature": 0,
+                  "threshold": 2.5,
+                  "leftIds": [
+                    "draw1",
+                    "draw3",
+                    "draw6"
+                  ],
+                  "rightIds": [
+                    "draw2",
+                    "draw4",
+                    "draw5"
+                  ],
+                  "weighted": 0.0,
+                  "gain": 0.5
+                }
+              },
+              {
+                "id": "rootL",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "draw1",
+                  "draw3",
+                  "draw6"
+                ],
+                "sourceIds": [
+                  "s2",
+                  "s1",
+                  "s1"
+                ],
+                "stats": {
+                  "n": 3,
+                  "counts": [
+                    3,
+                    0
+                  ],
+                  "mean": null,
+                  "value": 0,
+                  "probability": 0.0,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              },
+              {
+                "id": "rootR",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "draw2",
+                  "draw4",
+                  "draw5"
+                ],
+                "sourceIds": [
+                  "s6",
+                  "s3",
+                  "s3"
+                ],
+                "stats": {
+                  "n": 3,
+                  "counts": [
+                    0,
+                    3
+                  ],
+                  "mean": null,
+                  "value": 1,
+                  "probability": 1.0,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              }
+            ]
+          }
+        ],
+        "predictions": [
+          {
+            "id": "s1",
+            "values": [
+              0,
+              1,
+              0
+            ],
+            "value": 0,
+            "voteFraction": 0.3333333333333333
+          },
+          {
+            "id": "s2",
+            "values": [
+              0,
+              1,
+              0
+            ],
+            "value": 0,
+            "voteFraction": 0.3333333333333333
+          },
+          {
+            "id": "s3",
+            "values": [
+              0,
+              1,
+              1
+            ],
+            "value": 1,
+            "voteFraction": 0.6666666666666666
+          },
+          {
+            "id": "s4",
+            "values": [
+              1,
+              1,
+              1
+            ],
+            "value": 1,
+            "voteFraction": 1.0
+          },
+          {
+            "id": "s5",
+            "values": [
+              1,
+              0,
+              1
+            ],
+            "value": 1,
+            "voteFraction": 0.6666666666666666
+          },
+          {
+            "id": "s6",
+            "values": [
+              1,
+              1,
+              1
+            ],
+            "value": 1,
+            "voteFraction": 1.0
+          }
+        ],
+        "oob": [
+          {
+            "id": "s1",
+            "treeIds": [
+              "tree2"
+            ],
+            "values": [
+              1
+            ],
+            "value": 1
+          },
+          {
+            "id": "s2",
+            "treeIds": [
+              "tree2"
+            ],
+            "values": [
+              1
+            ],
+            "value": 1
+          },
+          {
+            "id": "s3",
+            "treeIds": [
+              "tree1"
+            ],
+            "values": [
+              0
+            ],
+            "value": 0
+          },
+          {
+            "id": "s4",
+            "treeIds": [
+              "tree3"
+            ],
+            "values": [
+              1
+            ],
+            "value": 1
+          },
+          {
+            "id": "s5",
+            "treeIds": [
+              "tree1",
+              "tree3"
+            ],
+            "values": [
+              1,
+              1
+            ],
+            "value": 1
+          },
+          {
+            "id": "s6",
+            "treeIds": [
+              "tree2"
+            ],
+            "values": [
+              1
+            ],
+            "value": 1
+          }
+        ],
+        "eligible": 6,
+        "oobMetric": 0.3333333333333333
+      }
+    },
+    {
+      "input": {
+        "name": "bagging-regression",
+        "operation": "bagging",
+        "rows": [
+          {
+            "id": "s1",
+            "x": [
+              1,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s2",
+            "x": [
+              2,
+              0
+            ],
+            "y": 0
+          },
+          {
+            "id": "s3",
+            "x": [
+              3,
+              1
+            ],
+            "y": 2
+          },
+          {
+            "id": "s4",
+            "x": [
+              4,
+              0
+            ],
+            "y": 2
+          },
+          {
+            "id": "s5",
+            "x": [
+              5,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s6",
+            "x": [
+              6,
+              0
+            ],
+            "y": 2
+          }
+        ],
+        "options": {
+          "task": "regression",
+          "criterion": "sse",
+          "dimensions": 2,
+          "maxDepth": 3,
+          "minLeaf": 1,
+          "mtry": 0,
+          "seed": 7
+        },
+        "seed": 0,
+        "count": 3
+      },
+      "expected": {
+        "trees": [
+          {
+            "bootstrapStart": 0,
+            "featureStart": 6,
+            "featureBudget": 0,
+            "bootstrapSeed": 0,
+            "featureSeed": 2670642822,
+            "sample": {
+              "indices": [
+                1,
+                1,
+                4,
+                4,
+                2,
+                3
+              ],
+              "counts": [
+                {
+                  "id": "s1",
+                  "count": 0
+                },
+                {
+                  "id": "s2",
+                  "count": 2
+                },
+                {
+                  "id": "s3",
+                  "count": 1
+                },
+                {
+                  "id": "s4",
+                  "count": 1
+                },
+                {
+                  "id": "s5",
+                  "count": 2
+                },
+                {
+                  "id": "s6",
+                  "count": 0
+                }
+              ],
+              "uniqueIds": [
+                "s2",
+                "s3",
+                "s4",
+                "s5"
+              ],
+              "oobIds": [
+                "s1",
+                "s6"
+              ]
+            },
+            "tree": [
+              {
+                "id": "root",
+                "dimensions": 2,
+                "depth": 0,
+                "rowIds": [
+                  "draw1",
+                  "draw2",
+                  "draw3",
+                  "draw4",
+                  "draw5",
+                  "draw6"
+                ],
+                "sourceIds": [
+                  "s2",
+                  "s2",
+                  "s5",
+                  "s5",
+                  "s3",
+                  "s4"
+                ],
+                "stats": {
+                  "n": 6,
+                  "counts": null,
+                  "mean": 0.6666666666666666,
+                  "value": 0.6666666666666666,
+                  "probability": null,
+                  "impurity": 0.8888888888888888,
+                  "risk": 5.333333333333333
+                },
+                "features": [
+                  0,
+                  1
+                ],
+                "split": {
+                  "feature": 0,
+                  "threshold": 2.5,
+                  "leftIds": [
+                    "draw1",
+                    "draw2"
+                  ],
+                  "rightIds": [
+                    "draw3",
+                    "draw4",
+                    "draw5",
+                    "draw6"
+                  ],
+                  "weighted": 0.6666666666666666,
+                  "gain": 0.2222222222222222
+                }
+              },
+              {
+                "id": "rootL",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "draw1",
+                  "draw2"
+                ],
+                "sourceIds": [
+                  "s2",
+                  "s2"
+                ],
+                "stats": {
+                  "n": 2,
+                  "counts": null,
+                  "mean": 0.0,
+                  "value": 0.0,
+                  "probability": null,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              },
+              {
+                "id": "rootR",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "draw3",
+                  "draw4",
+                  "draw5",
+                  "draw6"
+                ],
+                "sourceIds": [
+                  "s5",
+                  "s5",
+                  "s3",
+                  "s4"
+                ],
+                "stats": {
+                  "n": 4,
+                  "counts": null,
+                  "mean": 1.0,
+                  "value": 1.0,
+                  "probability": null,
+                  "impurity": 1.0,
+                  "risk": 4.0
+                },
+                "features": [
+                  0,
+                  1
+                ],
+                "split": {
+                  "feature": 0,
+                  "threshold": 4.5,
+                  "leftIds": [
+                    "draw5",
+                    "draw6"
+                  ],
+                  "rightIds": [
+                    "draw3",
+                    "draw4"
+                  ],
+                  "weighted": 0.0,
+                  "gain": 1.0
+                }
+              },
+              {
+                "id": "rootRL",
+                "dimensions": 2,
+                "depth": 2,
+                "rowIds": [
+                  "draw5",
+                  "draw6"
+                ],
+                "sourceIds": [
+                  "s3",
+                  "s4"
+                ],
+                "stats": {
+                  "n": 2,
+                  "counts": null,
+                  "mean": 2.0,
+                  "value": 2.0,
+                  "probability": null,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              },
+              {
+                "id": "rootRR",
+                "dimensions": 2,
+                "depth": 2,
+                "rowIds": [
+                  "draw3",
+                  "draw4"
+                ],
+                "sourceIds": [
+                  "s5",
+                  "s5"
+                ],
+                "stats": {
+                  "n": 2,
+                  "counts": null,
+                  "mean": 0.0,
+                  "value": 0.0,
+                  "probability": null,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              }
+            ]
+          },
+          {
+            "bootstrapStart": 6,
+            "featureStart": 12,
+            "featureBudget": 0,
+            "bootstrapSeed": 2670642822,
+            "featureSeed": 3167820124,
+            "sample": {
+              "indices": [
+                2,
+                3,
+                3,
+                3,
+                4,
+                4
+              ],
+              "counts": [
+                {
+                  "id": "s1",
+                  "count": 0
+                },
+                {
+                  "id": "s2",
+                  "count": 0
+                },
+                {
+                  "id": "s3",
+                  "count": 1
+                },
+                {
+                  "id": "s4",
+                  "count": 3
+                },
+                {
+                  "id": "s5",
+                  "count": 2
+                },
+                {
+                  "id": "s6",
+                  "count": 0
+                }
+              ],
+              "uniqueIds": [
+                "s3",
+                "s4",
+                "s5"
+              ],
+              "oobIds": [
+                "s1",
+                "s2",
+                "s6"
+              ]
+            },
+            "tree": [
+              {
+                "id": "root",
+                "dimensions": 2,
+                "depth": 0,
+                "rowIds": [
+                  "draw1",
+                  "draw2",
+                  "draw3",
+                  "draw4",
+                  "draw5",
+                  "draw6"
+                ],
+                "sourceIds": [
+                  "s3",
+                  "s4",
+                  "s4",
+                  "s4",
+                  "s5",
+                  "s5"
+                ],
+                "stats": {
+                  "n": 6,
+                  "counts": null,
+                  "mean": 1.3333333333333333,
+                  "value": 1.3333333333333333,
+                  "probability": null,
+                  "impurity": 0.8888888888888888,
+                  "risk": 5.333333333333333
+                },
+                "features": [
+                  0,
+                  1
+                ],
+                "split": {
+                  "feature": 0,
+                  "threshold": 4.5,
+                  "leftIds": [
+                    "draw1",
+                    "draw2",
+                    "draw3",
+                    "draw4"
+                  ],
+                  "rightIds": [
+                    "draw5",
+                    "draw6"
+                  ],
+                  "weighted": 0.0,
+                  "gain": 0.8888888888888888
+                }
+              },
+              {
+                "id": "rootL",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "draw1",
+                  "draw2",
+                  "draw3",
+                  "draw4"
+                ],
+                "sourceIds": [
+                  "s3",
+                  "s4",
+                  "s4",
+                  "s4"
+                ],
+                "stats": {
+                  "n": 4,
+                  "counts": null,
+                  "mean": 2.0,
+                  "value": 2.0,
+                  "probability": null,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              },
+              {
+                "id": "rootR",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "draw5",
+                  "draw6"
+                ],
+                "sourceIds": [
+                  "s5",
+                  "s5"
+                ],
+                "stats": {
+                  "n": 2,
+                  "counts": null,
+                  "mean": 0.0,
+                  "value": 0.0,
+                  "probability": null,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              }
+            ]
+          },
+          {
+            "bootstrapStart": 12,
+            "featureStart": 18,
+            "featureBudget": 0,
+            "bootstrapSeed": 3167820124,
+            "featureSeed": 1338634754,
+            "sample": {
+              "indices": [
+                3,
+                5,
+                0,
+                3,
+                4,
+                1
+              ],
+              "counts": [
+                {
+                  "id": "s1",
+                  "count": 1
+                },
+                {
+                  "id": "s2",
+                  "count": 1
+                },
+                {
+                  "id": "s3",
+                  "count": 0
+                },
+                {
+                  "id": "s4",
+                  "count": 2
+                },
+                {
+                  "id": "s5",
+                  "count": 1
+                },
+                {
+                  "id": "s6",
+                  "count": 1
+                }
+              ],
+              "uniqueIds": [
+                "s1",
+                "s2",
+                "s4",
+                "s5",
+                "s6"
+              ],
+              "oobIds": [
+                "s3"
+              ]
+            },
+            "tree": [
+              {
+                "id": "root",
+                "dimensions": 2,
+                "depth": 0,
+                "rowIds": [
+                  "draw1",
+                  "draw2",
+                  "draw3",
+                  "draw4",
+                  "draw5",
+                  "draw6"
+                ],
+                "sourceIds": [
+                  "s4",
+                  "s6",
+                  "s1",
+                  "s4",
+                  "s5",
+                  "s2"
+                ],
+                "stats": {
+                  "n": 6,
+                  "counts": null,
+                  "mean": 1.0,
+                  "value": 1.0,
+                  "probability": null,
+                  "impurity": 1.0,
+                  "risk": 6.0
+                },
+                "features": [
+                  0,
+                  1
+                ],
+                "split": {
+                  "feature": 0,
+                  "threshold": 3.0,
+                  "leftIds": [
+                    "draw3",
+                    "draw6"
+                  ],
+                  "rightIds": [
+                    "draw1",
+                    "draw2",
+                    "draw4",
+                    "draw5"
+                  ],
+                  "weighted": 0.5,
+                  "gain": 0.5
+                }
+              },
+              {
+                "id": "rootL",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "draw3",
+                  "draw6"
+                ],
+                "sourceIds": [
+                  "s1",
+                  "s2"
+                ],
+                "stats": {
+                  "n": 2,
+                  "counts": null,
+                  "mean": 0.0,
+                  "value": 0.0,
+                  "probability": null,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              },
+              {
+                "id": "rootR",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "draw1",
+                  "draw2",
+                  "draw4",
+                  "draw5"
+                ],
+                "sourceIds": [
+                  "s4",
+                  "s6",
+                  "s4",
+                  "s5"
+                ],
+                "stats": {
+                  "n": 4,
+                  "counts": null,
+                  "mean": 1.5,
+                  "value": 1.5,
+                  "probability": null,
+                  "impurity": 0.75,
+                  "risk": 3.0
+                },
+                "features": [
+                  0,
+                  1
+                ],
+                "split": {
+                  "feature": 1,
+                  "threshold": 0.5,
+                  "leftIds": [
+                    "draw1",
+                    "draw2",
+                    "draw4"
+                  ],
+                  "rightIds": [
+                    "draw5"
+                  ],
+                  "weighted": 0.0,
+                  "gain": 0.75
+                }
+              },
+              {
+                "id": "rootRL",
+                "dimensions": 2,
+                "depth": 2,
+                "rowIds": [
+                  "draw1",
+                  "draw2",
+                  "draw4"
+                ],
+                "sourceIds": [
+                  "s4",
+                  "s6",
+                  "s4"
+                ],
+                "stats": {
+                  "n": 3,
+                  "counts": null,
+                  "mean": 2.0,
+                  "value": 2.0,
+                  "probability": null,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              },
+              {
+                "id": "rootRR",
+                "dimensions": 2,
+                "depth": 2,
+                "rowIds": [
+                  "draw5"
+                ],
+                "sourceIds": [
+                  "s5"
+                ],
+                "stats": {
+                  "n": 1,
+                  "counts": null,
+                  "mean": 0.0,
+                  "value": 0.0,
+                  "probability": null,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              }
+            ]
+          }
+        ],
+        "predictions": [
+          {
+            "id": "s1",
+            "values": [
+              0.0,
+              2.0,
+              0.0
+            ],
+            "value": 0.6666666666666666,
+            "voteFraction": null
+          },
+          {
+            "id": "s2",
+            "values": [
+              0.0,
+              2.0,
+              0.0
+            ],
+            "value": 0.6666666666666666,
+            "voteFraction": null
+          },
+          {
+            "id": "s3",
+            "values": [
+              2.0,
+              2.0,
+              0.0
+            ],
+            "value": 1.3333333333333333,
+            "voteFraction": null
+          },
+          {
+            "id": "s4",
+            "values": [
+              2.0,
+              2.0,
+              2.0
+            ],
+            "value": 2.0,
+            "voteFraction": null
+          },
+          {
+            "id": "s5",
+            "values": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "value": 0.0,
+            "voteFraction": null
+          },
+          {
+            "id": "s6",
+            "values": [
+              0.0,
+              0.0,
+              2.0
+            ],
+            "value": 0.6666666666666666,
+            "voteFraction": null
+          }
+        ],
+        "oob": [
+          {
+            "id": "s1",
+            "treeIds": [
+              "tree1",
+              "tree2"
+            ],
+            "values": [
+              0.0,
+              2.0
+            ],
+            "value": 1.0
+          },
+          {
+            "id": "s2",
+            "treeIds": [
+              "tree2"
+            ],
+            "values": [
+              2.0
+            ],
+            "value": 2.0
+          },
+          {
+            "id": "s3",
+            "treeIds": [
+              "tree3"
+            ],
+            "values": [
+              0.0
+            ],
+            "value": 0.0
+          },
+          {
+            "id": "s4",
+            "treeIds": [],
+            "values": [],
+            "value": null
+          },
+          {
+            "id": "s5",
+            "treeIds": [],
+            "values": [],
+            "value": null
+          },
+          {
+            "id": "s6",
+            "treeIds": [
+              "tree1",
+              "tree2"
+            ],
+            "values": [
+              0.0,
+              0.0
+            ],
+            "value": 0.0
+          }
+        ],
+        "eligible": 4,
+        "oobMetric": 3.25
+      }
+    },
+    {
+      "input": {
+        "name": "oob-none",
+        "operation": "bagging",
+        "rows": [
+          {
+            "id": "s1",
+            "x": [
+              1,
+              1
+            ],
+            "y": 0
+          }
+        ],
+        "options": {
+          "task": "classification",
+          "criterion": "gini",
+          "dimensions": 2,
+          "maxDepth": 3,
+          "minLeaf": 1,
+          "mtry": 0,
+          "seed": 7
+        },
+        "seed": 7,
+        "count": 3
+      },
+      "expected": {
+        "trees": [
+          {
+            "bootstrapStart": 0,
+            "featureStart": 1,
+            "featureBudget": 0,
+            "bootstrapSeed": 7,
+            "featureSeed": 1025555898,
+            "sample": {
+              "indices": [
+                0
+              ],
+              "counts": [
+                {
+                  "id": "s1",
+                  "count": 1
+                }
+              ],
+              "uniqueIds": [
+                "s1"
+              ],
+              "oobIds": []
+            },
+            "tree": [
+              {
+                "id": "root",
+                "dimensions": 2,
+                "depth": 0,
+                "rowIds": [
+                  "draw1"
+                ],
+                "sourceIds": [
+                  "s1"
+                ],
+                "stats": {
+                  "n": 1,
+                  "counts": [
+                    1,
+                    0
+                  ],
+                  "mean": null,
+                  "value": 0,
+                  "probability": 0.0,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              }
+            ]
+          },
+          {
+            "bootstrapStart": 1,
+            "featureStart": 2,
+            "featureBudget": 0,
+            "bootstrapSeed": 1025555898,
+            "featureSeed": 3923423697,
+            "sample": {
+              "indices": [
+                0
+              ],
+              "counts": [
+                {
+                  "id": "s1",
+                  "count": 1
+                }
+              ],
+              "uniqueIds": [
+                "s1"
+              ],
+              "oobIds": []
+            },
+            "tree": [
+              {
+                "id": "root",
+                "dimensions": 2,
+                "depth": 0,
+                "rowIds": [
+                  "draw1"
+                ],
+                "sourceIds": [
+                  "s1"
+                ],
+                "stats": {
+                  "n": 1,
+                  "counts": [
+                    1,
+                    0
+                  ],
+                  "mean": null,
+                  "value": 0,
+                  "probability": 0.0,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              }
+            ]
+          },
+          {
+            "bootstrapStart": 2,
+            "featureStart": 3,
+            "featureBudget": 0,
+            "bootstrapSeed": 3923423697,
+            "featureSeed": 2630631676,
+            "sample": {
+              "indices": [
+                0
+              ],
+              "counts": [
+                {
+                  "id": "s1",
+                  "count": 1
+                }
+              ],
+              "uniqueIds": [
+                "s1"
+              ],
+              "oobIds": []
+            },
+            "tree": [
+              {
+                "id": "root",
+                "dimensions": 2,
+                "depth": 0,
+                "rowIds": [
+                  "draw1"
+                ],
+                "sourceIds": [
+                  "s1"
+                ],
+                "stats": {
+                  "n": 1,
+                  "counts": [
+                    1,
+                    0
+                  ],
+                  "mean": null,
+                  "value": 0,
+                  "probability": 0.0,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              }
+            ]
+          }
+        ],
+        "predictions": [
+          {
+            "id": "s1",
+            "values": [
+              0,
+              0,
+              0
+            ],
+            "value": 0,
+            "voteFraction": 0.0
+          }
+        ],
+        "oob": [
+          {
+            "id": "s1",
+            "treeIds": [],
+            "values": [],
+            "value": null
+          }
+        ],
+        "eligible": 0,
+        "oobMetric": null
+      }
+    },
+    {
+      "input": {
+        "name": "zero-trees",
+        "operation": "bagging",
+        "rows": [
+          {
+            "id": "s1",
+            "x": [
+              1,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s2",
+            "x": [
+              2,
+              0
+            ],
+            "y": 0
+          },
+          {
+            "id": "s3",
+            "x": [
+              3,
+              1
+            ],
+            "y": 1
+          },
+          {
+            "id": "s4",
+            "x": [
+              4,
+              0
+            ],
+            "y": 1
+          },
+          {
+            "id": "s5",
+            "x": [
+              5,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s6",
+            "x": [
+              6,
+              0
+            ],
+            "y": 1
+          }
+        ],
+        "options": {
+          "task": "classification",
+          "criterion": "gini",
+          "dimensions": 2,
+          "maxDepth": 3,
+          "minLeaf": 1,
+          "mtry": 0,
+          "seed": 7
+        },
+        "seed": 7,
+        "count": 0
+      },
+      "expected": {
+        "trees": [],
+        "predictions": [
+          {
+            "id": "s1",
+            "values": [],
+            "value": null,
+            "voteFraction": null
+          },
+          {
+            "id": "s2",
+            "values": [],
+            "value": null,
+            "voteFraction": null
+          },
+          {
+            "id": "s3",
+            "values": [],
+            "value": null,
+            "voteFraction": null
+          },
+          {
+            "id": "s4",
+            "values": [],
+            "value": null,
+            "voteFraction": null
+          },
+          {
+            "id": "s5",
+            "values": [],
+            "value": null,
+            "voteFraction": null
+          },
+          {
+            "id": "s6",
+            "values": [],
+            "value": null,
+            "voteFraction": null
+          }
+        ],
+        "oob": [
+          {
+            "id": "s1",
+            "treeIds": [],
+            "values": [],
+            "value": null
+          },
+          {
+            "id": "s2",
+            "treeIds": [],
+            "values": [],
+            "value": null
+          },
+          {
+            "id": "s3",
+            "treeIds": [],
+            "values": [],
+            "value": null
+          },
+          {
+            "id": "s4",
+            "treeIds": [],
+            "values": [],
+            "value": null
+          },
+          {
+            "id": "s5",
+            "treeIds": [],
+            "values": [],
+            "value": null
+          },
+          {
+            "id": "s6",
+            "treeIds": [],
+            "values": [],
+            "value": null
+          }
+        ],
+        "eligible": 0,
+        "oobMetric": null
+      }
+    },
+    {
+      "input": {
+        "name": "boosting-tiny",
+        "operation": "boosting",
+        "rows": [
+          {
+            "id": "a1",
+            "x": [
+              1,
+              0
+            ],
+            "y": 0
+          },
+          {
+            "id": "a2",
+            "x": [
+              2,
+              0
+            ],
+            "y": 0
+          },
+          {
+            "id": "a3",
+            "x": [
+              3,
+              1
+            ],
+            "y": 2
+          },
+          {
+            "id": "a4",
+            "x": [
+              4,
+              1
+            ],
+            "y": 2
+          }
+        ],
+        "options": {
+          "task": "regression",
+          "criterion": "sse",
+          "dimensions": 2,
+          "maxDepth": 1,
+          "minLeaf": 1,
+          "mtry": 0,
+          "seed": 7
+        },
+        "rate": 0.5,
+        "stages": 3
+      },
+      "expected": {
+        "baseline": 1.0,
+        "predictions": [
+          0.125,
+          0.125,
+          1.875,
+          1.875
+        ],
+        "stages": [
+          {
+            "stage": 1,
+            "before": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "residuals": [
+              -1.0,
+              -1.0,
+              1.0,
+              1.0
+            ],
+            "fitted": [
+              -1.0,
+              -1.0,
+              1.0,
+              1.0
+            ],
+            "after": [
+              0.5,
+              0.5,
+              1.5,
+              1.5
+            ],
+            "lossBefore": 0.5,
+            "lossAfter": 0.125,
+            "tree": [
+              {
+                "id": "root",
+                "dimensions": 2,
+                "depth": 0,
+                "rowIds": [
+                  "a1",
+                  "a2",
+                  "a3",
+                  "a4"
+                ],
+                "sourceIds": [
+                  "a1",
+                  "a2",
+                  "a3",
+                  "a4"
+                ],
+                "stats": {
+                  "n": 4,
+                  "counts": null,
+                  "mean": 0.0,
+                  "value": 0.0,
+                  "probability": null,
+                  "impurity": 1.0,
+                  "risk": 4.0
+                },
+                "features": [
+                  0,
+                  1
+                ],
+                "split": {
+                  "feature": 0,
+                  "threshold": 2.5,
+                  "leftIds": [
+                    "a1",
+                    "a2"
+                  ],
+                  "rightIds": [
+                    "a3",
+                    "a4"
+                  ],
+                  "weighted": 0.0,
+                  "gain": 1.0
+                }
+              },
+              {
+                "id": "rootL",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "a1",
+                  "a2"
+                ],
+                "sourceIds": [
+                  "a1",
+                  "a2"
+                ],
+                "stats": {
+                  "n": 2,
+                  "counts": null,
+                  "mean": -1.0,
+                  "value": -1.0,
+                  "probability": null,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              },
+              {
+                "id": "rootR",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "a3",
+                  "a4"
+                ],
+                "sourceIds": [
+                  "a3",
+                  "a4"
+                ],
+                "stats": {
+                  "n": 2,
+                  "counts": null,
+                  "mean": 1.0,
+                  "value": 1.0,
+                  "probability": null,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              }
+            ]
+          },
+          {
+            "stage": 2,
+            "before": [
+              0.5,
+              0.5,
+              1.5,
+              1.5
+            ],
+            "residuals": [
+              -0.5,
+              -0.5,
+              0.5,
+              0.5
+            ],
+            "fitted": [
+              -0.5,
+              -0.5,
+              0.5,
+              0.5
+            ],
+            "after": [
+              0.25,
+              0.25,
+              1.75,
+              1.75
+            ],
+            "lossBefore": 0.125,
+            "lossAfter": 0.03125,
+            "tree": [
+              {
+                "id": "root",
+                "dimensions": 2,
+                "depth": 0,
+                "rowIds": [
+                  "a1",
+                  "a2",
+                  "a3",
+                  "a4"
+                ],
+                "sourceIds": [
+                  "a1",
+                  "a2",
+                  "a3",
+                  "a4"
+                ],
+                "stats": {
+                  "n": 4,
+                  "counts": null,
+                  "mean": 0.0,
+                  "value": 0.0,
+                  "probability": null,
+                  "impurity": 0.25,
+                  "risk": 1.0
+                },
+                "features": [
+                  0,
+                  1
+                ],
+                "split": {
+                  "feature": 0,
+                  "threshold": 2.5,
+                  "leftIds": [
+                    "a1",
+                    "a2"
+                  ],
+                  "rightIds": [
+                    "a3",
+                    "a4"
+                  ],
+                  "weighted": 0.0,
+                  "gain": 0.25
+                }
+              },
+              {
+                "id": "rootL",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "a1",
+                  "a2"
+                ],
+                "sourceIds": [
+                  "a1",
+                  "a2"
+                ],
+                "stats": {
+                  "n": 2,
+                  "counts": null,
+                  "mean": -0.5,
+                  "value": -0.5,
+                  "probability": null,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              },
+              {
+                "id": "rootR",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "a3",
+                  "a4"
+                ],
+                "sourceIds": [
+                  "a3",
+                  "a4"
+                ],
+                "stats": {
+                  "n": 2,
+                  "counts": null,
+                  "mean": 0.5,
+                  "value": 0.5,
+                  "probability": null,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              }
+            ]
+          },
+          {
+            "stage": 3,
+            "before": [
+              0.25,
+              0.25,
+              1.75,
+              1.75
+            ],
+            "residuals": [
+              -0.25,
+              -0.25,
+              0.25,
+              0.25
+            ],
+            "fitted": [
+              -0.25,
+              -0.25,
+              0.25,
+              0.25
+            ],
+            "after": [
+              0.125,
+              0.125,
+              1.875,
+              1.875
+            ],
+            "lossBefore": 0.03125,
+            "lossAfter": 0.0078125,
+            "tree": [
+              {
+                "id": "root",
+                "dimensions": 2,
+                "depth": 0,
+                "rowIds": [
+                  "a1",
+                  "a2",
+                  "a3",
+                  "a4"
+                ],
+                "sourceIds": [
+                  "a1",
+                  "a2",
+                  "a3",
+                  "a4"
+                ],
+                "stats": {
+                  "n": 4,
+                  "counts": null,
+                  "mean": 0.0,
+                  "value": 0.0,
+                  "probability": null,
+                  "impurity": 0.0625,
+                  "risk": 0.25
+                },
+                "features": [
+                  0,
+                  1
+                ],
+                "split": {
+                  "feature": 0,
+                  "threshold": 2.5,
+                  "leftIds": [
+                    "a1",
+                    "a2"
+                  ],
+                  "rightIds": [
+                    "a3",
+                    "a4"
+                  ],
+                  "weighted": 0.0,
+                  "gain": 0.0625
+                }
+              },
+              {
+                "id": "rootL",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "a1",
+                  "a2"
+                ],
+                "sourceIds": [
+                  "a1",
+                  "a2"
+                ],
+                "stats": {
+                  "n": 2,
+                  "counts": null,
+                  "mean": -0.25,
+                  "value": -0.25,
+                  "probability": null,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              },
+              {
+                "id": "rootR",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "a3",
+                  "a4"
+                ],
+                "sourceIds": [
+                  "a3",
+                  "a4"
+                ],
+                "stats": {
+                  "n": 2,
+                  "counts": null,
+                  "mean": 0.25,
+                  "value": 0.25,
+                  "probability": null,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              }
+            ]
+          }
+        ],
+        "loss": 0.0078125
+      }
+    },
+    {
+      "input": {
+        "name": "boosting",
+        "operation": "boosting",
+        "rows": [
+          {
+            "id": "s1",
+            "x": [
+              1,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s2",
+            "x": [
+              2,
+              0
+            ],
+            "y": 0
+          },
+          {
+            "id": "s3",
+            "x": [
+              3,
+              1
+            ],
+            "y": 2
+          },
+          {
+            "id": "s4",
+            "x": [
+              4,
+              0
+            ],
+            "y": 2
+          },
+          {
+            "id": "s5",
+            "x": [
+              5,
+              1
+            ],
+            "y": 0
+          },
+          {
+            "id": "s6",
+            "x": [
+              6,
+              0
+            ],
+            "y": 2
+          }
+        ],
+        "options": {
+          "task": "regression",
+          "criterion": "sse",
+          "dimensions": 2,
+          "maxDepth": 1,
+          "minLeaf": 1,
+          "mtry": 0,
+          "seed": 7
+        },
+        "rate": 0.5,
+        "stages": 3
+      },
+      "expected": {
+        "baseline": 1.0,
+        "predictions": [
+          0.08333333333333333,
+          0.4166666666666667,
+          1.2083333333333333,
+          1.5416666666666667,
+          1.2083333333333333,
+          1.5416666666666667
+        ],
+        "stages": [
+          {
+            "stage": 1,
+            "before": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "residuals": [
+              -1.0,
+              -1.0,
+              1.0,
+              1.0,
+              -1.0,
+              1.0
+            ],
+            "fitted": [
+              -1.0,
+              -1.0,
+              0.5,
+              0.5,
+              0.5,
+              0.5
+            ],
+            "after": [
+              0.5,
+              0.5,
+              1.25,
+              1.25,
+              1.25,
+              1.25
+            ],
+            "lossBefore": 0.5,
+            "lossAfter": 0.3125,
+            "tree": [
+              {
+                "id": "root",
+                "dimensions": 2,
+                "depth": 0,
+                "rowIds": [
+                  "s1",
+                  "s2",
+                  "s3",
+                  "s4",
+                  "s5",
+                  "s6"
+                ],
+                "sourceIds": [
+                  "s1",
+                  "s2",
+                  "s3",
+                  "s4",
+                  "s5",
+                  "s6"
+                ],
+                "stats": {
+                  "n": 6,
+                  "counts": null,
+                  "mean": 0.0,
+                  "value": 0.0,
+                  "probability": null,
+                  "impurity": 1.0,
+                  "risk": 6.0
+                },
+                "features": [
+                  0,
+                  1
+                ],
+                "split": {
+                  "feature": 0,
+                  "threshold": 2.5,
+                  "leftIds": [
+                    "s1",
+                    "s2"
+                  ],
+                  "rightIds": [
+                    "s3",
+                    "s4",
+                    "s5",
+                    "s6"
+                  ],
+                  "weighted": 0.5,
+                  "gain": 0.5
+                }
+              },
+              {
+                "id": "rootL",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "s1",
+                  "s2"
+                ],
+                "sourceIds": [
+                  "s1",
+                  "s2"
+                ],
+                "stats": {
+                  "n": 2,
+                  "counts": null,
+                  "mean": -1.0,
+                  "value": -1.0,
+                  "probability": null,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              },
+              {
+                "id": "rootR",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "s3",
+                  "s4",
+                  "s5",
+                  "s6"
+                ],
+                "sourceIds": [
+                  "s3",
+                  "s4",
+                  "s5",
+                  "s6"
+                ],
+                "stats": {
+                  "n": 4,
+                  "counts": null,
+                  "mean": 0.5,
+                  "value": 0.5,
+                  "probability": null,
+                  "impurity": 0.75,
+                  "risk": 3.0
+                },
+                "features": [],
+                "split": null
+              }
+            ]
+          },
+          {
+            "stage": 2,
+            "before": [
+              0.5,
+              0.5,
+              1.25,
+              1.25,
+              1.25,
+              1.25
+            ],
+            "residuals": [
+              -0.5,
+              -0.5,
+              0.75,
+              0.75,
+              -1.25,
+              0.75
+            ],
+            "fitted": [
+              -0.5,
+              -0.5,
+              0.25,
+              0.25,
+              0.25,
+              0.25
+            ],
+            "after": [
+              0.25,
+              0.25,
+              1.375,
+              1.375,
+              1.375,
+              1.375
+            ],
+            "lossBefore": 0.3125,
+            "lossAfter": 0.265625,
+            "tree": [
+              {
+                "id": "root",
+                "dimensions": 2,
+                "depth": 0,
+                "rowIds": [
+                  "s1",
+                  "s2",
+                  "s3",
+                  "s4",
+                  "s5",
+                  "s6"
+                ],
+                "sourceIds": [
+                  "s1",
+                  "s2",
+                  "s3",
+                  "s4",
+                  "s5",
+                  "s6"
+                ],
+                "stats": {
+                  "n": 6,
+                  "counts": null,
+                  "mean": 0.0,
+                  "value": 0.0,
+                  "probability": null,
+                  "impurity": 0.625,
+                  "risk": 3.75
+                },
+                "features": [
+                  0,
+                  1
+                ],
+                "split": {
+                  "feature": 0,
+                  "threshold": 2.5,
+                  "leftIds": [
+                    "s1",
+                    "s2"
+                  ],
+                  "rightIds": [
+                    "s3",
+                    "s4",
+                    "s5",
+                    "s6"
+                  ],
+                  "weighted": 0.5,
+                  "gain": 0.125
+                }
+              },
+              {
+                "id": "rootL",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "s1",
+                  "s2"
+                ],
+                "sourceIds": [
+                  "s1",
+                  "s2"
+                ],
+                "stats": {
+                  "n": 2,
+                  "counts": null,
+                  "mean": -0.5,
+                  "value": -0.5,
+                  "probability": null,
+                  "impurity": 0.0,
+                  "risk": 0.0
+                },
+                "features": [],
+                "split": null
+              },
+              {
+                "id": "rootR",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "s3",
+                  "s4",
+                  "s5",
+                  "s6"
+                ],
+                "sourceIds": [
+                  "s3",
+                  "s4",
+                  "s5",
+                  "s6"
+                ],
+                "stats": {
+                  "n": 4,
+                  "counts": null,
+                  "mean": 0.25,
+                  "value": 0.25,
+                  "probability": null,
+                  "impurity": 0.75,
+                  "risk": 3.0
+                },
+                "features": [],
+                "split": null
+              }
+            ]
+          },
+          {
+            "stage": 3,
+            "before": [
+              0.25,
+              0.25,
+              1.375,
+              1.375,
+              1.375,
+              1.375
+            ],
+            "residuals": [
+              -0.25,
+              -0.25,
+              0.625,
+              0.625,
+              -1.375,
+              0.625
+            ],
+            "fitted": [
+              -0.3333333333333333,
+              0.3333333333333333,
+              -0.3333333333333333,
+              0.3333333333333333,
+              -0.3333333333333333,
+              0.3333333333333333
+            ],
+            "after": [
+              0.08333333333333333,
+              0.4166666666666667,
+              1.2083333333333333,
+              1.5416666666666667,
+              1.2083333333333333,
+              1.5416666666666667
+            ],
+            "lossBefore": 0.265625,
+            "lossAfter": 0.22395833333333334,
+            "tree": [
+              {
+                "id": "root",
+                "dimensions": 2,
+                "depth": 0,
+                "rowIds": [
+                  "s1",
+                  "s2",
+                  "s3",
+                  "s4",
+                  "s5",
+                  "s6"
+                ],
+                "sourceIds": [
+                  "s1",
+                  "s2",
+                  "s3",
+                  "s4",
+                  "s5",
+                  "s6"
+                ],
+                "stats": {
+                  "n": 6,
+                  "counts": null,
+                  "mean": 0.0,
+                  "value": 0.0,
+                  "probability": null,
+                  "impurity": 0.53125,
+                  "risk": 3.1875
+                },
+                "features": [
+                  0,
+                  1
+                ],
+                "split": {
+                  "feature": 1,
+                  "threshold": 0.5,
+                  "leftIds": [
+                    "s2",
+                    "s4",
+                    "s6"
+                  ],
+                  "rightIds": [
+                    "s1",
+                    "s3",
+                    "s5"
+                  ],
+                  "weighted": 0.4201388888888889,
+                  "gain": 0.1111111111111111
+                }
+              },
+              {
+                "id": "rootL",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "s2",
+                  "s4",
+                  "s6"
+                ],
+                "sourceIds": [
+                  "s2",
+                  "s4",
+                  "s6"
+                ],
+                "stats": {
+                  "n": 3,
+                  "counts": null,
+                  "mean": 0.3333333333333333,
+                  "value": 0.3333333333333333,
+                  "probability": null,
+                  "impurity": 0.1701388888888889,
+                  "risk": 0.5104166666666666
+                },
+                "features": [],
+                "split": null
+              },
+              {
+                "id": "rootR",
+                "dimensions": 2,
+                "depth": 1,
+                "rowIds": [
+                  "s1",
+                  "s3",
+                  "s5"
+                ],
+                "sourceIds": [
+                  "s1",
+                  "s3",
+                  "s5"
+                ],
+                "stats": {
+                  "n": 3,
+                  "counts": null,
+                  "mean": -0.3333333333333333,
+                  "value": -0.3333333333333333,
+                  "probability": null,
+                  "impurity": 0.6701388888888888,
+                  "risk": 2.0104166666666665
+                },
+                "features": [],
+                "split": null
+              }
+            ]
+          }
+        ],
+        "loss": 0.22395833333333334
+      }
+    },
+    {
+      "input": {
+        "name": "boosting-empty",
+        "operation": "boosting",
+        "rows": [],
+        "options": {
+          "task": "regression",
+          "criterion": "sse",
+          "dimensions": 2,
+          "maxDepth": 3,
+          "minLeaf": 1,
+          "mtry": 0,
+          "seed": 7
+        },
+        "rate": 0.5,
+        "stages": 3
+      },
+      "expected": {
+        "baseline": null,
+        "predictions": [],
+        "stages": [],
+        "loss": null
+      }
+    }
+  ]
+}

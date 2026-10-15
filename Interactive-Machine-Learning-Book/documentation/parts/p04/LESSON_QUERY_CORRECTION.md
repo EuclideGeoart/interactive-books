@@ -1,0 +1,9 @@
+# Lesson query boundary correction — CORRECTION REQUIRED pending owner acceptance
+
+Independent integration-owner review of delivery `72a7a1df85d3e5870e1d6b223d84691a768adbb6` found that `validateLab` used `forEach` on the two-feature query. A missing slot was skipped. With zero trees in bagging/forest, or zero boosting stages, no kernel prediction was invoked to reject it; `deriveLab` returned `NaN` query plot geometry. Dense controls did not create this input, but the exported numerical lesson boundary accepted it.
+
+The owner reproduced `[1,,]` in all three zero-work modes, then retained an independent failing regression at `documentation/validation/wave-b/continuation-owner/lesson-query-before/` in the integration Book. The active full focused run was cancelled by the owner after seven passing gates; its actual subprocess exit is -15 (SIGTERM), with the incomplete manifest and cancellation record retained under `continuation-owner/p04/`. Cached historical browser reports in that cancelled directory are not corrected-source browser results.
+
+Only the existing query finite guard changes: indexed access visits both declared slots before any early return or geometry. The API, numeric algorithms, dense arithmetic, canonical Python, fixtures, tolerances, prose tables, shared files and baselines retain their accepted semantics. Caller audit covers `deriveLab`, TreeStage's derived state and mutation validation, and the unit/parity lesson callers. The owned regression checks first/last holes in all six modes, zero trees/stages, JSON null serialization and preservation of caller holes.
+
+Source/test correction is confined to `src/parts/p04/lesson.ts` and `tests/unit/p04/lessons.test.ts`; this report is the third owned path. Fresh source-bound owner focused validation and visual acceptance determine the final classification. No acceptance/freeze is claimed by this correction report.

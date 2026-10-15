@@ -1,0 +1,85 @@
+{
+  "provenance": "Explicit hand-authored toy records, not measured data. IDs identify observations; binary features mean present/absent.",
+  "records": [
+    {
+      "id": "a1",
+      "category": "A",
+      "features": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "a2",
+      "category": "A",
+      "features": [
+        1,
+        0
+      ]
+    },
+    {
+      "id": "a3",
+      "category": "A",
+      "features": [
+        1,
+        0
+      ]
+    },
+    {
+      "id": "a4",
+      "category": "A",
+      "features": [
+        1,
+        0
+      ]
+    },
+    {
+      "id": "a5",
+      "category": "A",
+      "features": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "a6",
+      "category": "A",
+      "features": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "b1",
+      "category": "B",
+      "features": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "b2",
+      "category": "B",
+      "features": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "b3",
+      "category": "B",
+      "features": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "b4",
+      "category": "B",
+      "features": [
+        0,
+        0
+      ]
+    }
+  ]
+}

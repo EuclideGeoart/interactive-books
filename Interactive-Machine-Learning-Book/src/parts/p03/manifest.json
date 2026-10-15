@@ -1,0 +1,17 @@
+{
+  "part": "p03",
+  "chapters": [
+    {
+      "id": "III-17",
+      "slug": "k-nearest-neighbors"
+    },
+    {
+      "id": "III-18",
+      "slug": "distance-metrics-dimensionality"
+    },
+    {
+      "id": "III-19",
+      "slug": "naive-bayes"
+    }
+  ]
+}

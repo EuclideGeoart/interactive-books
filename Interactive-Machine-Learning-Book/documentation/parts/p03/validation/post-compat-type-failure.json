@@ -1,0 +1,7 @@
+{
+  "head": "ee1d9e1b20f826bbc910734b93060a97761ddbd2",
+  "logPath": "artifacts/integrator-focused-validation-post-compat.log",
+  "logText": "\n> interactive-machine-learning@0.1.0 validate:focused\n> node scripts/validate.mjs focused --part p03\n\nRunning: Type/content check\n21:32:26 [content] Syncing content\n21:32:26 [content] Synced content\n21:32:26 [types] Generated 397ms\n21:32:26 [check] Getting diagnostics for Astro files in /media/mario-geometry/WD_SN7100_NVMe/coding-projects/interactive-books-worktrees/book-iii-part-iii-instance-probabilistic/Interactive-Machine-Learning-Book...\n\u001b[96mtests/unit/p03/models.test.ts\u001b[0m:\u001b[93m108\u001b[0m:\u001b[93m54\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m ts(2540): \u001b[0mCannot assign to 'x' because it is a read-only property.\n\n\u001b[7m108\u001b[0m     const trace=neighborTrace(initial);initial.query.x=2;\n\u001b[7m   \u001b[0m \u001b[91m                                                     ~\u001b[0m\n\nResult (87 files): \n- 1 error\n- 0 warnings\n- 0 hints\n\n",
+  "exitPath": "artifacts/integrator-focused-post-compat-exit.txt",
+  "exitText": "1\n"
+}

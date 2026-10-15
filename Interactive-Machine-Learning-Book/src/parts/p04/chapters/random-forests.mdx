@@ -1,0 +1,117 @@
+---
+chapterId: III-24
+title: Random Forests
+hero: Draw a new feature subset at each node
+lede: Inspect genuine per-split feature sampling, separately bootstrapped recursive trees and the predictions they actually aggregate.
+description: Inspect genuine per-split feature sampling, separately bootstrapped recursive trees and the predictions they actually aggregate.
+prerequisites: [IV.1, IV.14, V.3, VIII.10]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import TreeStage from '../TreeStage';
+import reference from '../../../../code/python/p04/trees_ensembles.py?raw';
+
+<Stage caption="Start with the controls. Every branch, score, bootstrap draw and stage output comes from the active numeric state; Reset restores the hand-authored inputs."><TreeStage scope="iii24-forest" mode="forest" client:load /></Stage>
+
+## Find the second feature draw inside a tree
+
+Select tree2 in the opening sheet. At its root, the considered zero-based feature list is [1], so it tests x2 ≤ 0.5. Inspect node rootR: its list is [0], and it tests x1 ≤ 4. This is a fresh feature choice within the same tree. It is not a feature subset selected once and reused for the entire tree.
+
+Set **Features per split** to 2. Both columns are now eligible at every node, giving the same policy as all-feature bagging for the same seed, data and other hyperparameters. Return to 1, change the seed, and inspect the candidate table at several nodes. A chosen test must belong to that node's recorded feature subset.
+
+## Two sources of variation
+
+A random forest combines bootstrap resampling with random feature subsets at eligible nodes. At each node:
+
+1. Check empty, pure, depth and minimum-count stopping rules.
+2. Sample m distinct feature indices without replacement.
+3. Enumerate all legal adjacent-value partitions in those features.
+4. Choose the greatest positive gain under the deterministic tie rule.
+5. Recurse into both children, drawing fresh subsets when they are eligible.
+
+Features are selected by partial Fisher–Yates sampling. With d features, draw a slot among d possibilities for the first index, d−1 for the next, and so on. Sorting the selected indices makes candidate order explicit without changing subset membership. We consume the feature stream in preorder, left child before right.
+
+If m=d, the implementation considers all features and consumes no feature draws. If the chosen subset contains no legal positive-gain candidate, the node becomes a leaf; it does not secretly inspect excluded columns or retry until a favorable feature appears. This is the exact forest policy taught by this sheet.
+
+## How this changes correlation
+
+Suppose a strong predictor would win almost every root search. Plain bagging can then build similar trees despite varying the rows. Restricting each node to a random feature subset gives other predictors a chance to influence branches, potentially reducing correlation between tree errors. Individual trees may also become weaker; the subset size expresses a tradeoff rather than guaranteeing an improvement.
+
+For d=2,m=1, each feature has ideal selection probability 1/2 at an eligible node. This feature choice is separate from its subsequent gain. No selection probability changes the impurity weights: candidate counts still include every bootstrap occurrence at that node.
+
+The output uses the same hard-majority vote and class-zero tie policy as III-23. The source matrix is n by 2; each query is a length-2 row. A bootstrap tree is trained on n draw rows, and every eligible node records its own subset and exact row IDs.
+
+## Work the original seeded forest
+
+At seed 7, depth 3 and m=1, tree1 uses the same first bootstrap indices [1,5,3,5,0,5] as bagging. Its root considers x1 and separates pure leaves at threshold 3. Before tree2 starts, the stream reserves seven feature outputs: at most 2³−1 eligible internal nodes times one draw per node.
+
+Tree2's bootstrap indices are [3,3,4,4,2,2]. In source IDs these are [s4,s4,s5,s5,s3,s3]. Its root considers x2 and partitions:
+
+<div class="table-scroll" id="iii24-worked-bootstrap" data-p04-prose-table="iii24-worked-bootstrap" data-scrollable="III-24 bootstrap branch memberships and class counts, scrollable" tabindex="0" role="region" aria-label="III-24 bootstrap branch memberships and class counts, scrollable">
+
+| Branch | Draw-source IDs | Counts [0,1] |
+| --- | --- | --- |
+| x2 ≤ 0.5 | s4, s4 | [0,2] |
+| x2 > 0.5 | s5, s5, s3, s3 | [2,2] |
+
+</div>
+
+The root Gini is 4/9; weighted child Gini is (2/6)0+(4/6)(1/2)=1/3, so gain is 1/9. The right child now samples x1, and threshold 4 separates the two s3 occurrences from the two s5 occurrences. Both children are pure. The recursive node ledger makes this second feature draw and its four weighted observations visible.
+
+For source s5, the three fitted forest labels are [1,0,1], giving aggregate class 1. The forest does not magically repair that row. OOB predictions use only trees excluding the source ID; the original forest's eligible set covers all six rows and its OOB accuracy is 2/6=1/3.
+
+## Stream provenance is an algorithm contract
+
+The master seed reserves a nonoverlapping bootstrap segment followed by a worst-case feature segment for each tree. The feature budget is (2^depth−1)m when $m<d$, otherwise zero. A tree uses only the eligible nodes' prefix of its reservation; unused outputs remain reserved. Thus a pure node's stopping can never shift the next tree into a previous tree's stream.
+
+Changing m can change both feature choices and subsequent bootstrap reservations. Compare policies by the recorded actual seeds and ledgers, rather than assuming that one seed guarantees identical samples across different stream budgets. Setting m=d does reproduce plain bagging because neither policy reserves feature draws.
+
+<Callout title="A forest is still a collection of inspectable trees" kind="numerical">
+We bound the experiment to six trees, depth five, two sheet features and 32 kernel rows. Every tree uses the same finite-input and exact prediction-shape contract. Empty trees contribute no query vote; zero eligible predictions and zero OOB coverage are undefined. These small ensembles demonstrate the mechanism without claiming convergence to a large-forest population limit.
+</Callout>
+
+## Connections and independent checks
+
+The independent oracle derives stream states with closed-form unsigned integer arithmetic, reconstructs the sampled feature slots at each eligible node, and then enumerates all legally separable row subsets to verify the chosen branch. It checks exact seeds, offsets, multiplicities, node features and source IDs; rational voting checks aggregation and OOB exclusion separately.
+
+Trees' individual thresholds are easy to inspect, but a forest's collective behavior depends on many conditional paths. Feature importance or causal interpretation is outside this lesson. III-25 instead uses ordered residual fits: a boosting stage cannot be freely reordered with its predecessor's training target.
+
+## Execute the actual Python and NumPy
+
+The imported file below is the canonical runnable source used by the numerical tests. Read the named functions for this chapter; the same recursive kernel supports the Part's later ensembles. From the book root:
+
+```bash
+.venv/bin/python -B code/python/p04/trees_ensembles.py
+```
+
+That default command prints the six-row squared-error boosting demonstration as JSON. To run this chapter's tree or sampling operation, pass a JSON request on stdin with `operation` equal to `tree`, `bootstrap`, `bagging` or `boosting`, the displayed `rows`, and the `options` keys in `DEFAULT_OPTIONS`. The independent fixture file contains complete runnable requests for all six lessons. Core lessons require no network or model service.
+
+For this chapter's exact committed example, run the independent fixture request through the actual canonical module:
+
+```bash
+.venv/bin/python -B - <<'PYTHON'
+import json, sys
+from pathlib import Path
+sys.path.insert(0, "code/python/p04")
+from trees_ensembles import dispatch
+cases = json.loads(Path("fixtures/p04/trees.fixtures.json").read_text())["cases"]
+request = next(c["input"] for c in cases if c["input"]["name"] == "forest")
+print(json.dumps(dispatch(request), allow_nan=False))
+PYTHON
+```
+
+<CodeFile source={reference} file="code/python/p04/trees_ensembles.py" />
+
+## Five graded investigations
+
+<ChoiceExercise id="iii24-1" client:load prompt={"When does this forest choose its feature subset?"} choices={[{"label":"At each eligible node, including eligible descendants.","correct":true,"feedback":"The node ledger records the separate draws."},{"label":"Once per tree.","correct":false,"feedback":"Tree2's root and right child use different feature indices."}]} />
+
+<ChoiceExercise id="iii24-2" client:load prompt={"For d=2 and m=1, how many features enter a node's candidate search?"} choices={[{"label":"Exactly one, sampled without replacement.","correct":true,"feedback":"The split search is restricted to that node's selected feature."},{"label":"Both, after the sampled feature is inspected.","correct":false,"feedback":"Excluded features are not silently searched."}]} />
+
+<ChoiceExercise id="iii24-3" client:load prompt={"The sampled feature has no legal positive-gain split. What happens here?"} choices={[{"label":"The node becomes a leaf.","correct":true,"feedback":"The explicit policy does not retry with excluded features."},{"label":"The algorithm retries all excluded columns until one works.","correct":false,"feedback":"That would be a different sampling/stopping contract."}]} />
+
+<ChoiceExercise id="iii24-4" client:load prompt={"Six drawn rows have root Gini 4/9 and weighted child Gini 1/3. What is gain?"} choices={[{"label":"1/9.","correct":true,"feedback":"Subtract 3/9 from 4/9."},{"label":"7/9.","correct":false,"feedback":"Impurity reduction is a difference, not a sum."}]} />
+
+<ChoiceExercise id="iii24-5" client:load prompt={"What does m=d do in this implementation?"} choices={[{"label":"It uses all features with no feature draws, reproducing bagging's policy.","correct":true,"feedback":"The same reservation policy and seed then produce the same bootstrap stream."},{"label":"It makes the tree choose only the most important feature.","correct":false,"feedback":"All declared features are candidates; gain still selects the test."}]} />

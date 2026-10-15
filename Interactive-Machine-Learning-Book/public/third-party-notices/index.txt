@@ -1,0 +1,5 @@
+Book III third-party notices
+
+These notices apply only to the bundled third-party runtime code, CSS and unmodified fonts listed here. They do not license original Book III software, code examples or educational content. Original educational content by Mario Balit is scoped separately under CC BY-NC-SA 4.0; software source remains reserved. See the Book III Copyright and Licensing page and COPYRIGHT_AND_LICENSING.md.
+
+Astro and its Preact integration/helpers, Preact and KaTeX: MIT. Instrument Sans, JetBrains Mono and Source Serif 4: SIL OFL 1.1. KaTeX fonts: MIT. These files preserve the actual installed notices. Source Serif additionally includes Adobe and Google Fonts notices because Fontsource 5.3.0 supplies an incomplete copyright header. Package origins and hashes are recorded in the release audit.

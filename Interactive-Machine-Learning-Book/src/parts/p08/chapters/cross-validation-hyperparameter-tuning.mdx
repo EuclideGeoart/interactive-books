@@ -1,0 +1,93 @@
+---
+chapterId: III-35
+title: Cross-Validation and Hyperparameter Tuning
+hero: Lock the test rows before comparing models
+lede: Follow exact group memberships through fold fits, an explicit tuning grid, a development refit and one final test evaluation.
+description: Inspect deterministic group-disjoint folds, training-only preprocessing, per-fold ridge scores, explicit tie-breaking and the final untouched test set.
+prerequisites: [IV.5, V.3, V.4, V.7]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import { href } from '../../../shell/href';
+import EvaluationStage from '../EvaluationStage';
+import reference from '../../../../code/python/p08/evaluation.py?raw';
+
+<Stage caption="An actual experimental workflow: group split, per-fold transform and ridge fits, explicit grid selection, development refit, then final test."><EvaluationStage scope="iii35-folds" mode="folds" client:load /></Stage>
+
+## Start with the boundary
+
+Read the locked test IDs. Choose an inspected fold and find its training and validation IDs. A group consists of two related observations; keeping both together models repeated measurements from one subject. Every development group appears in one validation fold and in the other training folds. The test group appears in neither role.
+
+Select a test row in the editor and change its target. The final test error changes after **Reveal final test**, but the chosen power, penalty, CV scores and learning-curve fits remain the same. Restore the original data. Change the split seed: this genuinely reallocates groups, using the displayed unsigned integer draws. It does not regenerate the hand-authored observations. Replay the five workflow phases, then edit a row at a historical phase; replay ends and the edit begins from that displayed state.
+
+## Why a second dataset is needed
+
+Training error describes how well a fitted model explains the observations it used. Validation asks how a procedure performs on observations it did not fit. Hyperparameters, including feature power and regularization strength, are choices about that procedure. Choosing them by validation makes validation data part of model development. A final test estimates performance of the selected procedure on a further held-out set, provided we do not keep changing the procedure after seeing that test.
+
+This lab has 12 hand-authored observations in six groups. One whole group is test; five are development. With three folds, validation contains two, two and one development groups. Unequal fold sizes are visible. Group independence is a sampling assumption, not a consequence of these IDs. For time series, a random group split may still expose the future; a chronological boundary would be required instead.
+
+## Define the fold score and grid
+
+For fold k, fit every preprocessing statistic and the model on training set Tₖ, then evaluate on validation set Vₖ:
+
+$$
+E_k(h)=\frac1{|V_k|}\sum_{i\in V_k}(\hat y_i^{(T_k,h)}-y_i)^2,
+\qquad \overline E(h)=\frac1K\sum_{k=1}^K E_k(h).
+$$
+
+The score weights folds equally, even when they have different row counts. A pooled per-row MSE would be another declared convention; it is not silently substituted here. Inspect every fold score before comparing their mean. Variability between folds can be more informative than an extra decimal in the mean.
+
+The grid is ordered lexicographically: power p is 1 then 2; within each power, λ is 0, 1 then 4. Power chooses one feature φ=z or φ=z² after training-only imputation and scaling. This is one engineered scalar feature, not a degree-two model containing both z and z². The objective is
+
+$$
+J(w,b)=\frac1{|T_k|}\sum_{i\in T_k}(b+w\phi_i-y_i)^2+\lambda w^2.
+$$
+
+The intercept is not penalized. Eliminating b by setting its derivative to zero gives b=ȳ−wφ̄. Substituting into the w derivative gives
+
+$$
+w=\frac{\operatorname{mean}[(\phi-\bar\phi)(y-\bar y)]}
+{\operatorname{mean}[(\phi-\bar\phi)^2]+\lambda}.
+$$
+
+At zero feature variance with λ=0, the slope is unidentified; this lab chooses w=0 and b=ȳ. Selection uses held-out MSE, not the training objective including λw². Changing λ would otherwise also change the quantity being compared.
+
+## A literal selection example
+
+Suppose two candidates have three held-out fold MSEs (1,4,1) and (2,2,2). Both have equal-weight CV mean 2. Our strict less-than update keeps the first candidate in grid order. There is no hidden tolerance that converts near ties into ties. If the first candidate has p=1, λ=0, these values stay fixed when refitting; the model's numerical w and b are fitted again on all development rows.
+
+If validation fold sizes are (2,4,2), the first candidate's pooled row MSE is (2·1+4·4+2·1)/8=2.5, while its equal-fold score remains 2. Declaring aggregation is part of defining the experiment. Neither score should include the test rows.
+
+## Execute the transparent reference
+
+The canonical code constructs n×1 NumPy feature and target batches. Mathematical observations and the one weight are columns; the implementation stores batch observations in rows. It uses scalar closed-form ridge arithmetic rather than an opaque search service. A complete JSON request contains rows, probability rows, seed, threshold, folds, phase, t and delta; the result includes every membership, transform fit, candidate and prediction. CLI input comes from standard input. The same actual file supports all five chapters.
+
+<CodeFile source={reference} file="code/python/p08/evaluation.py" />
+
+## Explorer: which boundary changes the result?
+
+Change the fold count between two and four and inspect the new memberships. Seed replay uses sorted group IDs followed by descending Fisher–Yates swaps driven by the frozen u32 LCG. Whole groups are distributed round-robin; this is **group-aware allocation, not stratification**. A classification experiment that claims stratification must allocate class counts deliberately. This regression board makes no such claim.
+
+Use constant data to inspect the zero-variance convention and exact grid ties. Restore original data and inspect a missing feature: its imputed value is learned separately in each training fold. A global imputer would leak validation features into fitting. <a href={href('/chapters/preprocessing-feature-pipelines/')}>III-38</a> makes that numerical difference explicit.
+
+<Callout title="Repeated selection spends validation information" kind="misconception">
+Searching many grids and reporting only the best mean invites selection optimism. Nested CV can hold an outer validation layer around inner tuning. This small board demonstrates a single declared grid and a final group test; it does not implement nested CV or prove an unbiased population estimate.
+</Callout>
+
+## Limits and connections
+
+Six synthetic groups cannot establish production generalization. A single test group can have unusually easy or difficult rows. Leakage-free code still needs representative sampling, a defensible group definition and a decision-relevant metric. Do not call a validation minimum proof that one architecture is universally best. The regression objective connects to <a href={href('/chapters/regularization/')}>III-12</a>; sampling variability is the reason to inspect multiple folds. Future preprocessing belongs inside each fit, not outside the boundary.
+
+## Five graded decisions
+
+<ChoiceExercise id="iii35-1" client:load prompt="May a test target influence the chosen penalty?" choices={[{label:'No; only development validation scores select it.',correct:true,feedback:'Test evaluation follows selection and development refitting.'},{label:'Yes, if the test group is small.',correct:false,feedback:'Sample size does not authorize test-driven tuning. That would make it another validation set.'}]} />
+<ChoiceExercise id="iii35-2" client:load prompt="What does the split seed control in this board?" choices={[{label:'Group assignment, not observation generation.',correct:true,feedback:'Rows are hand-authored; the LCG shuffles sorted groups.'},{label:'The targets and probabilities.',correct:false,feedback:'The displayed synthetic targets and forecasts have explicit hand provenance.'}]} />
+<ChoiceExercise id="iii35-3" client:load prompt="Two candidates have exactly equal CV mean. Which wins?" choices={[{label:'The first in declared grid order.',correct:true,feedback:'Strict less-than selection preserves the first candidate on exact ties.'},{label:'The last one because it was computed more recently.',correct:false,feedback:'There is no last-write tie rule. Read the ordered grid contract.'}]} />
+<ChoiceExercise id="iii35-4" client:load prompt="What is fitted again after choosing p and λ?" choices={[{label:'Preprocessing, slope and intercept on all development rows.',correct:true,feedback:'Hyperparameters remain selected; fitted statistics and parameters use the larger development set.'},{label:'Nothing; reuse the first fold model.',correct:false,feedback:'A fold model deliberately omitted validation groups. Final refitting uses all development rows.'}]} />
+<ChoiceExercise id="iii35-5" client:load prompt="Does the group round-robin allocation guarantee class stratification?" choices={[{label:'No; it preserves group boundaries only.',correct:true,feedback:'Stratification would need explicit class-balance constraints, which this regression lab does not claim.'},{label:'Yes; equal numbers of groups imply equal class frequencies.',correct:false,feedback:'Group counts and class frequencies are different quantities.'}]} />
+
+## What you can now explain
+
+You can identify every fit and evaluation membership, derive the ridge fit, distinguish objective from selection metric, reproduce exact tie-breaking and describe development refitting before test evaluation. Next, <a href={href('/chapters/learning-curves-model-selection/')}>III-36</a> varies actual training membership while keeping validation fixed.

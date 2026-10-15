@@ -1,0 +1,135 @@
+---
+chapterId: III-26
+title: k-Means
+hero: Give every assignment a distance and every center a mean
+lede: Drag a centroid, inspect its distance column, then separate the assignment and mean update that define Lloyd's algorithm.
+description: Inspect real point-to-centroid distances, deterministic assignments, cluster sums, proposed means and objective changes in an immutable k-means replay.
+prerequisites: ["II.3", "II.9", "V.1", "III.7"]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import { href } from '../../../shell/href';
+import ClusteringStage from '../ClusteringStage';
+import reference from '../../../../code/python/p05/clustering.py?raw';
+
+<Stage caption="Drag a hollow centroid diamond or use its arrow keys and numeric coordinates. Read distance → assignment → sum → mean. The proposed objective is visible before the update; every display uses the active numerical state."><ClusteringStage scope="iii26-lloyd" mode="lloyd" client:load /></Stage>
+
+## Let the center make a claim
+
+Reset, then select centroid 0. Move its x coordinate from −3 to −2. Only one distance column changes, but a nearest-center assignment can change anywhere its competitors were close. The plotted dashed links and labels show the current assignment; the table records every squared distance. The original point at −1 is tied between centers −3 and 1. Our exact tie chooses center 0.
+
+Press **Assign nearest** to commit the displayed preview. Then read the cluster sums and the **current → proposed WCSS** before pressing **Update means**. Assigning points and moving centers are different operations. Repeat them, or replay their immutable half-step states. There is no animation that secretly fits a different model.
+
+## Define the unsupervised problem
+
+We observe feature vectors but have no target labels. A cluster label is an algorithm's grouping decision. It is not an observed class, a predicted regression target, or an ordered numerical quantity.
+
+For $n$ observations and chosen $k$, k-means uses centers $c_j$ and assignments $a_i$. This sheet measures squared scaled Euclidean distance:
+
+$$
+d_{ij}^2=\sum_{r=1}^2\left(\frac{x_{ir}-c_{jr}}{s_r}\right)^2,
+\qquad s_r>0,\qquad
+J(a,c)=\sum_{i=1}^n d_{i,a_i}^2.
+$$
+
+$J$ is the within-cluster sum of squares, WCSS. It is a **sum**, without $1/n$, one half, or a square root. Each observation has weight one, including coincident observations with different IDs. Reference scales remain fixed during a Lloyd run. With unit scales, this is ordinary Euclidean k-means. There is no intercept or target column.
+
+Mathematical observations are $2\times1$ columns; $X$ stores samples in its $n\times2$ rows. The center matrix is $k\times2$, the squared-distance matrix $n\times k$, and assignments an $n\times1$ integer column. Zero-based cluster indices run from 0 to $k-1$.
+
+## Two exact subproblems give the mechanics
+
+With centers fixed, choose the least costly center independently for every row:
+
+$$
+a_i\leftarrow\operatorname*{arg\,min}_{0\le j<k}d_{ij}^2.
+$$
+
+The browser and NumPy choose the lowest center index on an exact computed tie. Rounding the table to six significant digits does not create a tie in the model.
+
+With assignments fixed, let $C_j$ contain the observations assigned to center $j$. For a nonempty cluster, differentiate each coordinate of its quadratic cost:
+
+$$
+\frac{\partial J_j}{\partial c_{jr}}
+=\frac{2}{s_r^2}\left(|C_j|c_{jr}-\sum_{i\in C_j}x_{ir}\right)=0,
+\qquad
+c_{jr}\leftarrow\frac{1}{|C_j|}\sum_{i\in C_j}x_{ir}.
+$$
+
+Thus the coordinatewise arithmetic mean minimizes that cluster's cost. Fixed feature scaling changes memberships but does not change the raw-coordinate mean of a fixed membership. The positive quadratic curvature gives the unique mean for a nonempty cluster.
+
+The equivalent identity is useful for an independent proof:
+
+$$
+\sum_{i\in C_j}\left\|S^{-1}(x_i-c_j)\right\|^2
+=\sum_{i\in C_j}\left\|S^{-1}(x_i-\mu_j)\right\|^2
++|C_j|\left\|S^{-1}(c_j-\mu_j)\right\|^2.
+$$
+
+The mean removes the last nonnegative term. Assignment and update cannot increase $J$ in exact arithmetic under these fixed data, scales and declared empty-cluster conventions. Arbitrary dragging changes centers and can increase it.
+
+## Calculate the first full iteration literally
+
+The four hand-authored observations have x coordinates −3, −1, 1 and 3, all with y=0. Initial centers are (−3,0) and (1,0). Neither the observations nor these default centers were sampled by a seed.
+
+<div class="table-scroll" tabindex="0" role="region" aria-label="III-26 initial distances, scrollable">
+
+| ID | x₁ | d² to c0 | d² to c1 | Assigned label |
+| --- | ---: | ---: | ---: | ---: |
+| s1 | −3 | 0 | 16 | 0 |
+| s2 | −1 | 4 | 4 | 0 by tie |
+| s3 | 1 | 16 | 0 | 1 |
+| s4 | 3 | 36 | 4 | 1 |
+
+</div>
+
+The objective is $0+4+0+4=8$. Cluster 0 contains s1/s2, sum (−4,0), count 2, mean (−2,0). Cluster 1 contains s3/s4, sum (4,0), count 2, mean (2,0). At those proposed centers each assigned squared distance is 1, so proposed WCSS is 4. Pressing **Update means** commits exactly those values.
+
+The next assignment is unchanged. A second mean update also leaves the centers unchanged, so the sheet stops at binary64 equality. Its trace objectives are **8 → 8 → 4 → 4 → 4**, including the initial preview and each assignment/update phase. Reaching this fixed point does not generally prove global optimality.
+
+## Explore without changing history
+
+The centroid selector, numeric fields, pointer dragging and arrow keys all call the same coordinate edit. Pointer input snaps to a stated 0.1 lattice; keyboard movement adds 0.1, or 0.5 with Shift, to the unrounded displayed coordinate. Numeric Enter preserves fine precision. Values outside −5…5 are visibly rejected; pointer movement stops at that boundary.
+
+Switch **Edit handles** to observations to move the data themselves. Editing data, centers or scales clears committed assignments and returns to a nearest-label preview. This prevents a historical assignment from masquerading as a new optimization run. Seed changes alone leave the current centers unchanged; **Initialize from seed** selects new initial observation rows.
+
+Replay records deeply detached, frozen complete states. **First**, **Previous** and **Next** select them; they do not reverse mutations. Edit a center while viewing a historical frame and the new experiment begins with that frame's centers, observations and scales. Reset restores the literal original data and selected handle.
+
+## Empty means, precision and evaluation
+
+An empty cluster has no mean. The policy is **retain its previous center**. The membership table says “Undefined; retain” and shows the coordinates; it never reports the retained value as an observed empty-cluster mean. Such a center contributes zero to held WCSS. Part V deliberately does not reseed it behind the learner's back.
+
+<Callout title="Finite input is only the first numerical condition" kind="numerical">
+The pure model accepts 1–32 dense two-feature rows, unique nonempty IDs, 1 ≤ k ≤ n, positive finite scales and finite coordinates. It rejects overflowing differences, scaled differences, squares, sums and objectives. A nonzero difference whose scaled value or square becomes zero is rejected with rescaling guidance, so distinct points cannot silently become zero-distance ties. Ordinary rounding of small positive terms into a larger sum remains binary64 behavior.
+</Callout>
+
+WCSS has squared normalized-feature units. Smaller WCSS is not classification accuracy, truth, fairness, or usefulness. With distinct points, allowing $k=n$ can make WCSS zero by assigning each point its own center; that alone does not justify so many clusters. Choosing k requires the intended task, stability and an appropriate external or structural evaluation.
+
+The physical plot uses equal raw x/y scales. Scaling changes the metric without redrawing a misleading transformed coordinate system. Numeric outputs are authoritative where observations coincide. Visible labels are sized for the measured viewport; wide tables and equations scroll in named bounded regions.
+
+## Read the actual canonical code
+
+The source below implements `inspect_lloyd`, `lloyd_step`, `lloyd_trace` and deterministic initialization directly with NumPy arrays and explicit boundary checks. From the book root, the default invocation prints the literal first mean update:
+
+```bash
+.venv/bin/python -B code/python/p05/clustering.py
+```
+
+<CodeFile source={reference} file="code/python/p05/clustering.py" />
+
+Independent test source evaluates expanded rational quadratics and the pairwise-distance identity for cluster SSE, and enumerates every tiny unlabeled partition. It imports and tests this actual canonical module; agreement between Python and TypeScript alone is insufficient evidence. Their purpose is to distinguish mathematical evidence from two implementations making the same mistake.
+
+## Five graded investigations
+
+<div data-p05-exercises>
+<ChoiceExercise id="iii26-1" client:load prompt="At x=−1 with centers −3 and 1, which label is committed?" choices={[{label:'0, because both squared distances are 4.',correct:true,feedback:'The declared exact tie rule chooses the lowest centroid index. It does not imply greater evidence for that center.'},{label:'1, because its coordinate is positive.',correct:false,feedback:'Center coordinates have no preference sign. Compare both distances and apply the explicitly declared index tie rule.'}]} />
+<ChoiceExercise id="iii26-2" client:load prompt="What is the mean of the cluster containing x coordinates −3 and −1?" choices={[{label:'−2',correct:true,feedback:'Their sum is −4 and count is 2. The coordinatewise mean minimizes the fixed-membership squared objective.'},{label:'−4',correct:false,feedback:'−4 is the sum. A centroid mean divides by the actual cluster count, not by the total dataset count.'}]} />
+<ChoiceExercise id="iii26-3" client:load prompt="What happens to WCSS after the literal first mean update?" choices={[{label:'8 → 4',correct:true,feedback:'The updated centers are −2 and 2, and all four held squared distances become 1. Their sum is 4.'},{label:'8 → 1',correct:false,feedback:'1 is the mean of the four updated squared errors. This chapter reports their sum, WCSS, without averaging.'}]} />
+<ChoiceExercise id="iii26-4" client:load prompt="An empty cluster has no members. What does this sheet do?" choices={[{label:'Retain its old center and mark the mean undefined.',correct:true,feedback:'The retained center is an explicit algorithmic policy. Zero members do not define an arithmetic mean.'},{label:'Set its mean to the origin.',correct:false,feedback:'The origin would fabricate a numerical mean and silently change the declared algorithm. No such update is made.'}]} />
+<ChoiceExercise id="iii26-5" client:load prompt="Does a stopped Lloyd trace certify the globally best grouping?" choices={[{label:'No; it records a fixed point at the stated precision.',correct:true,feedback:'Coordinatewise assignment and mean improvements can stop at a worse local solution. Initialization and the objective both matter.'},{label:'Yes; every decreasing objective finds the global optimum.',correct:false,feedback:'A non-increasing sequence can stop at a local solution. Part V’s rectangle example has fixed points of costs 4 and 16.'}]} />
+</div>
+
+## Connections and checkpoints
+
+You can now calculate an entire distance matrix, distinguish preview from committed labels, derive a mean update and account for both objective values. <a href={href('chapters/clustering-initialization-failures/')}>III-27</a> tests the role of initialization and feature units; <a href={href('chapters/hierarchical-density-clustering/')}>III-28</a> changes the definition of a cluster. Book II's norms, means and partial derivatives supply the mathematical tools. A cluster number describes membership, so relabeling whole groups must not change an evaluation of the partition.

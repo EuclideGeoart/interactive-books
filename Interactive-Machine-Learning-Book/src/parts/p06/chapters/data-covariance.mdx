@@ -1,0 +1,130 @@
+---
+chapterId: III-29
+title: High-Dimensional Data and Covariance
+hero: Move the cloud, then measure its spread
+lede: Separate location from variation by centering every observation and inspecting the products that build a covariance matrix.
+description: Drag a two-feature cloud, inspect means and centered products, and compare sample and population covariance before extending the same shapes to high-dimensional data.
+prerequisites: [I.8, II.9, II.11, IV.14, V.6]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import { href } from '../../../shell/href';
+import PCAStage from '../PCAStage';
+import reference from '../../../../code/python/p06/pca.py?raw';
+
+<Stage caption="Start by dragging a filled observation. The table exposes centered products, the matrix measures the same cloud, and the lines and residuals derive from that single numerical state."><PCAStage scope="iii29-covariance" mode="covariance" client:load /></Stage>
+
+## Move one point before naming the matrix
+
+Move point **a** to x = −1 using the numeric editor, or select its handle and press Right ten times. Its centered x changes, but so do the centered x values of the other rows: the mean belongs to the entire cloud. The plus moves with that mean. A centered coordinate is not simply the original coordinate with its label changed.
+
+Reset. Switch **Covariance normalization** from sample to population. The cloud, mean, component lines and reconstruction stay geometrically identical. Covariance entries and eigenvalues shrink by 3/4 because these four observations now use divisor 4 instead of 3. The retained fraction and reconstruction SSE do not change.
+
+Try the line, isotropic, constant and singleton clouds. These are transparent hand-authored counterexamples, with no seed or randomness. The singleton has a mean but no sample covariance; switch to population to obtain its zero-spread descriptive covariance. Reset restores the four original observations and one retained component. Touch dragging, keyboard moves and numeric edits enter the same model; a replay edit starts from the frame you see.
+
+## Many features, one row per observation
+
+An observation with d features is a mathematical column vector $x_i\in\mathbb R^{d\times1}$. In a batch we store its transpose in a row:
+
+$$
+X=\begin{bmatrix}x_1^T\\\vdots\\x_n^T\end{bmatrix}\in\mathbb R^{n\times d},\qquad
+\mu=\frac1n\sum_{i=1}^n x_i\in\mathbb R^{d\times1}.
+$$
+
+A hundred measurements do not necessarily represent a hundred independent directions of variation. Height in metres and height in centimetres duplicate one degree of freedom. A nearly redundant sensor adds a small new direction. Data can occupy a low-dimensional region of a large feature space.
+
+Our browser and canonical Python deliberately accept only dense n×2 batches, with 1–128 uniquely identified observations. That bounded core lets you inspect every product and direction. The n×d equations here explain the generalization; this Part does not implement an arbitrary-dimensional solver, missing-value imputation, sparse matrices, whitening or standardization.
+
+## Center before measuring spread
+
+Subtract the same feature mean from every row:
+
+$$
+X_c=X-\mathbf1\mu^T,\qquad (X_c)_{ij}=x_{ij}-\mu_j.
+$$
+
+Each centered column sums to zero in exact arithmetic. The operation removes location while preserving pairwise differences. Translating every point by a fixed vector t changes the mean to μ+t and leaves Xc unchanged. It therefore leaves covariance unchanged. Moving only one point changes both location and variation.
+
+Centering is a fitted preprocessing operation. In a predictive workflow, fit μ on training rows, then center validation or future rows with that same μ. Re-centering each future batch changes the coordinate system and leaks batch information into the transform. The opening lab uses one descriptive batch and does not claim a held-out evaluation.
+
+## Build covariance from literal products
+
+Let q be the declared divisor: q=n for the empirical population convention, or q=n−1 for the sample convention. For q positive,
+
+$$
+C=\frac1q X_c^T X_c\in\mathbb R^{d\times d},\qquad
+C_{jh}=\frac1q\sum_{i=1}^n (x_{ij}-\mu_j)(x_{ih}-\mu_h).
+$$
+
+Diagonal entries are feature variances. Off-diagonal entries measure signed co-variation, not a distance and not a causal effect. Products of two centered coordinates are positive when both deviate in the same direction and negative when they deviate in opposite directions. Symmetry follows because multiplication commutes: Cjh=Chj.
+
+For any direction v, $v^TCv=\|X_cv\|_2^2/q\ge0$. Covariance is positive semidefinite, so its exact eigenvalues cannot be negative. This derivation connects the matrix directly to variance along directions; it is more informative than memorizing a matrix formula.
+
+Sample normalization is the familiar unbiased covariance estimator under independent identically distributed sampling with finite second moments. Population normalization here describes the displayed empirical cloud. Neither choice turns a four-row synthetic cloud into evidence about a real population. With n greater than one, multiplying C by n/(n−1) changes eigenvalues but not its eigenvectors or explained-variance fractions.
+
+## Work the four-row cloud by hand
+
+The original rows are (−2,−1), (−1,−2), (1,2), (2,1). Their column sums are zero, so μ=(0,0) and centering leaves them unchanged.
+
+<div class="table-scroll" id="iii29-products" data-p06-prose-table data-scrollable="III-29 centered covariance products, scrollable" tabindex="0" role="region" aria-label="III-29 centered covariance products, scrollable">
+
+| Row | dx² | dx·dy | dy² |
+| --- | ---: | ---: | ---: |
+| a | 4 | 2 | 1 |
+| b | 1 | 2 | 4 |
+| c | 1 | 2 | 4 |
+| d | 4 | 2 | 1 |
+| Sum | 10 | 8 | 10 |
+
+</div>
+
+Hence the sample and population matrices are
+
+$$
+C_s=\begin{bmatrix}10/3&8/3\\8/3&10/3\end{bmatrix},\qquad
+C_p=\begin{bmatrix}5/2&2\\2&5/2\end{bmatrix}.
+$$
+
+The sum of the diagonal entries, the trace, measures total feature variance: 20/3 under sample normalization and 5 under population normalization. Both describe the same geometry in different normalization units. The sample off-diagonal 8/3 is not a correlation coefficient; it need not lie between −1 and 1.
+
+## Units, degeneracy and arithmetic limits
+
+If one feature is measured in metres and another in seconds, covariance entries carry mixed products of units. Euclidean PCA on raw numbers then embeds a choice of metric. Multiplying only one feature by 100 can rotate the preferred direction. Standardizing features is a separate fitted decision; this lab does not silently normalize scales. Read the distance-metric discussion in <a href={href('/chapters/distance-metrics-dimensionality/')}>III-18</a> before treating variance as importance.
+
+Centered data have rank at most min(d,n−1). A line cloud has rank at most one; a constant cloud has rank zero. At n=1, population covariance is the zero matrix, while sample covariance is undefined because q=0. Empty data do not define a mean and are rejected. The model validates dense shapes, IDs, finite coordinates and k even before these degenerate outcomes.
+
+<Callout title="Finite input does not guarantee finite arithmetic" kind="numerical">
+The kernel rejects nonfinite intermediate arithmetic and squared-component or variance-normalization underflow to zero. Its mean preserves exact constant features and otherwise accumulates differences from the first row, divided by n. It does not subtract two large second moments to obtain covariance. Binary64 centering can still lose variation already below the input's representable spacing; no algorithm can recover information that was never represented. Rescale an extreme problem before analysis.
+</Callout>
+
+## Execute the actual Python and NumPy
+
+The imported canonical file implements the same bounded n×2 contract. It validates each coordinate before constructing the NumPy array, then forms the means, centered products, covariance, eigenpairs and reconstruction. The oracle separately forms exact Fraction products and compares NumPy SVD and symmetric eigh results; a library wrapper is not the teaching mechanism.
+
+From the book root, a terminal invocation uses the original cloud and prints a JSON result:
+
+```bash
+.venv/bin/python -B code/python/p06/pca.py
+```
+
+For a pipe, provide a complete request with `points` (objects containing a unique `id` and two-entry `x`), `normalization` (`sample` or `population`), and integral numeric `k` from 0 to 2. No seed is accepted or needed. An invalid request exits with an error instead of manufacturing a covariance.
+
+<CodeFile source={reference} file="code/python/p06/pca.py" />
+
+## Five graded investigations
+
+<ChoiceExercise id="iii29-1" client:load prompt="X contains 7 observations and 5 features. What are the shapes of μ and C?" choices={[{label:'μ is 5 × 1 and C is 5 × 5.',correct:true,feedback:'The batch stores observations in rows; covariance compares feature columns.'},{label:'μ is 7 × 1 and C is 7 × 7.',correct:false,feedback:'Those dimensions confuse observations with features. C has one row and column per feature.'}]} />
+
+<ChoiceExercise id="iii29-2" client:load prompt="Add the same vector (3,−1) to every point. What changes?" choices={[{label:'The mean changes; centered coordinates and covariance do not.',correct:true,feedback:'Both each point and its mean receive the same translation.'},{label:'Every covariance entry increases by 3.',correct:false,feedback:'Covariance measures deviations from the mean, not absolute location.'}]} />
+
+<ChoiceExercise id="iii29-3" client:load prompt="For the original four rows, what is sample covariance between x and y?" choices={[{label:'8/3.',correct:true,feedback:'The four centered cross-products total 8; sample normalization divides by 4−1.'},{label:'2.',correct:false,feedback:'2 is the population covariance 8/4. State the divisor before choosing a value.'}]} />
+
+<ChoiceExercise id="iii29-4" client:load prompt="One finite observation is available. Which covariance statement is valid?" choices={[{label:'Population covariance is zero; sample covariance is undefined.',correct:true,feedback:'Centering gives a zero row, but the sample divisor n−1 is zero.'},{label:'Both are zero because the centered coordinates are zero.',correct:false,feedback:'A zero numerator does not define division by zero.'}]} />
+
+<ChoiceExercise id="iii29-5" client:load prompt="Why can a 100-feature centered dataset with only 4 rows be rank deficient?" choices={[{label:'Its rank is at most 3 because centering makes the rows linearly dependent.',correct:true,feedback:'The centered rows sum to zero, so rank is bounded by n−1 as well as d.'},{label:'It must have rank 100 because there are 100 columns.',correct:false,feedback:'Columns can be redundant, and only three independent centered row directions are possible.'}]} />
+
+## What you should now be able to explain
+
+You can separate translation from spread, write the n×d and d×d shapes, build every covariance entry from centered products, choose a normalization explicitly, and explain why small or redundant batches are rank deficient. <a href={href('/chapters/pca-eigenvectors-variance/')}>III-30</a> uses this same covariance to find directions; III-31 measures what projection discards.

@@ -1,0 +1,10 @@
+{
+  "status":"HAND-AUTHORED — UNVALIDATED — OWNER MUST EXECUTE CHECKS",
+  "provenance":"Exact rational literals calculated by hand; no generator has run or is required.",
+  "metric":{"threshold":0.5,"expected":{"tp":2,"fp":2,"tn":4,"fn":0,"accuracy":0.75,"balancedAccuracy":0.8333333333333334,"precision":0.5,"recall":1,"f1":0.6666666666666666,"brier":0.195},"binCounts":[1,2,2,1,2]},
+  "leakage":{"rows":[{"id":"t0","group":"t","x":[0],"y":0},{"id":"t2","group":"t","x":[2],"y":2},{"id":"v0","group":"v","x":[null],"y":0},{"id":"v10","group":"v","x":[10],"y":10}],"train":["t0","t2"],"validation":["v0","v10"],"proper":{"impute":1,"center":1,"scale":1,"slope":0.5,"intercept":1,"trainingMse":0.25,"objective":0.5,"heldOutMse":10.625,"predictions":[1,5.5]},"leaked":{"impute":4,"center":4,"variance":14,"slopeSquared":0.06222222222222222,"intercept":1.2,"heldOutMse":36,"predictions":[1.2,1.6]},"difference":25.375},
+  "seedZero":{"groups":["e","a","c","d","f","b"],"draws":[1013904223,1196435762,3519870697,2868466484,1649599747],"test":["e1","e2"],"validation":[["a1","a2","f1","f2"],["b1","b2","c1","c2"],["d1","d2"]]},
+  "binary64":{"t":100000000,"delta":0.00000001,"left":1,"right":0,"fragile":0,"stable":0.000000005},
+  "zeroTrueClassProbability":{"rows":[{"id":"zero","y":1,"p":0}],"threshold":0.5,"expected":{"tp":0,"fp":0,"tn":0,"fn":1,"precision":null,"recall":0,"balancedAccuracy":null,"f1":0,"brier":1,"logLoss":null}},
+  "logScore":{"rows":[{"id":"coin0","y":0,"p":0.5},{"id":"coin1","y":1,"p":0.5}],"threshold":0.5,"expectedLogLoss":0.6931471805599453,"expectedBrier":0.25}
+}

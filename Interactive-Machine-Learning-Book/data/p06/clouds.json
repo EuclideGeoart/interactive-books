@@ -1,0 +1,10 @@
+{
+  "provenance": "Hand-authored synthetic observations; no random draws or seed.",
+  "clouds": {
+    "tilted": [[-2,-1],[-1,-2],[1,2],[2,1]],
+    "line": [[-2,-2],[-1,-1],[1,1],[2,2]],
+    "isotropic": [[-2,0],[2,0],[0,-2],[0,2]],
+    "constant": [[1,1],[1,1],[1,1],[1,1]],
+    "singleton": [[1,2]]
+  }
+}

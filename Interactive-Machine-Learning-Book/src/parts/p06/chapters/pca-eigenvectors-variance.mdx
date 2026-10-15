@@ -1,0 +1,151 @@
+---
+chapterId: III-30
+title: 'PCA: Eigenvectors and Explained Variance'
+hero: Find the line with the most spread
+lede: Use covariance eigengeometry to choose orthogonal directions, then separate explained variation from prediction quality.
+description: Inspect ordered covariance eigenpairs and explained variance while dragging data, including sign ambiguity, repeated eigenvalues, zero spread and stable small-eigenvalue arithmetic.
+prerequisites: [II.4, II.17, II.19, V.6, VIII.4]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import { href } from '../../../shell/href';
+import PCAStage from '../PCAStage';
+import reference from '../../../../code/python/p06/pca.py?raw';
+
+<Stage caption="Drag the cloud and watch its actual covariance directions. PC1 is solid, PC2 dashed; neither arrow sign is a physical property of the observations."><PCAStage scope="iii30-eigenpairs" mode="eigenpairs" client:load /></Stage>
+
+## Ask the cloud for a direction
+
+In the original cloud, PC1 follows the line y=x. Drag point a upward and inspect the off-diagonal covariance, the solid line and both eigenvalues. The direction changes because its variance is recomputed from the edited observations; this is not a decorative rotation.
+
+Reset. Select the **isotropic cloud**. Its spread is equal in every direction. The lab shows a coordinate basis and explicitly states that it is conventional; the picture does not establish a unique horizontal first component. With the **constant cloud**, both eigenvalues are zero and the explained-variance fractions are undefined. “0/0” is not a retained fraction of zero or one.
+
+Select **line cloud**, then retain one component. The cloud lies in a one-dimensional span. In exact arithmetic one eigenvalue is positive and the other is zero. Numerical output may contain a very small residual from a nonexact floating direction; a tolerance used in a test is not permission to erase a positive eigenvalue in the model.
+
+## PCA chooses an orthonormal coordinate system
+
+For centered row-batch Xc and covariance C=XcᵀXc/q, a unit column direction v produces projected scalar scores z=Xcv. Their variance under the same divisor q is
+
+$$
+\frac{\|X_cv\|_2^2}{q}=v^TCv,\qquad \|v\|_2=1.
+$$
+
+The unit constraint is essential: multiplying a direction by ten multiplies its score variance by a hundred without finding a better line. PCA maximizes this variance over unit directions. It then repeats inside orthogonal complements, so later components do not duplicate earlier directions.
+
+For real symmetric C, an orthonormal eigenbasis exists:
+
+$$
+Cv_j=\lambda_jv_j,\quad V^TV=I,\quad
+\lambda_1\ge\lambda_2\ge\cdots\ge\lambda_d\ge0.
+$$
+
+V has d×d shape, with directions in its columns. Covariance is positive semidefinite because every directional variance is nonnegative. These directions describe variation in the supplied metric, not class boundaries, causes or supervised feature importance. PCA needs no target labels.
+
+## Derive why the maximum is an eigenvector
+
+Use a Lagrange multiplier for the unit constraint:
+
+$$
+\mathcal L(v,\lambda)=v^TCv-\lambda(v^Tv-1),\qquad
+\nabla_v\mathcal L=2Cv-2\lambda v=0.
+$$
+
+At a stationary direction, Cv=λv, and multiplying by vᵀ shows its variance is λ. To find the maximum, write a unit vector in the orthonormal eigenbasis: v=Va with aᵀa=1. Then
+
+$$
+v^TCv=\sum_{j=1}^d\lambda_j a_j^2\le\lambda_1\sum_j a_j^2=\lambda_1.
+$$
+
+The bound is attained by a leading eigenvector. Restricting to vectors orthogonal to v1 removes its coordinate and leaves λ2 as the next maximum. Distinct eigenvalues determine distinct lines, up to sign. If the largest eigenvalue repeats, any unit vector in its eigenspace attains the same maximum.
+
+## Work the original eigenpairs literally
+
+For the sample covariance from III-29,
+
+$$
+C=\begin{bmatrix}10/3&8/3\\8/3&10/3\end{bmatrix},\qquad
+v_1=\frac1{\sqrt2}\begin{bmatrix}1\\1\end{bmatrix},\quad
+v_2=\frac1{\sqrt2}\begin{bmatrix}-1\\1\end{bmatrix}.
+$$
+
+Multiplying gives Cv1=6v1 and Cv2=(2/3)v2. Their dot product is zero and each norm is one. The eigenvalue sum is 6+2/3=20/3, equal to the covariance trace. Population normalization multiplies both eigenvalues by 3/4: 4.5 and 0.5. The directions are unchanged.
+
+Define explained-variance fractions only when the total is positive:
+
+$$
+r_j=\frac{\lambda_j}{\sum_h\lambda_h},\qquad
+R_k=\sum_{j=1}^k r_j.
+$$
+
+Here r1=6/(20/3)=0.9 and r2=0.1. One component retains 90% of the empirical feature variation; it does not give 90% prediction accuracy. Zero components retain zero when there is positive spread; all components retain one. For a zero matrix, the denominator is zero and every ratio is undefined.
+
+<div class="table-scroll" id="iii30-spectrum" data-p06-prose-table data-scrollable="III-30 ordered covariance spectrum, scrollable" tabindex="0" role="region" aria-label="III-30 ordered covariance spectrum, scrollable">
+
+| Covariance convention | λ1 | λ2 | Retained with k=1 |
+| --- | ---: | ---: | ---: |
+| Sample, q=3 | 6 | 2/3 | 0.9 |
+| Population, q=4 | 4.5 | 0.5 | 0.9 |
+| Isotropic preset, population | 2 | 2 | 0.5; direction ambiguous |
+| Constant preset | 0 | 0 | Undefined; no spread |
+
+</div>
+
+## Signs and repeated eigenvalues are not bugs
+
+If Cv=λv, then C(−v)=λ(−v). Flipping a component flips its scores but leaves the reconstructed points unchanged because both factors change sign. The browser chooses a reproducible display sign for the leading eigenvector and obtains the perpendicular second vector. Another library may choose different signs; raw vector equality is the wrong parity test. Compare the projector vvᵀ or the absolute inner product for a simple eigenvalue.
+
+For C=αI, all directions have the same variance. A one-component reconstruction depends on the chosen line, but its total discarded energy is the same for every line. More generally, if a repeated eigenspace straddles the retained/discarded boundary, there is no unique rank-k projector. If you retain an entire repeated eigenspace, its projector is unique even though the basis within it can rotate. Our oracle compares orthogonality, eigen relations and optimal SSE in the ambiguous case, without requiring NumPy to return the browser's basis.
+
+Near a repeated spectrum, a tiny perturbation can rotate the vectors substantially. The lab warns when the computed gap is within 64 machine epsilons of total variance. This is a conditioning warning; it does not merge eigenvalues, choose a unique axis, or zero out variation. Exact computed equality is labeled separately.
+
+## Calculate the small eigenvalue without subtracting large equals
+
+For a symmetric two-by-two covariance $C=\begin{bmatrix}a&b\\b&c\end{bmatrix}$, the formal eigenvalues are
+
+$$
+\lambda_\pm=\frac{a+c}{2}\pm\sqrt{\left(\frac{a-c}{2}\right)^2+b^2}.
+$$
+
+The plus expression is well behaved after scaling by the largest entry magnitude and using `hypot`. The minus expression can lose all small positive variation through cancellation. For diagonal C=diag(0.5,5×10⁻¹⁷), both large terms can round to 0.25, making their difference zero.
+
+This kernel uses the scaled plus formula to obtain a stable leading direction, choosing the longer of two algebraic eigenvector formulas. It obtains the minor eigenvalue from centered data directly:
+
+$$
+\lambda_2=\frac1q\sum_i (x_{c,i}^Tv_2)^2.
+$$
+
+This sums nonnegative small quantities instead of subtracting two large quantities. No tolerance clamps a small positive value to zero. Last-bit ordering is restored if directional energy rounds above the computed leading value in a nearly repeated spectrum. Input dimensions, IDs and all finite arithmetic are checked before any zero-spread return.
+
+<Callout title="A stable small formula is not unlimited precision" kind="numerical">
+Binary64 input, centering and dot products still round. The covariance method can square conditioning; for large high-dimensional problems, working directly with an SVD of centered data is often preferable. Severe squared-component or variance-normalization underflow and intermediate overflow are rejected here. The 2×2 educational solver is not a general eigensolver. The independent oracle uses exact Fraction covariance and NumPy eigh/SVD, with sign/subspace-invariant comparisons and a separate relative bound for tiny positive eigenvalues.
+</Callout>
+
+## Execute the actual Python and NumPy
+
+The imported reference is actual source. `pca(request)` returns means, centered rows, covariance, eigenvectors, eigenvalues and fractions, followed by projection and reconstruction for the chosen k. `axes` serializes a list of direction columns; form a matrix with these vectors as columns before performing XcV.
+
+```bash
+.venv/bin/python -B code/python/p06/pca.py
+```
+
+That terminal command uses the original hand-authored request. Pipes require the full JSON request described in III-29. NumPy integer or finite integral numeric k values, including JSON `1.0`, are accepted; booleans, nonintegral numbers and nonfinite values are rejected. Inspect `oracle/p06/independent.py` for the separate SVD/eigh method rather than interpreting Python–TypeScript agreement alone as independence.
+
+<CodeFile source={reference} file="code/python/p06/pca.py" />
+
+## Five graded investigations
+
+<ChoiceExercise id="iii30-1" client:load prompt="Why constrain a PCA direction to unit length?" choices={[{label:'Otherwise arbitrary scaling could increase the score variance.',correct:true,feedback:'Variance scales quadratically with vector length; the constraint isolates direction.'},{label:'To force each eigenvalue to equal one.',correct:false,feedback:'Normalization affects the direction vector length, not the cloud’s directional variance.'}]} />
+
+<ChoiceExercise id="iii30-2" client:load prompt="The eigenvalues are 6 and 2/3. What fraction does one component retain?" choices={[{label:'0.9.',correct:true,feedback:'Divide 6 by the total 20/3.'},{label:'6/2 = 3.',correct:false,feedback:'Divide by the total variance, not by the number of components.'}]} />
+
+<ChoiceExercise id="iii30-3" client:load prompt="NumPy returns −v1 where the browser returns v1. Is PCA inconsistent?" choices={[{label:'No; compare the line projector v1v1ᵀ.',correct:true,feedback:'A sign flip changes scores and basis together, preserving projection and reconstruction.'},{label:'Yes; the negative vector has a negative eigenvalue.',correct:false,feedback:'Cv=λv implies C(−v)=λ(−v) with the same λ.'}]} />
+
+<ChoiceExercise id="iii30-4" client:load prompt="Covariance is 2I and k=1. Which claim is justified?" choices={[{label:'Every unit line has variance 2; the displayed first line is conventional.',correct:true,feedback:'The eigenvalue repeats, so the maximizing direction is not unique.'},{label:'Horizontal is the uniquely most informative direction.',correct:false,feedback:'Equal spread in every direction cannot determine a unique axis.'}]} />
+
+<ChoiceExercise id="iii30-5" client:load prompt="Why compute a tiny minor eigenvalue from perpendicular score energy?" choices={[{label:'To avoid cancellation in the difference of two nearly equal large terms.',correct:true,feedback:'A sum of small squares preserves positive variation that subtraction can erase.'},{label:'To declare all eigenvalues below 10⁻⁶ exactly zero.',correct:false,feedback:'This model never uses a tolerance to manufacture zero variation.'}]} />
+
+## Connect the spectrum to the next task
+
+You can derive the variance maximum, verify eigenpair shapes, compute retained fractions, and distinguish sign, repeated-basis and near-repeat ambiguity. Book II's eigenvectors and SVD supply the geometry. <a href={href('/chapters/pca-projection-reconstruction/')}>III-31</a> now uses these directions to compress data and measure the actual reconstruction error; a large retained fraction remains an unsupervised quantity.

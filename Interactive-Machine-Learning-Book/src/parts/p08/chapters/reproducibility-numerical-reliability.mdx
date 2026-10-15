@@ -1,0 +1,103 @@
+---
+chapterId: III-39
+title: Reproducibility and Numerical Reliability
+hero: Reproduce the procedure, then question its arithmetic
+lede: Replay exact group assignments and inspect two numerical counterexamples that a random seed cannot fix.
+description: Record complete experiment provenance, reproduce u32 split draws and distinguish binary64 cancellation, nonassociativity and conditioning from sampling reliability.
+prerequisites: [VIII.1, VIII.2, VIII.3, VIII.4, VIII.6, VIII.10]
+---
+import Stage from '../../../shell/Stage.astro';
+import CodeFile from '../../../shell/CodeFile.astro';
+import Callout from '../../../shell/Callout.astro';
+import ChoiceExercise from '../../../ui/ChoiceExercise';
+import { href } from '../../../shell/href';
+import EvaluationStage from '../EvaluationStage';
+import reference from '../../../../code/python/p08/evaluation.py?raw';
+
+<Stage caption="Replay preserves detached immutable experimental states. The provenance record describes data, parameters, transform order, model convention, split draws and arithmetic."><EvaluationStage scope="iii39-reliability" mode="reliability" client:load /></Stage>
+
+## Repeat an experiment, not just a seed
+
+Change the split seed, note the group order and u32 draws, then enter the same seed again. With identical rows and configuration, the same group allocation, selected parameters and numerical fits return. The observations were hand-authored; the seed controls group assignment only. Changing an observation while keeping the seed defines a different experiment.
+
+Open **Complete experiment provenance and parameters**. It includes the entire displayed input state, data version, grid, selection rule, split convention and development model with transform membership. Replay selects immutable historical states; it does not perform inverse updates. Edit a target at a replay frame to fork that displayed experiment, then reset to recover the canonical rows and seed 7. All operations are synchronous and local.
+
+## The exact random mechanism
+
+The shared generator stores an unsigned 32-bit state s. Every draw performs
+
+$$
+s_{j+1}=(1664525s_j+1013904223)\bmod2^{32},\qquad u_j=s_{j+1}/2^{32}.
+$$
+
+Group IDs are sorted before shuffling. Descending Fisher–Yates swaps position i with j=⌊u(i+1)⌋ for i=g−1,…,1. The first shuffled group is locked test. Remaining groups go round-robin into validation folds. Row order in membership tables follows input row order. Exact grid ties retain the first candidate, ordered by power then penalty. These details belong with the seed; choosing another PRNG or consuming an extra draw changes the experiment.
+
+A small hand-check starts at seed 0: the first unsigned update is 1013904223. With two groups [a,b], i=1 and j=⌊2·1013904223/4294967296⌋=0, so the order becomes [b,a]. The same arithmetic must be reproduced with integer semantics in Python; arbitrary floating multiplication of large RNG states is not the contract. This tiny shuffle example explains the mechanism; the board requires enough groups for training, validation and test.
+
+## What an experiment record must carry
+
+Record source/data versions and exact values, missing-value conventions, membership and group assumptions, the model family, feature order, objective normalization, parameter grid, selection metric, tie-breaking, chosen parameters and final fitted state. Record the evaluation threshold and probability-bin convention separately. A deployment record also needs actual runtime/library versions, hardware, thread/reduction settings and environment details. This board documents its binary64 algorithm but does not pretend a browser can capture every machine's environment or promise cross-platform bitwise identity.
+
+A standard library pipeline can be compared to this lab by matching mean imputation, population scaling, scalar feature power, unpenalized intercept and ridge normalization. Libraries may define ridge as SSE+αw² rather than MSE+λw², in which case α=nλ for a given fit. Matching names without matching conventions is not a valid numerical comparison. The owner-authored oracle instead uses an augmented least-squares system and exact rational calculations; the canonical code remains visible.
+
+## Binary64 addition is not associative
+
+In exact arithmetic both parenthesizations below equal 1:
+
+$$
+(10^{16}+(-10^{16}))+1,\qquad 10^{16}+((-10^{16})+1).
+$$
+
+In binary64, spacing near 10¹⁶ is 2. The inner −10¹⁶+1 rounds to −10¹⁶ under ties-to-even, so the right expression becomes 0. The left cancels exactly first and then adds 1. The board computes both expressions; it does not display a pre-drawn claim about them.
+
+Parallel reductions can change addition order. A seed fixes pseudorandom draws, not the schedule of a reduction. Deterministic algorithms need a declared arithmetic order as well. Our mean sums terms divided by n sequentially; this avoids some sum overflow but cannot remove all representation error. A reproducibility tolerance must be justified by the quantity's conditioning, not widened until unrelated answers pass.
+
+## Stable algebra addresses cancellation
+
+The positive expression √(t²+1)−t suffers subtraction of nearly equal large numbers. Rationalization gives
+
+$$
+\sqrt{t^2+1}-t=\frac{1}{\sqrt{t^2+1}+t}.
+$$
+
+At t=10⁸, t²+1 rounds to t². The fragile calculation yields 0. The stable expression yields approximately 5×10⁻⁹, retaining the small result without subtracting two nearly equal roots. The identity follows by multiplying numerator and denominator by √(t²+1)+t, because the numerator becomes (t²+1)−t²=1 in exact algebra.
+
+Move t toward 1 and inspect both computed values, then restore 10⁸. The stable rearrangement addresses the algorithm's cancellation; its root and input representation still use binary64. The lab bounds t at 10¹² so this particular demonstration cannot overflow t². It rejects overflow or underflow to zero in model arithmetic instead of producing fabricated finite scores.
+
+## Conditioning is a property of the question
+
+Now consider 1/(a−b), a=1+δ and b=1. If a and b nearly agree, tiny relative input errors can produce a large relative change in the difference. A subtraction condition estimate is
+
+$$
+\kappa=\frac{|a|+|b|}{|a-b|}.
+$$
+
+For δ near 10⁻⁸, κ is about 2×10⁸. The stored binary64 value 1+δ is already rounded; `(1+δ)−1` is not necessarily the nominal δ. The board compares reciprocal represented spacing with 1/δ. A stable algorithm cannot infer the intended exact inputs from rounded values. Measuring a and b more precisely, rescaling a model, or reformulating the scientific question may matter more than another solver.
+
+This lab keeps δ between 10⁻¹² and .1 so its represented difference is nonzero. It reports the sensitivity honestly rather than claiming its rearranged expression makes every nearby problem reliable.
+
+## Canonical execution and numerical contracts
+
+X and y use n×1 batches; one mathematical weight is 1×1 and the intercept is scalar. Canonical Python validates real values before NumPy conversion, rejecting Booleans, nonfinite numbers, malformed shapes and duplicate IDs. TypeScript additionally rejects sparse array holes. Intermediate arithmetic must remain representable; undefined metric denominators carry reasons. Inputs are not silently clipped and seeds must be integral u32 values.
+
+<CodeFile source={reference} file="code/python/p08/evaluation.py" />
+
+<Callout title="Reproducible is not representative" kind="misconception">
+You can reproduce a biased split, a contaminated scaler or a model that fails tomorrow. Exact toy replay is evidence about the stated mechanism, not a guarantee of production generalization, numerical robustness at arbitrary scales or valid causal conclusions.
+</Callout>
+
+## Connections and boundaries
+
+The Book II prerequisite links cover representation, conditioning, cancellation and stable algorithms. The earlier chapters in this Part add sampling and leakage boundaries to arithmetic reliability. The bounded board implements no distributed trainer, environment lockfile generator or production model registry. It exposes the minimum complete experiment so those larger systems can be judged against concrete semantics.
+
+## Five graded decisions
+
+<ChoiceExercise id="iii39-1" client:load prompt="Does recording seed 7 alone define this experiment?" choices={[{label:'No; data, split algorithm, transforms, model and selection conventions also matter.',correct:true,feedback:'The same seed with another draw order or dataset produces another experiment.'},{label:'Yes; every implementation uses the same random stream.',correct:false,feedback:'Seeds only have meaning with a particular generator and draw sequence.'}]} />
+<ChoiceExercise id="iii39-2" client:load prompt="What is the first u32 update from seed 0?" choices={[{label:'1013904223.',correct:true,feedback:'The multiplicative term is zero, so the increment gives the first state.'},{label:'1664525.',correct:false,feedback:'That is the multiplier, not the resulting state from seed zero.'}]} />
+<ChoiceExercise id="iii39-3" client:load prompt="What does binary64 compute for the two 10¹⁶ addition orders?" choices={[{label:'Left order 1; right order 0.',correct:true,feedback:'Adding 1 to −10¹⁶ rounds away before cancellation in the right order.'},{label:'Both 1 because addition is associative.',correct:false,feedback:'Exact addition is associative; rounded binary64 operations need not be.'}]} />
+<ChoiceExercise id="iii39-4" client:load prompt="Which expression avoids the t=10⁸ root subtraction?" choices={[{label:'1 divided by (sqrt(t²+1)+t).',correct:true,feedback:'Rationalization preserves the small positive result without subtracting nearby roots.'},{label:'Compute the subtraction twice and average it.',correct:false,feedback:'Repeating the same rounded cancellation cannot recover its lost information.'}]} />
+<ChoiceExercise id="iii39-5" client:load prompt="Does a stable algorithm remove sensitivity when a≈b in 1/(a−b)?" choices={[{label:'No; input conditioning remains even with careful arithmetic.',correct:true,feedback:'The condition estimate grows as the input separation shrinks.'},{label:'Yes; stability guarantees accurate results for any uncertain inputs.',correct:false,feedback:'Algorithmic stability and well-conditioned input questions are distinct.'}]} />
+
+## What you can now explain
+
+You can replay a fully specified seeded procedure, record transform and model provenance, calculate a nonassociativity counterexample and separate avoidable cancellation from input conditioning. Together with <a href={href('/chapters/cross-validation-hyperparameter-tuning/')}>III-35</a> through III-38, these habits turn fitting into an inspectable experiment whose limits remain explicit.
